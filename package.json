@@ -4,6 +4,11 @@
     "apps/*",
     "libs/*"
   ],
+  "scripts": {
+    "build": "yarn workspaces foreach --parallel --verbose  run build",
+    "lint": "yarn workspaces foreach --parallel --verbose run lint",
+    "test": "yarn workspaces foreach --parallel --verbose run test"
+  },
   "license": "GPL-3.0-only",
   "packageManager": "yarn@3.1.1"
 }
