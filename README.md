@@ -38,7 +38,18 @@ In addition, familiarity with [TypeScript](https://typescriptlang.org/) and [Rea
 Install the dependencies:
 
 ```bash
-$ yarn install
+$ yarn set version berry 
+$ yarn plugin import workspace-tools
+$ yarn
+```
+Now you can start making changes.
+
+### Running command on a single package
+```bash
+$ yarn workspace [@piedao/ui-atoms] run [build]
 ```
 
-Now you can start making changes.
+### Running command on a single package
+```bash
+$ yarn workspace [@piedao/ui-atoms] run [build]
+```
