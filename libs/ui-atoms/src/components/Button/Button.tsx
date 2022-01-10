@@ -37,10 +37,15 @@ const Button = ({
   label,
 }: ButtonProps) => {
   const mode = primary
-    ? "storybook-button--primary"
+    ? "text-lg leading-6 dark:bg-gray-800 text-sky-500 dark:text-sky-400"
     : "storybook-button--secondary";
   return (
-    <button>
+    <button
+      type="button"
+      className={`text-lime-400 text-lg leading-6 dark:bg-gray-800 text-sky-500 dark:text-sky-400`}
+      style={backgroundColor ? { backgroundColor }: {}}
+      onClick={onClick}
+    >
       {label}
     </button>
   );
