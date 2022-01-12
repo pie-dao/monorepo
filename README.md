@@ -4,14 +4,17 @@ Monorepo implementing the PieDAO application layer.
 
 ## Packages
 
-The PieDAO monorepo is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README
+The PieDAO monorepo is maintained with [Nx](https://nx.dev/getting-started/intro) and [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README
 associated to each package for detailed usage instructions.
+
+If running in VS code, Nx has a dedicated extension
 
 ### Apps
 
 | Apps                                        | Description                                                    |
 | ---------------------------------------------- | -------------------------------------------------------------- |
 | [`@piedao/example`](/apps/example)             | your app description                        |
+| [`@piedao/mono-app`](/apps/mono-app)             | React SPA for interacting with Mono Vaults                        |
 
 ### Libs
 
