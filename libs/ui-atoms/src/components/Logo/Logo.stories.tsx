@@ -1,5 +1,6 @@
 import React from 'react';
-import Logo from './Logo';
+import { Story } from "@storybook/react";
+import Logo, { LogoProps } from './Logo';
 
 export default {
   title: 'Application/Component Library/Logo',
@@ -9,29 +10,29 @@ export default {
   }
 }
 
-const Template = (args) => <Logo {...args}/>
+const Template: Story<LogoProps> = (args) => <Logo {...args} />;
 
 export const Default = Template.bind({})
 Default.args = {
-    size: 'xl'
+    size: 'medium'
 }
 
 export const Small = Template.bind({})
 Small.args = {
-    size: 'sm'    
+    size: 'small'    
 }
 
 export const Medium = Template.bind({})
 Medium.args = {
-    size: 'md'    
+    size: 'medium'    
 }
 
 export const Large = Template.bind({})
 Large.args = {
-    size: 'lg'    
+    size: 'large'    
 }
 
 export const ExtraLarge = Template.bind({})
 ExtraLarge.args = {
-    size: 'xl'    
+    size: 'extra-large'    
 }

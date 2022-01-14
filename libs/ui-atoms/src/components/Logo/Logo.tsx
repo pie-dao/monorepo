@@ -1,28 +1,16 @@
 import React from 'react'
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
 import "./logo.css"
-import { ReactComponent as LogoSvg } from './logo.svg'
+import logoFile from "./logo.png"
 
-const logoClasses = size => {
-    switch (size) {
-        case 'xl':
-            return 'w-96 h-96';
-            break;
-        case 'lg':
-            return 'w-48 h-48';
-            break;
-        case 'sm':
-            return 'w-12 h-12';
-            break;
-        default:
-            return 'w-96 h-96';
-    }
-}
+export interface LogoProps  {
+  size: "small" | "medium" | "large" | "extra-large";
+};
 
-const Logo = ({ size }) => {
+const Logo = ({ size }: LogoProps) => {
   return (      
     <div className="text-blue-300">
-        <img className={[logoClasses(size)]} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNKBCUqHqXhzWXIp0jkhMKP3w4mUz2CgbkRw&usqp=CAU"/>
+        <img className={size} src={logoFile} />
     </div>
   )
 }

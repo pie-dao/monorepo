@@ -2,9 +2,7 @@
 declare const _default: {
     title: string;
     component: {
-        ({ size }: {
-            size: any;
-        }): JSX.Element;
+        ({ size }: import("./Logo").ButtonProps): JSX.Element;
         protoTypes: {
             size: import("prop-types").Requireable<string>;
         };
