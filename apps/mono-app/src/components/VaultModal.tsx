@@ -1,7 +1,7 @@
 import { Vault } from "../store/vault/vaultSlice";
 import { scrollTo } from "../utils/scroll";
 
-const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => (
+const VaultModal = ({ vault, loading }: { vault: Vault, loading: boolean }): JSX.Element => (
   <div
     className="
     border-red-100 border-2 rounded-xl
@@ -16,9 +16,14 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => (
     <img alt={vault.symbol + '-icon'} className="absolute top-3 left-3" />
     <h2 className="text-center text-lg italic m-5">{vault.name}</h2>
     <p>{vault.description}</p>
-    { vault.stats && <div className="details">
-      <p>Projected APY: {vault.stats.projectedAPY} %</p>
-    </div>}
+    { 
+      loading 
+        ? <p>Loading...</p>
+        : vault.stats && 
+        <div className="details">
+          <p>Projected APY: {vault.stats.projectedAPY} %</p>
+        </div> 
+    }
     <section>
       <button
         className="

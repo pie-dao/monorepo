@@ -3,11 +3,11 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useEffect } from "react";
 import { injected } from "../connectors";
 
-export const useActiveWeb3 = (): boolean => {
+export const useActiveWeb3 = (): { active: boolean, account?: string | null } => {
   /**
    * This activates the web3-react provider
    */
-  const { activate, active } = useWeb3React<Web3Provider>();
+  const { activate, active, account } = useWeb3React<Web3Provider>();
   useEffect(() => {
     if (!active) {
       activate(injected).then(() => {
@@ -15,5 +15,5 @@ export const useActiveWeb3 = (): boolean => {
       });
     }
   }, [activate, active]);
-  return active;
+  return { active, account };
 };

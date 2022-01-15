@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Mono } from '../../types/abi/Mono'
-import { LOREM } from '../../constants';
+import { Mono } from '../../types/artifacts/abi/Mono'
+import { ChainIds, LOREM } from '../../constants';
 import { BigNumber } from '@ethersproject/bignumber';
-import { Erc20 } from '../../types/abi/Erc20';
+import { Erc20 } from '../../types/artifacts/abi/Erc20';
 import { InsufficientBalanceError, NotImplementedError, NotYetReadyToWithdrawError } from '../../errors';
 
 
@@ -31,7 +31,7 @@ export interface VaultState {
   status: 'idle' | 'loading' | 'failed';
 }
 
-export type SUPPORTEDNETWORKS = 'POLYGON';
+export type SUPPORTEDNETWORKS = 'POLYGON' | 'LOCAL';
 
 type NetworkDetails = {
   name: string;
@@ -45,8 +45,12 @@ type Networks = {
 export const NETWORKS: Networks = {
   POLYGON: {
     name: 'Polygon',
-    chainId: 137,
+    chainId: ChainIds.POLYGON,
   },
+  LOCAL: {
+    name: 'localhost',
+    chainId: ChainIds.LOCAL
+  }
 }
 
 const initialState: VaultState = {

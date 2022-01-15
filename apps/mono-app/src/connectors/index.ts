@@ -5,7 +5,8 @@ import { Web3Provider } from '@ethersproject/providers'
 export const injected = new InjectedConnector({
   supportedChainIds: [
     ChainIds.POLYGON,
-    ChainIds.MAINNET
+    ChainIds.MAINNET,
+    ChainIds.LOCAL
   ]
 });
 
