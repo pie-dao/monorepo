@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Mono } from '../../types/artifacts/abi/Mono'
 import { ChainIds, LOREM } from '../../constants';
-import { BigNumber } from '@ethersproject/bignumber';
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { Erc20 } from '../../types/artifacts/abi/Erc20';
 import { InsufficientBalanceError, NotImplementedError, NotYetReadyToWithdrawError } from '../../errors';
 
@@ -11,6 +11,12 @@ export interface VaultStats {
   historicalAPY: number;
   deposits: number;
 };
+
+export interface UserBalances {
+  wallet: BigNumberish;
+  vaultUnderlying: BigNumberish;
+  vault: BigNumberish;
+}
 
 export interface Vault {
   name: string;
@@ -24,6 +30,7 @@ export interface Vault {
   extendedDescription: string;
   network: NetworkDetails;
   stats?: VaultStats
+  userBalances?: UserBalances
 }
 
 export interface VaultState {
@@ -63,7 +70,7 @@ const initialState: VaultState = {
       symbol: 'USDC',
       addresses: {
         token: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-        vault: '0x6bd0d8c8ad8d3f1f97810d5cc57e9296db73dc45',
+        vault: '0x21a3366cAbB5991a6F2612887FfCB0657023065E',
       },
     },
     {
@@ -74,13 +81,34 @@ const initialState: VaultState = {
       symbol: 'DAI',
       addresses: {
         token: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
-        vault: '0x6bd0d8c8ad8d3f1f97810d5cc57e9296db73dc45',
+        vault: '0x21a3366cAbB5991a6F2612887FfCB0657023065E',
       },
     }
   ],
   status: 'idle',
 };
 
+export const vaultSlice = createSlice({
+  name: 'vault',
+  initialState,
+  reducers: {
+    setStats: (state, action: PayloadAction<{ name: string, stats: VaultStats }>) => {
+      const vault = state.vaults.find(a => a.name === action.payload.name);
+      if (vault) vault.stats = action.payload.stats;
+    },
+    setUserBalances: (state, action: PayloadAction<UserBalances & { token: string }>) => {
+      const vault = state.vaults.find(a => a.addresses.token === action.payload.token);
+      const { token, ...balances } = action.payload
+      if (vault) vault.userBalances = balances
+    }
+  },
+});
+
+export const { setStats, setUserBalances } = vaultSlice.actions;
+export default vaultSlice.reducer;
+
+
+// ----- functions to be implemented in the application
 
 // actions - getters
 export const getTotalDeposits = async (contract: Mono): Promise<BigNumber> => {
@@ -103,6 +131,7 @@ export const latestBatchBurn = async (contract: Mono): Promise<number> => {
   /**
    * Underlying tokens are redeemable once the batch burn process is complete
    * So we want to listen for the latest batch burn event
+   * @dev - polygon network will not allow this
    */
   
   // list all ExecuteBatchBurn events
@@ -118,7 +147,7 @@ export const latestBatchBurn = async (contract: Mono): Promise<number> => {
   }
 }
 
-const userCanWithdraw = async (contract: Mono, user: string): Promise<boolean> => {
+export const userCanWithdraw = async (contract: Mono, user: string): Promise<boolean> => {
   /**
    * Fetch batchburnindex & compare the batchBurnIndexForUser
    * (batchBurnForUser < batchBurnIndex) indicates user has something to withdraw
@@ -174,17 +203,3 @@ const withdraw = async (contract: Mono, userAddress: string): Promise<void> => {
     throw new NotYetReadyToWithdrawError()
   }
 }
-
-export const vaultSlice = createSlice({
-  name: 'vault',
-  initialState,
-  reducers: {
-    setStats: (state, action: PayloadAction<{ name: string, stats: VaultStats }>) => {
-      const vault = state.vaults.find(a => a.name === action.payload.name);
-      if (vault) vault.stats = action.payload.stats;
-    },
-  },
-});
-
-export const { setStats } = vaultSlice.actions;
-export default vaultSlice.reducer;

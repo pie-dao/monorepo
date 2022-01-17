@@ -62,11 +62,11 @@ export function useMonoVaultContract(vaultAddress: string) {
 }
 
 export function useMultipleTokenContract(tokenAddresses: string[]) {
-  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI)
+  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI) as Erc20[]
 }
 
 export function useMultipleMonoContract(vaultAddresses: string[]) {
-  return useMultipleContracts<Mono>(vaultAddresses, MonoABI)
+  return useMultipleContracts<Mono>(vaultAddresses, MonoABI) as Mono[]
 }
 
 export function useMultipleContracts<T extends Contract>(

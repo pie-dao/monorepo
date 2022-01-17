@@ -6,3 +6,10 @@ export enum ChainIds {
   POLYGON = 137,
   MAINNET = 1
 };
+
+
+export const ChainMap: Record<string, number> = {
+  LOCAL: 31337,
+  POLYGON: 137,
+  MAINNET: 1,
+}

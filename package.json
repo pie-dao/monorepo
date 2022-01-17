@@ -6,11 +6,13 @@
   ],
   "scripts": {
     "commit": "cz",
+    "start:mono-app": "yarn workspace @piedao/mono-app start",
     "build": "yarn workspaces foreach --parallel --verbose run build",
     "lint": "yarn workspaces foreach --parallel --verbose run lint",
     "test": "yarn workspaces foreach --parallel --verbose run test"
   },
   "license": "GPL-3.0-only",
+  "name": "@piedao/monorepo",
   "packageManager": "yarn@3.1.1",
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0"
