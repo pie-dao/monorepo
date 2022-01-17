@@ -1,3 +1,6 @@
 import Button from "./components/Button";
-
-export { Button };
+import Logo from "./components/Logo";
+export {
+  Button,
+  Logo
+};
