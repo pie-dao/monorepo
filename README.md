@@ -4,14 +4,15 @@ Monorepo implementing the PieDAO application layer.
 
 ## Packages
 
-The PieDAO monorepo is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README
-associated to each package for detailed usage instructions.
+The PieDAO monorepo is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README associated with each package for detailed usage instructions.
+
 
 ### Apps
 
 | Apps                                        | Description                                                    |
 | ---------------------------------------------- | -------------------------------------------------------------- |
 | [`@piedao/example`](/apps/example)             | your app description                        |
+| [`@piedao/mono-app`](/apps/mono-app)             | React SPA for interacting with Mono Vaults                        |
 
 ### Libs
 
