@@ -3,6 +3,7 @@ import { USDCIcon } from "../assets/icons/logos";
 import { Vault } from "../store/vault/vaultSlice";
 import { scrollTo } from "../utils/scroll";
 import { Logo } from '@piedao/ui-atoms'
+import logoFile from '../assets/icons/logo.png'
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -39,7 +40,7 @@ const fetchIcon = (name: string): ReactNode => {
       return (<USDCIcon colors={{ primary: '#a50bce', bg: 'white' }}/>)
     }
     default: {
-      return (<Logo size="sm" />)
+      return (<img src={logoFile} />)
     }
   } 
 
