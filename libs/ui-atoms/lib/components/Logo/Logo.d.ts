@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import "./logo.css";
+export interface ButtonProps {
+    size: "small" | "medium" | "large";
+}
 declare const Logo: {
-    ({ size }: {
-        size: string | 'xl' | 'lg' | 'sm';
-    }): JSX.Element;
+    ({ size }: ButtonProps): JSX.Element;
     protoTypes: {
         size: PropTypes.Requireable<string>;
     };

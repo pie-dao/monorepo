@@ -1,1 +1,17 @@
 @import "../../../index.css";
+
+.extra-large {
+  @apply w-96 h-96;
+}
+
+.large {
+  @apply w-48 h-48;
+}
+
+.medium {
+  @apply w-24 h-24;
+}
+
+.small {
+  @apply w-12 h-12;
+}
