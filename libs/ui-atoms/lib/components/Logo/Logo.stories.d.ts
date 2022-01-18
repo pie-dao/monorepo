@@ -1,9 +1,8 @@
-/// <reference types="react" />
 declare const _default: {
     title: string;
     component: {
         ({ size }: {
-            size: any;
+            size: string;
         }): JSX.Element;
         protoTypes: {
             size: import("prop-types").Requireable<string>;

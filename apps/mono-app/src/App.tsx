@@ -10,6 +10,7 @@ import { ChainMap } from './constants';
 import { Vault } from './store/vault/vaultSlice';
 import WalletModal from './components/Wallet/WalletModal';
 import { useMonoVaultContract, useTokenContract } from './hooks/useContract';
+import Card from './components/UI/card';
 
 
 const useNetwork = (): string => {
@@ -88,7 +89,7 @@ function App() {
   const { loading } = useMulticallVaultDeposits()
   const data = useAppSelector(state => state.vault.vaults)
   return (
-    <div className="App text-center">
+    <div className="App text-center h-full w-full">
       <Header setShow={setShow} />
       { show && <WalletModal setShow={setShow} />}
       <Data />

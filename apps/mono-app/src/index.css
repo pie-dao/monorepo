@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .border-gradient {
+    display: inline-flex;
+    border-radius: 1rem;
+    padding: 2px;
+    background-image: 
+      linear-gradient(white, white),
+      radial-gradient(
+        circle at top left,
+        theme('colors.orange'),
+        theme('colors.purple'),
+        theme('colors.blue'),
+        theme('colors.green')
+      );
+      background-origin: border-box;
+    background-clip: content-box, border-box;
+    transition: 0.2s ease-in-out;
+  }
+  .border-gradient:hover {
+    transform: scale(1.1);
+  }
+
+  .flip {
+    transition: 0.5s ease-in-out;
+  }
+  .flip:hover {
+    transform: rotateY(360deg);
+  }
+}

@@ -5,6 +5,7 @@
   "author": "jordaniza",
   "private": false,
   "dependencies": {
+    "@piedao/ui-atoms": "*",
     "@0xsequence/multicall": "^0.35.5",
     "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
