@@ -3,7 +3,6 @@
   "license": "MIT",
   "version": "0.1.0",
   "author": "jordaniza",
-  "private": false,
   "dependencies": {
     "@0xsequence/multicall": "^0.35.5",
     "@reduxjs/toolkit": "^1.5.1",

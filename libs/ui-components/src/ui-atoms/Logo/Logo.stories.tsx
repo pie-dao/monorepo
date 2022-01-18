@@ -3,7 +3,7 @@ import { Story } from "@storybook/react";
 import Logo, { LogoProps } from './Logo';
 
 export default {
-  title: 'Application/Component Library/Logo',
+  title: 'ui-atoms/Logo',
   component: Logo,
   argTypes: {
       size: {control: 'text'}

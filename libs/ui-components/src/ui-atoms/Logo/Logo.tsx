@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from "prop-types"
 import "./logo.css"
+// @ts-ignore
 import logoFile from "./logo.png"
 
 export interface LogoProps  {
