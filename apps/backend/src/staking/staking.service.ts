@@ -71,7 +71,7 @@ export class StakingService {
       {
         type: 'input',
         name: 'proposals',
-        message: 'What are the proposal Ids (comma separated string, or empty for use them all)?',
+        message: 'What are the proposal Ids you wish to EXCLUDE (comma separated string, or empty to include them all)?',
       },           
     ]);
 
@@ -84,7 +84,7 @@ export class StakingService {
       spin.start(`Generating the epoch...`);
 
       /* istanbul ignore next */
-      let proposalsIds = params.proposals ? params.proposals.split(",").map(id => '"' + id + '"') : null;
+      let proposalsIds = params.proposals ? params.proposals.split(",") : null; // .map(id => '"' + id + '"')
       
       let epoch = await this.generateEpoch(
         params.month,
@@ -98,7 +98,7 @@ export class StakingService {
 
       spin.succeed('Epoch has been generated!!');
     } catch(error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -311,7 +311,7 @@ export class StakingService {
         let from = moment({ year: moment().year(), month: month - 4, day: 1 });
         let to = moment({ year: moment().year(), month: month - 1, day: 1 }).endOf('month');
 
-        let votes = await this.getSnapshotVotes(from.unix(), to.unix(), proposalsIds);
+        let votes = await this.getSnapshotVotes(from.unix(), to.unix(), proposalsIds, "in");
 
         // getting all voters addresses from snapshot's votes...
         let voters = await this.getVotersFromShapshotVotes(votes, blockNumber);
@@ -330,7 +330,6 @@ export class StakingService {
 
           /* istanbul ignore next */
           if (oldestLock && oldestLock.lockedAt < votedTimeRange) {
-            console.log("staker", staker.id, oldestLock.lockedAt, votedTimeRange);
             isFreeRider = true;
           }
 
@@ -366,8 +365,7 @@ export class StakingService {
         // fetching all votes from snapshot in the last month...
         let from = moment({ year: year, month: month - 1, day: 1 });
         let to = from.clone().endOf('month');
-
-        let votes: Vote[] = await this.getSnapshotVotes(from.unix(), to.unix(), proposalsIds);
+        let votes: Vote[] = await this.getSnapshotVotes(from.unix(), to.unix(), proposalsIds, "not_in");
 
         let previousEpoch: EpochEntity = null;
         let rewards: any[] = [];
@@ -743,19 +741,19 @@ export class StakingService {
     })
   }
 
-  private getSnapshotVotes(from: number, to: number, proposalsIds: Array<string>): Promise<Vote[]> {
+  private getSnapshotVotes(from: number, to: number, proposalsIds: Array<string>, condition: string): Promise<Vote[]> {
     return new Promise(async (resolve, reject) => {
       try {
         let blocks = 1000;
         let skip = 0;
         let snapshotVotes = [];
 
-        let votes = await this.fetchSnapshotVotes(from, to, blocks, skip, proposalsIds);
+        let votes = await this.fetchSnapshotVotes(from, to, blocks, skip, proposalsIds, condition);
 
         while (votes.length > 0) {
           snapshotVotes = snapshotVotes.concat(votes);
           skip += blocks;
-          votes = await this.fetchSnapshotVotes(from, to, blocks, skip, proposalsIds);
+          votes = await this.fetchSnapshotVotes(from, to, blocks, skip, proposalsIds, condition);
         }
 
         resolve(snapshotVotes);
@@ -766,7 +764,7 @@ export class StakingService {
     });
   }
 
-  private fetchSnapshotVotes(from, to, blocks, skip, proposalsIds): Promise<Vote[]> {
+  private fetchSnapshotVotes(from, to, blocks, skip, proposalsIds, condition): Promise<Vote[]> {
     return new Promise(async (resolve, reject) => {
       try {
         /* istanbul ignore next */
@@ -783,7 +781,7 @@ export class StakingService {
                   space: "${this.snapshotSpaceID}"
                   created_gte: ${from}
                   created_lte: ${to}
-                  proposal_in: [${proposalsIdsString}]
+                  proposal_in: [${condition == "in" ? proposalsIdsString : ""}]
                 }
               ) {
                 id
@@ -808,12 +806,28 @@ export class StakingService {
           }
         ).toPromise();
 
-        resolve(response.data.data.votes.filter(vote => {
+        let votes = response.data.data.votes;
+
+        votes = votes.filter(vote => {
           /* istanbul ignore next */
           if (vote.proposal.state == 'closed') {
             return vote;
           }
-        }));
+        });
+
+        if(proposalsIds && proposalsIds.length) {
+          votes = votes.filter(vote => {
+            /* istanbul ignore next */
+            if (
+              // filtering out the proposal, excluding the ones we want to exclude...  
+              !proposalsIds.includes(vote.proposal.id)
+            ) {
+              return vote;
+            }
+          });
+        }
+
+        resolve(votes);
       } catch (error) {
         /* istanbul ignore next */
         reject(error);
