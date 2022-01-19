@@ -1,10 +1,15 @@
 import { Logo } from "@piedao/ui-atoms";
 import { useWeb3React } from "@web3-react/core";
 import logoFile from '../assets/icons/logo.png'
+import WalletModal from "./Wallet/WalletModal";
+import { useState } from "react";
 
-const Header = ({ setShow }: { setShow: (show: boolean) => void }) => {
-  const { active, deactivate } = useWeb3React();
+const Header = () => {
+  const [show, setShow] = useState(false)
+  const { active, deactivate, chainId } = useWeb3React();
   return (
+    <>
+    { show && <WalletModal setShow={setShow} />}
     <header
       className="
       border-2
@@ -24,6 +29,7 @@ const Header = ({ setShow }: { setShow: (show: boolean) => void }) => {
         { active ? 'Disconnect' : 'Connect Web3' }
       </button>
     </header>
+    </>
   )
 };
 export default Header;

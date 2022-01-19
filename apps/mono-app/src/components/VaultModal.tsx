@@ -4,6 +4,7 @@ import { Vault } from "../store/vault/vaultSlice";
 import { scrollTo } from "../utils/scroll";
 import { Logo } from '@piedao/ui-atoms'
 import logoFile from '../assets/icons/logo.png'
+import { useMulticallVaultDeposits } from "../hooks/useBalances";
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -34,7 +35,6 @@ const Divider = ({ props }: { props?: React.HTMLProps<HTMLDivElement> }) => (
 )
 
 const fetchIcon = (name: string): ReactNode => {
-  console.debug({ Logo })
   switch (name.toLowerCase()) {
     case 'usdc': {
       return (<USDCIcon colors={{ primary: '#a50bce', bg: 'white' }}/>)
@@ -46,7 +46,9 @@ const fetchIcon = (name: string): ReactNode => {
 
 } 
 
-const VaultModal = ({ vault, loading }: { vault: Vault, loading: boolean }): JSX.Element => (
+const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
+  const { loading } = useMulticallVaultDeposits();
+  return (
   <CardBorderGradient
     className="w-screen"
   >
@@ -102,6 +104,6 @@ const VaultModal = ({ vault, loading }: { vault: Vault, loading: boolean }): JSX
     </section>
   </div>
   </CardBorderGradient>  
-);
+)};
 
 export default VaultModal;

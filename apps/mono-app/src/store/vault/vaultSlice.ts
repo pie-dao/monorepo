@@ -12,10 +12,15 @@ export interface VaultStats {
   deposits: number;
 };
 
+export type Balance = {
+  // store the raw value of any balances as a string but provide a human readable number
+  label: number;
+  value: string;
+} 
 export interface UserBalances {
-  wallet: BigNumberish;
-  vaultUnderlying: BigNumberish;
-  vault: BigNumberish;
+  wallet: Balance;
+  vaultUnderlying: Balance;
+  vault: Balance;
 }
 
 export interface Vault {

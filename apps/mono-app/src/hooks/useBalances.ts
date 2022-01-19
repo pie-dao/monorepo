@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import { useActiveWeb3 } from './useWeb3';
 import { getNameOfDeclaration } from "typescript";
 import { useAppDispatch, useAppSelector } from ".";
-import { setStats, UserBalances, Vault, setUserBalances, userCanWithdraw } from "../store/vault/vaultSlice";
+import { setStats, UserBalances, Vault, setUserBalances, userCanWithdraw, Balance } from "../store/vault/vaultSlice";
 import { Erc20, Mono } from "../types/artifacts/abi";
 import { useMonoVaultContract, useMultipleContracts, useMultipleMonoContract, useMultipleTokenContract, useTokenContract } from "./useContract";
 import { injected } from "../connectors";
@@ -24,6 +24,11 @@ const reduxSetBalances = (
 const fromScaleDecimals = (n: number | BigNumber, decimals: number) => typeof n === 'number' ? n : Number(n.toBigInt() / 10n ** BigInt(decimals));
 const fromScale = (n: number | BigNumber) => fromScaleDecimals(n, 18);
 
+const toBalance = (n: number | BigNumber, decimals: number): Balance => ({
+  label: fromScaleDecimals(n, decimals),
+  value: String(n)
+})
+
 const getUserBalance = async (
   t: Erc20,
   account: string,
@@ -33,18 +38,11 @@ const getUserBalance = async (
   const d = await t.decimals()
   const vault = v ? await v.balanceOf(account): -1;
   const vaultUnderlying = v ? await v.balanceOfUnderlying(account) : -1;
-  console.debug({
-    t,
-    addr: t.address,
-    wallet,
-    wallet2: wallet.toBigInt(),
-    name: await t.name()
-  })
   return {
     token: t.address,
-    wallet: fromScaleDecimals(wallet, d),
-    vault: fromScaleDecimals(vault, d),
-    vaultUnderlying: fromScaleDecimals(vaultUnderlying, d)
+    wallet: toBalance(wallet, d),
+    vault: toBalance(vault, d),
+    vaultUnderlying: toBalance(vaultUnderlying, d)
   }
 }
 
@@ -69,7 +67,6 @@ export const useUserCanWithdraw = () => {
         }
       })
     ).then(usersCanWithdraw => {
-      console.debug({usersCanWithdraw})
       setLoading(false);
     })
   }
@@ -114,7 +111,6 @@ useEffect(() => {
         return await getUserBalance(t, account, vault)
       })
     ).then(payload => {
-      console.debug({ payload })
       reduxSetBalances(dispatch, payload)
       setLoading(false)
     })

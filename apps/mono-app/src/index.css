@@ -11,11 +11,15 @@
       linear-gradient(white, white),
       radial-gradient(
         circle at top left,
-        theme('colors.orange'),
-        theme('colors.purple'),
-        theme('colors.blue'),
-        theme('colors.green')
-      );
+        /* theme('colors.orange'), */
+        /* theme('colors.purple'), */
+        /* theme('colors.blue'), */
+        /* theme('colors.green') */
+        orange,
+        purple,
+        blue,
+        green,
+        );
       background-origin: border-box;
     background-clip: content-box, border-box;
     transition: 0.2s ease-in-out;

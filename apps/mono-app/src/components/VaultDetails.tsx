@@ -1,8 +1,11 @@
+import { useAppSelector } from "../hooks";
 import { Vault } from "../store/vault/vaultSlice";
 
 const toCommas = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
-const VaultExtended = ({ vault }: { vault: Vault }): JSX.Element => (
+const VaultExtended = (): JSX.Element => {
+  const vault = useAppSelector(state => state.vault.vaults[0]);
+  return (
   <section
     id="vault-extended"
     className="
@@ -87,5 +90,5 @@ const VaultExtended = ({ vault }: { vault: Vault }): JSX.Element => (
       </section>
     </section>
   </section>
-);
+)};
 export default VaultExtended;
