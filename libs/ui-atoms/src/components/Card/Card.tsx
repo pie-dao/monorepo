@@ -3,7 +3,7 @@ import "./card.css";
 const Card = () => {
   return (
     <div
-      className="rounded-xl border-2 border-red-700"
+      className="card"
     >
       Card Text
     </div>
