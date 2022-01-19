@@ -4,7 +4,11 @@ import { Story } from "@storybook/react";
 import Button, { ButtonProps } from "./Button";
 
 export default {
+<<<<<<< HEAD:libs/ui-components/src/ui-atoms/Button/Button.stories.tsx
   title: "Ui Atoms/Button",
+=======
+  title: "ui-atoms/Button",
+>>>>>>> db04f5a655b220245dd6cea91e6fe5e3ff48dd53:libs/ui-atoms/src/components/Button/Button.stories.tsx
   component: Button,
   argTypes: {
     backgroundColor: { control: "color" },

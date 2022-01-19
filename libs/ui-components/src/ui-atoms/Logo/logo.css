@@ -1,15 +1,15 @@
 .extra-large {
-  @apply w-96 h-auto;
+  @apply w-96 h-96;
 }
 
 .large {
-  @apply w-48 h-auto;
+  @apply w-48 h-48;
 }
 
 .medium {
-  @apply w-24 h-auto;
+  @apply w-24 h-24;
 }
 
 .small {
-  @apply w-12 h-auto;
+  @apply w-12 h-12;
 }
