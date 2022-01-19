@@ -6,19 +6,18 @@ Monorepo implementing the PieDAO application layer.
 
 The PieDAO monorepo is maintained with [yarn workspaces](https://yarnpkg.com/features/workspaces). Check out the README associated with each package for detailed usage instructions.
 
-
 ### Apps
 
-| Apps                                        | Description                                                    |
-| ---------------------------------------------- | -------------------------------------------------------------- |
-| [`@piedao/example`](/apps/example)             | your app description                        |
-| [`@piedao/mono-app`](/apps/mono-app)             | React SPA for interacting with Mono Vaults                        |
+| Apps                                 | Description                                |
+| ------------------------------------ | ------------------------------------------ |
+| [`@piedao/example`](/apps/example)   | your app description                       |
+| [`@piedao/mono-app`](/apps/mono-app) | React SPA for interacting with Mono Vaults |
 
 ### Libs
 
-| Package                                  | Description                                  |
-| ---------------------------------------- | -------------------------------------------- |
-| [`@piedao/constants`](/packages/constants) | Constants shared across packages        |
+| Package                                    | Description                      |
+| ------------------------------------------ | -------------------------------- |
+| [`@piedao/constants`](/packages/constants) | Constants shared across packages |
 
 ## Contributing
 
@@ -26,6 +25,7 @@ Feel free to dive in! [Open](https://github.com/pie-dao/monorepo/issues/new) an 
 For any concerns or feedback, join us on [Discord](https://discord.piedao.org).
 
 ### Pre Requisites
+
 You will need the following software on your machine:
 
 - [Git](https://git-scm.com/downloads)
@@ -39,18 +39,21 @@ In addition, familiarity with [TypeScript](https://typescriptlang.org/) and [Rea
 Install the dependencies:
 
 ```bash
-$ yarn set version berry 
+$ yarn set version berry
 $ yarn plugin import workspace-tools
 $ yarn
 ```
+
 Now you can start making changes.
 
 ### Running command on a single package
+
 ```bash
-$ yarn workspace [@piedao/ui-atoms] run [build]
+$ yarn workspace [@piedao/ui-components] run [build]
 ```
 
 ### Running command on a single package
+
 ```bash
-$ yarn workspace [@piedao/ui-atoms] run [build]
+$ yarn workspace [@piedao/ui-components] run [build]
 ```
