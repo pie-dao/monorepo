@@ -471,3 +471,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 .contents {
   display: contents;
 }
+
+.text-blue-300 {
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity));
+}
