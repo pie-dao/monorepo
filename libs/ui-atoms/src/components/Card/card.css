@@ -1,5 +1,0 @@
-@import "../../../index.css";
-
-.card {
-  @apply rounded-xl border-2 border-red-700
-}

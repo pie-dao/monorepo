@@ -1,0 +1,11 @@
+@import "../../../index.css";
+
+.card {
+  @apply rounded-xl border-2 border-red-700;
+  transition: 2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.1);
+  } 
+}
+
