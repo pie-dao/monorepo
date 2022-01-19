@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import logoFile from "./logo.png";
+// @ts-ignore
+import logoFile from "./logo-piedao.svg";
 import "./logo.css";
 
 export interface LogoProps {

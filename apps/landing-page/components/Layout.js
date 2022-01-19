@@ -1,37 +1,18 @@
 import Image from "next/image";
 import styles from "../styles/Layout.module.css";
-import { Button, Logo } from "@piedao/ui-components";
+import { Logo } from "@piedao/ui-components";
 
 const Layout = ({ children }) => {
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <Button label="test" size="large" />
-        <Logo size="xl" />
-        {/* <a
-          href="https://piedao.org"
-          target="_blank"
-          rel="piedao"
-        >
-          <span className={styles.logo}>
-            <Image src="/DOUGH2v.png" alt="Vercel Logo" width={50} height={50} />
-          </span>
-        </a> */}
+    <div className={`bg-primary flex flex-col h-screen justify-between`}>
+      <header className="h-[92px] grid content-around justify-center">
+        <Logo size="large" />
       </header>
 
-      <main className={styles.main}>{children}</main>
+      <main className="h-screen w-full">{children}</main>
 
-      <footer className={styles.footer}>
-        <a href="https://piedao.org" target="_blank" rel="piedao">
-          <span className={styles.logo}>
-            <Image
-              src="/DOUGH2v.png"
-              alt="Vercel Logo"
-              width={50}
-              height={50}
-            />
-          </span>
-        </a>
+      <footer className="h-[92px] grid content-around justify-center">
+        <Logo size="medium" />
       </footer>
     </div>
   );
