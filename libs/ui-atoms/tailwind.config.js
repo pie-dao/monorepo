@@ -1,7 +1,7 @@
 module.exports = {
-  mode: "all",
-  content: ["**/*.{js, jsx}"],
-  darkMode: false, // or 'media' or 'class'
+  mode: "jit",
+  content: ['./**/*.{js,ts,jsx,tsx}'],
+  darkMode: "media", // or 'media' or 'class'
   theme: {
     extend: {},
   },

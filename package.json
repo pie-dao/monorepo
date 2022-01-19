@@ -5,6 +5,8 @@
     "libs/*"
   ],
   "scripts": {
+    "atoms:storybook": "yarn workspace @piedao/ui-atoms storybook",
+    "atoms:build": "yarn workspace @piedao/ui-atoms build",
     "commit": "cz",
     "build": "yarn workspaces foreach --parallel --verbose run build",
     "lint": "yarn workspaces foreach --parallel --verbose run lint",
