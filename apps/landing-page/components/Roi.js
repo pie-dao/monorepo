@@ -1,11 +1,7 @@
 import Image from "next/image";
 import content from "../content/en_EN.json";
-import pies from "../config/pies.json";
 
 const Roi = ({ }) => {
-  let play = pies["0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"];
-  console.log("play", play);
-
   return (
     <section className={`w-full pt-10`}>
       <div className="bg-secondary relative grid content-around justify-center p-8 w-full h-96">

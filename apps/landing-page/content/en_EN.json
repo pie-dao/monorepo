@@ -34,18 +34,22 @@
     "description": "PLAY's goal is to provide exposure to the most in-demand projects in Web 3.0. The best part? They are blockchain-enabled decentralized applications where crypto assets and data are user-owned.",
     "boxes": [
       {
+        "id": 1,
         "title": "Own  the next big thing",
         "description": "There's a reason a certain tech giant changed its name to a Meta-verse reference. They see its potential and are betting big on its future, you can too. PLAY invests in gaming, infrastructure, and entertainment projects defining the metaverse on the Ethereum blockchain. Don’t worry about the future, own it."
       },
       {
+        "id": 2,
         "title": "Own  the next big thing",
         "description": "There's a reason a certain tech giant changed its name to a Meta-verse reference. They see its potential and are betting big on its future, you can too. PLAY invests in gaming, infrastructure, and entertainment projects defining the metaverse on the Ethereum blockchain. Don’t worry about the future, own it."
       },
       {
+        "id": 3,
         "title": "Own  the next big thing",
         "description": "There's a reason a certain tech giant changed its name to a Meta-verse reference. They see its potential and are betting big on its future, you can too. PLAY invests in gaming, infrastructure, and entertainment projects defining the metaverse on the Ethereum blockchain. Don’t worry about the future, own it."
       },
       {
+        "id": 4,
         "title": "Own  the next big thing",
         "description": "There's a reason a certain tech giant changed its name to a Meta-verse reference. They see its potential and are betting big on its future, you can too. PLAY invests in gaming, infrastructure, and entertainment projects defining the metaverse on the Ethereum blockchain. Don’t worry about the future, own it."
       }

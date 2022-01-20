@@ -4,7 +4,6 @@ import pies from "../config/pies.json";
 
 const ScrollingBoxes = ({ }) => {
   let play = pies["0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"];
-  console.log("play", play);
 
   return (
     <section className={`w-full justify-evenly content-center text-center relative`}>
@@ -20,7 +19,7 @@ const ScrollingBoxes = ({ }) => {
       <div className="flex m-10 mt-60">
         {play.composition.map(pie => {
           return (
-            <div className="relative w-1/3 p-4 m-1 rounded-md bg-secondary flex flex-col items-center justify-center text-center">
+            <div key={pie.address} className="relative w-1/3 p-4 m-1 rounded-md bg-secondary flex flex-col items-center justify-center text-center">
               <img className="absolute -top-6 left-3" src={`/assets/${pie.icon}`} />
               <p className="text-xl p-2 text-bold pt-8">{pie.symbol}</p>
             </div>
