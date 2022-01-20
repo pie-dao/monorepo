@@ -17,7 +17,7 @@
       {"symbol":"ENJ","coingeckoId":"enjincoin","address":"0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c", "coingeckoImageId": "", "icon": "enj.svg"},
       {"symbol":"SAND","coingeckoId":"the-sandbox","address":"0x3845badAde8e6dFF049820680d1F14bD3903a5d0", "coingeckoImageId": "", "icon": "sand.svg"},
       {"symbol":"AXS","coingeckoId":"axie-infinity","address":"0xBB0E17EF65F82Ab018d8EDd776e8DD940327B28b", "coingeckoImageId": "", "icon": "axs.svg"},
-      {"symbol":"ILV","coingeckoId":"illuvium","address":"0x767fe9edc9e0df98e07454847909b5e959d7ca0e", "coingeckoImageId": "", "icon": "ilv.svg"},
+      {"symbol":"ILV","coingeckoId":"illuvium","address":"0x767fe9edc9e0df98e07454847909b5e959d7ca0e", "coingeckoImageId": "", "icon": "ilv_.svg"},
       {"symbol":"AUDIO","coingeckoId":"audius","address":"0x18aaa7115705e8be94bffebde57af9bfc265b998", "coingeckoImageId": "", "icon": "audio.svg"},
       {"symbol":"GALA","coingeckoId":"gala","address":"0x15D4c048F83bd7e37d49eA4C83a07267Ec4203dA", "coingeckoImageId": "", "decimals": 8, "icon": "gala.svg"},
       {"symbol":"YGG","coingeckoId":"yield-guild-games","address":"0x25f8087ead173b73d6e8b84329989a8eea16cf73", "coingeckoImageId": "", "icon": "ygg.svg"}
