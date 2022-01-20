@@ -21,11 +21,23 @@ const Metaverse = ({}) => {
           <img src="/metaverse_man.svg" />          
         </div>
       </div>
-      <div className="flex mb-4">
-        <div className="w-1/4 bg-gray-500 h-12"></div>
-        <div className="w-1/4 bg-gray-400 h-12"></div>
-        <div className="w-1/4 bg-gray-500 h-12"></div>
-        <div className="w-1/4 bg-gray-400 h-12"></div>
+      <div className="flex items-center justify-center mb-4 bg-no-repeat bg-contain bg-center bg-[url('/bg_single_line.svg')] h-96 text-center">
+        <div className="w-1/4 -mt-40">
+          <p className="text-highlight_secondary text-4xl">{content.metaverse.info_boxes.first.title}</p>
+          <p>{content.metaverse.info_boxes.first.sub_title}</p>
+        </div>
+        <div className="w-1/4">
+        <p className="text-highlight_secondary text-4xl">{content.metaverse.info_boxes.second.title}</p>
+          <p>{content.metaverse.info_boxes.second.sub_title}</p>
+        </div>
+        <div className="w-1/4 -mt-40">
+        <p className="text-highlight_secondary text-4xl">{content.metaverse.info_boxes.third.title}</p>
+          <p>{content.metaverse.info_boxes.third.sub_title}</p>
+        </div>
+        <div className="w-1/4">
+          <p className="text-highlight_secondary text-4xl">{content.metaverse.info_boxes.fourth.title}</p>
+          <p>{content.metaverse.info_boxes.fourth.sub_title}</p>
+        </div>                
       </div>      
     </section>
   );

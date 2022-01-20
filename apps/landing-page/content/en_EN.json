@@ -10,6 +10,24 @@
   "metaverse": {
     "description": "The metaverse is a virtual space created by the convergence of virtual reality (VR), augmented reality (AR), and blockchain.",
     "details_left": "It will open up a new economy powered by blockchains and decentralized applications.",
-    "details_right": "It will allow for rich and immersive experiences in new virtual worlds."
+    "details_right": "It will allow for rich and immersive experiences in new virtual worlds.",
+    "info_boxes": {
+      "first": {
+        "title": "$ 1.5 Billion",
+        "sub_title": "blockchain gaming industry"
+      },
+      "second": {
+        "title": "1.2 Million",
+        "sub_title": "active blockchain gaming users in avarage"
+      },
+      "third": {
+        "title": "+ 663,000",
+        "sub_title": "in NFT sales in the first half of 2021"
+      },
+      "fourth": {
+        "title": "$ 2.5 Billion",
+        "sub_title": "traders have bought or sold Axie Infinity NFTs"
+      }              
+    }
   }
 }
