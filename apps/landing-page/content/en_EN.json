@@ -6,5 +6,10 @@
     "content_text": "Projects within PLAY are the leading innovators in blockchain gaming, infrastructure, and entertainment.",
     "call_to_action": "Invest in Play",
     "call_to_text": "+500% from inception"
+  },
+  "metaverse": {
+    "description": "The metaverse is a virtual space created by the convergence of virtual reality (VR), augmented reality (AR), and blockchain.",
+    "details_left": "It will open up a new economy powered by blockchains and decentralized applications.",
+    "details_right": "It will allow for rich and immersive experiences in new virtual worlds."
   }
 }
