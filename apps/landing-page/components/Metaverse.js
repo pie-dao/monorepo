@@ -21,7 +21,7 @@ const Metaverse = ({}) => {
           <img src="/metaverse_man.svg" />          
         </div>
       </div>
-      <div className="flex items-center justify-center mb-4 bg-no-repeat bg-contain bg-center bg-[url('/bg_single_line.svg')] h-96 text-center">
+      <div className="pl-10  pr-20 flex items-center justify-center mb-4 bg-no-repeat bg-contain bg-center bg-[url('/bg_single_line.svg')] h-96 text-center">
         <div className="w-1/4 -mt-40">
           <p className="text-highlight_secondary text-4xl">{content.metaverse.info_boxes.first.title}</p>
           <p>{content.metaverse.info_boxes.first.sub_title}</p>

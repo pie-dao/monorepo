@@ -3,7 +3,7 @@ import content from "../content/en_EN.json";
 
 const Hero = ({}) => {
   return (
-    <section className={`bg-primary w-full justify-evenly content-center text-center pt-40 bg-no-repeat bg-contain bg-center bg-[url('/bg_lines.svg')] h-[634px]`}>
+    <section className={`pl-10 pr-10 bg-primary w-full justify-evenly content-center text-center pt-40 bg-no-repeat bg-contain bg-center bg-[url('/bg_lines.svg')] h-[634px]`}>
       <div className="pb-16">
         <h2 className="uppercase text-xl">{content.hero.sub_title}</h2>
         <h1 className="uppercase text-4xl">{content.hero.title}</h1>

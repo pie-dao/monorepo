@@ -4,7 +4,7 @@ import { Logo } from "@piedao/ui-components";
 
 const Layout = ({ children }) => {
   return (
-    <body className={`bg-primary flex flex-col min-h-screen justify-between pl-10 pr-10`}>
+    <body className={`bg-primary flex flex-col min-h-screen justify-between`}>
       <header className="bg-primary p-6 h-[92px] grid content-around justify-center">
         <Logo size="large" />
       </header>
