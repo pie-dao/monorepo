@@ -13,10 +13,10 @@ const Metaverse = ({}) => {
       <div className="flex items-center justify-center h-96 text-center">
         <img src="./carousel_placeholder.svg" />                
       </div>
-      <div class="content-center text-center mb-16">
-        <p class="font-small text-highlight_secondary">
+      <div className="content-center text-center mb-16">
+        <p className="font-small text-highlight_secondary">
           For detailed information on allocation and rebalancing procedures 
-          <span class="font small text-highlight">read the prospectus.</span>
+          <span className="font small text-highlight">read the prospectus.</span>
         </p>
       </div>
     </section>
