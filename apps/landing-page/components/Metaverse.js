@@ -3,7 +3,7 @@ import content from "../content/en_EN.json";
 
 const Metaverse = ({}) => {
   return (
-    <section classNameName={`bg-primary w-full justify-evenly content-center text-center flex flex-row md:flex-col`}>
+    <section className={`bg-primary w-full justify-evenly content-center text-center flex flex-row md:flex-col`}>
       <div className="flex mb-4 ml-12 mr-12">
         <div className="w-1/2 p-10 pt-[5pc]">
           <h1 className="text-4xl text-highlight uppercase">What <span className="font-bold">is the metaverse?</span></h1>
@@ -21,7 +21,7 @@ const Metaverse = ({}) => {
           <img src="/metaverse_man.svg" />          
         </div>
       </div>
-      <div className="pl-10  pr-20 flex items-center justify-center mb-4 bg-no-repeat bg-contain bg-center bg-[url('/bg_single_line.svg')] h-96 text-center">
+      <div className="flex items-center justify-center bg-[center_top_1rem] bg-no-repeat bg-cover bg-[url('/bg_single_line.svg')] h-80 text-center">
         <div className="w-1/4 -mt-40">
           <p className="text-highlight_secondary text-4xl">{content.metaverse.info_boxes.first.title}</p>
           <p>{content.metaverse.info_boxes.first.sub_title}</p>

@@ -23,13 +23,13 @@ export default function Home() {
         {/* Metaverse Section */}
         <Metaverse />
         {/* ScrollingBoxes Section */}
-        <ScrollingBoxes /> 
+        {/* <ScrollingBoxes /> */}
         {/* UnderlyingTokens Section */}
-        <UnderlyingTokens />
+        {/* <UnderlyingTokens /> */}
         {/* Methodology Section */}
-        <Methodology />
+        {/* <Methodology /> */}
         {/* Roi Section */}
-        <Roi />                           
+        {/* <Roi /> */}
       </div>
 
     </div>
