@@ -808,13 +808,6 @@ export class StakingService {
 
         let votes = response.data.data.votes;
 
-        votes = votes.filter(vote => {
-          /* istanbul ignore next */
-          if (vote.proposal.state == 'closed') {
-            return vote;
-          }
-        });
-
         if(proposalsIds && proposalsIds.length) {
           votes = votes.filter(vote => {
             /* istanbul ignore next */
