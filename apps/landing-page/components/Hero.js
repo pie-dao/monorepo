@@ -5,7 +5,7 @@ const Hero = ({}) => {
   return (
     <section className={`
       bg-primary w-full justify-evenly content-center 
-      text-center pt-10 md:pt-40 bg-no-repeat bg-cover 
+      text-center m-10 md:pt-40 bg-no-repeat bg-cover 
       -bg-[center_top_1rem] bg-[url('/bg_lines.svg')] h-[317px] md:h-[634px]`}> 
       <div className="pl-6 pr-6 md:pl-24 md:pr-24">
         <div className="pb-8">
