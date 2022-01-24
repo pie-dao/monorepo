@@ -23,7 +23,7 @@ export default function Home() {
         {/* Metaverse Section */}
         <Metaverse />
         {/* ScrollingBoxes Section */}
-        {/* <ScrollingBoxes /> */}
+        <ScrollingBoxes />
         {/* UnderlyingTokens Section */}
         {/* <UnderlyingTokens /> */}
         {/* Methodology Section */}
