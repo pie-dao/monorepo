@@ -7,24 +7,32 @@ const ScrollingBoxes = ({ }) => {
 
   return (
     <section className={`w-full justify-evenly content-center text-center relative`}>
-      <img className="z-30 absolute -top-3" src="./bg_front_line_1.svg" />
-      <img className="z-50 absolute -top-3" src="./bg_front_line_2.svg" />
-      <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-xl" src="./logo_play.svg" />
-      <div className="bg-secondary absolute p-8 z-40 w-full">
-        <p className="z-50 uppercase text-4xl">
+      <img className="z-20 absolute -top-3 hidden md:block" src="./bg_front_line_1.svg" />
+      <img className="z-40 absolute -top-3 hidden md:block" src="./bg_front_line_2.svg" />
+      <img className="z-20 absolute -top-3 md:hidden block" src="./bg_front_line_1_mobile.svg" />
+      <img className="z-40 absolute -top-3 md:hidden block" src="./bg_front_line_2_mobile.svg" />      
+      {/* <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-sm" src="./logo_play.svg" /> */}
+      <div className="bg-secondary absolute p-8 z-30 w-full">
+        <p className="z-50 uppercase text-xl md:text-4xl">
           underlying <span className="font-bold">tokens</span>
         </p>
       </div>
 
-      <div className="flex m-10 mt-60">
+      <div class="relative rounded-xl overflow-auto">
+      <div class="mt-40 overflow-x-scroll flex">
         {play.composition.map(pie => {
-          return (
-            <div key={pie.address} className="relative w-1/3 p-4 m-1 rounded-md bg-secondary flex flex-col items-center justify-center text-center">
+          return (           
+            <div key={pie.address} className="relative w-1/3 p-4 m-1 rounded-md bg-secondary flex flex-col items-center justify-center text-left">
               <img className="absolute -top-6 left-3" src={`/assets/${pie.icon}`} />
-              <p className="text-xl p-2 text-bold pt-8">{pie.symbol}</p>
+              <div class="w-full">
+                <p className="w-full text-sm pt-8 pb-6">23%</p>
+                <p className="text-xl text-bold">{pie.symbol}</p>
+                <p className="text-xl text-extrabold text-highlight">3.45$</p>
+              </div>
             </div>
           )
         })}
+      </div>
       </div>
     </section>
   );

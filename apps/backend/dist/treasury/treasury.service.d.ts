@@ -1,0 +1,30 @@
+import { Model } from 'mongoose';
+import { HttpService } from '@nestjs/axios';
+import { TreasuryDocument, AssetEntity, AssetValues, TreasuryEntity } from './entities/treasury.entity';
+import { SupportedNetwork } from './types/treasury.types.Network';
+import { Balances, Meta, MetaLabel } from './types/treasury.types.Balance';
+export declare class TreasuryService {
+    httpService: HttpService;
+    treasuryModel: Model<TreasuryDocument>;
+    private readonly logger;
+    private readonly zapperApiUrl;
+    private readonly treasury;
+    private readonly zapperApiKey;
+    constructor(httpService: HttpService, treasuryModel: Model<TreasuryDocument>);
+    getTreasury(days?: number): Promise<TreasuryEntity[]>;
+    daysAgo(days: number): Date;
+    createTreasuryRecord(): Promise<void>;
+    loadTreasury(): Promise<void>;
+    getSupportedNetworks(): Promise<SupportedNetwork[]>;
+    getUnderlyingAssetsArray(balances: Array<AssetEntity[] | []>): AssetEntity[];
+    getTotal(assets: AssetEntity[]): TreasuryEntity;
+    getNetworkBalances(networks: SupportedNetwork[]): Promise<Array<AssetEntity[] | []>>;
+    getNetworkBalance(network: SupportedNetwork): Promise<AssetEntity[] | []>;
+    loadDB(record: TreasuryEntity): Promise<void>;
+    getBalanceSummary(supported: SupportedNetwork): Promise<AssetEntity[] | undefined>;
+    extractTreasuryValues(balance: Balances): AssetValues | undefined;
+    extractValuesFromMeta(meta: Meta[], label: MetaLabel): Record<string, number>;
+    recordHasUsefulData(record: AssetEntity | undefined): boolean;
+    apiCall<T>(url: string): Promise<T>;
+    flatten<T extends any[]>(arr: Array<T>): T;
+}

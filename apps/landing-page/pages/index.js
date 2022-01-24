@@ -25,7 +25,7 @@ export default function Home() {
         {/* ScrollingBoxes Section */}
         <ScrollingBoxes />
         {/* UnderlyingTokens Section */}
-        {/* <UnderlyingTokens /> */}
+        <UnderlyingTokens />
         {/* Methodology Section */}
         {/* <Methodology /> */}
         {/* Roi Section */}
