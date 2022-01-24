@@ -1,7 +1,5 @@
 import { useAppSelector } from "../hooks";
-import { Vault } from "../store/vault/vaultSlice";
-
-const toCommas = (num: number) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+import { prettyNumber } from "../utils";
 
 const VaultExtended = (): JSX.Element => {
   const vault = useAppSelector(state => state.vault.vaults[0]);
@@ -40,19 +38,14 @@ const VaultExtended = (): JSX.Element => {
           <h3 className="text-xl ml-2 mb-5">{vault.name}</h3>
           <p className="ml-2 text-gray-700 italic">{vault.description}</p>
         </section>
-        <p className="ml-2">{vault.extendedDescription}</p>
         {vault.stats && <section className="stats flex flex-col">
           <div className="flex justify-between">
             <p className="ml-2">Total Deposits:</p>
-            <p className="mr-2 font-bold">{toCommas(vault.stats.deposits)}</p>
-          </div>
-          <div className="flex justify-between">
-            <p className="ml-2">Historical APY:</p>
-            <p className="mr-2 font-bold">{vault.stats.historicalAPY} %</p>
+            <p className="mr-2 font-bold">{prettyNumber(vault.stats.deposits.label)}</p>
           </div>
           <div className="flex justify-between">
             <p className="ml-2">Projected APY:</p>
-            <p className="mr-2 font-bold">{vault.stats.projectedAPY} %</p>
+            <p className="mr-2 font-bold">{vault.stats.currentAPY ?? 'N/A'} %</p>
           </div>
         </section>}
       </section>

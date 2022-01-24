@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
-import vaultReducer from './vault/vaultSlice';
+import vaultReducer from './vault/vault.slice';
 
 export const rootReducer = combineReducers({
   vault: vaultReducer,

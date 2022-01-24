@@ -1,6 +1,14 @@
 module.exports = {
-  orange: '#ff8932',
-  purple: '#a50bce',
-  blue: '#1fa6e0',
-  green: '#47d482'
+  orange: {
+    400: '#ff8932'
+  },
+  purple: {
+    400: '#a50bce'
+  },
+  blue: {
+    400: '#1fa6e0'
+  },
+  green:{
+    400: '#47d482'
+  }
 };

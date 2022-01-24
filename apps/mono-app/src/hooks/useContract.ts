@@ -61,17 +61,17 @@ export function useMonoVaultContract(vaultAddress: string) {
   return useContract<Mono>(vaultAddress, MonoABI);
 }
 
-export function useMultipleTokenContract(tokenAddresses: string[]) {
+export function useMultipleTokenContract(tokenAddresses?: string[]): Erc20[] {
   return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI) as Erc20[]
 }
 
-export function useMultipleMonoContract(vaultAddresses: string[]) {
+export function useMultipleMonoContract(vaultAddresses: string[]): Mono[] {
   return useMultipleContracts<Mono>(vaultAddresses, MonoABI) as Mono[]
 }
 
 export function useMultipleContracts<T extends Contract>(
-  addresses: string[],
-  ABI: any
+  addresses?: string[],
+  ABI?: any
 ) {
   const context = useWeb3React<Web3Provider>()
   return useMemo(() => {

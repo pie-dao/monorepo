@@ -1,12 +1,20 @@
-import { useWeb3React } from "@web3-react/core";
+import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import { MetamaskIcon, WalletConnectIcon } from "../../assets/icons/connectors";
 import { injected } from "../../connectors";
 
 const MetamaskButton = ({ setShow }: { setShow(show: boolean): void }) => {
 const { activate } = useWeb3React()
-const handleConnect = () => { activate(injected).then(() => {
-  setShow(false)
-}) }
+const handleConnect = () => {
+  activate(injected, undefined, true).then(() => {
+    setShow(false)
+  }).catch(err => {
+    if (err instanceof UnsupportedChainIdError) {
+      alert('Chain not supported')
+    } else {
+      alert('Error in connecting')
+    }
+  })
+}
 return (
   <button
     onClick={() => handleConnect()}

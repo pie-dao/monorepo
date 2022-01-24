@@ -1,13 +1,13 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { ChainIds } from "../constants";
+import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react'
+import { PortisConnector } from '@web3-react/portis-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { Web3Provider } from '@ethersproject/providers'
+import { SupportedChains } from "../utils/networks";
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [
-    ChainIds.POLYGON,
-    ChainIds.MAINNET,
-    ChainIds.LOCAL
-  ]
+  supportedChainIds: Object.values(SupportedChains)
 });
 
 export default function getLibrary(provider: any): Web3Provider {
@@ -26,3 +26,26 @@ export default function getLibrary(provider: any): Web3Provider {
   library.pollingInterval = 12000;
   return library
 }
+
+
+export const gnosisSafe = new SafeAppConnector()
+
+// export const walletconnect = new WalletConnectConnector({
+//   supportedChainIds,
+//   rpc: INFURA_NETWORK_URLS,
+//   qrcode: true,
+// })
+
+// // mainnet only
+// export const portis = new PortisConnector({
+//   dAppId: PORTIS_ID ?? '',
+//   networks: [1],
+// })
+
+// mainnet only
+export const walletlink = new WalletLinkConnector({
+  url: '',
+  appName: 'Piedao',
+  appLogoUrl: '',
+  supportedChainIds: Object.values(SupportedChains),
+})

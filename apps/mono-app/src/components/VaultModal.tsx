@@ -1,10 +1,8 @@
-import React, { ReactHTMLElement, ReactNode, ReactPropTypes } from "react";
-import { USDCIcon } from "../assets/icons/logos";
-import { Vault } from "../store/vault/vaultSlice";
-import { scrollTo } from "../utils/scroll";
-import { Logo } from '@piedao/ui-atoms'
+import React, { ReactNode } from "react";
+import { DAIIcon, USDCIcon } from "../assets/icons/logos";
 import logoFile from '../assets/icons/logo.png'
-import { useMulticallVaultDeposits } from "../hooks/useBalances";
+import { Vault } from "../store/vault/Vault";
+import { prettyNumber } from "../utils";
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -39,6 +37,9 @@ const fetchIcon = (name: string): ReactNode => {
     case 'usdc': {
       return (<USDCIcon colors={{ primary: '#a50bce', bg: 'white' }}/>)
     }
+    case 'dai': {
+      return (<DAIIcon colors={{ bg: 'orange', primary: 'white' }}/>)
+    }
     default: {
       return (<img src={logoFile} />)
     }
@@ -46,8 +47,8 @@ const fetchIcon = (name: string): ReactNode => {
 
 } 
 
-const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
-  const { loading } = useMulticallVaultDeposits();
+const VaultModal = ({ vault, setSelectedVault }: { vault: Vault, setSelectedVault: (v: Vault) => void }): JSX.Element => {
+  // const { loading } = useMulticallVaultDeposits();
   return (
   <CardBorderGradient
     className="w-screen"
@@ -63,33 +64,56 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
     <CardIcon>
       { fetchIcon(vault.name) }
     </CardIcon>
-
+    <div className="absolute right-3 top-3">
+      <p className={`text-sm p-1 text-white rounded-lg font-extrabold
+        ${vault.network.name.toUpperCase() === 'POLYGON' ? ' text-purple-700' : 'text-red-700'} `}
+      >{vault.network.name}</p>
+    </div>
     <h2 className="text-center text-lg italic m-5">{vault.name}</h2>
-    <p>{vault.description}</p>
+    <p className="text-left mx-5">{vault.description}</p>
+    <div className="flex justify-between px-5">
+      <p className="text-left">Deposits:</p>
+      <p>${prettyNumber(vault.stats?.deposits.label ?? 0)}</p>
+    </div>
+    <div className="flex justify-between px-5">
+      <p className="text-left">Last Harvest:</p>
+      <p>{vault.stats?.lastHarvest ?? 'N/A'}</p>
+    </div>    
     { 
-      loading 
-        ? <p>Loading...</p>
-        : vault.stats && 
-        <div className="details">
-          <p>Projected APY: {vault.stats.projectedAPY} %</p>
-        </div> 
+      // loading 
+        // ? <p>Loading...</p> 
+        // : vault.stats && 
+        // <div className="details">
+        //   <p>Projected APY: {vault.stats.projectedAPY} %</p>
+        // </div> 
     }
     <Divider />
-    <section className="card-actions">
+    <section className="card-actions flex justify-between items-center px-5 w-full">
+      <div className="details">
+        <p>Current APY: <span className="font-bold text-green-600">{vault.stats && vault.stats.currentAPY} %</span></p>
+      </div> 
+
       <button
         className="
-          bg-blue-500 border-2 border-blue-500
+          bg-purple-400 font-bold
+          border-purple-400
+          text-white
+          hover:text-purple-400
+          border-2
           hover:bg-transparent 
           rounded-md
-          px-2 py-1 mx-1
+          px-2 py-1 
           my-1
+          text-center
           min-w-[120px]
           "
-        onClick={() => scrollTo('vault-extended', -1000)}
+        onClick={() => {
+          setSelectedVault(vault)
+        }}
       >
         Deposit
       </button>
-      <button
+      {/* <button
         className="
           border-blue-500 border-2 hover:bg-blue-500
           rounded-md 
@@ -100,7 +124,7 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
         onClick={() => scrollTo('vault-extended', -1000)}
       >
         Withdraw
-      </button>
+      </button> */}
     </section>
   </div>
   </CardBorderGradient>  
