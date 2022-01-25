@@ -1,0 +1,88 @@
+type GlobalStat @entity {
+  id: ID!,
+  depositedLocksCounter: BigInt!
+  depositedLocksValue: BigInt!
+  withdrawnLocksCounter: BigInt!
+  withdrawnLocksValue: BigInt!
+  ejectedLocksCounter: BigInt!
+  ejectedLocksValue: BigInt!
+  boostedLocksCounter: BigInt!
+  boostedLocksValue: BigInt!
+  averageTimeLock: BigInt!
+  totalDoughStaked: BigInt!
+  veTokenTotalSupply: BigInt!
+  stakersCounter: BigInt!
+  timestamp: BigInt!
+}
+
+type Staker @entity {
+  id: ID!
+  accountLocks: [Lock!]! @derivedFrom(field: "staker")
+  accountRewards: [Reward!]! @derivedFrom(field: "staker")
+  accountVeTokenBalance: BigInt!
+  accountWithdrawableRewards: BigInt!
+  accountWithdrawnRewards: BigInt!
+}
+
+type StakersTracker @entity {
+  id: ID!
+  counter: BigInt!
+  stakers: [String!]!
+}
+
+type LocksTracker @entity {
+  id: ID!
+  counter: BigInt!
+  locks: [String!]!
+}
+
+type GlobalStatsTracker @entity {
+  id: ID!
+  counter: BigInt!
+  latest: String!
+  globalStats: [String!]!
+}
+
+type Reward @entity {
+  id:  ID!
+  timestamp: BigInt!
+  amount: BigInt!
+  account: Bytes!
+  staker: Staker!
+  rewardToken: Bytes!
+  windowIndex: BigInt!
+  accountIndex: BigInt!
+  type: String!
+}
+
+type RewardDistribution @entity {
+  id:  ID!
+  transaction: String!
+  timestamp: BigInt!
+  block: BigInt!
+  windowIndex: BigInt!
+  rewardsDeposited: BigInt!
+  rewardToken: Bytes!
+  owner: Bytes!
+}
+
+type Lock @entity {
+  id: ID!
+  lockId: BigInt!
+  lockDuration: BigInt!
+  lockedAt: BigInt!
+  amount: BigInt!
+  staker: Staker!
+  withdrawn: Boolean!
+  ejected: Boolean!
+  boosted: Boolean!
+  boostedPointer: ID!
+}
+
+type Delegate @entity {
+  id:  ID!
+  delegator: Bytes!
+  delegate: Bytes!
+  timestamp: BigInt!
+  block: BigInt!
+}

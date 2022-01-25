@@ -1,0 +1,93 @@
+# This is the GlobalStat Entity
+# it is supposed to keep track of anything we might need
+# to access counters / stats with a single query...
+type GlobalStat @entity {
+  # the id must be unique, and always the same, so we are sure
+  # we always update the same entity on our database.
+  # that's why we're using a const as ID = "unique_stats_id"
+  id: ID!,
+  # TODO: this should be improved by adding a one-to-many as we did for holdersCounter...
+  locksCounter: BigInt
+  # this is a one-to-many relationship, to keep track of the amount of holders
+  # for each token we'll be indexing...
+  holdersCounter: [HoldersCounter!] @derivedFrom(field: "globalStat")
+}
+
+type HoldersCounter @entity {
+  # the id here is the token's name (i.e: DOUGH, YPIE, etc)
+  id: ID!
+  # the counter, to keep track of the total amount of holders for each token
+  count: BigInt!
+  # the one-to-many reference to the parent entity
+  globalStat: GlobalStat!
+}
+
+type Holder @entity {
+  # the Holder is an address either a smart contract or a EOA
+  # holding one or many positions.
+
+  # the id here is the eth address of the holder, in hex format
+  id: ID!
+  # the one-to-many relationship, to keep track of all the tokens 
+  # each holder is having, and it's total balance
+  positions: [Position!]! @derivedFrom(field: "holder")
+}
+
+type Position @entity {
+  # the id here is a componed string, combining the holder's address 
+  # and the token's address as follows:
+  # holder_address + "_" + token_address
+  id: ID!
+  # the total amount of token owned by a specific address
+  balance: BigDecimal!
+  # the one-to-many reference to the parent entity
+  holder: Holder!
+  # the one-to-one relationship with the Token entity
+  token: Token!
+}
+
+type Token @entity {
+  # the id here is the token's address
+  id: ID!
+  # the name of the token
+  name: String!
+  # the symbol of the token
+  symbol: String!
+  # the decimals of the token
+  decimals: BigInt!
+}
+
+type PieLog @entity {
+  # the id here is the transaction hash of the transfer event + "_" + pie_address
+  id: ID!
+  # the pie address
+  pieAddress: Bytes!
+  # the pie symbol
+  pieSymbol: String!
+  # the type of action related to this transaction (mint/burn)
+  action: String!
+  # the block number
+  block: BigInt!
+  # the timestamp when the transaction occurred
+  timestamp: BigInt!
+  # amount of ypie generated/destroyed by the transaction event
+  amount: BigDecimal!
+  # amount in USD
+  amountUSD: BigDecimal!
+  # the one-to-many relationship, to keep track of all the tokens 
+  # involved into each transaction
+  tokensInPieTransaction: [TokenInPieTransaction!]! @derivedFrom(field: "pieLog")  
+}
+
+type TokenInPieTransaction @entity {
+  # the id here is transaction_hash + "_" + token_address
+  id: ID!
+  # the price of the token at this specific timestamp
+  price: BigDecimal!
+  # the balance of the pie, calculated in tokens
+  balance: BigDecimal!
+  # the one-to-one relationship with the Token entity
+  token: Token!
+  # the one-to-one relationship with the PieLog entity
+  pieLog: PieLog!  
+}

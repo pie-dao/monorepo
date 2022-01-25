@@ -1,0 +1,98 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: Dough
+    network: mainnet
+    source:
+      address: "0xad32a8e6220741182940c5abf610bde99e737b2d"
+      abi: Dough
+      startBlock: 10840239
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GlobalStat
+        - HoldersCounter
+        - Holder
+        - Token
+      abis:
+        - name: Dough
+          file: ./abis/Dough.json
+      eventHandlers:
+        - event: ClaimedTokens(indexed address,indexed address,uint256)
+          handler: handlerClaimedTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handlerTransfer
+        - event: NewCloneToken(indexed address,uint256)
+          handler: handlerNewCloneToken
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handlerApproval
+      file: ./src/Dough.ts
+  - kind: ethereum/contract
+    name: Ypie
+    network: mainnet
+    source:
+      address: "0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31"
+      startBlock: 11477560
+      abi: PieVault
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GlobalStat
+        - HoldersCounter
+        - Holder
+        - Token
+      abis:
+        - name: PieVault
+          file: ./abis/PieVault.json
+        - name: Factory
+          file: ./abis/Factory.json
+        - name: Pair
+          file: ./abis/Pair.json
+        - name: LendingRegistry
+          file: ./abis/LendingRegistry.json          
+      eventHandlers:
+        - event: AnnualizedFeeSet(uint256)
+          handler: handlerAnnualizedFeeSet
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handlerApproval
+        - event: Call(indexed address,indexed address,bytes,uint256)
+          handler: handlerCall
+        - event: CallerAdded(indexed address)
+          handler: handlerCallerAdded
+        - event: CallerRemoved(indexed address)
+          handler: handlerCallerRemoved
+        - event: CapSet(uint256)
+          handler: handlerCapSet
+        - event: EntryFeeBeneficiaryShareSet(uint256)
+          handler: handlerEntryFeeBeneficiaryShareSet
+        - event: EntryFeeSet(uint256)
+          handler: handlerEntryFeeSet
+        - event: ExitFeeBeneficiaryShareSet(uint256)
+          handler: handlerExitFeeBeneficiaryShareSet
+        - event: ExitFeeSet(uint256)
+          handler: handlerExitFeeSet
+        - event: FeeBeneficiarySet(indexed address)
+          handler: handlerFeeBeneficiarySet
+        - event: FeeCharged(uint256)
+          handler: handlerFeeCharged
+        - event: LockSet(uint256)
+          handler: handlerLockSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handlerOwnershipTransferred
+        - event: PoolExited(indexed address,uint256)
+          handler: handlerPoolExited
+        - event: PoolJoined(indexed address,uint256)
+          handler: handlerPoolJoined
+        - event: TokenAdded(indexed address)
+          handler: handlerTokenAdded
+        - event: TokenRemoved(indexed address)
+          handler: handlerTokenRemoved
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handlerTransfer
+      file: ./src/Ypie.ts

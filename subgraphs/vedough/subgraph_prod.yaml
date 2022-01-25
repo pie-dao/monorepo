@@ -1,0 +1,180 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: SharesTimeLock
+    network: mainnet
+    source:
+      address: "0x6Bd0D8c8aD8D3F1f97810d5Cc57E9296db73DC45"
+      abi: SharesTimeLock
+      startBlock: 13229400
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GlobalStat
+        - Staker
+        - Lock
+      abis:
+        - name: Dough
+          file: ./abis/Dough.json        
+        - name: SharesTimeLock
+          file: ./abis/SharesTimeLock.json
+        - name: NonTransferableRewardsOwned
+          file: ./abis/NonTransferableRewardsOwned.json          
+      eventHandlers:
+        - event: BoostedToMax(indexed uint256,indexed uint256,uint256,indexed address)
+          handler: handleBoostedToMax
+        - event: Deposited(indexed uint256,uint256,uint32,indexed address)
+          handler: handleDeposited
+        - event: Ejected(indexed uint256,uint256,indexed address)
+          handler: handleEjected
+        - event: MinLockAmountChanged(uint256)
+          handler: handleMinLockAmountChanged
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: WhitelistedChanged(indexed address,indexed bool)
+          handler: handleWhitelistedChanged
+        - event: Withdrawn(indexed uint256,uint256,indexed address)
+          handler: handleWithdrawn
+      file: ./src/SharesTimeLock.ts
+  - kind: ethereum/contract
+    name: NonTransferableRewardsOwned
+    network: mainnet
+    source:
+      address: "0xE6136F2e90EeEA7280AE5a0a8e6F48Fb222AF945"
+      abi: NonTransferableRewardsOwned
+      startBlock: 13229395
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - GlobalStat
+        - Staker
+        - Lock
+      abis:
+        - name: Dough
+          file: ./abis/Dough.json        
+        - name: SharesTimeLock
+          file: ./abis/SharesTimeLock.json        
+        - name: NonTransferableRewardsOwned
+          file: ./abis/NonTransferableRewardsOwned.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: ClaimedFor(uint256,indexed address,indexed address,bytes[])
+          handler: handleClaimedFor
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: RewardsDistributed(indexed address,uint256)
+          handler: handleRewardsDistributed
+        - event: RewardsRedistributed(uint256,indexed address)
+          handler: handleRewardsRedistributed       
+        - event: RewardsWithdrawn(indexed address,uint256)
+          handler: handleRewardsWithdrawn
+        - event: RoleAdminChanged(indexed bytes,indexed bytes,indexed bytes)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/NonTransferableRewardsOwned.ts
+  - kind: ethereum/contract
+    name: Dough
+    network: mainnet
+    source:
+      address: "0xad32a8e6220741182940c5abf610bde99e737b2d"
+      abi: Dough
+      startBlock: 13229400
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - ClaimedTokens
+        - Transfer
+        - NewCloneToken
+        - Approval
+      abis:
+        - name: Dough
+          file: ./abis/Dough.json
+        - name: SharesTimeLock
+          file: ./abis/SharesTimeLock.json        
+        - name: NonTransferableRewardsOwned
+          file: ./abis/NonTransferableRewardsOwned.json          
+      eventHandlers:
+        - event: ClaimedTokens(indexed address,indexed address,uint256)
+          handler: handleClaimedTokens
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+        - event: NewCloneToken(indexed address,uint256)
+          handler: handleNewCloneToken
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+      file: ./src/Dough.ts     
+  - kind: ethereum/contract
+    name: DoughStakingDelegateRegistry
+    network: mainnet
+    source:
+      address: "0x9684C4A31246405BC2C8002494268e81D7623b4f"
+      abi: DoughStakingDelegateRegistry
+      startBlock: 13499161
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - ClearDelegate
+        - OwnershipChange
+        - SetDelegate
+      abis:
+        - name: DoughStakingDelegateRegistry
+          file: ./abis/DoughStakingDelegateRegistry.json
+      eventHandlers:
+        - event: ClearDelegate(indexed address,indexed address)
+          handler: handleClearDelegate
+        - event: OwnershipChange(indexed address,indexed address)
+          handler: handleOwnershipChange
+        - event: SetDelegate(indexed address,indexed address)
+          handler: handleSetDelegate
+      file: ./src/DoughStakingDelegateRegistry.ts
+  - kind: ethereum/contract
+    name: MerkleTreeDistributor
+    network: mainnet
+    source:
+      address: "0xbaB795479bfF02c6ef52a10a54a95a42A1afa456"
+      abi: MerkleTreeDistributor
+      startBlock: 13551739
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Claimed
+        - CreatedWindow
+        - DeleteWindow
+        - LockSet
+        - OwnershipTransferred
+        - WithdrawRewards
+      abis:
+        - name: MerkleTreeDistributor
+          file: ./abis/MerkleTreeDistributor.json
+      eventHandlers:
+        - event: Claimed(indexed address,uint256,indexed address,uint256,uint256,indexed address)
+          handler: handleClaimed
+        - event: CreatedWindow(indexed uint256,uint256,indexed address,address)
+          handler: handleCreatedWindow
+        - event: DeleteWindow(indexed uint256,address)
+          handler: handleDeleteWindow
+        - event: LockSet(indexed uint256)
+          handler: handleLockSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: WithdrawRewards(indexed address,uint256,indexed address)
+          handler: handleWithdrawRewards
+      file: ./src/MerkleTreeDistributor.ts      
