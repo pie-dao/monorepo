@@ -1,5 +1,5 @@
 import { useAppSelector } from "../hooks";
-import DepositWorkflow from "./Deposit";
+import DepositCard from "./Deposit";
 import VaultModal from "./VaultModal";
 
 const VaultList = ({ loading }: { loading: boolean }): JSX.Element => {
@@ -15,7 +15,7 @@ const VaultList = ({ loading }: { loading: boolean }): JSX.Element => {
       <VaultModal key={v.symbol} vault={v} />
     ))}
   </section>
-  { selectedVault && <DepositWorkflow loading={loading} vault={selectedVault}/>}
+  { selectedVault && <DepositCard loading={loading} vault={selectedVault}/>}
   </>
 )};
 export default VaultList;

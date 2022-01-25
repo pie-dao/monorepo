@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { vaultState } from './vault.state';
-import { UserBalanceOnChainData, VaultOnChainData } from './Vault';
-
+import { Balance, UserBalanceOnChainData, VaultOnChainData } from './Vault';
+import { toBalance } from '../../utils';
+import { addBalances, subBalances } from '../../utils/balances';
 
 export const vaultSlice = createSlice({
   name: 'vault',
@@ -22,10 +23,35 @@ export const vaultSlice = createSlice({
     },
     setSelectedVault: (state, action: PayloadAction<string>) => {
       state.selected = action.payload;
+    },
+    setApproval: (state, action: PayloadAction<Balance>) => {
+      const vault = state.vaults.find(v => v.address === state.selected);
+      if (vault && vault.userBalances) {
+        vault.userBalances.allowance = action.payload;
+      }
+    },
+    setNewBalances: (state, action: PayloadAction<Balance>) => {
+      const vault = state.vaults.find(v => v.address === state.selected);
+      if (vault && vault.userBalances && vault.token?.decimals) {
+        const decimals = vault.token.decimals;
+        vault.userBalances.allowance = toBalance(0, decimals);
+        vault.userBalances.vaultUnderlying = addBalances(vault.userBalances.vaultUnderlying, action.payload);
+        vault.userBalances.wallet = subBalances(vault.userBalances.wallet, action.payload)
+      }
+    },
+    setChainRefetch: (state) => {
+      state.triggerUpdate++
     }
   },
 });
 
-export const { setUserBalances, setOnChainVaultData, setSelectedVault } = vaultSlice.actions;
+export const {
+  setChainRefetch,
+  setUserBalances,
+  setOnChainVaultData,
+  setSelectedVault,
+  setApproval,
+  setNewBalances,
+} = vaultSlice.actions;
 export default vaultSlice.reducer;
 

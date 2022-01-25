@@ -2,6 +2,7 @@ import VaultList from './components/VaultList';
 import Header from './components/Header';
 import { useOnChainData } from './hooks/useChainData';
 import { useEagerConnect } from './hooks/useWeb3';
+import VaultExtended from './components/VaultDetails';
 
 
 const FancyTitle = () => (
@@ -29,7 +30,6 @@ function App() {
         <h1 className="text-3xl m-10">Vaults</h1>
         <VaultList loading={appLoading}/>
       </section>
-      {/* <VaultExtended /> */}
     </div>
   );
 }

@@ -32,6 +32,7 @@ export interface UserBalances {
   wallet: Balance;
   vaultUnderlying: Balance;
   vault: Balance;
+  allowance: Balance;
 }
 
 /**
@@ -47,6 +48,7 @@ export interface VaultState {
   vaults: Vault[];
   selected: null | string;
   isLoading: boolean;
+  triggerUpdate: number;
 }
 
 export type VaultOnChainData = Pick<Vault, 'address' | 'stats' | 'token'>;

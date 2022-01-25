@@ -41,14 +41,14 @@ const toOnChainVaultData = (
 /**
  * Get the application level vault details routing through the multicall contract
  */
-export const useOnChainVaultData = (): {
+export const useOnChainVaultData = (block: number): {
   loading: boolean;
 } => {
   const dispatch = useAppDispatch()
   const { account, active, chainId } = useWeb3React();
   const [loading, setLoading] = useState(false);
   const vaultAddresses = useAddresses()
-  const monoContracts = useMultipleMonoContract(vaultAddresses)
+  const monoContracts = useMultipleMonoContract(vaultAddresses, true)
   // batch request onChain data from each vault
   useEffect(() => {
     if (account && active && monoContracts.length > 0) {
@@ -64,7 +64,7 @@ export const useOnChainVaultData = (): {
         setLoading(false)
       })
     }
-  }, [account, active, chainId])
+  }, [account, active, chainId, block])
   return {
     loading,
   }

@@ -23,12 +23,12 @@ function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked()
 }
 
-function getProviderOrSigner(library: Web3Provider, account?: string | null): MulticallProvider | JsonRpcSigner {
+function getProviderOrSigner(library: Web3Provider, account?: string | null, preferMulticall?: boolean): MulticallProvider | JsonRpcSigner {
   /**
    * We currently batch multiple reads through multicall contract
    * But may need to pass write data individually
    */
-  return account
+  return (!preferMulticall && account)
     ? getSigner(library, account)
     : getMulticallProvider(library)
 }
@@ -61,22 +61,23 @@ export function useMonoVaultContract(vaultAddress?: string) {
   return useContract<Mono>(vaultAddress, MonoABI);
 }
 
-export function useMultipleTokenContract(tokenAddresses?: string[]): Erc20[] {
-  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI) as Erc20[]
+export function useMultipleTokenContract(tokenAddresses?: string[], preferMulticall?: boolean): Erc20[] {
+  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI, preferMulticall) as Erc20[]
 }
 
-export function useMultipleMonoContract(vaultAddresses?: string[]): Mono[] {
-  return useMultipleContracts<Mono>(vaultAddresses, MonoABI) as Mono[]
+export function useMultipleMonoContract(vaultAddresses?: string[], preferMulticall?: boolean): Mono[] {
+  return useMultipleContracts<Mono>(vaultAddresses, MonoABI, preferMulticall) as Mono[]
 }
 
 export function useMultipleContracts<T extends Contract>(
   addresses?: string[],
-  ABI?: any
+  ABI?: any,
+  preferMulticall?: boolean
 ) {
   const context = useWeb3React<Web3Provider>()
   return useMemo(() => {
     if (!addresses || !ABI || !context.library || !context.chainId) return []
-    return addresses.map(a => getContract(context, a, ABI))
+    return addresses.map(a => getContract(context, a, ABI, preferMulticall))
   }, [addresses, ABI, context]) as T[]
 }
 
@@ -84,12 +85,13 @@ export function useMultipleContracts<T extends Contract>(
 const getContract = (
   context: Web3ReactContextInterface,
   address: string,
-  ABI: any
+  ABI: any,
+  preferMulticall?: boolean
 ) => {
   const { library, account, active } = context;
   try {
     if (!active) throw new ProviderNotActivatedError();
-    const providerSigner = getProviderOrSigner(library, account);
+    const providerSigner = getProviderOrSigner(library, account, preferMulticall);
     return new Contract(address, ABI, providerSigner);
   } catch (error) {
     console.error('Failed to get contract', error)

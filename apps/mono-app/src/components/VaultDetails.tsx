@@ -1,10 +1,12 @@
-import { useAppSelector } from "../hooks";
+import { useSelectedVault } from "../hooks/useSelectedVault";
 import { prettyNumber } from "../utils";
 
 const VaultExtended = (): JSX.Element => {
-  const vault = useAppSelector(state => state.vault.vaults[0]);
+  const vault = useSelectedVault();
   return (
-  <section
+  <>{ 
+    vault && 
+    <section
     id="vault-extended"
     className="
       w-screen min-h-screen 
@@ -83,5 +85,6 @@ const VaultExtended = (): JSX.Element => {
       </section>
     </section>
   </section>
+  } </>
 )};
 export default VaultExtended;
