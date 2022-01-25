@@ -19,4 +19,6 @@ export const vaultState: VaultState = {
     //   address: '0x21a3366cAbB5991a6F2612887FfCB0657023065E',
     // }
   ],
+  selected: null,
+  isLoading: false,
 };

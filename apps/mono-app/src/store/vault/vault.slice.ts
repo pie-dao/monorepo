@@ -19,10 +19,13 @@ export const vaultSlice = createSlice({
       if (vault) {
         vault.userBalances = action.payload.userBalances
       }
+    },
+    setSelectedVault: (state, action: PayloadAction<string>) => {
+      state.selected = action.payload;
     }
   },
 });
 
-export const { setUserBalances, setOnChainVaultData } = vaultSlice.actions;
+export const { setUserBalances, setOnChainVaultData, setSelectedVault } = vaultSlice.actions;
 export default vaultSlice.reducer;
 

@@ -3,6 +3,8 @@ import { DAIIcon, USDCIcon } from "../assets/icons/logos";
 import logoFile from '../assets/icons/logo.png'
 import { Vault } from "../store/vault/Vault";
 import { prettyNumber } from "../utils";
+import { useAppDispatch } from "../hooks";
+import { setSelectedVault } from "../store/vault/vault.slice";
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -47,8 +49,8 @@ const fetchIcon = (name: string): ReactNode => {
 
 } 
 
-const VaultModal = ({ vault, setSelectedVault }: { vault: Vault, setSelectedVault: (v: Vault) => void }): JSX.Element => {
-  // const { loading } = useMulticallVaultDeposits();
+const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
+  const dispatch = useAppDispatch();
   return (
   <CardBorderGradient
     className="w-screen"
@@ -79,14 +81,6 @@ const VaultModal = ({ vault, setSelectedVault }: { vault: Vault, setSelectedVaul
       <p className="text-left">Last Harvest:</p>
       <p>{vault.stats?.lastHarvest ?? 'N/A'}</p>
     </div>    
-    { 
-      // loading 
-        // ? <p>Loading...</p> 
-        // : vault.stats && 
-        // <div className="details">
-        //   <p>Projected APY: {vault.stats.projectedAPY} %</p>
-        // </div> 
-    }
     <Divider />
     <section className="card-actions flex justify-between items-center px-5 w-full">
       <div className="details">
@@ -108,7 +102,7 @@ const VaultModal = ({ vault, setSelectedVault }: { vault: Vault, setSelectedVaul
           min-w-[120px]
           "
         onClick={() => {
-          setSelectedVault(vault)
+          dispatch(setSelectedVault(vault.address))
         }}
       >
         Deposit

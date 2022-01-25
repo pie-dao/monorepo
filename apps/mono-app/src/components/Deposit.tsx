@@ -28,16 +28,15 @@ function useAllowance(contract?: Erc20, monoAddress?: string) {
 function DepositButton ({
   sufficientBalance,
   deposit,
-  vaultId  
+  vault  
 }: {
   sufficientBalance: boolean,
   deposit: Balance,
-  vaultId: string,
+  vault: Vault,
 }) {
   const { account } = useWeb3React();
-  const vault = useAppSelector(state => state.vault.vaults.find(v => v.name === vaultId))
-  const monoContract = useMonoVaultContract(vault?.address ?? '0x0');
-  const tokenContract = useTokenContract(vault?.token?.address ?? '0x0');
+  const monoContract = useMonoVaultContract(vault.address);
+  const tokenContract = useTokenContract(vault.token?.address);
   const [depositing, setDepositing] = useState(false);
   const onClick = () => {
     setDepositing(true)
@@ -66,12 +65,11 @@ function DepositButton ({
   )
 }
 
-function DepositInput({ vaultId }: { vaultId: string }) {
-  const vault = useAppSelector(state => state.vault.vaults.find(v => v.name === vaultId))
-  const tokenContract = useTokenContract(vault?.token?.address ?? '0x0');
+function DepositInput({ vault }: { vault: Vault }) {
+  const tokenContract = useTokenContract(vault.token?.address);
   const decimals = useDecimals(tokenContract) ?? 0;
   const [deposit, setDeposit] = useState<Balance>({ label: 0, value: '0' });
-  const vaultBalance = useAppSelector(state => state.vault.vaults.find(v => v.name === vaultId)?.userBalances?.wallet)
+  const vaultBalance = vault.userBalances?.wallet
   const [sufficientBalance, setSufficientBalance] = useState(true);
   
   const handleMaxDeposit = () => {   
@@ -113,7 +111,7 @@ function DepositInput({ vaultId }: { vaultId: string }) {
       <DepositButton
         sufficientBalance={sufficientBalance}
         deposit={deposit}
-        vaultId={vaultId}
+        vault={vault}
         />
       </div>
       {  sufficientBalance ? '' : <p className="text-red-800">Insufficient Balance</p> }
@@ -126,27 +124,13 @@ function DepositInput({ vaultId }: { vaultId: string }) {
 }
 
 
-function DepositWorkflow({ vault }: { vault: Vault }) {
-
+function DepositWorkflow({ vault, loading }: { vault: Vault, loading: boolean }) {
   const network = useNetwork();
-  const tokenContract = useTokenContract(vault?.token?.address ?? '0x0');
-  const monoContract = useMonoVaultContract(vault.address ?? '0x0');
+  const tokenContract = useTokenContract(vault.token?.address);
   const allowance = useAllowance(tokenContract, vault.address)
 
   const decimals = vault?.token?.decimals; 
   const correctNetwork = network === vault?.network.name.toUpperCase();
-
-  console.debug({
-    network,
-    vault,
-    tokenContract,
-    monoContract,
-    allowance,
-    decimals,
-    correctNetwork
-  })
-
-
   return (
     <section className="mt-10 h-96 flex items-center flex-col justify-center">
       
@@ -154,18 +138,23 @@ function DepositWorkflow({ vault }: { vault: Vault }) {
       ------
       <div>
         <p>Current Network {network}</p>
-        <p>Vault Network <span className={ correctNetwork ? 'text-indigo-500' : 'text-red-800' }>{vault?.network.name.toUpperCase()}</span></p>
+        { loading
+          ? <p>Loading</p>
+          : <p>Vault Network <span className={ correctNetwork ? 'text-indigo-500' : 'text-red-800' }>{vault?.network.name.toUpperCase()}</span></p>
+        } 
       </div>
       ------
        <div>
-        <p>
-        Your Account balance { prettyNumber(vault?.userBalances?.wallet.label) }
-        </p>
-        <p className="italic text-gray-600">Raw value { vault?.userBalances?.wallet.value ?? 0 }</p>
-        <p></p>
+        { loading
+          ? <p>Loading</p>
+          : <>
+              <p>Your Account balance { prettyNumber(vault?.userBalances?.wallet.label) }</p>
+              <p className="italic text-gray-600">Raw value { vault?.userBalances?.wallet.value ?? 0 }</p>
+            </>
+        }
       </div>
       -----
-      <DepositInput vaultId={vault.symbol} />
+      <DepositInput vault={vault} />
       <div>
         Approved to spend? {(allowance ?? 0 / (10 ** Number(decimals))).toString()}
       </div>         

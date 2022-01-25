@@ -44,7 +44,7 @@ const useTokenAddresses = () => {
   ) as string[] | undefined
 }
 
-export const useUserBalances = (): { loading: boolean }  => {
+export const useUserBalances = (vaultDataLoaded: boolean): { loading: boolean }  => {
 /**
   * Grab the user balances for each ERC20 token
   * In terms of:
@@ -57,7 +57,6 @@ const { account, active, chainId } = useWeb3React();
 const dispatch = useAppDispatch();
 const tokenAddresses = useTokenAddresses()
 const monoAddresses = useAddresses();
-
 const vaults = useAppSelector(state => state.vault.vaults)
 const monoContracts = useMultipleMonoContract(monoAddresses)
 const tokenContracts = useMultipleTokenContract(tokenAddresses)
@@ -70,20 +69,20 @@ useEffect(() => {
       tokenContracts.map(async token => {
         const vault = vaults.find(async v => v.token?.address === token.address);
         const mono = monoContracts.find(m => m.address === vault?.address);
-        return (
-          vault &&
-          mono &&
-          vault.token
-        ) && await getUserBalances(token, mono, account, vault.token?.decimals);
+        if (mono && vault && vault.token) {
+          return await getUserBalances(token, mono, account, vault.token.decimals);
+        }
       })
     ).then(payload => {
       payload.filter(p => !!p).forEach(p => {
         const data = p && toUserBalances(p);
-        data && dispatch(setUserBalances(data));
+        if (data) {
+          dispatch(setUserBalances(data));
+        }
       })
       setLoading(false)
     })
   }
-}, [account, active, chainId])
+}, [account, active, chainId, vaultDataLoaded])
 return { loading }
 };

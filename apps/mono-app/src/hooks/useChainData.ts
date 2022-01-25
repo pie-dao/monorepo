@@ -7,6 +7,6 @@ export const useOnChainData = (): boolean => {
    * to keep the state updated
    */
   const { loading: vaultsLoading } = useOnChainVaultData()
-  const { loading: balancesLoading } = useUserBalances();
-  return vaultsLoading && balancesLoading;
+  const { loading: balancesLoading } = useUserBalances(vaultsLoading);
+  return vaultsLoading || balancesLoading;
 } 

@@ -45,6 +45,8 @@ export interface Vault extends BasicVaultInformation {
 
 export interface VaultState {
   vaults: Vault[];
+  selected: null | string;
+  isLoading: boolean;
 }
 
 export type VaultOnChainData = Pick<Vault, 'address' | 'stats' | 'token'>;

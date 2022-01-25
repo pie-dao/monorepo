@@ -57,11 +57,11 @@ export const useOnChainVaultData = (): {
       Promise.all(
         monoContracts.map(async v => await getVaultDetails(v))
       ).then(payload => {
-        setLoading(false)
         payload.forEach(p => {
           const data = toOnChainVaultData(p) 
           dispatch(setOnChainVaultData(data))
         })
+        setLoading(false)
       })
     }
   }, [account, active, chainId])

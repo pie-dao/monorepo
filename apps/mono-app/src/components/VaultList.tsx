@@ -1,16 +1,10 @@
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { useUserBalances } from "../hooks/useBalances";
-import { Vault } from "../store/vault/Vault";
+import { useAppSelector } from "../hooks";
 import DepositWorkflow from "./Deposit";
 import VaultModal from "./VaultModal";
 
-const VaultList = (): JSX.Element => {
+const VaultList = ({ loading }: { loading: boolean }): JSX.Element => {
   const vaults = useAppSelector(state => state.vault.vaults);
-  // const { balances } = useUserBalances();
-  const [selectedVault, setSelectedVault] = useState<Vault>();
-  // const balance = selectedVault && balances?.filter(b => b.vaultAddress === selectedVault?.address)
-  // console.debug({ balance })
+  const selectedVault = useAppSelector(state => state.vault.vaults.find(v => v.address === state.vault.selected));
   return (
   <>
   <section
@@ -18,10 +12,10 @@ const VaultList = (): JSX.Element => {
     className="flex flex-row flex-wrap align-middle justify-center mb-10"
   >
     {vaults.map(v => (
-      <VaultModal key={v.symbol} vault={v} setSelectedVault={setSelectedVault} />
+      <VaultModal key={v.symbol} vault={v} />
     ))}
   </section>
-  { selectedVault && <DepositWorkflow vault={selectedVault}/>}
+  { selectedVault && <DepositWorkflow loading={loading} vault={selectedVault}/>}
   </>
 )};
 export default VaultList;

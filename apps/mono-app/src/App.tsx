@@ -27,7 +27,7 @@ function App() {
         <div className="spacer my-10 h-1" />
         <FancyTitle />
         <h1 className="text-3xl m-10">Vaults</h1>
-        <VaultList />
+        <VaultList loading={appLoading}/>
       </section>
       {/* <VaultExtended /> */}
     </div>

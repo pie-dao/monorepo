@@ -34,8 +34,8 @@ function getProviderOrSigner(library: Web3Provider, account?: string | null): Mu
 }
 
 export function useContract<T extends Contract>(
-  address: string,
-  ABI: any,
+  address?: string,
+  ABI?: any,
 ): T | undefined {
 
   const { library, account, chainId, active } = useWeb3React<Web3Provider>()
@@ -53,11 +53,11 @@ export function useContract<T extends Contract>(
   }, [address, ABI, library, chainId]) as T
 }
 
-export function useTokenContract(tokenAddress: string) {
+export function useTokenContract(tokenAddress?: string) {
   return useContract<Erc20>(tokenAddress, ERC20ABI);
 }
 
-export function useMonoVaultContract(vaultAddress: string) {
+export function useMonoVaultContract(vaultAddress?: string) {
   return useContract<Mono>(vaultAddress, MonoABI);
 }
 
@@ -65,7 +65,7 @@ export function useMultipleTokenContract(tokenAddresses?: string[]): Erc20[] {
   return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI) as Erc20[]
 }
 
-export function useMultipleMonoContract(vaultAddresses: string[]): Mono[] {
+export function useMultipleMonoContract(vaultAddresses?: string[]): Mono[] {
   return useMultipleContracts<Mono>(vaultAddresses, MonoABI) as Mono[]
 }
 
