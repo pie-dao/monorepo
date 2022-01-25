@@ -1,0 +1,10 @@
+{
+  "name": "@subgraphs/docker",
+  "version": "0.0.1",
+  "scripts": {
+    "graph-down": "docker-compose --project-directory docker down",
+    "graph-cleanup": "rm -fr docker/data",
+    "graph-up": "docker-compose --project-directory docker up",
+    "start-graph": "yarn run graph-down && yarn run graph-cleanup && yarn run graph-up"
+  }
+}

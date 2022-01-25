@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "libs/*"
+    "libs/*",
+    "subgraphs/*"
   ],
   "scripts": {
     "commit": "cz",
