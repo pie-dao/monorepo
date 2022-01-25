@@ -3,38 +3,52 @@ import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from ".";
 import { Erc20, Mono } from "../types/artifacts/abi";
 import {  useMultipleMonoContract, useMultipleTokenContract } from "./useContract";
-import { UserBalanceOnChainData, UserBalances, Vault } from "../store/vault/Vault";
+import { Balance, UserBalanceOnChainData, UserBalances, Vault } from "../store/vault/Vault";
 import { AwaitedReturn, toBalance } from "../utils";
 import { useAddresses } from "./useAddresses";
 import { setUserBalances } from "../store/vault/vault.slice";
+import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
 
 const getUserBalances = async (
   token: Erc20,
   vault: Mono,
   account: string,
-  decimals: number,
+  batchBurnRound: number,
 ) => {
   return await Promise.all([
-    vault.address,
     token.balanceOf(account),
     vault.balanceOf(account),
     vault.balanceOfUnderlying(account),
     token.allowance(account, vault.address),
-    decimals
+    vault.userBatchBurnReceipts(account),
+    vault.batchBurns(batchBurnRound)
   ])
 }
 
-const toUserBalances = (
+const calculateAvailable = (shares: BigNumber, amountPerShare: BigNumber, decimals: number): Balance => {
+  const bigAvailable = shares.mul(amountPerShare);
+  return toBalance(bigAvailable, decimals);
+}
+
+const toUserBalances = ({address, decimals, userBalancedata }: {
+  address: string,
+  decimals: number,
   userBalancedata: AwaitedReturn<typeof getUserBalances>,
-): UserBalanceOnChainData => {
-  const decimals = userBalancedata[5];
+}): UserBalanceOnChainData => {
+  const shares = userBalancedata[4][1];
+  const amountPerShare = userBalancedata[5][1];
   return {
-    address: userBalancedata[0],
+    address,
     userBalances: {
-      wallet: toBalance(userBalancedata[1], decimals),
-      vault: toBalance(userBalancedata[2], decimals),
-      vaultUnderlying: toBalance(userBalancedata[3], decimals),
-      allowance: toBalance(userBalancedata[4], decimals)
+      wallet: toBalance(userBalancedata[0], decimals),
+      vault: toBalance(userBalancedata[1], decimals),
+      vaultUnderlying: toBalance(userBalancedata[2], decimals),
+      allowance: toBalance(userBalancedata[3], decimals),
+      batchBurn: {
+        round: userBalancedata[4][0].toNumber(),
+        shares: toBalance(shares, decimals),
+        available: calculateAvailable(shares, amountPerShare, decimals)
+      }
     }
   }
 }
@@ -71,16 +85,22 @@ export const useUserBalances = (vaultDataLoaded: boolean, block: number): { load
         tokenContracts.map(async token => {
           const vault = vaults.find(async v => v.token?.address === token.address);
           const mono = monoContracts.find(m => m.address === vault?.address);
-          if (mono && vault && vault.token) {
-            return await getUserBalances(token, mono, account, vault.token.decimals);
+          if (mono && vault && vault.token && vault.stats) {
+            return {
+              decimals: vault.token.decimals,
+              address: mono.address,
+              userBalanceData: await getUserBalances(token, mono, account, vault.stats?.batchBurnRound)
+            };
           }
         })
       ).then(payload => {
         payload.filter(p => !!p).forEach(p => {
-          const data = p && toUserBalances(p);
-          if (data) {
-            dispatch(setUserBalances(data));
-          }
+          const data = p && toUserBalances({
+            address: p.address,
+            userBalancedata: p.userBalanceData,
+            decimals: p.decimals
+          });
+          if (data) dispatch(setUserBalances(data));
         })
         setLoading(false)
         })

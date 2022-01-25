@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react"
 
-const StyledButton = (
+export const StyledButton = (
   props: ButtonHTMLAttributes<HTMLButtonElement>
 ) => {
   const { className, ...rest } = props; 
@@ -30,5 +30,26 @@ const StyledButton = (
   </button>
   )
 }
+
+export const SwitcherButton = (
+  props: ButtonHTMLAttributes<HTMLButtonElement>
+) => (
+  <button
+    className="
+      bg-transparent
+      mx-5
+      text-purple-900
+      font-extrabold
+      hover:underline
+      decoration-purple-900
+      disabled:decoration-transparent
+      disabled:text-purple-400
+    "
+    { ...props }
+  >
+    { props.children }
+  </button>
+)
+
 
 export default StyledButton

@@ -26,6 +26,7 @@ export interface VaultStats {
   currentAPY: number;
   deposits: Balance;
   lastHarvest: number;
+  batchBurnRound: number;
 }
 
 export interface UserBalances {
@@ -33,6 +34,15 @@ export interface UserBalances {
   vaultUnderlying: Balance;
   vault: Balance;
   allowance: Balance;
+  batchBurn: {
+    round: number;
+    shares: Balance;
+    available: Balance;
+  }
+}
+
+export interface UserWithdrawals {
+
 }
 
 /**
@@ -42,13 +52,13 @@ export interface Vault extends BasicVaultInformation {
   token?: VaultToken;
   stats?: VaultStats;
   userBalances?: UserBalances
+  withdrawals?: UserWithdrawals
 }
 
 export interface VaultState {
   vaults: Vault[];
   selected: null | string;
   isLoading: boolean;
-  triggerUpdate: number;
 }
 
 export type VaultOnChainData = Pick<Vault, 'address' | 'stats' | 'token'>;

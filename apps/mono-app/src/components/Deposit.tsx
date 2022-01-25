@@ -9,7 +9,8 @@ import { useState } from "react";
 import { useAppDispatch } from "../hooks";
 import { setApproval } from "../store/vault/vault.slice";
 import StyledButton from "./UI/button";
-
+import CardItem from "./UI/cardItem";
+import { useSelectedVault } from "../hooks/useSelectedVault";
 
 const conditionallyApprove = async ({
   allowance,
@@ -28,7 +29,6 @@ const conditionallyApprove = async ({
   if (
     allowance && allowance.lt(depositValue)
   ) {
-
     const transaction = await token.approve(spender, depositValue)
     // dev - hook up to observer here!
     dispatch(setApproval(deposit))
@@ -153,57 +153,29 @@ function DepositInput({ vault }: { vault: Vault }) {
   )
 }
 
-const CardItem = (props: { left: string, rightText: string, loading?: boolean }) => {
+function DepositCard({ loading }: { loading: boolean }) {
+  const vault = useSelectedVault();
+  if (!vault) return <p>Failed to Load</p> 
   return (
-      <>{ 
-        !props.loading
-        ? 
-          <div className="flex justify-between w-full">
-              <p className="ml-2">{props.left}</p>
-                <p className="mr-2 font-bold">{props.rightText}</p>
-          </div>
-        : <p>Loading...</p>
-      }</>
-  )
-}
-
-function DepositCard({ vault, loading }: { vault: Vault, loading: boolean }) {
-  return (
-    <div className="component-spacer h-screen w-screen flex justify-center align-middle">
-    <section
-      className="
-        mt-10
-        h-1/2
-        flex
-        items-center
-        flex-col
-        justify-evenly
-        p-5
-        border-2
-        w-1/2
-        rounded-xl
-        shadow-lg
-      "
-      >
+    <section className="flex flex-col justify-evenly h-full items-center">
       <h1 className="text-3xl">Deposit {vault.name}</h1>
       <CardItem
           loading={loading}
           left="Vault Network"
-          rightText={ vault.network.name }
+          right={ vault.network.name }
       />
       <CardItem
           loading={loading}
           left={`Your ${vault.symbol} Wallet balance`}
-          rightText={ prettyNumber(vault?.userBalances?.wallet.label) }
+          right={ prettyNumber(vault?.userBalances?.wallet.label) }
       />
       <CardItem
           loading={loading}
           left={`Your Vault Token balance`}
-          rightText={ prettyNumber(vault?.userBalances?.vault.label) }
-      />       
-      <DepositInput vault={vault} />     
-    </section>
-    </div>
+          right={ prettyNumber(vault?.userBalances?.vault.label) }
+      />
+      <DepositInput vault={vault} />
+    </section>     
   )
 }
 

@@ -39,14 +39,10 @@ export const vaultSlice = createSlice({
         vault.userBalances.wallet = subBalances(vault.userBalances.wallet, action.payload)
       }
     },
-    setChainRefetch: (state) => {
-      state.triggerUpdate++
-    }
   },
 });
 
 export const {
-  setChainRefetch,
   setUserBalances,
   setOnChainVaultData,
   setSelectedVault,

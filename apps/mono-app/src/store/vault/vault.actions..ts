@@ -6,20 +6,6 @@ import { InsufficientBalanceError, NotImplementedError, NotYetReadyToWithdrawErr
 import { Erc20, Mono } from "../../types/artifacts/abi";
 import { toScale } from "../../utils";
 
-export const getVaultDetails = async (vault: Mono) => {
-  return await Promise.all(
-    [
-      vault.address,
-      // token address
-      vault.underlying(),
-      vault.underlyingDecimals(),
-      vault.totalUnderlying(),
-      vault.lastHarvest(),
-      vault.estimatedReturn(),
-    ]
-  )
-}
-
 // actions - getters
 export const getTotalDeposits = async (contract: Mono): Promise<BigNumber> => {
   return await contract.totalUnderlying();
@@ -67,6 +53,8 @@ export const userCanWithdraw = async (contract: Mono, user: string): Promise<boo
   // // @dev check with dantop
   // const batchBurnIndexForUser = await contract.userBatchBurnLastRequest(user);
   // return batchBurnIndex.gt(batchBurnIndexForUser);
+  const receipts = contract.userBatchBurnReceipts(user);
+  
   return true
 }
 

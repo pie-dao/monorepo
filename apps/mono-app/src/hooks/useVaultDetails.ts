@@ -2,11 +2,26 @@ import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from ".";
 import { VaultOnChainData, VaultStats, VaultToken } from "../store/vault/Vault";
-import { getVaultDetails } from "../store/vault/vault.actions.";
 import { setOnChainVaultData } from "../store/vault/vault.slice";
+import { Mono } from "../types/artifacts/abi";
 import { AwaitedReturn, fromScale } from "../utils";
 import { useAddresses } from "./useAddresses";
 import { useMultipleMonoContract } from "./useContract";
+
+export const getVaultDetails = async (vault: Mono) => {
+  return await Promise.all(
+    [
+      vault.address,
+      // token address
+      vault.underlying(),
+      vault.underlyingDecimals(),
+      vault.totalUnderlying(),
+      vault.lastHarvest(),
+      vault.estimatedReturn(),
+      vault.batchBurnRound(),
+    ]
+  )
+}
 
 const toVaultToken = (
   vaultDetails: AwaitedReturn<typeof getVaultDetails>,
@@ -25,6 +40,7 @@ const toVaultStats = (
   },
   lastHarvest: vaultDetails[4].toNumber(),
   currentAPY: vaultDetails[5].toNumber(),
+  batchBurnRound: vaultDetails[6].toNumber()
 })
 
 const toOnChainVaultData = (

@@ -2,8 +2,6 @@ import VaultList from './components/VaultList';
 import Header from './components/Header';
 import { useOnChainData } from './hooks/useChainData';
 import { useEagerConnect } from './hooks/useWeb3';
-import VaultExtended from './components/VaultDetails';
-
 
 const FancyTitle = () => (
   <div className="flex flex-col">

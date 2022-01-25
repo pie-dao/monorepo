@@ -21,5 +21,4 @@ export const vaultState: VaultState = {
   ],
   selected: null,
   isLoading: false,
-  triggerUpdate: 0,
 };

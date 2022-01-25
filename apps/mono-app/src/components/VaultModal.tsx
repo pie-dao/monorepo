@@ -5,6 +5,8 @@ import { Vault } from "../store/vault/Vault";
 import { prettyNumber } from "../utils";
 import { useAppDispatch } from "../hooks";
 import { setSelectedVault } from "../store/vault/vault.slice";
+import StyledButton from "./UI/button";
+import { scrollTo } from "../utils/scroll";
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -87,38 +89,13 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
         <p>Current APY: <span className="font-bold text-green-600">{vault.stats && vault.stats.currentAPY} %</span></p>
       </div> 
 
-      <button
-        className="
-          bg-purple-400 font-bold
-          border-purple-400
-          text-white
-          hover:text-purple-400
-          border-2
-          hover:bg-transparent 
-          rounded-md
-          px-2 py-1 
-          my-1
-          text-center
-          min-w-[120px]
-          "
+      <StyledButton
         onClick={() => {
           dispatch(setSelectedVault(vault.address))
         }}
       >
-        Deposit
-      </button>
-      {/* <button
-        className="
-          border-blue-500 border-2 hover:bg-blue-500
-          rounded-md 
-          py-1 px-2 mx-1
-          my-1
-          min-w-[120px]
-          "
-        onClick={() => scrollTo('vault-extended', -1000)}
-      >
-        Withdraw
-      </button> */}
+        More
+      </StyledButton>
     </section>
   </div>
   </CardBorderGradient>  
