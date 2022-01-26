@@ -19,3 +19,5 @@ export const subBalances = (b1: Balance, b2: Balance): Balance => {
     value
   }
 }
+
+export const zeroBalance = (): Balance => ({ label: 0, value: '0' });

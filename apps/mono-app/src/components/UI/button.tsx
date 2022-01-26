@@ -21,7 +21,7 @@ export const StyledButton = (
           disabled:bg-gray-600
           disabled:text-gray-500
           disabled:border-gray-600
-          ${className}
+          ${className ? className : ''}
           `}
         onClick={rest.onClick}
         { ...rest }

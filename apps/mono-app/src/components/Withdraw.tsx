@@ -1,16 +1,19 @@
-import { BigNumber, BigNumberish } from "@ethersproject/bignumber";
+import { BigNumber } from "@ethersproject/bignumber";
 import { useWeb3React } from "@web3-react/core";
 import { useState } from "react";
-import { MissingDecimalsError } from "../errors";
-import { useAppDispatch } from "../hooks";
-import { useMonoVaultContract, useTokenContract } from "../hooks/useContract";
+import { MissingDecimalsError, TXRejectedError } from "../errors";
+import { useMonoVaultContract } from "../hooks/useContract";
 import { useSelectedVault } from "../hooks/useSelectedVault"
 import { Balance, Vault } from "../store/vault/Vault";
-import { Mono } from "../types/artifacts/abi";
-import { prettyNumber } from "../utils";
-import StyledButton, { SwitcherButton } from "./UI/button";
+import { prettyNumber, toBalance } from "../utils";
+import StyledButton from "./UI/button";
 import CardItem from "./UI/cardItem";
 import { NotYetReadyToWithdrawError } from '../errors';
+import LoadingSpinner from "./UI/loadingSpinner";
+import { zeroBalance } from "../utils/balances";
+import { checkForEvent } from "../utils/event";
+import { setReduceVaultTokens } from "../store/vault/vault.slice";
+import { useAppDispatch } from "../hooks";
 
 enum WITHDRAWAL {
   'NOTSTARTED',
@@ -36,65 +39,86 @@ const getButtonText = (status: WITHDRAWAL): string => {
   }
 }
 
-
-function WithdrawalButtons ({
+function WithdrawalButton ({
   sufficientBalance,
   withdrawal,
   vault,
-  status
+  status,
+  setWithdrawal
 }: {
   sufficientBalance: boolean,
   withdrawal: Balance,
+  setWithdrawal: (w: Balance) => void
   vault: Vault,
   status: WITHDRAWAL
 }) {
   const { account, chainId } = useWeb3React();
-  const [withdrawing, setWithdrawing] = useState(false);
+  const [pending, setPending] = useState(false);
   const monoContract = useMonoVaultContract(vault.address);
+  const dispatch = useAppDispatch();
 
   const buttonDisabled = () => {
-    const invalidDepost = withdrawal.label <= 0;
+    const invalidDepost = status !== WITHDRAWAL.READY && (withdrawal.label <= 0);
     const insufficientBalance = !sufficientBalance;
     const wrongNetwork =  chainId !== vault.network.chainId
-    return insufficientBalance || wrongNetwork || invalidDepost; 
+    return insufficientBalance || wrongNetwork || invalidDepost || pending; 
   }
 
-  const enterBatchBurn = () => {
-    setWithdrawing(true)
-    monoContract?.enterBatchBurn(withdrawal.value).then(() => {
-      console.debug('success')
-    }).finally(() => {
-      setWithdrawing(false)
-    });
-  }
-
-  const execBatchBurn = () => {
-    if (status === WITHDRAWAL.READY) {
-      setWithdrawing(true)
-      monoContract?.exitBatchBurn()
-        .then(() => 'Success')
-        .catch(() => 'fail')
-        .finally(() => setWithdrawing(false))
-    } else {
-      throw new NotYetReadyToWithdrawError()
+  const enterBatchBurn = async () => {
+    setPending(true)
+    try {
+      const tx = await monoContract?.enterBatchBurn(withdrawal.value);
+      const confirm = tx && await checkForEvent(tx, 'EnterBatchBurn');
+      if (confirm) {
+        dispatch(setReduceVaultTokens(withdrawal));
+        setWithdrawal(zeroBalance());
+      } else {
+        throw new TXRejectedError();
+      }  
+    } catch (err) {
+      console.debug(err);
+    } finally {
+      setPending(false);
     }
   }
+
+  const exitBatchBurn = async () => {
+    setPending(true)
+    try {
+      if (status === WITHDRAWAL.READY) {
+        const tx = await monoContract?.exitBatchBurn();
+        const confirm = tx && await checkForEvent(tx, 'ExitBatchBurn');
+        if (!confirm) throw new TXRejectedError();
+      } else {
+        throw new NotYetReadyToWithdrawError();
+      }
+    } catch (err) {
+      console.debug(err);
+    } finally {
+      setPending(false);
+    }
+  }
+
   return (
     <>
       {
         account &&
-      <div className="ml-2">
         <StyledButton
-          disabled={false}
-          onClick={() => status === WITHDRAWAL.READY ? execBatchBurn() : enterBatchBurn()}
-          >{ withdrawing ? 'Withdrawing...' : getButtonText(status) }
+          className="
+            w-full
+            bg-transparent 
+            text-purple-700 
+            hover:bg-purple-400 
+            hover:text-white
+          "
+          disabled={buttonDisabled()}
+          onClick={() => status === WITHDRAWAL.READY ? exitBatchBurn() : enterBatchBurn()}
+          >{ pending ? <LoadingSpinner /> : getButtonText(status) }
         </StyledButton>     
-      </div>
       }
   </>
   )
 }
-
 
 function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) {
   const decimals = vault.token?.decimals;
@@ -109,6 +133,7 @@ function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) 
       value: vaultBalance?.value ?? '0'
     })
   }
+
   const handleWithdrawalChange = (value: string) => {
     if (decimals) {
       const num = (value === '' || !value || value === ' ') ? '0' : value; 
@@ -127,26 +152,31 @@ function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) 
   return (
     <section className="input flex justify-between w-full">
       <div className="flex justify-between w-full">
-        <div className="flex flex-grow border-gray-400 rounded-lg border-2 px-5">
-          <input
-            type="number"
-            min="0"
-            max={vaultBalance?.label}
-            className="focus:outline-none w-full"
-            value={withdrawal.label.toString()}
-            onChange={(e) => handleWithdrawalChange(e.target.value)}
-          />
-          <button
-            className="text-blue-300 ml-3"
-            onClick={() => handleMaxWithdrawal()}
-            >MAX</button>
+        { 
+          status !== WITHDRAWAL.READY && <div className="flex flex-grow border-gray-400 rounded-lg border-2 px-5">
+            <input
+              type="number"
+              min="0"
+              max={vaultBalance?.label}
+              className="focus:outline-none w-full"
+              value={withdrawal.label.toString()}
+              onChange={(e) => handleWithdrawalChange(e.target.value)}
+            />
+            <button
+              className="text-blue-300 ml-3"
+              onClick={() => handleMaxWithdrawal()}
+              >MAX</button>
+          </div>
+        }
+        <div className={`${status === WITHDRAWAL.READY ? 'w-full' : 'ml-2'}`}>
+          <WithdrawalButton
+            sufficientBalance={sufficientBalance}
+            withdrawal={withdrawal}
+            setWithdrawal={setWithdrawal}
+            status={status}
+            vault={vault}
+            />
         </div>
-        <WithdrawalButtons
-          sufficientBalance={sufficientBalance}
-          withdrawal={withdrawal}
-          status={status}
-          vault={vault}
-          />
       </div>
       {  sufficientBalance ? '' : <p className="text-red-800">Insufficient Balance</p> }
     </section>
@@ -156,9 +186,8 @@ function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) 
 const WithdrawStatusBar = ({ status }: { status: WITHDRAWAL }) => {
   return (
     <div className="flex w-full justify-evenly">
-      <div className={`mx-1 w-1/3 -skew-x-12 ${status > 0 ? ' bg-orange-400' : 'bg-gray-400'}`}>REQUESTED</div>
-      <div className={`mx-1 w-1/3 -skew-x-12 ${status > 1 ? ' bg-blue-400' : 'bg-gray-400'}`}>READY</div>
-      <div className={`mx-1 w-1/3 -skew-x-12 ${status > 2 ? ' bg-purple-400' : 'bg-gray-400'}`}>WITHDRAWN</div>
+      <div className={`mx-1 w-1/2 -skew-x-12 ${status > 0 ? ' bg-orange-400' : 'bg-gray-400'}`}>REQUESTED</div>
+      <div className={`mx-1 w-1/2 -skew-x-12 ${status > 1 ? ' bg-blue-400' : 'bg-gray-400'}`}>READY</div>
     </div>
   )
 }
@@ -190,6 +219,7 @@ const useStatus = (): WITHDRAWAL => {
 const WithdrawCard = ({ loading }: { loading: boolean }) => {
   const vault = useSelectedVault();
   const status = useStatus();
+  // const status = WITHDRAWAL.READY
   if (!vault) return <p>Failed to Load</p> 
   return (
     <section className="flex flex-col justify-evenly h-full items-center">

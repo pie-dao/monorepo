@@ -3,14 +3,18 @@ import { useWeb3React } from "@web3-react/core";
 import { useMonoVaultContract, useTokenContract } from "../hooks/useContract";
 import { Balance, Vault } from "../store/vault/Vault";
 import { prettyNumber } from "../utils";
-import { MissingDecimalsError } from "../errors";
+import { MissingDecimalsError, TXRejectedError } from "../errors";
 import { Erc20 } from "../types/artifacts/abi";
 import { useState } from "react";
 import { useAppDispatch } from "../hooks";
-import { setApproval } from "../store/vault/vault.slice";
+import { setApproval, setLoading } from "../store/vault/vault.slice";
 import StyledButton from "./UI/button";
 import CardItem from "./UI/cardItem";
 import { useSelectedVault } from "../hooks/useSelectedVault";
+import LoadingSpinner from "./UI/loadingSpinner";
+import { checkForEvent } from "../utils/event";
+import { zeroBalance } from "../utils/balances";
+import { ContractTransaction } from "@ethersproject/contracts";
 
 const conditionallyApprove = async ({
   allowance,
@@ -19,35 +23,42 @@ const conditionallyApprove = async ({
   spender,
   dispatch
 }: {
-  allowance?: BigNumber,
+  allowance: BigNumber,
   deposit: Balance,
   token: Erc20,
   spender: string,
   dispatch: ReturnType<typeof useAppDispatch>,
-}): Promise<void> => {
+}): Promise<boolean> => {
+
   const depositValue = BigNumber.from(deposit.value);
-  if (
-    allowance && allowance.lt(depositValue)
-  ) {
-    const transaction = await token.approve(spender, depositValue)
-    const { events } = await transaction.wait();
-    if (!(events && events.filter(e => e.event === 'Apprval'))) {
-      throw Error
+
+  if (allowance.lt(depositValue)) {
+    // allowance needs to increase
+    const tx = await token.approve(spender, depositValue);
+    const confirm = await checkForEvent(tx, 'Approval');
+
+    if (confirm) {
+      dispatch(setApproval(deposit))
+      return true
+    } else { 
+      throw new TXRejectedError();
     }
-    // dev - hook up to observer here!
-    dispatch(setApproval(deposit))
+
   } else {
-    console.debug('No need to increase approval')
+    // current allowance is sufficient, no need to increase
+    return true
   }
 }
 
 function DepositButton ({
   sufficientBalance,
   deposit,
+  setDeposit,
   vault  
 }: {
   sufficientBalance: boolean,
   deposit: Balance,
+  setDeposit: (d: Balance) => void,
   vault: Vault,
 }) {
   const dispatch = useAppDispatch()
@@ -61,31 +72,37 @@ function DepositButton ({
     const invalidDepost = deposit.label <= 0;
     const insufficientBalance = !sufficientBalance;
     const wrongNetwork =  chainId !== vault.network.chainId
-    return insufficientBalance || wrongNetwork || invalidDepost; 
+    return insufficientBalance || wrongNetwork || invalidDepost || depositing; 
   }
 
-  tokenContract?.on('Approval', () => console.debug('event'))
-
-  const onClick = () => {
+  const onClick = async () => {
     setDepositing(true)
-    if (tokenContract && account) {
-      conditionallyApprove(
-      {
-        allowance: BigNumber.from(allowance?.value),
-        deposit,
-        spender: vault.address,
-        token: tokenContract,
-        dispatch
+    try {
+      if (tokenContract && account && allowance) {
+        await conditionallyApprove({
+          deposit,
+          dispatch,
+          spender: vault.address,
+          token: tokenContract,
+          allowance: BigNumber.from(allowance.value),
+        });
+        const tx = await monoContract?.deposit(account, deposit.value)
+        const confirm = tx && await checkForEvent(tx, 'Deposit');
+        if (confirm) {
+          setDeposit(zeroBalance())
+        } else { 
+          throw new TXRejectedError();
+        }
+      } else {
+        throw new TXRejectedError('Missing Params');
       }
-      ).then(() => {
-        console.debug('approved')
-        monoContract?.deposit(account, deposit.value).then(() => {
-          console.debug('made deposit');
-        //   // here we should await block confirmation
-        })
-      }).catch(() => console.debug('fail')).finally(() => setDepositing(false))
+    } catch (err) {
+      console.debug(err)
+    } finally {
+      setDepositing(false)
     }
   }
+
   return (
     <>
     <div className="ml-2">
@@ -94,7 +111,7 @@ function DepositButton ({
         <StyledButton
           disabled={buttonDisabled()}
           onClick={() => onClick()}
-          >{ depositing ? 'Depositing...' : 'DEPOSIT' }
+          >{ depositing ? <LoadingSpinner /> : 'DEPOSIT' }
         </StyledButton>
       }
     </div>
@@ -150,6 +167,7 @@ function DepositInput({ vault }: { vault: Vault }) {
         <DepositButton
           sufficientBalance={sufficientBalance}
           deposit={deposit}
+          setDeposit={setDeposit}
           vault={vault}
           />
       </div>

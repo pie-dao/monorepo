@@ -39,6 +39,16 @@ export const vaultSlice = createSlice({
         vault.userBalances.wallet = subBalances(vault.userBalances.wallet, action.payload)
       }
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setReduceVaultTokens: (state, action: PayloadAction<Balance>) => {
+      // to do - reduce the corresponding underlying balance
+      const vault = state.vaults.find(v => v.address === state.selected);
+      if (vault && vault.userBalances && vault.token?.decimals) {
+        vault.userBalances.vault = subBalances(vault.userBalances.vault, action.payload);
+      }
+    },
   },
 });
 
@@ -48,6 +58,8 @@ export const {
   setSelectedVault,
   setApproval,
   setNewBalances,
+  setReduceVaultTokens,
+  setLoading
 } = vaultSlice.actions;
 export default vaultSlice.reducer;
 

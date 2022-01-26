@@ -5,6 +5,7 @@ export class InsufficientBalanceError extends Error {};
 export class NotYetReadyToWithdrawError extends Error {};
 export class ProviderNotActivatedError extends Error {};
 export class MissingDecimalsError extends Error {};
+export class TXRejectedError extends Error {};
 
 // function getErrorMessage(error: Error) {
 //   if (error instanceof NoEthereumProviderError) {
