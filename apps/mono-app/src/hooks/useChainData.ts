@@ -19,7 +19,9 @@ export const useOnChainData = (): boolean => {
    * to keep the state updated
    */
   const block = useBlock();
-  const { loading: vaultsLoading } = useOnChainVaultData(block)
-  const { loading: balancesLoading } = useUserBalances(vaultsLoading, block);
+  // chain ID requires a call to the node, need to be careful with rerenders
+  const { chainId } = useWeb3React<Web3Provider>();
+  const { loading: vaultsLoading } = useOnChainVaultData(block, chainId)
+  const { loading: balancesLoading } = useUserBalances(vaultsLoading, block, chainId);
   return vaultsLoading || balancesLoading;
 } 

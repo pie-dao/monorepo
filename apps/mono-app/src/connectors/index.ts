@@ -4,7 +4,13 @@ import { PortisConnector } from '@web3-react/portis-connector'
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { Web3Provider } from '@ethersproject/providers'
+import { NetworkConnector } from '@web3-react/network-connector'
 import { SupportedChains } from "../utils/networks";
+
+// export const network = new NetworkConnector({
+//   urls: { 137: 'https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122' },
+//   defaultChainId: 137
+// })
 
 export const injected = new InjectedConnector({
   supportedChainIds: Object.values(SupportedChains)

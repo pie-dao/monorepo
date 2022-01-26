@@ -9,7 +9,8 @@ import { Balance, Vault } from "../store/vault/Vault";
 import { Mono } from "../types/artifacts/abi";
 import { prettyNumber } from "../utils";
 import StyledButton, { SwitcherButton } from "./UI/button";
-import CardItem from "./UI/cardItem"
+import CardItem from "./UI/cardItem";
+import { NotYetReadyToWithdrawError } from '../errors';
 
 enum WITHDRAWAL {
   'NOTSTARTED',
@@ -58,7 +59,7 @@ function WithdrawalButtons ({
     return insufficientBalance || wrongNetwork || invalidDepost; 
   }
 
-  const onClick = () => {
+  const enterBatchBurn = () => {
     setWithdrawing(true)
     monoContract?.enterBatchBurn(withdrawal.value).then(() => {
       console.debug('success')
@@ -66,14 +67,26 @@ function WithdrawalButtons ({
       setWithdrawing(false)
     });
   }
+
+  const execBatchBurn = () => {
+    if (status === WITHDRAWAL.READY) {
+      setWithdrawing(true)
+      monoContract?.exitBatchBurn()
+        .then(() => 'Success')
+        .catch(() => 'fail')
+        .finally(() => setWithdrawing(false))
+    } else {
+      throw new NotYetReadyToWithdrawError()
+    }
+  }
   return (
     <>
       {
         account &&
       <div className="ml-2">
         <StyledButton
-          disabled={buttonDisabled()}
-          onClick={() => onClick()}
+          disabled={false}
+          onClick={() => status === WITHDRAWAL.READY ? execBatchBurn() : enterBatchBurn()}
           >{ withdrawing ? 'Withdrawing...' : getButtonText(status) }
         </StyledButton>     
       </div>

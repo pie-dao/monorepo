@@ -30,6 +30,10 @@ const conditionallyApprove = async ({
     allowance && allowance.lt(depositValue)
   ) {
     const transaction = await token.approve(spender, depositValue)
+    const { events } = await transaction.wait();
+    if (!(events && events.filter(e => e.event === 'Apprval'))) {
+      throw Error
+    }
     // dev - hook up to observer here!
     dispatch(setApproval(deposit))
   } else {
@@ -60,6 +64,8 @@ function DepositButton ({
     return insufficientBalance || wrongNetwork || invalidDepost; 
   }
 
+  tokenContract?.on('Approval', () => console.debug('event'))
+
   const onClick = () => {
     setDepositing(true)
     if (tokenContract && account) {
@@ -75,8 +81,7 @@ function DepositButton ({
         console.debug('approved')
         monoContract?.deposit(account, deposit.value).then(() => {
           console.debug('made deposit');
-          // here we should await block confirmation
-          // dispatch(setChainRefetch());
+        //   // here we should await block confirmation
         })
       }).catch(() => console.debug('fail')).finally(() => setDepositing(false))
     }

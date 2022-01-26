@@ -61,24 +61,33 @@ export function useMonoVaultContract(vaultAddress?: string) {
   return useContract<Mono>(vaultAddress, MonoABI);
 }
 
-export function useMultipleTokenContract(tokenAddresses?: string[], preferMulticall?: boolean): Erc20[] {
-  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI, preferMulticall) as Erc20[]
+export function useMultipleTokenContract(
+  tokenAddresses?: string[],
+  preferMulticall?: boolean,
+  chainId?: number
+): Erc20[] {
+  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI, preferMulticall, chainId) as Erc20[]
 }
 
-export function useMultipleMonoContract(vaultAddresses?: string[], preferMulticall?: boolean): Mono[] {
-  return useMultipleContracts<Mono>(vaultAddresses, MonoABI, preferMulticall) as Mono[]
+export function useMultipleMonoContract(
+  vaultAddresses?: string[],
+  preferMulticall?: boolean,
+  chainId?: number
+): Mono[] {
+  return useMultipleContracts<Mono>(vaultAddresses, MonoABI, preferMulticall, chainId) as Mono[]
 }
 
 export function useMultipleContracts<T extends Contract>(
   addresses?: string[],
   ABI?: any,
-  preferMulticall?: boolean
+  preferMulticall?: boolean,
+  chainId?: number
 ) {
-  const context = useWeb3React<Web3Provider>()
+  const context = useWeb3React();
   return useMemo(() => {
-    if (!addresses || !ABI || !context.library || !context.chainId) return []
+    if (!addresses || !ABI || !context.library || !chainId) return []
     return addresses.map(a => getContract(context, a, ABI, preferMulticall))
-  }, [addresses, ABI, context]) as T[]
+  }, [addresses, ABI, chainId, context.account, context.library]) as T[]
 }
 
 

@@ -17,6 +17,10 @@ const FancyTitle = () => (
 
 function App() {
   const triedEager = useEagerConnect();
+  
+  // fallback and eagerConnect are conflicting - resolve
+  // useFallbackNetwork();
+
   // useOnChainData is the global state initialiser
   const appLoading = useOnChainData();
   return (

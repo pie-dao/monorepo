@@ -60,7 +60,7 @@ const useTokenAddresses = () => {
   ) as string[] | undefined
 }
 
-export const useUserBalances = (vaultDataLoaded: boolean, block: number): { loading: boolean }  => {
+export const useUserBalances = (vaultDataLoaded: boolean, block: number, chainId?: number): { loading: boolean }  => {
   /**
     * Grab the user balances for each ERC20 token
     * In terms of:
@@ -69,13 +69,13 @@ export const useUserBalances = (vaultDataLoaded: boolean, block: number): { load
     *  -- Vault tokens
     */
   const [loading, setLoading] = useState(false);
-  const { account, active, chainId } = useWeb3React();
+  const { account, active } = useWeb3React();
   const dispatch = useAppDispatch();
   const tokenAddresses = useTokenAddresses()
   const monoAddresses = useAddresses();
   const vaults = useAppSelector(state => state.vault.vaults)
-  const monoContracts = useMultipleMonoContract(monoAddresses, true)
-  const tokenContracts = useMultipleTokenContract(tokenAddresses, true)
+  const monoContracts = useMultipleMonoContract(monoAddresses, true, chainId)
+  const tokenContracts = useMultipleTokenContract(tokenAddresses, true, chainId)
 
   useEffect(() => {
     if (block && account && active && tokenContracts.length > 0 && monoContracts.length > 0) {
