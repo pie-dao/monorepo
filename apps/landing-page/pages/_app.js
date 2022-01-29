@@ -1,3 +1,4 @@
+import "swiper/css/bundle";
 import "../styles/globals.css";
 import "@piedao/ui-components/public/output.css";
 

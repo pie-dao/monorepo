@@ -1,31 +1,56 @@
-import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SingleBox from "./SingleBox";
 import content from "../content/en_EN.json";
+import styles from "../styles/ScrollingBoxes.module.scss";
 
 const ScrollingBoxes = ({}) => {
   return (
-    <section className={`w-full justify-evenly content-left text-left m-10`}>
-      <div className="z-40 sticky top-0 bg-secondary p-12 md:pl-24 md:pr-24 h-60">
-        <p className="uppercase text-4xl">Easy access to<br />
+    <section
+      className={`w-full justify-evenly content-left text-left m-10 overflow-hidden lg:overflow-visible`}
+    >
+      <div className="z-40 sticky top-0 bg-secondary p-12 lg:pl-24 lg:pr-24 h-60 text-center lg:text-left">
+        <p className="uppercase text-4xl">
+          Easy access to
+          <br />
           <span className="font-bold">the metaverse</span>
         </p>
-        <p className="hidden md:block w-1/3 pt-4">{content.scrolling_boxes.description}</p>            
+        <p className="hidden lg:block lg:w-1/3 pt-4">
+          {content.scrolling_boxes.description}
+        </p>
       </div>
-      <div className="z-50 sticky flex mb-4">
-        <div className="hidden md:block w-1/2"></div>
-        <div className="w-full md:w-1/2 m-8 right-0 -top-52">
-          {content.scrolling_boxes.boxes.map(box => {
-            return(
-              <div key={box.id} className="p-1 rounded-md bg-gradient-to-tr from-red-500 to-blue-500 mb-4">
-                <div className="w-full rounded-md bg-primary p-4 flex flex-col items-center justify-center text-center">
-                  <img src={box.icon} className="w-1/4"/>
-                  <p className="text-4xl text-highlight p-4">{box.title}</p>
-                  <p className="p-2">{box.description}</p>
-                </div>
-              </div>              
-            )
-          })}        
+      <div className="z-50 sticky flex mb-4 lg:-mt-60 justify-end">
+        <div className="flex lg:hidden">
+          <Swiper
+            spaceBetween={-50}
+            speed={1000}
+            slidesPerView={"auto"}
+            centeredSlides
+            watchSlidesProgress
+            breakpoints={{
+              768: {
+                spaceBetween: -70,
+              },
+            }}
+            className={`w-full ${styles.swiperSlider}`}
+          >
+            {content.scrolling_boxes.boxes.map((box) => {
+              return (
+                <SwiperSlide
+                  key={box.id}
+                  className={`w-[280px] md:w-[360px] my-10 lg:w-full`}
+                >
+                  <SingleBox singleBox={box} />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
         </div>
-      </div>      
+        <div className="hidden w-1/2 lg:flex flex-col">
+          {content.scrolling_boxes.boxes.map((box) => (
+            <SingleBox singleBox={box} key={box.id} />
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

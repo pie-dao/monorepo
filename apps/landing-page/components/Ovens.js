@@ -1,0 +1,33 @@
+import Button from "../components/Button";
+import content from "../content/en_EN.json";
+
+const Ovens = () => {
+  return (
+    <section className="bg-highlight w-full my-5">
+      <div className="container mx-auto text-center py-12 relative">
+        <h2 className="text-black text-xl md:text-4xl uppercase mb-6">
+          {content.ovens.title.first}
+          <br />
+          <span className="font-bold">{content.ovens.title.highlighted}</span>
+        </h2>
+        <p className="max-w-[70%] mx-auto">
+          {content.ovens.description.first}{" "}
+          <span className="font-bold">
+            {content.ovens.description.highlighted}
+          </span>
+        </p>
+        <div className="w-full absolute mt-4">
+          <Button className="uppercase btn-lg" gradient large>
+            <span className="font-bold">
+              {content.ovens.call_to_action.title}
+            </span>
+            <br />
+            {content.ovens.call_to_action.subtitle}
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Ovens;

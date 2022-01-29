@@ -27,7 +27,7 @@
       "fourth": {
         "title": "$ 2.5 Billion",
         "sub_title": "traders have bought or sold Axie Infinity NFTs"
-      }              
+      }
     }
   },
   "scrolling_boxes": {
@@ -60,6 +60,83 @@
     ]
   },
   "methodology": {
-    "description": "The inclusion of assets in the PLAY token is determined by the following criteria:"
+    "description": "The inclusion of assets in the PLAY token is determined by the following criteria:",
+    "icon": "/double-checkmark.svg",
+    "prospectus": "For detailed information on allocation and rebalancing procedures read the prospectus.",
+    "boxes": [
+      {
+        "id": 1,
+        "description": "The project is on the Ethereum blockchain"
+      },
+      {
+        "id": 2,
+        "description": "The project is in the following categories: Blockchain Gaming, Non-Fungible Tokens, Entertainment, and Infrastructure."
+      },
+      {
+        "id": 3,
+        "description": "The project token needs to be an ERC-20 token."
+      },
+      {
+        "id": 4,
+        "description": "The project's token must have liquidity on DEX greater than $500k."
+      },
+      {
+        "id": 5,
+        "description": "The project's token has an established history of trading, over the past 60 days."
+      },
+      {
+        "id": 6,
+        "description": "The project has been audited.  All critical vulnerabilities must be addressed to mitigate contract risk."
+      }
+    ]
+  },
+  "about_us_twitter": {
+    "title": "What are others saying about this PIE?"
+  },
+  "explore_products": {
+    "title": {
+      "first": "Explore",
+      "highlighted": "more products"
+    },
+    "boxes": [
+      {
+        "id": 1,
+        "description": "The project is on the Ethereum blockchain"
+      },
+      {
+        "id": 2,
+        "description": "The project is in the following categories: Blockchain Gaming, Non-Fungible Tokens, Entertainment, and Infrastructure."
+      },
+      {
+        "id": 3,
+        "description": "The project token needs to be an ERC-20 token."
+      },
+      {
+        "id": 4,
+        "description": "The project's token must have liquidity on DEX greater than $500k."
+      },
+      {
+        "id": 5,
+        "description": "The project's token has an established history of trading, over the past 60 days."
+      },
+      {
+        "id": 6,
+        "description": "The project has been audited.  All critical vulnerabilities must be addressed to mitigate contract risk."
+      }
+    ]
+  },
+  "ovens": {
+    "title": {
+      "first": "Mint PLAY using the oven",
+      "highlighted": "and save on gas fees"
+    },
+    "description": {
+      "first": "The oven allows you to pool your ETH with other users and mint PIEs together. Using the oven is simple you just need to deposit ETH, wait and withdraw your PLAY",
+      "highlighted": "saving more than 90% in gas."
+    },
+    "call_to_action": {
+      "title": "Use the oven",
+      "subtitle": "Save on gas"
+    }
   }
 }
