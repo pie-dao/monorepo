@@ -10,6 +10,7 @@ const ScrollingBoxes = ({}) => {
     <section
       className={`w-full justify-evenly content-center text-center relative overflow-hidden lg:overflow-visible`}
     >
+      {/*
       <img
         className="z-40 absolute -top-3 hidden md:block"
         src="./bg_front_line_1.svg"
@@ -26,7 +27,7 @@ const ScrollingBoxes = ({}) => {
         className="z-40 absolute -top-3 md:hidden block"
         src="./bg_front_line_2_mobile.svg"
       />
-      {/* <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-sm" src="./logo_play.svg" /> */}
+       <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-sm" src="./logo_play.svg" /> */}
       <div className="bg-secondary absolute p-8 z-30 w-full">
         <p className="z-50 uppercase text-xl md:text-4xl">
           underlying <span className="font-bold">tokens</span>
@@ -55,9 +56,11 @@ const ScrollingBoxes = ({}) => {
                       !isActive && "opacity-75 md:opacity-100"
                     }`}
                   >
-                    <img
+                    <Image
                       className="absolute -top-6 left-3"
                       src={`/assets/${pie.icon}`}
+                      width={60}
+                      height={60}
                     />
                     <div className="w-full relative">
                       <p className="w-full text-sm pt-8 pb-6">23%</p>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import styles from "../styles/Methodology.module.scss";
@@ -49,7 +50,14 @@ const Methodology = ({}) => {
               <div className="p-1 rounded-md bg-gradient-to-tr from-red-500 to-blue-500">
                 <div className="w-full rounded-md bg-primary p-4 flex flex-col items-center justify-center text-center h-72">
                   <p className="p-2">{box.description}</p>
-                  <img src={content.methodology.icon} className="mt-12" />
+                  <div className="w-[57px] h-[34px] mt-12">
+                    <Image
+                      src={content.methodology.icon}
+                      width={57}
+                      height={34}
+                      alt="green checkmark"
+                    />
+                  </div>
                 </div>
               </div>
             </SwiperSlide>

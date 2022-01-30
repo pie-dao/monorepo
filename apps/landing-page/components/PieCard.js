@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useMemo } from "react";
 import { LinearGradient } from "@visx/gradient";
 import { scaleTime, scaleLinear } from "@visx/scale";
@@ -94,10 +95,12 @@ const PieCard = ({ pie, height, width }) => {
       </div>
       <div className="w-full mb-4">
         <div className="w-[50px] h-[50px] mx-auto">
-          <img
+          <Image
             src={pie.image.small}
-            className="w-full rounded-full"
+            className="rounded-full"
             alt={pie.name}
+            width={50}
+            height={50}
           />
         </div>
         <div className="w-full">

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import twitterPosts from "./api/twitterPosts";
-import coingecko from "./api/coingecko";
+// import coingecko from "./api/coingecko";
 import coingeckoData from "./api/mocks/coingeckoData.json";
 import Hero from "../components/Hero";
 import Metaverse from "../components/Metaverse";

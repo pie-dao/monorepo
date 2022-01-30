@@ -1,4 +1,3 @@
-import Image from "next/image";
 import content from "../content/en_EN.json";
 import Button from "./Button";
 
@@ -29,7 +28,6 @@ const Hero = ({}) => {
           </Button>
           <div className="p-4 flex justify-center">
             <p className="pr-2">{content.hero.call_to_text}</p>
-            <img src="/green_arrow.svg" />
           </div>
         </div>
       </div>
