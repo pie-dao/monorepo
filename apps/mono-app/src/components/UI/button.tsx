@@ -7,10 +7,10 @@ export const StyledButton = (
   return (
     <button
         className={`
-          bg-purple-400 font-bold
-          border-purple-400
+          bg-purple-700 font-bold
+          border-purple-700
           text-white
-          hover:text-purple-400
+          hover:text-purple-700
           hover:bg-transparent
           border-2
           rounded-md
@@ -38,12 +38,12 @@ export const SwitcherButton = (
     className="
       bg-transparent
       mx-5
-      text-purple-900
+      text-purple-500
       font-extrabold
       hover:underline
-      decoration-purple-900
+      decoration-purple-500
       disabled:decoration-transparent
-      disabled:text-purple-400
+      disabled:text-purple-900
     "
     { ...props }
   >

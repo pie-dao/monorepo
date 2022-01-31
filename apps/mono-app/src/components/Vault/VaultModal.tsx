@@ -1,12 +1,12 @@
 import React, { ReactNode } from "react";
-import { DAIIcon, USDCIcon } from "../assets/icons/logos";
-import logoFile from '../assets/icons/logo.png'
-import { Vault } from "../store/vault/Vault";
-import { prettyNumber } from "../utils";
-import { useAppDispatch } from "../hooks";
-import { setSelectedVault } from "../store/vault/vault.slice";
-import StyledButton from "./UI/button";
-import { scrollTo } from "../utils/scroll";
+import { DAIIcon, USDCIcon } from "../../assets/icons/logos";
+import logoFile from '../../assets/icons/logo.png'
+import { Vault } from "../../store/vault/Vault";
+import { prettyNumber } from "../../utils";
+import { useAppDispatch } from "../../hooks";
+import { setSelectedVault } from "../../store/vault/vault.slice";
+import StyledButton from "../UI/button";
+import { scrollTo } from "../../utils/scroll";
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -92,6 +92,8 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
       <StyledButton
         onClick={() => {
           dispatch(setSelectedVault(vault.address))
+          // ensure vault has rendered before scrolling
+          setTimeout(() => scrollTo('vault-actions', -300), 0);
         }}
       >
         More

@@ -1,19 +1,22 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react'
 import { PortisConnector } from '@web3-react/portis-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { WalletConnectConnector } from './walletConnect'
 import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 import { Web3Provider } from '@ethersproject/providers'
 import { NetworkConnector } from '@web3-react/network-connector'
-import { SupportedChains } from "../utils/networks";
+import { chainMap, SupportedChains } from "../utils/networks";
 
-// export const network = new NetworkConnector({
-//   urls: { 137: 'https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122' },
-//   defaultChainId: 137
-// })
+const supportedChainIds = Object.keys(chainMap).map(s => Number(s));
+const RPC_URLS = ['https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122'];
+
+export const network = new NetworkConnector({
+  urls: { 137:  RPC_URLS[0]},
+  defaultChainId: 137
+})
 
 export const injected = new InjectedConnector({
-  supportedChainIds: Object.values(SupportedChains)
+  supportedChainIds
 });
 
 export default function getLibrary(provider: any): Web3Provider {
@@ -36,11 +39,15 @@ export default function getLibrary(provider: any): Web3Provider {
 
 export const gnosisSafe = new SafeAppConnector()
 
-// export const walletconnect = new WalletConnectConnector({
-//   supportedChainIds,
-//   rpc: INFURA_NETWORK_URLS,
-//   qrcode: true,
-// })
+export const walletconnect = new WalletConnectConnector({
+  rpc: {
+    1: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
+  },
+  chainId: 1,
+  bridge: 'https://bridge.walletconnect.org',
+  qrcode: true,
+  
+})
 
 // // mainnet only
 // export const portis = new PortisConnector({
@@ -49,9 +56,9 @@ export const gnosisSafe = new SafeAppConnector()
 // })
 
 // mainnet only
-export const walletlink = new WalletLinkConnector({
-  url: '',
-  appName: 'Piedao',
-  appLogoUrl: '',
-  supportedChainIds: Object.values(SupportedChains),
-})
+// export const walletlink = new WalletLinkConnector({
+//   url: '',
+//   appName: 'Piedao',
+//   appLogoUrl: '',
+//   supportedChainIds
+// })

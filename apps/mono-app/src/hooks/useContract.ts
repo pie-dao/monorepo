@@ -11,6 +11,7 @@ import MonoABI from '../abi/mono.json'
 import { ProviderNotActivatedError } from "../errors"
 import getLibrary from "../connectors"
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types"
+import { useWeb3Cache } from "./useCachedWeb3"
 
 function getMulticallProvider(library: Web3Provider): MulticallProvider {
   /**
@@ -37,8 +38,8 @@ export function useContract<T extends Contract>(
   address?: string,
   ABI?: any,
 ): T | undefined {
-
-  const { library, account, chainId, active } = useWeb3React<Web3Provider>()
+  const { chainId } = useWeb3Cache();
+  const { library, account, active } = useWeb3React<Web3Provider>()
 
   return useMemo(() => {
     if (!address || !ABI || !library || !chainId) return undefined
@@ -87,7 +88,12 @@ export function useMultipleContracts<T extends Contract>(
   return useMemo(() => {
     if (!addresses || !ABI || !context.library || !chainId) return []
     return addresses.map(a => getContract(context, a, ABI, preferMulticall))
-  }, [addresses, ABI, chainId, context.account, context.library]) as T[]
+  }, [
+    addresses,
+    ABI,
+    context.account,
+    context.library
+  ]) as T[]
 }
 
 
@@ -98,6 +104,7 @@ const getContract = (
   preferMulticall?: boolean
 ) => {
   const { library, account, active } = context;
+  console.debug('here')
   try {
     if (!active) throw new ProviderNotActivatedError();
     const providerSigner = getProviderOrSigner(library, account, preferMulticall);

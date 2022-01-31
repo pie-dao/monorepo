@@ -1,13 +1,17 @@
 import { ButtonHTMLAttributes, useState } from "react";
-import { Vault } from "../store/vault/Vault"
+import { Vault } from "../../store/vault/Vault"
 import DepositCard from "./Deposit"
-import { SwitcherButton } from "./UI/button";
+import { SwitcherButton } from "../UI/button";
 import WithdrawCard from "./Withdraw"
+import { useSelectedVault } from "../../hooks/useSelectedVault";
 
-function VaultActions({ vault, loading }: { vault: Vault, loading: boolean }) {
+function VaultActions({ loading }: { loading: boolean }) {
   const [depositMode, setDepositMode] = useState(true);
+  const vault = useSelectedVault()
   return (
-    <div className="component-spacer h-screen w-screen flex justify-center items-center">
+    <div 
+      id="vault-actions" 
+      className="component-spacer h-screen w-screen flex justify-center items-center">
       <section
         className="
           h-1/2

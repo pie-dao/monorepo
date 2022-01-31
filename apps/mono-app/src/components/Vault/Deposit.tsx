@@ -1,20 +1,20 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { useWeb3React } from "@web3-react/core";
-import { useMonoVaultContract, useTokenContract } from "../hooks/useContract";
-import { Balance, Vault } from "../store/vault/Vault";
-import { prettyNumber } from "../utils";
-import { MissingDecimalsError, TXRejectedError } from "../errors";
-import { Erc20 } from "../types/artifacts/abi";
+import { useMonoVaultContract, useTokenContract } from "../../hooks/useContract";
+import { Balance, Vault } from "../../store/vault/Vault";
+import { prettyNumber } from "../../utils";
+import { MissingDecimalsError, TXRejectedError } from "../../errors";
+import { Erc20 } from "../../types/artifacts/abi";
 import { useState } from "react";
-import { useAppDispatch } from "../hooks";
-import { setApproval, setLoading } from "../store/vault/vault.slice";
-import StyledButton from "./UI/button";
-import CardItem from "./UI/cardItem";
-import { useSelectedVault } from "../hooks/useSelectedVault";
-import LoadingSpinner from "./UI/loadingSpinner";
-import { checkForEvent } from "../utils/event";
-import { zeroBalance } from "../utils/balances";
-import { ContractTransaction } from "@ethersproject/contracts";
+import { useAppDispatch } from "../../hooks";
+import { setApproval, setLoading } from "../../store/vault/vault.slice";
+import StyledButton from "../UI/button";
+import CardItem from "../UI/cardItem";
+import { useSelectedVault } from "../../hooks/useSelectedVault";
+import LoadingSpinner from "../UI/loadingSpinner";
+import { checkForEvent } from "../../utils/event";
+import { zeroBalance } from "../../utils/balances";
+import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 
 const conditionallyApprove = async ({
   allowance,
@@ -62,7 +62,8 @@ function DepositButton ({
   vault: Vault,
 }) {
   const dispatch = useAppDispatch()
-  const { account, chainId } = useWeb3React();
+  const { chainId } = useWeb3Cache()
+  const { account } = useWeb3React();
   const monoContract = useMonoVaultContract(vault.address);
   const tokenContract = useTokenContract(vault.token?.address);
   const [depositing, setDepositing] = useState(false);

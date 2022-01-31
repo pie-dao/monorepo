@@ -1,9 +1,10 @@
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import React from "react";
 import { MetamaskIcon, WalletConnectIcon } from "../../assets/icons/connectors";
-import { injected } from "../../connectors";
+import { injected, walletconnect } from "../../connectors";
 
 const MetamaskButton = ({ setShow }: { setShow(show: boolean): void }) => {
-const { activate } = useWeb3React()
+const { activate } = useWeb3React();
 const handleConnect = () => {
   activate(injected, undefined, true).then(() => {
     setShow(false)
@@ -27,9 +28,8 @@ return (
 
 const WalletConnectButton = ({ setShow }: { setShow(show: boolean): void }) => {
   const { activate } = useWeb3React()
-  const handleConnect = () => { activate(injected).then(() => {
-    setShow(false)
-  }) }
+  const handleConnect = () => { activate(walletconnect).then(v => console.debug(v))
+  }
   return (
     <button
       onClick={() => handleConnect()}
@@ -40,36 +40,37 @@ const WalletConnectButton = ({ setShow }: { setShow(show: boolean): void }) => {
     )
   }
   
-
+const HoverCard = (props: { children: React.ReactNode }) => (
+  <div className="flex justify-center items-center h-36 w-full rounded-md hover:bg-gray-100">
+    { props.children }
+  </div>
+)
 
 const WalletModal = (props: { setShow: (show: boolean) => void }) => {
   return (
     <section
       className="
       top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-        w-1/2
+        max-w-[500px]
+        w-full
         h-1/3
         z-10
-        bg-gray-50
+        bg-white
         flex items-center justify-between
-        rounded-md
+        rounded-xl
         flex-col
         shadow-md
         p-5
         fixed
-
       "
       >
-        <div className="mt-1">
-          <h1>CONNECT WALLET</h1>
-        </div>
         <div className="w-full">
-          <div className="my-5">
+          <HoverCard>
             <MetamaskButton setShow={props.setShow}/>
-          </div>
-          <div className="my-10">
+          </HoverCard>
+          <HoverCard>
             <WalletConnectButton setShow={props.setShow}/>
-          </div>
+          </HoverCard>
         </div>
         <div className="mt-1">
           <a
@@ -80,8 +81,8 @@ const WalletModal = (props: { setShow: (show: boolean) => void }) => {
             <p>Learn more about wallets</p>
             <p>&#8594;</p>
           </a>
-        </div>
         <button onClick={() => props.setShow(false)}>CLOSE</button>
+        </div>
     </section>
   );
 }

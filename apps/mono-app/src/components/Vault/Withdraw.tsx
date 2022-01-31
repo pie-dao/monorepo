@@ -1,19 +1,20 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { useWeb3React } from "@web3-react/core";
 import { useState } from "react";
-import { MissingDecimalsError, TXRejectedError } from "../errors";
-import { useMonoVaultContract } from "../hooks/useContract";
-import { useSelectedVault } from "../hooks/useSelectedVault"
-import { Balance, Vault } from "../store/vault/Vault";
-import { prettyNumber, toBalance } from "../utils";
-import StyledButton from "./UI/button";
-import CardItem from "./UI/cardItem";
-import { NotYetReadyToWithdrawError } from '../errors';
-import LoadingSpinner from "./UI/loadingSpinner";
-import { zeroBalance } from "../utils/balances";
-import { checkForEvent } from "../utils/event";
-import { setReduceVaultTokens } from "../store/vault/vault.slice";
-import { useAppDispatch } from "../hooks";
+import { MissingDecimalsError, TXRejectedError } from "../../errors";
+import { useMonoVaultContract } from "../../hooks/useContract";
+import { useSelectedVault } from "../../hooks/useSelectedVault"
+import { Balance, Vault } from "../../store/vault/Vault";
+import { prettyNumber, toBalance } from "../../utils";
+import StyledButton from "../UI/button";
+import CardItem from "../UI/cardItem";
+import { NotYetReadyToWithdrawError } from '../../errors';
+import LoadingSpinner from "../UI/loadingSpinner";
+import { zeroBalance } from "../../utils/balances";
+import { checkForEvent } from "../../utils/event";
+import { setReduceVaultTokens } from "../../store/vault/vault.slice";
+import { useAppDispatch } from "../../hooks";
+import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 
 enum WITHDRAWAL {
   'NOTSTARTED',
@@ -52,7 +53,8 @@ function WithdrawalButton ({
   vault: Vault,
   status: WITHDRAWAL
 }) {
-  const { account, chainId } = useWeb3React();
+  const { chainId } = useWeb3Cache()
+  const { account } = useWeb3React();
   const [pending, setPending] = useState(false);
   const monoContract = useMonoVaultContract(vault.address);
   const dispatch = useAppDispatch();
