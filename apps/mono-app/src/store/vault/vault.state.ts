@@ -8,7 +8,11 @@ export const vaultState: VaultState = {
       description: 'Balanced Stablecoin farming strategies for USDC assets across L2 chains.',
       network: NETWORKS.POLYGON,
       symbol: 'USDC',
-      address: '0x0449b34c8abf9d7bd22c42695c9b672131188ccf'
+      address: '0x0449b34c8abf9d7bd22c42695c9b672131188ccf',
+      token: {
+        decimals: 6,
+        address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174'
+      }
     },
     // {
     //   name: 'DAI',

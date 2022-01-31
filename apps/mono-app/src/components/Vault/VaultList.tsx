@@ -1,5 +1,4 @@
 import { useAppSelector } from "../../hooks";
-import { useOnChainData } from "../../hooks/useChainData";
 import { useSelectedVault } from "../../hooks/useSelectedVault";
 import VaultActions from "./VaultActions";
 import VaultModal from "./VaultModal";

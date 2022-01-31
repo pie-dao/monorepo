@@ -1,6 +1,6 @@
 import { Contract } from "@ethersproject/contracts"
 import { useWeb3React } from "@web3-react/core"
-import { JsonRpcProvider, JsonRpcSigner, Web3Provider } from "@ethersproject/providers"
+import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers"
 import { useMemo } from "react"
 import { MulticallProvider } from "@0xsequence/multicall/dist/declarations/src/providers"
 import { providers } from "@0xsequence/multicall"
@@ -104,7 +104,6 @@ const getContract = (
   preferMulticall?: boolean
 ) => {
   const { library, account, active } = context;
-  console.debug('here')
   try {
     if (!active) throw new ProviderNotActivatedError();
     const providerSigner = getProviderOrSigner(library, account, preferMulticall);

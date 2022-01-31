@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import logoFile from '../../assets/icons/logo.png'
 import WalletModal from "./WalletModal";
 import { useEffect, useState } from "react";
-import { ChainMap, chainMap } from "../../utils/networks";
+import { chainMap } from "../../utils/networks";
 import ErrorMessage from "./ErrorMessage";
 import { useAppSelector } from "../../hooks";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
@@ -97,7 +97,7 @@ const Header = () => {
       <div className="flex justify-start">
         <img src={logoFile} className="h-14 ml-2 w-14 flex-grow-1 basis-0"/>
       </div>
-        <h1 className="m-auto">Name TBD Vaults</h1>
+        <h1 className="m-auto">Auxo Vaults</h1>
       <div className="flex justify-end items-center">
       { error && <button
         onMouseEnter={() => setShowError(true)}

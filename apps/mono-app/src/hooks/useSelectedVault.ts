@@ -1,7 +1,4 @@
-import { useAppSelector } from ".";
 import { useProxySelector } from "../store";
+import { Vault } from "../store/vault/Vault";
 
-export const useSelectedVault = () => useAppSelector(state => {
-  // return useProxySelector(state => state.vault.vaults.find(v => v.address === state.vault.selected))
-  return state.vault.vaults.find(v => v.address === state.vault.selected)
-});
+export const useSelectedVault = (): Vault | undefined => useProxySelector(state => state.vault.vaults.find(v => v.address === state.vault.selected))

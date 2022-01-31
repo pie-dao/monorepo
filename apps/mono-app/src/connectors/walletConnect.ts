@@ -81,7 +81,6 @@ export class WalletConnectConnector extends AbstractConnector {
       this.walletConnectProvider = new WalletConnectProvider(this.config)
       // Hoist the wc object to where the rest of the code is expecting it
       this.walletConnectProvider.wc = this.walletConnectProvider.signer.connection.wc;
-      console.debug(this.walletConnectProvider)
     }
 
     // ensure that the uri is going to be available, and emit an event if there's a new uri

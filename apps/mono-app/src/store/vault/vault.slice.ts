@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { vaultState } from './vault.state';
-import { Balance, UserBalanceOnChainData, VaultOnChainData } from './Vault';
+import { Balance, UserBalanceOnChainData, Vault, VaultOnChainData } from './Vault';
 import { toBalance } from '../../utils';
 import { addBalances, subBalances } from '../../utils/balances';
 
@@ -8,6 +8,9 @@ export const vaultSlice = createSlice({
   name: 'vault',
   initialState: vaultState,
   reducers: {
+    setVaults: (state, action: PayloadAction<Vault[]>) => {
+      state.vaults = action.payload;
+    },
     setOnChainVaultData: (state, action: PayloadAction<VaultOnChainData>) => {
       const vault = state.vaults.find(v => v.address === action.payload.address);
       if (vault) {
@@ -59,7 +62,8 @@ export const {
   setApproval,
   setNewBalances,
   setReduceVaultTokens,
-  setLoading
+  setLoading,
+  setVaults,
 } = vaultSlice.actions;
 export default vaultSlice.reducer;
 

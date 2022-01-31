@@ -49,7 +49,7 @@ export interface UserWithdrawals {
  * Additional Vault fields are populated at runtime, thus they may be optional
  */
 export interface Vault extends BasicVaultInformation {
-  token?: VaultToken;
+  token: VaultToken;
   stats?: VaultStats;
   userBalances?: UserBalances
   withdrawals?: UserWithdrawals

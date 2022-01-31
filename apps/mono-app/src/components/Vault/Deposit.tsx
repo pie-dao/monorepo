@@ -65,7 +65,7 @@ function DepositButton ({
   const { chainId } = useWeb3Cache()
   const { account } = useWeb3React();
   const monoContract = useMonoVaultContract(vault.address);
-  const tokenContract = useTokenContract(vault.token?.address);
+  const tokenContract = useTokenContract(vault.token.address);
   const [depositing, setDepositing] = useState(false);
   const allowance = vault.userBalances?.allowance;
 

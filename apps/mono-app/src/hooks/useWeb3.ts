@@ -1,5 +1,4 @@
 import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
 import { injected, gnosisSafe } from "../connectors";
 import { useEffect, useState } from 'react'
 import { UAParser } from 'ua-parser-js'
