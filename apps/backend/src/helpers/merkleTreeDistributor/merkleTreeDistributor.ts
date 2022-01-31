@@ -1,8 +1,8 @@
 import { ethers } from 'ethers';
-import { Claims } from '../..//staking/types/staking.types.Claims';
-import { Participation } from '../..//staking/types/staking.types.Participation';
+import { Claims } from '../../staking/types/staking.types.Claims';
+import { Participation } from '../../staking/types/staking.types.Participation';
 import * as MerkleDistributorHelper from "@uma/merkle-distributor";
-import { MerkleTree } from '../..//staking/types/staking.types.MerkleTree';
+import { MerkleTree } from '../../staking/types/staking.types.MerkleTree';
 import { Decimal } from 'decimal.js';
 import { BigNumber } from 'bignumber.js';
 import { EpochEntity } from '../../staking/entities/epoch.entity';
