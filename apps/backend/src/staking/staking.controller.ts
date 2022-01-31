@@ -73,31 +73,4 @@ export class StakingController {
       throw new NotFoundException(error);
     }
   };
-
-  @ApiOkResponse({type: Object, isArray: false})
-  @ApiNotFoundResponse()
-  @ApiBadRequestResponse()
-  @ApiQuery({name: 'month', required: true})
-  @ApiQuery({name: 'blockNumber', required: true})
-  @ApiQuery({name: 'proposals', required: true, isArray: true})
-  @Get('free-riders')
-  async getFreeRiders(
-    @Query('month') month?: number,
-    @Query('blockNumber') blockNumber?: number,
-    @Query('proposals') proposals?: string    
-  ): Promise<FreeRider[]> {
-    try {
-      if(month === undefined || blockNumber === undefined) {
-        throw new InternalServerErrorException({error: "month / blockNumber are mandatory params."}, null);
-      }
-
-      /* istanbul ignore next */
-      let proposalsIds = proposals ? proposals.split(",").map(id => '"' + id + '"') : null;  
-
-      return await this.stakingService.getFreeRiders(month, blockNumber, proposalsIds);
-    } catch(error) {
-      /* istanbul ignore next */
-      throw new NotFoundException(error);
-    }
-  };
 }

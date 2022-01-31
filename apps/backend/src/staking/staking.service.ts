@@ -274,12 +274,13 @@ export class StakingService {
 
         // retrieving the stakers from our subgraph...
         let stakers = await this.getStakers(null, blockNumber, null);
+        console.log("generating participation", stakers, votes);
 
         // generating the participations...
         const participations = [];
 
         stakers.forEach(staker => {
-          let stakerVotes: Vote[] = votes.filter(vote => vote.voter.toLowerCase() == staker.id);
+          let stakerVotes: Vote[] = votes.filter(vote => vote.voter.toLowerCase() == staker.id.toLowerCase());
           let participation = stakerVotes.length ? 1 : 0;
 
           let element: Participation = {
@@ -297,55 +298,9 @@ export class StakingService {
         let delegates: Delegate[] = await this.getDelegates();
         // including the delegtors into participations...
         let participationsIncludesDelegates = this.includeDelegates(participations, delegates);
+        console.log("resolving participations", participationsIncludesDelegates);
         resolve(participationsIncludesDelegates);
       } catch (error) {
-        reject(error);
-      }
-    });
-  }
-
-  getFreeRiders(month: number, blockNumber: number, proposalsIds: Array<string>): Promise<FreeRider[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // fetching all votes from snapshot in the last 3 months...
-        let from = moment({ year: moment().year(), month: month - 4, day: 1 });
-        let to = moment({ year: moment().year(), month: month - 1, day: 1 }).endOf('month');
-
-        let votes = await this.getSnapshotVotes(from.unix(), to.unix(), proposalsIds, "in");
-
-        // getting all voters addresses from snapshot's votes...
-        let voters = await this.getVotersFromShapshotVotes(votes, blockNumber);
-
-        // fetching all the stakers which have NOT voted in the last 3 months...
-        let stakers = await this.getStakers(voters, blockNumber, 'id_not_in');
-
-        // creating the freeRiders dataStruct...
-        let votedTimeRange = this.generateBackmonthTimestamp(3, false);
-        let freeRiders = [];
-
-        stakers.forEach(staker => {
-          let oldestLock = this.getOldestLock(staker.accountLocks);
-
-          let isFreeRider = false;
-
-          /* istanbul ignore next */
-          if (oldestLock && oldestLock.lockedAt < votedTimeRange) {
-            isFreeRider = true;
-          }
-
-          let freeRider = {
-            id: staker.id,
-            isFreeRider: isFreeRider,
-            oldestLock: oldestLock,
-            stakingData: staker
-          } as FreeRider
-
-          freeRiders.push(freeRider);
-        });
-
-        resolve(freeRiders);
-      } catch (error) {
-        /* istanbul ignore next */
         reject(error);
       }
     });
@@ -513,7 +468,7 @@ export class StakingService {
 
     Object.keys(mappedDelegates).forEach(delegate_address => {
       /* istanbul ignore next */
-      if (mappedEntries[delegate_address].participation == 1) {
+      if (mappedEntries[delegate_address] && mappedEntries[delegate_address].participation == 1) {
         mappedEntries[mappedDelegates[delegate_address]].participation = 1;
         mappedEntries[mappedDelegates[delegate_address]].delegatedTo = delegate_address;
         mappedEntries[mappedDelegates[delegate_address]].votes = mappedEntries[delegate_address].votes;

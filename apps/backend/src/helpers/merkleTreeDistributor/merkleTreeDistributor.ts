@@ -1,11 +1,11 @@
 import { ethers } from 'ethers';
-import { Claims } from 'src/staking/types/staking.types.Claims';
-import { Participation } from 'src/staking/types/staking.types.Participation';
+import { Claims } from '../..//staking/types/staking.types.Claims';
+import { Participation } from '../..//staking/types/staking.types.Participation';
 import * as MerkleDistributorHelper from "@uma/merkle-distributor";
-import { MerkleTree } from 'src/staking/types/staking.types.MerkleTree';
+import { MerkleTree } from '../..//staking/types/staking.types.MerkleTree';
 import { Decimal } from 'decimal.js';
 import { BigNumber } from 'bignumber.js';
-import { EpochEntity } from 'src/staking/entities/epoch.entity';
+import { EpochEntity } from '../../staking/entities/epoch.entity';
 
 export class MerkleTreeDistributor {
   private SLICE_ADDRESS = ethers.utils.getAddress('0x1083D743A1E53805a95249fEf7310D75029f7Cd6');
@@ -64,7 +64,139 @@ export class MerkleTreeDistributor {
         reject(error);
       }
     });
-  }  
+  } 
+
+  private buildNotVotingAddresses(
+    participations: Participation[], 
+    windowIndex: number, 
+    previousEpoch: 
+    EpochEntity, 
+    unclaimed: any
+  ): any {
+    let notVotingAddresses = {};
+
+    participations.forEach(participation => {
+      /* istanbul ignore next */
+      if(!participation.participation) {
+        // if the address is inactive on this window...
+        if(windowIndex != 0) {
+          // ----- ACTIVE -> INACTIVE -----
+          let notVotingStakerAddress = previousEpoch && previousEpoch.merkleTree.stats.notVotingAddresses
+            ? Object.keys(previousEpoch.merkleTree.stats.notVotingAddresses).find(address =>
+            ethers.utils.getAddress(address) == ethers.utils.getAddress(participation.address)
+          ) : null;
+
+          // if the address is inactive for the very first time, we add it...
+          if(!notVotingStakerAddress) {
+            notVotingAddresses[ethers.utils.getAddress(participation.address)] = {
+              amount: 0,
+              windowIndex: [Number(windowIndex)]
+            };
+          } 
+          // ----- INACTIVE -> INACTIVE -----
+          else {
+            let notVotingStaker = previousEpoch.merkleTree.stats.notVotingAddresses[notVotingStakerAddress];
+            notVotingStaker.windowIndex.push(Number(windowIndex));
+            notVotingAddresses[notVotingStakerAddress] = notVotingStaker;
+          }
+        }
+      }
+    });
+
+    return notVotingAddresses;
+  }
+
+  private compoundNotVotingAddresses(
+    calculations: any,
+    participations: Participation[], 
+    windowIndex: number, 
+    previousEpoch: EpochEntity, 
+    claims: any,
+    unclaimed: any
+  ): any {
+    let notVotingAddresses = {};
+
+    participations.forEach(participation => {
+      /* istanbul ignore next */
+      if(!participation.participation) {
+        if(windowIndex != 0) {
+          let stakerBalance = new Decimal(participation.staker.accountVeTokenBalance);
+          let stakerProRata = stakerBalance.times(calculations.proRata).div(this.EXPLODE_DECIMALS).truncated();
+
+          // let's check if there is any unclaimed amount that must be accrued...
+          let unclaimedAddress = unclaimed ? unclaimed.addresses.find(element => 
+            ethers.utils.getAddress(participation.address) ===  ethers.utils.getAddress(element.address)
+          ) : null;
+          
+          if(unclaimedAddress) {
+            stakerProRata = stakerProRata.plus(unclaimedAddress.amount);
+          }     
+
+          let notVotingStakerAddress = Object.keys(claims.stats.notVotingAddresses).find(address =>
+            ethers.utils.getAddress(address) == ethers.utils.getAddress(participation.address)
+          );
+
+          if(notVotingStakerAddress) {
+            let notVotingStaker = claims.stats.notVotingAddresses[notVotingStakerAddress];
+            notVotingStaker.amount = stakerProRata.plus(notVotingStaker.amount);
+            notVotingAddresses[notVotingStakerAddress] = notVotingStaker;
+          }
+        }
+      }
+    });
+
+    return notVotingAddresses;
+  }
+
+  private distributeRewards(
+    totalRewardsDistributed: string,
+    calculations: any, 
+    participations: Participation[],
+    windowIndex: number
+  ): any {
+    let totalCalculatedRewards = new Decimal(0);
+    let sliceUnits = new Decimal(totalRewardsDistributed).times(this.EXPLODE_DECIMALS);
+    let minRewarded = sliceUnits;
+    let minRewardedStaker = null;
+    let recipients = {};
+
+    // distributing the rewards to all the users...
+    participations.forEach(participation => {
+      let stakerBalance = new Decimal(participation.staker.accountVeTokenBalance);
+      let stakerProRata = stakerBalance.times(calculations.proRata).div(this.EXPLODE_DECIMALS).truncated();
+
+      // calculating minimum rewarded to add delta...
+      if(stakerProRata.lt(minRewarded)) {
+        minRewarded = stakerProRata;
+        minRewardedStaker = participation.staker.id;
+      }
+
+      // keeping the total to calculate the delta later on...
+      totalCalculatedRewards = totalCalculatedRewards.plus(stakerProRata);  
+
+      // refilling the recipients array...
+      recipients[participation.staker.id] = {
+        participation: participation.participation,
+        amount: stakerProRata,
+        metaData: {
+          reason: [`Distribution for epoch ${windowIndex}`],
+          staker: participation.staker
+        }
+      }
+    });
+
+    // adding delta to the min reward item...
+    /* istanbul ignore next */
+    if(!minRewarded.eq(sliceUnits)) {
+      let delta = new Decimal(sliceUnits.minus(totalCalculatedRewards).toFixed(0));
+
+      if(delta.gt(0)) {
+        recipients[minRewardedStaker].amount = recipients[minRewardedStaker].amount.plus(delta);
+      }
+    }   
+    
+    return recipients;
+  }
 
   async generateMerkleTree(
     totalRewardsDistributed: string, 
@@ -111,14 +243,37 @@ export class MerkleTreeDistributor {
     previousEpoch: EpochEntity, 
     rewards: any[]
   ): Promise<Claims> {
-    let unclaimed = previousEpoch ? await this.getUnclaimed(rewards, previousEpoch) : null;  
-    let calculations = this.calculateProRata(windowIndex, totalRewardsDistributed, participations);
+    /*
+      Unclaimed: all those addresses that 
+      - were active on the previous Epoch
+      - did NOT claimed their rewards
+    */
+    let unclaimed = previousEpoch ? await this.getUnclaimed(rewards, previousEpoch) : null;
 
+    /*
+      Inactive: all those addresses that 
+      - were inactive on the previous Epoch
+    */
+    let inactive = previousEpoch ? previousEpoch.merkleTree.stats.notVotingAddresses : null;    
+    
+    /*
+      Calculating the proRata and the totalVeDoughSupply,
+      by iterating the entire participations array 
+      (all veDOUGH holders, active and inactive)
+    */
+    let calculations = this.calculateProRata(windowIndex, totalRewardsDistributed, participations);
+    /*
+      Generating the empty/default claims object
+    */
     let claims = {
       stats: {
         proRata: calculations.proRata.toString(),
         totalVeDoughSupply: calculations.totalVeDoughSupply.toString(),
-        notVotingAddresses: {}
+        notVotingAddresses: {},
+        toBeSlashed: {
+          accounts: [],
+          total: new BigNumber(0)
+        }
       },
       chainId: 1,
       rewardToken: this.SLICE_ADDRESS,
@@ -127,69 +282,99 @@ export class MerkleTreeDistributor {
       recipients: {}
     };
 
-    let totalCalculatedRewards = new Decimal(0);
-    let sliceUnits = new Decimal(totalRewardsDistributed).times(this.EXPLODE_DECIMALS);
-    let minRewarded = sliceUnits;
-    let minRewardedStaker = null;
+    /* 
+      building up the notVotingAddresses array, by including:
+      - all those addresses which haven't voted in the current epoch
+      - acccrueing the amount and the inactive window, from previous epoch
+    */
+    claims.stats.notVotingAddresses = this.buildNotVotingAddresses(
+      participations, 
+      windowIndex, 
+      previousEpoch, 
+      unclaimed
+    );
 
-    // distributing the rewards to all the users...
-    participations.forEach(participation => {
-      let stakerBalance = new Decimal(participation.staker.accountVeTokenBalance);
-      let stakerProRata = stakerBalance.times(calculations.proRata).div(this.EXPLODE_DECIMALS).truncated();
+    // ---------------------------------------------------------------------------------
+    // ----- INACTIVE -> SLASHED -----
+    // filtering out the notVotingAddresses, in order to grab the accounts to be slashed
+    // and calculating the total amount of rewards to be slashed as well...
+    Object.keys(claims.stats.notVotingAddresses).forEach(address => {
+      let holder = claims.stats.notVotingAddresses[address];
 
-      // calculating minimum rewarded to add delta...
-      if(stakerProRata.lt(minRewarded)) {
-        minRewarded = stakerProRata;
-        minRewardedStaker = participation.staker.id;
-      }
-
-      totalCalculatedRewards = totalCalculatedRewards.plus(stakerProRata);     
-
-      claims.recipients[participation.staker.id] = {
-        participation: participation.participation,
-        amount: stakerProRata,
-        metaData: {
-          reason: [`Distribution for epoch ${windowIndex}`],
-          staker: participation.staker
-        }
-      }   
-
-      /* istanbul ignore next */
-      if(!participation.participation) {
-        if(windowIndex != 0) {
-          let notVotingStakerAddress = previousEpoch && previousEpoch.merkleTree.stats.notVotingAddresses
-           ? Object.keys(previousEpoch.merkleTree.stats.notVotingAddresses).find(address =>
-            ethers.utils.getAddress(address) == ethers.utils.getAddress(participation.address)
-          ) : null;
-  
-          if(!notVotingStakerAddress) {
-            claims.stats.notVotingAddresses[ethers.utils.getAddress(participation.address)] = {
-              amount: stakerProRata,
-              windowIndex: [Number(windowIndex)]
-            };
-
+      if(holder.windowIndex.length >= 3) {
+        // let's check if the latest 3 windows are in the correct sequence...
+        let latest_3 = holder.windowIndex.slice(-3);
+        let areInSequence = latest_3.every( (window,index)  => {
+          if(index > 0) {
+            return window == latest_3[index - 1] + 1;
           } else {
-            let notVotingStaker = previousEpoch.merkleTree.stats.notVotingAddresses[notVotingStakerAddress];
-            notVotingStaker.amount = stakerProRata.plus(notVotingStaker.amount);
-            notVotingStaker.windowIndex.push(Number(windowIndex));         
-  
-            claims.stats.notVotingAddresses[notVotingStakerAddress] = notVotingStaker;
+            return true;
           }
+        });
+
+        if(areInSequence) {
+          claims.stats.toBeSlashed.accounts.push(address);
+          claims.stats.toBeSlashed.total = claims.stats.toBeSlashed.total.plus(holder.amount);
+          // resetting the total accured so far for the slashed address...
+          holder.amount = 0;
         }
       }
     });
 
-    // adding delta to the min reward item...
-    /* istanbul ignore next */
-    if(!minRewarded.eq(sliceUnits)) {
-      let delta = new Decimal(sliceUnits.minus(totalCalculatedRewards).toFixed(0));
+    // if we have accounts to be slashed...
+    if(claims.stats.toBeSlashed.accounts.length) {
+      // then we remove the toBeSlashed.account from the participations...
+      participations = participations.filter(participation => {
+        let founded = claims.stats.toBeSlashed.accounts.find(x => x.toLowerCase() == participation.address.toLocaleLowerCase());
+        return !founded;
+      });
 
-      if(delta.gt(0)) {
-        claims.recipients[minRewardedStaker].amount = claims.recipients[minRewardedStaker].amount.plus(delta);
-      }
-    }    
+      // update the orignal totalRewardsDistributed value...
+      totalRewardsDistributed = claims.stats.toBeSlashed.total
+        .div(this.EXPLODE_DECIMALS.toString())
+        .plus(totalRewardsDistributed).toString();
+
+      // we re-calculate the proRata, using the reduced participations array...
+      calculations = this.calculateProRata(
+        windowIndex, 
+        totalRewardsDistributed, 
+        participations
+      );
+
+      // updating the claims ojbect values with the new ones...
+      claims.stats.proRata = calculations.proRata.toString();
+      claims.stats.totalVeDoughSupply = calculations.totalVeDoughSupply.toString();
+
+      // re-distributing the rewards to all the users, except the toBeSlashed ones...
+      // claims.recipients = this.distributeRewards(
+      //   claims.stats.toBeSlashed.total.plus(totalRewardsDistributed).toString(), 
+      //   calculations, 
+      //   participations, 
+      //   windowIndex
+      // );
+    }
+    // ---------------------------------------------------------------------------------
+
+    // distributing rewards to all stakers as first...
+    claims.recipients = this.distributeRewards(
+      totalRewardsDistributed, 
+      calculations, 
+      participations, 
+      windowIndex
+    );
+
+    // compounding the notVotinAddresses...
+    this.compoundNotVotingAddresses(
+      calculations, 
+      participations,
+      windowIndex,
+      previousEpoch,
+      claims,
+      unclaimed
+    );
 
     // calculating the compounds for the unclaimed ones...
+    // ----- ACTIVE -> ACTIVE -----
     participations.forEach(participation => {
       let unclaimedAddress = unclaimed ? unclaimed.addresses.find(element => 
         ethers.utils.getAddress(participation.address) ===  ethers.utils.getAddress(element.address)
@@ -200,6 +385,21 @@ export class MerkleTreeDistributor {
           claims.recipients[participation.staker.id].amount.plus(unclaimedAddress.amount); 
       }       
     });
+
+    // calculating the compounds for the previous unclaimable ones...
+    // ----- INACTIVE -> ACTIVE -----
+    if(inactive) {
+      participations.forEach(participation => {
+        let founded = Object.keys(inactive).find(
+          x => x.toLowerCase() == participation.address.toLocaleLowerCase()
+        );
+  
+        if(founded) {
+          claims.recipients[participation.staker.id].amount = 
+            claims.recipients[participation.staker.id].amount.plus(inactive[founded].amount); 
+        }     
+      });
+    }
 
     // finally, we re-iterate all over the claims, and we remove the not-active ones...
     let finalCalculatedRewards = new Decimal(0);
