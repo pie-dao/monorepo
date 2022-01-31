@@ -344,14 +344,6 @@ export class MerkleTreeDistributor {
       // updating the claims ojbect values with the new ones...
       claims.stats.proRata = calculations.proRata.toString();
       claims.stats.totalVeDoughSupply = calculations.totalVeDoughSupply.toString();
-
-      // re-distributing the rewards to all the users, except the toBeSlashed ones...
-      // claims.recipients = this.distributeRewards(
-      //   claims.stats.toBeSlashed.total.plus(totalRewardsDistributed).toString(), 
-      //   calculations, 
-      //   participations, 
-      //   windowIndex
-      // );
     }
     // ---------------------------------------------------------------------------------
 
