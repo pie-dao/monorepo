@@ -11,7 +11,14 @@ const histories = [
     marketCapUSD: new BigNumber("26.13762717355117514798"),
     totalSupply: new BigNumber("26.13762717355117514798"),
     nav: 0,
-    decimals: 18
+    decimals: 18,
+    pie: {
+      usd: 671863,
+      usd_market_cap: 8507603.84069643,
+      usd_24h_vol: 27.63934871442503,
+      usd_24h_change: 1536.874503249737,
+      ticks: []
+    }    
   },
   {
     underlyingAssets: [
@@ -22,7 +29,14 @@ const histories = [
     marketCapUSD: new BigNumber("26.13762717355117514798"),
     totalSupply: new BigNumber("26.13762717355117514798"),
     nav: 0,
-    decimals: 18
+    decimals: 18,
+    pie: {
+      usd: 671863,
+      usd_market_cap: 8507603.84069643,
+      usd_24h_vol: 27.63934871442503,
+      usd_24h_change: 1536.874503249737,
+      ticks: []
+    }    
   },
 ]
 

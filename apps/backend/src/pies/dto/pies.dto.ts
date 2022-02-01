@@ -1,9 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsHexadecimal, IsArray } from "class-validator";
+import { IsHexadecimal, IsObject, IsArray } from "class-validator";
 
 export class PieDto {
   @ApiProperty()
   name: string;
+
+  @ApiProperty()
+  symbol: string;  
 
   @ApiProperty()
   @IsHexadecimal()
@@ -12,4 +15,16 @@ export class PieDto {
   @ApiProperty()
   @IsArray()
   history: Array<string>;  
+
+  @ApiProperty()
+  @IsHexadecimal()
+  coingecko_id: string;  
+
+  @ApiProperty()
+  @IsObject()
+  image: {
+    thumb: string,
+    small: string,
+    large: string
+  };  
 }

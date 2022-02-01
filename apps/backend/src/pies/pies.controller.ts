@@ -13,14 +13,14 @@ import { PiesService } from './pies.service';
 export class PiesController {
   constructor(private readonly piesService: PiesService) {}
 
-  // @Get('updatenavs')
-  // async updateNavs(): Promise<boolean> {
-  //   try {
-  //     return await this.piesService.updateNAVs();
-  //   } catch(error) {
-  //     throw new NotFoundException(error);
-  //   }
-  // }
+  @Get('updatenavs')
+  async updateNavs(): Promise<boolean> {
+    try {
+      return await this.piesService.updateNAVs();
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }
 
   @ApiOkResponse({type: PieEntity, isArray: true})
   @ApiNotFoundResponse()
@@ -41,10 +41,21 @@ export class PiesController {
   @ApiBadRequestResponse()
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'address', required: false})
+  @ApiQuery({name: 'timestamp', required: false})
+  @ApiQuery({name: 'order', required: false})
   @Get('history')
-  async getPieHistory(@Query('name') name?: string, @Query('address') address?: string): Promise<PieHistoryEntity[]> {
+  async getPieHistory(
+    @Query('name') name?: string, 
+    @Query('address') address?: string,
+    @Query('timestamp') timestamp?: string,
+    @Query('order') order?: 'descending' | 'ascending'
+  ): Promise<PieHistoryEntity[]> {
     try {
-      return await this.piesService.getPieHistory(name, address);
+      if(order === undefined) {
+        order = 'descending';
+      }
+
+      return await this.piesService.getPieHistory(name, address, timestamp, order);
     } catch(error) {
       throw new NotFoundException(error);
     }
@@ -73,16 +84,4 @@ export class PiesController {
       throw new NotFoundException(error);
     }
   }
-
-  // @ApiCreatedResponse({type: PieEntity})
-  // @ApiNotFoundResponse()
-  // @ApiBadRequestResponse()
-  // @Post('create')
-  // async createPie(@Body() pie: PieDto): Promise<PieEntity> {
-  //   try {
-  //     return await this.piesService.createPie(pie);
-  //   } catch(error) {
-  //     throw new NotFoundException(error);
-  //   }
-  // }
 }

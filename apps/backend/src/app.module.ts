@@ -9,6 +9,8 @@ import { StakingModule } from './staking/staking.module';
 import { TreasuryModule } from './treasury/treasury.module';
 import { TasksModule } from './tasks/tasks.module';
 import { ConsoleModule } from 'nestjs-console';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -16,6 +18,11 @@ import { ConsoleModule } from 'nestjs-console';
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_DB),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      exclude: ['/api*', '/pies*', '/staking*'],
+      serveRoot: '/public/'
+    }),     
     StakingModule,
     TreasuryModule,    
     TasksModule,

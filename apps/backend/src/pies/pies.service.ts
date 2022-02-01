@@ -15,15 +15,114 @@ import { HttpService } from '@nestjs/axios';
 @Injectable()
 export class PiesService {
   private pies = [
-    {name: "BTC++", address: "0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd", history: []},
-    {name: "DEFI+S", address: "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c", history: []},
-    {name: "DEFI++", address: "0x8d1ce361eb68e9e05573443c407d4a3bed23b033", history: []},
-    {name: "BCP", address: "0xe4f726adc8e89c6a6017f01eada77865db22da14", history: []},
-    {name: "YPIE", address: "0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31", history: []},
-    {name: "PLAY", address: "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4", history: []},
-    {name: "DEFI+L", address: "0x78f225869c08d478c34e5f645d07a87d3fe8eb78", history: []},
-    {name: "USD++", address: "0x9a48bd0ec040ea4f1d3147c025cd4076a2e71e3e", history: []},
-    {name: "NOT_EXISTING_PIE", address: "0x0000000000000000000000000000000000000000", history: []}
+    {
+      symbol: "BTC++",
+      name: "PieDAO BTC++",
+      address: "0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd", 
+      history: [], 
+      coingecko_id: "piedao-btc",
+      image: {
+        thumb: "/public/btc/thumb/icon.png",
+        small: "/public/btc/small/icon.png",
+        large: "/public/btc/large/icon.png",
+      }    
+    },
+    {
+      symbol: "DEFI+S", 
+      name: "PieDAO DEFI Small Cap",
+      address: "0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c", 
+      history: [], 
+      coingecko_id: "piedao-defi-small-cap",
+      image: {
+        thumb: "/public/defi_s/thumb/icon.png",
+        small: "/public/defi_s/small/icon.png",
+        large: "/public/defi_s/large/icon.png",
+      }      
+    },
+    {
+      symbol: "DEFI++",
+      name: "PieDAO DEFI++", 
+      address: "0x8d1ce361eb68e9e05573443c407d4a3bed23b033", 
+      history: [], 
+      coingecko_id: "piedao-defi",
+      image: {
+        thumb: "/public/defi_plus/thumb/icon.png",
+        small: "/public/defi_plus/small/icon.png",
+        large: "/public/defi_plus/large/icon.png",
+      }       
+    },
+    {
+      symbol: "BCP",
+      name: "PieDAO Balanced Crypto Pie", 
+      address: "0xe4f726adc8e89c6a6017f01eada77865db22da14", 
+      history: [], 
+      coingecko_id: "piedao-balanced-crypto-pie",
+      image: {
+        thumb: "/public/bcp/thumb/icon.png",
+        small: "/public/bcp/small/icon.png",
+        large: "/public/bcp/large/icon.png",
+      }     
+    },
+    {
+      symbol: "YPIE", 
+      name: "PieDAO Yearn Ecosystem Pie", 
+      address: "0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31", 
+      history: [], 
+      coingecko_id: "piedao-yearn-ecosystem-pie",
+      image: {
+        thumb: "/public/ypie/thumb/icon.png",
+        small: "/public/ypie/small/icon.png",
+        large: "/public/ypie/large/icon.png",
+      }
+    },
+    {
+      symbol: "PLAY", 
+      name: "Metaverse NFT Index", 
+      address: "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4", 
+      history: [], 
+      coingecko_id: "metaverse-nft-index",
+      image: {
+        thumb: "/public/play/thumb/icon.png",
+        small: "/public/play/small/icon.png",
+        large: "/public/play/large/icon.png",
+      }      
+    },
+    {
+      symbol: "DEFI+L",
+      name: "PieDAO DEFI Large Cap",  
+      address: "0x78f225869c08d478c34e5f645d07a87d3fe8eb78", 
+      history: [], 
+      coingecko_id: "piedao-defi-large-cap",
+      image: {
+        thumb: "/public/defi_l/thumb/icon.png",
+        small: "/public/defi_l/small/icon.png",
+        large: "/public/defi_l/large/icon.png",
+      }    
+    },
+    {
+      symbol: "USD++",
+      name: "USD Index Pie",  
+      address: "0x9a48bd0ec040ea4f1d3147c025cd4076a2e71e3e", 
+      history: [], 
+      coingecko_id: "",
+      image: {
+        thumb: "/public/defi_l/thumb/icon.png",
+        small: "/public/defi_l/small/icon.png",
+        large: "/public/defi_l/large/icon.png",
+      }      
+    },
+    {
+      name: "NOT_EXISTING_PIE", 
+      symbol: "NOT_EXISTING_PIE", 
+      address: "0x0000000000000000000000000000000000000000", 
+      history: [], 
+      coingecko_id: "",
+      image: {
+        thumb: "",
+        small: "",
+        large: "",
+      }      
+    },
   ];
 
   private readonly logger = new Logger(PiesService.name);
@@ -48,6 +147,19 @@ export class PiesService {
 
     // retrieving all pies from database...
     let pies = await this.getPies(undefined, undefined, test);
+    let url = null;
+    let coingeckoPiesInfos = {};
+
+    // fetching all the basic price/24h-change/marketCap infos for all pies...
+    try {
+      let ids = pies.map(pie => pie.coingecko_id);
+      url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+      
+      let response = await this.httpService.get(url).toPromise();
+      coingeckoPiesInfos = response.data;
+    } catch(error) {
+      this.logger.error("Error while fetching prices for all pies", error.message);
+    }
 
     // for each pie, we iterate to fetch the underlying assets...
     for(let k = 0; k < pies.length; k++) {
@@ -65,7 +177,7 @@ export class PiesService {
         let underlyingAssets = result[0];
         let underylingTotals = result[1];
         
-        let url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd`;
+        url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd`;
         
         // fetching the prices for each underlying contract...
         let response = await this.httpService.get(url).toPromise();
@@ -116,6 +228,18 @@ export class PiesService {
         history.decimals = pieDecimals;
         history.nav = (pieMarketCapUSD.toNumber() / totalSupply.toNumber());
 
+        let ticksResponse = [];
+        
+        try {
+          url = `https://api.coingecko.com/api/v3/coins/${pie.coingecko_id}/market_chart?vs_currency=usd&days=30&interval=hourly`;
+          response = await this.httpService.get(url).toPromise();   
+          ticksResponse = response.data;
+        } catch(error) {
+          this.logger.error(`${pie.name} - error fetching ticks: `, error.message);
+        }
+
+        history.pie = {ticks: ticksResponse, ...coingeckoPiesInfos[pie.coingecko_id]};
+
         // and saving the history entity...
         let historyDB = await history.save();
         
@@ -125,7 +249,7 @@ export class PiesService {
         // and finally saving the Pie Entity as well...
         let pieDB = await pie.save();
 
-        this.logger.debug(pie.name, "nav updated");
+        this.logger.debug(`${pie.name} - nav updated`);
       } catch(error) {
         this.logger.error(pie.name, error.message);
       }
@@ -178,7 +302,7 @@ export class PiesService {
     });
   }
 
-  getPieHistory(name?, address?): Promise<PieHistoryEntity[]> {
+  getPieHistory(name?, address?, timestamp?, order?: 'descending' | 'ascending'): Promise<PieHistoryEntity[]> {
     return new Promise(async(resolve, reject) => {
       let pie = null;
       let error = null;
@@ -203,7 +327,7 @@ export class PiesService {
       }
 
       if(pie) {
-        resolve(await this.getPieHistoryDetails(pie));
+        resolve(await this.getPieHistoryDetails(pie, order));
       } else {
         reject(error);
       }
@@ -211,12 +335,12 @@ export class PiesService {
     });
   }
 
-  getPieHistoryDetails(pie: PieEntity): Promise<PieHistoryEntity[]> {
+  getPieHistoryDetails(pie: PieEntity, order: 'descending' | 'ascending'): Promise<PieHistoryEntity[]> {
     return new Promise(async(resolve, reject) => {
       try {
         let pieHistories = await this.pieHistoryModel.find({
           '_id': { $in: pie.history }
-        }).lean();
+        }).sort({timestamp: order}).lean();
   
         resolve(pieHistories);        
       } catch(error) {
