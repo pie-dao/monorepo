@@ -1,9 +1,12 @@
 .button {
-  @apply py-2 px-4 rounded leading-5;
+  @apply py-2 px-4 rounded leading-5 bg-highlight border-2 border-highlight font-bold;
+  &:hover {
+    @apply bg-primary;
+  }
 }
 
 .lg {
-  @apply px-8 rounded-lg;
+  @apply px-8 rounded-md;
 }
 
 .gradient {

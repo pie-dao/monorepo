@@ -4,9 +4,9 @@ const Button = (props) => {
   const { className, children, gradient, large, ...rest } = props;
   return (
     <button
-      className={`${styles.button} ${gradient && styles.gradient} ${
-        large && styles.lg
-      } ${className && className}`}
+      className={`${styles.button} ${gradient ? styles.gradient : ""} ${
+        large ? styles.lg : ""
+      } ${className ? className : ""}`}
       {...rest}
     >
       {children}

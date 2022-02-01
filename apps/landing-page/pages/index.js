@@ -12,6 +12,7 @@ import Ovens from "../components/Ovens";
 import Roi from "../components/Roi";
 import AboutUsTwitter from "../components/AboutUsTwitter";
 import ExploreProducts from "../components/ExploreProducts";
+import PlayBar from "../components/PlayBar";
 
 export async function getServerSideProps() {
   const posts = await twitterPosts(
@@ -56,7 +57,7 @@ export default function Home({ posts, coingeckoData }) {
       <div className="text-white grid place-items-center">
         {/* Hero Section */}
         <Hero />
-        {/* Metaverse Section */}
+        <PlayBar />
         <Metaverse />
         {/* ScrollingBoxes Section */}
         <ScrollingBoxes />
@@ -65,10 +66,10 @@ export default function Home({ posts, coingeckoData }) {
         {/* Methodology Section */}
         <Methodology />
         {/* Roi Section */}
-        {/* <Roi /> */}
-        {/* <AboutUsTwitter twitterPosts={posts} /> */}
+        <Roi />
+        {<AboutUsTwitter twitterPosts={posts} />}
         <Ovens />
-        {/* <ExploreProducts coingeckoData={coingeckoData} /> */}
+        <ExploreProducts coingeckoData={coingeckoData} />
       </div>
     </div>
   );

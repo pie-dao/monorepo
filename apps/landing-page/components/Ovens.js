@@ -18,11 +18,11 @@ const Ovens = () => {
         </p>
         <div className="w-full absolute mt-4">
           <Button className="uppercase btn-lg" gradient large>
-            <span className="font-bold">
-              {content.ovens.call_to_action.title}
-            </span>
+            {content.ovens.call_to_action.title}
             <br />
-            {content.ovens.call_to_action.subtitle}
+            <span className="font-light">
+              {content.ovens.call_to_action.subtitle}
+            </span>
           </Button>
         </div>
       </div>
