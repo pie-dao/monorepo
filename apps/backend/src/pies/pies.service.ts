@@ -232,12 +232,19 @@ export class PiesService {
             decimals: decimals,
             amount: underylingTotals[i].toString(),
             token_info: prices[underlyingAssets[i].toLowerCase()],
-            pieDAOMarketCap: pieDAOMarketCap.toString()
+            pieDAOMarketCap: pieDAOMarketCap,
+            pieDAOMarketCapPercentage: 0
           });
 
           // updating the global amount of usd for the main pie of this history entity...
           pieMarketCapUSD = pieMarketCapUSD.plus(pieDAOMarketCap);
         };
+
+        // adding the allocation percentage to each underlying asset...
+        history.underlyingAssets.forEach((asset: any) => {
+          asset.pieDAOMarketCapPercentage = asset.pieDAOMarketCap.times(100).div(pieMarketCapUSD).toString();
+          asset.pieDAOMarketCap = asset.pieDAOMarketCap.toString();
+        });
 
         // finally updating the total amount in usd...
         history.pieDAOMarketCap = pieMarketCapUSD;
