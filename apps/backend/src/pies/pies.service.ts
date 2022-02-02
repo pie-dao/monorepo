@@ -139,21 +139,18 @@ export class PiesService {
   // 0 * * * *
   @Cron('0 * * * *')
   async updateNAVs(test?: boolean): Promise<boolean> {
-    this.logger.debug("updateNAVs is running");
-
     // instance of the pie-getter contract...
     const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
-    const contract = new ethers.Contract(process.env.PIE_GETTER_CONTRACT, pieGetterABI, provider);
+    this.logger.debug(`updateNAVs is running for block ${await provider.getBlockNumber()}`);
 
     // retrieving all pies from database...
     let pies = await this.getPies(undefined, undefined, test);
-    let url = null;
     let coingeckoPiesInfos = {};
 
     // fetching all the basic price/24h-change/marketCap infos for all pies...
     try {
       let ids = pies.map(pie => pie.coingecko_id);
-      url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+      let url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(",")}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
       
       let response = await this.httpService.get(url).toPromise();
       coingeckoPiesInfos = response.data;
@@ -162,12 +159,32 @@ export class PiesService {
     }
 
     // for each pie, we iterate to fetch the underlying assets...
+    let pieHistoryPromises = [];
+
     for(let k = 0; k < pies.length; k++) {
       const pie = new this.pieModel(pies[k]);
+      pieHistoryPromises.push(this.CalculatePieHistory(provider, pie, coingeckoPiesInfos));
+    };
 
+    try {
+      let responses = await Promise.allSettled(pieHistoryPromises);
+      responses.forEach((response: any) => {
+        this.logger.debug(`pie: ${response.value.symbol}, status: ${response.status}`)
+      });
+    } catch(error) {
+      console.error(error);
+    }
+
+    return true;
+  }
+
+  CalculatePieHistory(provider: ethers.providers.JsonRpcProvider, pie: PieDocument, coingeckoPiesInfos: any): Promise<any> {
+    return new Promise(async(resolve, reject) => {
       try {
-        let pieContract = new ethers.Contract(pie.address, erc20, provider);
-        
+        this.logger.debug(`${pie.symbol} - updating nav...`);
+        const contract = new ethers.Contract(process.env.PIE_GETTER_CONTRACT, pieGetterABI, provider);
+
+        let pieContract = new ethers.Contract(pie.address, erc20, provider);        
         let pieSupply = await pieContract.totalSupply();
         let pieDecimals = await pieContract.decimals();
         let piePrecision = new BigNumber(10).pow(pieDecimals);
@@ -177,7 +194,7 @@ export class PiesService {
         let underlyingAssets = result[0];
         let underylingTotals = result[1];
         
-        url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+        let url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
         
         // fetching the prices for each underlying contract...
         let response = await this.httpService.get(url).toPromise();
@@ -250,12 +267,12 @@ export class PiesService {
         let pieDB = await pie.save();
 
         this.logger.debug(`${pie.name} - nav updated`);
+        resolve(pieDB);
       } catch(error) {
         this.logger.error(pie.name, error.message);
+        reject(error);
       }
-    };
-
-    return true;
+    });    
   }
 
   getPies(name?: string, address?: string, test?: boolean): Promise<PieEntity[]> {
@@ -286,11 +303,11 @@ export class PiesService {
             for(let i = 0; i < this.pies.length; i++) {
               pies.push(await this.createPie(this.pies[i]));
             };
-          } else {
-            if(!test) {
-              pies = pies.filter(pie => pie.name != "NOT_EXISTING_PIE");
-            }
-          }     
+          }
+
+          if(!test) {
+            pies = pies.filter(pie => pie.name != "NOT_EXISTING_PIE");
+          }          
       }
 
       if(error) {
