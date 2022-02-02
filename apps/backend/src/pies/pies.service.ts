@@ -193,9 +193,9 @@ export class PiesService {
         let result = await contract.callStatic.getAssetsAndAmountsForAmount(pie.address, pieSupply);
         let underlyingAssets = result[0];
         let underylingTotals = result[1];
-        
+
         let url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
-        
+
         // fetching the prices for each underlying contract...
         let response = await this.httpService.get(url).toPromise();
         let prices = response.data;
@@ -319,7 +319,7 @@ export class PiesService {
     });
   }
 
-  getPieHistory(name?, address?, timestamp?, order?: 'descending' | 'ascending', last?: boolean): Promise<PieHistoryEntity[]> {
+  getPieHistory(name?, address?, from?: string, to?: string, order?: 'descending' | 'ascending', last?: boolean, limit?: number): Promise<PieHistoryEntity[]> {
     return new Promise(async(resolve, reject) => {
       let pie = null;
       let error = null;
@@ -345,10 +345,10 @@ export class PiesService {
 
       if(pie) {
         if(last) {
-          let history = await this.getPieHistoryDetails(pie, 'descending', timestamp, 1);
+          let history = await this.getPieHistoryDetails(pie, order, from, to, limit);
           resolve(history);
         } else {
-          resolve(await this.getPieHistoryDetails(pie, order, timestamp, 50));
+          resolve(await this.getPieHistoryDetails(pie, order, from, to, limit));
         }
       } else {
         reject(error);
@@ -357,14 +357,30 @@ export class PiesService {
     });
   }
 
-  getPieHistoryDetails(pie: PieEntity, order: 'descending' | 'ascending', timestamp: number, limit: number): Promise<PieHistoryEntity[]> {
+  getPieHistoryDetails(pie: PieEntity, order: 'descending' | 'ascending', from: string, to: string, limit: number): Promise<PieHistoryEntity[]> {
     return new Promise(async(resolve, reject) => {
       try {
-        let pieHistories = await this.pieHistoryModel.find({
+        let filters = {
           '_id': { $in: pie.history }
-        })
+        };
+
+        if(from || to) {
+          if(from && to) {
+            filters['timestamp'] = {$gte: from, $lte: to};
+          } else {
+            if(from) {
+              filters['timestamp'] = {$gte: from};
+            }
+
+            if(to) {
+              filters['timestamp'] = {$lte: to};
+            }            
+          }
+        }
+
+        let pieHistories = await this.pieHistoryModel.find(filters)
         .sort({timestamp: order})
-        .limit(limit)
+        .limit(Number(limit))
         .lean();
   
         resolve(pieHistories);        

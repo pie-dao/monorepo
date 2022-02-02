@@ -41,13 +41,16 @@ export class PiesController {
   @ApiBadRequestResponse()
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'address', required: false})
-  @ApiQuery({name: 'timestamp', required: false})
+  @ApiQuery({name: 'from', required: false})
+  @ApiQuery({name: 'to', required: false})
   @ApiQuery({name: 'order', required: false})
   @Get('history')
   async getPieHistory(
     @Query('name') name?: string, 
     @Query('address') address?: string,
-    @Query('timestamp') timestamp?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('limit') limit?: number,
     @Query('order') order?: 'descending' | 'ascending'
   ): Promise<PieHistoryEntity[]> {
     try {
@@ -55,7 +58,11 @@ export class PiesController {
         order = 'descending';
       }
 
-      return await this.piesService.getPieHistory(name, address, timestamp, order, false);
+      if(limit === undefined) {
+        limit = 0;
+      }
+
+      return await this.piesService.getPieHistory(name, address, from, to, order, false, limit);
     } catch(error) {
       throw new NotFoundException(error);
     }
@@ -72,7 +79,7 @@ export class PiesController {
     @Query('address') address?: string
   ): Promise<PieHistoryEntity[]> {
     try {
-      return await this.piesService.getPieHistory(name, address, null, null, true);
+      return await this.piesService.getPieHistory(name, address, null, null, 'descending', true, 1);
     } catch(error) {
       throw new NotFoundException(error);
     }
