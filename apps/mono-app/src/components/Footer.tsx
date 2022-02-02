@@ -1,7 +1,7 @@
 import { useBlock } from "../hooks/useBlock";
 
 const Footer = () => {
-  const block = useBlock();  
+  const block = useBlock();
   return (
     <footer
       className="
@@ -17,15 +17,15 @@ const Footer = () => {
       justify-end
       "
     >
-    <div className="flex w-full align-bottom justify-between">
-      <div className="flex justify-start align-bottom">
-        <p>PieDAO {new Date().getFullYear()}</p>
+      <div className="flex w-full align-bottom justify-between">
+        <div className="flex justify-start align-bottom">
+          <p>PieDAO {new Date().getFullYear()}</p>
+        </div>
+        <div className="flex justify-end">
+          {block.blockNumber && <p>Block {block.blockNumber}</p>}
+        </div>
       </div>
-      <div className="flex justify-end">
-        { block.blockNumber && <p>Block {block.blockNumber}</p>}
-      </div>
-    </div>
     </footer>
-  )
+  );
 };
 export default Footer;

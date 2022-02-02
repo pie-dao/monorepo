@@ -1,22 +1,22 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
-import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react'
-import { PortisConnector } from '@web3-react/portis-connector'
-import { WalletConnectConnector } from './walletConnect'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { Web3Provider } from '@ethersproject/providers'
-import { NetworkConnector } from '@web3-react/network-connector'
-import { chainMap, SupportedChains } from "../utils/networks";
+import { SafeAppConnector } from "@gnosis.pm/safe-apps-web3-react";
+import { WalletConnectConnector } from "./walletConnect";
+import { Web3Provider } from "@ethersproject/providers";
+import { NetworkConnector } from "@web3-react/network-connector";
+import { chainMap } from "../utils/networks";
 
-const supportedChainIds = Object.keys(chainMap).map(s => Number(s));
-const RPC_URLS = ['https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122'];
+const supportedChainIds = Object.keys(chainMap).map((s) => Number(s));
+const RPC_URLS = [
+  "https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122",
+];
 
 export const network = new NetworkConnector({
-  urls: { 137:  RPC_URLS[0]},
-  defaultChainId: 137
-})
+  urls: { 137: RPC_URLS[0] },
+  defaultChainId: 137,
+});
 
 export const injected = new InjectedConnector({
-  supportedChainIds
+  supportedChainIds,
 });
 
 export default function getLibrary(provider: any): Web3Provider {
@@ -26,28 +26,26 @@ export default function getLibrary(provider: any): Web3Provider {
    */
   const library = new Web3Provider(
     provider,
-    typeof provider.chainId === 'number'
+    typeof provider.chainId === "number"
       ? provider.chainId
-      : typeof provider.chainId === 'string'
+      : typeof provider.chainId === "string"
       ? parseInt(provider.chainId)
-      : 'any'
-  )
+      : "any"
+  );
   library.pollingInterval = 12000;
-  return library
+  return library;
 }
 
-
-export const gnosisSafe = new SafeAppConnector()
+export const gnosisSafe = new SafeAppConnector();
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
-    1: 'https://mainnet.infura.io/v3/84842078b09946638c03157f83405213',
+    1: "https://mainnet.infura.io/v3/84842078b09946638c03157f83405213",
   },
   chainId: 1,
-  bridge: 'https://bridge.walletconnect.org',
+  bridge: "https://bridge.walletconnect.org",
   qrcode: true,
-  
-})
+});
 
 // // mainnet only
 // export const portis = new PortisConnector({

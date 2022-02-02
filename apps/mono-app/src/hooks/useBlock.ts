@@ -5,18 +5,18 @@ import { useWeb3Cache } from "./useCachedWeb3";
 type Block = {
   blockNumber: number | null | undefined;
   lastUpdated: Date | undefined;
-}
+};
 
 export const useBlock = (): Block => {
   const { library } = useWeb3React();
   const { chainId } = useWeb3Cache();
   const [block, setBlock] = useState<Block>({
     blockNumber: null,
-    lastUpdated: new Date()
-  })
+    lastUpdated: new Date(),
+  });
   useEffect(() => {
     if (!!library) {
-      let stale = false
+      let stale = false;
 
       library
         .getBlockNumber()
@@ -24,37 +24,37 @@ export const useBlock = (): Block => {
           if (!stale) {
             setBlock({
               blockNumber,
-              lastUpdated: new Date()
-            })
+              lastUpdated: new Date(),
+            });
           }
         })
         .catch(() => {
           if (!stale) {
             setBlock({
               blockNumber: null,
-              lastUpdated: new Date()
-            })
+              lastUpdated: new Date(),
+            });
           }
-        })
+        });
 
       const updateBlockNumber = (blockNumber: number) => {
         setBlock({
           blockNumber,
-          lastUpdated: new Date()
-        })
-      }
-      library.on('block', updateBlockNumber)
+          lastUpdated: new Date(),
+        });
+      };
+      library.on("block", updateBlockNumber);
 
       return () => {
-        stale = true
-        library.removeListener('block', updateBlockNumber)
+        stale = true;
+        library.removeListener("block", updateBlockNumber);
         setBlock({
           blockNumber: undefined,
-          lastUpdated: new Date()
+          lastUpdated: new Date(),
         });
-      }
+      };
     }
-  }, [library, chainId]) // ensures refresh if referential identity of library doesn't change across chainIds
+  }, [library, chainId]); // ensures refresh if referential identity of library doesn't change across chainIds
 
-  return block
-}
+  return block;
+};

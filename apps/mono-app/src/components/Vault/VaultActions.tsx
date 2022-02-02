@@ -1,13 +1,10 @@
-import { ButtonHTMLAttributes, useState } from "react";
-import { Vault } from "../../store/vault/Vault"
+import { useState } from "react";
 import DepositCard from "./Deposit"
 import { SwitcherButton } from "../UI/button";
 import WithdrawCard from "./Withdraw"
-import { useSelectedVault } from "../../hooks/useSelectedVault";
 
 function VaultActions({ loading }: { loading: boolean }) {
   const [depositMode, setDepositMode] = useState(true);
-  const vault = useSelectedVault()
   return (
     <div 
       id="vault-actions" 

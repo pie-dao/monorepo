@@ -1,14 +1,18 @@
-import { configureStore, ThunkAction, Action, combineReducers, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import vaultReducer from './vault/vault.slice';
-import appReducer from './app/app.slice';
+import {
+  configureStore,
+  ThunkAction,
+  Action,
+  combineReducers,
+} from "@reduxjs/toolkit";
+import vaultReducer from "./vault/vault.slice";
+import appReducer from "./app/app.slice";
 import memoize from "proxy-memoize";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 
-
 export const rootReducer = combineReducers({
   vault: vaultReducer,
-  app: appReducer
+  app: appReducer,
 });
 
 export const store = configureStore({

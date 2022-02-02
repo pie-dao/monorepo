@@ -7,7 +7,7 @@ import { MissingDecimalsError, TXRejectedError } from "../../errors";
 import { Erc20 } from "../../types/artifacts/abi";
 import { useState } from "react";
 import { useAppDispatch } from "../../hooks";
-import { setApproval, setLoading } from "../../store/vault/vault.slice";
+import { setApproval } from "../../store/vault/vault.slice";
 import StyledButton from "../UI/button";
 import CardItem from "../UI/cardItem";
 import { useSelectedVault } from "../../hooks/useSelectedVault";

@@ -1,5 +1,5 @@
 import { scrollTo } from "../utils/scroll";
-import { ReactComponent as Logo } from '../logo.svg';
+import { ReactComponent as Logo } from "../logo.svg";
 
 /**
  * This file is intended to be moved to a parent repository delivered to the user
@@ -29,7 +29,7 @@ const Hero = (): JSX.Element => (
           my-2
           sm:my-1
           "
-          onClick={() => scrollTo('content', 100)}
+          onClick={() => scrollTo("content", 100)}
         >
           Get Started
         </button>
@@ -45,7 +45,7 @@ const Hero = (): JSX.Element => (
       </section>
       <Logo
         className="h-10 w-10 absolute bottom-10 animate-bounce"
-        onClick={() => scrollTo('content', 100)}
+        onClick={() => scrollTo("content", 100)}
       />
     </section>
   </section>

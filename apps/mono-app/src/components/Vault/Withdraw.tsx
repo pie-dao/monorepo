@@ -5,7 +5,7 @@ import { MissingDecimalsError, TXRejectedError } from "../../errors";
 import { useMonoVaultContract } from "../../hooks/useContract";
 import { useSelectedVault } from "../../hooks/useSelectedVault"
 import { Balance, Vault } from "../../store/vault/Vault";
-import { prettyNumber, toBalance } from "../../utils";
+import { prettyNumber } from "../../utils";
 import StyledButton from "../UI/button";
 import CardItem from "../UI/cardItem";
 import { NotYetReadyToWithdrawError } from '../../errors';

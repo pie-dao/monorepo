@@ -1,17 +1,16 @@
-import { Contract } from "@ethersproject/contracts"
-import { useWeb3React } from "@web3-react/core"
-import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers"
-import { useMemo } from "react"
-import { MulticallProvider } from "@0xsequence/multicall/dist/declarations/src/providers"
-import { providers } from "@0xsequence/multicall"
-import { Erc20 } from "../types/artifacts/abi/Erc20"
-import ERC20ABI from '../abi/erc20.json'
-import { Mono } from "../types/artifacts/abi"
-import MonoABI from '../abi/mono.json'
-import { ProviderNotActivatedError } from "../errors"
-import getLibrary from "../connectors"
-import { Web3ReactContextInterface } from "@web3-react/core/dist/types"
-import { useWeb3Cache } from "./useCachedWeb3"
+import { Contract } from "@ethersproject/contracts";
+import { useWeb3React } from "@web3-react/core";
+import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import { useMemo } from "react";
+import { MulticallProvider } from "@0xsequence/multicall/dist/declarations/src/providers";
+import { providers } from "@0xsequence/multicall";
+import { Erc20 } from "../types/artifacts/abi/Erc20";
+import ERC20ABI from "../abi/erc20.json";
+import { Mono } from "../types/artifacts/abi";
+import MonoABI from "../abi/mono.json";
+import { ProviderNotActivatedError } from "../errors";
+import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
+import { useWeb3Cache } from "./useCachedWeb3";
 
 function getMulticallProvider(library: Web3Provider): MulticallProvider {
   /**
@@ -21,37 +20,41 @@ function getMulticallProvider(library: Web3Provider): MulticallProvider {
 }
 
 function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
-  return library.getSigner(account).connectUnchecked()
+  return library.getSigner(account).connectUnchecked();
 }
 
-function getProviderOrSigner(library: Web3Provider, account?: string | null, preferMulticall?: boolean): MulticallProvider | JsonRpcSigner {
+function getProviderOrSigner(
+  library: Web3Provider,
+  account?: string | null,
+  preferMulticall?: boolean
+): MulticallProvider | JsonRpcSigner {
   /**
    * We currently batch multiple reads through multicall contract
    * But may need to pass write data individually
    */
-  return (!preferMulticall && account)
+  return !preferMulticall && account
     ? getSigner(library, account)
-    : getMulticallProvider(library)
+    : getMulticallProvider(library);
 }
 
 export function useContract<T extends Contract>(
   address?: string,
-  ABI?: any,
+  ABI?: any
 ): T | undefined {
   const { chainId } = useWeb3Cache();
-  const { library, account, active } = useWeb3React<Web3Provider>()
+  const { library, account, active } = useWeb3React<Web3Provider>();
 
   return useMemo(() => {
-    if (!address || !ABI || !library || !chainId) return undefined
+    if (!address || !ABI || !library || !chainId) return undefined;
     try {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
       return new Contract(address, ABI, providerSigner);
     } catch (error) {
-      console.error('Failed to get contract', error)
-      return undefined
+      console.error("Failed to get contract", error);
+      return undefined;
     }
-  }, [address, ABI, library, chainId]) as T
+  }, [address, ABI, library, chainId, account, active]) as T;
 }
 
 export function useTokenContract(tokenAddress?: string) {
@@ -67,7 +70,12 @@ export function useMultipleTokenContract(
   preferMulticall?: boolean,
   chainId?: number
 ): Erc20[] {
-  return useMultipleContracts<Erc20>(tokenAddresses, ERC20ABI, preferMulticall, chainId) as Erc20[]
+  return useMultipleContracts<Erc20>(
+    tokenAddresses,
+    ERC20ABI,
+    preferMulticall,
+    chainId
+  ) as Erc20[];
 }
 
 export function useMultipleMonoContract(
@@ -75,7 +83,12 @@ export function useMultipleMonoContract(
   preferMulticall?: boolean,
   chainId?: number
 ): Mono[] {
-  return useMultipleContracts<Mono>(vaultAddresses, MonoABI, preferMulticall, chainId) as Mono[]
+  return useMultipleContracts<Mono>(
+    vaultAddresses,
+    MonoABI,
+    preferMulticall,
+    chainId
+  ) as Mono[];
 }
 
 export function useMultipleContracts<T extends Contract>(
@@ -86,16 +99,10 @@ export function useMultipleContracts<T extends Contract>(
 ) {
   const context = useWeb3React();
   return useMemo(() => {
-    if (!addresses || !ABI || !context.library || !chainId) return []
-    return addresses.map(a => getContract(context, a, ABI, preferMulticall))
-  }, [
-    addresses,
-    ABI,
-    context.account,
-    context.library
-  ]) as T[]
+    if (!addresses || !ABI || !context.library || !chainId) return [];
+    return addresses.map((a) => getContract(context, a, ABI, preferMulticall));
+  }, [addresses, ABI, preferMulticall, context, chainId]) as T[];
 }
-
 
 const getContract = (
   context: Web3ReactContextInterface,
@@ -106,10 +113,14 @@ const getContract = (
   const { library, account, active } = context;
   try {
     if (!active) throw new ProviderNotActivatedError();
-    const providerSigner = getProviderOrSigner(library, account, preferMulticall);
+    const providerSigner = getProviderOrSigner(
+      library,
+      account,
+      preferMulticall
+    );
     return new Contract(address, ABI, providerSigner);
   } catch (error) {
-    console.error('Failed to get contract', error)
-    return undefined
+    console.error("Failed to get contract", error);
+    return undefined;
   }
-}
+};

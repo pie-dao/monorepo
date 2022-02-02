@@ -45,7 +45,7 @@ const fetchIcon = (name: string): ReactNode => {
       return (<DAIIcon colors={{ bg: 'orange', primary: 'white' }}/>)
     }
     default: {
-      return (<img src={logoFile} />)
+      return (<img alt="piedao-logo" src={logoFile} />)
     }
   } 
 

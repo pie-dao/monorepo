@@ -18,7 +18,7 @@ const useFallBack = () => {
   const { chainId } = useWeb3Cache();
   useEffect(() => {
     if (!active) activate(network)
-  }, [active, chainId])
+  }, [active, chainId, activate])
 }
 
 const useConnectedWallet = () => {
@@ -95,7 +95,7 @@ const Header = () => {
       "
     >
       <div className="flex justify-start">
-        <img src={logoFile} className="h-14 ml-2 w-14 flex-grow-1 basis-0"/>
+        <img src={logoFile} alt="piedao-logo" className="h-14 ml-2 w-14 flex-grow-1 basis-0"/>
       </div>
         <h1 className="m-auto">Auxo Vaults</h1>
       <div className="flex justify-end items-center">
