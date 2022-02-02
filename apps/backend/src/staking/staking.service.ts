@@ -298,7 +298,6 @@ export class StakingService {
         let delegates: Delegate[] = await this.getDelegates();
         // including the delegtors into participations...
         let participationsIncludesDelegates = this.includeDelegates(participations, delegates);
-        console.log("resolving participations", participationsIncludesDelegates);
         resolve(participationsIncludesDelegates);
       } catch (error) {
         reject(error);
