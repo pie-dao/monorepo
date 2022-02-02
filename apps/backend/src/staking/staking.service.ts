@@ -274,7 +274,6 @@ export class StakingService {
 
         // retrieving the stakers from our subgraph...
         let stakers = await this.getStakers(null, blockNumber, null);
-        console.log("generating participation", stakers, votes);
 
         // generating the participations...
         const participations = [];
