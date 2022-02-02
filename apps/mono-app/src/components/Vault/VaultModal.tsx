@@ -36,8 +36,8 @@ const Divider = ({ props }: { props?: React.HTMLProps<HTMLDivElement> }) => (
   />
 )
 
-const fetchIcon = (name: string): ReactNode => {
-  switch (name.toLowerCase()) {
+const fetchIcon = (sym: string): ReactNode => {
+  switch (sym.toLowerCase()) {
     case 'usdc': {
       return (<USDCIcon colors={{ primary: '#a50bce', bg: 'white' }}/>)
     }
@@ -66,7 +66,7 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
     "
   >
     <CardIcon>
-      { fetchIcon(vault.name) }
+      { fetchIcon(vault.symbol) }
     </CardIcon>
     <div className="absolute right-3 top-3">
       <p className={`text-sm p-1 text-white rounded-lg font-extrabold

@@ -6,8 +6,9 @@ import { MulticallProvider } from "@0xsequence/multicall/dist/declarations/src/p
 import { providers } from "@0xsequence/multicall";
 import { Erc20 } from "../types/artifacts/abi/Erc20";
 import ERC20ABI from "../abi/erc20.json";
-import { Mono } from "../types/artifacts/abi";
 import MonoABI from "../abi/mono.json";
+import MerkleAuthABI from "../abi/MerkleAuth.json";
+import { MerkleAuth, Mono } from "../types/artifacts/abi";
 import { ProviderNotActivatedError } from "../errors";
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import { useWeb3Cache } from "./useCachedWeb3";
@@ -65,6 +66,10 @@ export function useMonoVaultContract(vaultAddress?: string) {
   return useContract<Mono>(vaultAddress, MonoABI);
 }
 
+export function useMerkleAuthContract(vaultAddress?: string) {
+  return useContract<MerkleAuth>(vaultAddress, MerkleAuthABI);
+}
+
 export function useMultipleTokenContract(
   tokenAddresses?: string[],
   preferMulticall?: boolean,
@@ -89,6 +94,19 @@ export function useMultipleMonoContract(
     preferMulticall,
     chainId
   ) as Mono[];
+}
+
+export function useMultipleMerkleAuthContract(
+  authAddress?: string[],
+  preferMulticall?: boolean,
+  chainId?: number
+): MerkleAuth[] {
+  return useMultipleContracts<MerkleAuth>(
+    authAddress,
+    MerkleAuthABI,
+    preferMulticall,
+    chainId
+  ) as MerkleAuth[];
 }
 
 export function useMultipleContracts<T extends Contract>(

@@ -23,7 +23,7 @@ const Vaults = () => {
     className="flex flex-row flex-wrap w-full items-center justify-center m-20"
   >
     {vaults.map(v => (
-      <VaultModal key={v.symbol} vault={v} />
+      <VaultModal key={v.name} vault={v} />
     ))}
   </section>
   )

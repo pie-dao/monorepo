@@ -5,7 +5,7 @@ import { Balance, Vault } from "../../store/vault/Vault";
 import { prettyNumber } from "../../utils";
 import { MissingDecimalsError, TXRejectedError } from "../../errors";
 import { Erc20 } from "../../types/artifacts/abi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks";
 import { setApproval } from "../../store/vault/vault.slice";
 import StyledButton from "../UI/button";
@@ -15,6 +15,7 @@ import LoadingSpinner from "../UI/loadingSpinner";
 import { checkForEvent } from "../../utils/event";
 import { zeroBalance } from "../../utils/balances";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
+import MerkleVerify, { useDepositor } from "./MerkleAuthCheck";
 
 const conditionallyApprove = async ({
   allowance,
@@ -179,6 +180,7 @@ function DepositInput({ vault }: { vault: Vault }) {
 
 function DepositCard({ loading }: { loading: boolean }) {
   const vault = useSelectedVault();
+  const loadingDepositor = useDepositor(vault?.auth.address, vault?.address);
   if (!vault) return <p>Failed to Load</p> 
   return (
     <section className="flex flex-col justify-evenly h-full items-center">
@@ -198,7 +200,8 @@ function DepositCard({ loading }: { loading: boolean }) {
           left={`Your Vault Token balance`}
           right={ prettyNumber(vault?.userBalances?.vault.label) }
       />
-      <DepositInput vault={vault} />
+      { loadingDepositor ? <div>LOADING...</div> :
+        vault.auth.isDepositor ? <DepositInput vault={vault} /> : <MerkleVerify vault={vault}/>}
     </section>     
   )
 }

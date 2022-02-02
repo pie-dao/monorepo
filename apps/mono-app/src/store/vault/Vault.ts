@@ -41,8 +41,9 @@ export interface UserBalances {
   }
 }
 
-export interface UserWithdrawals {
-
+export interface VaultAuth {
+  address: string;
+  isDepositor: boolean;
 }
 
 /**
@@ -50,9 +51,9 @@ export interface UserWithdrawals {
  */
 export interface Vault extends BasicVaultInformation {
   token: VaultToken;
+  auth: VaultAuth;
   stats?: VaultStats;
   userBalances?: UserBalances
-  withdrawals?: UserWithdrawals
 }
 
 export interface VaultState {
