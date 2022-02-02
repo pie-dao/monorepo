@@ -5,15 +5,21 @@ import { Web3Provider } from "@ethersproject/providers";
 import { NetworkConnector } from "@web3-react/network-connector";
 import { chainMap } from "../utils/networks";
 
-const supportedChainIds = Object.keys(chainMap).map((s) => Number(s));
-const RPC_URLS = [
-  "https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122",
+const supportedChainIds = Object.keys(chainMap).map(s => Number(s));
+export const RPC_URLS = [
+  'https://mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122',
+  'https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122',
+  'https://rpc.ftm.tools/'
 ];
 
 export const network = new NetworkConnector({
-  urls: { 137: RPC_URLS[0] },
-  defaultChainId: 137,
-});
+  urls: {
+    1: RPC_URLS[0],
+    137: RPC_URLS[1],
+    250: RPC_URLS[2]
+  },
+  defaultChainId: 250
+})
 
 export const injected = new InjectedConnector({
   supportedChainIds,
