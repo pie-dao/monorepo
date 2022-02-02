@@ -33,7 +33,7 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  marketCapUSD: BigNumber;
+  pieDAOMarketCap: BigNumber;
 
   @Prop()
   @ApiProperty()

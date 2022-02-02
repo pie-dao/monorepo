@@ -177,7 +177,7 @@ export class PiesService {
         let underlyingAssets = result[0];
         let underylingTotals = result[1];
         
-        url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd`;
+        url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(',')}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
         
         // fetching the prices for each underlying contract...
         let response = await this.httpService.get(url).toPromise();
@@ -206,7 +206,7 @@ export class PiesService {
 
           // calculating the value in usd for a given amount of underlyingAsset...
           let usdPrice = prices[underlyingAssets[i].toLowerCase()].usd;
-          let marketCapUSD = new BigNumber(underylingTotals[i].toString()).times(usdPrice).div(precision);
+          let pieDAOMarketCap = new BigNumber(underylingTotals[i].toString()).times(usdPrice).div(precision);
 
           // refilling the underlyingAssets of the History Entity...
           history.underlyingAssets.push({
@@ -214,16 +214,16 @@ export class PiesService {
             symbol: symbol, 
             decimals: decimals,
             amount: underylingTotals[i].toString(),
-            usdPrice: usdPrice.toString(),
-            marketCapUSD: marketCapUSD.toString()
+            token_info: prices[underlyingAssets[i].toLowerCase()],
+            pieDAOMarketCap: pieDAOMarketCap.toString()
           });
 
           // updating the global amount of usd for the main pie of this history entity...
-          pieMarketCapUSD = pieMarketCapUSD.plus(marketCapUSD);
+          pieMarketCapUSD = pieMarketCapUSD.plus(pieDAOMarketCap);
         };
 
         // finally updating the total amount in usd...
-        history.marketCapUSD = pieMarketCapUSD;
+        history.pieDAOMarketCap = pieMarketCapUSD;
         history.totalSupply = pieSupply;
         history.decimals = pieDecimals;
         history.nav = (pieMarketCapUSD.toNumber() / totalSupply.toNumber());
