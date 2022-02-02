@@ -13,14 +13,14 @@ import { PiesService } from './pies.service';
 export class PiesController {
   constructor(private readonly piesService: PiesService) {}
 
-  @Get('updatenavs')
-  async updateNavs(): Promise<boolean> {
-    try {
-      return await this.piesService.updateNAVs();
-    } catch(error) {
-      throw new NotFoundException(error);
-    }
-  }
+  // @Get('updatenavs')
+  // async updateNavs(): Promise<boolean> {
+  //   try {
+  //     return await this.piesService.updateNAVs();
+  //   } catch(error) {
+  //     throw new NotFoundException(error);
+  //   }
+  // }
 
   @ApiOkResponse({type: PieEntity, isArray: true})
   @ApiNotFoundResponse()
@@ -55,11 +55,28 @@ export class PiesController {
         order = 'descending';
       }
 
-      return await this.piesService.getPieHistory(name, address, timestamp, order);
+      return await this.piesService.getPieHistory(name, address, timestamp, order, false);
     } catch(error) {
       throw new NotFoundException(error);
     }
   };  
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({name: 'name', required: false})
+  @ApiQuery({name: 'address', required: false})
+  @Get('latest-history')
+  async getLastPieHistory(
+    @Query('name') name?: string, 
+    @Query('address') address?: string
+  ): Promise<PieHistoryEntity[]> {
+    try {
+      return await this.piesService.getPieHistory(name, address, null, null, true);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }; 
 
   @ApiOkResponse({type: PieEntity, isArray: false})
   @ApiNotFoundResponse()

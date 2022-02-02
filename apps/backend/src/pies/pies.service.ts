@@ -319,7 +319,7 @@ export class PiesService {
     });
   }
 
-  getPieHistory(name?, address?, timestamp?, order?: 'descending' | 'ascending'): Promise<PieHistoryEntity[]> {
+  getPieHistory(name?, address?, timestamp?, order?: 'descending' | 'ascending', last?: boolean): Promise<PieHistoryEntity[]> {
     return new Promise(async(resolve, reject) => {
       let pie = null;
       let error = null;
@@ -344,7 +344,12 @@ export class PiesService {
       }
 
       if(pie) {
-        resolve(await this.getPieHistoryDetails(pie, order));
+        if(last) {
+          let history = await this.getPieHistoryDetails(pie, 'descending', timestamp, 1);
+          resolve(history);
+        } else {
+          resolve(await this.getPieHistoryDetails(pie, order, timestamp, 50));
+        }
       } else {
         reject(error);
       }
@@ -352,12 +357,15 @@ export class PiesService {
     });
   }
 
-  getPieHistoryDetails(pie: PieEntity, order: 'descending' | 'ascending'): Promise<PieHistoryEntity[]> {
+  getPieHistoryDetails(pie: PieEntity, order: 'descending' | 'ascending', timestamp: number, limit: number): Promise<PieHistoryEntity[]> {
     return new Promise(async(resolve, reject) => {
       try {
         let pieHistories = await this.pieHistoryModel.find({
           '_id': { $in: pie.history }
-        }).sort({timestamp: order}).lean();
+        })
+        .sort({timestamp: order})
+        .limit(limit)
+        .lean();
   
         resolve(pieHistories);        
       } catch(error) {
