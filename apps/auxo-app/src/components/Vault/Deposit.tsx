@@ -5,7 +5,7 @@ import { Balance, Vault } from "../../store/vault/Vault";
 import { prettyNumber } from "../../utils";
 import { MissingDecimalsError, TXRejectedError } from "../../errors";
 import { Erc20 } from "../../types/artifacts/abi";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch } from "../../hooks";
 import { setApproval } from "../../store/vault/vault.slice";
 import StyledButton from "../UI/button";

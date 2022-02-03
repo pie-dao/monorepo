@@ -2,13 +2,10 @@ import { BytesLike } from "@ethersproject/bytes";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks";
-import { useMerkleAuthContract, useMonoVaultContract } from "../../hooks/useContract"
-import { useSelectedVault } from "../../hooks/useSelectedVault"
+import { useMerkleAuthContract } from "../../hooks/useContract"
 import MerkleProofs from '../../static/stakers-merkle-tree.json';
-import { useProxySelector } from "../../store";
 import { Vault } from "../../store/vault/Vault";
 import { setIsDepositor } from "../../store/vault/vault.slice";
-import { checkForEvent } from "../../utils/event";
 import StyledButton from "../UI/button";
 
 const getProof = (account?: string | null): BytesLike[] | undefined => {
@@ -36,7 +33,7 @@ export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
         .catch(() => console.warn('isDepositor failed'))
         .finally(() => setLoading(false))
     }
-  }, [account, vaultAddress]);
+  }, [account, vaultAddress, authContract, dispatch]);
   return loading
 }
 
@@ -64,7 +61,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
     } else {
       console.warn('Proof or account missing')
     }
-  }, [account, proof])
+  }, [account, proof, authContract, dispatch, vault.address])
   const needsToVerifyString = 'You Need to verify before you can take this action'
   const verifiedString = 'Account has been verfied';
   const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
