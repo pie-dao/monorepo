@@ -1,4 +1,6 @@
 import Image from "next/image";
+import pieDaoLogo from "../public/piedao_logo.png";
+import separator from "../public/separator.svg";
 import arrowUp from "../public/arrow_green.svg";
 import content from "../content/en_EN.json";
 import Button from "./Button";
@@ -7,12 +9,18 @@ const Hero = ({}) => {
   return (
     <section
       className={`
-      bg-primary w-full justify-evenly content-center 
-      text-center m-10 md:py-40 bg-no-repeat bg-cover 
-      -bg-[center_top_1rem] bg-[url('/bg_lines.svg')]`}
+      bg-primary w-full justify-evenly content-center grid
+      text-center min-h-screen bg-no-repeat bg-cover 
+      -bg-[center_top_1rem] bg-[url('/bg_lines.svg')] mb-8`}
     >
       <div className="px-6 md:px-24 container mx-auto">
-        <div className="pb-8">
+        <div className="hidden md:block mb-8">
+          <Image src={pieDaoLogo} alt="PieDao Logo" />
+        </div>
+        <div className="hidden md:block mb-10">
+          <Image src={separator} alt="separator" />
+        </div>
+        <div className="mb-12">
           <h2 className="font-bold uppercase text-sm md:text-xl">
             {content.hero.sub_title}
           </h2>
@@ -35,10 +43,10 @@ const Hero = ({}) => {
           </p>
         </div>
         <div>
-          <Button className="uppercase" gradient large>
+          <Button className="uppercase mb-4" gradient large>
             {content.hero.call_to_action}
           </Button>
-          <div className="p-4 flex justify-center relative flex-col items-center">
+          <div className="flex justify-center relative flex-col items-center">
             <Image src={arrowUp} alt="arrow up" className="up" />
             <h5 className="glitch mt-2">
               <span aria-hidden="true">{content.hero.call_to_text}</span>

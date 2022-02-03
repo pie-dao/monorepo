@@ -28,7 +28,7 @@ const ScrollingBoxes = ({}) => {
               speed={1000}
               slidesPerView={"auto"}
               centeredSlides
-              watchSlidesProgress
+              updateOnWindowResize
               breakpoints={{
                 768: {
                   spaceBetween: -70,

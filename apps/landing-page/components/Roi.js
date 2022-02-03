@@ -7,14 +7,14 @@ import content from "../content/en_EN.json";
 const Roi = ({}) => {
   return (
     <section className={`w-full pt-10`}>
-      <div className="bg-secondary relative grid content-around justify-center p-8 w-full h-96">
+      <div className="bg-secondary relative grid content-around justify-center my-24 w-full">
         {/* <img className="z-20 absolute -top-10" src="./bg_big_line_2.svg" />
         <img className="z-40 absolute -top-16" src="./bg_big_line_1.svg" /> */}
-        <div className="bg-highlight z-20 relative -top-10 uppercase text-2xl p-4 rounded-xl flex flex-col items-center justify-center">
+        <div className="bg-highlight z-20 relative -top-16 sm:-top-12 text-2xl p-4 mx-4 rounded-xl flex flex-col items-center justify-center text-center">
           <p className="font-light">If you had bought PLAY in March 2021</p>
           <p className="font-bold">you would have an ROI of 255%</p>
         </div>
-        <div className="bg-black z-20 relative uppercase text-xl p-4 rounded-xl flex flex-col items-center justify-center">
+        <div className="bg-black z-20 relative uppercase text-xl p-4 md:rounded-xl flex flex-col items-center justify-center">
           <div className="w-full flex mb-4 flex-col md:flex-row">
             <div className="w-full md:w-1/4 flex flex-col items-center text-center justify-center">
               <p className="text-gradient">100$</p>

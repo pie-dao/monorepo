@@ -22,10 +22,10 @@ const Methodology = ({}) => {
   };
   return (
     <section
-      className={`bg-primary w-full justify-evenly flex-col content-center text-center flexmd:flex-col overflow-hidden`}
+      className={`bg-primary w-full justify-evenly flex-col content-center text-center flexmd:flex-col overflow-hidden container mx-auto`}
     >
       <div className="flex mb-4 ml-12 mr-12">
-        <div className="w-full pt-[5pc] content-center text-center">
+        <div className="w-full content-center text-center">
           <h1 className="text-4xl text-highlight uppercase">
             Methodology <span className="font-bold">& Strategy</span>
           </h1>

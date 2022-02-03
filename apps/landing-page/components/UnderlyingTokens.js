@@ -1,15 +1,29 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
+import tokenImages from "../public/assets";
 import playLogo from "../public/play_icon.svg";
-import content from "../content/en_EN.json";
-import pies from "../config/pies.json";
+import { useMemo } from "react";
+import gradientPicker from "../utils/gradientPicker";
 
-const ScrollingBoxes = ({}) => {
-  let play = pies["0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"];
+const ScrollingBoxes = ({ underlyingAssets }) => {
+  const sortedAssets = useMemo(() => {
+    return underlyingAssets.sort((a, b) => {
+      return b.pieDAOMarketCapPercentage - a.pieDAOMarketCapPercentage;
+    });
+  }, [underlyingAssets]);
+
+  const relativePercentage = (underlyingPercentage) => {
+    const maxPercentage = sortedAssets[0].pieDAOMarketCapPercentage;
+    return ((underlyingPercentage * 100) / maxPercentage).toFixed(2);
+  };
+
+  const barColor = (ratio) => {
+    return gradientPicker([215, 11, 154], [143, 235, 255], ratio);
+  };
 
   return (
     <section
-      className={`w-full justify-evenly content-center text-center relative overflow-hidden lg:overflow-visible`}
+      className={`w-full justify-evenly content-center text-center relative overflow-hidden lg:overflow-visible mb-20`}
     >
       {/*
       <img
@@ -37,8 +51,7 @@ const ScrollingBoxes = ({}) => {
       <div className="-mt-12 relative z-1">
         <Image src={playLogo} alt="play logo" />
       </div>
-
-      <div className="container mx-auto relative rounded-xl">
+      <div className="relative rounded-xl">
         <Swiper
           spaceBetween={10}
           slidesPerView={"auto"}
@@ -46,39 +59,52 @@ const ScrollingBoxes = ({}) => {
           watchSlidesProgress
           breakpoints={{
             768: {
-              centeredSlides: false,
+              centeredSlides: true,
+              initialSlide: 3,
             },
           }}
           className="w-full"
         >
-          {play.composition.map((pie) => {
-            return (
-              <SwiperSlide key={pie.address} className="w-[150px] mt-6">
-                {({ isActive }) => (
-                  <div
-                    className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
-                      !isActive && "opacity-75 md:opacity-100"
-                    }`}
-                  >
-                    <div className="absolute -top-6 left-3">
-                      <Image
-                        src={`/assets/${pie.icon}`}
-                        width={60}
-                        height={60}
-                        alt={pie.name}
-                      />
+          {sortedAssets.map(
+            ({ address, symbol, token_info, pieDAOMarketCapPercentage }) => {
+              const imageObj = tokenImages.find(
+                (token) => token.name === symbol
+              );
+              const percentage = (+pieDAOMarketCapPercentage).toFixed(2);
+              const relPerc = relativePercentage(percentage);
+              return (
+                <SwiperSlide key={address} className="w-[150px] mt-6">
+                  {({ isActive }) => (
+                    <div
+                      className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
+                        !isActive && "opacity-75 md:opacity-100"
+                      }`}
+                    >
+                      <div className="absolute -top-6 left-3">
+                        <Image src={imageObj.image} alt={symbol} />
+                      </div>
+                      <div className="w-full relative">
+                        <p className="w-full text-md pt-8 pb-6">
+                          {percentage}%
+                        </p>
+                        <p className="text-xl font-extrabold">{symbol}</p>
+                        <p className="text-xl font-bold text-highlight">
+                          {token_info.usd.toFixed(2)}$
+                        </p>
+                        <div
+                          className={`bg-blue-600 rounded-full w-2.5 absolute bottom-0 right-0`}
+                          style={{
+                            height: `${relPerc}%`,
+                            backgroundColor: `${barColor(relPerc)}`,
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="w-full relative">
-                      <p className="w-full text-sm pt-8 pb-6">23%</p>
-                      <p className="text-xl text-bold">{pie.symbol}</p>
-                      <p className="text-xl text-bold text-highlight">3.45$</p>
-                      <div className="bg-blue-600 h-[70%] rounded-full w-2.5 absolute bottom-0 right-0"></div>
-                    </div>
-                  </div>
-                )}
-              </SwiperSlide>
-            );
-          })}
+                  )}
+                </SwiperSlide>
+              );
+            }
+          )}
         </Swiper>
       </div>
     </section>
