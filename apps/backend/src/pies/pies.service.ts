@@ -11,8 +11,13 @@ import * as erc20byte32 from './abis/erc20byte32.json';
 import { PieHistoryDocument, PieHistoryEntity } from './entities/pie-history.entity';
 import { BigNumber } from 'bignumber.js';
 import { HttpService } from '@nestjs/axios';
+import * as moment from 'moment';
+import * as ethDater from 'ethereum-block-by-date';
+import { Command, Console, createSpinner } from 'nestjs-console';
+import * as fs from 'fs';
 
 @Injectable()
+@Console()
 export class PiesService {
   private pies = [
     {
@@ -125,13 +130,145 @@ export class PiesService {
     },
   ];
 
+  // 08/06/2021 - PieGetter Contract Creation Date
+  // private startingBlockNumber = 12595880;
+
+  // 01/01/2022 - Custom Starting Date of your choise
+  private startingBlockNumber = 13916166;
+
   private readonly logger = new Logger(PiesService.name);
+  private blockSpin = createSpinner();
+  private blockToBeFetched = 0;
+  private blockResolved = 0;
+  private blockRejected = 0;
 
   constructor(
     private httpService: HttpService,
     @InjectModel(PieEntity.name) private pieModel: Model<PieDocument>,
     @InjectModel(PieHistoryEntity.name) private pieHistoryModel: Model<PieHistoryDocument>
   ) {}
+
+  private fetchBlockFromTimestamp(timestamp: number, provider: ethers.providers.JsonRpcProvider, retry?: number): Promise<any> {
+    return new Promise(async(resolve, reject) => {
+      try {
+        const ethDaterHelper = new ethDater(provider);
+
+        let block = await ethDaterHelper.getDate(
+          timestamp,
+          true
+        );
+
+        // console.log(`RETRY: ${retry} -----> good for ${timestamp}, going to resolve...`);
+        this.blockResolved += 1;
+
+        if(retry) {
+          this.blockRejected -= retry;
+        }
+
+        this.blockSpin.text = `waiting for ${this.blockToBeFetched} blocks: resolved ${this.blockResolved}, rejected ${this.blockRejected}`;
+        resolve(block);
+      } catch(error) {
+        // console.error(`RETRY: ${retry} -----> error for ${timestamp}: ${error.message}, going to retry...`);
+        retry = retry ? retry++ : 1;
+        this.blockRejected += 1;
+        resolve(this.fetchBlockFromTimestamp(timestamp, provider, retry));
+      }
+    });
+  }
+
+  private async generateBackBlocks(provider: ethers.providers.JsonRpcProvider): Promise<Array<any>> {
+    // retrieving the start block infos from the chain...
+    let startBlock = await provider.getBlock(this.startingBlockNumber);
+    // removing minutes and seconds, and add 1 hour, to start fresh and clean...
+    let startTimestamp = moment(startBlock.timestamp * 1000).minutes(0).seconds(0).add(1, 'hour');
+    // calculating latest hour timestamp, starting from current block from chain...
+    let latestValidBlock = await provider.getBlock(await provider.getBlockNumber());
+    let endTimestamp = moment(latestValidBlock.timestamp * 1000).minutes(0).seconds(0);
+
+    this.blockSpin.info(`startTimestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
+    this.blockSpin.info(`endTimestamp: ${endTimestamp.toDate().getTime()} - ${endTimestamp.format('DD/MM/YYYY')}`);
+
+    // iterating all over the timestamps in the range of interest...
+    let backTimestamp = startTimestamp;
+    let backBlocksPromises = [];
+
+    while(
+      (backTimestamp.toDate().getTime() < endTimestamp.toDate().getTime())
+    ) {
+      backBlocksPromises.push(
+        this.fetchBlockFromTimestamp(backTimestamp.toDate().getTime(), provider)
+      );
+
+      backTimestamp = backTimestamp.add(1, 'hour');
+    }
+
+    // and calculate the relative Blocks in parallel promises...
+    this.blockToBeFetched = backBlocksPromises.length;
+    this.blockSpin.start(`waiting for ${this.blockToBeFetched} blocks to be fetched...`);
+    let backBlocksResponses = await Promise.allSettled(backBlocksPromises);
+    // filtering out the rejected ones, if any...
+    backBlocksResponses = backBlocksResponses.filter((response: any) => response.status == 'fulfilled');
+    // mapping out the blockNumber object...
+    backBlocksResponses = backBlocksResponses.map((response: any) => response.value);
+
+    try {
+      fs.writeFileSync('src/pies/blocks_history/blocks.json', JSON.stringify(backBlocksResponses), {flag: 'w+'});
+    } catch(error) {
+      console.error(error.message);
+    }
+
+    this.blockSpin.info(`total blocks to be processed ${backBlocksResponses.length}`);
+    return backBlocksResponses;
+  }
+
+  @Command({
+    command: 'generate-pies-back-history',
+    description: 'Generate back history for pies.'
+  })
+  async generatePiesBackHistory(): Promise<boolean> {
+    let beginning = moment().format('YYYY-MM-DD HH:mm:ss');
+    this.blockSpin.info(`Generating the back history for all pies, started at ${beginning}`);
+        
+    const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
+    
+    // retrieving all the backBlocks, from this.startingBlockNumber up to date...
+    let backBlocks = await this.generateBackBlocks(provider);
+
+    // // retrieving all pies from database...
+    // let pies = await this.getPies(undefined, undefined, false);
+
+    // // for each block, from past to present...
+    // backBlocks.forEach(async(backBlock) => {
+    //   // for each pie, we iterate to fetch the underlying assets...
+    //   for(let k = 0; k < pies.length; k++) {
+    //     const pie = new this.pieModel(pies[k]);
+        
+    //     try {
+    //       if(pie.symbol == "PLAY") {
+    //         const contract = new ethers.Contract(process.env.PIE_GETTER_CONTRACT, pieGetterABI, provider);
+    //         let pieContract = new ethers.Contract(pie.address, erc20, provider);        
+    //         let pieSupply = await pieContract.totalSupply({blockTag: backBlock.block});
+    //         let pieDecimals = await pieContract.decimals({blockTag: backBlock.block});
+    //         let piePrecision = new BigNumber(10).pow(pieDecimals);
+    //         let totalSupply = new BigNumber(pieSupply.toString()).div(piePrecision);
+            
+    //         let result = await contract.callStatic.getAssetsAndAmountsForAmount(pie.address, pieSupply, {blockTag: backBlock.block}); 
+    //         let underlyingAssets = result[0];
+    //         let underylingTotals = result[1];
+
+    //         console.log(`underlyingAssets for block ${backBlock.block}`, underlyingAssets);       
+    //       }        
+    //     } catch(error) {
+    //       console.error(error.message);
+    //     }
+    //   };
+    // });
+    
+    let end = moment().format('YYYY-MM-DD HH:mm:ss');
+    this.blockSpin.succeed(`back history has been completed, ended at ${end}`);
+
+    return true;
+  }
 
   // Use this every 5 minutes cron setup for testing purposes.
   // */5 * * * *
@@ -140,6 +277,7 @@ export class PiesService {
   @Cron('0 * * * *')
   async updateNAVs(test?: boolean): Promise<boolean> {
     // instance of the pie-getter contract...
+    let timestamp = Date.now();
     const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
     this.logger.debug(`updateNAVs is running for block ${await provider.getBlockNumber()}`);
 
@@ -163,7 +301,7 @@ export class PiesService {
 
     for(let k = 0; k < pies.length; k++) {
       const pie = new this.pieModel(pies[k]);
-      pieHistoryPromises.push(this.CalculatePieHistory(provider, pie, coingeckoPiesInfos));
+      pieHistoryPromises.push(this.CalculatePieHistory(provider, pie, coingeckoPiesInfos, timestamp));
     };
 
     try {
@@ -178,7 +316,7 @@ export class PiesService {
     return true;
   }
 
-  CalculatePieHistory(provider: ethers.providers.JsonRpcProvider, pie: PieDocument, coingeckoPiesInfos: any): Promise<any> {
+  CalculatePieHistory(provider: ethers.providers.JsonRpcProvider, pie: PieDocument, coingeckoPiesInfos: any, timestamp: number): Promise<any> {
     return new Promise(async(resolve, reject) => {
       try {
         this.logger.debug(`${pie.symbol} - updating nav...`);
@@ -201,7 +339,7 @@ export class PiesService {
         let prices = response.data;
 
         // creating the pieHistory Enity...
-        const history = new this.pieHistoryModel({timestamp: Date.now(), amount: 0, underlyingAssets: []});
+        const history = new this.pieHistoryModel({timestamp: timestamp, amount: 0, underlyingAssets: []});
         let pieMarketCapUSD = new BigNumber(0);
 
         // calculating the underlyingAssets, populating it into the pieHistory
