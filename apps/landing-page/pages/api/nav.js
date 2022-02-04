@@ -5,7 +5,7 @@ const getPie = async (pieAddress) => {
   };
 
   const fetchPie = await fetch(
-    `https://piedao-backend-stage.herokuapp.com/pies/latest-history?address=${pieAddress}`,
+    `https://piedao-backend-stage.herokuapp.com/pies/pie-nav-chart?address=${pieAddress}`,
     { headers }
   );
   const pieInfo = await fetchPie.json();

@@ -51,7 +51,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
       <div className="-mt-12 relative z-1">
         <Image src={playLogo} alt="play logo" />
       </div>
-      <div className="relative rounded-xl">
+      <div className="relative rounded-xl md:container md:mx-auto">
         <Swiper
           spaceBetween={10}
           slidesPerView={"auto"}
@@ -59,8 +59,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
           watchSlidesProgress
           breakpoints={{
             768: {
-              centeredSlides: true,
-              initialSlide: 3,
+              centeredSlides: false,
             },
           }}
           className="w-full"

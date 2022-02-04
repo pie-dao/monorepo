@@ -1,6 +1,8 @@
 import Button from "./Button";
 import Image from "next/image";
 import sushiswapLogo from "../public/sushiswap_logo.png";
+import oneInch from "../public/1inch.svg";
+import uniswap from "../public/uniswap.svg";
 import roiPlaceholder from "../public/roi_placeholder.svg";
 import content from "../content/en_EN.json";
 
@@ -34,10 +36,42 @@ const Roi = ({}) => {
           <p>PLAY is our fastest-growing PIE</p>
         </div>
         <div className="relative top-6 z-20 flex flex-col items-center text-center justify-center">
-          <Button className="uppercase btn-lg flex items-center" gradient large>
+          <Button
+            href="https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="uppercase flex items-center px-8 button gradient"
+          >
             <span className="font-bold mr-2">Buy on SushiSwap</span>
             <Image src={sushiswapLogo} alt="sushiswap logo" />
           </Button>
+        </div>
+      </div>
+      <div>
+        <p className="text-center uppercase text-sm text-[#9388DB] mb-4">
+          You can find PLAY also on
+        </p>
+        <div className="flex justify-center items-center gap-x-10">
+          <a
+            href="https://app.1inch.io/#/1/swap/ETH/0x33e18a092a93ff21ad04746c7da12e35d34dc7c4/import-token"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center"
+          >
+            <Image src={oneInch} alt="1inch Logo" />
+            <p className="ml-2">1INCH</p>
+          </a>
+          <a
+            href="https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4&chain=mainnet"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center"
+          >
+            <div>
+              <Image src={uniswap} alt="uniswap Logo" />
+            </div>
+            <p className="ml-2">UNISWAP</p>
+          </a>
         </div>
       </div>
     </section>

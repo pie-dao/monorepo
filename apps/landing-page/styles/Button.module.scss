@@ -1,5 +1,5 @@
 .button {
-  @apply py-2 px-4 rounded leading-5 bg-highlight border-2 border-highlight font-bold;
+  @apply py-2 rounded leading-5 bg-highlight border-2 border-highlight font-bold;
   &:hover {
     @apply bg-primary;
   }
@@ -23,5 +23,13 @@
   &:hover {
     box-shadow: 2px 1000px 1px #ffffff inset;
     color: #000000;
+  }
+}
+
+.inverted {
+  @apply bg-primary;
+  color: #ffffff;
+  &:hover {
+    @apply bg-highlight;
   }
 }

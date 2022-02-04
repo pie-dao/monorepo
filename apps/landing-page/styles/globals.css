@@ -20,6 +20,31 @@
   );
 }
 
+.button {
+  @apply py-2 rounded leading-5 bg-highlight border-2 border-highlight font-bold;
+}
+
+.button:hover {
+  @apply bg-primary;
+}
+
+.button.gradient {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(101deg, #d7099c, #28d2ff);
+  background-origin: border-box;
+  border: solid 3px transparent;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #201140 inset;
+}
+
+.button.gradient:hover {
+  box-shadow: 2px 1000px 1px #ffffff inset;
+  color: #000000;
+}
+
 h5.glitch {
   @apply font-bold text-6xl text-white uppercase;
   position: relative;

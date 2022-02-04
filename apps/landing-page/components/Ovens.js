@@ -3,7 +3,7 @@ import content from "../content/en_EN.json";
 
 const Ovens = () => {
   return (
-    <section className="bg-highlight w-full my-5">
+    <section className="bg-highlight w-full mt-5 mb-28">
       <div className="container mx-auto text-center py-12 relative">
         <h2 className="text-black text-xl md:text-4xl uppercase mb-6">
           {content.ovens.title.first}
@@ -17,7 +17,10 @@ const Ovens = () => {
           </span>
         </p>
         <div className="w-full absolute mt-4">
-          <Button className="uppercase btn-lg" gradient large>
+          <Button
+            className="uppercase px-8 mx-auto w-[200px] flex flex-col"
+            gradient
+          >
             {content.ovens.call_to_action.title}
             <br />
             <span className="font-light">

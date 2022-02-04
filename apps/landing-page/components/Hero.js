@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Image from "next/image";
 import pieDaoLogo from "../public/piedao_logo.png";
 import separator from "../public/separator.svg";
@@ -5,7 +6,11 @@ import arrowUp from "../public/arrow_green.svg";
 import content from "../content/en_EN.json";
 import Button from "./Button";
 
-const Hero = ({}) => {
+const Hero = ({ actualPrice }) => {
+  const inceptionPerc = useMemo(() => {
+    return ((actualPrice - 1) * 100).toFixed();
+  }, [actualPrice]);
+
   return (
     <section
       className={`
@@ -42,23 +47,25 @@ const Hero = ({}) => {
             {content.hero.content_text}
           </p>
         </div>
-        <div>
-          <Button className="uppercase mb-4" gradient large>
+        <div className="flex flex-col items-center">
+          <Button className="uppercase mb-4 px-8" gradient>
             {content.hero.call_to_action}
           </Button>
-          <div className="flex justify-center relative flex-col items-center">
-            <Image src={arrowUp} alt="arrow up" className="up" />
-            <h5 className="glitch mt-2">
-              <span aria-hidden="true">{content.hero.call_to_text}</span>
-              {content.hero.call_to_text}
-              <span aria-hidden="true">{content.hero.call_to_text}</span>
-            </h5>
-            <h6 className="glitch">
-              <span aria-hidden="true">{content.hero.call_to_text_2}</span>
-              {content.hero.call_to_text_2}
-              <span aria-hidden="true">{content.hero.call_to_text_2}</span>
-            </h6>
-          </div>
+          {inceptionPerc > 0 && (
+            <div className="flex justify-center relative flex-col items-center">
+              <Image src={arrowUp} alt="arrow up" className="up" />
+              <h5 className="glitch mt-2">
+                <span aria-hidden="true">+{inceptionPerc}%</span>+
+                {inceptionPerc}%
+                <span aria-hidden="true">+{inceptionPerc}%</span>
+              </h5>
+              <h6 className="glitch">
+                <span aria-hidden="true">{content.hero.call_to_text_2}</span>
+                {content.hero.call_to_text_2}
+                <span aria-hidden="true">{content.hero.call_to_text_2}</span>
+              </h6>
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,16 +1,22 @@
 import styles from "../styles/Button.module.scss";
 
-const Button = (props) => {
-  const { className, children, gradient, large, ...rest } = props;
+const Button = ({
+  className,
+  children,
+  gradient,
+  large,
+  inverted,
+  ...rest
+}) => {
   return (
-    <button
-      className={`${styles.button} ${gradient ? styles.gradient : ""} ${
-        large ? styles.lg : ""
-      } ${className ? className : ""}`}
+    <a
+      className={`${gradient ? styles.gradient : ""} ${
+        inverted ? styles.inverted : ""
+      } ${className ? className : ""} ${styles.button} cursor-pointer`}
       {...rest}
     >
       {children}
-    </button>
+    </a>
   );
 };
 

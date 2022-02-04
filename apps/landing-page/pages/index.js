@@ -1,7 +1,7 @@
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import twitterPosts from "./api/twitterPosts";
 import getPie from "./api/pie";
+import getNav from "./api/nav";
 import coingeckoData from "./api/mocks/coingeckoData.json";
 import Hero from "../components/Hero";
 import Metaverse from "../components/Metaverse";
@@ -20,42 +20,46 @@ export async function getServerSideProps() {
   );
 
   const playAddress = "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4";
+  const morePies = [
+    "0x8d1ce361eb68e9e05573443c407d4a3bed23b033",
+    "0xe4f726adc8e89c6a6017f01eada77865db22da14",
+  ];
 
   const playData = await getPie(playAddress);
+  const morePiesData = await Promise.all(
+    morePies.map((pieAddress) => getNav(pieAddress))
+  );
 
   return {
     props: {
       posts,
       playData,
+      morePiesData,
     },
   };
 }
 
-export default function Home({ posts, playData }) {
+export default function Home({ posts, playData, morePiesData }) {
   return (
     <div>
-      <Head>
-        <title>Home Page</title>
-        <meta name="description" content="PieDAO Metaverse - Home Page" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <div className="text-white grid place-items-center">
         {/* Hero Section */}
-        <Hero />
-        <PlayBar play={playData[0].pie} />
+        <Hero actualPrice={playData.history[0].pie.usd} />
+        <PlayBar play={playData.history[0].pie} />
         <Metaverse />
         {/* ScrollingBoxes Section */}
         <ScrollingBoxes />
         {/* UnderlyingTokens Section */}
-        <UnderlyingTokens underlyingAssets={playData[0].underlyingAssets} />
+        <UnderlyingTokens
+          underlyingAssets={playData.history[0].underlyingAssets}
+        />
         {/* Methodology Section */}
         <Methodology />
         {/* Roi Section */}
         <Roi />
         {<AboutUsTwitter twitterPosts={posts} />}
         <Ovens />
-        {/* <ExploreProducts coingeckoData={playData} /> */}
+        <ExploreProducts pies={morePiesData} />
       </div>
     </div>
   );

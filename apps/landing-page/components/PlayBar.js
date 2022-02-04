@@ -1,7 +1,7 @@
 // import { Logo } from "@piedao/ui-components";
 import Image from "next/image";
 import Button from "./Button";
-// import ShareMenu from "./ShareMenu";
+import ShareMenu from "./ShareMenu";
 import playLogo from "../public/play_logo.svg";
 import arrowIconGreen from "../public/arrow_icon_green.svg";
 import arrowIconRed from "../public/arrow_icon_red.svg";
@@ -48,8 +48,8 @@ const PlayBar = ({ play }) => {
       </div>
       <div className="flex w-auto ml-auto items-center">
         <p className="text-white text-2xl mr-4">$ {usd}</p>
-        <Button className="mr-4">BUY</Button>
-        {/* <ShareMenu /> */}
+        <Button className="mr-4 px-8">BUY</Button>
+        <ShareMenu />
       </div>
     </div>
   );
