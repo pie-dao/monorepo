@@ -16,7 +16,8 @@ import * as lodash from 'lodash';
 import * as pieABI from './abis/Pie.json';
 import { Console, Command, createSpinner } from 'nestjs-console';
 import * as inquirer from 'inquirer';
-
+import * as antoEpoch from './test/stubs/anto_epoch_4.json';
+import * as totoEpoch from './test/stubs/toto_epoch_4.json';
 @Injectable()
 @Console()
 export class StakingService {
@@ -30,6 +31,23 @@ export class StakingService {
     private httpService: HttpService,
     @InjectModel(EpochEntity.name) private epochModel: Model<EpochDocument>,
   ) {}
+
+  @Command({
+    command: 'cross-check-epochs',
+    description: 'Cross Check Epochs Nestjs/Python.'
+  })
+  async crossCheckEpochs(): Promise<void> {
+    Object.keys(totoEpoch["merkleTree"]["claims"]).forEach(address => {
+      let antoClaim = antoEpoch["claims"][ethers.utils.getAddress(address)];
+      let totoClaim = totoEpoch["merkleTree"]["claims"][address];
+      
+      if(totoClaim.amount != antoClaim.amount) {
+        console.log(address, totoClaim.amount, antoClaim.amount);
+      }
+    });
+
+    return;
+  }
 
   @Command({
     command: 'generate-epoch',
