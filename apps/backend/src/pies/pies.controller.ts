@@ -52,7 +52,7 @@ export class PiesController {
     @Query('to') to?: string,
     @Query('limit') limit?: number,
     @Query('order') order?: 'descending' | 'ascending'
-  ): Promise<PieHistoryEntity[]> {
+  ): Promise<any> {
     try {
       if(order === undefined) {
         order = 'descending';
@@ -62,7 +62,7 @@ export class PiesController {
         limit = 0;
       }
 
-      return await this.piesService.getPieHistory(name, address, from, to, order, false, limit);
+      return await this.piesService.getPieHistory(name, address, from, to, order, limit);
     } catch(error) {
       throw new NotFoundException(error);
     }
@@ -77,13 +77,30 @@ export class PiesController {
   async getLastPieHistory(
     @Query('name') name?: string, 
     @Query('address') address?: string
-  ): Promise<PieHistoryEntity[]> {
+  ): Promise<any> {
     try {
-      return await this.piesService.getPieHistory(name, address, null, null, 'descending', true, 1);
+      return await this.piesService.getPieHistory(name, address, null, null, 'descending', 1);
     } catch(error) {
       throw new NotFoundException(error);
     }
   }; 
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({name: 'name', required: false})
+  @ApiQuery({name: 'address', required: false})
+  @Get('pie-nav-chart')
+  async getPieNavChart(
+    @Query('name') name?: string, 
+    @Query('address') address?: string
+  ): Promise<any> {
+    try {
+      return await this.piesService.getPieNavChart(name, address);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  };
 
   @ApiOkResponse({type: PieEntity, isArray: false})
   @ApiNotFoundResponse()
