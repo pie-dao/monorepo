@@ -21,14 +21,13 @@
   box-shadow: 2px 1000px 1px #201140 inset;
 
   &:hover {
+    @apply text-black;
     box-shadow: 2px 1000px 1px #ffffff inset;
-    color: #000000;
   }
 }
 
 .inverted {
-  @apply bg-primary;
-  color: #ffffff;
+  @apply bg-primary text-white;
   &:hover {
     @apply bg-highlight;
   }

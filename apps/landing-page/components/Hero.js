@@ -14,11 +14,11 @@ const Hero = ({ actualPrice }) => {
   return (
     <section
       className={`
-      bg-primary w-full justify-evenly content-center grid
+      bg-primary w-full justify-evenly content-center grid grid-cols-1
       text-center min-h-screen bg-no-repeat bg-cover 
       -bg-[center_top_1rem] bg-[url('/bg_lines.svg')] mb-8`}
     >
-      <div className="px-6 md:px-24 container mx-auto">
+      <div className="container mx-auto px-4">
         <div className="hidden md:block mb-8">
           <Image src={pieDaoLogo} alt="PieDao Logo" />
         </div>
@@ -29,7 +29,7 @@ const Hero = ({ actualPrice }) => {
           <h2 className="font-bold uppercase text-sm md:text-xl">
             {content.hero.sub_title}
           </h2>
-          <div className="relative mb-6">
+          <div className="relative mb-6 overflow-hidden">
             <h1 className="uppercase text-4xl md:text-6xl title-gradient">
               {content.hero.title}
             </h1>
