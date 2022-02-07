@@ -1,5 +1,11 @@
+type LogoColorProps = {
+  colors?: {
+    bg: string;
+    primary: string;
+  }
+}
 
-export const USDCIcon = ({ colors }: { colors?: { bg: string, primary: string }}) => (
+export const USDCIcon = ({ colors }: LogoColorProps) => (
   <svg xmlns="http://www.w3.org/2000/svg" data-name="86977684-12db-4850-8f30-233a7c267d11" viewBox="0 0 2000 2000">
     <path d="M1000 2000c554.17 0 1000-445.83 1000-1000S1554.17 0 1000 0 0 445.83 0 1000s445.83 1000 1000 1000z"
       fill={ colors ? colors.bg : "#2775ca" }/>
@@ -10,7 +16,7 @@ export const USDCIcon = ({ colors }: { colors?: { bg: string, primary: string }}
   </svg>
 )
 
-export const DAIIcon = ({ colors }: { colors?: { bg: string, primary: string }}) => (
+export const DAIIcon = ({ colors }: LogoColorProps) => (
   <svg xmlns="http://www.w3.org/2000/svg" version="1.1" shapeRendering="geometricPrecision" textRendering="geometricPrecision" imageRendering="optimizeQuality" fillRule="evenodd" clipRule="evenodd" viewBox="0 0 444.44 444.44">
     <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
@@ -19,3 +25,13 @@ export const DAIIcon = ({ colors }: { colors?: { bg: string, primary: string }})
  </g>
 </svg>
 )
+
+export const FTMLogo = ({ colors, height }: LogoColorProps & { height: number }) => {
+  const proportions = `h-${height} w-${height}`
+  return (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" className={proportions}>
+    <circle fill={colors ? colors.bg : "purple"} xmlns="http://www.w3.org/2000/svg" className="cls-2" cx="16" cy="16" r="16"/>
+    <path fill={ colors ? colors.primary : "white" } className="cls-1" d="M17.2,12.9l3.6-2.1V15Zm3.6,9L16,24.7l-4.8-2.8V17L16,19.8,20.8,17ZM11.2,10.8l3.6,2.1L11.2,15Zm5.4,3.1L20.2,16l-3.6,2.1Zm-1.2,4.2L11.8,16l3.6-2.1Zm4.8-8.3L16,12.2,11.8,9.8,16,7.3ZM10,9.4V22.5l6,3.4,6-3.4V9.4L16,6Z"/>
+  </svg>
+  )
+}

@@ -3,18 +3,6 @@ import { useSelectedVault } from "../../hooks/useSelectedVault";
 import VaultActions from "./VaultActions";
 import VaultModal from "./VaultModal";
 
-const FancyTitle = () => (
-  <div className="flex flex-col">
-  <h1 className="text-3xl my-5">
-    <span className="text-purple-400">Cross Chain</span> 
-    <span className="text-purple-400"> & </span>
-    <span className="text-purple-400">Layer 2</span>
-    <span className="text-purple-400"> | </span>
-    <span className="text-cyan-400 my-2">Easy as 🥧</span>
-  </h1>
-  </div>
-)
-
 const Vaults = () => {
   const vaults = useAppSelector(state => state.vault.vaults);
   return (
@@ -34,7 +22,6 @@ const VaultList = (): JSX.Element => {
   return (
   <div>
     <div className="h-screen flex flex-col w-screen justify-center items-center">
-    <FancyTitle />
     <Vaults />
     </div>
     { selectedVault && <VaultActions loading={false} />}

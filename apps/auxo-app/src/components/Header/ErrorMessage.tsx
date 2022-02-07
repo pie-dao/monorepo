@@ -3,6 +3,7 @@ import { setError } from "../../store/app/app.slice";
 
 function ErrorMessage({ setShowError, setClicked }: { setShowError: (s: boolean) => void, setClicked: (s: boolean) => void }): JSX.Element {
   const error = useAppSelector(state => state.app.error);
+  // const error = 'there was an error'
   const dispatch = useAppDispatch()
   return (
     <span>{ error &&
