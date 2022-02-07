@@ -6,7 +6,6 @@ const Button = ({
   gradient,
   large,
   inverted,
-  href,
   ...rest
 }) => {
   return (
