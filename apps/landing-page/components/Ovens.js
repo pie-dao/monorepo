@@ -20,12 +20,15 @@ const Ovens = () => {
           <Button
             className="uppercase px-8 mx-auto w-[200px] flex flex-col"
             gradient
+            href="#"
           >
-            {content.ovens.call_to_action.title}
-            <br />
-            <span className="font-light">
-              {content.ovens.call_to_action.subtitle}
-            </span>
+            <>
+              {content.ovens.call_to_action.title}
+              <br />
+              <span className="font-light">
+                {content.ovens.call_to_action.subtitle}
+              </span>
+            </>
           </Button>
         </div>
       </div>
