@@ -472,18 +472,18 @@ export class StakingService {
         let url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${assets}&vs_currencies=usd`;
         let response = await this.httpService.get(url).toPromise();
         let prices = response.data;
-        let pieDAOMarketCap = 0;
+        let marginalTVL = 0;
 
         Object.keys(prices).forEach(address => {
           let underlyingAsset = underlying.find(asset => asset.address == address);
           underlyingAsset.price = prices[address];
 
           let underlyingMarketCapUSD = parseFloat(underlyingAsset.amount) * underlyingAsset.price.usd;
-          pieDAOMarketCap += underlyingMarketCapUSD;
+          marginalTVL += underlyingMarketCapUSD;
         });
 
         resolve({
-          nav: parseFloat((pieDAOMarketCap / parseFloat(totalSupply.toString())).toFixed(2)),
+          nav: parseFloat((marginalTVL / parseFloat(totalSupply.toString())).toFixed(2)),
           totalSupply: totalSupply.toString(),
           decimals: decimals,
           symbol: await rewardsContract.symbol(),

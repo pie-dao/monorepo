@@ -33,7 +33,7 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  pieDAOMarketCap: BigNumber;
+  marginalTVL: BigNumber;
 
   @Prop()
   @ApiProperty()

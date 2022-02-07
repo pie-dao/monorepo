@@ -132,21 +132,16 @@ export class PiesService {
   ];
 
   // 08/06/2021 - PieGetter Contract Creation Date
-  // private startingBlockNumber = 12595880;
+  private startingBlockNumber = 12595880;
 
   // 01/01/2022 - Custom Starting Date of your choise
-  private startingBlockNumber = 13916166;
+  // private startingBlockNumber = 13916166;
 
   private readonly logger = new Logger(PiesService.name);
   private historySpin = createSpinner();
   private historyToBeFetched = 0;
   private historyResolved = 0;
   private historyRejected = 0;
-
-  private blockSpin = createSpinner();
-  private blockToBeFetched = 0;
-  private blockResolved = 0;
-  private blockRejected = 0;
 
   constructor(
     private httpService: HttpService,
@@ -155,6 +150,8 @@ export class PiesService {
   ) {}
 
   private async generateBackBlocks(provider: ethers.providers.JsonRpcProvider): Promise<Array<any>> {
+    let blockSpin = createSpinner();
+
     // retrieving the start block infos from the chain...
     let startBlock = await provider.getBlock(this.startingBlockNumber);
     // removing minutes and seconds, and add 1 hour, to start fresh and clean...
@@ -163,26 +160,25 @@ export class PiesService {
     let endBlock = await provider.getBlock(await provider.getBlockNumber());
     let endTimestamp = moment(endBlock.timestamp * 1000).minutes(0).seconds(0);
 
-    this.blockSpin.info(`startBlock: ${startBlock.number} - startTimestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
-    this.blockSpin.info(`endBlock: ${endBlock.number} - endTimestamp: ${endTimestamp.toDate().getTime()} - ${endTimestamp.format('DD/MM/YYYY')}`);    
+    blockSpin.info(`startBlock: ${startBlock.number} - startTimestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
+    blockSpin.info(`endBlock: ${endBlock.number} - endTimestamp: ${endTimestamp.toDate().getTime()} - ${endTimestamp.format('DD/MM/YYYY')}`);    
 
     // iterating all over the timestamps in the range of interest...
     let currentBlock = startBlock.number;
     let backBlocks = [];
 
-    // while((startTimestamp.toDate().getTime() < endTimestamp.toDate().getTime())) {
-      while(currentBlock < endBlock.number) {
+    while(currentBlock < endBlock.number) {
       backBlocks.push({
         timestamp: startTimestamp.toDate().getTime(),
         block: currentBlock
       });
 
       startTimestamp = startTimestamp.add(1, 'hour');
-      currentBlock += 276;
+      currentBlock += 270;
     }
 
-    this.blockSpin.info(`latest calculated block: ${currentBlock} - latest calculated timestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
-    this.blockSpin.succeed(`total blocks to be processed ${backBlocks.length}`);
+    blockSpin.info(`latest calculated block: ${currentBlock} - latest calculated timestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
+    blockSpin.succeed(`total blocks to be processed ${backBlocks.length}`);
     return backBlocks;
   }
 
@@ -267,7 +263,7 @@ export class PiesService {
           let precision = new BigNumber(10).pow(decimals);
   
           // calculating the value in usd for a given amount of underlyingAsset...
-          let pieDAOMarketCap = new BigNumber(underylingTotals[i].toString()).times(tokenInfo.usd).div(precision);
+          let marginalTVL = new BigNumber(underylingTotals[i].toString()).times(tokenInfo.usd).div(precision);
   
           // refilling the underlyingAssets of the History Entity...
           history.underlyingAssets.push({
@@ -276,23 +272,23 @@ export class PiesService {
             decimals: decimals,
             amount: underylingTotals[i].toString(),
             token_info: tokenInfo,
-            pieDAOMarketCap: pieDAOMarketCap,
-            pieDAOMarketCapPercentage: 0
+            marginalTVL: marginalTVL,
+            marginalTVLPercentage: 0
           });
   
           // updating the global amount of usd for the main pie of this history entity...
-          pieMarketCapUSD = pieMarketCapUSD.plus(pieDAOMarketCap);
+          pieMarketCapUSD = pieMarketCapUSD.plus(marginalTVL);
         };
   
         // adding the allocation percentage to each underlying asset...
         history.underlyingAssets.forEach((asset: any) => {
-          asset.pieDAOMarketCapPercentage = asset.pieDAOMarketCap.times(100).div(pieMarketCapUSD).toString();
-          asset.pieDAOMarketCap = asset.pieDAOMarketCap.toString();
+          asset.marginalTVLPercentage = asset.marginalTVL.times(100).div(pieMarketCapUSD).toString();
+          asset.marginalTVL = asset.marginalTVL.toString();
         });
         /******************************************************************/
   
         // finally updating the total amount in usd, and the relative nav...
-        history.pieDAOMarketCap = pieMarketCapUSD;
+        history.marginalTVL = pieMarketCapUSD;
         history.nav = (pieMarketCapUSD.toNumber() / totalSupply.toNumber());
   
         // and saving the history entity...
@@ -313,6 +309,37 @@ export class PiesService {
     });
   }
 
+  private generateMarketCharts(backBlocks: Array<any>): Promise<any> {
+    return new Promise(async(resolve, reject) => {
+      let latestValidDate = moment(lodash.last(backBlocks).timestamp);
+      let startRange = moment(lodash.first(backBlocks).timestamp);
+      let days = latestValidDate.diff(startRange, 'days');
+      console.log(days, startRange.format('DD-MM-YYYY'), latestValidDate.format('DD-MM-YYYY'));
+
+      if(days <= 90) {
+        console.log(`we should just fetch the latest ${days} days`);
+      } else {
+        days = 90;
+        while(days > 0) {
+          let daysLeft = latestValidDate.diff(startRange, 'days');
+          days = daysLeft < days ? daysLeft : days;
+          let endRange = startRange.add(days, 'days');
+
+          if(days > 0) {
+            console.log(`fetching ${days} days from ${startRange.format('DD-MM-YYYY')} to ${endRange.format('DD-MM-YYYY')}...`);       
+          }
+
+          startRange = endRange;
+        }
+      }
+
+      resolve(true);
+      
+      // let underlyingMarketDataResponse = await this.httpService
+      // .get(`https://api.coingecko.com/api/v3/coins/ethereum/contract/${underlyingAssets[i]}/market_chart/range?vs_currency=usd&from=${backDate.unix()}&to=${backBlock.timestamp}`).toPromise();      
+    });
+  }
+
   @Command({
     command: 'generate-pies-back-histories',
     description: 'Generate back histories for pies.'
@@ -325,6 +352,9 @@ export class PiesService {
     
     // retrieving all the backBlocks, from this.startingBlockNumber up to date...
     let backBlocks = await this.generateBackBlocks(provider);
+    
+    // generating the marketCharts for all the pies, and the relative underlying assets...
+    let marketCharts = await this.generateMarketCharts(backBlocks);
 
     // // retrieving all pies from database...
     // let pies = await this.getPies(undefined, undefined, false);
@@ -447,7 +477,7 @@ export class PiesService {
 
           // calculating the value in usd for a given amount of underlyingAsset...
           let usdPrice = prices[underlyingAssets[i].toLowerCase()].usd;
-          let pieDAOMarketCap = new BigNumber(underylingTotals[i].toString()).times(usdPrice).div(precision);
+          let marginalTVL = new BigNumber(underylingTotals[i].toString()).times(usdPrice).div(precision);
 
           // refilling the underlyingAssets of the History Entity...
           history.underlyingAssets.push({
@@ -456,22 +486,22 @@ export class PiesService {
             decimals: decimals,
             amount: underylingTotals[i].toString(),
             token_info: prices[underlyingAssets[i].toLowerCase()],
-            pieDAOMarketCap: pieDAOMarketCap,
-            pieDAOMarketCapPercentage: 0
+            marginalTVL: marginalTVL,
+            marginalTVLPercentage: 0
           });
 
           // updating the global amount of usd for the main pie of this history entity...
-          pieMarketCapUSD = pieMarketCapUSD.plus(pieDAOMarketCap);
+          pieMarketCapUSD = pieMarketCapUSD.plus(marginalTVL);
         };
 
         // adding the allocation percentage to each underlying asset...
         history.underlyingAssets.forEach((asset: any) => {
-          asset.pieDAOMarketCapPercentage = asset.pieDAOMarketCap.times(100).div(pieMarketCapUSD).toString();
-          asset.pieDAOMarketCap = asset.pieDAOMarketCap.toString();
+          asset.marginalTVLPercentage = asset.marginalTVL.times(100).div(pieMarketCapUSD).toString();
+          asset.marginalTVL = asset.marginalTVL.toString();
         });
 
         // finally updating the total amount in usd...
-        history.pieDAOMarketCap = pieMarketCapUSD;
+        history.marginalTVL = pieMarketCapUSD;
         history.totalSupply = pieSupply;
         history.decimals = pieDecimals;
         history.nav = (pieMarketCapUSD.toNumber() / totalSupply.toNumber());
@@ -649,6 +679,7 @@ export class PiesService {
       let response = {
         name: asset.pie.name,
         symbol: asset.pie.symbol,
+        address: asset.pie. address,
         nav: asset.history[0].nav,
         ticks: asset.history[0].pie.ticks.prices.slice(0, 16) // TODO: change me with real value...
       };
