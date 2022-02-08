@@ -55,7 +55,6 @@ const calculateAvailable = (
   /**
    * We seem to overcompute the amount available, so need to confirm this calc
    */
-  // console.debug({ shares, amountPerShare })
   // const bigAvailable = shares.mul(amountPerShare);
   return toBalance(shares, decimals);
 };

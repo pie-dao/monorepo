@@ -1,35 +1,47 @@
-export type SUPPORTEDNETWORKS = "POLYGON" | "LOCAL" | "FANTOM" | "ETHEREUM";
+import { useWeb3React } from "@web3-react/core";
+import { useAppDispatch } from "../hooks";
+import { setError } from "../store/app/app.slice";
 
-export type NetworkDetails = {
-  name: SUPPORTEDNETWORKS;
-  chainId: number;
-};
+export type SUPPORTEDNETWORKS = "FANTOM";
 
-export type Networks = {
-  [N in SUPPORTEDNETWORKS]: NetworkDetails;
-};
-
-export type _NetworkDetail = {
+export type NetworkDetail = {
   name: SUPPORTEDNETWORKS;
   symbol: string;
   color: string;
 };
-export type ChainMap = Record<number, _NetworkDetail>;
+export type ChainMap = Record<number, NetworkDetail>;
 
 export const chainMap: ChainMap = {
-  137: {
-    name: "POLYGON",
-    color: "purple-700",
-    symbol: "MATIC",
-  },
-  1: {
-    name: "ETHEREUM",
-    color: "blue-400",
-    symbol: "ETH",
-  },
   250: {
     name: "FANTOM",
     color: "blue-700",
     symbol: "FTM",
   },
+};
+
+export const supportedChains = Object.values(chainMap).map(({ name }) => name);
+export const supportedChainIds = Object.keys(chainMap).map((s) => Number(s));
+
+export const isChainSupported = (chainId: number): boolean =>
+  !!chainMap[chainId];
+
+export const useChainHandler = (): NetworkDetail | undefined => {
+  const { chainId } = useWeb3React();
+  const dispatch = useAppDispatch();
+  if (chainId && isChainSupported(chainId)) {
+    dispatch(
+      setError({
+        message: undefined,
+        show: false,
+      })
+    );
+    return chainMap[chainId];
+  } else {
+    dispatch(
+      setError({
+        message: `You are currently connected to an unsupported chain, supported chains are ${supportedChains}`,
+        show: true,
+      })
+    );
+  }
 };

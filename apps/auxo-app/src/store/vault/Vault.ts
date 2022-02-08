@@ -1,4 +1,4 @@
-import { NetworkDetails } from "../../utils/networks";
+import { ChainMap, SUPPORTEDNETWORKS } from "../../utils/networks";
 
 /**
  * Initialise a vault with basic information
@@ -7,7 +7,10 @@ interface BasicVaultInformation {
   name: string;
   address: string;
   description: string;
-  network: NetworkDetails;
+  network: {
+    name: SUPPORTEDNETWORKS;
+    chainId: keyof ChainMap;
+  }
   symbol: string;
 }
 

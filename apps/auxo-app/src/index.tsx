@@ -7,14 +7,17 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 import { Web3ReactProvider } from "@web3-react/core";
 import getLibrary from "./connectors";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </Web3ReactProvider>
+    <BrowserRouter>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Web3ReactProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );

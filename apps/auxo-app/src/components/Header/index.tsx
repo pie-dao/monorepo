@@ -1,18 +1,18 @@
 import { useWeb3React } from "@web3-react/core";
-import logoFile from '../../assets/icons/logo.png'
 import { FaBell } from 'react-icons/fa'
 import { GiHamburgerMenu } from 'react-icons/gi'
 import WalletModal from "./WalletModal";
 import { useEffect, useState } from "react";
-import { chainMap } from "../../utils/networks";
+import { useChainHandler } from "../../utils/networks";
 import ErrorMessage from "./ErrorMessage";
-import { useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 import { useEagerConnect, useInactiveListener } from "../../hooks/useWeb3";
 import { network } from "../../connectors";
 import { HEADER_HEIGHT } from "../../constants";
 import { FTMLogo } from "../../assets/icons/logos";
 import StyledButton from "../UI/button";
+import { setErrorDisplay } from "../../store/app/app.slice";
 
 const trimAccount = (account: string): string => {
   return account.slice(0, 6) + '...' + account.slice(38)
@@ -28,8 +28,8 @@ const useFallBack = () => {
 
 const useConnectedWallet = () => {
   const { connector } = useWeb3React();
-  const [activatingConnector, setActivatingConnector] = useState<any>()
-  const triedEager = useEagerConnect()
+  const [activatingConnector, setActivatingConnector] = useState<any>();
+  const triedEager = useEagerConnect();
 
   useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
@@ -38,19 +38,35 @@ const useConnectedWallet = () => {
   }, [activatingConnector, connector])
 
   useFallBack();
-
   useInactiveListener(!triedEager ||!!activatingConnector);
+}
+
+const AlertButton = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const error = useAppSelector(state => state.app.error);
+  return (
+    <button
+      className="rounded-md shadow-md p-2 relative"
+      onClick={() => {
+        if (error.message) {
+          dispatch(setErrorDisplay(true))
+        }
+      }}    
+      >
+      <FaBell color="purple"/>
+      { error.message && <div className="bg-red-700 rounded-full h-3 w-3 absolute -top-0 -right-1"/>}
+    </button>
+  )
 }
 
 
 const Web3Status = (): JSX.Element => {
   const [show, setShow] = useState(false);
-  const { chainId } = useWeb3Cache()
+  const chain = useChainHandler();
   const { active, account } = useWeb3React();
   
   useConnectedWallet();
 
-  const chain = chainId && chainMap[chainId];
   return (
   <div className="
     flex
@@ -58,7 +74,7 @@ const Web3Status = (): JSX.Element => {
     justify-evenly
     ">
     { show && <WalletModal setShow={setShow} />}
-    { chainId &&
+    { chain &&
       <div className="flex items-center shadow-md rounded-md px-2">
         <FTMLogo colors={{ primary: 'white', bg: 'purple' }} height={5} />
         <p className={`
@@ -81,10 +97,7 @@ const Web3Status = (): JSX.Element => {
         ? trimAccount(account)
         : 'Connect Web3' }
     </StyledButton>
-    <button className="rounded-md shadow-md p-2 relative">
-      <FaBell color="purple"/>
-      <div className="bg-red-700 rounded-full h-3 w-3 absolute -top-0 -right-1"/>
-    </button>
+    <AlertButton />
   </div>
   )
 }
@@ -116,9 +129,6 @@ const MobileMenu = (): JSX.Element => {
 }
 
 const Header = () => {
-  // const triedEager = useEagerConnect();
-  const [showError, setShowError] = useState(false)
-  const [clicked, setClicked] = useState(false)
   const error = useAppSelector(state => state.app.error);
   return (
     <>
@@ -145,32 +155,14 @@ const Header = () => {
       </div>
       <div className="flex md:hidden justify-end">
         <MobileMenu />
-      </div>      
-      {/* <button
-        onMouseEnter={() => setShowError(true)}
-        onMouseLeave={() => {
-          if (!clicked) setShowError(false)
-        }}
-        onClick={() => {
-          setClicked(true)
-          setShowError(true)
-        }}
-        className="
-          bg-red-700
-          text-white
-          rounded-xl
-          py-1
-          px-2
-          font-extrabold
-          mr-2
-          text-center
-        "
-        >Error</button>       */}
+      </div> 
       </header>
-      {/* {showError &&  */}
-      <div className="fixed top-14 flex justify-center w-full z-10">
-        <ErrorMessage setClicked={setClicked} setShowError={setShowError}/>
-      </div>
+      {
+      error.show && 
+        <div className="fixed top-14 flex justify-center w-full z-10">
+          <ErrorMessage />
+        </div>
+      }
     </>
   )
 };

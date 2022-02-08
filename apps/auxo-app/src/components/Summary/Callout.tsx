@@ -1,8 +1,8 @@
-import { DESCRIPTIONS, HEADER_HEIGHT } from "../../constants"
+import { DESCRIPTIONS } from "../../constants"
 
 const FancyTitle = () => (
     <section className="flex flex-col mb-8">
-        <h1 className="text-2xl my-5 flex flex-wrap items-center text-center justify-center">
+        <h1 className="font-primary text-2xl my-5 flex flex-wrap items-center text-center justify-center">
             <span >Cross Chain & Layer 2 </span> 
             <span className="text-purple-600 my-2 mx-3 font-extrabold">Easy as 🥧</span>
         </h1>
@@ -12,9 +12,7 @@ const FancyTitle = () => (
 const Callout = (): JSX.Element => {
     return (
         <section className={`
-            absolute
             w-full
-            top-${HEADER_HEIGHT}
             px-5 md:px-10 py-5
         `}>
             <div className="
@@ -36,6 +34,7 @@ const Callout = (): JSX.Element => {
                 w-[95%]
                 shadow-lg
                 -top-10
+                font-primary
             "><div className="
                 p-5
                 flex flex-col

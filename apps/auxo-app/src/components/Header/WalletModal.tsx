@@ -2,15 +2,22 @@ import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 import React from "react";
 import { MetamaskIcon, WalletConnectIcon } from "../../assets/icons/connectors";
 import { injected, walletconnect } from "../../connectors";
+import { useAppDispatch } from "../../hooks";
+import { setError } from "../../store/app/app.slice";
+import { supportedChainIds } from "../../utils/networks";
 
-const MetamaskButton = ({ setShow }: { setShow(show: boolean): void }) => {
+const MetamaskButton = ({ setShow }: { setShow(show: boolean): void }): JSX.Element => {
 const { activate } = useWeb3React();
+const dispatch = useAppDispatch();
 const handleConnect = () => {
   activate(injected, undefined, true).then(() => {
     setShow(false)
   }).catch(err => {
     if (err instanceof UnsupportedChainIdError) {
-      alert('Chain not supported')
+      dispatch(setError({
+        message: `You are currently connected to an unsupported chain, supported chains are ${supportedChainIds}`,
+        show: true
+      }))
     } else {
       alert('Error in connecting')
     }
@@ -26,7 +33,7 @@ return (
   )
 }
 
-const WalletConnectButton = ({ setShow }: { setShow(show: boolean): void }) => {
+const WalletConnectButton = () => {
   const { activate } = useWeb3React()
   const handleConnect = () => { activate(walletconnect).then(v => console.debug(v))
   }
@@ -53,7 +60,6 @@ const WalletModal = (props: { setShow: (show: boolean) => void }) => {
       top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
         max-w-[500px]
         w-full
-        h-1/3
         z-10
         bg-white
         flex items-center justify-between
@@ -69,7 +75,7 @@ const WalletModal = (props: { setShow: (show: boolean) => void }) => {
             <MetamaskButton setShow={props.setShow}/>
           </HoverCard>
           <HoverCard>
-            <WalletConnectButton setShow={props.setShow}/>
+            <WalletConnectButton />
           </HoverCard>
         </div>
         <div className="mt-1">

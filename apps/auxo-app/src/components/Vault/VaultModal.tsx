@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../hooks";
 import { setSelectedVault } from "../../store/vault/vault.slice";
 import StyledButton from "../UI/button";
 import { scrollTo } from "../../utils/scroll";
+import { chainMap } from "../../utils/networks";
 
 const CardBorderGradient = ({ children }: React.HTMLProps<HTMLDivElement> & { children: ReactNode }) => {
   return (
@@ -70,7 +71,7 @@ const VaultModal = ({ vault }: { vault: Vault }): JSX.Element => {
     </CardIcon>
     <div className="absolute right-3 top-3">
       <p className={`text-sm p-1 text-white rounded-lg font-extrabold
-        ${vault.network.name.toUpperCase() === 'POLYGON' ? ' text-purple-700' : 'text-red-700'} `}
+        bg-${chainMap[vault.network.chainId].color} `}
       >{vault.network.name}</p>
     </div>
     <h2 className="text-center text-lg italic m-5">{vault.name}</h2>

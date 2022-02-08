@@ -3,26 +3,22 @@ import { SafeAppConnector } from "@gnosis.pm/safe-apps-web3-react";
 import { WalletConnectConnector } from "./walletConnect";
 import { Web3Provider } from "@ethersproject/providers";
 import { NetworkConnector } from "@web3-react/network-connector";
-import { chainMap } from "../utils/networks";
 
-const supportedChainIds = Object.keys(chainMap).map((s) => Number(s));
 export const RPC_URLS = [
   "https://mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122",
-  "https://polygon-mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122",
   "https://rpc.ftm.tools/",
 ];
 
 export const network = new NetworkConnector({
   urls: {
     1: RPC_URLS[0],
-    137: RPC_URLS[1],
-    250: RPC_URLS[2],
+    250: RPC_URLS[1],
   },
   defaultChainId: 250,
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds,
+  supportedChainIds: [1, 250],
 });
 
 export default function getLibrary(provider: any): Web3Provider {
@@ -52,17 +48,3 @@ export const walletconnect = new WalletConnectConnector({
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
 });
-
-// // mainnet only
-// export const portis = new PortisConnector({
-//   dAppId: PORTIS_ID ?? '',
-//   networks: [1],
-// })
-
-// mainnet only
-// export const walletlink = new WalletLinkConnector({
-//   url: '',
-//   appName: 'Piedao',
-//   appLogoUrl: '',
-//   supportedChainIds
-// })

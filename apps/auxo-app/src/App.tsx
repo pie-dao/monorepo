@@ -1,9 +1,12 @@
-import VaultList from "./components/Vault/VaultList";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useSetWeb3Cache } from "./hooks/useCachedWeb3";
 import { useChainData } from "./hooks/useOnChainData";
 import Callout from "./components/Summary/Callout";
+import VaultTable from "./components/Vault/VaultTable";
+import VaultNetworks from "./components/Vault/VaultNetworks";
+import { Routes, Route } from "react-router-dom";
+import VaultActions from "./components/Vault/VaultActions";
 
 const ChainDataComponent = () => {
   useSetWeb3Cache();
@@ -11,15 +14,24 @@ const ChainDataComponent = () => {
   return <div>{loading}</div>;
 };
 
+const Home = () => (
+  <>
+    <Callout />
+    <VaultNetworks />
+    <VaultTable />
+  </>
+);
+
 function App() {
   return (
-    <div className="App text-center h-full w-full">
+    <div className="App text-center h-screen w-screen bg-gray-100">
       <Header />
-      <Callout />
-      <section id="content">
-        <div className="spacer my-10 h-1" />
-        <ChainDataComponent />
-        <VaultList />
+      <ChainDataComponent />
+      <section className="w-full flex flex-col absolute top-[56px]">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/details" element={<VaultActions loading={false} />} />
+        </Routes>
       </section>
       <Footer />
     </div>
