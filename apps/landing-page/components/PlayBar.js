@@ -5,6 +5,7 @@ import ShareMenu from "./ShareMenu";
 import playLogo from "../public/play_logo.svg";
 import arrowIconGreen from "../public/arrow_icon_green.svg";
 import arrowIconRed from "../public/arrow_icon_red.svg";
+import piedaoLogo from "../public/piedao_logo_text.png";
 import styles from "../styles/PlayBar.module.scss";
 
 const PlayBar = ({ play }) => {
@@ -13,11 +14,11 @@ const PlayBar = ({ play }) => {
 
   return (
     <div
-      className={`xl:container flex w-full sticky top-2 z-50 h-[65px] items-center p-4 xl:rounded-md border-transparent border-x-0 border-y-4 xl:border-4 ${styles.gradient}`}
+      className={`xl:container flex w-full sticky top-2 z-40 h-[65px] mx-4 items-center p-4 xl:rounded-md border-transparent border-x-0 border-y-4 xl:border-4 ${styles.gradient}`}
     >
       <div className="w-auto flex items-center">
-        <div className="mr-6 hidden md:block">
-          {/* <Logo size="large" /> */}
+        <div className="mr-6 hidden lg:flex">
+          <Image src={piedaoLogo} alt="PieDao Logo" />
         </div>
         <Image src={playLogo} alt="play logo" />
         <div className="ml-2 align-baseline">
@@ -48,7 +49,9 @@ const PlayBar = ({ play }) => {
       </div>
       <div className="flex w-auto ml-auto items-center">
         <p className="text-white text-2xl mr-4">$ {usd}</p>
-        <Button className="mr-4 px-8">BUY</Button>
+        <Button className="mr-4 px-8" href="#">
+          BUY
+        </Button>
         <ShareMenu />
       </div>
     </div>
