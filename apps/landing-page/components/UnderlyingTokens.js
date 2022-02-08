@@ -23,7 +23,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
 
   return (
     <section
-      className={`w-full justify-evenly content-center text-center relative overflow-hidden lg:overflow-visible mb-20`}
+      className={`w-full justify-evenly content-center text-center relative overflow-hidden mb-20`}
     >
       {/*
       <img
@@ -43,7 +43,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
         src="./bg_front_line_2_mobile.svg"
       />
        <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-sm" src="./logo_play.svg" /> */}
-      <div className="bg-secondary p-8 w-full relative">
+      <div className="bg-secondary py-8 w-full relative">
         <p className="uppercase text-xl md:text-4xl">
           underlying <span className="font-bold">tokens</span>
         </p>
@@ -51,10 +51,10 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
       <div className="-mt-12 relative z-1">
         <Image src={playLogo} alt="play logo" />
       </div>
-      <div className="relative rounded-xl md:container md:mx-auto">
+      <div className="lg:container lg:mx-auto lg:px-4">
         <Swiper
-          spaceBetween={10}
           slidesPerView={"auto"}
+          spaceBetween={10}
           centeredSlides
           watchSlidesProgress
           breakpoints={{
@@ -62,7 +62,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
               centeredSlides: false,
             },
           }}
-          className="w-full"
+          className="w-full flex"
         >
           {sortedAssets.map(
             ({ address, symbol, token_info, pieDAOMarketCapPercentage }) => {

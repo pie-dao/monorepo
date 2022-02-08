@@ -19,7 +19,7 @@ const AboutUsTwitter = ({ twitterPosts }) => {
     >
       <div className="flex mb-4 ml-12 mr-12">
         <div className="w-full pt-[5pc] content-center text-center">
-          <h1 className="text-4xl text-highlight uppercase">
+          <h1 className="text-4xl title-gradient uppercase font-light">
             {content.about_us_twitter.title}
           </h1>
         </div>

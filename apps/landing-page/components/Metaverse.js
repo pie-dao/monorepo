@@ -5,9 +5,9 @@ import content from "../content/en_EN.json";
 const Metaverse = ({}) => {
   return (
     <section
-      className={`bg-primary w-full justify-evenly content-center container mt-8`}
+      className={`bg-primary w-full justify-evenly content-center mt-8 container mx-auto px-4`}
     >
-      <div className="px-6 md:px-0">
+      <div>
         <div className="flex flex-col md:flex-row mb-4">
           <div className="w-full justify-center flex flex-col">
             <h1 className="w-full text-4xl text-highlight uppercase font-light">
@@ -30,10 +30,10 @@ const Metaverse = ({}) => {
           </div>
         </div>
       </div>
-      <div className="pl-6 pr-6 md:pl-24 md:pr-24 bg-[center_top_1rem] bg-no-repeat bg-cover bg-[url('/bg_single_line.svg')]">
-        <div className="flex flex-row items-start justify-center text-center flex-wrap">
-          <div className="w-1/2 md:w-1/4 pb-2">
-            <p className="text-highlight_secondary text-2xl md:text-4xl">
+      <div className="bg-[length:100%_100%] bg-no-repeat bg-cover bg-[url('/bg_single_line.svg')]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:pb-24">
+          <div className="flex flex-col md:text-center">
+            <p className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">
                 {content.metaverse.info_boxes.first.title_highlight}{" "}
               </span>
@@ -41,8 +41,8 @@ const Metaverse = ({}) => {
             </p>
             <p>{content.metaverse.info_boxes.first.sub_title}</p>
           </div>
-          <div className="w-1/2 md:w-1/4 md:mt-40 pb-2">
-            <p className="text-highlight_secondary text-2xl md:text-4xl">
+          <div className="flex flex-col md:mt-36 md:text-center">
+            <p className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">
                 {content.metaverse.info_boxes.second.title_highlight}{" "}
               </span>
@@ -50,14 +50,14 @@ const Metaverse = ({}) => {
             </p>
             <p>{content.metaverse.info_boxes.second.sub_title}</p>
           </div>
-          <div className="w-1/2 md:w-1/4 pb-2">
-            <p className="text-highlight_secondary text-2xl md:text-4xl font-bold">
+          <div className="flex flex-col md:text-center">
+            <p className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl font-bold">
               {content.metaverse.info_boxes.third.title}
             </p>
             <p>{content.metaverse.info_boxes.third.sub_title}</p>
           </div>
-          <div className="w-1/2 md:w-1/4 md:mt-40 pb-2">
-            <p className="text-highlight_secondary text-2xl md:text-4xl">
+          <div className="flex flex-col md:mt-36 md:text-center">
+            <p className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">
                 {content.metaverse.info_boxes.fourth.title_highlight}{" "}
               </span>

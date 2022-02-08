@@ -6,10 +6,10 @@ import styles from "../styles/ScrollingBoxes.module.scss";
 const ScrollingBoxes = ({}) => {
   return (
     <section
-      className={`w-full justify-evenly content-left text-left m-10 overflow-hidden lg:overflow-visible`}
+      className={`w-full justify-evenly content-left text-left overflow-hidden lg:overflow-visible`}
     >
-      <div className="z-20 sticky top-20 bg-secondary p-6 lg:pl-24 lg:pr-24 h-60 text-center lg:text-left">
-        <div className="container mx-auto">
+      <div className="w-full z-20 sticky top-20 bg-secondary h-60 text-center lg:text-left -mt-20">
+        <div className="container mx-auto px-4 pt-8">
           <p className="uppercase text-4xl">
             Easy access to
             <br />
@@ -20,35 +20,26 @@ const ScrollingBoxes = ({}) => {
           </p>
         </div>
       </div>
-      <div className="z-20 sticky flex mb-4 lg:-mt-60 justify-end">
-        <div className="container mx-auto">
-          <div className="flex lg:hidden">
+      <div className="z-20 sticky flex mb-4 lg:-mt-60 lg:justify-end">
+        <div className="lg:container lg:mx-auto w-full px-4">
+          <div className="flex lg:hidden w-full">
             <Swiper
-              spaceBetween={-50}
+              observer
               speed={1000}
               slidesPerView={"auto"}
               centeredSlides
-              updateOnWindowResize
-              breakpoints={{
-                768: {
-                  spaceBetween: -70,
-                },
-              }}
-              className={`w-full ${styles.swiperSlider}`}
+              className={`w-full overflow-visible mt-44 ${styles.swiperSlider}`}
             >
               {content.scrolling_boxes.boxes.map((box) => {
                 return (
-                  <SwiperSlide
-                    key={box.id}
-                    className={`w-[280px] md:w-[360px] lg:w-full`}
-                  >
+                  <SwiperSlide key={box.id} className={`w-[280px] flex`}>
                     <SingleBox singleBox={box} />
                   </SwiperSlide>
                 );
               })}
             </Swiper>
           </div>
-          <div className="hidden w-1/2 lg:flex flex-col ml-auto mr-4">
+          <div className="hidden w-1/2 lg:flex flex-col ml-auto mt-32">
             {content.scrolling_boxes.boxes.map((box) => (
               <SingleBox singleBox={box} key={box.id} />
             ))}

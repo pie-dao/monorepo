@@ -16,7 +16,7 @@ const Hero = ({ actualPrice }) => {
       className={`
       bg-primary w-full justify-evenly content-center grid grid-cols-1
       text-center min-h-screen bg-no-repeat bg-cover 
-      -bg-[center_top_1rem] bg-[url('/bg_lines.svg')] mb-8`}
+      bg-[length:100%_100%] bg-[url('/bg_lines.svg')] mb-8`}
     >
       <div className="container mx-auto px-4">
         <div className="hidden md:block mb-8">
@@ -48,7 +48,7 @@ const Hero = ({ actualPrice }) => {
           </p>
         </div>
         <div className="flex flex-col items-center">
-          <Button className="uppercase mb-4 px-8" gradient>
+          <Button className="uppercase mb-4 px-8" gradient href="#">
             {content.hero.call_to_action}
           </Button>
           {inceptionPerc > 0 && (
