@@ -1,30 +1,28 @@
+import { useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
+import Modal from "./Modal";
+import greenCheckmark from "../public/double-checkmark.svg";
 import styles from "../styles/Methodology.module.scss";
 import content from "../content/en_EN.json";
 
 const Methodology = ({}) => {
-  const controlFifthSlide = (slider) => {
-    slider.slides.map((slide) =>
-      slide.classList.remove(
-        "swiper-slide-fifth-right",
-        "swiper-slide-fifth-left"
-      )
-    );
+  let [isOpen, setIsOpen] = useState(false);
 
-    slider.slides[slider.activeIndex + 2]?.classList.add(
-      "swiper-slide-fifth-right"
-    );
-    slider.slides[slider.activeIndex - 2]?.classList.add(
-      "swiper-slide-fifth-left"
-    );
-  };
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   return (
     <section
-      className={`bg-primary w-full justify-evenly flex-col content-center text-center flexmd:flex-col overflow-hidden container mx-auto`}
+      className={`bg-primary w-full justify-evenly content-center text-center overflow-hidden`}
     >
-      <div className="flex mb-4 ml-12 mr-12">
+      <div className="flex mb-4 container mx-auto px-4">
         <div className="w-full content-center text-center">
           <h1 className="text-4xl text-highlight uppercase">
             Methodology <span className="font-bold">& Strategy</span>
@@ -32,44 +30,42 @@ const Methodology = ({}) => {
           <h2>{content.methodology.description}</h2>
         </div>
       </div>
-      <Swiper
-        spaceBetween={-60}
-        speed={1000}
-        slidesPerView={"auto"}
-        centeredSlides
-        className={`${styles.swiperSlider} mb-10`}
-        modules={[Navigation]}
-        navigation
-        onSlideChange={(slider) => {
-          controlFifthSlide(slider);
-        }}
-      >
-        {content.methodology.boxes.map((box) => {
-          return (
-            <SwiperSlide key={box.id} className={`w-[240px] my-10`}>
-              <div className="p-1 rounded-md bg-gradient-to-tr from-red-500 to-blue-500">
-                <div className="w-full rounded-md bg-primary p-4 flex flex-col items-center justify-center text-center h-72">
-                  <p className="p-2">{box.description}</p>
-                  <div className="w-[57px] h-[34px] mt-12">
-                    <Image
-                      src={content.methodology.icon}
-                      width={57}
-                      height={34}
-                      alt="green checkmark"
-                    />
+      <div className="max-w-screen-sm mx-auto">
+        <Swiper
+          speed={1000}
+          slidesPerView={"auto"}
+          centeredSlides
+          className={`${styles.swiperSlider} mb-10`}
+          modules={[Navigation]}
+          navigation
+        >
+          {content.methodology.boxes.map((box) => {
+            return (
+              <SwiperSlide key={box.id} className={`w-[220px] my-10`}>
+                <div className="p-1 rounded-md bg-gradient-to-tr from-red-500 to-blue-500">
+                  <div className="w-full rounded-md bg-primary p-4 flex flex-col items-center justify-center text-center h-72">
+                    <div className="flex flex-1 items-center">
+                      <p className="p-2">{box.description}</p>
+                    </div>
+                    <div>
+                      <Image src={greenCheckmark} alt="green checkmark" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-      <p className="text-deep_blue">
-        For detailed information on allocation and rebalancing procedures{" "}
-        <a className="text-highlight" href="#">
-          read the prospectus.
-        </a>
-      </p>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </div>
+      <div className="container mx-auto px-4">
+        <p className="text-deep_blue">
+          For detailed information on allocation and rebalancing procedures{" "}
+          <a className="text-highlight cursor-pointer" onClick={openModal}>
+            read the prospectus.
+          </a>
+        </p>
+      </div>
+      <Modal isOpen={isOpen} closeModal={closeModal} />
     </section>
   );
 };

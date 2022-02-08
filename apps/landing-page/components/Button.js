@@ -12,7 +12,7 @@ const Button = ({
     <a
       className={`${gradient ? styles.gradient : ""} ${
         inverted ? styles.inverted : ""
-      } ${className ? className : ""} ${styles.button} cursor-pointer`}
+      } ${className ? className : ""} ${styles.button} px-8 cursor-pointer`}
       {...rest}
     >
       {children}

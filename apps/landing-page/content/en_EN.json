@@ -36,6 +36,10 @@
   },
   "scrolling_boxes": {
     "description": "PLAY's goal is to provide exposure to the most in-demand projects in Web 3.0.",
+    "subparagraph": {
+      "title": "The best part?",
+      "content": "They are blockchain-enabled decentralized applications where crypto assets and data are user-owned. As such these assets can be moved across different virtual worlds. Breaking free of the stranglehold centralized platforms have had on you as a user."
+    },
     "boxes": [
       {
         "id": 1,
@@ -59,7 +63,6 @@
   },
   "methodology": {
     "description": "The inclusion of assets in the PLAY token is determined by the following criteria:",
-    "icon": "/double-checkmark.svg",
     "prospectus": "For detailed information on allocation and rebalancing procedures read the prospectus.",
     "boxes": [
       {
@@ -136,5 +139,61 @@
       "title": "Use the oven",
       "subtitle": "Save on gas"
     }
+  },
+  "modal": {
+    "section_1": {
+      "title": "Asset Allocation",
+      "description": "The allocation methodology used is the Correlated Risk-Adjusted Market Cap. The resulting percentage allocation is further adjusted through the following:",
+      "points": [
+        {
+          "id": 1,
+          "description": "The total market cap of the assets is divided by the total market cap of the PIEs."
+        },
+        {
+          "id": 2,
+          "description": "The percentage allocation is adjusted by the following factors:"
+        },
+        {
+          "id": 3,
+          "description": "The percentage allocation is adjusted by the following factors:"
+        },
+        {
+          "id": 4,
+          "description": "The percentage allocation is adjusted by the following factors:"
+        }
+      ],
+      "description_2": "Weighting in the momentum of the asset Market Cap over the past 30 days, defined as the ratio between the 15days and the 30days average Market Caps"
+    },
+    "section_2": {
+      "title": "Token rebalancing Policy",
+      "description_1": "The rebalancing of the PLAY token is rule-based. Under normal circumstances, PLAY holdings will be rebalanced:",
+      "points_1": [
+        {
+          "id": 1,
+          "description": "At least once every 6 months to avoid obsolescence."
+        },
+        {
+          "id": 2,
+          "description": " At most once per calendar month."
+        }
+      ],
+      "notes": "Note: The inclusion of new assets won’t immediately trigger a rebalancing. The new asset allocation will be identified during the first available rebalancing.",
+      "description_2": "Exceptions to the normal procedure can be triggered by the following:",
+      "points_2": [
+        {
+          "id": 1,
+          "description": "Max allocation of the largest holding is greater than 50% for 7 consecutive days."
+        },
+        {
+          "id": 2,
+          "description": "Max cumulative allocation of the top three holdings is greater than 80% for 7 consecutive days."
+        }
+      ]
+    },
+    "section_3": {
+      "title": "Rebalancing Procedure:",
+      "description": "Based on the rules above any community member could call for a rebalancing of the PLAY token. The new allocation considered for rebalancing will also include the addition/removal of any assets voted on by the community."
+    },
+    "download": "Download PDF"
   }
 }
