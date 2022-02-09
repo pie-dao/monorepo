@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useAppDispatch } from ".";
 import { Erc20, Mono } from "../types/artifacts/abi";
 import {
+  useMultipleMerkleAuthContract,
   useMultipleMonoContract,
   useMultipleTokenContract,
 } from "./useContract";
@@ -55,8 +56,8 @@ const calculateAvailable = (
   /**
    * We seem to overcompute the amount available, so need to confirm this calc
    */
-  // const bigAvailable = shares.mul(amountPerShare);
-  return toBalance(shares, decimals);
+  const bigAvailable = shares.mul(amountPerShare);
+  return toBalance(bigAvailable, decimals);
 };
 
 const toState = ({
@@ -78,7 +79,7 @@ const toState = ({
    * a state update. Useful for controlling re-renders and preventing
    * hammering of the node
    *
-   * @dev - clean this mess up a bit.
+   * @dev - clean this up a bit for multichain.
    * It works, but it's big and not easy to maintain
    */
   const toNumber = (n: BigNumber | BigNumber[]): number =>
@@ -142,10 +143,22 @@ const useTokenAddresses = () => {
   ) as string[];
 };
 
+const useMerkleAuthAddresses = () => {
+  return useProxySelector((state) =>
+    state.vault.vaults.map((v) => v.auth.address).filter((v) => !!v)
+  ) as string[];
+};
+
 const useContracts = (chainId?: number) => {
   const tokenAddresses = useTokenAddresses();
   const monoAddresses = useAddresses();
+  const authAddresses = useMerkleAuthAddresses();
   const monoContracts = useMultipleMonoContract(monoAddresses, true, chainId);
+  const authContracts = useMultipleMerkleAuthContract(
+    authAddresses,
+    true,
+    chainId
+  );
   const tokenContracts = useMultipleTokenContract(
     tokenAddresses,
     true,
@@ -154,8 +167,10 @@ const useContracts = (chainId?: number) => {
   return {
     monoContracts,
     tokenContracts,
+    authContracts,
   };
 };
+
 export const useChainData = (): { loading: boolean } => {
   const { account, active } = useWeb3React();
   const { chainId } = useWeb3Cache();

@@ -9,7 +9,9 @@ type Block = {
 };
 
 export const useBlock = (): Block => {
-  const { library } = useWeb3React<providers.Web3Provider | providers.JsonRpcProvider>();
+  const { library } = useWeb3React<
+    providers.Web3Provider | providers.JsonRpcProvider
+  >();
   const { chainId } = useWeb3Cache();
   const [block, setBlock] = useState<Block>({
     blockNumber: null,

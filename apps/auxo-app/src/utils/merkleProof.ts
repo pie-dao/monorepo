@@ -1,7 +1,7 @@
 import { BytesLike } from "ethers";
-import MerkleProofs from '../static/stakers-merkle-tree.json';
+import MerkleProofs from "../static/stakers-merkle-tree.production.json";
 
 export const getProof = (account?: string | null): BytesLike[] | undefined => {
-    const input = MerkleProofs[account as keyof typeof MerkleProofs];
-    return input;
-}
+  const input = MerkleProofs[account as keyof typeof MerkleProofs];
+  return input;
+};

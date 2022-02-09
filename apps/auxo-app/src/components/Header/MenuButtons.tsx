@@ -1,10 +1,10 @@
 import { useWeb3React } from "@web3-react/core";
 import { FTMLogo } from "../../assets/icons/logos";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { setErrorDisplay } from "../../store/app/app.slice";
+import { setAlertDisplay } from "../../store/app/app.slice";
 import StyledButton from "../UI/button";
 import { FaBell } from 'react-icons/fa';
-import { useChainHandler } from "../../utils/networks";
+import { useChainHandler } from "../../hooks/useChainHandler";
 
 const trimAccount = (account: string): string => {
     return account.slice(0, 6) + '...' + account.slice(38)
@@ -12,13 +12,13 @@ const trimAccount = (account: string): string => {
 
 export const AlertButton = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const error = useAppSelector(state => state.app.error);
+    const error = useAppSelector(state => state.app.alert);
     return (
       <button
         className="rounded-md shadow-md p-2 relative"
         onClick={() => {
           if (error.message) {
-            dispatch(setErrorDisplay(true))
+            dispatch(setAlertDisplay(true))
           }
         }}    
         >

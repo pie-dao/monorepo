@@ -1,7 +1,7 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { useWeb3React } from "@web3-react/core";
 import { useState } from "react";
-import { MissingDecimalsError, TXRejectedError } from "../../errors";
+import { MissingDecimalsError } from "../../errors";
 import { useMonoVaultContract } from "../../hooks/useContract";
 import { useSelectedVault } from "../../hooks/useSelectedVault"
 import { Balance, Vault } from "../../store/vault/Vault";
@@ -15,6 +15,9 @@ import { checkForEvent } from "../../utils/event";
 import { setReduceVaultTokens } from "../../store/vault/vault.slice";
 import { useAppDispatch } from "../../hooks";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
+import { setAlert } from "../../store/app/app.slice";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 enum WITHDRAWAL {
   'NOTSTARTED',
@@ -59,6 +62,34 @@ function WithdrawalButton ({
   const monoContract = useMonoVaultContract(vault.address);
   const dispatch = useAppDispatch();
 
+  const firstwallet = useRef(true);
+  const firstburn = useRef(true);
+
+  
+  useEffect(() => {
+    if (!firstwallet.current) {
+      dispatch(setAlert({
+        show: true,
+        message: 'Withdrawal Complete',
+        type: 'SUCCESS'
+      }))  
+    } else {
+      firstwallet.current = false;
+    }
+  }, [vault.userBalances?.wallet.value, dispatch])
+
+  useEffect(() => {
+    if (!firstburn.current) {
+      dispatch(setAlert({
+        show: true,
+        message: 'Withdraw request confirmed',
+        type: 'SUCCESS'
+      }))  
+    } else {
+      firstburn.current = false;
+    }
+  }, [vault.userBalances?.batchBurn.shares.value, dispatch])
+
   const buttonDisabled = () => {
     const invalidDepost = status !== WITHDRAWAL.READY && (withdrawal.label <= 0);
     const insufficientBalance = !sufficientBalance;
@@ -74,9 +105,18 @@ function WithdrawalButton ({
       if (confirm) {
         dispatch(setReduceVaultTokens(withdrawal));
         setWithdrawal(zeroBalance());
+        dispatch(setAlert({
+          message: 'Transaction approved...',
+          type: 'PENDING',
+          show: true
+        }))
       } else {
-        throw new TXRejectedError();
-      }  
+        dispatch(setAlert({
+          message: 'There was a problem with the transaction',
+          show: true,
+          type: 'ERROR'
+        }))
+      }
     } catch (err) {
       console.debug(err);
     } finally {
@@ -90,7 +130,19 @@ function WithdrawalButton ({
       if (status === WITHDRAWAL.READY) {
         const tx = await monoContract?.exitBatchBurn();
         const confirm = tx && await checkForEvent(tx, 'ExitBatchBurn');
-        if (!confirm) throw new TXRejectedError();
+        if (!confirm) {
+          dispatch(setAlert({
+            message: 'There was a problem with the transaction',
+            show: true,
+            type: 'ERROR'
+          }))
+        } else {
+          dispatch(setAlert({
+            message: 'Transaction approved...',
+            type: 'PENDING',
+            show: true
+          }))
+        }
       } else {
         throw new NotYetReadyToWithdrawError();
       }
@@ -106,13 +158,6 @@ function WithdrawalButton ({
       {
         account &&
         <StyledButton
-          className="
-            w-full
-            bg-transparent 
-            text-purple-700 
-            hover:bg-purple-400 
-            hover:text-white
-          "
           disabled={buttonDisabled()}
           onClick={() => status === WITHDRAWAL.READY ? exitBatchBurn() : enterBatchBurn()}
           >{ pending ? <LoadingSpinner /> : getButtonText(status) }
@@ -122,12 +167,12 @@ function WithdrawalButton ({
   )
 }
 
-function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) {
+export function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) {
   const decimals = vault.token?.decimals;
   const [withdrawal, setWithdrawal] = useState<Balance>({ label: 0, value: '0' });
   const vaultBalance = vault.userBalances?.vault
   const [sufficientBalance, setSufficientBalance] = useState(true);
-  
+
   const handleMaxWithdrawal = () => {   
     setSufficientBalance(true);
     setWithdrawal({
@@ -152,25 +197,26 @@ function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) 
     }
   }  
   return (
-    <section className="input flex justify-between w-full">
-      <div className="flex justify-between w-full">
+    <section className="input flex flex-col justify-between h-full w-full">
+      <div className="flex flex-col justify-evenly w-full h-full px-5">
         { 
-          status !== WITHDRAWAL.READY && <div className="flex flex-grow border-gray-400 rounded-lg border-2 px-5">
+          status !== WITHDRAWAL.READY &&
+            <div className="flex border-gray-200 rounded-lg border-2 px-5">
             <input
               type="number"
               min="0"
               max={vaultBalance?.label}
-              className="focus:outline-none w-full"
+              className="focus:outline-none w-full p-1"
               value={withdrawal.label.toString()}
               onChange={(e) => handleWithdrawalChange(e.target.value)}
             />
             <button
-              className="text-blue-300 ml-3"
+              className="text-blue-300"
               onClick={() => handleMaxWithdrawal()}
               >MAX</button>
           </div>
         }
-        <div className={`${status === WITHDRAWAL.READY ? 'w-full' : 'ml-2'}`}>
+        <div>
           <WithdrawalButton
             sufficientBalance={sufficientBalance}
             withdrawal={withdrawal}
@@ -185,16 +231,16 @@ function WithdrawInput({ vault, status }: { vault: Vault, status: WITHDRAWAL }) 
   )
 }
 
-const WithdrawStatusBar = ({ status }: { status: WITHDRAWAL }) => {
+export const WithdrawStatusBar = ({ status }: { status: WITHDRAWAL }) => {
   return (
     <div className="flex w-full justify-evenly">
-      <div className={`mx-1 w-1/2 -skew-x-12 ${status > 0 ? ' bg-orange-400' : 'bg-gray-400'}`}>REQUESTED</div>
-      <div className={`mx-1 w-1/2 -skew-x-12 ${status > 1 ? ' bg-blue-400' : 'bg-gray-400'}`}>READY</div>
+      <div className={`text-sm w-1/2 ${status > 0 ? ' bg-orange-400' : 'bg-gray-400'}`}>REQUESTED</div>
+      <div className={`text-sm w-1/2 ${status > 1 ? ' bg-blue-400' : 'bg-gray-400'}`}>READY</div>
     </div>
   )
 }
 
-const useStatus = (): WITHDRAWAL => {
+export const useStatus = (): WITHDRAWAL => {
   /**
   * (a) get user batched burn receipt by using userBatchBurnReceipts(address) (this will give you a Receipt { round, shares } object)
   * (b) check that round > 0 && shares > 0. If that is not the case, the user has no withdrawal pending.

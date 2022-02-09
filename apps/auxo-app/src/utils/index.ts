@@ -23,3 +23,6 @@ export const toBalance = (
   label: fromScale(n, decimals),
   value: String(n),
 });
+
+export const AUXO_HELP_URL =
+  "https://www.notion.so/piedao/Auxo-Vaults-12adac7ebc1e43eeb0c5db4c7cd828e2";

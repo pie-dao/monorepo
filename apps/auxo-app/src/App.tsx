@@ -6,7 +6,6 @@ import Callout from "./components/Summary/Callout";
 import VaultTable from "./components/Vault/VaultTable";
 import VaultNetworks from "./components/Vault/VaultNetworks";
 import { Routes, Route } from "react-router-dom";
-import VaultActions from "./components/Vault/VaultActions";
 import VaultDetails from "./components/Vault/Details/VaultDetails";
 
 const ChainDataComponent = () => {
@@ -27,11 +26,11 @@ function App() {
   return (
     <div className="App text-center h-full min-h-screen justify-between flex flex-col w-screen bg-gray-100">
       <section className="w-full h-full flex flex-col">
-      <Header />
-      <ChainDataComponent />
+        <Header />
+        <ChainDataComponent />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/details"   element={<VaultDetails />} />
+          <Route path="/details" element={<VaultDetails />} />
         </Routes>
       </section>
       <Footer />

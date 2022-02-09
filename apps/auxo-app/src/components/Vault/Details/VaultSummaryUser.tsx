@@ -27,6 +27,11 @@ const VaultSummaryUser = ({ loading, vault }: {
             left={`Your ${vault.symbol} Wallet balance`}
             right={ prettyNumber(vault?.userBalances?.wallet.label) }
         />
+        <CardItem
+          loading={loading}
+          left={`Shares Pending Withdrawal:`}
+          right={ prettyNumber(vault?.userBalances?.batchBurn.shares.label ?? 0) }
+        /> 
          <CardItem
             loading={loading}
             left={`Available to withdraw:`}

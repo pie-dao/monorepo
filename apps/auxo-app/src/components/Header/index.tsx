@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import WalletModal from "./WalletModal";
 import { useEffect, useState } from "react";
-import ErrorMessage from "./ErrorMessage";
+import AlertMessage from "./AlertMessage";
 import { useAppSelector } from "../../hooks";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 import { useEagerConnect, useInactiveListener } from "../../hooks/useWeb3";
@@ -85,7 +85,7 @@ const DesktopMenu = (): JSX.Element => {
 }
 
 const Header = () => {
-  const error = useAppSelector(state => state.app.error);
+  const alert = useAppSelector(state => state.app.alert);
   useConnectedWallet();
   return (
     <>
@@ -112,12 +112,7 @@ const Header = () => {
         <MobileMenu />
       </div> 
       </header>
-      {
-      error.show && 
-        <div className="fixed top-14 flex justify-center w-full z-10">
-          <ErrorMessage />
-        </div>
-      }
+      { alert.show && <AlertMessage /> }
     </>
   )
 };

@@ -3,8 +3,9 @@ import React from "react";
 import { MetamaskIcon, WalletConnectIcon } from "../../assets/icons/connectors";
 import { injected, walletconnect } from "../../connectors";
 import { useAppDispatch } from "../../hooks";
-import { setError } from "../../store/app/app.slice";
+import { setAlert } from "../../store/app/app.slice";
 import { supportedChainIds } from "../../utils/networks";
+import ExternalUrl from "../UI/url";
 
 const MetamaskButton = ({ setShow }: { setShow(show: boolean): void }): JSX.Element => {
 const { activate } = useWeb3React();
@@ -14,9 +15,10 @@ const handleConnect = () => {
     setShow(false)
   }).catch(err => {
     if (err instanceof UnsupportedChainIdError) {
-      dispatch(setError({
+      dispatch(setAlert({
         message: `You are currently connected to an unsupported chain, supported chains are ${supportedChainIds}`,
-        show: true
+        show: true,
+        type: 'ERROR'
       }))
     } else {
       alert('Error in connecting')
@@ -79,15 +81,11 @@ const WalletModal = (props: { setShow: (show: boolean) => void }) => {
           </HoverCard>
         </div>
         <div className="mt-1">
-          <a
-            href="https://ethereum.org/en/wallets/"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
+          <ExternalUrl to="https://ethereum.org/en/wallets/">
             <p>Learn more about wallets</p>
             <p>&#8594;</p>
-          </a>
-        <button onClick={() => props.setShow(false)}>CLOSE</button>
+          </ExternalUrl>
+          <button onClick={() => props.setShow(false)}>CLOSE</button>
         </div>
     </section>
   );

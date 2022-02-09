@@ -12,7 +12,7 @@ function VaultDetails(): JSX.Element {
   const navigate = useNavigate();
   useEffect(() => {
     if (!vault) navigate('/');
-  }, []);
+  }, [vault, navigate]);
   return (
     <section className="
       grid
@@ -34,7 +34,7 @@ function VaultDetails(): JSX.Element {
         row-span-2
         flex justify-center items-center bg-white border-gradient rounded-md h-72
         ">
-        <DepositWithdrawSwitcher />
+        <DepositWithdrawSwitcher vault={vault}/>
       </div>
       <div className="col-span-12 lg:col-span-8 order-4 md:order-6 row-span-1">
         <VaultAssetExposureCard />

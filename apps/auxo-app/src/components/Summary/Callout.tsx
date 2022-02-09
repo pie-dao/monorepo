@@ -1,4 +1,6 @@
 import { DESCRIPTIONS } from "../../constants"
+import { AUXO_HELP_URL } from "../../utils"
+import ExternalUrl from "../UI/url"
 
 const FancyTitle = () => (
     <section className="flex flex-col mb-8">
@@ -44,14 +46,11 @@ const Callout = (): JSX.Element => {
                     <p className="sm:w-3/4 md:w-1/2">
                         {DESCRIPTIONS.BANNER}
                     </p>
-                    <a
-                        className="mt-5 underline text-purple-800"
-                        href="https://ethereum.org/en/wallets/"
-                        target="_blank"
-                        rel="noreferrer noopener"
-                    >
-                        <p>Learn more about Auxo Vaults</p>
-                    </a>
+                    <ExternalUrl to={AUXO_HELP_URL}>
+                        <p className="underline text-purple-700 underline-offset-2 mt-3">
+                            Learn more about Auxo Vaults
+                        </p>
+                    </ExternalUrl>
                 </div>
             </div>
         </section>

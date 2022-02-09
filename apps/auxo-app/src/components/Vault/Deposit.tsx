@@ -16,6 +16,9 @@ import { checkForEvent } from "../../utils/event";
 import { zeroBalance } from "../../utils/balances";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 import MerkleVerify, { useDepositor } from "./MerkleAuthCheck";
+import { setAlert } from "../../store/app/app.slice";
+import { useEffect } from "react";
+import { useRef } from "react";
 
 const conditionallyApprove = async ({
   allowance,
@@ -40,6 +43,11 @@ const conditionallyApprove = async ({
 
     if (confirm) {
       dispatch(setApproval(deposit))
+      dispatch(setAlert({
+        message: 'Approval Successful, waiting for the network',
+        show: true,
+        type: 'PENDING'
+      }))
       return true
     } else { 
       throw new TXRejectedError();
@@ -69,6 +77,19 @@ function DepositButton ({
   const tokenContract = useTokenContract(vault.token.address);
   const [depositing, setDepositing] = useState(false);
   const allowance = vault.userBalances?.allowance;
+  const firstLoad = useRef(true);
+  
+  useEffect(() => {
+    if (!firstLoad.current) {
+      dispatch(setAlert({
+        show: true,
+        message: 'Deposit Complete',
+        type: 'SUCCESS'
+      }))  
+    } else {
+      firstLoad.current = false;
+    }
+  }, [vault.userBalances?.vaultUnderlying.value, dispatch])
 
   const buttonDisabled = () => {
     const invalidDepost = deposit.label <= 0;
@@ -91,9 +112,18 @@ function DepositButton ({
         const tx = await monoContract?.deposit(account, deposit.value)
         const confirm = tx && await checkForEvent(tx, 'Deposit');
         if (confirm) {
-          setDeposit(zeroBalance())
+          dispatch(setAlert({
+            show: true,
+            message: 'Transaction approved...',
+            type: 'PENDING'
+          }));
+          setDeposit(zeroBalance());
         } else { 
-          throw new TXRejectedError();
+          dispatch(setAlert({
+            message: 'There was a problem with the transaction',
+            show: true,
+            type: 'ERROR'
+          }));
         }
       } else {
         throw new TXRejectedError('Missing Params');
@@ -121,10 +151,10 @@ function DepositButton ({
   )
 }
 
-function DepositInput({ vault }: { vault: Vault }) {
+export function DepositInput({ vault }: { vault: Vault }) {
   const decimals = vault.token?.decimals;
   const [deposit, setDeposit] = useState<Balance>({ label: 0, value: '0' });
-  const vaultBalance = vault.userBalances?.wallet
+  const vaultBalance = vault.userBalances?.wallet;
   const [sufficientBalance, setSufficientBalance] = useState(true);
   
   const handleMaxDeposit = () => {   
@@ -150,9 +180,10 @@ function DepositInput({ vault }: { vault: Vault }) {
     }
   }  
   return (
-    <section className="input flex justify-between w-full">
-      <div className="flex justify-between w-full">
-        <div className="flex flex-grow border-gray-400 rounded-lg border-2 px-5">
+    <section className="h-full">
+      <div className="flex flex-col justify-evenly h-full w-full">
+        <p>Your {vault.symbol} Balance: <span className="font-bold text-purple-700">{prettyNumber(vaultBalance?.label)}</span></p>
+        <div className="flex border-gray-200 rounded-lg border-2 px-5 py-1 mx-5">
           <input
             type="number"
             min="0"

@@ -1,39 +1,48 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type AppState = {
-  error: {
+export type AlertTypes = 'SUCCESS' | 'PENDING' | 'ERROR' | undefined;
+    
+export type AppState = {
+  alert: {
     message: string | undefined;
     show: boolean;
+    type: AlertTypes;
   }
   chainId: number | undefined;
+}
+
+const initialAlertState: AppState['alert'] = {
+  message: undefined,
+  show: false,
+  type: undefined
 }
 
 const appSlice = createSlice({
   name: 'application',
   initialState: {
-    error: {
-      message: 'Problem',
-      show: false
-    },
+    alert: initialAlertState,
     chainId: undefined
   } as AppState,
   reducers: {
-    setError: (state, action: PayloadAction<AppState['error']>) => {
-      state.error.message = action.payload.message;
-      state.error.show = action.payload.show;
+    setAlert: (state, action: PayloadAction<AppState['alert']>) => {
+      state.alert = action.payload;
     },
-    setErrorDisplay: (state, action: PayloadAction<boolean>) => {
-      state.error.show = action.payload;
+    setAlertDisplay: (state, action: PayloadAction<boolean>) => {
+      state.alert.show = action.payload;
     },
     setChainId: (state, action: PayloadAction<number>) => {
       state.chainId = action.payload;
+    },
+    clearAlert: (state) => {
+      state.alert = initialAlertState;
     }
   }
 })
 
 export const { 
-  setError,
-  setErrorDisplay,
+  setAlert,
+  clearAlert,
+  setAlertDisplay,
   setChainId
 } = appSlice.actions;
 
