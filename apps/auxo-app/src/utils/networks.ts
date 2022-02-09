@@ -8,6 +8,7 @@ export type NetworkDetail = {
   name: SUPPORTEDNETWORKS;
   symbol: string;
   color: string;
+  blockExplorer: string;
 };
 export type ChainMap = Record<number, NetworkDetail>;
 
@@ -16,6 +17,7 @@ export const chainMap: ChainMap = {
     name: "FANTOM",
     color: "blue-700",
     symbol: "FTM",
+    blockExplorer: 'https://ftmscan.com'
   },
 };
 
@@ -45,3 +47,4 @@ export const useChainHandler = (): NetworkDetail | undefined => {
     );
   }
 };
+

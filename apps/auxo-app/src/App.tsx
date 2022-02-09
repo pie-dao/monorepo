@@ -7,6 +7,7 @@ import VaultTable from "./components/Vault/VaultTable";
 import VaultNetworks from "./components/Vault/VaultNetworks";
 import { Routes, Route } from "react-router-dom";
 import VaultActions from "./components/Vault/VaultActions";
+import VaultDetails from "./components/Vault/VaultDetails";
 
 const ChainDataComponent = () => {
   useSetWeb3Cache();
@@ -24,13 +25,13 @@ const Home = () => (
 
 function App() {
   return (
-    <div className="App text-center h-screen w-screen bg-gray-100">
+    <div className="App text-center h-screen flex flex-col justify-between w-screen bg-gray-100">
       <Header />
       <ChainDataComponent />
-      <section className="w-full flex flex-col absolute top-[56px]">
+      <section className="w-full h-full flex flex-col">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/details" element={<VaultActions loading={false} />} />
+          <Route path="/details" element={<VaultDetails />} />
         </Routes>
       </section>
       <Footer />

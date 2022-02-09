@@ -33,7 +33,7 @@ export const vaultState: VaultState = {
         address: '0xA86fc7aD871B5247f13BB38a08a67bE4d38e577B',
         isDepositor: false,
       }
-    },
+    },   
   ],
   selected: null,
   isLoading: false,

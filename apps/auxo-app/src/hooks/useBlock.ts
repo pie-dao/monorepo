@@ -1,4 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
+import { providers } from "ethers";
 import { useEffect, useState } from "react";
 import { useWeb3Cache } from "./useCachedWeb3";
 
@@ -8,7 +9,7 @@ type Block = {
 };
 
 export const useBlock = (): Block => {
-  const { library } = useWeb3React();
+  const { library } = useWeb3React<providers.Web3Provider | providers.JsonRpcProvider>();
   const { chainId } = useWeb3Cache();
   const [block, setBlock] = useState<Block>({
     blockNumber: null,

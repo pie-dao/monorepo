@@ -6,8 +6,6 @@ const Footer = () => {
   return (
     <footer
       className="
-      fixed
-      bottom-0
       h-10
       z-10
       w-full

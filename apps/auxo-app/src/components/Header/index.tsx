@@ -139,8 +139,7 @@ const Header = () => {
       justify-between
       px-5
       my-2
-      absolute w-full
-      top-0
+      w-full
       h-${HEADER_HEIGHT}
       z-10
       pt-1

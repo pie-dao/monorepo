@@ -3,15 +3,11 @@ import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "../../hooks";
 import { useMerkleAuthContract } from "../../hooks/useContract"
-import MerkleProofs from '../../static/stakers-merkle-tree.json';
 import { Vault } from "../../store/vault/Vault";
 import { setIsDepositor } from "../../store/vault/vault.slice";
+import { getProof } from "../../utils/merkleProof";
 import StyledButton from "../UI/button";
 
-const getProof = (account?: string | null): BytesLike[] | undefined => {
-  const input = MerkleProofs[account as keyof typeof MerkleProofs];
-  return input;
-}
 
 export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
   const [loading, setLoading] = useState(false);
