@@ -28,7 +28,7 @@ const SubCharts = ({ play }) => {
   const [mcapDate, setMcapDate] = useState(latestTickDate);
 
   return (
-    <section className="container mx-auto mb-10 px-4 gap-y-4 md:gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+    <section className="container mx-auto mb-10 px-6 gap-y-4 md:gap-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <div className="flex flex-col">
         <h4 className="font-bold text-white mb-2">NAV</h4>
         <div className="w-full flex flex-1 flex-col border border-deeper_purple rounded-lg py-2 px-4">

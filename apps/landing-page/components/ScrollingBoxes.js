@@ -9,13 +9,13 @@ const ScrollingBoxes = ({}) => {
       className={`w-full justify-evenly content-left text-left overflow-hidden lg:overflow-visible`}
     >
       <div className="w-full z-20 sticky top-20 bg-secondary h-60 text-center lg:text-left -mt-20">
-        <div className="container mx-auto px-4 pt-8">
-          <p className="uppercase text-4xl">
+        <div className="container mx-auto px-6 pt-8">
+          <h2 className="uppercase text-4xl md:text-5xl mb-4">
             Easy access to
             <br />
             <span className="font-bold">the metaverse</span>
-          </p>
-          <p className="hidden lg:block lg:w-1/3 pt-4">
+          </h2>
+          <p className="hidden lg:block lg:w-1/3 pt-4 text-sm md:text-xl">
             {content.scrolling_boxes.description}
           </p>
         </div>

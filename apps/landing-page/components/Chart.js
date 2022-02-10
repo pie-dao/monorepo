@@ -33,7 +33,7 @@ const Chart = ({ play }) => {
     } catch (e) {}
   };
   return (
-    <section className="container mx-auto my-4 px-4 border-b border-highlight">
+    <section className="container mx-auto my-4 px-6 border-b border-highlight">
       <div className="flex flex-col md:flex-row items-center justify-between my-4 gap-x-2">
         <div className="flex flex-col md:flex-row items-center gap-x-3">
           <p className="hidden md:flex font-bold">Contract Address</p>
@@ -43,7 +43,7 @@ const Chart = ({ play }) => {
               {play.pie.address}
             </p>
           </div>
-          <div className="hidden md:flex">
+          <div className="hidden md:flex gap-x-4">
             <button onClick={copyOnClipboard} type="button" className="flex">
               <Image src={copyIcon} alt="Copy Icon" />
             </button>

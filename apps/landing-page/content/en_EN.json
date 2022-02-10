@@ -14,11 +14,13 @@
     "details_right": "It will allow for rich and immersive experiences in new virtual worlds.",
     "info_boxes": {
       "first": {
-        "title": "$ 1.5 Billion",
-        "sub_title": "is the current value of the blockchain gaming industry"
+        "title": "Billion",
+        "title_highlight": "$ 1.5",
+        "sub_title": "is the current value of the blockchain gaming industry "
       },
       "second": {
-        "title": "1.2 Million",
+        "title": "Million",
+        "title_highlight": "1.2",
         "sub_title": "the average amount of active blockchain gamers"
       },
       "third": {

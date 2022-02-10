@@ -18,7 +18,7 @@ const Hero = ({ actualPrice }) => {
       text-center min-h-screen bg-no-repeat bg-cover 
       bg-[length:100%_100%] bg-[url('/bg_lines.svg')] mb-8`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <div className="hidden md:block mb-8">
           <Image src={pieDaoLogo} alt="PieDao Logo" />
         </div>
@@ -26,34 +26,42 @@ const Hero = ({ actualPrice }) => {
           <Image src={separator} alt="separator" />
         </div>
         <div className="mb-12">
-          <h2 className="font-bold uppercase text-sm md:text-xl">
+          <h2 className="font-bold uppercase text-sm md:text-3xl">
             {content.hero.sub_title}
           </h2>
           <div className="relative mb-6 overflow-hidden">
-            <h1 className="uppercase text-4xl md:text-6xl title-gradient">
+            <h1 className="uppercase text-4xl md:text-5xl lg:text-6xl xl:text-8xl title-gradient">
               {content.hero.title}
             </h1>
-            <p className="absolute uppercase text-4xl md:text-6xl title-gradient w-full top-2 left-6 opacity-25">
+            <p className="absolute uppercase text-4xl md:text-5xl lg:text-6xl xl:text-8xl title-gradient w-full top-2 left-6 opacity-25">
               {content.hero.title}
             </p>
-            <p className="absolute uppercase text-4xl md:text-6xl title-gradient w-full top-2 right-6 opacity-25">
+            <p className="absolute uppercase text-4xl md:text-5xl lg:text-6xl xl:text-8xl title-gradient w-full top-2 right-6 opacity-25">
               {content.hero.title}
             </p>
           </div>
-          <p className="font-bold text-sm md:text-md">
+          <p className="font-bold text-sm md:text-xl">
             {content.hero.content_highlight}
           </p>
-          <p className="text-sm md:text-md mt-6 md:mt-0">
+          <p className="text-sm md:text-xl mt-6 md:mt-0">
             {content.hero.content_text}
           </p>
         </div>
         <div className="flex flex-col items-center">
-          <Button className="uppercase mb-4 px-8" gradient href="#">
+          <Button
+            className="uppercase mb-4 px-8"
+            gradient
+            href="https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {content.hero.call_to_action}
           </Button>
           {inceptionPerc > 0 && (
             <div className="flex justify-center relative flex-col items-center">
-              <Image src={arrowUp} alt="arrow up" className="up" />
+              <div>
+                <Image src={arrowUp} alt="arrow up" className="up" />
+              </div>
               <h5 className="glitch mt-2">
                 <span aria-hidden="true">+{inceptionPerc}%</span>+
                 {inceptionPerc}%

@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Bar } from "@visx/shape";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Group } from "@visx/group";
+import { localPoint } from "@visx/event";
 import { timeFormat } from "d3-time-format";
 import { max } from "d3-array";
-import styles from "../styles/MarketCapChart.module.scss";
 
 const barColor = "#412D87";
+const barColorHighlight = "#d7099c";
 
 const getMcapValue = (d) => d[1];
 const getDate = (d) => new Date(d[0]);
@@ -20,6 +21,7 @@ const MarketCapChart = ({
   setMcapDate,
 }) => {
   const svgRef = useRef();
+  const [activeElement, setActiveElement] = useState(null);
 
   const today = useMemo(() => new Date(), []);
   const weekAgo = useMemo(
@@ -28,7 +30,7 @@ const MarketCapChart = ({
   );
 
   const chartData = useMemo(() => {
-    return marketcapData.filter((d) => getDate(d) > weekAgo).slice(0, 20);
+    return marketcapData.filter((d) => getDate(d) > weekAgo);
   }, [marketcapData, weekAgo]);
 
   const xScale = useMemo(
@@ -53,13 +55,9 @@ const MarketCapChart = ({
 
   const handleMouseMove = (e, d) => {
     if (!svgRef.current) return;
+    setActiveElement(Number(e.target.getAttribute("x")));
     setMcapPrice(getMcapValue(d));
     setMcapDate(formatDate(getDate(d)));
-  };
-  const handleMouseLeave = (e) => {
-    if (!svgRef.current) return;
-    setMcapPrice(chartData[chartData.length - 1][1]);
-    setMcapDate(formatDate(new Date(chartData[chartData.length - 1][0])));
   };
 
   if (width < 10) return null;
@@ -81,13 +79,10 @@ const MarketCapChart = ({
                 y={barY}
                 width={barWidth}
                 height={barHeight}
-                fill={barColor}
+                fill={activeElement === barX ? barColorHighlight : barColor}
                 rx={2}
-                className={styles.bar}
                 onMouseMove={(e) => handleMouseMove(e, d)}
-                onMouseLeave={(e) => handleMouseLeave(e, d)}
                 onTouchMove={(e) => handleMouseMove(e, d)}
-                onTouchEnd={(e) => handleMouseLeave(e, d)}
               />
             );
           })}

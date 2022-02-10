@@ -8,7 +8,7 @@ import medium from "../public/social/medium_blue.svg";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary px-2 py-4 flex content-around justify-center items-center text-white container mx-auto flex-col md:flex-row">
+    <footer className="bg-primary px-6 py-4 flex content-around justify-center items-center text-white container mx-auto flex-col md:flex-row">
       <Image src={piedaoLogo} alt="PieDao Logo" />
       <ul className="flex items-center flex-1 ml-6 gap-x-4">
         <li>

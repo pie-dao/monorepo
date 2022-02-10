@@ -9,12 +9,12 @@ const ExploreProducts = ({ pies }) => {
     >
       <div className="flex ml-12 mr-12">
         <div className="w-full mb-10 content-center text-center">
-          <h2 className="text-4xl text-highlight uppercase">
+          <h3 className="text-highlight uppercase text-4xl md:text-5xl mb-4">
             {content.explore_products.title.first}{" "}
             <span className="text-highlight font-bold">
               {content.explore_products.title.highlighted}
             </span>
-          </h2>
+          </h3>
         </div>
       </div>
       <div className="container mx-auto gap-10 w-full flex flex-col lg:flex-row items-center justify-center">

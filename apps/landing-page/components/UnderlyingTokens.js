@@ -44,9 +44,11 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
       />
        <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-sm" src="./logo_play.svg" /> */}
       <div className="bg-secondary py-8 w-full relative">
-        <p className="uppercase text-xl md:text-4xl">
-          underlying <span className="font-bold">tokens</span>
-        </p>
+        <div className="container mx-auto px-6">
+          <h2 className="uppercase text-4xl md:text-5xl mb-4">
+            underlying <span className="font-bold">tokens</span>
+          </h2>
+        </div>
       </div>
       <div className="-mt-12 relative z-1">
         <Image src={playLogo} alt="play logo" />

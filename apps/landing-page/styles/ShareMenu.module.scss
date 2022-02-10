@@ -1,0 +1,11 @@
+.shareButton {
+  &:hover {
+    :global {
+      svg {
+        path {
+          @apply fill-primary;
+        }
+      }
+    }
+  }
+}

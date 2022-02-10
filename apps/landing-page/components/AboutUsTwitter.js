@@ -18,10 +18,10 @@ const AboutUsTwitter = ({ twitterPosts }) => {
       className={`bg-primary w-full justify-evenly flex-col content-center text-center flexmd:flex-col overflow-hidden`}
     >
       <div className="flex mb-4 ml-12 mr-12">
-        <div className="w-full pt-[5pc] content-center text-center">
-          <h1 className="text-4xl title-gradient uppercase font-light">
+        <div className="w-full content-center text-center">
+          <h3 className="title-gradient uppercase font-light text-4xl md:text-5xl mb-4">
             {content.about_us_twitter.title}
-          </h1>
+          </h3>
         </div>
       </div>
       <Swiper

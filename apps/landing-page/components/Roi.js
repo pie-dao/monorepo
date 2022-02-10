@@ -12,7 +12,7 @@ const Roi = ({}) => {
       <div className="bg-secondary relative grid content-around justify-center my-24 w-full">
         {/* <img className="z-20 absolute -top-10" src="./bg_big_line_2.svg" />
         <img className="z-40 absolute -top-16" src="./bg_big_line_1.svg" /> */}
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-6">
           <div className="bg-highlight z-20 relative -top-16 sm:-top-12 text-2xl p-4 mx-4 rounded-xl flex flex-col items-center justify-center text-center">
             <p className="font-light">If you had bought PLAY in March 2021</p>
             <p className="font-bold">you would have an ROI of 255%</p>
@@ -33,8 +33,12 @@ const Roi = ({}) => {
             </div>
           </div>
           <div className="pt-4 relative z-20 flex flex-col items-center text-center justify-center">
-            <p className="font-bold">With 550+ token holders</p>
-            <p>PLAY is our fastest-growing PIE</p>
+            <p className="font-bold text-sm md:text-xl">
+              With 550+ token holders
+            </p>
+            <p className="text-sm md:text-xl">
+              PLAY is our fastest-growing PIE
+            </p>
           </div>
           <div className="relative top-6 z-20 flex flex-col items-center text-center justify-center">
             <Button
@@ -51,7 +55,7 @@ const Roi = ({}) => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <p className="text-center uppercase text-sm text-[#9388DB] mb-4">
           You can find PLAY also on
         </p>

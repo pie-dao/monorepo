@@ -111,12 +111,14 @@ const Methodology = ({}) => {
     <section
       className={`bg-primary w-full justify-evenly content-center text-center overflow-hidden`}
     >
-      <div className="flex mb-4 container mx-auto px-4">
+      <div className="flex mb-4 container mx-auto px-6">
         <div className="w-full content-center text-center">
-          <h1 className="text-4xl text-highlight uppercase">
+          <h2 className="text-highlight uppercase text-4xl md:text-5xl mb-4">
             Methodology <span className="font-bold">& Strategy</span>
-          </h1>
-          <h2>{content.methodology.description}</h2>
+          </h2>
+          <p className="text-sm md:text-xl">
+            {content.methodology.description}
+          </p>
         </div>
       </div>
       <div className="max-w-screen-sm mx-auto">
@@ -134,7 +136,9 @@ const Methodology = ({}) => {
                 <div className="p-1 rounded-md bg-gradient-to-tr from-red-500 to-blue-500">
                   <div className="w-full rounded-md bg-primary p-4 flex flex-col items-center justify-center text-center h-72">
                     <div className="flex flex-1 items-center">
-                      <p className="p-2">{box.description}</p>
+                      <p className="p-2 text-sm md:text-md">
+                        {box.description}
+                      </p>
                     </div>
                     <div>
                       <Image src={greenCheckmark} alt="green checkmark" />
@@ -146,7 +150,7 @@ const Methodology = ({}) => {
           })}
         </Swiper>
       </div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-6">
         <p className="text-deep_blue">
           For detailed information on allocation and rebalancing procedures{" "}
           <a className="text-highlight cursor-pointer" onClick={openModal}>
