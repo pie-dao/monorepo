@@ -1,6 +1,7 @@
 // import { Logo } from "@piedao/ui-components";
 import Image from "next/image";
 import Button from "./Button";
+import PriceChange from "./PriceChange";
 import ShareMenu from "./ShareMenu";
 import playLogo from "../public/play_logo.svg";
 import arrowIconGreen from "../public/arrow_icon_green.svg";
@@ -10,7 +11,6 @@ import styles from "../styles/PlayBar.module.scss";
 
 const PlayBar = ({ play }) => {
   const { usd_24h_change, usd } = play;
-  const usdDayChange = usd_24h_change.toFixed(2);
 
   return (
     <div
@@ -25,21 +25,7 @@ const PlayBar = ({ play }) => {
           <p className="text-gradient text-2xl md:text-xl leading-none md:leading-none flex">
             PLAY{" "}
             <span className="text-white text-sm hidden md:block ml-2">
-              {usd_24h_change > 0 ? (
-                <>
-                  <span className="text-[#2DFF1B] mr-1">+ {usdDayChange}%</span>
-                  <Image src={arrowIconGreen} alt="arrow up" />
-                </>
-              ) : usd_24h_change === 0 ? (
-                `0%`
-              ) : (
-                <>
-                  <span className="text-highlight mr-1">
-                    - {Math.abs(usdDayChange)}%
-                  </span>
-                  <Image src={arrowIconRed} alt="arrow down" />
-                </>
-              )}
+              <PriceChange priceChangeUsd={usd_24h_change} />
             </span>
           </p>
           <p className="text-white text-[0.75rem] uppercase leading-none md:leading-none hidden md:block">
