@@ -193,5 +193,23 @@
       "description": "Based on the rules above any community member could call for a rebalancing of the PLAY token. The new allocation considered for rebalancing will also include the addition/removal of any assets voted on by the community."
     },
     "download": "Download PDF"
+  },
+  "socials": {
+    "discord": {
+      "name": "Discord",
+      "url": "http://discord.link/PieDAO"
+    },
+    "telegram": {
+      "name": "Telegram",
+      "url": "https://t.me/piedao"
+    },
+    "twitter": {
+      "name": "Twitter",
+      "url": "https://twitter.com/PieDAO_DeFi"
+    },
+    "medium": {
+      "name": "Medium",
+      "url": "https://medium.com/piedao"
+    }
   }
 }

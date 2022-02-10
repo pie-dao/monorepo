@@ -2,10 +2,99 @@ import { useState } from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
+import { Dialog } from "@headlessui/react";
+import Button from "./Button";
+
 import Modal from "./Modal";
 import greenCheckmark from "../public/double-checkmark.svg";
 import styles from "../styles/Methodology.module.scss";
 import content from "../content/en_EN.json";
+
+const ModalContent = () => {
+  return (
+    <>
+      <Dialog.Title
+        as="h3"
+        className="text-2xl leading-6 text-highlight font-bold uppercase"
+      >
+        {content.modal.section_1.title}
+      </Dialog.Title>
+      <div className="mt-4 mb-8 text-sm text-white">
+        <p>{content.modal.section_1.description}</p>
+        <ul>
+          {content.modal.section_1.points.map((point) => (
+            <li key={point.id} className="text-sm text-white flex items-center">
+              <Image
+                src={greenCheckmark}
+                alt="Green checkmark"
+                aria-hidden="true"
+                width={20}
+              />
+              <span className="ml-2">{point.description}</span>
+            </li>
+          ))}
+        </ul>
+        <p>{content.modal.section_1.description_2}</p>
+      </div>
+
+      <Dialog.Title
+        as="h3"
+        className="text-2xl leading-6 text-highlight font-bold uppercase"
+      >
+        {content.modal.section_2.title}
+      </Dialog.Title>
+      <div className="mt-4 mb-8 text-sm text-white">
+        <p>{content.modal.section_2.description_1}</p>
+        <ul>
+          {content.modal.section_2.points_1.map((point) => (
+            <li key={point.id} className="text-sm text-white flex items-center">
+              <Image
+                src={greenCheckmark}
+                alt="Green checkmark"
+                aria-hidden="true"
+                width={20}
+              />
+              <span className="ml-2">{point.description}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mb-2">{content.modal.section_2.notes}</p>
+        <p>{content.modal.section_2.description_2}</p>
+        <ul>
+          {content.modal.section_2.points_2.map((point) => (
+            <li key={point.id} className="text-sm text-white flex items-center">
+              <Image
+                src={greenCheckmark}
+                alt="Green checkmark"
+                aria-hidden="true"
+                width={20}
+              />
+              <span className="ml-2">{point.description}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Dialog.Title
+        as="h3"
+        className="text-2xl leading-6 text-highlight font-bold uppercase"
+      >
+        {content.modal.section_3.title}
+      </Dialog.Title>
+      <div className="mt-4 mb-8 text-sm text-white">
+        <p>{content.modal.section_3.description}</p>
+      </div>
+      <div className="mt-4">
+        <Button
+          className="text-white uppercase"
+          href="https://gateway.pinata.cloud/ipfs/QmcNBx57qyjsuENaTZunsG7C12PN8i9t9BKjzaWzGSaBVK"
+          target="_blank"
+        >
+          {content.modal.download}
+        </Button>
+      </div>
+    </>
+  );
+};
 
 const Methodology = ({}) => {
   let [isOpen, setIsOpen] = useState(false);
@@ -65,7 +154,9 @@ const Methodology = ({}) => {
           </a>
         </p>
       </div>
-      <Modal isOpen={isOpen} closeModal={closeModal} />
+      <Modal isOpen={isOpen} closeModal={closeModal}>
+        <ModalContent />
+      </Modal>
     </section>
   );
 };

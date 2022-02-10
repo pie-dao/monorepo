@@ -1,8 +1,5 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
 import PieCard from "./PieCard";
-import styles from "../styles/ExploreProducts.module.scss";
 import content from "../content/en_EN.json";
 
 const ExploreProducts = ({ pies }) => {

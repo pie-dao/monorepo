@@ -13,6 +13,8 @@ import Roi from "../components/Roi";
 import AboutUsTwitter from "../components/AboutUsTwitter";
 import ExploreProducts from "../components/ExploreProducts";
 import PlayBar from "../components/PlayBar";
+import Chart from "../components/Chart";
+import SubCharts from "../components/SubCharts";
 
 export async function getServerSideProps() {
   const posts = await twitterPosts(
@@ -41,26 +43,26 @@ export async function getServerSideProps() {
 
 export default function Home({ posts, playData, morePiesData }) {
   return (
-    <div>
-      <div className="text-white grid place-items-center">
-        {/* Hero Section */}
-        <Hero actualPrice={playData.history[0].pie.usd} />
-        <PlayBar play={playData.history[0].pie} />
-        <Metaverse />
-        {/* ScrollingBoxes Section */}
-        <ScrollingBoxes />
-        {/* UnderlyingTokens Section */}
-        <UnderlyingTokens
-          underlyingAssets={playData.history[0].underlyingAssets}
-        />
-        {/* Methodology Section */}
-        <Methodology />
-        {/* Roi Section */}
-        <Roi />
-        {<AboutUsTwitter twitterPosts={posts} />}
-        <Ovens />
-        <ExploreProducts pies={morePiesData} />
-      </div>
+    <div className="text-white grid place-items-center">
+      {/* Hero Section */}
+      <Hero actualPrice={playData.history[0].pie.usd} />
+      <PlayBar play={playData.history[0].pie} />
+      <Metaverse />
+      {/* ScrollingBoxes Section */}
+      <ScrollingBoxes />
+      <Chart play={playData} />
+      <SubCharts play={playData} />
+      {/* UnderlyingTokens Section */}
+      <UnderlyingTokens
+        underlyingAssets={playData.history[0].underlyingAssets}
+      />
+      {/* Methodology Section */}
+      <Methodology />
+      {/* Roi Section */}
+      <Roi />
+      {<AboutUsTwitter twitterPosts={posts} />}
+      <Ovens />
+      <ExploreProducts pies={morePiesData} />
     </div>
   );
 }

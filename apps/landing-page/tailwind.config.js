@@ -15,6 +15,10 @@ module.exports = {
         highlight: "#D7099C",
         highlight_secondary: "#32C7FE",
         deep_blue: "#367BF5",
+        deep_purple: "#9388DB",
+        deeper_purple: "#412D87",
+        light_blue: "#28D2FF",
+        light_green: "#2DFF1B",
       },
       fontFamily: {
         sans: ["Rubik", ...defaultTheme.fontFamily.sans],

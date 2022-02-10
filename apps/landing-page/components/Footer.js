@@ -1,4 +1,5 @@
 import Image from "next/image";
+import content from "../content/en_EN.json";
 import piedaoLogo from "../public/piedao_logo_text.png";
 import discord from "../public/social/discord_blue.svg";
 import twitter from "../public/social/twitter_blue.svg";
@@ -7,31 +8,51 @@ import medium from "../public/social/medium_blue.svg";
 
 const Footer = () => {
   return (
-    <footer className="bg-primary p-6 flex content-around justify-center items-center text-white container mx-auto">
+    <footer className="bg-primary px-2 py-4 flex content-around justify-center items-center text-white container mx-auto flex-col md:flex-row">
       <Image src={piedaoLogo} alt="PieDao Logo" />
       <ul className="flex items-center flex-1 ml-6 gap-x-4">
         <li>
-          <a href="#" className="flex">
-            <Image src={discord} alt="Visit our discord" />
-            <p className="ml-2">Discord</p>
+          <a
+            href={content.socials.discord.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="flex"
+          >
+            <Image src={discord} alt="Discord" />
+            <p className="ml-2">{content.socials.discord.name}</p>
           </a>
         </li>
         <li>
-          <a href="#" className="flex">
-            <Image src={telegram} alt="Share on Telegram" />
-            <p className="ml-2">Telegram</p>
+          <a
+            href={content.socials.telegram.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="flex"
+          >
+            <Image src={telegram} alt="Telegram" />
+            <p className="ml-2">{content.socials.telegram.name}</p>
           </a>
         </li>
         <li>
-          <a href="#" className="flex">
-            <Image src={twitter} alt="Share on Twitter" />
-            <p className="ml-2">Twitter</p>
+          <a
+            href={content.socials.twitter.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="flex"
+          >
+            <Image src={twitter} alt="Twitter" />
+            <p className="ml-2">{content.socials.twitter.name}</p>
           </a>
         </li>
         <li>
-          <a href="#" className="flex">
-            <Image src={medium} alt="Share on Medium" />
-            <p className="ml-2">Medium</p>
+          <a
+            href={content.socials.medium.url}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="flex"
+          >
+            <Image src={medium} alt="Medium" />
+            <p className="ml-2">{content.socials.medium.name}</p>
           </a>
         </li>
       </ul>
