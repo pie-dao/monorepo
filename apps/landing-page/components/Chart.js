@@ -33,22 +33,24 @@ const Chart = ({ play }) => {
     } catch (e) {}
   };
   return (
-    <section className="container mx-auto my-4 border-b border-highlight">
-      <div className="flex items-center justify-between my-4 gap-x-2">
-        <div className="flex items-center gap-x-3">
-          <p className="font-bold">Contract Address</p>
-          <div className="flex items-center bg-secondary rounded-full pr-2">
+    <section className="container mx-auto my-4 px-4 border-b border-highlight">
+      <div className="flex flex-col md:flex-row items-center justify-between my-4 gap-x-2">
+        <div className="flex flex-col md:flex-row items-center gap-x-3">
+          <p className="hidden md:flex font-bold">Contract Address</p>
+          <div className="flex mb-2 md:mb-0 items-center bg-secondary rounded-full pr-2">
             <Image src={ethIcon} alt="Ethereum Icon" />
-            <p className="text-light_blue text-sm relative top-0.5 ml-1">
+            <p className="text-light_blue text-xs	md:text-sm relative top-0.5 ml-1">
               {play.pie.address}
             </p>
           </div>
-          <button onClick={copyOnClipboard} type="button" className="flex">
-            <Image src={copyIcon} alt="Copy Icon" />
-          </button>
-          <button onClick={addPlayToMetamask} type="button" className="flex">
-            <Image src={metamaskIcon} alt="Metamask Icon" />
-          </button>
+          <div className="hidden md:flex">
+            <button onClick={copyOnClipboard} type="button" className="flex">
+              <Image src={copyIcon} alt="Copy Icon" />
+            </button>
+            <button onClick={addPlayToMetamask} type="button" className="flex">
+              <Image src={metamaskIcon} alt="Metamask Icon" />
+            </button>
+          </div>
         </div>
         <div className="flex items-center">
           <Image src={auditIcon} alt="Chart Icon" />
@@ -101,7 +103,7 @@ const Chart = ({ play }) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[600px]">
+      <div className="w-full h-[200px] md:h-[500px]">
         <ParentSize>
           {({ width, height }) => (
             <PlayChart
@@ -113,7 +115,7 @@ const Chart = ({ play }) => {
           )}
         </ParentSize>
       </div>
-      <div className="flex text-deep_purple mb-2 gap-x-4">
+      <div className="hidden md:flex text-deep_purple mb-2 gap-x-4">
         <p>
           1 Day <PriceChange priceChangeUsd={-10.3} />
         </p>

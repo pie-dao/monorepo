@@ -20,7 +20,7 @@ const ScrollingBoxes = ({}) => {
           </p>
         </div>
       </div>
-      <div className="z-20 sticky flex mb-4 lg:-mt-60 lg:justify-end">
+      <div className="z-20 sticky flex mb-4 mt-20 lg:-mt-60 lg:justify-end">
         <div className="lg:container lg:mx-auto w-full px-4">
           <div className="flex lg:hidden w-full">
             <Swiper

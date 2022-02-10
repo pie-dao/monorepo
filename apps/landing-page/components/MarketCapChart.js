@@ -28,7 +28,7 @@ const MarketCapChart = ({
   );
 
   const chartData = useMemo(() => {
-    return marketcapData.filter((d) => getDate(d) > weekAgo);
+    return marketcapData.filter((d) => getDate(d) > weekAgo).slice(0, 20);
   }, [marketcapData, weekAgo]);
 
   const xScale = useMemo(
@@ -61,11 +61,6 @@ const MarketCapChart = ({
     setMcapPrice(chartData[chartData.length - 1][1]);
     setMcapDate(formatDate(new Date(chartData[chartData.length - 1][0])));
   };
-
-  useEffect(() => {
-    setMcapPrice(chartData[chartData.length - 1][1]);
-    setMcapDate(formatDate(new Date(chartData[chartData.length - 1][0])));
-  }, []);
 
   if (width < 10) return null;
 
