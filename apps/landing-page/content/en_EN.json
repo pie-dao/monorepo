@@ -15,20 +15,20 @@
     "info_boxes": {
       "first": {
         "title": "$ 1.5 Billion",
-        "sub_title": "is the current value of the blockchain gaming industry and growing"
+        "sub_title": "is the current value of the blockchain gaming industry"
       },
       "second": {
         "title": "1.2 Million",
-        "sub_title": "active blockchain gaming users on avarage"
+        "sub_title": "the average amount of active blockchain gamers"
       },
       "third": {
         "title": "+ 663,000",
-        "sub_title": "in NFT sales in the first half of 2021"
+        "sub_title": "traders have bought or sold Axie Infinity NFTs"
       },
       "fourth": {
         "title": "Billion",
         "title_highlight": "$ 2.5",
-        "sub_title": "traders have bought or sold Axie Infinity NFTs"
+        "sub_title": "in NFT sales in the first half of 2021"
       }
     }
   },
