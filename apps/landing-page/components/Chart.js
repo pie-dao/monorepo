@@ -33,7 +33,7 @@ const Chart = ({ play }) => {
     } catch (e) {}
   };
   return (
-    <section className="container mx-auto my-4 px-6 border-b border-highlight">
+    <section className="container mx-auto my-4 px-6">
       <div className="flex flex-wrap flex-row items-center my-4 gap-2 justify-center">
         <div className="flex flex-col lg:flex-row items-center gap-3">
           <p className="hidden lg:flex font-bold">Contract Address</p>
@@ -133,6 +133,7 @@ const Chart = ({ play }) => {
           1 Year <PriceChange priceChangeUsd={190} />
         </p>
       </div>
+      <div className="w-full border-b border-highlight"></div>
     </section>
   );
 };
