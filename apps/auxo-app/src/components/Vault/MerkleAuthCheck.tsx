@@ -82,7 +82,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
     }
   }, [account, proof, authContract, dispatch, vault.address]);
 
-  const needsToVerifyString = 'You need to verify before you can take this action'
+  const needsToVerifyString = 'You need to verify before you can use this vault'
   const verifiedString = 'Account has been verfied';
   const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
   

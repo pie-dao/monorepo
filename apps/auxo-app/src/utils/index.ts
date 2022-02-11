@@ -13,8 +13,10 @@ export const prettyNumber = (n?: number): string =>
 export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
 
-export const fromScale = (n: number | BigNumber, decimals: number) =>
-  typeof n === "number" ? n : n.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
+export const fromScale = (n: number | BigNumber, decimals: number): number =>
+  typeof n === "number"
+    ? n
+    : n.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
 
 export const toBalance = (
   n: number | BigNumber,

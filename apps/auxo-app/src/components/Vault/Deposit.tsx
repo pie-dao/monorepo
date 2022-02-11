@@ -1,13 +1,13 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { useWeb3React } from "@web3-react/core";
-import { useMonoVaultContract, useTokenContract } from "../../hooks/useContract";
+import { useMonoVaultContract, useTokenContract, useVaultCapContract } from "../../hooks/useContract";
 import { Balance, Vault } from "../../store/vault/Vault";
-import { prettyNumber } from "../../utils";
+import { prettyNumber, toBalance } from "../../utils";
 import { MissingDecimalsError, TXRejectedError } from "../../errors";
 import { Erc20 } from "../../types/artifacts/abi";
 import { useState } from "react";
 import { useAppDispatch } from "../../hooks";
-import { setApproval } from "../../store/vault/vault.slice";
+import { setApproval, setCap } from "../../store/vault/vault.slice";
 import StyledButton from "../UI/button";
 import CardItem from "../UI/cardItem";
 import { useSelectedVault } from "../../hooks/useSelectedVault";
@@ -52,11 +52,28 @@ const conditionallyApprove = async ({
     } else { 
       throw new TXRejectedError();
     }
-
   } else {
     // current allowance is sufficient, no need to increase
     return true
   }
+}
+
+export const useUnderlyingCap = (vault: Vault | undefined) => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const decimals = vault?.token.decimals;
+  const vaultCap = useVaultCapContract(vault?.cap.address);
+  useEffect(() => {
+    if (decimals) vaultCap?.UNDERLYING_CAP()
+      .then(cap => {
+        dispatch(
+          setCap(
+            toBalance(cap, decimals)
+        )
+      )
+    }).finally(() => setLoading(false));
+  }, [decimals, dispatch, vaultCap]);
+  return loading;
 }
 
 function DepositButton ({
@@ -128,8 +145,18 @@ function DepositButton ({
       } else {
         throw new TXRejectedError('Missing Params');
       }
-    } catch (err) {
-      console.debug(err)
+    } catch (err: any) {
+      if (err && err.code) {
+        if (err.code === 4001) dispatch(
+          setAlert({
+            message: 'User Rejected Transaction',
+            show: true,
+            type: 'ERROR'
+          }
+        ))
+      } else {
+        console.warn(err)
+      }
     } finally {
       setDepositing(false)
     }
@@ -151,17 +178,58 @@ function DepositButton ({
   )
 }
 
+const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber => {
+  return b1.gt(b2) ? b2 : b1; 
+}
+
+export const useMaxDepositAmount = (vault: Vault | undefined): Balance | undefined => {
+  /**
+   * Return min of underlying balance or (cap - deposits)
+   */
+  const [balance, setBalance] = useState<Balance>(); 
+  useEffect(() => {
+    if (vault && vault.userBalances && vault.cap.underlying) {
+      
+      const currentDeposits = vault.userBalances?.vaultUnderlying;
+      const capUnderlying = vault.cap.underlying;
+      const inWallet = vault.userBalances.wallet;
+      const pendingWithdrawal = vault.userBalances.batchBurn.shares;
+      
+      const BigWallet = BigNumber.from(inWallet.value);
+      const BigMaxAllowed = BigNumber
+        .from(capUnderlying.value)
+        .sub(BigNumber.from(currentDeposits.value))
+        .sub(BigNumber.from(pendingWithdrawal.value))
+
+      const value: string = BigNumberMin(
+        BigWallet, BigMaxAllowed
+      ).toString();
+
+      const label: number = Math.min(
+        capUnderlying.label - (currentDeposits.label + pendingWithdrawal.label),
+        inWallet.label  
+      );
+  
+      setBalance({ value, label })
+    }
+  }, [vault])
+  return balance;
+
+}
+
 export function DepositInput({ vault }: { vault: Vault }) {
+  useUnderlyingCap(vault);
+  const maxDeposit = useMaxDepositAmount(vault);
   const decimals = vault.token?.decimals;
   const [deposit, setDeposit] = useState<Balance>({ label: 0, value: '0' });
   const vaultBalance = vault.userBalances?.wallet;
   const [sufficientBalance, setSufficientBalance] = useState(true);
-  
+
   const handleMaxDeposit = () => {   
     setSufficientBalance(true);
     setDeposit({
-      label: vaultBalance?.label ?? 0,
-      value: vaultBalance?.value ?? '0'
+      label: maxDeposit?.label ?? 0,
+      value: maxDeposit?.value ?? '0'
     })
   }
   const handleDepositChange = (value: string) => {
@@ -183,11 +251,12 @@ export function DepositInput({ vault }: { vault: Vault }) {
     <section className="h-full">
       <div className="flex flex-col justify-evenly h-full w-full">
         <p>Your {vault.symbol} Balance: <span className="font-bold text-purple-700">{prettyNumber(vaultBalance?.label)}</span></p>
+        <p>Max Deposit {vault.cap.underlying?.label}, remaining {maxDeposit?.label}</p>
         <div className="flex border-gray-200 rounded-lg border-2 px-5 py-1 mx-5">
           <input
             type="number"
             min="0"
-            max={vaultBalance?.label}
+            max={maxDeposit ? maxDeposit.label : vaultBalance?.label}
             className="focus:outline-none w-full"
             value={deposit.label.toString()}
             onChange={(e) => handleDepositChange(e.target.value)}

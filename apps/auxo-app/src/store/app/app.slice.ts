@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type AlertTypes = 'SUCCESS' | 'PENDING' | 'ERROR' | undefined;
-    
+export type ActionTypes = 'SWITCH_NETWORK' | undefined;
+
 export type AppState = {
   alert: {
     message: string | undefined;
     show: boolean;
     type: AlertTypes;
+    action?: ActionTypes;
   }
   chainId: number | undefined;
 }
@@ -14,7 +16,8 @@ export type AppState = {
 const initialAlertState: AppState['alert'] = {
   message: undefined,
   show: false,
-  type: undefined
+  type: undefined,
+  action: undefined
 }
 
 const appSlice = createSlice({

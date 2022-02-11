@@ -43,10 +43,14 @@ export interface UserBalances {
     available: Balance;
   }
 }
-
 export interface VaultAuth {
   address: string;
   isDepositor: boolean;
+}
+
+export interface VaultCap {
+  address: string;
+  underlying: Balance | null;
 }
 
 /**
@@ -55,6 +59,7 @@ export interface VaultAuth {
 export interface Vault extends BasicVaultInformation {
   token: VaultToken;
   auth: VaultAuth;
+  cap: VaultCap;
   stats?: VaultStats;
   userBalances?: UserBalances
 }

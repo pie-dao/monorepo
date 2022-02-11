@@ -6,7 +6,6 @@ import { VaultPoolStatsRow, VEDoughStatusRow } from "./StatusRows";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-
 function VaultDetails(): JSX.Element {
   const vault = useSelectedVault();
   const navigate = useNavigate();

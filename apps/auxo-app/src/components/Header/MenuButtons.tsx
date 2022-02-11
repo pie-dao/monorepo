@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import { FTMLogo } from "../../assets/icons/logos";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { setAlertDisplay } from "../../store/app/app.slice";
+import { setAlert, setAlertDisplay } from "../../store/app/app.slice";
 import StyledButton from "../UI/button";
 import { FaBell } from 'react-icons/fa';
 import { useChainHandler } from "../../hooks/useChainHandler";
@@ -9,6 +9,18 @@ import { useChainHandler } from "../../hooks/useChainHandler";
 const trimAccount = (account: string): string => {
     return account.slice(0, 6) + '...' + account.slice(38)
 }  
+
+export const CreateAlert = () => {
+  const dispatch = useAppDispatch()
+  const onClick = () => {
+    dispatch(setAlert({
+      message: 'Test Alert',
+      type: 'ERROR',
+      show: true
+    }))
+  }
+  return <button onClick={onClick}>Test Alert</button>
+}
 
 export const AlertButton = (): JSX.Element => {
     const dispatch = useAppDispatch();

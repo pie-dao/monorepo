@@ -65,7 +65,6 @@ function WithdrawalButton ({
   const firstwallet = useRef(true);
   const firstburn = useRef(true);
 
-  
   useEffect(() => {
     if (!firstwallet.current) {
       dispatch(setAlert({

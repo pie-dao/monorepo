@@ -58,6 +58,12 @@ export const vaultSlice = createSlice({
         vault.userBalances.vault = subBalances(vault.userBalances.vault, action.payload);
       }
     },
+    setCap: (state, action: PayloadAction<Balance>) => {
+      const vault = state.vaults.find(v => v.address === state.selected);
+      if (vault && vault.userBalances && vault.token?.decimals) {
+        vault.cap.underlying = action.payload;
+      }
+    }
   },
 });
 
@@ -70,6 +76,7 @@ export const {
   setReduceVaultTokens,
   setLoading,
   setIsDepositor,
+  setCap,
   setVaults,
 } = vaultSlice.actions;
 export default vaultSlice.reducer;

@@ -8,7 +8,7 @@ import {
   useMultipleTokenContract,
 } from "./useContract";
 import { Balance, Vault } from "../store/vault/Vault";
-import { AwaitedReturn, toBalance } from "../utils";
+import { AwaitedReturn, fromScale, toBalance } from "../utils";
 import { useAddresses } from "./useAddresses";
 import { setVaults } from "../store/vault/vault.slice";
 import { BigNumber } from "@ethersproject/bignumber";
@@ -41,8 +41,8 @@ const getAllBalances = async (
     ].forEach((call) => calls.push(call));
   }
 
-  if (batchBurnRound) {
-    calls.push(vault.batchBurns(batchBurnRound));
+  if (batchBurnRound && batchBurnRound > 0) {
+    calls.push(vault.batchBurns(batchBurnRound - 1));
   }
 
   return await Promise.all(calls);
@@ -54,9 +54,10 @@ const calculateAvailable = (
   decimals: number
 ): Balance => {
   /**
-   * We seem to overcompute the amount available, so need to confirm this calc
+   *
    */
-  const bigAvailable = shares.mul(amountPerShare);
+  const _amountPerShare = fromScale(amountPerShare, decimals);
+  const bigAvailable = shares.mul(_amountPerShare);
   return toBalance(bigAvailable, decimals);
 };
 
@@ -209,26 +210,30 @@ export const useChainData = (): { loading: boolean } => {
             return data;
           }
         })
-      ).then((payload) => {
-        const newVaults = payload
-          .filter((p) => !!p)
-          .map((p) => {
-            return (
-              p &&
-              toState({
-                existing: p.vault,
-                address: p.address,
-                decimals: p.vault.token.decimals,
-                data: p.data,
-                account,
-              })
-            );
-          }) as Vault[];
+      )
+        .then((payload) => {
+          const newVaults = payload
+            .filter((p) => !!p)
+            .map((p) => {
+              return (
+                p &&
+                toState({
+                  existing: p.vault,
+                  address: p.address,
+                  decimals: p.vault.token.decimals,
+                  data: p.data,
+                  account,
+                })
+              );
+            }) as Vault[];
 
-        if (newVaults && hasStateChanged(vaults, newVaults)) {
-          dispatch(setVaults(newVaults));
-        }
-      });
+          if (newVaults && hasStateChanged(vaults, newVaults)) {
+            dispatch(setVaults(newVaults));
+          }
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
     }
   }, [
     account,

@@ -1,25 +1,27 @@
 import { Tab } from "@headlessui/react"
-import { useWeb3React } from "@web3-react/core"
 import { Fragment } from "react"
 import { FaLock } from "react-icons/fa"
+import { useSelectedVault } from "../../../hooks/useSelectedVault"
 import { Vault } from "../../../store/vault/Vault"
-import { getProof } from "../../../utils/merkleProof"
 import { DepositInput } from "../Deposit"
 import MerkleVerify from "../MerkleAuthCheck"
 import { useStatus, WithdrawInput, WithdrawStatusBar } from "../Withdraw"
 
+const useIsDepositor = (): boolean => {
+  const vault = useSelectedVault();
+  return !!vault?.auth.isDepositor;
+}
+
 const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.Element => {
-    const { account } = useWeb3React();
     const status = useStatus();
-    const hasVedough = getProof(account);
-    const tabHeaders = hasVedough ? ['OPT-IN', 'DEPOSIT', 'WITHDRAW'] : ['OPT-IN'];
-    const isDepositor = vault?.auth.isDepositor;
+    const isDepositor = useIsDepositor();
+    const tabHeaders = isDepositor ? ['OPT-IN', 'DEPOSIT', 'WITHDRAW'] : ['OPT-IN'];
     return (
       <div className="w-full h-full">
-      <Tab.Group>
+      <Tab.Group defaultIndex={isDepositor ? 1 : 0} >
         <Tab.List className="flex justify-evenly items-center">
           {tabHeaders.map((t, i) => 
-            (<Tab disabled={isDepositor} key={i} as={Fragment as any}>
+            (<Tab disabled={false} key={i} as={Fragment as any}>
               {({ selected }) => (
                 <button
                   className={
@@ -29,7 +31,7 @@ const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.E
                     : 'text-gray-300 border-gray-300'} 
                   `}
                 >
-                  {(!hasVedough || !isDepositor) && <FaLock />}<p className="ml-1">{t}</p>
+                  {(!isDepositor) && <FaLock />}<p className="ml-1">{t}</p>
                 </button>
               )}
             </Tab>

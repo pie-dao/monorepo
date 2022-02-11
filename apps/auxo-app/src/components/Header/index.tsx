@@ -2,13 +2,12 @@ import { useWeb3React } from "@web3-react/core";
 import WalletModal from "./WalletModal";
 import { useEffect, useState } from "react";
 import AlertMessage from "./AlertMessage";
-import { useAppSelector } from "../../hooks";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 import { useEagerConnect, useInactiveListener } from "../../hooks/useWeb3";
 import { network } from "../../connectors";
 import { HEADER_HEIGHT } from "../../constants";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { AccountConnector, AlertButton, NetworkDisplay } from "./MenuButtons";
+import { AccountConnector, AlertButton, CreateAlert, NetworkDisplay } from "./MenuButtons";
 
 
 const useFallBack = () => {
@@ -31,7 +30,9 @@ const useConnectedWallet = () => {
   }, [activatingConnector, connector])
 
   useFallBack();
-  useInactiveListener(!triedEager ||!!activatingConnector);
+  useInactiveListener(
+    !triedEager ||
+    !!activatingConnector);
 }
 
 const MobileMenu = (): JSX.Element => {
@@ -77,6 +78,7 @@ const DesktopMenu = (): JSX.Element => {
     justify-evenly
     ">
     { show && <WalletModal setShow={setShow} />}
+    <CreateAlert />
     <NetworkDisplay />
     <AccountConnector setShow={setShow} />
     <AlertButton />
@@ -85,7 +87,6 @@ const DesktopMenu = (): JSX.Element => {
 }
 
 const Header = () => {
-  const alert = useAppSelector(state => state.app.alert);
   useConnectedWallet();
   return (
     <>
@@ -112,7 +113,7 @@ const Header = () => {
         <MobileMenu />
       </div> 
       </header>
-      { alert.show && <AlertMessage /> }
+      <AlertMessage />
     </>
   )
 };

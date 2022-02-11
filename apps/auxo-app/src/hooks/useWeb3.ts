@@ -38,7 +38,7 @@ export function useEagerConnect() {
 
   // then, if that fails, try connecting to an injected connector
   useEffect(() => {
-    if (!active && triedSafe) {
+    if (!active && triedSafe && !tried) {
       injected.isAuthorized().then((isAuthorized) => {
         if (isAuthorized) {
           activate(injected, undefined, true).catch(() => {
@@ -55,7 +55,7 @@ export function useEagerConnect() {
         }
       });
     }
-  }, [activate, active, triedSafe]);
+  }, [activate, active, triedSafe, tried]);
 
   // wait until we get confirmation of a connection to flip the flag
   useEffect(() => {

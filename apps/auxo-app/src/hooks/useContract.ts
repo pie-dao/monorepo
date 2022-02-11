@@ -8,10 +8,12 @@ import { Erc20 } from "../types/artifacts/abi/Erc20";
 import ERC20ABI from "../abi/erc20.json";
 import MonoABI from "../abi/mono.json";
 import MerkleAuthABI from "../abi/MerkleAuth.json";
+import VaultCappedABI from "../abi/VaultCapped.json";
 import { MerkleAuth, Mono } from "../types/artifacts/abi";
 import { ProviderNotActivatedError } from "../errors";
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import { useWeb3Cache } from "./useCachedWeb3";
+import { VaultCapped } from "../types/artifacts/abi/VaultCapped";
 
 function getMulticallProvider(library: Web3Provider): MulticallProvider {
   /**
@@ -68,6 +70,10 @@ export function useMonoVaultContract(vaultAddress?: string) {
 
 export function useMerkleAuthContract(vaultAddress?: string) {
   return useContract<MerkleAuth>(vaultAddress, MerkleAuthABI);
+}
+
+export function useVaultCapContract(vaultAddress?: string) {
+  return useContract<VaultCapped>(vaultAddress, VaultCappedABI);
 }
 
 export function useMultipleTokenContract(

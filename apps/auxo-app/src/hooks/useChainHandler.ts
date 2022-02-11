@@ -23,6 +23,7 @@ export const useChainHandler = (): NetworkDetail | undefined => {
           message: `You are currently connected to an unsupported chain, supported chains are ${supportedChains}`,
           show: true,
           type: "ERROR",
+          action: "SWITCH_NETWORK",
         })
       );
     }
