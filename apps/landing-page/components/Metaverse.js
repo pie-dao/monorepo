@@ -34,8 +34,8 @@ const Metaverse = ({}) => {
           </div>
         </div>
       </div>
-      <div className="bg-[length:100%_100%] bg-no-repeat bg-cover bg-[url('/bg_single_line.svg')]">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:pb-24">
+      <div className="bg-[length:100%_100%] bg-no-repeat bg-cover bg-[url('/bg_single_line.svg')] mb-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:pb-24 ">
           <div className="flex flex-col md:text-center">
             <h4 className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">

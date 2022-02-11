@@ -4,7 +4,7 @@ import content from "../content/en_EN.json";
 const ExploreProducts = ({ pies }) => {
   return (
     <section
-      className={`bg-primary w-full justify-evenly flex-col content-center text-center flex md:flex-col overflow-hidden mb-6`}
+      className={`bg-primary w-full justify-evenly flex-col content-center text-center flex md:flex-col overflow-hidden mb-20`}
     >
       <div className="flex ml-12 mr-12">
         <div className="w-full mb-10 content-center text-center">
