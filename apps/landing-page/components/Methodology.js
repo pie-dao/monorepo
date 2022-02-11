@@ -133,7 +133,9 @@ const Methodology = ({}) => {
           {content.methodology.boxes.map((box) => {
             return (
               <SwiperSlide key={box.id} className={`w-[220px] my-10`}>
-                <div className="p-1 rounded-md bg-gradient-to-tr from-red-500 to-blue-500">
+                <div
+                  className={`p-1 rounded-md border-2 border-transparent ${styles.gradient}`}
+                >
                   <div className="w-full rounded-md bg-primary p-4 flex flex-col items-center justify-center text-center h-72">
                     <div className="flex flex-1 items-center">
                       <p className="p-2 text-sm md:text-md">

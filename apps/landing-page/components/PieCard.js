@@ -153,6 +153,8 @@ const PieCard = ({
         <Button
           className="w-full"
           href={`https://www.piedao.org/#/pie/${pieData.address}`}
+          target="_blank"
+          rel="noreferrer noopener"
           inverted
         >
           Discover
@@ -160,6 +162,8 @@ const PieCard = ({
         <Button
           className="w-full uppercase"
           href={`https://www.piedao.org/#/swap`}
+          target="_blank"
+          rel="noreferrer noopener"
         >
           BUY
         </Button>

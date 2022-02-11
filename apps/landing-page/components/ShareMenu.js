@@ -1,6 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
+import content from "../content/en_EN.json";
 import shareIcon from "../public/share.svg";
 import styles from "../styles/ShareMenu.module.scss";
 
@@ -23,7 +24,12 @@ const ShareMenu = () => {
       >
         <Menu.Items className="absolute p-3 flex flex-col items-center w-10 justify-center mt-6 left-0 right-0 origin-top-right bg-white divide-y divide-gray-100 rounded-md ring-2 ring-highlight_secondary focus:outline-none">
           <Menu.Item>
-            <a href="#" className={`mb-1 ${styles.shareButton}`}>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURI(
+                content.socials.twitter.share
+              )}&url=${url}`}
+              className={`mb-1 ${styles.shareButton}`}
+            >
               <svg
                 width="28"
                 height="28"
@@ -54,7 +60,9 @@ const ShareMenu = () => {
           </Menu.Item>
           <Menu.Item>
             <a
-              href={`https://t.me/share?url=${url}=Check%20this%20out%21`}
+              href={`https://t.me/share?url=${url}&text=${encodeURI(
+                content.socials.telegram.share
+              )}`}
               target="_blank"
               rel="noreferrer noopener"
               className={`${styles.shareButton}`}

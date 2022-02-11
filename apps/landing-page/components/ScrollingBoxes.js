@@ -3,12 +3,12 @@ import SingleBox from "./SingleBox";
 import content from "../content/en_EN.json";
 import styles from "../styles/ScrollingBoxes.module.scss";
 
-const ScrollingBoxes = ({}) => {
+const ScrollingBoxes = () => {
   return (
     <section
       className={`w-full justify-evenly content-left text-left overflow-hidden lg:overflow-visible`}
     >
-      <div className="w-full z-20 sticky top-20 bg-secondary h-60 text-center lg:text-left -mt-20">
+      <div className="w-full z-20 sticky top-20 bg-secondary h-64 text-center lg:text-left -mt-20">
         <div className="container mx-auto px-6 pt-8">
           <h2 className="uppercase text-4xl md:text-5xl mb-4">
             Easy access to

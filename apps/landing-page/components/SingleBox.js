@@ -4,7 +4,7 @@ import styles from "../styles/SingleBox.module.scss";
 const SingleBox = ({ singleBox }) => {
   return (
     <div
-      className={`rounded-md bg-primary px-4 py-6 flex flex-col items-center justify-center text-center md:mb-28 md:h-auto border-4 border-transparent ${styles.gradient}`}
+      className={`rounded-md bg-primary px-4 py-6 flex flex-col items-center justify-center text-center md:mb-28 md:h-auto border-2 border-transparent ${styles.gradient}`}
     >
       <div className="-mt-32 md:mb-4 w-[70%] md:w-[180px]">
         <Image

@@ -1,9 +1,10 @@
+import { useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import tokenImages from "../public/assets";
 import playLogo from "../public/play_icon.svg";
-import { useMemo } from "react";
 import gradientPicker from "../utils/gradientPicker";
+import styles from "../styles/UnderlyingTokens.module.scss";
 
 const ScrollingBoxes = ({ underlyingAssets }) => {
   const sortedAssets = useMemo(() => {
@@ -53,7 +54,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
       <div className="-mt-12 relative z-1">
         <Image src={playLogo} alt="play logo" />
       </div>
-      <div className="lg:container lg:mx-auto lg:px-4">
+      <div className="mx-4">
         <Swiper
           slidesPerView={"auto"}
           spaceBetween={10}
@@ -64,7 +65,7 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
               centeredSlides: false,
             },
           }}
-          className="w-full flex"
+          className={`mx-auto flex ${styles.underlyingTokensSlider}`}
         >
           {sortedAssets.map(
             ({ address, symbol, token_info, pieDAOMarketCapPercentage }) => {

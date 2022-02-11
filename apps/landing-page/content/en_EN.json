@@ -203,15 +203,23 @@
     },
     "telegram": {
       "name": "Telegram",
-      "url": "https://t.me/piedao"
+      "url": "https://t.me/piedao",
+      "share": "Check this out!"
     },
     "twitter": {
       "name": "Twitter",
-      "url": "https://twitter.com/PieDAO_DeFi"
+      "url": "https://twitter.com/PieDAO_DeFi",
+      "share": "Check this out!"
     },
     "medium": {
       "name": "Medium",
       "url": "https://medium.com/piedao"
+    }
+  },
+  "subcharts": {
+    "sentiment": {
+      "positive": "You are positive",
+      "negative": "You are negative"
     }
   }
 }

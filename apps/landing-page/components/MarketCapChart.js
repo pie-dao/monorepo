@@ -2,7 +2,6 @@ import { useMemo, useRef, useState } from "react";
 import { Bar } from "@visx/shape";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Group } from "@visx/group";
-import { localPoint } from "@visx/event";
 import { timeFormat } from "d3-time-format";
 import { max } from "d3-array";
 
@@ -37,7 +36,6 @@ const MarketCapChart = ({
     () =>
       scaleBand({
         range: [0, width],
-        round: true,
         domain: chartData.map(getDate),
         padding: 0.2,
       }),

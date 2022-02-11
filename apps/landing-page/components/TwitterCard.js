@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const TwitterCard = ({ twitterPost }) => {
   return (
-    <div className="w-[300px] lg:w-full h-[300px] flex flex-col text-left mx-auto rounded-lg bg-white shadow p-5 text-gray-800">
+    <div className="w-[300px] h-[300px] flex flex-col text-left mx-auto rounded-lg bg-white shadow p-5 text-gray-800">
       <div className="w-full flex mb-4">
         <div className="overflow-hidden rounded-full w-12 h-12">
           <Image

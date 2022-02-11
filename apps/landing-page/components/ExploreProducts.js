@@ -17,7 +17,7 @@ const ExploreProducts = ({ pies }) => {
           </h3>
         </div>
       </div>
-      <div className="container mx-auto gap-10 w-full flex flex-col lg:flex-row items-center justify-center">
+      <div className="container mx-auto px-6 gap-10 w-full flex flex-col lg:flex-row items-center justify-center">
         {pies.map((pie) => {
           return (
             <div
