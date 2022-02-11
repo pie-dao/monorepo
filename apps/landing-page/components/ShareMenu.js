@@ -6,7 +6,7 @@ import shareIcon from "../public/share.svg";
 import styles from "../styles/ShareMenu.module.scss";
 
 const ShareMenu = () => {
-  const url = typeof window !== "undefined" ? window.location.href : "";
+  const url = typeof window !== "undefined" ? window.location.origin : "";
   console.log(url);
   return (
     <Menu as="div" className="relative">
