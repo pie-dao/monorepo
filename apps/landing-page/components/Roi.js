@@ -4,11 +4,10 @@ import sushiswapLogo from "../public/sushiswap_logo.png";
 import oneInch from "../public/1inch.svg";
 import uniswap from "../public/uniswap.svg";
 import roiPlaceholder from "../public/roi_placeholder.svg";
-import content from "../content/en_EN.json";
 
 const Roi = ({}) => {
   return (
-    <section className={`w-full pt-10`}>
+    <section className={`w-full my-10`}>
       <div className="bg-secondary relative grid content-around justify-center my-24 w-full">
         {/* <img className="z-20 absolute -top-10" src="./bg_big_line_2.svg" />
         <img className="z-40 absolute -top-16" src="./bg_big_line_1.svg" /> */}

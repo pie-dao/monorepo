@@ -1,5 +1,4 @@
-import ParentSize from "@visx/responsive/lib/components/ParentSize";
-import PieCard from "./PieCard";
+import PieCardPlain from "./PieCardPlain";
 import content from "../content/en_EN.json";
 
 const ExploreProducts = ({ pies }) => {
@@ -19,18 +18,7 @@ const ExploreProducts = ({ pies }) => {
       </div>
       <div className="container mx-auto px-6 gap-10 w-full flex flex-col lg:flex-row items-center justify-center">
         {pies.map((pie) => {
-          return (
-            <div
-              key={pie.symbol}
-              className="h-[320px] w-full max-w-[425px] mb-2 rounded-lg relative"
-            >
-              <ParentSize>
-                {({ width, height }) => (
-                  <PieCard pieData={pie} height={height} width={width} />
-                )}
-              </ParentSize>
-            </div>
-          );
+          return <PieCardPlain key={pie.symbol} pieData={pie} />;
         })}
       </div>
     </section>

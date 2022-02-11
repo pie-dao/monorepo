@@ -5,15 +5,17 @@ import content from "../content/en_EN.json";
 
 const AboutUsTwitter = ({ twitterPosts }) => {
   return (
-    <section className={`container mx-auto px-4 bg-primary`}>
-      <div className="flex mb-4">
+    <section
+      className={`bg-primary w-full justify-evenly content-center text-center overflow-hidden`}
+    >
+      <div className="flex mb-4 container mx-auto px-6">
         <div className="w-full content-center text-center">
           <h3 className="title-gradient uppercase font-light text-4xl md:text-5xl mb-4">
             {content.about_us_twitter.title}
           </h3>
         </div>
       </div>
-      <div className="max-w-screen-lg mx-auto">
+      <div className="max-w-screen-sm mx-auto">
         <Swiper
           spaceBetween={30}
           speed={1000}

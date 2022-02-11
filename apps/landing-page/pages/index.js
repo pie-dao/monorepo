@@ -53,7 +53,7 @@ export default function Home({ playData, morePiesData }) {
       <Methodology />
       {/* Roi Section */}
       <Roi />
-      {<AboutUsTwitter twitterPosts={posts} />}
+      <AboutUsTwitter twitterPosts={posts} />
       <Ovens />
       <ExploreProducts pies={morePiesData} />
     </div>
