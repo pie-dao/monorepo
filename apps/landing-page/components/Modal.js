@@ -42,12 +42,12 @@ const Modal = ({ isOpen, closeModal, children }) => {
             leaveTo="opacity-0 scale-95"
           >
             <div className="inline-block w-full max-w-2xl p-12 my-8 overflow-hidden text-left align-middle transition-all transform bg-black shadow-xl rounded-2xl relative">
-              <div
+              <button
                 className="absolute cursor-pointer top-0 right-0 m-4"
                 onClick={closeModal}
               >
                 <Image src={close} alt="close popup" />
-              </div>
+              </button>
               {children}
             </div>
           </Transition.Child>
