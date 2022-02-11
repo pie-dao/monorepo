@@ -4,7 +4,7 @@ import content from "../content/en_EN.json";
 const ExploreProducts = ({ pies }) => {
   return (
     <section
-      className={`bg-primary w-full justify-evenly flex-col content-center text-center flex md:flex-col overflow-hidden`}
+      className={`bg-primary w-full justify-evenly flex-col content-center text-center flex md:flex-col overflow-hidden mb-6`}
     >
       <div className="flex ml-12 mr-12">
         <div className="w-full mb-10 content-center text-center">
@@ -16,7 +16,7 @@ const ExploreProducts = ({ pies }) => {
           </h3>
         </div>
       </div>
-      <div className="container mx-auto px-6 gap-10 w-full flex flex-col lg:flex-row items-center justify-center">
+      <div className="container mx-auto px-6 gap-x-10 gap-y-16 w-full flex flex-col lg:flex-row items-center justify-center">
         {pies.map((pie) => {
           return <PieCardPlain key={pie.symbol} pieData={pie} />;
         })}

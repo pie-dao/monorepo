@@ -13,11 +13,11 @@ const Footer = () => {
         href="https://www.piedao.org"
         target="_blank"
         rel="noreferrer noopener"
-        className="flex"
+        className="flex mb-6 md:mb-0"
       >
         <Image src={piedaoLogo} alt="PieDao Logo" />
       </a>
-      <ul className="flex items-center flex-1 ml-6 gap-x-4">
+      <ul className="flex items-center flex-1 md:ml-6 mb-6 md:mb-0 gap-6">
         <li>
           <a
             href={content.socials.discord.url}
@@ -26,7 +26,9 @@ const Footer = () => {
             className="flex"
           >
             <Image src={discord} alt="Discord" />
-            <p className="ml-2">{content.socials.discord.name}</p>
+            <p className="ml-2 hidden md:flex">
+              {content.socials.discord.name}
+            </p>
           </a>
         </li>
         <li>
@@ -37,7 +39,9 @@ const Footer = () => {
             className="flex"
           >
             <Image src={telegram} alt="Telegram" />
-            <p className="ml-2">{content.socials.telegram.name}</p>
+            <p className="ml-2 hidden md:flex">
+              {content.socials.telegram.name}
+            </p>
           </a>
         </li>
         <li>
@@ -48,7 +52,9 @@ const Footer = () => {
             className="flex"
           >
             <Image src={twitter} alt="Twitter" />
-            <p className="ml-2">{content.socials.twitter.name}</p>
+            <p className="ml-2 hidden md:flex">
+              {content.socials.twitter.name}
+            </p>
           </a>
         </li>
         <li>
@@ -59,7 +65,7 @@ const Footer = () => {
             className="flex"
           >
             <Image src={medium} alt="Medium" />
-            <p className="ml-2">{content.socials.medium.name}</p>
+            <p className="ml-2 hidden md:flex">{content.socials.medium.name}</p>
           </a>
         </li>
       </ul>

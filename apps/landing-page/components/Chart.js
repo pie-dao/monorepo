@@ -34,25 +34,29 @@ const Chart = ({ play }) => {
   };
   return (
     <section className="container mx-auto my-4 px-6 border-b border-highlight">
-      <div className="flex flex-col md:flex-row items-center justify-between my-4 gap-x-2">
-        <div className="flex flex-col md:flex-row items-center gap-x-3">
-          <p className="hidden md:flex font-bold">Contract Address</p>
-          <div className="flex mb-2 md:mb-0 items-center bg-secondary rounded-full pr-2">
+      <div className="flex flex-wrap flex-row items-center my-4 gap-2 justify-center">
+        <div className="flex flex-col lg:flex-row items-center gap-3">
+          <p className="hidden lg:flex font-bold">Contract Address</p>
+          <div className="flex items-center bg-secondary rounded-full pr-2">
             <Image src={ethIcon} alt="Ethereum Icon" />
             <p className="text-light_blue text-xs	md:text-sm relative top-0.5 ml-1">
               {play.pie.address}
             </p>
           </div>
-          <div className="hidden md:flex gap-x-4">
-            <button onClick={copyOnClipboard} type="button" className="flex">
-              <Image src={copyIcon} alt="Copy Icon" />
-            </button>
-            <button onClick={addPlayToMetamask} type="button" className="flex">
-              <Image src={metamaskIcon} alt="Metamask Icon" />
-            </button>
-          </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex gap-x-4">
+          <button
+            onClick={copyOnClipboard}
+            type="button"
+            className="hidden md:flex"
+          >
+            <Image src={copyIcon} alt="Copy Icon" />
+          </button>
+          <button onClick={addPlayToMetamask} type="button" className="flex">
+            <Image src={metamaskIcon} alt="Metamask Icon" />
+          </button>
+        </div>
+        <div className="flex items-center md:ml-auto">
           <Image src={auditIcon} alt="Chart Icon" />
           <p className="ml-1 mr-2 font-bold">Audit result:</p>
           <a

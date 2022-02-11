@@ -13,21 +13,21 @@ const Roi = ({}) => {
         <img className="z-40 absolute -top-16" src="./bg_big_line_1.svg" /> */}
         <div className="container mx-auto px-6">
           <div className="bg-highlight z-20 relative -top-16 sm:-top-12 text-2xl p-4 mx-4 rounded-xl flex flex-col items-center justify-center text-center">
-            <p className="font-light">If you had bought PLAY in March 2021</p>
-            <p className="font-bold">you would have an ROI of 255%</p>
+            <p className="font-light">If you had bought PLAY in June 2021</p>
+            <p className="font-bold">you would have an ROI of 629%</p>
           </div>
           <div className="bg-black z-20 relative uppercase text-xl p-4 md:rounded-xl flex flex-col items-center justify-center">
             <div className="w-full flex mb-4 flex-col md:flex-row">
               <div className="w-full md:w-1/4 flex flex-col items-center text-center justify-center">
-                <p className="text-gradient">100$</p>
-                <p className="font-light text-sm text-[#9388DB]">01-03-2021</p>
+                <p className="text-gradient">$100</p>
+                <p className="font-light text-sm text-[#9388DB]">01-06-2021</p>
               </div>
               <div className="w-full md:w-3/4">
                 <Image src={roiPlaceholder} alt="ROI Placeholder" />
               </div>
               <div className="w-full md:w-1/4 flex flex-col items-center text-center justify-center">
-                <p className="text-gradient">254$</p>
-                <p className="font-light text-sm text-[#9388DB]">01-04-2021</p>
+                <p className="text-gradient">$729</p>
+                <p className="font-light text-sm text-[#9388DB]">31-12-2021</p>
               </div>
             </div>
           </div>
