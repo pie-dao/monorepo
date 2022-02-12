@@ -9,7 +9,7 @@ import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    // hotjar.initialize(0123456, 1);
+    hotjar.initialize(2803048, 6);
   }, []);
 
   return (
