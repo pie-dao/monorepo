@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { hotjar } from "react-hotjar";
 import "swiper/css/bundle";
@@ -6,8 +6,11 @@ import "../styles/globals.css";
 
 import Footer from "../components/Footer";
 import Layout from "../components/Layout";
+import CookieBar from "../components/CookieBar";
 
 function MyApp({ Component, pageProps }) {
+  const [isOpen, setIsOpen] = useState(!!pageProps.showCookiePolicy);
+
   useEffect(() => {
     hotjar.initialize(2803048, 6);
   }, []);
@@ -48,7 +51,8 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Layout>
         <Component {...pageProps} />
-        <Footer />
+        <Footer margin={isOpen ? "mb-16" : ""} />
+        <CookieBar isOpen={isOpen} setIsOpen={setIsOpen} />
       </Layout>
     </>
   );

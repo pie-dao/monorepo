@@ -25,9 +25,9 @@ const ShareMenu = () => {
         <Menu.Items className="absolute p-3 flex flex-col items-center w-10 justify-center mt-6 left-0 right-0 origin-top-right bg-white divide-y divide-gray-100 rounded-md ring-2 ring-highlight_secondary focus:outline-none">
           <Menu.Item>
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURI(
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                 content.socials.twitter.share
-              )}&url=${url}`}
+              )}&url=${encodeURIComponent(url)}`}
               className={`mb-1 ${styles.shareButton}`}
             >
               <svg
@@ -44,7 +44,10 @@ const ShareMenu = () => {
             </a>
           </Menu.Item>
           <Menu.Item>
-            <a href="#" className={`mb-1 ${styles.shareButton}`}>
+            <a
+              href={`${content.socials.facebook.url}${encodeURIComponent(url)}`}
+              className={`mb-1 ${styles.shareButton}`}
+            >
               <svg
                 width="28"
                 height="28"

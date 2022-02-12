@@ -1,10 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
-import greenCheckmark from "../public/double-checkmark.svg";
 import close from "../public/close.svg";
-import Button from "./Button";
-import content from "../content/en_EN.json";
 
 const Modal = ({ isOpen, closeModal, children }) => {
   return (
@@ -24,7 +21,7 @@ const Modal = ({ isOpen, closeModal, children }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0" />
+            <Dialog.Overlay className="fixed inset-0 bg-highlight opacity-25" />
           </Transition.Child>
           <span
             className="inline-block h-screen align-middle"

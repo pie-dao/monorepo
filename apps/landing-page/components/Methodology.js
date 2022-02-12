@@ -155,9 +155,13 @@ const Methodology = ({}) => {
       <div className="container mx-auto px-6">
         <p className="text-deep_blue">
           For detailed information on allocation and rebalancing procedures{" "}
-          <a className="text-highlight cursor-pointer" onClick={openModal}>
+          <button
+            type="button"
+            className="text-highlight cursor-pointer"
+            onClick={openModal}
+          >
             read the prospectus.
-          </a>
+          </button>
         </p>
       </div>
       <Modal isOpen={isOpen} closeModal={closeModal}>

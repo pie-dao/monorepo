@@ -12,6 +12,16 @@ const PieCard = ({ pieData }) => {
     [pieData.symbol]
   );
 
+  const swapWebsite = (pieAddress) => {
+    if (pieAddress === "0x8d1ce361eb68e9e05573443c407d4a3bed23b033") {
+      return "https://www.piedao.org/#/oven";
+    }
+    if (pieAddress === "0xe4f726adc8e89c6a6017f01eada77865db22da14") {
+      return "https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0xe4f726adc8e89c6a6017f01eada77865db22da14";
+    }
+    return "https://www.piedao.org/#/swap";
+  };
+
   return (
     <div className="flex flex-col w-full max-w-[425px] relative">
       <div className="h-[320px] rounded-lg relative bg-[#7A32FE]">
@@ -68,7 +78,7 @@ const PieCard = ({ pieData }) => {
         </Button>
         <Button
           className="w-full uppercase"
-          href={`https://www.piedao.org/#/swap`}
+          href={swapWebsite(pieData.address)}
           target="_blank"
           rel="noreferrer noopener"
         >

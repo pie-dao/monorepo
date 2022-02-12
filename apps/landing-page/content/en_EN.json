@@ -214,6 +214,10 @@
     "medium": {
       "name": "Medium",
       "url": "https://medium.com/piedao"
+    },
+    "facebook": {
+      "name": "Facebook",
+      "url": "https://www.facebook.com/sharer/sharer.php?u="
     }
   },
   "subcharts": {
@@ -221,5 +225,18 @@
       "positive": "You are positive",
       "negative": "You are negative"
     }
+  },
+  "cookies": {
+    "title": "Cookies",
+    "description": "This website uses cookies to ensure you get the best experience on our website. By continuing to use this site you agree to our use of cookies.",
+    "button": "Got it!"
+  },
+  "cookie_modal": {
+    "title": "Cookie Title",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  },
+  "terms_modal": {
+    "title": "Terms Title",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
   }
 }

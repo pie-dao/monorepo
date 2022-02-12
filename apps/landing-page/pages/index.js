@@ -1,3 +1,4 @@
+import Cookies from "cookies";
 import getPie from "./api/pie";
 import getNav from "./api/nav";
 import Hero from "../components/Hero";
@@ -14,7 +15,7 @@ import Chart from "../components/Chart";
 import SubCharts from "../components/SubCharts";
 import posts from "../content/twitterPosts.json";
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res }) {
   const playAddress = "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4";
   const morePies = [
     "0x8d1ce361eb68e9e05573443c407d4a3bed23b033",
@@ -26,10 +27,14 @@ export async function getServerSideProps() {
     morePies.map((pieAddress) => getNav(pieAddress))
   );
 
+  const cookies = new Cookies(req, res);
+  const showCookiePolicy = cookies.get("cookiePolicy") !== "accepted";
+
   return {
     props: {
       playData,
       morePiesData,
+      showCookiePolicy,
     },
   };
 }

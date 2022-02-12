@@ -1,4 +1,7 @@
+import { useState } from "react";
 import Image from "next/image";
+import { Dialog } from "@headlessui/react";
+import Modal from "./Modal";
 import content from "../content/en_EN.json";
 import piedaoLogo from "../public/piedao_logo_text.png";
 import discord from "../public/social/discord_blue.svg";
@@ -6,9 +9,49 @@ import twitter from "../public/social/twitter_blue.svg";
 import telegram from "../public/social/telegram_blue.svg";
 import medium from "../public/social/medium_blue.svg";
 
-const Footer = () => {
+const ModalCookie = () => {
   return (
-    <footer className="bg-primary px-6 py-4 flex content-around justify-center items-center text-white container mx-auto flex-col md:flex-row">
+    <>
+      <Dialog.Title
+        as="h3"
+        className="text-2xl mb-4 leading-6 text-highlight font-bold uppercase"
+      >
+        {content.cookie_modal.title}
+      </Dialog.Title>
+      <div className="mt-4text-sm text-white">
+        <p>{content.cookie_modal.description}</p>
+      </div>
+    </>
+  );
+};
+
+const ModalTerms = () => {
+  return (
+    <>
+      <Dialog.Title
+        as="h3"
+        className="text-2xl mb-4 leading-6 text-highlight font-bold uppercase"
+      >
+        {content.terms_modal.title}
+      </Dialog.Title>
+      <div className="mt-4 text-sm text-white">
+        <p>{content.terms_modal.description}</p>
+      </div>
+    </>
+  );
+};
+
+const Footer = ({ margin }) => {
+  const [modalToOpen, setModalToOpen] = useState("");
+
+  const closeModal = () => {
+    setModalToOpen("");
+  };
+
+  return (
+    <footer
+      className={`bg-primary px-6 py-4 flex content-around justify-center items-center text-white container mx-auto flex-col md:flex-row ${margin}`}
+    >
       <a
         href="https://www.piedao.org"
         target="_blank"
@@ -70,13 +113,27 @@ const Footer = () => {
         </li>
       </ul>
       <div className="flex items-center gap-x-4 text-sm">
-        <a href="#" className="flex">
+        <button
+          type="button"
+          onClick={() => setModalToOpen("cookies")}
+          className="flex"
+        >
           Cookies
-        </a>
-        <a href="#" className="flex">
+        </button>
+        <button
+          type="button"
+          onClick={() => setModalToOpen("terms")}
+          className="flex"
+        >
           Terms & Conditions
-        </a>
+        </button>
       </div>
+      <Modal isOpen={modalToOpen === "cookies"} closeModal={closeModal}>
+        <ModalCookie />
+      </Modal>
+      <Modal isOpen={modalToOpen === "terms"} closeModal={closeModal}>
+        <ModalTerms />
+      </Modal>
     </footer>
   );
 };
