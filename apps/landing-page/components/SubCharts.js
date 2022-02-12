@@ -12,10 +12,7 @@ import SentimentCheck from "./SentimentCheck";
 const formatDate = timeFormat("%d/%m/%Y");
 const getDate = (d) => formatDate(new Date(d[0]));
 
-const SubCharts = ({ play }) => {
-  const playData = play.history[0];
-  const { nav, pie } = playData;
-
+const SubCharts = ({ nav, pie }) => {
   const latestTickDate = getDate(
     pie.ticks.market_caps[pie.ticks.market_caps.length - 1]
   );

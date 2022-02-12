@@ -7,8 +7,8 @@ import playLogo from "../public/play_logo.svg";
 import piedaoLogo from "../public/piedao_logo_text.png";
 import styles from "../styles/PlayBar.module.scss";
 
-const PlayBar = ({ play }) => {
-  const { usd_24h_change, usd } = play;
+const PlayBar = ({ pieHistory }) => {
+  const { usd_24h_change, usd } = pieHistory;
 
   return (
     <div

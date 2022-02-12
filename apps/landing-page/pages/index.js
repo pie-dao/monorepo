@@ -35,23 +35,18 @@ export async function getServerSideProps() {
 }
 
 export default function Home({ playData, morePiesData }) {
+  const { pie: pieHistory, underlyingAssets, nav } = playData.history[0];
+  const { pie: pieInfo } = playData;
   return (
     <div className="text-white grid place-items-center">
-      {/* Hero Section */}
-      <Hero actualPrice={playData.history[0].pie.usd} />
-      <PlayBar play={playData.history[0].pie} />
+      <Hero actualPrice={pieHistory.usd} />
+      <PlayBar pieHistory={pieHistory} />
       <Metaverse />
-      {/* ScrollingBoxes Section */}
       <ScrollingBoxes />
-      <Chart play={playData} />
-      <SubCharts play={playData} />
-      {/* UnderlyingTokens Section */}
-      <UnderlyingTokens
-        underlyingAssets={playData.history[0].underlyingAssets}
-      />
-      {/* Methodology Section */}
+      <Chart play={playData} pieInfo={pieInfo} pieHistory={pieHistory} />
+      <SubCharts pie={pieHistory} nav={nav} />
+      <UnderlyingTokens underlyingAssets={underlyingAssets} />
       <Methodology />
-      {/* Roi Section */}
       <Roi />
       <AboutUsTwitter twitterPosts={posts} />
       <Ovens />

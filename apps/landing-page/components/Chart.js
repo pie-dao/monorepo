@@ -9,11 +9,11 @@ import metamaskIcon from "../public/metamask.svg";
 import PlayChart from "./PlayChart";
 import PriceChange from "./PriceChange";
 
-const Chart = ({ play }) => {
+const Chart = ({ pieInfo, pieHistory }) => {
   const [chartTimeRange, setChartTimeRange] = useState("1m");
 
   const copyOnClipboard = () => {
-    navigator.clipboard.writeText(play.pie.address);
+    navigator.clipboard.writeText(pieInfo.address);
   };
 
   const addPlayToMetamask = async () => {
@@ -23,8 +23,8 @@ const Chart = ({ play }) => {
         params: {
           type: "ERC20",
           options: {
-            address: play.pie.address,
-            symbol: play.pie.symbol,
+            address: pieInfo.address,
+            symbol: pieInfo.symbol,
             decimals: 18,
             image: `https://assets.coingecko.com/coins/images/14590/small/PLAY.png`,
           },
@@ -40,7 +40,7 @@ const Chart = ({ play }) => {
           <div className="flex items-center bg-secondary rounded-full pr-2">
             <Image src={ethIcon} alt="Ethereum Icon" />
             <p className="text-light_blue text-xs	md:text-sm relative top-0.5 ml-1">
-              {play.pie.address}
+              {pieInfo.address}
             </p>
           </div>
         </div>
@@ -111,7 +111,7 @@ const Chart = ({ play }) => {
         <ParentSize>
           {({ width, height }) => (
             <PlayChart
-              prices={play.history[0].pie.ticks.prices}
+              prices={pieHistory.ticks.prices}
               width={width}
               height={height}
               chartTimeRange={chartTimeRange}
