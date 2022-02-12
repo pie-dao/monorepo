@@ -1,11 +1,17 @@
+import { useEffect } from "react";
+import Head from "next/head";
+import { hotjar } from "react-hotjar";
 import "swiper/css/bundle";
 import "../styles/globals.css";
-import Head from "next/head";
 
 import Footer from "../components/Footer";
 import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    // hotjar.initialize(0123456, 1);
+  }, []);
+
   return (
     <>
       <Head>
@@ -27,9 +33,18 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           property="og:image"
-          content="/https://play-metaverse-token.netlify.app/metaverse_man_fb.png"
+          content="https://play-metaverse-token.netlify.app/metaverse_man_fb.png"
         />
-        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="PLAY" />
+        <meta
+          name="twitter:description"
+          content="The PLAY token captures the value of projects operating in the areas of blockchain gaming and virtual entertainment within the metaverse."
+        />
+        <meta
+          name="twitter:image"
+          content="https://play-metaverse-token.netlify.app/metaverse_man_fb.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <Layout>
         <Component {...pageProps} />

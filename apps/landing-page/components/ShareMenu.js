@@ -60,7 +60,7 @@ const ShareMenu = () => {
           </Menu.Item>
           <Menu.Item>
             <a
-              href={`https://t.me/share?url=${url}&text=${encodeURI(
+              href={`https://t.me/share/url?url=${url}&text=${encodeURI(
                 content.socials.telegram.share
               )}`}
               target="_blank"
