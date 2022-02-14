@@ -18,11 +18,13 @@ export const accentColorLight = "#28D2FF";
 export const axisColor = "#9388DB";
 const tooltipStyles = {
   ...defaultStyles,
-  background: "transparent",
+  background: "#150110",
   color: "#28D2FF",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  border: "1px solid #412D87",
+  padding: "0.5rem",
 };
 
 const formatDate = timeFormat("%d %B %Y");
@@ -220,7 +222,7 @@ const PlayChart = ({
           <TooltipWithBounds
             key={Math.random()}
             top={tooltipTop - 12}
-            left={tooltipLeft + 12}
+            left={tooltipLeft}
             style={tooltipStyles}
           >
             <span className="font-bold mb-1 text-lg">
