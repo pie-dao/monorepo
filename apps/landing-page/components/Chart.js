@@ -107,7 +107,7 @@ const Chart = ({ pieInfo, pieHistory }) => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[200px] md:h-[500px]">
+      <div className="w-full h-[250px] md:h-[500px]">
         <ParentSize>
           {({ width, height }) => (
             <PlayChart
