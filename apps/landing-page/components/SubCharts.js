@@ -1,16 +1,15 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
-import { timeFormat } from "d3-time-format";
 import priceFormatter from "../utils/priceFormatter";
+import timeFormat from "../utils/timeFormat";
 import MarketCapChart from "./MarketCapChart";
 import navPlaceholder from "../public/nav_placeholder.svg";
 import arrowRed from "../public/arrow_red.svg";
 import arrowGreen from "../public/arrow_green.svg";
 import SentimentCheck from "./SentimentCheck";
 
-const formatDate = timeFormat("%d/%m/%Y");
-const getDate = (d) => formatDate(new Date(d[0]));
+const getDate = (d) => timeFormat(new Date(d[0]));
 
 const SubCharts = ({ nav, pie }) => {
   const latestTickDate = getDate(
@@ -33,7 +32,7 @@ const SubCharts = ({ nav, pie }) => {
             <p className="text-gradient text-2xl">
               {priceFormatter.format(nav)}
             </p>
-            <p className="text-sm text-deep_purple">{formatDate(Date.now())}</p>
+            <p className="text-sm text-deep_purple">{timeFormat(Date.now())}</p>
           </div>
           <div className="flex flex-1 items-center">
             <Image src={navPlaceholder} alt="nav placeholder" />

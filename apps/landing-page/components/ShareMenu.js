@@ -7,7 +7,6 @@ import styles from "../styles/ShareMenu.module.scss";
 
 const ShareMenu = () => {
   const url = typeof window !== "undefined" ? window.location.origin : "";
-  console.log(url);
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="inline-flex justify-center w-full p-2 text-sm font-medium text-white bg-black rounded-lg bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
@@ -29,6 +28,8 @@ const ShareMenu = () => {
                 content.socials.twitter.share
               )}&url=${encodeURIComponent(url)}`}
               className={`mb-1 ${styles.shareButton}`}
+              target="_blank"
+              rel="noreferrer noopener"
             >
               <svg
                 width="28"
@@ -44,9 +45,17 @@ const ShareMenu = () => {
             </a>
           </Menu.Item>
           <Menu.Item>
-            <a
-              href={`${content.socials.facebook.url}${encodeURIComponent(url)}`}
+            <button
+              onClick={() =>
+                window.open(
+                  `${content.socials.facebook.url}${encodeURIComponent(url)}`,
+                  "_blank",
+                  "width=600,height=600"
+                )
+              }
               className={`mb-1 ${styles.shareButton}`}
+              target="_blank"
+              rel="noreferrer noopener"
             >
               <svg
                 width="28"
@@ -59,7 +68,7 @@ const ShareMenu = () => {
                   fill="#9388DB"
                 />
               </svg>
-            </a>
+            </button>
           </Menu.Item>
           <Menu.Item>
             <a
