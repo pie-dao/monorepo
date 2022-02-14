@@ -5,10 +5,11 @@ import { curveMonotoneX } from "@visx/curve";
 import { GridRows, GridColumns } from "@visx/grid";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { AxisRight, AxisBottom } from "@visx/axis";
-import { withTooltip, defaultStyles, Tooltip } from "@visx/tooltip";
+import { withTooltip, defaultStyles, TooltipWithBounds } from "@visx/tooltip";
 import { localPoint } from "@visx/event";
 import { max, extent, bisector } from "d3-array";
 import { timeFormat } from "d3-time-format";
+import priceFormatter from "../utils/priceFormatter";
 
 export const background = "#3b6978";
 export const background2 = "#204051";
@@ -216,19 +217,19 @@ const PlayChart = ({
       </svg>
       {tooltipData && (
         <div>
-          <Tooltip
+          <TooltipWithBounds
             key={Math.random()}
             top={tooltipTop - 12}
-            left={tooltipLeft}
+            left={tooltipLeft + 12}
             style={tooltipStyles}
           >
-            <span className="font-bold mb-2">{`$${getPieValue(
-              tooltipData
-            ).toFixed(2)}`}</span>
-            <span className="uppercase font-">
+            <span className="font-bold mb-1 text-lg">
+              {priceFormatter.format(getPieValue(tooltipData))}
+            </span>
+            <span className="uppercase text-deep_purple">
               {formatDate(getDate(tooltipData))}
             </span>
-          </Tooltip>
+          </TooltipWithBounds>
         </div>
       )}
     </div>

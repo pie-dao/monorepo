@@ -20,14 +20,18 @@ const Roi = ({}) => {
             <div className="w-full flex mb-4 flex-col md:flex-row">
               <div className="w-full md:w-1/4 flex flex-col items-center text-center justify-center">
                 <p className="text-gradient">$100</p>
-                <p className="font-light text-sm text-[#9388DB]">01-06-2021</p>
+                <p className="font-light text-sm text-deep_purple">
+                  01-06-2021
+                </p>
               </div>
               <div className="w-full md:w-3/4">
                 <Image src={roiPlaceholder} alt="ROI Placeholder" />
               </div>
               <div className="w-full md:w-1/4 flex flex-col items-center text-center justify-center">
                 <p className="text-gradient">$729</p>
-                <p className="font-light text-sm text-[#9388DB]">31-12-2021</p>
+                <p className="font-light text-sm text-deep_purple">
+                  31-12-2021
+                </p>
               </div>
             </div>
           </div>
@@ -55,7 +59,7 @@ const Roi = ({}) => {
         </div>
       </div>
       <div className="container mx-auto px-6">
-        <p className="text-center uppercase text-sm text-[#9388DB] mb-4">
+        <p className="text-center uppercase text-sm text-deep_purple mb-4">
           You can find PLAY also on
         </p>
         <div className="flex justify-center items-center gap-x-10">
