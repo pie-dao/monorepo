@@ -8,6 +8,7 @@ import discord from "../public/social/discord_blue.svg";
 import twitter from "../public/social/twitter_blue.svg";
 import telegram from "../public/social/telegram_blue.svg";
 import medium from "../public/social/medium_blue.svg";
+import greenCheckmark from "../public/double-checkmark.svg";
 
 const ModalCookie = () => {
   return (
@@ -18,8 +19,46 @@ const ModalCookie = () => {
       >
         {content.cookie_modal.title}
       </Dialog.Title>
-      <div className="mt-4text-sm text-white">
-        <p>{content.cookie_modal.description}</p>
+      <div className="mt-4 mb-8 text-sm text-white">
+        <ul>
+          {content.cookie_modal.points.map((point) => (
+            <li
+              key={point.id}
+              className="text-sm text-white flex items-start mb-2"
+            >
+              <div className="flex-none">
+                <Image
+                  src={greenCheckmark}
+                  alt="Green checkmark"
+                  aria-hidden="true"
+                  width={20}
+                />
+              </div>
+              <span className="ml-2">{point.description}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <Dialog.Title
+        as="h3"
+        className="text-2xl mb-4 leading-6 text-highlight font-bold uppercase"
+      >
+        {content.cookie_modal.more.title}
+      </Dialog.Title>
+      <div className="mt-4 mb-8 text-sm text-white">
+        {content.cookie_modal.more.points.map((point) => (
+          <p key={point.id} className="text-sm text-white mb-2">
+            <span>{point.description}</span>{" "}
+            <a
+              href={point.url}
+              className="underline"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {point.url}
+            </a>
+          </p>
+        ))}
       </div>
     </>
   );
@@ -35,7 +74,19 @@ const ModalTerms = () => {
         {content.terms_modal.title}
       </Dialog.Title>
       <div className="mt-4 text-sm text-white">
-        <p>{content.terms_modal.description}</p>
+        <ul>
+          {content.terms_modal.points.map((point) => (
+            <li key={point.id} className="text-sm text-white flex items-center">
+              <Image
+                src={greenCheckmark}
+                alt="Green checkmark"
+                aria-hidden="true"
+                width={20}
+              />
+              <span className="ml-2">{point.description}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );

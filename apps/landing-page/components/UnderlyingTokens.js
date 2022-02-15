@@ -5,6 +5,7 @@ import tokenImages from "../public/assets";
 import playLogo from "../public/play_icon.svg";
 import gradientPicker from "../utils/gradientPicker";
 import styles from "../styles/UnderlyingTokens.module.scss";
+import content from "../content/en_EN.json";
 
 const ScrollingBoxes = ({ underlyingAssets }) => {
   const sortedAssets = useMemo(() => {
@@ -26,28 +27,13 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
     <section
       className={`w-full justify-evenly content-center text-center relative overflow-hidden mb-20`}
     >
-      {/*
-      <img
-        className="z-40 absolute -top-3 hidden md:block"
-        src="./bg_front_line_1.svg"
-      />
-      <img
-        className="z-40 absolute -top-3 hidden md:block"
-        src="./bg_front_line_2.svg"
-      />
-      <img
-        className="z-40 absolute -top-3 md:hidden block"
-        src="./bg_front_line_1_mobile.svg"
-      />
-      <img
-        className="z-40 absolute -top-3 md:hidden block"
-        src="./bg_front_line_2_mobile.svg"
-      />
-       <img className="z-50 absolute w-24 ml-[48%] mt-20 shadow-sm" src="./logo_play.svg" /> */}
       <div className="bg-secondary py-8 w-full relative">
         <div className="container mx-auto px-6">
           <h2 className="uppercase text-4xl md:text-5xl mb-4">
-            underlying <span className="font-bold">tokens</span>
+            {content.underlying_tokens.title.first}{" "}
+            <span className="font-bold">
+              {content.underlying_tokens.title.highlighted}
+            </span>
           </h2>
         </div>
       </div>

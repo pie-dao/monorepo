@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { Dialog } from "@headlessui/react";
 import Button from "./Button";
-
 import Modal from "./Modal";
 import greenCheckmark from "../public/double-checkmark.svg";
 import styles from "../styles/Methodology.module.scss";
@@ -114,7 +113,10 @@ const Methodology = ({}) => {
       <div className="flex mb-4 container mx-auto px-6">
         <div className="w-full content-center text-center">
           <h2 className="text-highlight uppercase text-4xl md:text-5xl mb-4">
-            Methodology <span className="font-bold">& Strategy</span>
+            {content.methodology.title.first}{" "}
+            <span className="font-bold">
+              {content.methodology.title.highlighted}
+            </span>
           </h2>
           <p className="text-sm md:text-xl">
             {content.methodology.description}
@@ -154,14 +156,14 @@ const Methodology = ({}) => {
       </div>
       <div className="container mx-auto px-6">
         <p className="text-deep_blue">
-          For detailed information on allocation and rebalancing procedures{" "}
+          {content.methodology.prospectus}{" "}
           <button
             type="button"
             className="text-highlight cursor-pointer"
             onClick={openModal}
             data-ga="read-prospectus"
           >
-            read the prospectus.
+            {content.methodology.prospectus_cta}
           </button>
         </p>
       </div>

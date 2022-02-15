@@ -8,7 +8,16 @@
     "call_to_text": "+500%",
     "call_to_text_2": "from inception"
   },
+  "navbar": {
+    "play": "PLAY",
+    "name": "Metaverse NFT index",
+    "cta": "BUY"
+  },
   "metaverse": {
+    "title": {
+      "first": "What",
+      "highlighted": "is the Metaverse?"
+    },
     "description": "The metaverse is a virtual space created by the convergence of virtual reality (VR), augmented reality (AR), and blockchain.",
     "details_left": "It will open up a new economy powered by blockchains and decentralized applications.",
     "details_right": "It will allow for rich and immersive experiences in new virtual worlds.",
@@ -35,6 +44,10 @@
     }
   },
   "scrolling_boxes": {
+    "title": {
+      "first": "Easy access to",
+      "highlighted": "the Metaverse"
+    },
     "description": "PLAY's goal is to provide exposure to the most in-demand projects in Web 3.0.",
     "subparagraph": {
       "title": "The best part?",
@@ -62,8 +75,13 @@
     ]
   },
   "methodology": {
+    "title": {
+      "first": "Methodology",
+      "highlighted": "& Strategy"
+    },
     "description": "The inclusion of assets in the PLAY token is determined by the following criteria:",
-    "prospectus": "For detailed information on allocation and rebalancing procedures read the prospectus.",
+    "prospectus": "For detailed information on allocation and rebalancing procedures",
+    "prospectus_cta": "read the prospectus.",
     "boxes": [
       {
         "id": 1,
@@ -99,32 +117,10 @@
       "first": "Explore",
       "highlighted": "more products"
     },
-    "boxes": [
-      {
-        "id": 1,
-        "description": "The project is on the Ethereum blockchain"
-      },
-      {
-        "id": 2,
-        "description": "The project is in the following categories: Blockchain Gaming, Non-Fungible Tokens, Entertainment, and Infrastructure."
-      },
-      {
-        "id": 3,
-        "description": "The project token needs to be an ERC-20 token."
-      },
-      {
-        "id": 4,
-        "description": "The project's token must have liquidity on DEX greater than $500k."
-      },
-      {
-        "id": 5,
-        "description": "The project's token has an established history of trading, over the past 60 days."
-      },
-      {
-        "id": 6,
-        "description": "The project has been audited.  All critical vulnerabilities must be addressed to mitigate contract risk."
-      }
-    ]
+    "nav": {
+      "name": "NAV",
+      "tooltip": "The net asset value (NAV) of a Pie represents the market value of each share's portion of the Pie's underlying assets. The NAV is determined by adding up the value of all assets in the Pie and then dividing that value by the number of outstanding shares in the Pie."
+    }
   },
   "ovens": {
     "title": {
@@ -139,6 +135,30 @@
       "title": "Use the oven",
       "subtitle": "Save on gas"
     }
+  },
+  "underlying_tokens": {
+    "title": {
+      "first": "Underlying",
+      "highlighted": "tokens"
+    }
+  },
+  "roi": {
+    "title": {
+      "first": "If you had bought PLAY in June 2021",
+      "highlighted": "you would have an ROI of 629%"
+    },
+    "prices": {
+      "starting_price": "$100",
+      "starting_price_date": "01-06-2021",
+      "ending_price": "$729",
+      "ending_price_date": "31-12-2021"
+    },
+    "description_highlight": "With 550+ token holders",
+    "description": "PLAY is our fastest-growing PIE",
+    "cta": "Buy on SushiSwap",
+    "find_it_also": "You can find it also on",
+    "one_inch": "1inch",
+    "uniswap": "Uniswap"
   },
   "modal": {
     "section_1": {
@@ -231,7 +251,11 @@
     "fees_percentage": "0.5%"
   },
   "subcharts": {
+    "nav": "NAV",
+    "marketcap": "Market Cap",
+    "inception": "Incpetion: 21/02/2021",
     "sentiment": {
+      "title": "How do you feel about play?",
       "positive": "You are positive",
       "negative": "You are negative"
     }
@@ -242,11 +266,48 @@
     "button": "Got it!"
   },
   "cookie_modal": {
-    "title": "Cookie Title",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "title": "Cookie Policy",
+    "points": [
+      {
+        "id": 1,
+        "description": "We implemented Google Analytics(GA) on this site and only use cookies necessary to run GA."
+      },
+      {
+        "id": 2,
+        "description": "These cookies don't gather information that identifies you. All the information these cookies collect is grouped together with information from other people’s use of our site on an anonymous basis. Overall, these cookies provide us with analytical information about how our site is performing and how we can improve it, that's it."
+      }
+    ],
+    "more": {
+      "title": "Want to know more?",
+      "points": [
+        {
+          "id": 1,
+          "description": "Not sure what cookies are? Go to",
+          "url": "https://en.wikipedia.org/wiki/HTTP_cookie"
+        },
+        {
+          "id": 2,
+          "description": "Do you want to learn how to manage your cookies? Go to",
+          "url": "https://developers.google.com/analytics/devguides/collection/analyticsjs/cookie-usage"
+        }
+      ]
+    }
   },
   "terms_modal": {
-    "title": "Terms Title",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "title": "Terms & Conditions",
+    "points": [
+      {
+        "id": 1,
+        "description": "PieDAO will never collect or sell any personal data, period."
+      },
+      {
+        "id": 2,
+        "description": "This site does not require any type of login (neither web2 nor web3)."
+      },
+      {
+        "id": 3,
+        "description": "We run cookies to get performance insights only."
+      }
+    ]
   }
 }

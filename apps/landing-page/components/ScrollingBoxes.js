@@ -8,19 +8,27 @@ const ScrollingBoxes = () => {
     <section
       className={`w-full justify-evenly content-left text-left overflow-hidden lg:overflow-visible`}
     >
-      <div className="w-full z-20 sticky top-20 bg-secondary h-64 text-center lg:text-left -mt-20">
+      <div className="w-full z-20 sticky top-24 bg-secondary h-fit pb-10 text-center lg:text-left -mt-20">
         <div className="container mx-auto px-6 pt-8">
           <h2 className="uppercase text-4xl md:text-5xl mb-4">
-            Easy access to
+            {content.scrolling_boxes.title.first}
             <br />
-            <span className="font-bold">the metaverse</span>
+            <span className="font-bold">
+              {content.scrolling_boxes.title.highlighted}
+            </span>
           </h2>
           <p className="hidden lg:block lg:w-1/3 pt-4 text-sm md:text-xl">
             {content.scrolling_boxes.description}
           </p>
+          <p className="hidden lg:block lg:w-1/3 pt-4 text-sm md:text-xl">
+            <span className="flex mb-2 font-bold">
+              {content.scrolling_boxes.subparagraph.title}
+            </span>
+            {content.scrolling_boxes.subparagraph.content}
+          </p>
         </div>
       </div>
-      <div className="z-20 sticky flex mb-4 mt-20 lg:-mt-60 lg:justify-end">
+      <div className="z-20 sticky flex mb-4 mt-20 lg:-mt-[28rem] lg:justify-end">
         <div className="lg:container lg:mx-auto w-full px-4">
           <div className="flex lg:hidden w-full">
             <Swiper

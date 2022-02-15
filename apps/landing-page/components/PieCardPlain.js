@@ -5,6 +5,7 @@ import piesImages from "../public/pies";
 import backgroundImage from "../public/explore_products_bg.svg";
 import popover from "../public/popover_icon.svg";
 import Button from "./Button";
+import content from "../content/en_EN.json";
 
 const PieCard = ({ pieData }) => {
   const tokenImage = useMemo(
@@ -40,7 +41,7 @@ const PieCard = ({ pieData }) => {
             <h4 className="text-sm text-white uppercase">{pieData.name}</h4>
           </div>
           <div className="text-2xl text-white font-extrabold mx-auto mt-auto flex items-end mb-2 z-10">
-            <span>NAV</span>{" "}
+            <span>{content.explore_products.nav.name}</span>{" "}
             <Popover className="relative flex self-start">
               <Popover.Button className="ml-1">
                 <Image src={popover} alt="popover" />
@@ -49,11 +50,7 @@ const PieCard = ({ pieData }) => {
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative bg-white p-7">
                     <p className="text-sm text-black">
-                      The net asset value (NAV) of a Pie represents the market
-                      value of each share’s portion of the Pie’s underlying
-                      assets. The NAV is determined by adding up the value of
-                      all assets in the Pie and then dividing that value by the
-                      number of outstanding shares in the Pie.
+                      {content.explore_products.nav.tooltip}
                     </p>
                   </div>
                 </div>

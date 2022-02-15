@@ -9,7 +9,10 @@ const Metaverse = ({}) => {
         <div className="flex flex-col md:flex-row mb-4">
           <div className="w-full justify-center flex flex-col">
             <h2 className="w-full text-highlight uppercase font-light text-4xl md:text-5xl mb-4">
-              What <span className="font-bold">is the metaverse?</span>
+              {content.metaverse.title.first}{" "}
+              <span className="font-bold">
+                {content.metaverse.title.highlighted}
+              </span>
             </h2>
             <p className="text-sm md:text-xl">
               {content.metaverse.description}

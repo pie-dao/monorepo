@@ -1,11 +1,12 @@
-// import { Logo } from "@piedao/ui-components";
 import Image from "next/image";
 import Button from "./Button";
 import PriceChange from "./PriceChange";
 import ShareMenu from "./ShareMenu";
+import priceFormat from "../utils/priceFormatter";
 import playLogo from "../public/play_logo.svg";
 import piedaoLogo from "../public/piedao_logo_text.png";
 import styles from "../styles/PlayBar.module.scss";
+import content from "../content/en_EN.json";
 
 const PlayBar = ({ pieHistory }) => {
   const { usd_24h_change, usd } = pieHistory;
@@ -28,18 +29,20 @@ const PlayBar = ({ pieHistory }) => {
         <Image src={playLogo} alt="play logo" />
         <div className="ml-2 align-baseline">
           <p className="text-gradient text-xl md:text-xl leading-none md:leading-none flex">
-            PLAY{" "}
+            {content.navbar.play}{" "}
             <span className="text-white text-sm hidden md:block ml-2">
               <PriceChange priceChangeUsd={usd_24h_change} />
             </span>
           </p>
           <p className="text-white text-[0.75rem] uppercase leading-none md:leading-none hidden md:block">
-            Metaverse NFT index
+            {content.navbar.name}
           </p>
         </div>
       </div>
       <div className="flex w-auto ml-auto items-center">
-        <p className="text-white text-xl md:text-2xl mr-2 md:mr-4">$ {usd}</p>
+        <p className="text-white text-xl md:text-2xl mr-2 md:mr-4">
+          {priceFormat.format(usd)}
+        </p>
         <Button
           className="md:mr-4 px-8"
           href="https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
@@ -47,7 +50,7 @@ const PlayBar = ({ pieHistory }) => {
           rel="noopener noreferrer"
           data-ga="buy-btn-sticky"
         >
-          BUY
+          {content.navbar.cta}
         </Button>
         <ShareMenu />
       </div>
