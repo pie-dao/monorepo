@@ -7,20 +7,22 @@ export const StyledButton = (
   return (
     <button
         className={`
-          bg-purple-700 font-bold
-          border-purple-700
+          bg-baby-blue-dark font-bold
+          border-baby-blue-dark
           text-white
-          hover:text-purple-700
+          hover:text-baby-blue-dark
           hover:bg-transparent
+          shadow-md
           border-2
-          rounded-md
+          rounded-lg
           px-2 py-1 
           my-1
           text-center
           min-w-[120px]
-          disabled:bg-gray-600
-          disabled:text-gray-500
-          disabled:border-gray-600
+          disabled:bg-gray-300
+          disabled:text-white
+          disabled:shadow-none
+          disabled:border-gray-300
           ${className ? className : ''}
           `}
         onClick={rest.onClick}

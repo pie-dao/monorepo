@@ -18,10 +18,21 @@ export const fromScale = (n: number | BigNumber, decimals: number): number =>
     ? n
     : n.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
 
+export const smallToBalance = (n: number, decimals: number): Balance => ({
+  /**
+   * Convert a standard number to a balance object
+   */
+  value: toScale(n, decimals).toString(),
+  label: n
+})
+
 export const toBalance = (
   n: number | BigNumber,
   decimals: number
 ): Balance => ({
+  /**
+   * Convert a big number to a balance object
+   */
   label: fromScale(n, decimals),
   value: String(n),
 });

@@ -9,16 +9,16 @@ import { useEffect } from "react";
 const alertColor = (type: AlertTypes) => {
   switch (type) {
     case 'SUCCESS': {
-      return 'bg-green-700';
+      return 'bg-alert-success';
     }
     case 'PENDING': {
-      return 'bg-yellow-600';
+      return 'bg-alert-pending';
     }
     case 'ERROR': {
-      return 'bg-red-500';
+      return 'bg-alert-error';
     }
     default: {
-      return 'bg-red-500';
+      return 'bg-alert-error';
     }
   }
 }
@@ -59,17 +59,18 @@ function AlertMessage(): JSX.Element {
       }
     }
   },[alert, dispatch])
+
   return (
     <div className={`
         ${alert.show ? 'opacity-100' : 'opacity-0' }
-        transition ease-in-out
-         absolute top-14 flex justify-center w-full z-10
+          transition ease-in-out
+          absolute flex justify-center w-full z-10
         `}>
       <div className={`${alertColor(alert.type)} 
-        py-1 w-screen flex flex-col md:flex-row justify-center items-center`
+        py-1 flex flex-col md:flex-row justify-center rounded-lg w-full items-center`
         }>
         <p className="text-white mr-2">{alert.message}</p>
-        { alert.type === 'PENDING' && <LoadingSpinner className="text-white mr-2"/>}
+        { alert.type === 'PENDING' && <LoadingSpinner spinnerClass="fill-white" className="text-white mr-2"/>}
         { alert.action && <ActionButton alert={alert} /> }
         <button
           onClick={() => {

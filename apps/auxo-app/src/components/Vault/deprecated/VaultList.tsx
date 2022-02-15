@@ -1,5 +1,5 @@
-import { useAppSelector } from "../../hooks";
-import { useSelectedVault } from "../../hooks/useSelectedVault";
+import { useAppSelector } from "../../../hooks";
+import { useSelectedVault } from "../../../hooks/useSelectedVault";
 import VaultActions from "./VaultActions";
 import VaultModal from "./VaultModal";
 

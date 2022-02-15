@@ -1,16 +1,19 @@
 import { useWeb3React } from "@web3-react/core";
+import { useRef } from "react";
 import { useCallback, useEffect, useState } from "react";
-import { useAppDispatch } from "../../hooks";
-import { useMerkleAuthContract } from "../../hooks/useContract"
-import { setAlert } from "../../store/app/app.slice";
-import { Vault } from "../../store/vault/Vault";
-import { setIsDepositor } from "../../store/vault/vault.slice";
-import { AUXO_HELP_URL } from "../../utils";
-import { getProof } from "../../utils/merkleProof";
-import StyledButton from "../UI/button";
-import LoadingSpinner from "../UI/loadingSpinner";
-import ExternalUrl from "../UI/url";
+import { FaCheckCircle } from "react-icons/fa";
+import { useAppDispatch } from "../../../hooks";
+import { useMerkleAuthContract } from "../../../hooks/useContract"
+import { setAlert } from "../../../store/app/app.slice";
+import { Vault } from "../../../store/vault/Vault";
+import { setIsDepositor } from "../../../store/vault/vault.slice";
+import { AUXO_HELP_URL } from "../../../utils";
+import { getProof } from "../../../utils/merkleProof";
+import StyledButton from "../../UI/button";
+import LoadingSpinner from "../../UI/loadingSpinner";
+import ExternalUrl from "../../UI/url";
 
+const veDoughLogo = process.env.PUBLIC_URL + '/veDough-only.png'
 
 export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
   const [loading, setLoading] = useState(false);
@@ -38,11 +41,22 @@ export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
 }
 
 const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
-  const { loading } = useDepositor(vault.auth.address, vault.address);
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const authContract = useMerkleAuthContract(vault.auth.address);
   const isDepositor =  vault.auth.isDepositor;
+
+  const first = useRef(false);
+
+  useEffect(() => {
+    if (!first) {
+      dispatch(setAlert({
+        message: 'Authorization confirmed',
+        show: true,
+        type: 'SUCCESS'
+      }))
+    }
+  }, [isDepositor])
 
   const proof = getProof(account);
 
@@ -55,8 +69,8 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
         if (confirm) {
           dispatch(
             setIsDepositor({
-            address: vault.address,
-            isDepositor: confirm
+              address: vault.address,
+              isDepositor: confirm
             })
           );
 
@@ -87,20 +101,28 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
   
   return (
-    <div className="p-5">{ 
-      loading 
-      ? <LoadingSpinner />
+    <div className="p-5 flex flex-col items-center justify-center">{ 
+      false 
+      ? <LoadingSpinner className="text-gray-600" spinnerClass="text-red"/>
       :
       <>
-      <p className="my-2 text-xl">{proof ? (isDepositor ? verifiedString : needsToVerifyString) : notAuthorizedString}</p>
+      { !isDepositor &&
+        <div className="m-auto w-1/2">
+          <img src={veDoughLogo} alt="veDough-holders-only"/>
+        </div>
+      }
+      <p className="my-3 text-xl text-gray-700">{proof ? (isDepositor ? verifiedString : needsToVerifyString) : notAuthorizedString}</p>
+      {
+        isDepositor && <FaCheckCircle size={28} className="fill-baby-blue-dark" />
+      }
       { 
         (!isDepositor && proof) && 
-        <StyledButton onClick={() => submitProof()}>Opt In</StyledButton>
+        <StyledButton className="md:w-1/2" onClick={() => submitProof()}>Opt In</StyledButton>
       }
       { 
         !isDepositor && 
         <ExternalUrl to={AUXO_HELP_URL}>
-          <p className="underline text-purple-700 underline-offset-2 text-semibold">More Info</p>
+          <p className="underline text-baby-blue-dark underline-offset-2 text-semibold">More Info</p>
         </ExternalUrl>
       }
       </>

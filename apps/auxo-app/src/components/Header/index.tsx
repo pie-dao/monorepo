@@ -5,10 +5,10 @@ import AlertMessage from "./AlertMessage";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
 import { useEagerConnect, useInactiveListener } from "../../hooks/useWeb3";
 import { network } from "../../connectors";
-import { HEADER_HEIGHT } from "../../constants";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AccountConnector, AlertButton, CreateAlert, NetworkDisplay } from "./MenuButtons";
 
+const auxoLogo = process.env.PUBLIC_URL + '/auxo-logo.png'
 
 const useFallBack = () => {
   const { active, activate } = useWeb3React()
@@ -78,7 +78,6 @@ const DesktopMenu = (): JSX.Element => {
     justify-evenly
     ">
     { show && <WalletModal setShow={setShow} />}
-    <CreateAlert />
     <NetworkDisplay />
     <AccountConnector setShow={setShow} />
     <AlertButton />
@@ -95,16 +94,14 @@ const Header = () => {
       flex
       items-center
       justify-between
-      px-5
-      my-2
       w-full
-      h-${HEADER_HEIGHT}
+      h-24
       z-10
       pt-1
       `}
     >
-      <div className="flex justify-start items-center">
-        <p className="font-extrabold text-lg">AUXO</p>
+      <div className="w-16 sm:w-20 md:w-24">
+        <img src={auxoLogo} alt="auxo-logo" className="object-contain"/>
       </div>
       <div className="hidden md:flex justify-end items-center">
         <DesktopMenu />
@@ -113,7 +110,6 @@ const Header = () => {
         <MobileMenu />
       </div> 
       </header>
-      <AlertMessage />
     </>
   )
 };

@@ -14,6 +14,7 @@ import { ProviderNotActivatedError } from "../errors";
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import { useWeb3Cache } from "./useCachedWeb3";
 import { VaultCapped } from "../types/artifacts/abi/VaultCapped";
+import { useMerkleAuthAddresses, useTokenAddresses, useVaultAddresses, useVaultCapAddresses } from "./useAddresses";
 
 function getMulticallProvider(library: Web3Provider): MulticallProvider {
   /**
@@ -115,6 +116,20 @@ export function useMultipleMerkleAuthContract(
   ) as MerkleAuth[];
 }
 
+export function useMultipleCapContract(
+  capAddresses?: string[],
+  preferMulticall?: boolean,
+  chainId?: number
+): VaultCapped[] {
+  return useMultipleContracts<VaultCapped>(
+    capAddresses,
+    VaultCappedABI,
+    preferMulticall,
+    chainId
+  ) as VaultCapped[];
+}
+
+
 export function useMultipleContracts<T extends Contract>(
   addresses?: string[],
   ABI?: any,
@@ -147,4 +162,34 @@ const getContract = (
     console.error("Failed to get contract", error);
     return undefined;
   }
+};
+
+
+export const useContracts = (chainId?: number) => {
+  const tokenAddresses = useTokenAddresses();
+  const monoAddresses = useVaultAddresses();
+  const authAddresses = useMerkleAuthAddresses();
+  const capAddresses = useVaultCapAddresses();
+  const monoContracts = useMultipleMonoContract(monoAddresses, true, chainId);
+  const authContracts = useMultipleMerkleAuthContract(
+    authAddresses,
+    true,
+    chainId
+  );
+  const tokenContracts = useMultipleTokenContract(
+    tokenAddresses,
+    true,
+    chainId
+  );
+  const capContracts = useMultipleCapContract(
+    capAddresses,
+    true,
+    chainId
+  )
+  return {
+    monoContracts,
+    tokenContracts,
+    authContracts,
+    capContracts
+  };
 };

@@ -1,30 +1,23 @@
 import { BigNumber } from "@ethersproject/bignumber";
 import { useWeb3React } from "@web3-react/core";
 import { useState } from "react";
-import { MissingDecimalsError } from "../../errors";
-import { useMonoVaultContract } from "../../hooks/useContract";
-import { useSelectedVault } from "../../hooks/useSelectedVault"
-import { Balance, Vault } from "../../store/vault/Vault";
-import { prettyNumber } from "../../utils";
-import StyledButton from "../UI/button";
-import CardItem from "../UI/cardItem";
-import { NotYetReadyToWithdrawError } from '../../errors';
-import LoadingSpinner from "../UI/loadingSpinner";
-import { zeroBalance } from "../../utils/balances";
-import { checkForEvent } from "../../utils/event";
-import { setReduceVaultTokens } from "../../store/vault/vault.slice";
-import { useAppDispatch } from "../../hooks";
-import { useWeb3Cache } from "../../hooks/useCachedWeb3";
-import { setAlert } from "../../store/app/app.slice";
+import { MissingDecimalsError } from "../../../errors";
+import { useMonoVaultContract } from "../../../hooks/useContract";
+import { useSelectedVault } from "../../../hooks/useSelectedVault"
+import { Balance, Vault } from "../../../store/vault/Vault";
+import StyledButton from "../../UI/button";
+import { NotYetReadyToWithdrawError } from '../../../errors';
+import LoadingSpinner from "../../UI/loadingSpinner";
+import { zeroBalance } from "../../../utils/balances";
+import { checkForEvent } from "../../../utils/event";
+import { setReduceVaultTokens } from "../../../store/vault/vault.slice";
+import { useAppDispatch } from "../../../hooks";
+import { useWeb3Cache } from "../../../hooks/useCachedWeb3";
+import { setAlert } from "../../../store/app/app.slice";
 import { useRef } from "react";
 import { useEffect } from "react";
+import { WITHDRAWAL } from "../../../hooks/useWithdrawalStatus";
 
-enum WITHDRAWAL {
-  'NOTSTARTED',
-  'REQUESTED',
-  'READY',
-  'COMPLETE'
-}
 
 const getButtonText = (status: WITHDRAWAL): string => {
   switch (status) {
@@ -239,76 +232,4 @@ export const WithdrawStatusBar = ({ status }: { status: WITHDRAWAL }) => {
   )
 }
 
-export const useStatus = (): WITHDRAWAL => {
-  /**
-  * (a) get user batched burn receipt by using userBatchBurnReceipts(address) (this will give you a Receipt { round, shares } object)
-  * (b) check that round > 0 && shares > 0. If that is not the case, the user has no withdrawal pending.
-  * (c) get current batched burn round using batchBurnRound() method (will redeploy the implementation contract in a moment so that you should be able to get that). 
-  * (d) Compare user's round from step (a) and batchBurnRound from step (c). There are 2 cases:
-  *   (1)  The batchBurnRound is greater than the user's round: the user has underlying waiting for him :))))
-  *   (2) The batchBurnRound is  equal to the user's round: the user needs to wait for next burning event
-  * In the first case you can check how much the user should receive by doing (receipt is the receipt from step (1) ):
-  *   receipt.shares * batchBurns(batchBurn).amountPerShare
-  */
-  const vault = useSelectedVault();
-  const batchBurnRound = vault?.stats?.batchBurnRound;
-  const userBatchBurnRound = vault?.userBalances?.batchBurn.round;
-  if (batchBurnRound && userBatchBurnRound) {
-    if (batchBurnRound > userBatchBurnRound) {
-      return WITHDRAWAL.READY;
-    } else { 
-      return WITHDRAWAL.REQUESTED;
-    }
-  }
-  return WITHDRAWAL.NOTSTARTED;
-}
 
-const WithdrawCard = ({ loading }: { loading: boolean }) => {
-  const vault = useSelectedVault();
-  const status = useStatus();
-  // const status = WITHDRAWAL.READY
-  if (!vault) return <p>Failed to Load</p> 
-  return (
-    <section className="flex flex-col justify-evenly h-full items-center">
-      <h1 className="text-3xl">Withdraw {vault.name}</h1>
-      <CardItem
-          loading={loading}
-          left="Vault Network:"
-          right={ vault.network.name }
-      />
-      <CardItem
-          loading={loading}
-          left={`Your ${vault.symbol} Wallet balance:`}
-          right={ prettyNumber(vault?.userBalances?.wallet.label) }
-      />
-      <CardItem
-          loading={loading}
-          left={`Your Vault Token balance:`}
-          right={ prettyNumber(vault?.userBalances?.vault.label) }
-      />
-      <CardItem
-          loading={loading}
-          left={`Batch Burn Round:`}
-          right={ prettyNumber(vault?.stats?.batchBurnRound) }
-      />
-      <CardItem
-          loading={loading}
-          left={`Your Batch Burn Round:`}
-          right={ prettyNumber(vault?.userBalances?.batchBurn.round) }
-      />            
-      <CardItem
-          loading={loading}
-          left={`Shares Pending Withdrawal:`}
-          right={ prettyNumber(vault?.userBalances?.batchBurn.shares.label ?? 0) }
-      />      
-      <CardItem
-          loading={loading}
-          left={`Available to withdraw:`}
-          right={ prettyNumber(vault?.userBalances?.batchBurn.available.label ?? 0 ) }
-      />
-      <WithdrawStatusBar status={status} />
-      <WithdrawInput vault={vault} status={status}/>
-    </section>
-  )
-}
-export default WithdrawCard

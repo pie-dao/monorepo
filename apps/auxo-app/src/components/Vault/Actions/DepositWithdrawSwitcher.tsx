@@ -3,9 +3,9 @@ import { Fragment } from "react"
 import { FaLock } from "react-icons/fa"
 import { useSelectedVault } from "../../../hooks/useSelectedVault"
 import { Vault } from "../../../store/vault/Vault"
-import { DepositInput } from "../Deposit"
-import MerkleVerify from "../MerkleAuthCheck"
-import { useStatus, WithdrawInput, WithdrawStatusBar } from "../Withdraw"
+import DepositInput from "./Deposit/DepositInput"
+import MerkleVerify from "./MerkleAuthCheck"
+import WithdrawInput from "./Withdraw/WithdrawInput"
 
 const useIsDepositor = (): boolean => {
   const vault = useSelectedVault();
@@ -13,7 +13,6 @@ const useIsDepositor = (): boolean => {
 }
 
 const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.Element => {
-    const status = useStatus();
     const isDepositor = useIsDepositor();
     const tabHeaders = isDepositor ? ['OPT-IN', 'DEPOSIT', 'WITHDRAW'] : ['OPT-IN'];
     return (
@@ -27,7 +26,7 @@ const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.E
                   className={
                   `border-b-2 flex items-center justify-center w-full h-full py-2 font-semibold
                   ${selected
-                    ? 'text-black border-purple-700'
+                    ? 'text-gray-600 border-baby-blue-dark border-b-[3px]'
                     : 'text-gray-300 border-gray-300'} 
                   `}
                 >
@@ -42,15 +41,10 @@ const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.E
             {vault ? (<MerkleVerify vault={vault} />) : 'Connect a vault'}
             </Tab.Panel>
           <Tab.Panel className="h-full w-full">
-            {vault ? <DepositInput vault={vault} /> : 'Connect a vault'}
+            <DepositInput />
           </Tab.Panel>
           <Tab.Panel className="h-full w-full">
-            {vault ? 
-            <>
-              <WithdrawStatusBar status={status} />
-              <WithdrawInput vault={vault} status={status} />
-            </>
-            : 'Connect a vault'}
+            <WithdrawInput />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

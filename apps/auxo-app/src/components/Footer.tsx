@@ -1,32 +1,31 @@
 import { useBlock } from "../hooks/useBlock";
-import logo from "./logo.png";
+
+const logo = process.env.PUBLIC_URL + '/piedaologo.png'
 
 const Footer = () => {
   const block = useBlock();
   return (
     <footer
       className="
-      h-10
-      z-10
-      w-full
-      px-5
-      grid
-      grid-rows-2
-      grid-cols-12
-      gap-1
+        flex
+        mb-10
+        h-24
+        w-full
+        px-20
+        items-end
       "
     >
-      <div className="row-span-2 col-span-6 sm:col-span-3 md:col-span-2 h-4 sm:h-6 w-30 md:w-48 lg:flex justify-center">
-        <img alt="piedao-logo" src={logo} className="h-6 w-30" />
+      <div className="w-24 sm:w-36 md:w-48 mr-3">
+        <img alt="piedao-logo" src={logo} className=" object-contain max-w-24" />
       </div>
-      <div className="row-span-1 col-span-6 sm:col-span-9 md:col-span-10">
+      <div className=" items-end flex-grow">
         {block.blockNumber && (
-          <p className="flex justify-end">
-            <span className="hidden sm:block mr-1">Block:</span>
+          <p className="flex justify-end text-gray-700">
+            <span className="hidden sm:block mr-2">Block:</span>
             {block.blockNumber}
           </p>
         )}
-        <div className="hidden sm:block h-[1px] my-1 bg-black" />
+        <div className="hidden sm:block h-[1px] my-1 bg-gray-700" />
       </div>
     </footer>
   );

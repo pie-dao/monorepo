@@ -1,51 +1,77 @@
 import { useSelectedVault } from "../../../hooks/useSelectedVault";
-import DepositWithdrawSwitcher from "./DepositWithdrawSwitcher";
+import DepositWithdrawSwitcher from "../Actions/DepositWithdrawSwitcher";
 import { VaultAssetExposureCard, VaultExtendedInformationCard, VaultInfoCard } from "./Cards";
 import VaultSummaryUser from "./VaultSummaryUser";
-import { VaultPoolStatsRow, VEDoughStatusRow } from "./StatusRows";
-import { useNavigate } from "react-router-dom";
+import { VaultPoolAPY, VEDoughStatusRow, FloatingBackground } from "./StatusRows";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { Vault } from "../../../store/vault/Vault";
+import { useAppDispatch } from "../../../hooks";
+import { setSelectedVault } from "../../../store/vault/vault.slice";
+import VaultCapSlider from "./VaultCapSlider";
+
+function VaultContentBlocks({ vault }: { vault: Vault | undefined }): JSX.Element {
+  return (
+    <section className="grid grid-cols-1 gap-4">
+      <VaultAssetExposureCard />
+      <VaultExtendedInformationCard />
+      <VaultInfoCard vault={vault}/>
+    </section>
+  )
+}
+
+function VaultActionBlocks({ vault }: { vault: Vault | undefined }): JSX.Element {
+  return (
+    <section className="grid grid-cols-1 gap-4">
+      <div className="min-h-[20rem] bg-white border-gradient rounded-xl shadow-md">
+        <DepositWithdrawSwitcher vault={vault}/>
+      </div>
+      <div className="bg-white rounded-xl shadow-md p-5">
+        <VaultSummaryUser vault={vault} loading={false} />
+      </div>
+    </section>
+  )
+}
 
 function VaultDetails(): JSX.Element {
   const vault = useSelectedVault();
-  const navigate = useNavigate();
+  const params = useParams();
+  const dispatch = useAppDispatch();
+  
   useEffect(() => {
-    if (!vault) navigate('/');
-  }, [vault, navigate]);
+    if (!vault && params && params.vaultId) {
+      dispatch(setSelectedVault(params.vaultId))
+    };
+  }, [vault, dispatch, params]);
+
   return (
-    <section className="
-      grid
-      grid-cols-12
-      grid-flow-rows
-      gap-4
-      m-5
-      ">
-      <section className="col-span-12 order-1">
-        <VEDoughStatusRow />
-      </section>
-      <section className="col-span-12 order-2 row-span-1">
-        <VaultPoolStatsRow vault={vault} />
-      </section>      
-      <div className="col-span-12 md:col-span:6 lg:col-span-8 order-3 row-span-1">
-        <VaultExtendedInformationCard />
-      </div>
-      <div className="col-span-12 md:col-span-6 lg:col-span-4 order-6 md:order-7 lg:order-3
-        row-span-2
-        flex justify-center items-center bg-white border-gradient rounded-md h-72
+    <section className="">
+      <VEDoughStatusRow />
+      <FloatingBackground />
+      <section className="
+          grid
+          grid-cols-12
+          grid-flow-rows
+          gap-4
+          z-20
+          relative
+          mx-5
         ">
-        <DepositWithdrawSwitcher vault={vault}/>
-      </div>
-      <div className="col-span-12 lg:col-span-8 order-4 md:order-6 row-span-1">
-        <VaultAssetExposureCard />
-      </div>
-      <div className="col-span-12 md:col-span:6 lg:col-span-8 order-5">
-       <VaultInfoCard vault={vault} />
-      </div>
-      <div className="
-        col-span-12 md:col-span-6 lg:col-span-4 order-7 md:order-8
-        flex justify-end items-center bg-white border-gradient rounded-md">
-        <VaultSummaryUser vault={vault} loading={false} />
-      </div>
+        <div className="
+            col-span-12 lg:col-span-6 xl:col-span-6
+            order-2 lg:order-1 text-gray-700
+          ">
+          <VaultPoolAPY vault={vault} />
+          <VaultContentBlocks vault={vault} />
+        </div>
+        <div className="
+          col-span-12 lg:col-span-6 xl:col-span-6
+          order-1 lg:order-2 text-gray-700
+          ">
+          <VaultCapSlider />
+          <VaultActionBlocks vault={vault} />
+        </div>
+      </section>
     </section>
   )
 }
