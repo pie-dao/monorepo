@@ -12,7 +12,6 @@ import AboutUsTwitter from "../components/AboutUsTwitter";
 import ExploreProducts from "../components/ExploreProducts";
 import PlayBar from "../components/PlayBar";
 import Chart from "../components/Chart";
-import SubCharts from "../components/SubCharts";
 import posts from "../content/twitterPosts.json";
 
 export async function getServerSideProps({ req, res }) {
@@ -24,7 +23,7 @@ export async function getServerSideProps({ req, res }) {
 
   const playData = await getPie(playAddress);
   const morePiesData = await Promise.all(
-    morePies.map((pieAddress) => getNav(pieAddress))
+    morePies.map(async (pieAddress) => await getNav(pieAddress))
   );
 
   const cookies = new Cookies(req, res);
