@@ -30,6 +30,7 @@ const ShareMenu = () => {
               className={`mb-1 ${styles.shareButton}`}
               target="_blank"
               rel="noreferrer noopener"
+              data-ga="share-social-twitter"
             >
               <svg
                 width="28"
@@ -56,6 +57,7 @@ const ShareMenu = () => {
               className={`mb-1 ${styles.shareButton}`}
               target="_blank"
               rel="noreferrer noopener"
+              data-ga="share-social-twitter"
             >
               <svg
                 width="28"
@@ -78,6 +80,7 @@ const ShareMenu = () => {
               target="_blank"
               rel="noreferrer noopener"
               className={`${styles.shareButton}`}
+              data-ga="share-social-facebook"
             >
               <svg
                 width="28"

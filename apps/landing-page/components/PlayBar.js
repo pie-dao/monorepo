@@ -45,6 +45,7 @@ const PlayBar = ({ pieHistory }) => {
           href="https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
           target="_blank"
           rel="noopener noreferrer"
+          data-ga="buy-btn-sticky"
         >
           BUY
         </Button>

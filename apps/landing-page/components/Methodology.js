@@ -159,6 +159,7 @@ const Methodology = ({}) => {
             type="button"
             className="text-highlight cursor-pointer"
             onClick={openModal}
+            data-ga="read-prospectus"
           >
             read the prospectus.
           </button>

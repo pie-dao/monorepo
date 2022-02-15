@@ -37,12 +37,16 @@ const Chart = ({ pieInfo, pieHistory }) => {
       <div className="flex flex-wrap flex-row items-center my-4 gap-2 justify-center">
         <div className="flex flex-col lg:flex-row items-center gap-3">
           <p className="hidden lg:flex font-bold">Contract Address</p>
-          <div className="flex items-center bg-secondary rounded-full pr-2">
+          <a
+            className="flex items-center bg-secondary rounded-full pr-2"
+            data-ga="btn-ethscan"
+            href="https://etherscan.io/token/0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
+          >
             <Image src={ethIcon} alt="Ethereum Icon" />
             <p className="text-light_blue text-xs	md:text-sm relative top-0.5 ml-1">
               {pieInfo.address}
             </p>
-          </div>
+          </a>
         </div>
         <div className="flex gap-x-4">
           <button
@@ -52,7 +56,12 @@ const Chart = ({ pieInfo, pieHistory }) => {
           >
             <Image src={copyIcon} alt="Copy Icon" />
           </button>
-          <button onClick={addPlayToMetamask} type="button" className="flex">
+          <button
+            onClick={addPlayToMetamask}
+            type="button"
+            className="flex"
+            data-ga="btn-metamask"
+          >
             <Image src={metamaskIcon} alt="Metamask Icon" />
           </button>
         </div>

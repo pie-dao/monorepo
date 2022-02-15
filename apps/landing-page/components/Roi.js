@@ -68,6 +68,7 @@ const Roi = ({}) => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex justify-center items-center"
+            data-ga="btn-1inch-cta"
           >
             <Image src={oneInch} alt="1inch Logo" />
             <p className="ml-2">1INCH</p>
@@ -77,6 +78,7 @@ const Roi = ({}) => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex justify-center items-center"
+            data-ga="btn-uniswap-cta"
           >
             <div>
               <Image src={uniswap} alt="uniswap Logo" />
