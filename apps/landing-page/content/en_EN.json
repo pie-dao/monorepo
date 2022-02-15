@@ -220,6 +220,16 @@
       "url": "https://www.facebook.com/sharer/sharer.php?u="
     }
   },
+  "chart": {
+    "address": "Contract address",
+    "check": "Check it also on",
+    "audit": "Audit result:",
+    "day": "1 Day",
+    "week": "1 Week",
+    "month": "1 Month",
+    "fees": "Fees",
+    "fees_percentage": "0.5%"
+  },
   "subcharts": {
     "sentiment": {
       "positive": "You are positive",

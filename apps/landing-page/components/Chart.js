@@ -1,15 +1,19 @@
 import { useState } from "react";
 import Image from "next/image";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
+import SubCharts from "./SubCharts";
 import auditIcon from "../public/audit.svg";
 import mixBytesIcon from "../public/mixbytes.svg";
 import ethIcon from "../public/ethereum.svg";
 import copyIcon from "../public/copy.svg";
 import metamaskIcon from "../public/metamask.svg";
+import coingecko from "../public/coingecko.svg";
+import coinmarketcap from "../public/coinmarketcap.svg";
 import PlayChart from "./PlayChart";
 import PriceChange from "./PriceChange";
+import content from "../content/en_EN.json";
 
-const Chart = ({ pieInfo, pieHistory }) => {
+const Chart = ({ pieInfo, pieHistory, nav }) => {
   const [chartTimeRange, setChartTimeRange] = useState("1m");
 
   const copyOnClipboard = () => {
@@ -36,10 +40,12 @@ const Chart = ({ pieInfo, pieHistory }) => {
     <section className="container mx-auto my-4 px-6">
       <div className="flex flex-wrap flex-row items-center my-4 gap-2 justify-center">
         <div className="flex flex-col lg:flex-row items-center gap-3">
-          <p className="hidden lg:flex font-bold">Contract Address</p>
+          <p className="hidden lg:flex font-bold">{content.chart.address}</p>
           <a
             className="flex items-center bg-secondary rounded-full pr-2"
             data-ga="btn-ethscan"
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://etherscan.io/token/0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
           >
             <Image src={ethIcon} alt="Ethereum Icon" />
@@ -67,7 +73,7 @@ const Chart = ({ pieInfo, pieHistory }) => {
         </div>
         <div className="flex items-center md:ml-auto">
           <Image src={auditIcon} alt="Chart Icon" />
-          <p className="ml-1 mr-2 font-bold">Audit result:</p>
+          <p className="ml-1 mr-2 font-bold">{content.chart.audit}</p>
           <a
             href="https://github.com/pie-dao/audits"
             target="_blank"
@@ -82,7 +88,10 @@ const Chart = ({ pieInfo, pieHistory }) => {
         <div className="flex align-center justify-between mb-4">
           <div className="flex">
             <p className="flex font-bold items-center">
-              FEES <span className="text-gradient ml-2">0.5%</span>
+              {content.chart.fees}{" "}
+              <span className="text-gradient ml-2">
+                {content.chart.fees_percentage}
+              </span>
             </p>
           </div>
           <div className="flex gap-x-4">
@@ -93,7 +102,7 @@ const Chart = ({ pieInfo, pieHistory }) => {
               }`}
               onClick={() => setChartTimeRange("1d")}
             >
-              1 DAY
+              {content.chart.day}
             </button>
             <button
               type="button"
@@ -102,7 +111,7 @@ const Chart = ({ pieInfo, pieHistory }) => {
               }`}
               onClick={() => setChartTimeRange("1w")}
             >
-              1 WEEK
+              {content.chart.week}
             </button>
             <button
               type="button"
@@ -111,7 +120,7 @@ const Chart = ({ pieInfo, pieHistory }) => {
               }`}
               onClick={() => setChartTimeRange("1m")}
             >
-              1 MONTH
+              {content.chart.month}
             </button>
           </div>
         </div>
@@ -142,7 +151,35 @@ const Chart = ({ pieInfo, pieHistory }) => {
           1 Year <PriceChange priceChangeUsd={190} />
         </p>
       </div>
-      <div className="w-full border-b border-highlight"></div>
+      <div className="w-full border-b border-highlight mb-10"></div>
+      <SubCharts pie={pieHistory} nav={nav} />
+      <div className="container mx-auto px-6 mb-12">
+        <p className="text-center uppercase text-sm text-deep_purple mb-4">
+          {content.chart.check}
+        </p>
+        <div className="flex justify-center items-center gap-x-10">
+          <a
+            href="https://www.coingecko.com/en/coins/metaverse-nft-index"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center"
+            data-ga="coingecko"
+          >
+            <Image src={coingecko} alt="coingecko Logo" />
+          </a>
+          <a
+            href="https://coinmarketcap.com/currencies/metaverse-nft-index"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center"
+            data-ga="coinmarketcap"
+          >
+            <div>
+              <Image src={coinmarketcap} alt="coinmarketcap Logo" />
+            </div>
+          </a>
+        </div>
+      </div>
     </section>
   );
 };

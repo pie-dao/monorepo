@@ -48,8 +48,12 @@ export default function Home({ playData, morePiesData }) {
       <PlayBar pieHistory={pieHistory} />
       <Metaverse />
       <ScrollingBoxes />
-      <Chart play={playData} pieInfo={pieInfo} pieHistory={pieHistory} />
-      <SubCharts pie={pieHistory} nav={nav} />
+      <Chart
+        play={playData}
+        pieInfo={pieInfo}
+        pieHistory={pieHistory}
+        nav={nav}
+      />
       <UnderlyingTokens underlyingAssets={underlyingAssets} />
       <Methodology />
       <Roi />
