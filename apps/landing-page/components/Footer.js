@@ -45,7 +45,7 @@ const ModalCookie = () => {
       >
         {content.cookie_modal.more.title}
       </Dialog.Title>
-      <div className="mt-4 mb-8 text-sm text-white">
+      <div className="mt-4 text-sm text-white">
         {content.cookie_modal.more.points.map((point) => (
           <p key={point.id} className="text-sm text-white mb-2">
             <span>{point.description}</span>{" "}
