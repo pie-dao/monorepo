@@ -99,7 +99,7 @@ const Header = () => {
       items-center
       justify-between
       w-full
-      px-4
+      px-4 md:px-0
       sm:h-24
       pt-1
       `}
