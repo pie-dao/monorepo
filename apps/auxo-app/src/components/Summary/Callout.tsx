@@ -1,54 +1,48 @@
-import { DESCRIPTIONS } from "../../constants"
-import { AUXO_HELP_URL } from "../../utils"
-import ExternalUrl from "../UI/url"
-import { Disclosure, Transition } from '@headlessui/react'
-
 const FancyTitle = () => (
-    <section className="flex flex-col mb-8">
-        <h1 className="font-primary text-4xl flex flex-wrap items-center text-center text-gray-700 justify-center">
+    <section className="flex flex-col">
+        <h1 className="font-primary text-2xl sm:text-3xl md:text-4xl flex flex-wrap items-center text-center text-gray-700 justify-center">
             <span >Cross Chain & Layer 2 </span> 
             <span className="text-baby-blue-dark my-2 mx-5 font-semibold">Easy as 🥧</span>
         </h1>
     </section>
 )
 
+// const DisclosurePanel = () => {
+//   return (
+//     <Disclosure>
+//       <Disclosure.Button>What are Auxo Vaults?</Disclosure.Button>
+//       <Transition
+//         enter="transition duration-100 ease-out"
+//         enterFrom="transform scale-95 opacity-0"
+//         enterTo="transform scale-100 opacity-100"
+//         leave="transition duration-75 ease-out"
+//         leaveFrom="transform scale-100 opacity-100"
+//         leaveTo="transform scale-95 opacity-0"
+//       >
+//         <Disclosure.Panel><AuxoDetails /></Disclosure.Panel>
+//       </Transition>
+//     </Disclosure>
+//   )
+// }
 
-const DisclosurePanel = () => {
-  return (
-    <Disclosure>
-      <Disclosure.Button>What are Auxo Vaults?</Disclosure.Button>
-      <Transition
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-95 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-95 opacity-0"
-      >
-        <Disclosure.Panel><AuxoDetails /></Disclosure.Panel>
-      </Transition>
-    </Disclosure>
-  )
-}
-
-const AuxoDetails = () => (
-    <div className="
-    p-5
-    w-full
-    flex flex-col
-    items-center
-    justify-center
-    ">
-        <p className="sm:w-3/4 md:w-1/2 text-sm">
-            {DESCRIPTIONS.BANNER}
-        </p>
-        <ExternalUrl to={AUXO_HELP_URL}>
-            <p className="underline text-baby-blue-dark text-sm underline-offset-2 mt-3">
-                Learn more about Auxo Vaults
-            </p>
-        </ExternalUrl>
-    </div>
-)
+// const AuxoDetails = () => (
+//     <div className="
+//     p-5
+//     w-full
+//     flex flex-col
+//     items-center
+//     justify-center
+//     ">
+//         <p className="sm:w-3/4 md:w-1/2 text-sm">
+//             {DESCRIPTIONS.BANNER}
+//         </p>
+//         <ExternalUrl to={AUXO_HELP_URL}>
+//             <p className="underline text-baby-blue-dark text-sm underline-offset-2 mt-3">
+//                 Learn more about Auxo Vaults
+//             </p>
+//         </ExternalUrl>
+//     </div>
+// )
 
 const Callout = (): JSX.Element => {
     return (
@@ -62,12 +56,13 @@ const Callout = (): JSX.Element => {
                     justify-center
                     rounded-lg
                     h-48
+                    mx-1 sm:mx-0
                     bg-baby-blue-light
                 "
             >
                 <FancyTitle />
             </div>
-            <div className="
+            {/* <div className="
                 border-gradient
                 rounded-lg
                 relative
@@ -80,7 +75,7 @@ const Callout = (): JSX.Element => {
                 <DisclosurePanel />
                 </div>
 
-            </div>
+            </div> */}
         </section>
     )
 }

@@ -3,7 +3,7 @@ import DepositWithdrawSwitcher from "../Actions/DepositWithdrawSwitcher";
 import { VaultAssetExposureCard, VaultExtendedInformationCard, VaultInfoCard } from "./Cards";
 import VaultSummaryUser from "./VaultSummaryUser";
 import { VaultPoolAPY, VEDoughStatusRow, FloatingBackground } from "./StatusRows";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Vault } from "../../../store/vault/Vault";
 import { useAppDispatch } from "../../../hooks";
@@ -53,9 +53,8 @@ function VaultDetails(): JSX.Element {
           grid-cols-12
           grid-flow-rows
           gap-4
-          z-20
           relative
-          mx-5
+          mx-1 md:mx-5
         ">
         <div className="
             col-span-12 lg:col-span-6 xl:col-span-6

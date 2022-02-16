@@ -18,7 +18,7 @@ const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.E
     return (
       <div className="w-full h-full">
       <Tab.Group defaultIndex={isDepositor ? 1 : 0} >
-        <Tab.List className="flex justify-evenly items-center">
+        <Tab.List className="flex justify-evenly items-center text-sm sm:text-base">
           {tabHeaders.map((t, i) => 
             (<Tab disabled={false} key={i} as={Fragment as any}>
               {({ selected }) => (

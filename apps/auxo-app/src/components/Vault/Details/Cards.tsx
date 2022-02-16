@@ -3,8 +3,8 @@ import { chainMap } from "../../../utils/networks"
 
 const Card = ({ children, title }: { children?: React.ReactNode, title?: string }): JSX.Element => (
     <div className="
-      p-5 rounded-lg shadow-md bg-white text-left text-sm text-gray-600">
-    <h2 className="font-extrabold text-xl mb-2">{title}</h2>
+      p-5 rounded-lg shadow-md bg-white text-left text-xs sm:text-sm text-gray-600">
+    <h2 className="font-extrabold text-lg sm:text-xl mb-2">{title}</h2>
       { children }
     </div>
 )
@@ -16,7 +16,7 @@ export const VaultInfoCard = ({ vault }: { vault: Vault | undefined }) => {
         <Card title="Vault Info">
         { 
             url &&
-            <div className="flex justify-between w-full">
+            <div className="flex justify-between w-full flex-wrap">
                 <p className="font-bold">Contract:</p>
                     <a
                     href={url}

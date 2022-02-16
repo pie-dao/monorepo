@@ -2,8 +2,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks"
 import { AlertTypes, AppState, setAlertDisplay } from "../../store/app/app.slice";
 import { RiCloseCircleFill } from 'react-icons/ri';
 import LoadingSpinner from "../UI/loadingSpinner";
-import StyledButton from "../UI/button";
-import { chainMap, changeNetwork, supportedChainIds } from "../../utils/networks";
+import { changeNetwork, supportedChainIds } from "../../utils/networks";
 import { useEffect } from "react";
 
 const alertColor = (type: AlertTypes) => {
@@ -25,13 +24,12 @@ const alertColor = (type: AlertTypes) => {
 
 function SwitchNetworkButton() {
   const firstSupportedChainId = supportedChainIds[0];
-  const firstSupportedChain = chainMap[firstSupportedChainId]
   return (
-  <StyledButton 
-    className="mx-2 bg-transparent my-0 p-0 border-0 shadow-md hover:text-white"
+  <button 
+    className="mx-4 text-white border-2 border-red-300 rounded-lg px-3 hover:bg-red-300 hover:text-alert-error"
     onClick={() => changeNetwork({ chainId: firstSupportedChainId })}>
-    Switch to {firstSupportedChain.name}
-  </StyledButton>
+    Switch Network
+  </button>
   )
 }
 
@@ -53,7 +51,7 @@ function AlertMessage(): JSX.Element {
     if (alert.action !== 'SWITCH_NETWORK') {
       const timeout = setTimeout(() => {
         dispatch(setAlertDisplay(false));
-      }, 4000);
+      }, 4_000);
       return () => {
         clearTimeout(timeout)
       }
@@ -62,20 +60,20 @@ function AlertMessage(): JSX.Element {
 
   return (
     <div className={`
-        ${alert.show ? 'opacity-100' : 'opacity-0' }
+        ${alert.show ? 'opacity-100 z-10' : 'opacity-0 -z-10' }
           transition ease-in-out
-          absolute flex justify-center w-full z-10
+          absolute flex justify-center w-full
         `}>
       <div className={`${alertColor(alert.type)} 
-        py-1 flex flex-col md:flex-row justify-center rounded-lg w-full items-center`
+        py-2 md:py-1 flex flex-wrap justify-center rounded-lg w-full items-center`
         }>
-        <p className="text-white mr-2">{alert.message}</p>
-        { alert.type === 'PENDING' && <LoadingSpinner spinnerClass="fill-white" className="text-white mr-2"/>}
+        <p className="text-white mr-2 m-1 sm:m-0">{alert.message}</p>
+        { alert.type === 'PENDING' && <span className="mx-2"><LoadingSpinner spinnerClass="fill-white" className="text-white mx-2"/></span>}
         { alert.action && <ActionButton alert={alert} /> }
         <button
           onClick={() => {
             dispatch(setAlertDisplay(false))
-          }}><RiCloseCircleFill color="white"/></button>
+          }}><RiCloseCircleFill className="ml-2" color="white"/></button>
         
       </div>
     </div>

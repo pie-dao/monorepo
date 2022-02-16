@@ -7,15 +7,16 @@ import { Balance } from "../../../../store/vault/Vault";
 import { compareBalances, zeroBalance } from "../../../../utils/balances";
 import StyledButton from "../../../UI/button";
 import InputSlider from "../InputSlider";
-import { handleTransaction, useAwaitPendingStateChange } from '../../../../hooks/useTransactionHandler';
+import { handleTransaction, useAwaitPendingStateChange, usePendingTransaction } from '../../../../hooks/useTransactionHandler';
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract, useTokenContract } from "../../../../hooks/useContract";
 import { setAlert } from "../../../../store/app/app.slice";
-import { LoadingSpinnerWithText } from "../../../UI/loadingSpinner";
+import LoadingSpinner from "../../../UI/loadingSpinner";
 import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 import { useWeb3React } from "@web3-react/core";
 import { prettyNumber } from "../../../../utils";
 import { SetStateType } from "../../../../types/utilities";
+import { useEffect } from "react";
 
 function ApproveDepositButton({ deposit }: { deposit: Balance }) {
     const [approving, setApproving] = useState(false);
@@ -23,15 +24,17 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
     const vault = useSelectedVault();
     const { limit } = useApprovalLimit();
     const tokenContract = useTokenContract(vault?.token.address);
+    const txPending = usePendingTransaction();
 
-    useAwaitPendingStateChange([limit]);
+    const eventName = 'Approval';
+    useAwaitPendingStateChange(limit, eventName);
 
     const approveDeposit = async () => {
         try {
             if (tokenContract && vault?.address) {
                 setApproving(true);
                 const tx = await tokenContract?.approve(vault?.address, deposit.value)
-                await handleTransaction(tx, 'Approval', dispatch);
+                await handleTransaction(tx, eventName, dispatch);
             } else {
                 console.error('Missing TX or account')
             }
@@ -40,7 +43,6 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
                 setAlert({
                   message: "There was a problem with the transaction",
                   type: "ERROR",
-                  show: true,
                 })
               );
         } finally {
@@ -50,11 +52,11 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
 
     return (
         <StyledButton
-            disabled={deposit.value === '0' || compareBalances(limit, 'gte', deposit)}
+            disabled={deposit.value === '0' || compareBalances(limit, 'gte', deposit) || txPending}
             onClick={approveDeposit}
         >
             { approving
-                ? <LoadingSpinnerWithText text="Approving..." />
+                ? <LoadingSpinner />
                 : 'Approve'
             }
         </StyledButton>
@@ -69,16 +71,24 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
     const { account } = useWeb3React();
     const auxoContract = useMonoVaultContract(vault?.address);
     const { limit } = useApprovalLimit();
-    const vaultUnderlying = vault?.userBalances?.vaultUnderlying
-    
-    useAwaitPendingStateChange([vaultUnderlying?.value]);
+    const vaultUnderlying = vault?.userBalances?.vaultUnderlying;
+    const txPending = usePendingTransaction();
 
+    const eventName = 'Deposit';
+    
+    const succeeded = useAwaitPendingStateChange(vaultUnderlying?.value, eventName);
+
+    useEffect(() => {
+        if (succeeded) {
+            setDeposit(zeroBalance());
+        }
+    }, [succeeded, setDeposit])
 
     const buttonDisabled = () => {
         const invalidDepost = deposit.label <= 0;
         const sufficientApproval = compareBalances(limit, 'gte', deposit);
         const wrongNetwork =  chainId !== vault?.network.chainId
-        return !sufficientApproval || wrongNetwork || invalidDepost || depositing; 
+        return !sufficientApproval || wrongNetwork || invalidDepost || depositing || txPending; 
     }
 
     const makeDeposit = async () => {
@@ -86,15 +96,13 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
             if (auxoContract && account) {
                 setDepositing(true)
                 const tx = await auxoContract?.deposit(account, deposit.value)
-                await handleTransaction(tx, 'Deposit', dispatch);
-                setDeposit(zeroBalance())
+                await handleTransaction(tx, eventName, dispatch);
             }
         } catch (err) {
             dispatch(
                 setAlert({
                     message: "There was a problem with the transaction",
                     type: "ERROR",
-                    show: true,
                 })
             );
         } finally {
@@ -109,10 +117,10 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
             ${
                 !buttonDisabled()
                 ? 'bg-baby-blue-dark'
-                : 'bg-gray-600'
+                : 'bg-gray-300'
             }`
         }>
-        <FaCheck className="fill-white w-4 h-4"/>
+        <FaCheck className='fill-white w-4 h-4'/>
         </div>
         <StyledButton
             disabled={buttonDisabled()}
@@ -120,7 +128,7 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
             className={
                 !buttonDisabled()
                 ? 'bg-baby-blue-dark'
-                : 'bg-gray-600'
+                : 'bg-gray-300'
             }
         >
             Deposit
@@ -149,11 +157,11 @@ function DepositInput() {
     return (
         <div 
             className="
-            my-2 flex flex-col h-full w-full justify-evenly px-4
+            sm:my-2 flex flex-col h-full w-full justify-evenly px-4
         ">
-            <div className="mb-2 mt-4 flex justify-start items-center h-10 w-full">
-                <div className="h-8 w-8 mr-3"><USDCIcon /></div>
-                <p className="text-gray-700 text-xl ">Deposit in {currency}</p>
+            <div className="mb-2 mt-4 flex justify-center sm:justify-start items-center h-10 w-full">
+                <div className="h-6 w-6 sm:h-8 sm:w-8 mr-3"><USDCIcon /></div>
+                <p className="text-gray-700 md:text-xl">Deposit in {currency}</p>
             </div>
             <div className="my-1">
                 <InputSlider value={deposit} setValue={setDeposit} max={max} label={label}/>

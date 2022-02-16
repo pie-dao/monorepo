@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { USDCIcon } from "../../../assets/icons/logos";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { setSelectedVault } from "../../../store/vault/vault.slice";
-import { prettyNumber } from "../../../utils";
+import { prettyNumber, zeroApyMessage } from "../../../utils";
 import StyledButton from "../../UI/button";
 
 type VaultRowEntry = {
@@ -100,14 +100,14 @@ const useVaultRows = (): { rows: VaultRow[], headers: Array<keyof VaultRow> } =>
       addStyles: true,
     },
     yield: {
-      value: (v.stats?.currentAPY ?? 'N/A') + ' %',
+      value: zeroApyMessage(v.stats?.currentAPY),
       addStyles: true
     },
       'total deposits': {
-      value: '$ ' + prettyNumber(v.stats?.deposits.label) ?? '--',
+      value: prettyNumber(v.stats?.deposits.label) ?? '--',
     },
       'my deposit': {
-      value: '$ ' + prettyNumber(v.userBalances?.vaultUnderlying.label) ?? '--',
+      value: prettyNumber(v.userBalances?.vaultUnderlying.label) ?? '--',
     },
       '': {
       value: v.address,
@@ -143,6 +143,7 @@ const VaultTable = () => {
                 my-2
                 rounded-xl
                 bg-white
+                p-[2px]
                 hover:border-gradient
                 hover:shadow-md
               ">

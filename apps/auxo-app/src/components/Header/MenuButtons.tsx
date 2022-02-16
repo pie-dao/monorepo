@@ -5,6 +5,8 @@ import { setAlert, setAlertDisplay } from "../../store/app/app.slice";
 import StyledButton from "../UI/button";
 import { FaBell } from 'react-icons/fa';
 import { useChainHandler } from "../../hooks/useChainHandler";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const trimAccount = (account: string): string => {
     return account.slice(0, 6) + '...' + account.slice(38)
@@ -14,28 +16,36 @@ export const CreateAlert = () => {
   const dispatch = useAppDispatch()
   const onClick = () => {
     dispatch(setAlert({
-      message: 'Test Alert',
+      message: 'Tehre was a problem connecting to the network etc etc etc etc blaj ffekekfekak  adalelglgl ',
       type: 'ERROR',
-      show: true
+      action: 'SWITCH_NETWORK'
     }))
   }
   return <button onClick={onClick}>Test Alert</button>
 }
 
 export const AlertButton = (): JSX.Element => {
+    const [notification, setNotification] = useState(false);
     const dispatch = useAppDispatch();
-    const error = useAppSelector(state => state.app.alert);
+    const alert = useAppSelector(state => state.app.alert);
+
+    useEffect(() => {
+      alert.message ? setNotification(true) : setNotification(false);
+    }, [alert.message])
+
     return (
       <button
-        className="rounded-md shadow-md h-10 w-10 p-2 flex items-center justify-center bg-white relative mb-1"
+        className="rounded-md shadow-md h-8 lg:h-10 w-auto p-2 flex items-center justify-center bg-white relative mb-1"
         onClick={() => {
-          if (error.message) {
-            dispatch(setAlertDisplay(true))
+          if (alert.message) {
+            console.debug('clicked')
+            dispatch(setAlertDisplay(true));
+            setNotification(false);
           }
         }}    
         >
         <FaBell className="fill-baby-blue-dark w-full h-full"/>
-        { error.message && <div className="bg-red-700 rounded-full h-3 w-3 absolute -top-0 -right-1"/>}
+        { notification && <div className="bg-alert-error rounded-full h-3 w-3 absolute -top-0 -right-1"/>}
       </button>
     )
   }
@@ -47,13 +57,17 @@ export const NetworkDisplay = () => {
     return (
       <>
        { chain &&
-        <div className="py-1 pl-2 mb-1 pr-10 flex items-center bg-white justify-start md:justify-start shadow-none md:shadow-md rounded-md "
+        <div className="py-1 pl-2 mb-1 pr-0 md:pr-10 
+          flex items-center justify-center bg-white md:justify-start
+          shadow-none md:shadow-md rounded-md"
         >
           <FTMLogo colors={{ primary: 'white', bg: '#7065F4' }} height={6} />
           <p className={`
             font-bold
+            text-left
             text-gray-600
-            text-md
+            text-sm
+            lg:text-base
             rounded-xl
             py-1
             px-3
@@ -74,7 +88,9 @@ export const AccountConnector = ({ setShow }: { setShow: (s: boolean) => void })
       : 'Connect Web3'
     ;
     return (
-      <StyledButton className="py-1 px-8 mx-5 text-md" onClick={() => {
+      <StyledButton className="py-1 px-8 mx-0 md:mx-5
+        text-xs md:text-sm lg:text-base "
+        onClick={() => {
         setShow(true)
       }}>
         {buttonText}

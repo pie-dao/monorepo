@@ -6,9 +6,10 @@ export type ActionTypes = 'SWITCH_NETWORK' | undefined;
 export type AppState = {
   alert: {
     message: string | undefined;
-    show: boolean;
     type: AlertTypes;
+    show?: boolean;
     action?: ActionTypes;
+    name?: string | undefined;
   }
   chainId: number | undefined;
 }
@@ -17,7 +18,8 @@ const initialAlertState: AppState['alert'] = {
   message: undefined,
   show: false,
   type: undefined,
-  action: undefined
+  action: undefined,
+  name: undefined
 }
 
 const appSlice = createSlice({
@@ -29,6 +31,7 @@ const appSlice = createSlice({
   reducers: {
     setAlert: (state, action: PayloadAction<AppState['alert']>) => {
       state.alert = action.payload;
+      state.alert.show = true;
     },
     setAlertDisplay: (state, action: PayloadAction<boolean>) => {
       state.alert.show = action.payload;

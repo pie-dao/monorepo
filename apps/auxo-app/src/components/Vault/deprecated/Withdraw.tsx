@@ -61,7 +61,6 @@ function WithdrawalButton ({
   useEffect(() => {
     if (!firstwallet.current) {
       dispatch(setAlert({
-        show: true,
         message: 'Withdrawal Complete',
         type: 'SUCCESS'
       }))  
@@ -73,7 +72,6 @@ function WithdrawalButton ({
   useEffect(() => {
     if (!firstburn.current) {
       dispatch(setAlert({
-        show: true,
         message: 'Withdraw request confirmed',
         type: 'SUCCESS'
       }))  
@@ -100,12 +98,11 @@ function WithdrawalButton ({
         dispatch(setAlert({
           message: 'Transaction approved...',
           type: 'PENDING',
-          show: true
+          
         }))
       } else {
         dispatch(setAlert({
           message: 'There was a problem with the transaction',
-          show: true,
           type: 'ERROR'
         }))
       }
@@ -125,14 +122,12 @@ function WithdrawalButton ({
         if (!confirm) {
           dispatch(setAlert({
             message: 'There was a problem with the transaction',
-            show: true,
             type: 'ERROR'
           }))
         } else {
           dispatch(setAlert({
             message: 'Transaction approved...',
             type: 'PENDING',
-            show: true
           }))
         }
       } else {

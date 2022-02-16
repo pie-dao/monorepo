@@ -2,7 +2,7 @@ import { Range, getTrackBackground } from 'react-range';
 import { useSelectedVault } from "../../../hooks/useSelectedVault";
 import { Balance } from "../../../store/vault/Vault";
 import { SetStateType } from "../../../types/utilities";
-import { smallToBalance, toBalance, toScale } from "../../../utils";
+import { smallToBalance } from "../../../utils";
 
 const useDecimals = (): number => {
   const vault = useSelectedVault();
@@ -69,6 +69,9 @@ function InputSlider({ value, setValue, max, label }: {
   max: Balance
   label: string
 }): JSX.Element {
+    const setMax = () => {
+      setValue(max)
+    }
     return (
         <div className="
             bg-baby-blue-light rounded-xl px-1 py-7
@@ -82,6 +85,9 @@ function InputSlider({ value, setValue, max, label }: {
             <div className="w-full px-2 my-5">
                 <RangeWrapper max={max} value={value} setValue={setValue} />
             </div>
+            <button
+              onClick={setMax}
+              className='text-baby-blue-dark font-bold border-4 border-white rounded-lg px-4 py-1'>MAX</button>
         </div>
     )
 }

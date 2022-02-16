@@ -14,7 +14,12 @@ import { ProviderNotActivatedError } from "../errors";
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import { useWeb3Cache } from "./useCachedWeb3";
 import { VaultCapped } from "../types/artifacts/abi/VaultCapped";
-import { useMerkleAuthAddresses, useTokenAddresses, useVaultAddresses, useVaultCapAddresses } from "./useAddresses";
+import {
+  useMerkleAuthAddresses,
+  useTokenAddresses,
+  useVaultAddresses,
+  useVaultCapAddresses,
+} from "./useAddresses";
 
 function getMulticallProvider(library: Web3Provider): MulticallProvider {
   /**
@@ -129,7 +134,6 @@ export function useMultipleCapContract(
   ) as VaultCapped[];
 }
 
-
 export function useMultipleContracts<T extends Contract>(
   addresses?: string[],
   ABI?: any,
@@ -164,7 +168,6 @@ const getContract = (
   }
 };
 
-
 export const useContracts = (chainId?: number) => {
   const tokenAddresses = useTokenAddresses();
   const monoAddresses = useVaultAddresses();
@@ -181,15 +184,11 @@ export const useContracts = (chainId?: number) => {
     true,
     chainId
   );
-  const capContracts = useMultipleCapContract(
-    capAddresses,
-    true,
-    chainId
-  )
+  const capContracts = useMultipleCapContract(capAddresses, true, chainId);
   return {
     monoContracts,
     tokenContracts,
     authContracts,
-    capContracts
+    capContracts,
   };
 };

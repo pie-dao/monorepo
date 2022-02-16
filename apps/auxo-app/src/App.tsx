@@ -26,8 +26,8 @@ const Home = () => (
 function App() {
   return (
     <div className="App text-center min-h-screen w-screen flex justify-center bg-gray-50">
-      <section className=" max-w-[1440px] w-screen h-screen justify-between flex flex-col items-center">
-        <section className="w-full h-full flex flex-col justify-between items-center px-20">
+      <section className=" max-w-[1440px] w-screen h-full min-h-screen justify-between flex flex-col items-center">
+        <section className="w-full h-full flex flex-col justify-between items-center px-1 sm:px-5 md:px-10 lg:px-20">
           <Header />
           <section className="h-full w-full relative">
             <AlertMessage />

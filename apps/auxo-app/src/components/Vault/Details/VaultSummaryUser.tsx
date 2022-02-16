@@ -18,8 +18,8 @@ const VaultSummaryUser = ({ loading, vault }: {
         />
         <CardItem
             loading={loading}
-            left="Last Harvested"
-            right={ vault?.stats?.lastHarvest.toString() ?? 'N/A' }
+            left="Fees"
+            right="0 %"
         />
         <div className="
           h-[1px] bg-gray-300 w-full my-5"/>
@@ -33,9 +33,10 @@ const VaultSummaryUser = ({ loading, vault }: {
           left={`Shares Pending Withdrawal`}
           right={ prettyNumber(vault?.userBalances?.batchBurn.shares.label ?? 0) }
         /> 
-         <section className="flex justify-between items-center w-full my-1 text-gray-600">
-            <p className="font-bold ml-2">Available to withdraw</p>
-            <WithdrawButton />
+         <section className="flex justify-between items-center
+          w-full mt-2 sm:my-1 text-gray-600">
+            <p className="font-bold ml-0 text-sm sm:text-base sm:ml-2">Available to withdraw</p>
+            <WithdrawButton showAvailable />
         </section>
       </section>     
     )

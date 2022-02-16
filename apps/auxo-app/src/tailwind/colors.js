@@ -1,14 +1,19 @@
 module.exports = {
-  orange: {
-    400: "#ff8932",
+  'baby-blue': {
+    light: '#E4ECFE',
+    dark: '#7065F4' 
   },
-  purple: {
-    400: "#a50bce",
+  return: {
+    '0':   '#65E3F4',
+    '20':  '#659EF4',
+    '40':  '#7065F4',
+    '60':  '#BE65F4',
+    '80':  '#F638EF',
+    '100': '#FE19A3',
   },
-  blue: {
-    400: "#1fa6e0",
-  },
-  green: {
-    400: "#47d482",
-  },
-};
+  alert: {
+    success: '#5CE472',
+    pending: '#EBCE3A',
+    error: '#E96A6A'
+  }
+}

@@ -15,13 +15,13 @@ import { useBlock } from "./useBlock";
 import { zeroBalance } from "../utils/balances";
 
 type BalancesProps = {
-  token: Erc20 | undefined,
-  mono: Mono | undefined,
-  auth: MerkleAuth | undefined,
-  cap: VaultCapped | undefined,
-  batchBurnRound?: number,
-  account?: string | null
-}
+  token: Erc20 | undefined;
+  mono: Mono | undefined;
+  auth: MerkleAuth | undefined;
+  cap: VaultCapped | undefined;
+  batchBurnRound?: number;
+  account?: string | null;
+};
 
 const getAllBalances = async ({
   token,
@@ -31,14 +31,13 @@ const getAllBalances = async ({
   batchBurnRound,
   account,
 }: BalancesProps) => {
-
   if (mono && auth && cap && token) {
     const calls: Promise<BigNumber | BigNumber[] | boolean>[] = [
       mono.totalUnderlying(), // 0
       mono.lastHarvest(), // 1
       mono.estimatedReturn(), // 2
       mono.batchBurnRound(), // 3
-      cap.UNDERLYING_CAP() // 4
+      cap.UNDERLYING_CAP(), // 4
     ];
 
     if (account) {
@@ -48,7 +47,7 @@ const getAllBalances = async ({
         mono.balanceOfUnderlying(account), // 7
         token.allowance(account, mono.address), // 8
         mono.userBatchBurnReceipts(account), // 9
-        auth.isDepositor(mono.address, account) // 10
+        auth.isDepositor(mono.address, account), // 10
       ].forEach((call) => calls.push(call));
     }
 
@@ -58,8 +57,8 @@ const getAllBalances = async ({
 
     return await Promise.all(calls);
   } else {
-    console.warn('Missing contracts')
-    return await Promise.all([])
+    console.warn("Missing contracts");
+    return await Promise.all([]);
   }
 };
 
@@ -68,7 +67,7 @@ const calculateAvailable = (
   amountPerShare: BigNumber,
   decimals: number,
   batchBurnRound: number,
-  userBatchBurnRound: number,
+  userBatchBurnRound: number
 ): Balance => {
   /**
    * Amount available depends on the batch burn round
@@ -116,7 +115,7 @@ const toState = ({
     },
     cap: {
       ...existing.cap,
-      underlying: toBalance(data[4] as BigNumber, decimals)
+      underlying: toBalance(data[4] as BigNumber, decimals),
     },
   };
   if (account)
@@ -124,8 +123,8 @@ const toState = ({
       ...returnValue,
       auth: {
         ...returnValue.auth,
-        isDepositor: data[10] as boolean
-      } as Vault['auth'],      
+        isDepositor: data[10] as boolean,
+      } as Vault["auth"],
       userBalances: {
         wallet: toBalance(data[5] as BigNumber, decimals),
         vault: toBalance(data[6] as BigNumber, decimals),
@@ -152,7 +151,7 @@ const toState = ({
             (data[11] as BigNumber[])[1],
             decimals,
             toNumber(data[3]),
-            (data[9] as BigNumber[])[0].toNumber(),
+            (data[9] as BigNumber[])[0].toNumber()
           ),
         },
       },
@@ -173,12 +172,8 @@ export const useChainData = (): { loading: boolean } => {
   const { blockNumber } = useBlock();
   const dispatch = useAppDispatch();
   const vaults = useProxySelector((state) => state.vault.vaults);
-  const {
-    monoContracts,
-    tokenContracts,
-    authContracts,
-    capContracts
-  } = useContracts(chainId);
+  const { monoContracts, tokenContracts, authContracts, capContracts } =
+    useContracts(chainId);
 
   useEffect(() => {
     if (
@@ -196,8 +191,12 @@ export const useChainData = (): { loading: boolean } => {
             async (v) => v.token?.address === token.address
           );
           const mono = monoContracts.find((m) => m.address === vault?.address)!;
-          const auth = authContracts.find(a => a.address === vault?.auth.address)!;
-          const cap = capContracts.find(c => c.address === vault?.cap.address)!;
+          const auth = authContracts.find(
+            (a) => a.address === vault?.auth.address
+          )!;
+          const cap = capContracts.find(
+            (c) => c.address === vault?.cap.address
+          )!;
           if (mono && vault) {
             const data = {
               vault,
@@ -208,7 +207,7 @@ export const useChainData = (): { loading: boolean } => {
                 auth,
                 cap,
                 batchBurnRound: vault.stats?.batchBurnRound,
-                account
+                account,
               }),
             };
             return data;
@@ -246,6 +245,8 @@ export const useChainData = (): { loading: boolean } => {
     blockNumber,
     dispatch,
     monoContracts,
+    capContracts,
+    authContracts,
     tokenContracts,
     vaults,
   ]);

@@ -12,13 +12,16 @@ export const StyledButton = (
           text-white
           hover:text-baby-blue-dark
           hover:bg-transparent
+          text-sm
+          sm:text-base
+          sm:px-2 py-1 
           shadow-md
           border-2
           rounded-lg
-          px-2 py-1 
           my-1
           text-center
-          min-w-[120px]
+          min-w-[80px]
+          sm:min-w-[120px]
           disabled:bg-gray-300
           disabled:text-white
           disabled:shadow-none

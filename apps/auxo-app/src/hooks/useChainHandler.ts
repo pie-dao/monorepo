@@ -20,8 +20,7 @@ export const useChainHandler = (): NetworkDetail | undefined => {
     } else {
       dispatch(
         setAlert({
-          message: `You are currently connected to an unsupported chain, supported chains are ${supportedChains}`,
-          show: true,
+          message: `You are currently connected to an unsupported chain, supported chains are: ${supportedChains}`,
           type: "ERROR",
           action: "SWITCH_NETWORK",
         })

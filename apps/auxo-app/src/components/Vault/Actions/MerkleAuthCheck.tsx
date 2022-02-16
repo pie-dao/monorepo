@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../../hooks";
 import { useMerkleAuthContract } from "../../../hooks/useContract"
+import { usePendingTransaction } from "../../../hooks/useTransactionHandler";
 import { setAlert } from "../../../store/app/app.slice";
 import { Vault } from "../../../store/vault/Vault";
 import { setIsDepositor } from "../../../store/vault/vault.slice";
@@ -21,6 +22,7 @@ export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const authContract = useMerkleAuthContract(authAddress);
+
   useEffect(() => {
     if (account && vaultAddress) {
       setLoading(true);
@@ -45,6 +47,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const { account } = useWeb3React();
   const authContract = useMerkleAuthContract(vault.auth.address);
   const isDepositor =  vault.auth.isDepositor;
+  const txPending = usePendingTransaction();
 
   const first = useRef(false);
 
@@ -52,11 +55,10 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
     if (!first) {
       dispatch(setAlert({
         message: 'Authorization confirmed',
-        show: true,
         type: 'SUCCESS'
       }))
     }
-  }, [isDepositor])
+  }, [isDepositor, dispatch])
 
   const proof = getProof(account);
 
@@ -65,7 +67,9 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
       try {
         const tx = await authContract?.authorizeDepositor(account, proof);
         await tx?.wait();
+
         const confirm = await authContract?.isDepositor(vault.address, account);
+        console.debug({ confirm })
         if (confirm) {
           dispatch(
             setIsDepositor({
@@ -77,7 +81,6 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
           dispatch(
             setAlert({
               message: 'Proof submitted, waiting to confirm',
-              show: true,
               type: 'PENDING'
             })
           );
@@ -86,7 +89,6 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
         dispatch(
           setAlert({
             message: 'There was a problem submitting the transaction',
-            show: true,
             type: 'ERROR'
           })
         )
@@ -99,7 +101,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const needsToVerifyString = 'You need to verify before you can use this vault'
   const verifiedString = 'Account has been verfied';
   const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
-  
+
   return (
     <div className="p-5 flex flex-col items-center justify-center">{ 
       false 
@@ -111,13 +113,13 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
           <img src={veDoughLogo} alt="veDough-holders-only"/>
         </div>
       }
-      <p className="my-3 text-xl text-gray-700">{proof ? (isDepositor ? verifiedString : needsToVerifyString) : notAuthorizedString}</p>
+      <p className="my-3 text-xl text-gray-700">{isDepositor ? (proof ? verifiedString : needsToVerifyString) : notAuthorizedString}</p>
       {
         isDepositor && <FaCheckCircle size={28} className="fill-baby-blue-dark" />
       }
       { 
         (!isDepositor && proof) && 
-        <StyledButton className="md:w-1/2" onClick={() => submitProof()}>Opt In</StyledButton>
+        <StyledButton className="md:w-1/2" onClick={() => submitProof()} disabled={txPending}>Opt In</StyledButton>
       }
       { 
         !isDepositor && 

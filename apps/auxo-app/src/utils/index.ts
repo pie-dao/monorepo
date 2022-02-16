@@ -23,8 +23,8 @@ export const smallToBalance = (n: number, decimals: number): Balance => ({
    * Convert a standard number to a balance object
    */
   value: toScale(n, decimals).toString(),
-  label: n
-})
+  label: n,
+});
 
 export const toBalance = (
   n: number | BigNumber,
@@ -39,3 +39,8 @@ export const toBalance = (
 
 export const AUXO_HELP_URL =
   "https://www.notion.so/piedao/Auxo-Vaults-12adac7ebc1e43eeb0c5db4c7cd828e2";
+
+export const zeroApyMessage = (apy: number | undefined): string => {
+  if (apy !== 0 && !apy) return "N/A";
+  else return apy === 0 ? "New Vault" : apy + " %";
+};

@@ -46,7 +46,6 @@ const conditionallyApprove = async ({
       dispatch(setApproval(deposit))
       dispatch(setAlert({
         message: 'Approval Successful, waiting for the network',
-        show: true,
         type: 'PENDING'
       }))
       return true
@@ -82,7 +81,6 @@ function DepositButton ({
   useEffect(() => {
     if (!firstLoad.current) {
       dispatch(setAlert({
-        show: true,
         message: 'Deposit Complete',
         type: 'SUCCESS'
       }))  
@@ -113,7 +111,6 @@ function DepositButton ({
         const confirm = tx && await checkForEvent(tx, 'Deposit');
         if (confirm) {
           dispatch(setAlert({
-            show: true,
             message: 'Transaction approved...',
             type: 'PENDING'
           }));
@@ -121,7 +118,6 @@ function DepositButton ({
         } else { 
           dispatch(setAlert({
             message: 'There was a problem with the transaction',
-            show: true,
             type: 'ERROR'
           }));
         }
@@ -133,7 +129,6 @@ function DepositButton ({
         if (err.code === 4001) dispatch(
           setAlert({
             message: 'User Rejected Transaction',
-            show: true,
             type: 'ERROR'
           }
         ))

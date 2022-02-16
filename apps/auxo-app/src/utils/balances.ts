@@ -29,8 +29,12 @@ export const subBalances = (b1: Balance, b2: Balance): Balance => {
   };
 };
 
-export const compareBalances = (b1: Balance, compare: 'gt' | 'gte' | 'lt' | 'lte', b2: Balance, ): boolean => {
+export const compareBalances = (
+  b1: Balance,
+  compare: "gt" | "gte" | "lt" | "lte",
+  b2: Balance
+): boolean => {
   return BigNumber.from(b1.value)[compare](BigNumber.from(b2.value));
-}
+};
 
 export const zeroBalance = (): Balance => ({ label: 0, value: "0" });

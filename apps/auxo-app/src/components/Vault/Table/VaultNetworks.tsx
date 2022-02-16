@@ -19,7 +19,7 @@ const VaultTableNetworkSwitcher = () => {
                 flex
                 justify-between
                 ">
-                <div className="border-b-2 border-baby-blue-dark shadow-xl w-1/6">
+                <div className="border-b-2 border-baby-blue-dark shadow-xl w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6">
                     <p className="mb-2 text-gray-700 ">{chain.name}</p>
                 </div>
                 <div>
