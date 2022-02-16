@@ -52,8 +52,8 @@ export const VaultPoolAPY = ({ vault }: { vault: Vault | undefined }) => {
   let message = zeroApyMessage(vault?.stats?.currentAPY)
   if (message !== 'New Vault') message = message + ' APY';
   return (
-    <div className="hidden lg:flex h-6 justify-start mb-5 items-center">
-      <div className="h-8 w-8 flex ml-3">
+    <div className="hidden lg:flex h-6 justify-start mb-5 items-center z-20">
+      <div className="h-7 w-auto flex ml-3">
         <USDCIcon />
       </div>
       <p className="ml-3 md:font-bold md:text-2xl text-gray-700"

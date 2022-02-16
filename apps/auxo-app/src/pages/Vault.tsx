@@ -72,7 +72,6 @@ function VaultDetails(): JSX.Element {
           gap-4
           relative
           mx-1 md:mx-5
-          overflow-x-hidden
         "
       >
         <div
