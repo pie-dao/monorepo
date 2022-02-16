@@ -42,7 +42,7 @@ export default function Home({ playData, morePiesData }) {
   const { pie: pieHistory, underlyingAssets, nav } = playData.history[0];
   const { pie: pieInfo } = playData;
   return (
-    <div className="text-white grid place-items-center">
+    <div className="text-white">
       <Hero actualPrice={pieHistory.usd} />
       <PlayBar pieHistory={pieHistory} />
       <Metaverse />

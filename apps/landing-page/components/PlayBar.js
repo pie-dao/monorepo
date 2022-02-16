@@ -13,7 +13,7 @@ const PlayBar = ({ pieHistory }) => {
 
   return (
     <div
-      className={`xl:container flex w-full sticky top-4 z-40 h-[65px] mx-4 items-center py-4 px-6 md:p-6 xl:rounded-md border-transparent border-x-0 border-y-2 xl:border-2 ${styles.gradient}`}
+      className={`xl:container flex w-full sticky top-4 z-40 h-[65px] xl:mx-auto items-center py-4 px-6 md:p-6 xl:rounded-md border-transparent border-x-0 border-y-2 xl:border-2 ${styles.gradient}`}
     >
       <div className="w-auto flex items-center">
         <div className="mr-6 hidden lg:flex">

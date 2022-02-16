@@ -36,7 +36,7 @@ const ScrollingBoxes = () => {
               speed={1000}
               slidesPerView={"auto"}
               centeredSlides
-              className={`w-full overflow-visible mt-44 ${styles.swiperSlider}`}
+              className={`w-full overflow-visible mt-64 ${styles.swiperSlider}`}
             >
               {content.scrolling_boxes.boxes.map((box) => {
                 return (

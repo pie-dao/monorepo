@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import ParentSize from "@visx/responsive/lib/components/ParentSize";
+import ParentSizeModern from "@visx/responsive/lib/components/ParentSizeModern";
 import SubCharts from "./SubCharts";
 import auditIcon from "../public/audit.svg";
 import mixBytesIcon from "../public/mixbytes.svg";
@@ -97,7 +97,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
           <div className="flex gap-x-4">
             <button
               type="button"
-              className={`text-sm text-white border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
+              className={`text-sm text-white uppercase border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
                 chartTimeRange === "1d" && `border-light_blue opacity-100`
               }`}
               onClick={() => setChartTimeRange("1d")}
@@ -106,7 +106,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
             </button>
             <button
               type="button"
-              className={`text-sm text-white border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
+              className={`text-sm text-white uppercase border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
                 chartTimeRange === "1w" && `border-light_blue opacity-100`
               }`}
               onClick={() => setChartTimeRange("1w")}
@@ -115,7 +115,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
             </button>
             <button
               type="button"
-              className={`text-sm text-white border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
+              className={`text-sm text-white uppercase border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
                 chartTimeRange === "1m" && `border-light_blue opacity-100`
               }`}
               onClick={() => setChartTimeRange("1m")}
@@ -126,7 +126,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
         </div>
       </div>
       <div className="w-full h-[250px] md:h-[500px]">
-        <ParentSize>
+        <ParentSizeModern>
           {({ width, height }) => (
             <PlayChart
               prices={pieHistory.ticks.prices}
@@ -135,7 +135,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
               chartTimeRange={chartTimeRange}
             />
           )}
-        </ParentSize>
+        </ParentSizeModern>
       </div>
       <div className="hidden md:flex text-deep_purple mb-2 gap-x-4">
         <p>
