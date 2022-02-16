@@ -4,8 +4,9 @@ import { WalletConnectConnector } from "./walletConnect";
 import { Web3Provider } from "@ethersproject/providers";
 import { NetworkConnector } from "@web3-react/network-connector";
 
+
 export const RPC_URLS = [
-  "https://mainnet.infura.io/v3/9ee4b6a28d1c4016981930ed7a8d7122",
+  "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY,
   "https://rpc.ftm.tools/",
 ];
 
@@ -42,7 +43,7 @@ export const gnosisSafe = new SafeAppConnector();
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
-    1: "https://mainnet.infura.io/v3/84842078b09946638c03157f83405213",
+    1: RPC_URLS[0],
   },
   chainId: 1,
   bridge: "https://bridge.walletconnect.org",

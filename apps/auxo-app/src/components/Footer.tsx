@@ -25,19 +25,17 @@ const Footer = () => {
         />
       </div>
       <div className=" items-end flex-grow">
-          <section className="flex justify-end text-gray-700 w-full items-end">
-            <ExternalUrl to={AUXO_HELP_URL}>
-              <p className="text-baby-blue-dark mr-5">
-                  FAQ
-              </p>
-            </ExternalUrl>
+        <section className="flex justify-end text-gray-700 w-full items-end">
+          <ExternalUrl to={AUXO_HELP_URL}>
+            <p className="text-baby-blue-dark mr-5">FAQ</p>
+          </ExternalUrl>
 
-          {
-            block.blockNumber && <p>
+          {block.blockNumber && (
+            <p>
               <span className="hidden sm:inline-block mr-2">Block:</span>
               {block.blockNumber}
             </p>
-          }
+          )}
         </section>
         <div className="hidden sm:block h-[1px] my-1 bg-gray-700" />
       </div>

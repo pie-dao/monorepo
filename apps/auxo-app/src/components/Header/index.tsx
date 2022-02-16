@@ -44,7 +44,7 @@ const MobileMenu = (): JSX.Element => {
   return (
     <>
     { show && <WalletModal setShow={setShow} />}
-    <GiHamburgerMenu onClick={() => setShowMobileMenu(!showMobileMenu)}/>
+    <GiHamburgerMenu size={24} onClick={() => setShowMobileMenu(!showMobileMenu)}/>
     { showMobileMenu && <section className="
       absolute
       top-16
@@ -99,7 +99,7 @@ const Header = () => {
       items-center
       justify-between
       w-full
-      px-2 sm:px-0
+      px-4
       sm:h-24
       pt-1
       `}

@@ -131,6 +131,7 @@ const VaultTable = () => {
       flex-col
       items-center
       min-w-[700px]
+      px-3
       ">
       <VaultTableHeaders headers={headers} />
       <tbody className="w-full">

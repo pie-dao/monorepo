@@ -59,17 +59,26 @@ function AlertMessage(): JSX.Element {
   },[alert, dispatch])
 
   return (
-    <div className={`
+      <div className={`
         ${alert.show ? 'opacity-100 z-10' : 'opacity-0 -z-10' }
-          transition ease-in-out
+          transition ease-in-out shadow-lg
           absolute flex justify-center w-full
         `}>
-      <div className={`${alertColor(alert.type)} 
-        py-2 md:py-1 flex flex-wrap justify-center rounded-lg w-full items-center`
+          <div className={`${alertColor(alert.type)} 
+          py-2 md:py-1 flex flex-wrap  
+          justify-center rounded-lg w-full items-center`
         }>
         <p className="text-white mr-2 m-1 sm:m-0">{alert.message}</p>
-        { alert.type === 'PENDING' && <span className="mx-2"><LoadingSpinner spinnerClass="fill-white" className="text-white mx-2"/></span>}
-        { alert.action && <ActionButton alert={alert} /> }
+        { 
+          alert.type === 'PENDING' && 
+          <span className="mx-2">
+            <LoadingSpinner spinnerClass="fill-white" className="text-white mx-2"/>
+          </span>
+        }
+        { 
+          alert.action &&
+          <ActionButton alert={alert} />
+        }
         <button
           onClick={() => {
             dispatch(setAlertDisplay(false))
