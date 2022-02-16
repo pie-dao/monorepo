@@ -1,4 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
+import pushShareData from "../utils/GTM/operations/share";
 import { Fragment } from "react";
 import Image from "next/image";
 import content from "../content/en_EN.json";
@@ -22,7 +23,9 @@ const ShareMenu = () => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute p-3 flex flex-col items-center w-10 justify-center mt-6 left-0 right-0 origin-top-right bg-white divide-y divide-gray-100 rounded-md ring-2 ring-highlight_secondary focus:outline-none">
-          <Menu.Item>
+          <Menu.Item
+            onClick={() => pushShareData("twitter", "share-social-twitter")}
+          >
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                 content.socials.twitter.share
@@ -30,7 +33,6 @@ const ShareMenu = () => {
               className={`mb-1 ${styles.shareButton}`}
               target="_blank"
               rel="noreferrer noopener"
-              id="share-social-twitter"
             >
               <svg
                 width="28"
@@ -47,17 +49,18 @@ const ShareMenu = () => {
           </Menu.Item>
           <Menu.Item>
             <button
-              onClick={() =>
+              onClick={() => {
+                pushShareData("facebook", "share-social-facebook");
                 window.open(
                   `${content.socials.facebook.url}${encodeURIComponent(url)}`,
                   "_blank",
                   "width=600,height=600"
-                )
-              }
+                );
+              }}
               className={`mb-1 ${styles.shareButton}`}
               target="_blank"
               rel="noreferrer noopener"
-              id="share-social-twitter"
+              id="share-social-facebook"
             >
               <svg
                 width="28"
@@ -72,7 +75,9 @@ const ShareMenu = () => {
               </svg>
             </button>
           </Menu.Item>
-          <Menu.Item>
+          <Menu.Item
+            onClick={() => pushShareData("telegram", "share-social-telegram")}
+          >
             <a
               href={`https://t.me/share/url?url=${url}&text=${encodeURI(
                 content.socials.telegram.share
@@ -80,7 +85,7 @@ const ShareMenu = () => {
               target="_blank"
               rel="noreferrer noopener"
               className={`${styles.shareButton}`}
-              id="share-social-facebook"
+              id="share-social-telegram"
             >
               <svg
                 width="28"
