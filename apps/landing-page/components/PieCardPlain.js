@@ -78,7 +78,7 @@ const PieCard = ({ pieData }) => {
           href={swapWebsite(pieData.address)}
           target="_blank"
           rel="noreferrer noopener"
-          data-ga={`btn-buy-${pieData.symbol}`}
+          id={`btn-buy-${pieData.symbol}`}
         >
           BUY
         </Button>

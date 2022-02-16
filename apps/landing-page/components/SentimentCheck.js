@@ -17,7 +17,7 @@ const SentimentCheck = () => {
               type="button"
               className="positive"
               onClick={() => setSentiment("positive")}
-              data-ga="sentiment-positive"
+              id="sentiment-positive"
             >
               <Image src={positive} alt="positive" />
             </button>
@@ -27,7 +27,7 @@ const SentimentCheck = () => {
               type="button"
               className="negative"
               onClick={() => setSentiment("negative")}
-              data-ga="sentiment-negative"
+              id="sentiment-negative"
             >
               <Image src={negative} alt="negative" />
             </button>

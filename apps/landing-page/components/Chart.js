@@ -43,7 +43,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
           <p className="hidden lg:flex font-bold">{content.chart.address}</p>
           <a
             className="flex items-center bg-secondary rounded-full pr-2"
-            data-ga="btn-ethscan"
+            id="btn-ethscan"
             target="_blank"
             rel="noopener noreferrer"
             href="https://etherscan.io/token/0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
@@ -66,7 +66,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
             onClick={addPlayToMetamask}
             type="button"
             className="flex"
-            data-ga="btn-metamask"
+            id="btn-metamask"
           >
             <Image src={metamaskIcon} alt="Metamask Icon" />
           </button>
@@ -163,7 +163,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex justify-center items-center"
-            data-ga="coingecko"
+            id="coingecko"
           >
             <Image src={coingecko} alt="coingecko Logo" />
           </a>
@@ -172,7 +172,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex justify-center items-center"
-            data-ga="coinmarketcap"
+            id="coinmarketcap"
           >
             <div>
               <Image src={coinmarketcap} alt="coinmarketcap Logo" />

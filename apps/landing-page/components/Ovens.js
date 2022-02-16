@@ -23,7 +23,7 @@ const Ovens = () => {
             target="_blank"
             rel="noreferrer noopener"
             href="https://www.piedao.org/#/oven"
-            data-ga="btn-oven"
+            id="btn-oven"
           >
             <>
               {content.ovens.call_to_action.title}
