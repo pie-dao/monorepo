@@ -184,6 +184,7 @@ export const useChainData = (): { loading: boolean } => {
       chainId &&
       chainMap[chainId]
     ) {
+
       // Multicall contract executes promise all as a batch request
       Promise.all(
         tokenContracts.map(async (token) => {
