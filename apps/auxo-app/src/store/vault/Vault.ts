@@ -4,9 +4,11 @@ import { ChainMap, SUPPORTEDNETWORKS } from "../../utils/networks";
  * Initialise a vault with basic information
  */
 interface BasicVaultInformation {
+  id: number;
   name: string;
   address: string;
   description: string;
+  strategies: Strategy[];
   network: {
     name: SUPPORTEDNETWORKS;
     chainId: keyof ChainMap;
@@ -14,17 +16,33 @@ interface BasicVaultInformation {
   symbol: string;
 }
 
+export type ExternalURL = {
+  name: string;
+  to: string;
+}
+
+// information about an individual strategy
+export type Strategy = {
+  name: string;
+  allocation: number;
+  description: string;
+  links: ExternalURL[]
+}
+
+
 // store the raw value of any balances as a string but provide a human readable number
 export type Balance = {
   label: number;
   value: string;
 } 
 
+// Information about the underlying vault token
 export interface VaultToken {
   address: string;
   decimals: number;
 }
 
+// Properties shared across users, ie. total deposits
 export interface VaultStats {
   currentAPY: number;
   deposits: Balance;
@@ -32,6 +50,7 @@ export interface VaultStats {
   batchBurnRound: number;
 }
 
+// Properties unique to a given user ie. own deposits
 export interface UserBalances {
   wallet: Balance;
   vaultUnderlying: Balance;
@@ -43,11 +62,14 @@ export interface UserBalances {
     available: Balance;
   }
 }
+
+// information about the vault auth contract, used for checking if an account is allowed to use this vault
 export interface VaultAuth {
   address: string;
   isDepositor: boolean;
 }
 
+// information about the per-account deposit limits (note, the vaultcap contract extends the vault base)
 export interface VaultCap {
   address: string;
   underlying: Balance | null;

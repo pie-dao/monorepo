@@ -1,9 +1,8 @@
 import { useSelectedVault } from "../hooks/useSelectedVault";
 import DepositWithdrawSwitcher from "../components/Vault/Actions/DepositWithdrawSwitcher";
 import {
-  VaultAssetExposureCard,
   VaultExtendedInformationCard,
-  VaultInfoCard,
+  VaultStrategiesCard,
 } from "../components/Vault/Details/Cards";
 import VaultSummaryUser from "../components/Vault/Details/VaultSummaryUser";
 import {
@@ -25,9 +24,8 @@ function VaultContentBlocks({
 }): JSX.Element {
   return (
     <section className="grid grid-cols-1 gap-4">
-      <VaultAssetExposureCard />
-      <VaultExtendedInformationCard />
-      <VaultInfoCard vault={vault} />
+      <VaultExtendedInformationCard vault={vault}/>
+      <VaultStrategiesCard vault={vault} />
     </section>
   );
 }
