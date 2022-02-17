@@ -104,7 +104,7 @@ const Header = () => {
       pt-1
       `}
     >
-      <div className="w-16 sm:w-20 md:w-24 my-5 lg:my-0">
+      <div className="w-16 sm:w-20 md:w-24 my-5 lg:my-0 ml-1 sm:ml-0">
         <img src={auxoLogo} alt="auxo-logo" className="object-contain"/>
       </div>
       <div className="hidden md:flex justify-end items-center">

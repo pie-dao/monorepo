@@ -32,7 +32,7 @@ const Callout = (): JSX.Element => {
                     justify-center
                     rounded-lg
                     py-5 sm:py-2 sm:h-48
-                    mx-5 sm:mx-3
+                    mx-5 sm:mx-3 md:mx-0
                     bg-baby-blue-light
                 "
       >
