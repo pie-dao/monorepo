@@ -85,7 +85,7 @@
     "boxes": [
       {
         "id": 1,
-        "description": "The project is on the Ethereum blockchain"
+        "description": "The project is on the Ethereum blockchain."
       },
       {
         "id": 2,
@@ -128,8 +128,8 @@
       "highlighted": "and save on gas fees"
     },
     "description": {
-      "first": "The oven allows you to pool your ETH with other users and mint PIEs together. Using the oven is simple you just need to deposit ETH, wait and withdraw your PLAY",
-      "highlighted": "saving more than 90% in gas."
+      "first": "The oven allows you to pool your ETH with other users and mint PIEs together. Using the oven is simple: you deposit ETH, wait to bake, and withdraw your PIE.",
+      "highlighted": "Save more than 90% in gas fees."
     },
     "call_to_action": {
       "title": "Use the oven",
