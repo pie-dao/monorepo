@@ -24,7 +24,7 @@ function VaultContentBlocks({
 }): JSX.Element {
   return (
     <section className="grid grid-cols-1 gap-4">
-      <VaultExtendedInformationCard vault={vault}/>
+      <VaultExtendedInformationCard vault={vault} />
       <VaultStrategiesCard vault={vault} />
     </section>
   );
