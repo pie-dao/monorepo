@@ -19,14 +19,17 @@ export const VaultStrategyDetails = ({ strategy }: { strategy: Strategy }): JSX.
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex justify-between w-full font-bold 
+              <Disclosure.Button className="flex items-center justify-between w-full font-bold 
                 ">
-                <span className="text-left">{strategy.name}</span>
-                <BiChevronRight
-                  className={`${
-                    open ? 'transform rotate-90' : ''
-                  } w-5 h-5 text-baby-blue-dark`}
-                />
+                <div className="flex">
+                    <BiChevronRight
+                      className={`${
+                        open ? 'transform rotate-90' : ''
+                      } w-5 h-5 text-baby-blue-dark`}
+                    />                    
+                    <span className="text-left ml-1">{strategy.name}</span>
+                </div>
+                <p className="font-bold text-return-100 flex no-wrap">{strategy.allocation * 100} <span>%</span></p>
               </Disclosure.Button>
               <Transition
                 enter="transition duration-100 ease-out"
@@ -36,12 +39,9 @@ export const VaultStrategyDetails = ({ strategy }: { strategy: Strategy }): JSX.
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0"
                 >
-              <Disclosure.Panel className="my-1 ">
-                <div key={strategy.name} className="flex justify-between my-1 pr-2">
-                    <p className="italic">Allocation</p>
-                    <p className="font-bold text-return-100">{strategy.allocation * 100} %</p>
-                </div>
-                <div className="px-5 border-l-2 border-l-baby-blue-light">                  
+              <Disclosure.Panel className="my-1">
+
+                <div className="px-5 border-l-2 ml-2 border-l-baby-blue-light">                  
                     <p>{strategy.description}</p>
                         <p className="font-bold my-1">Links</p>
                             <div className="px-5 border-l-2 border-l-baby-blue-light">
