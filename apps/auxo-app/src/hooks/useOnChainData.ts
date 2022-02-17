@@ -189,14 +189,14 @@ export const useChainData = (): { loading: boolean } => {
       Promise.all(
         tokenContracts.map(async (token) => {
           const vault = vaults.find(
-            async (v) => v.token?.address === token.address
+            (v) => v.token.address.toLowerCase() === token.address.toLowerCase()
           );
-          const mono = monoContracts.find((m) => m.address === vault?.address)!;
+          const mono = monoContracts.find((m) => m.address.toLowerCase() === vault?.address.toLowerCase())!;
           const auth = authContracts.find(
-            (a) => a.address === vault?.auth.address
+            (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
           )!;
           const cap = capContracts.find(
-            (c) => c.address === vault?.cap.address
+            (c) => c.address.toLowerCase() === vault?.cap.address.toLowerCase()
           )!;
           if (mono && vault) {
             const data = {

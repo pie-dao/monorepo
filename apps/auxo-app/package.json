@@ -3,7 +3,6 @@
   "license": "MIT",
   "version": "0.1.0",
   "author": "jordaniza",
-  "private": false,
   "dependencies": {
     "@0xsequence/multicall": "^0.35.5",
     "@gnosis.pm/safe-apps-web3-react": "^0.6.8",
