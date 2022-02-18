@@ -12,6 +12,8 @@ export const StyledButton = (
           text-white
           hover:text-baby-blue-dark
           hover:bg-transparent
+          transition-colors
+          delay-50
           text-sm
           sm:text-base
           sm:px-2 py-1 

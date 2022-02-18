@@ -43,5 +43,5 @@ export const AUXO_HELP_URL =
 
 export const zeroApyMessage = (apy: number | undefined): string => {
   if (apy !== 0 && !apy) return "N/A";
-  else return apy === 0 ? "New Vault" : apy + " %";
+  else return apy === 0 ? "New Vault" : apy.toFixed(2) + " %";
 };

@@ -71,7 +71,8 @@ const VaultTableHeaders = ({ headers }: { headers: string[] }) => {
 
 const VaultTableRowEntry = ({ item, rowNumber }: { item: VaultRowEntry, rowNumber: number }) => {
   const getTextColorFromOrder = (): string => {
-    return `text-return-${100 - 20 * rowNumber}`;
+    const val = ` text-return-${100 - 20 * rowNumber}`;
+    return val
   };
   return (
   <>{
@@ -100,7 +101,7 @@ const useVaultRows = (): { rows: VaultRow[], headers: Array<keyof VaultRow> } =>
       addStyles: true,
     },
     yield: {
-      value: (v.stats && v.token) && zeroApyMessage(Number(v.stats?.currentAPY.value) / (10 ** v.token.decimals)),
+      value: (v.stats && v.token) ? zeroApyMessage(Number(v.stats?.currentAPY.value) / (10 ** v.token.decimals)) : '--',
       addStyles: true
     },
       'total deposits': {

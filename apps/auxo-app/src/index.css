@@ -6,7 +6,6 @@
 
 @layer components {
   .border-gradient {
-    display: inline-flex;
     padding: 2px;
     background-image: 
       linear-gradient(white, white),
