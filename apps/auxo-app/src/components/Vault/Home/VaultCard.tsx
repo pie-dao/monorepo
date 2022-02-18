@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { USDCIcon } from "../../../assets/icons/logos";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { useApy } from "../../../hooks/useApy";
 import { Vault } from "../../../store/vault/Vault";
 import { setSelectedVault } from "../../../store/vault/vault.slice";
-import { prettyNumber, zeroApyMessage } from "../../../utils";
+import { prettyNumber } from "../../../utils";
 import StyledButton from "../../UI/button";
 import { Divider } from "../../UI/divider";
 
@@ -28,6 +29,7 @@ const VaultCardActions: React.FC<{ addr: string }> = ({ addr }) => {
 }
 
 const VaultCardHeader: React.FC<{ vault: Vault }> = ({ vault }) => {
+    const message = useApy(vault);
     return (
         <section className="flex justify-between items-center w-full py-3 px-4">
             <div className="flex items-center">
@@ -37,7 +39,7 @@ const VaultCardHeader: React.FC<{ vault: Vault }> = ({ vault }) => {
                 <p className="font-bold text-return-100">{vault.symbol}</p>
             </div>
             <div>
-                <p className="text-return-100 font-bold">{'APY: ' + zeroApyMessage(vault.stats?.currentAPY)}</p>
+                <p className="text-return-100 font-bold">{'APY: ' + message}</p>
             </div>
         </section>
     )

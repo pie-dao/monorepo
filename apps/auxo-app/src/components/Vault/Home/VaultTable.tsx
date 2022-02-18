@@ -100,7 +100,7 @@ const useVaultRows = (): { rows: VaultRow[], headers: Array<keyof VaultRow> } =>
       addStyles: true,
     },
     yield: {
-      value: zeroApyMessage(v.stats?.currentAPY),
+      value: (v.stats && v.token) && zeroApyMessage(Number(v.stats?.currentAPY.value) / (10 ** v.token.decimals)),
       addStyles: true
     },
       'total deposits': {

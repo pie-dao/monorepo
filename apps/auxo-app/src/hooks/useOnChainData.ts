@@ -110,7 +110,7 @@ const toState = ({
     stats: {
       deposits: toBalance(data[0] as BigNumber, decimals),
       lastHarvest: toNumber(data[1]),
-      currentAPY: toNumber(data[2]),
+      currentAPY: toBalance(data[2] as BigNumber, decimals),
       batchBurnRound: toNumber(data[3]),
     },
     cap: {
@@ -184,14 +184,15 @@ export const useChainData = (): { loading: boolean } => {
       chainId &&
       chainMap[chainId]
     ) {
-
       // Multicall contract executes promise all as a batch request
       Promise.all(
         tokenContracts.map(async (token) => {
           const vault = vaults.find(
             (v) => v.token.address.toLowerCase() === token.address.toLowerCase()
           );
-          const mono = monoContracts.find((m) => m.address.toLowerCase() === vault?.address.toLowerCase())!;
+          const mono = monoContracts.find(
+            (m) => m.address.toLowerCase() === vault?.address.toLowerCase()
+          )!;
           const auth = authContracts.find(
             (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
           )!;

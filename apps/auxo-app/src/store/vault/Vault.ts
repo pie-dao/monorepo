@@ -44,7 +44,7 @@ export interface VaultToken {
 
 // Properties shared across users, ie. total deposits
 export interface VaultStats {
-  currentAPY: number;
+  currentAPY: Balance;
   deposits: Balance;
   lastHarvest: number;
   batchBurnRound: number;

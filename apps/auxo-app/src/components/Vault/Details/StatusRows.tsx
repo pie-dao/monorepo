@@ -2,8 +2,8 @@ import { useWeb3React } from "@web3-react/core";
 import { IoChevronBack, IoWarningOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { USDCIcon } from "../../../assets/icons/logos";
+import { useApy } from "../../../hooks/useApy";
 import { Vault } from "../../../store/vault/Vault";
-import { zeroApyMessage } from "../../../utils";
 import { getProof } from "../../../utils/merkleProof";
 
 export const VEDoughChecker = (): JSX.Element => {
@@ -49,7 +49,7 @@ export const FloatingBackground = (): JSX.Element => {
 }
 
 export const VaultPoolAPY = ({ vault }: { vault: Vault | undefined }) => {
-  let message = zeroApyMessage(vault?.stats?.currentAPY)
+  let message = useApy(vault);
   if (message !== 'New Vault') message = message + ' APY';
   return (
     <div className="hidden lg:flex h-6 justify-start mb-5 items-center z-20">
