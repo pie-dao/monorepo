@@ -14,18 +14,7 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  nav: number;  
-
-  @Prop({type: Object})
-  @ApiProperty()
-  @IsObject()
-  pie: {
-    usd: number,
-    usd_market_cap: number,
-    usd_24h_vol: number,
-    usd_24h_change: number,
-    ticks: Array<Array<number>>
-  };
+  nav: number;
 
   @Prop()
   @ApiProperty()

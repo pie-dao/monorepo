@@ -273,7 +273,6 @@ export class PiesService {
             symbol: symbol, 
             decimals: decimals,
             amount: underylingTotals[i].toString(),
-            token_info: prices[underlyingAssets[i].toLowerCase()],
             marginalTVL: marginalTVL,
             marginalTVLPercentage: 0
           });
@@ -293,18 +292,6 @@ export class PiesService {
         history.totalSupply = pieSupply;
         history.decimals = pieDecimals;
         history.nav = (pieMarketCapUSD.toNumber() / totalSupply.toNumber());
-
-        let ticksResponse = [];
-        
-        try {
-          url = `https://api.coingecko.com/api/v3/coins/${pie.coingecko_id}/market_chart?vs_currency=usd&days=30&interval=hourly`;
-          response = await this.httpService.get(url).toPromise();   
-          ticksResponse = response.data;
-        } catch(error) {
-          this.logger.error(`${pie.name} - error fetching ticks: `, error.message);
-        }
-
-        history.pie = {ticks: ticksResponse, ...coingeckoPiesInfos[pie.coingecko_id]};
 
         // and saving the history entity...
         let historyDB = await history.save();
