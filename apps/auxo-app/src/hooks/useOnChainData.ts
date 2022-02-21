@@ -83,7 +83,6 @@ const calculateAvailable = (
 
 const toState = ({
   existing,
-  address,
   decimals,
   data,
   account,
@@ -92,7 +91,7 @@ const toState = ({
   address: string;
   decimals: number;
   data: AwaitedReturn<typeof getAllBalances>;
-  account?: string;
+  account?: string | null;
 }): Vault => {
   /**
    * Rebuilds the entire vault before making a dispatch call
@@ -177,7 +176,6 @@ export const useChainData = (): { loading: boolean } => {
 
   useEffect(() => {
     if (
-      account &&
       active &&
       tokenContracts.length > 0 &&
       monoContracts.length > 0 &&

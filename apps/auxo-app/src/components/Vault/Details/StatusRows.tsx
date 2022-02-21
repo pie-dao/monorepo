@@ -1,9 +1,9 @@
 import { useWeb3React } from "@web3-react/core";
 import { IoChevronBack, IoWarningOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { USDCIcon } from "../../../assets/icons/logos";
 import { useApy } from "../../../hooks/useApy";
 import { Vault } from "../../../store/vault/Vault";
+import { logoSwitcher } from "../../../utils/logos";
 import { getProof } from "../../../utils/merkleProof";
 
 export const VEDoughChecker = (): JSX.Element => {
@@ -54,7 +54,7 @@ export const VaultPoolAPY = ({ vault }: { vault: Vault | undefined }) => {
   return (
     <div className="hidden lg:flex h-6 justify-start mb-5 items-center z-20">
       <div className="h-7 w-auto flex ml-3">
-        <USDCIcon />
+        { logoSwitcher(vault?.symbol) }
       </div>
       <p className="ml-3 md:font-bold md:text-2xl text-gray-700"
           >{vault?.symbol} pool <span className="font-extrabold text-return-100 mr-3">{message}</span>

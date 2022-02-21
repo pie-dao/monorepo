@@ -27,7 +27,7 @@ export const VaultStrategyDetails = ({ strategy }: { strategy: Strategy }): JSX.
                         open ? 'transform rotate-90' : ''
                       } w-5 h-5 text-baby-blue-dark`}
                     />                    
-                    <span className="text-left ml-1">{strategy.name}</span>
+                    <span className="flex items-center text-left ml-1">{strategy.name}</span>
                 </div>
                 <p className="font-bold text-return-100 flex no-wrap">{strategy.allocation * 100} <span>%</span></p>
               </Disclosure.Button>

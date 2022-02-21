@@ -1,6 +1,22 @@
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from ".";
 import { useProxySelector } from "../store";
 import { Balance, Vault } from "../store/vault/Vault";
+import { setSelectedVault } from "../store/vault/vault.slice";
 import { zeroBalance } from "../utils/balances";
+
+export const useNavigateToVault = () => {
+  /**
+   * @returns a function that can be invoked to navigate to the passed vault page
+   */
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const selectVault = (addr: string): void => {
+    dispatch(setSelectedVault(addr));
+    navigate(`/vault/${addr}`);
+  };
+  return selectVault
+}
 
 export const useSelectedVault = (): Vault | undefined =>
   useProxySelector((state) =>

@@ -7,6 +7,7 @@ import { FaBell } from 'react-icons/fa';
 import { useChainHandler } from "../../hooks/useChainHandler";
 import { useState } from "react";
 import { useEffect } from "react";
+import { logoSwitcher } from "../../utils/logos";
 
 const trimAccount = (account: string): string => {
     return account.slice(0, 6) + '...' + account.slice(38)
@@ -54,6 +55,7 @@ const toProperCase = (s: string): string => s.slice(0, 1).toUpperCase() + s.slic
 
 export const NetworkDisplay = () => {
     const chain = useChainHandler();
+    console.debug({ chain })
     return (
       <>
        { chain &&
@@ -61,7 +63,9 @@ export const NetworkDisplay = () => {
           flex items-center justify-center bg-white md:justify-start
           shadow-none md:shadow-md rounded-md"
         >
-          <FTMLogo colors={{ primary: 'white', bg: '#7065F4' }} height={6} />
+          <div className="h-6 w-6">
+          { logoSwitcher(chain.symbol, { height: 6 }) }
+          </div>
           <p className={`
             font-bold
             text-left
@@ -88,7 +92,7 @@ export const AccountConnector = ({ setShow }: { setShow: (s: boolean) => void })
       : 'Connect Web3'
     ;
     return (
-      <StyledButton className="py-1 px-8 mx-0 md:mx-5
+      <StyledButton className="pt-1 mb-0 h-full px-8 mx-0 my-0 md:mx-5
         text-xs md:text-sm lg:text-base "
         onClick={() => {
         setShow(true)

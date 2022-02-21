@@ -1,20 +1,14 @@
-import { useNavigate } from "react-router-dom";
-import { USDCIcon } from "../../../assets/icons/logos";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { useAppSelector } from "../../../hooks";
 import { useApy } from "../../../hooks/useApy";
+import { useNavigateToVault } from "../../../hooks/useSelectedVault";
 import { Vault } from "../../../store/vault/Vault";
-import { setSelectedVault } from "../../../store/vault/vault.slice";
 import { prettyNumber } from "../../../utils";
+import { logoSwitcher } from "../../../utils/logos";
 import StyledButton from "../../UI/button";
 import { Divider } from "../../UI/divider";
 
 const VaultCardActions: React.FC<{ addr: string }> = ({ addr }) => {
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const selectVault = (vaultAddr: string): void => {
-      dispatch(setSelectedVault(vaultAddr));
-      navigate(`/vault/${vaultAddr}`);
-    };
+    const selectVault = useNavigateToVault()
     return (
         <section className="w-full relative">
             <span className="absolute -bottom-5 left-1/2 transform -translate-x-1/2">
@@ -34,7 +28,7 @@ const VaultCardHeader: React.FC<{ vault: Vault }> = ({ vault }) => {
         <section className="flex justify-between items-center w-full py-3 px-4">
             <div className="flex items-center">
                 <div className="h-8 w-8 mr-2">
-                    <USDCIcon colors={{ bg: '#7065F4', primary: 'white' }} />
+                    { logoSwitcher(vault.symbol) }
                 </div>
                 <p className="font-bold text-return-100">{vault.symbol}</p>
             </div>
@@ -69,10 +63,13 @@ const VaultCardContent: React.FC<{ vault: Vault }> = ({ vault }) => {
 
 
 const VaultCard: React.FC<{ vault: Vault }> = ({ vault }) => {
+    const selectVault = useNavigateToVault();
     return (
-        <div className="
+        <div 
+            onClick={() => selectVault(vault.address)}
+            className="
             hover:border-gradient p-[2px] bg-white shadow-md rounded-lg h-48 
-            flex flex-col items-center justify-between
+            flex flex-col items-center justify-between cursor-pointer
             ">
             <VaultCardHeader vault={vault} />
             <Divider />

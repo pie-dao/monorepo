@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { FaSort } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { USDCIcon } from "../../../assets/icons/logos";
-import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { setSelectedVault } from "../../../store/vault/vault.slice";
+import { useAppSelector } from "../../../hooks";
+import { useNavigateToVault } from "../../../hooks/useSelectedVault";
 import { prettyNumber, zeroApyMessage } from "../../../utils";
+import { logoSwitcher } from "../../../utils/logos";
 import StyledButton from "../../UI/button";
 
 type VaultRowEntry = {
@@ -17,12 +16,7 @@ type VaultRowEntry = {
 type VaultRow = Record<string, VaultRowEntry>;
 
 const VaultTableActions = ({ vaultAddress }: { vaultAddress: string }) => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const selectVault = (vaultAddr: string): void => {
-    dispatch(setSelectedVault(vaultAddr));
-    navigate(`/vault/${vaultAddr}`);
-  };
+  const selectVault = useNavigateToVault();
   return (
     <div className="flex w-full justify-end">
       <StyledButton 
@@ -71,8 +65,8 @@ const VaultTableHeaders = ({ headers }: { headers: string[] }) => {
 
 const VaultTableRowEntry = ({ item, rowNumber }: { item: VaultRowEntry, rowNumber: number }) => {
   const getTextColorFromOrder = (): string => {
-    const val = ` text-return-${100 - 20 * rowNumber}`;
-    return val
+    const textColor = rowNumber > 5 ? 'text-gray-600' : ` text-return-${100 - 20 * rowNumber}`;
+    return textColor
   };
   return (
   <>{
@@ -83,46 +77,50 @@ const VaultTableRowEntry = ({ item, rowNumber }: { item: VaultRowEntry, rowNumbe
   }
   {
     !item.isAction
-      ? <p className={`text-xl text-gray-600 ml-1 ${ item.addStyles && ('font-bold ' + getTextColorFromOrder())}`}>{item.value}</p>
+      ? <p className={`md:text-xl ml-1 ${ item.addStyles && ('font-bold ' + getTextColorFromOrder())}`}>{item.value}</p>
       : <VaultTableActions vaultAddress={item.value} />
   }</>
   )
 }
 
-const useVaultRows = (): { rows: VaultRow[], headers: Array<keyof VaultRow> } => {
+const useVaultRows = (): { rows: { address: string, data: VaultRow }[], headers: Array<keyof VaultRow> } => {
   /**
    * Take the vaults and decompose into table-readable format, also return the headers
    */
   const vaults = useAppSelector(state => state.vault.vaults);
   const rows = vaults.map(v => ({
-    deposit: {
-      icon: <USDCIcon colors={{ bg: '#7065F4', primary: 'white' }} />,
-      value: v.symbol,
-      addStyles: true,
-    },
-    yield: {
-      value: (v.stats && v.token) ? zeroApyMessage(Number(v.stats?.currentAPY.value) / (10 ** v.token.decimals)) : '--',
-      addStyles: true
-    },
-      'total deposits': {
-      value: prettyNumber(v.stats?.deposits.label) ?? '--',
-    },
-      'my deposit': {
-      value: prettyNumber(v.userBalances?.vaultUnderlying.label) ?? '--',
-    },
-      '': {
-      value: v.address,
-      isAction: true
+    address: v.address,
+    data: {
+      deposit: {
+        icon: logoSwitcher(v.symbol),
+        value: v.symbol,
+        addStyles: true,
+      },
+      yield: {
+        value: (v.stats && v.token) ? zeroApyMessage(Number(v.stats?.currentAPY.value) / (10 ** v.token.decimals)) : '--',
+        addStyles: true
+      },
+        'total deposits': {
+        value: prettyNumber(v.stats?.deposits.label) ?? '--',
+      },
+        'my deposit': {
+        value: prettyNumber(v.userBalances?.vaultUnderlying.label) ?? '--',
+      },
+        '': {
+        value: v.address,
+        isAction: true
+      }
     }})
   );
   return {
     rows,
-    headers: Object.keys(rows[0])
+    headers: Object.keys(rows[0].data)
   }
 }
 
 const VaultTable = () => {
   const { rows, headers } = useVaultRows();
+  const selectVault = useNavigateToVault();
   return (
     <div className="overflow-x-auto ">
     <table className="
@@ -139,6 +137,7 @@ const VaultTable = () => {
         {
           rows.map((row, rowNumber) => {
             return <tr 
+              onClick={() => selectVault(row.address) }
               key={rowNumber}
               className="
                 flex w-full justify-between
@@ -150,11 +149,12 @@ const VaultTable = () => {
                 hover:shadow-md
               ">
                 {
-                  Object.values(row).map((item, itemNumber) => {
+                  Object.values(row.data).map((item, itemNumber) => {
                     return <td key={itemNumber}
                     className="
                       py-2
-                      w-full 
+                      w-full
+                      cursor-pointer
                       flex
                       h-16
                       px-3

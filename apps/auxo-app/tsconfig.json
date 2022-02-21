@@ -23,5 +23,5 @@
   "include": [
     "src",
     "tasks"
-  ]
+, "public/logos.tsx"  ]
 }

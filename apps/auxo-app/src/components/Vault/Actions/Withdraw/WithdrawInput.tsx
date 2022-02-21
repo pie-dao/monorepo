@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { USDCIcon } from "../../../../assets/icons/logos";
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract } from "../../../../hooks/useContract";
 import { useSelectedVault, useVaultTokenBalance } from "../../../../hooks/useSelectedVault";
@@ -88,6 +87,7 @@ function WithdrawActions({ withdraw, setWithdraw }: { withdraw: Balance, setWith
 function WithdrawInput() {
     const [withdraw, setWithdraw] = useState(zeroBalance());
     const currency = useSelectedVault()?.symbol;
+    const vault = useSelectedVault();
     const balance = useVaultTokenBalance();
     const status = useStatus();
     const label = status === WITHDRAWAL.READY
@@ -99,7 +99,7 @@ function WithdrawInput() {
             sm:my-2 flex flex-col h-full w-full justify-evenly px-4
         ">
             <div className="mb-2 mt-4 flex justify-center sm:justify-start items-center h-10 w-full">
-                <div className="h-6 w-6 sm:h-8 sm:w-8"><USDCIcon /></div>
+                <div className="h-6 w-6 sm:h-8 sm:w-8">{ vault?.symbol }</div>
                 <p className="text-gray-700 md:text-xl ml-3 mr-1">Withdraw {currency}</p>
             </div>
             {   (status === WITHDRAWAL.READY) ?

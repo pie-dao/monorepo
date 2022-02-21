@@ -113,7 +113,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
           <img src={veDoughLogo} alt="veDough-holders-only"/>
         </div>
       }
-      <p className="my-3 text-xl text-gray-700">{isDepositor ? (proof ? verifiedString : needsToVerifyString) : notAuthorizedString}</p>
+      <p className="my-3 text-lg text-gray-700">{isDepositor ? (proof ? verifiedString : needsToVerifyString) : notAuthorizedString}</p>
       {
         isDepositor && <FaCheckCircle size={28} className="fill-baby-blue-dark" />
       }

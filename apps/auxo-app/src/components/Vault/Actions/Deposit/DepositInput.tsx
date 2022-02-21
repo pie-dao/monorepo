@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
-import { USDCIcon } from "../../../../assets/icons/logos";
 import { useMaxDeposit } from "../../../../hooks/useMaxDeposit";
 import { useApprovalLimit, useSelectedVault, useUserTokenBalance } from "../../../../hooks/useSelectedVault";
 import { Balance } from "../../../../store/vault/Vault";
@@ -17,6 +16,7 @@ import { useWeb3React } from "@web3-react/core";
 import { prettyNumber } from "../../../../utils";
 import { SetStateType } from "../../../../types/utilities";
 import { useEffect } from "react";
+import { logoSwitcher } from "../../../../utils/logos";
 
 function ApproveDepositButton({ deposit }: { deposit: Balance }) {
     const [approving, setApproving] = useState(false);
@@ -150,6 +150,7 @@ function DepositActions({ deposit, setDeposit }: { deposit: Balance, setDeposit:
 
 function DepositInput() {
     const [deposit, setDeposit] = useState(zeroBalance());
+    const vault = useSelectedVault();
     const max = useMaxDeposit();
     const currency = useSelectedVault()?.symbol;
     const balance = useUserTokenBalance();
@@ -160,7 +161,7 @@ function DepositInput() {
             sm:my-2 flex flex-col h-full w-full justify-evenly px-4
         ">
             <div className="mb-2 mt-4 flex justify-center sm:justify-start items-center h-10 w-full">
-                <div className="h-6 w-6 sm:h-8 sm:w-8 mr-3"><USDCIcon /></div>
+                <div className="h-6 w-6 sm:h-8 sm:w-8 mr-3">{ logoSwitcher(vault?.symbol) }</div>
                 <p className="text-gray-700 md:text-xl">Deposit in {currency}</p>
             </div>
             <div className="my-1">
