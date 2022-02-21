@@ -12,7 +12,7 @@ import * as erc20byte32 from './abis/erc20byte32.json';
 import { PieHistoryDocument, PieHistoryEntity } from './entities/pie-history.entity';
 import { BigNumber } from 'bignumber.js';
 import { HttpService } from '@nestjs/axios';
-import { Command, Console } from 'nestjs-console';
+import { Command, Console, createSpinner } from 'nestjs-console';
 import * as lodash from 'lodash';
 
 @Injectable()
@@ -93,53 +93,152 @@ export class PiesService {
     @InjectModel(CgCoinEntity.name) private cgCoinModel: Model<CgCoinDocument>
   ) {}
 
-  @Cron('0 * * * *')
   @Command({
-    command: 'update-cg-coins',
-    description: 'Update Coingecko Coins.'
+    command: 'init-cg-coins',
+    description: 'Init Coingecko Coins, back to 90 days before now.'
   })
-  async updateCgCoins(test?: boolean): Promise<boolean> {
-    // instance of the pie-getter contract...
-    let timestamp = Date.now();
-    const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
-    this.logger.debug(`updateCgCoins is running...`);
-
-    // retrieving all pies from database...
-    let pies = await this.getPies(undefined, undefined, test);
-    let coingeckoCoinsPromises = [];
-
-    pies.forEach(pie => {
-      if(pie.coingecko_id) {
-        coingeckoCoinsPromises.push(this.fetchCgCoins(pie.coingecko_id, timestamp));
-      }
-    });
-
+  async initCgCoins(test?: boolean): Promise<boolean> {
     try {
-      let responses = await Promise.allSettled(coingeckoCoinsPromises);
-      responses.forEach((response: any) => {
-        console.log(response);
+      let spinner = createSpinner();  
+      spinner.start(`initCgCoins is running...`);
+  
+      // retrieving all pies from database...
+      let pies = await this.getPies(undefined, undefined, test);
+      let coingeckoCoinsPromises = [];
+      let coingeckoChartsPromises = [];
+      // fetching all the coins from coingecko, to be use as a model to refill...
+      pies.forEach(pie => {
+        if(pie.coingecko_id) {
+          coingeckoCoinsPromises.push(this.fetchCgCoins(pie.coingecko_id));
+          coingeckoChartsPromises.push(this.fetchCgChart(pie.coingecko_id));
+        }
+      });
+
+      let coingeckoCoinsResponses = await Promise.allSettled(coingeckoCoinsPromises);
+      spinner.text = `coins model have been fetched from coingecko...`;
+      let coingeckoChartsResponses = await Promise.allSettled(coingeckoChartsPromises);
+      spinner.text = `coins charts have been fetched from coingecko...`;
+      let coinsDbPromises = [];
+
+      coingeckoChartsResponses.forEach((response: any) => {
+        let coinModel = <any> coingeckoCoinsResponses.find((el: any) => response.value.id == el.value.id);
+
+        delete(coinModel.value._id);
+        coinModel.value.sentiment_votes_up_percentage = null;
+        coinModel.value.sentiment_votes_down_percentage = null;
+        coinModel.value.market_cap_rank = null;
+        coinModel.value.coingecko_rank = null;
+        coinModel.value.coingecko_score = null;
+        coinModel.value.developer_score = null;
+        coinModel.value.community_score = null;
+        coinModel.value.liquidity_score = null;
+        coinModel.value.public_interest_score = null;
+        coinModel.value.market_data = {
+          current_price: {usd: null},
+          market_cap: {usd: null},
+          total_volume: {usd: null}
+        };
+        coinModel.value.community_data = null;
+        coinModel.value.public_interest_stats = null;
+        coinModel.value.status_updates = null;
+        coinModel.value.last_updated = null;
+        coinModel.value.tickers = null;
+
+        spinner.text = `refilling 90 days history for ${response.value.id}...`;
+        response.value.chart.prices.forEach((price, index) => {
+          let coin = Object.assign({}, coinModel.value);
+          let marketCap = response.value.chart.market_caps[index];
+          let totalVolume = response.value.chart.total_volumes[index];
+
+          coin.timestamp = lodash.get(price, 0);
+          coin.market_data.current_price.usd = lodash.get(price, 1);
+          coin.market_data.market_cap.usd = lodash.get(marketCap, 1);
+          coin.market_data.total_volume.usd = lodash.get(totalVolume, 1);
+
+          coinsDbPromises.push(this.saveCgCoins(coin, coin.timestamp));
+        });
+      });
+
+      spinner.text = `Saving all the items into db...`;
+      let coinsDbResponses = await Promise.allSettled(coinsDbPromises);
+      spinner.succeed(`All the latest 90 days histories have been saved into db correctly`);
+      coinsDbResponses.forEach((response: any) => {
+        this.logger.debug(`${response.value.coin.symbol} has been fetched and saved into db correctly.`);
       });
     } catch(error) {
-      console.error(error);
+      this.logger.error(error.message);
     }
 
     return true;
   }
 
-  private async fetchCgCoins(coingeckoId: string, timestamp: number): Promise<CgCoinDocument> {
+  @Cron('0 * * * *')
+  async updateCgCoins(test?: boolean): Promise<boolean> {
+    try {
+      let timestamp = Date.now();
+      this.logger.debug(`updateCgCoins is running...`);
+  
+      // retrieving all pies from database...
+      let pies = await this.getPies(undefined, undefined, test);
+      let coingeckoCoinsPromises = [];
+  
+      pies.forEach(pie => {
+        if(pie.coingecko_id) {
+          coingeckoCoinsPromises.push(this.fetchCgCoins(pie.coingecko_id));
+        }
+      });
+
+      let coingeckoCoinsResponses = await Promise.allSettled(coingeckoCoinsPromises);
+      let coinsDbPromises = [];
+      coingeckoCoinsResponses.forEach((response: any) => {
+        coinsDbPromises.push(this.saveCgCoins(response.value, timestamp))
+      });
+
+      let coinsDbResponses = await Promise.allSettled(coinsDbPromises);
+      coinsDbResponses.forEach((response: any) => {
+        this.logger.debug(`${response.value.coin.symbol} has been fetched and saved into db correctly.`);
+      });
+    } catch(error) {
+      this.logger.error(error.message);
+    }
+
+    return true;
+  }
+
+  private async saveCgCoins(coingeckoCoin: any, timestamp: number): Promise<CgCoinDocument> {
     return new Promise(async(resolve, reject) => {
       try {
-        let url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}?localization=false&developer_data=false`;
-  
-        // fetching the prices for each underlying contract...
-        let response = await this.httpService.get(url).toPromise();
-        let coin = new this.cgCoinModel({timestamp: timestamp, coin: response.data});
+        let coin = new this.cgCoinModel({timestamp: timestamp, coin: coingeckoCoin});
         let coinDocument = await coin.save();
         resolve(coinDocument);
       } catch(error) {
         reject(error);
       }
     });
+  }
+
+  private async fetchCgCoins(coingeckoId: string): Promise<any> {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}?localization=false&developer_data=false`;
+        let response = await this.httpService.get(url).toPromise();
+        resolve(response.data);
+      } catch(error) {
+        reject(error);
+      }
+    });
+  }
+
+  private async fetchCgChart(coingeckoId: string): Promise<any> {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}/market_chart?vs_currency=usd&days=90&interval=hourly`;
+        let response = await this.httpService.get(url).toPromise();
+        resolve({id: coingeckoId, chart: response.data});
+      } catch(error) {
+        reject(error);
+      }
+    }); 
   }
 
   getCgCoin(address: string, from?: string, to?: string, order?: 'descending' | 'ascending', limit?: number): Promise<CgCoinEntity[]> {

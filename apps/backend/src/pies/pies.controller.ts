@@ -14,14 +14,14 @@ import { CgCoinEntity } from './entities/cg_coin.entity';
 export class PiesController {
   constructor(private readonly piesService: PiesService) {}
 
-  // @Get('updatenavs')
-  // async updateNavs(): Promise<boolean> {
-  //   try {
-  //     return await this.piesService.updateNAVs();
-  //   } catch(error) {
-  //     throw new NotFoundException(error);
-  //   }
-  // }
+  @Get('updateCgCoins')
+  async updateCgCoins(): Promise<boolean> {
+    try {
+      return await this.piesService.updateCgCoins();
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }
 
   @ApiOkResponse({type: PieEntity, isArray: true})
   @ApiNotFoundResponse()
