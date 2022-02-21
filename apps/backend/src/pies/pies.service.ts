@@ -14,6 +14,7 @@ import { BigNumber } from 'bignumber.js';
 import { HttpService } from '@nestjs/axios';
 import { Command, Console, createSpinner } from 'nestjs-console';
 import * as lodash from 'lodash';
+import * as moment from 'moment';
 
 @Injectable()
 @Console()
@@ -98,8 +99,9 @@ export class PiesService {
     description: 'Init Coingecko Coins, back to 90 days before now.'
   })
   async initCgCoins(test?: boolean): Promise<boolean> {
+    let spinner = createSpinner();  
+    
     try {
-      let spinner = createSpinner();  
       spinner.start(`initCgCoins is running...`);
   
       // retrieving all pies from database...
@@ -123,59 +125,54 @@ export class PiesService {
       coingeckoChartsResponses.forEach((response: any) => {
         let coinModel = <any> coingeckoCoinsResponses.find((el: any) => response.value.id == el.value.id);
 
-        delete(coinModel.value._id);
-        coinModel.value.sentiment_votes_up_percentage = null;
-        coinModel.value.sentiment_votes_down_percentage = null;
-        coinModel.value.market_cap_rank = null;
-        coinModel.value.coingecko_rank = null;
-        coinModel.value.coingecko_score = null;
-        coinModel.value.developer_score = null;
-        coinModel.value.community_score = null;
-        coinModel.value.liquidity_score = null;
-        coinModel.value.public_interest_score = null;
-        coinModel.value.market_data = {
-          current_price: {usd: null},
-          market_cap: {usd: null},
-          total_volume: {usd: null}
-        };
-        coinModel.value.community_data = null;
-        coinModel.value.public_interest_stats = null;
-        coinModel.value.status_updates = null;
-        coinModel.value.last_updated = null;
-        coinModel.value.tickers = null;
-
         spinner.text = `refilling 90 days history for ${response.value.id}...`;
         response.value.chart.prices.forEach((price, index) => {
-          let coin = Object.assign({}, coinModel.value);
+
+          let currentPrice = response.value.chart.prices[index];
           let marketCap = response.value.chart.market_caps[index];
           let totalVolume = response.value.chart.total_volumes[index];
+          let timestamp = lodash.get(currentPrice, 0);
 
-          coin.timestamp = lodash.get(price, 0);
-          coin.market_data.current_price.usd = lodash.get(price, 1);
-          coin.market_data.market_cap.usd = lodash.get(marketCap, 1);
-          coin.market_data.total_volume.usd = lodash.get(totalVolume, 1);
-
-          coinsDbPromises.push(this.saveCgCoins(coin, coin.timestamp));
+          coinsDbPromises.push(new this.cgCoinModel({
+            timestamp: timestamp, 
+            coin: {
+              id: coinModel.value.id,
+              symbol: coinModel.value.symbol,
+              name: coinModel.value.name,
+              asset_platform_id: coinModel.value.asset_platform_id,
+              platforms: coinModel.value.platforms,
+              categories: coinModel.value.categories,
+              links: coinModel.value.links,
+              image: coinModel.value.image,
+              contract_address: coinModel.value.contract_address,
+              market_data: {
+                current_price: {usd: lodash.get(currentPrice, 1)},
+                market_cap: {usd: lodash.get(marketCap, 1)},
+                total_volume: {usd: lodash.get(totalVolume, 1)}
+              }
+            }}));
         });
       });
 
-      spinner.text = `Saving all the items into db...`;
-      let coinsDbResponses = await Promise.allSettled(coinsDbPromises);
-      spinner.succeed(`All the latest 90 days histories have been saved into db correctly`);
-      coinsDbResponses.forEach((response: any) => {
-        this.logger.debug(`${response.value.coin.symbol} has been fetched and saved into db correctly.`);
-      });
+      try {
+        spinner.text = `Saving all the items into db...`;
+        let result = await this.cgCoinModel.collection.insertMany(coinsDbPromises);
+        spinner.succeed(`All the latest 90 days histories have been saved into db correctly`);
+        return true;
+      } catch(error) {
+        spinner.fail(error.message);
+        return false;
+      }
     } catch(error) {
-      this.logger.error(error.message);
+      spinner.fail(error.message);
+      return false;
     }
-
-    return true;
   }
 
   @Cron('0 * * * *')
   async updateCgCoins(test?: boolean): Promise<boolean> {
     try {
-      let timestamp = Date.now();
+      let timestamp = moment().unix() * 1000;
       this.logger.debug(`updateCgCoins is running...`);
   
       // retrieving all pies from database...
@@ -267,6 +264,32 @@ export class PiesService {
         .lean();
   
         resolve(cgCoinEntity);        
+      } catch(error) {
+        reject(error);
+      }
+    });
+  }
+
+  getMarketChart(address: string, days: number): 
+    Promise<{prices: Array<Array<Number>>, market_caps: Array<Array<Number>>, total_volumes: Array<Array<Number>>}> {
+    return new Promise(async(resolve, reject) => {
+      try {
+        let from = moment().subtract(days, 'days').unix() * 1000;
+        let coinEntries = await this.getCgCoin(address, from.toString(), null, 'descending');
+        
+        let marketCharts = {
+          prices: [],
+          market_caps: [],
+          total_volumes: []
+        };
+        
+        coinEntries.forEach((coinEntry: any) => {
+          marketCharts.prices.push([Number(coinEntry.timestamp), coinEntry.coin.market_data.current_price.usd]);
+          marketCharts.market_caps.push([Number(coinEntry.timestamp), coinEntry.coin.market_data.market_cap.usd]);
+          marketCharts.total_volumes.push([Number(coinEntry.timestamp), coinEntry.coin.market_data.total_volume.usd]);
+        });
+
+        resolve(marketCharts);
       } catch(error) {
         reject(error);
       }

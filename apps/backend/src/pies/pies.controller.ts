@@ -14,15 +14,6 @@ import { CgCoinEntity } from './entities/cg_coin.entity';
 export class PiesController {
   constructor(private readonly piesService: PiesService) {}
 
-  @Get('updateCgCoins')
-  async updateCgCoins(): Promise<boolean> {
-    try {
-      return await this.piesService.updateCgCoins();
-    } catch(error) {
-      throw new NotFoundException(error);
-    }
-  }
-
   @ApiOkResponse({type: PieEntity, isArray: true})
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
@@ -36,6 +27,27 @@ export class PiesController {
       throw new NotFoundException(error);
     }
   };
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({name: 'address', required: true})
+  @ApiQuery({name: 'days', required: false})
+  @Get('market_chart')
+  async getMarketChart(
+    @Query('address') address: string,
+    @Query('days') days?: number
+  ): Promise<any> {
+    try {
+      if(days === undefined) {
+        days = 90;
+      }
+
+      return await this.piesService.getMarketChart(address, days);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }; 
 
   @ApiOkResponse({type: PieHistoryEntity, isArray: true})
   @ApiNotFoundResponse()
