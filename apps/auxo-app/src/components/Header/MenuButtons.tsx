@@ -1,5 +1,4 @@
 import { useWeb3React } from "@web3-react/core";
-import { FTMLogo } from "../../assets/icons/logos";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setAlert, setAlertDisplay } from "../../store/app/app.slice";
 import StyledButton from "../UI/button";

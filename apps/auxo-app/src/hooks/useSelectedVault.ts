@@ -15,8 +15,8 @@ export const useNavigateToVault = () => {
     dispatch(setSelectedVault(addr));
     navigate(`/vault/${addr}`);
   };
-  return selectVault
-}
+  return selectVault;
+};
 
 export const useSelectedVault = (): Vault | undefined =>
   useProxySelector((state) =>
