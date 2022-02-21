@@ -2,6 +2,7 @@
 import { useMemo, useCallback } from "react";
 import { LinePath, Line, Bar } from "@visx/shape";
 import { curveMonotoneX } from "@visx/curve";
+import { GridRows, GridColumns } from "@visx/grid";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { withTooltip } from "@visx/tooltip";
 import { LinearGradient } from "@visx/gradient";
@@ -16,21 +17,20 @@ export const axisColor = "#9388DB";
 
 const getDate = (d) => new Date(d[0]);
 const getNavValue = (d) => d[1];
-const getNavDiffPrice = (d) => d[2];
 const bisectDate = bisector((d) => new Date(d[0])).left;
 
-const NavChart = ({
+const PlayChart = ({
   lastWeekMeanNavData,
   width,
   height,
   margin = { top: 30, right: 0, bottom: 0, left: 0 },
   showTooltip,
+  hideTooltip,
   tooltipData,
   tooltipTop = 0,
   tooltipLeft = 0,
   setNavDate,
   setNavPrice,
-  setNavDiffPrice,
 }) => {
   if (width < 10) return null;
   const innerWidth = width - margin.left - margin.right;
@@ -77,7 +77,6 @@ const NavChart = ({
       });
       setNavPrice(getNavValue(d));
       setNavDate(getDate(d));
-      setNavDiffPrice(getNavDiffPrice(d));
     },
     [
       dateScale,
@@ -86,7 +85,6 @@ const NavChart = ({
       navValueScale,
       setNavPrice,
       setNavDate,
-      setNavDiffPrice,
     ]
   );
 
@@ -155,4 +153,4 @@ const NavChart = ({
   );
 };
 
-export default withTooltip(NavChart);
+export default withTooltip(PlayChart);
