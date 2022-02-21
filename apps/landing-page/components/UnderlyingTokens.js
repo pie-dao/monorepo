@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import priceFormatter from "../utils/priceFormatter";
 import Image from "next/image";
 import tokenImages from "../public/assets";
 import playLogo from "../public/play_icon.svg";
@@ -7,16 +8,16 @@ import gradientPicker from "../utils/gradientPicker";
 import styles from "../styles/UnderlyingTokens.module.scss";
 import content from "../content/en_EN.json";
 
-const ScrollingBoxes = ({ underlyingAssets }) => {
+const UnderlyingTokens = ({ underlyingData }) => {
   const sortedAssets = useMemo(() => {
-    return underlyingAssets.sort((a, b) => {
-      return b.pieDAOMarketCapPercentage - a.pieDAOMarketCapPercentage;
+    return underlyingData.underlyingAssets.sort((a, b) => {
+      return b.marketCapUSD - a.marketCapUSD;
     });
-  }, [underlyingAssets]);
+  }, [underlyingData]);
 
-  const relativePercentage = (underlyingPercentage) => {
-    const maxPercentage = sortedAssets[0].pieDAOMarketCapPercentage;
-    return ((underlyingPercentage * 100) / maxPercentage).toFixed(2);
+  const relativePercentage = (marketCapUSD) => {
+    const maxPercentage = sortedAssets[0].marketCapUSD;
+    return ((marketCapUSD * 100) / maxPercentage).toFixed(2);
   };
 
   const barColor = (ratio) => {
@@ -53,50 +54,47 @@ const ScrollingBoxes = ({ underlyingAssets }) => {
           }}
           className={`mx-auto flex ${styles.underlyingTokensSlider}`}
         >
-          {sortedAssets.map(
-            ({ address, symbol, token_info, pieDAOMarketCapPercentage }) => {
-              const imageObj = tokenImages.find(
-                (token) => token.name === symbol
-              );
-              const percentage = (+pieDAOMarketCapPercentage).toFixed(2);
-              const relPerc = relativePercentage(percentage);
-              return (
-                <SwiperSlide key={address} className="w-[150px] mt-6">
-                  {({ isActive }) => (
-                    <div
-                      className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
-                        !isActive && "opacity-75 md:opacity-100"
-                      }`}
-                    >
-                      <div className="absolute -top-6 left-3">
-                        <Image src={imageObj.image} alt={symbol} />
-                      </div>
-                      <div className="w-full relative">
-                        <p className="w-full text-md pt-8 pb-6">
-                          {percentage}%
-                        </p>
-                        <p className="text-xl font-extrabold">{symbol}</p>
-                        <p className="text-xl font-bold text-highlight">
-                          {token_info.usd.toFixed(2)}$
-                        </p>
-                        <div
-                          className={`bg-blue-600 rounded-full w-2.5 absolute bottom-0 right-0`}
-                          style={{
-                            height: `${relPerc}%`,
-                            backgroundColor: `${barColor(relPerc)}`,
-                          }}
-                        ></div>
-                      </div>
+          {sortedAssets.map(({ address, symbol, usdPrice, marketCapUSD }) => {
+            const imageObj = tokenImages.find((token) => token.name === symbol);
+            const percentage = (
+              (marketCapUSD * 100) /
+              underlyingData.marketCapUSD
+            ).toFixed(2);
+            const relPerc = relativePercentage(marketCapUSD);
+            return (
+              <SwiperSlide key={address} className="w-[150px] mt-6">
+                {({ isActive }) => (
+                  <div
+                    className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
+                      !isActive && "opacity-75 md:opacity-100"
+                    }`}
+                  >
+                    <div className="absolute -top-6 left-3">
+                      <Image src={imageObj.image} alt={symbol} />
                     </div>
-                  )}
-                </SwiperSlide>
-              );
-            }
-          )}
+                    <div className="w-full relative">
+                      <p className="w-full text-md pt-8 pb-6">{percentage}%</p>
+                      <p className="text-xl font-extrabold">{symbol}</p>
+                      <p className="text-xl font-bold text-highlight">
+                        {priceFormatter.format(usdPrice)}
+                      </p>
+                      <div
+                        className={`bg-blue-600 rounded-full w-2.5 absolute bottom-0 right-0`}
+                        style={{
+                          height: `${relPerc}%`,
+                          backgroundColor: `${barColor(relPerc)}`,
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+                )}
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
       </div>
     </section>
   );
 };
 
-export default ScrollingBoxes;
+export default UnderlyingTokens;

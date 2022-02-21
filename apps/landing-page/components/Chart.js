@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import ParentSizeModern from "@visx/responsive/lib/components/ParentSizeModern";
 import SubCharts from "./SubCharts";
@@ -13,11 +13,31 @@ import PlayChart from "./PlayChart";
 import PriceChange from "./PriceChange";
 import content from "../content/en_EN.json";
 
-const Chart = ({ pieInfo, pieHistory, nav }) => {
+const getDate = (d) => new Date(d[0]);
+const getPieValue = (d) => d[1];
+
+const Chart = ({ play, playTickers, underlyingData }) => {
   const [chartTimeRange, setChartTimeRange] = useState("1m");
 
+  const today = useMemo(() => new Date(), []);
+  const threeMonths = useMemo(
+    () => new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000),
+    [today]
+  );
+
+  const lastThreeMonthsPrices = playTickers.prices.filter(
+    (d) => getDate(d) > threeMonths
+  );
+
+  const priceDiffThreeMonths =
+    getPieValue(lastThreeMonthsPrices[lastThreeMonthsPrices.length - 1]) -
+    getPieValue(lastThreeMonthsPrices[0]);
+
+  const priceDiffThreeMonthsPercentage =
+    (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100;
+
   const copyOnClipboard = () => {
-    navigator.clipboard.writeText(pieInfo.address);
+    navigator.clipboard.writeText(play.contract_address);
   };
 
   const addPlayToMetamask = async () => {
@@ -27,8 +47,8 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
         params: {
           type: "ERC20",
           options: {
-            address: pieInfo.address,
-            symbol: pieInfo.symbol,
+            address: play.contract_address,
+            symbol: play.symbol,
             decimals: 18,
             image: `https://assets.coingecko.com/coins/images/14590/small/PLAY.png`,
           },
@@ -50,7 +70,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
           >
             <Image src={ethIcon} alt="Ethereum Icon" />
             <p className="text-light_blue text-xs	md:text-sm relative top-0.5 ml-1">
-              {pieInfo.address}
+              {play.contract_address}
             </p>
           </a>
         </div>
@@ -129,7 +149,7 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
         <ParentSizeModern>
           {({ width, height }) => (
             <PlayChart
-              prices={pieHistory.ticks.prices}
+              prices={playTickers.prices}
               width={width}
               height={height}
               chartTimeRange={chartTimeRange}
@@ -139,20 +159,29 @@ const Chart = ({ pieInfo, pieHistory, nav }) => {
       </div>
       <div className="hidden md:flex text-deep_purple mb-2 gap-x-4">
         <p>
-          1 Day <PriceChange priceChangeUsd={-10.3} />
+          {content.chart.day}{" "}
+          <PriceChange
+            priceChange={play.market_data.price_change_percentage_24h}
+          />
         </p>
         <p>
-          1 Month <PriceChange priceChangeUsd={40} />
+          {content.chart.month}{" "}
+          <PriceChange
+            priceChange={play.market_data.price_change_percentage_30d}
+          />
         </p>
         <p>
-          3 Months <PriceChange priceChangeUsd={50} />
-        </p>
-        <p>
-          1 Year <PriceChange priceChangeUsd={190} />
+          {content.chart.three_months}{" "}
+          <PriceChange priceChange={priceDiffThreeMonthsPercentage} />
         </p>
       </div>
       <div className="w-full border-b border-highlight mb-10"></div>
-      <SubCharts pie={pieHistory} nav={nav} />
+      <SubCharts
+        marketCap={playTickers.market_caps}
+        underlyingData={underlyingData}
+        play={play}
+        playPrices={playTickers.prices}
+      />
       <div className="container mx-auto px-6 mb-12">
         <p className="text-center uppercase text-sm text-deep_purple mb-4">
           {content.chart.check}

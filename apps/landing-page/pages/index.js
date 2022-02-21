@@ -1,6 +1,7 @@
 import Cookies from "cookies";
-import getPie from "./api/pie";
-import getNav from "./api/nav";
+import getPlayData from "./api/getPlayData";
+import getPlayTickers from "./api/getPlayTickers";
+import getPieHistory from "./api/getPieHistory";
 import Hero from "../components/Hero";
 import Metaverse from "../components/Metaverse";
 import ScrollingBoxes from "../components/ScrollingBoxes";
@@ -15,50 +16,52 @@ import Chart from "../components/Chart";
 import posts from "../content/twitterPosts.json";
 
 export async function getServerSideProps({ req, res }) {
-  const playAddress = "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4";
   const morePies = [
     "0x8d1ce361eb68e9e05573443c407d4a3bed23b033",
     "0xe4f726adc8e89c6a6017f01eada77865db22da14",
   ];
-
-  const playData = await getPie(playAddress);
-  const morePiesData = await Promise.all(
-    morePies.map(async (pieAddress) => await getNav(pieAddress))
+  const play = await getPlayData();
+  const playTickers = await getPlayTickers(30);
+  const underlyingData = await getPieHistory(
+    "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
   );
 
   const cookies = new Cookies(req, res);
   const showCookiePolicy = cookies.get("cookiePolicy") !== "accepted";
-
   return {
     props: {
-      playData,
-      morePiesData,
+      play,
+      underlyingData,
       showCookiePolicy,
+      playTickers,
     },
   };
 }
 
-export default function Home({ playData, morePiesData }) {
-  const { pie: pieHistory, underlyingAssets, nav } = playData.history[0];
-  const { pie: pieInfo } = playData;
+export default function Home({ play, underlyingData, playTickers }) {
+  const { market_data } = play;
+  const underlyingAssetsLatestHistory =
+    underlyingData[underlyingData.length - 1];
   return (
     <div className="text-white">
-      <Hero actualPrice={pieHistory.usd} />
-      <PlayBar pieHistory={pieHistory} />
+      <Hero actualPrice={market_data.current_price.usd} />
+      <PlayBar
+        actualPrice={market_data.current_price.usd}
+        priceChange={market_data.price_change_percentage_24h}
+      />
       <Metaverse />
       <ScrollingBoxes />
       <Chart
-        play={playData}
-        pieInfo={pieInfo}
-        pieHistory={pieHistory}
-        nav={nav}
+        play={play}
+        playTickers={playTickers}
+        underlyingData={underlyingData}
       />
-      <UnderlyingTokens underlyingAssets={underlyingAssets} />
+      <UnderlyingTokens underlyingData={underlyingAssetsLatestHistory} />
       <Methodology />
       <Roi />
       <AboutUsTwitter twitterPosts={posts} />
       <Ovens />
-      <ExploreProducts pies={morePiesData} />
+      {/* <ExploreProducts pies={morePiesHistory} /> */}
     </div>
   );
 }

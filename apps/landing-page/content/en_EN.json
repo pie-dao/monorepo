@@ -247,6 +247,7 @@
     "day": "1 Day",
     "week": "1 Week",
     "month": "1 Month",
+    "three_months": "3 Months",
     "fees": "Fees",
     "fees_percentage": "0.5%"
   },
@@ -254,6 +255,8 @@
     "nav": "NAV",
     "marketcap": "Market Cap",
     "inception": "Incpetion: 21/02/2021",
+    "premium": "Premium",
+    "discount": "Discount",
     "sentiment": {
       "title": "How do you feel about play?",
       "positive": "You are positive",
