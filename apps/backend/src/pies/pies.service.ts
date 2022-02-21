@@ -4,6 +4,7 @@ import { Cron } from '@nestjs/schedule';
 import { Model } from 'mongoose';
 import { PieDto } from './dto/pies.dto';
 import { PieDocument, PieEntity } from './entities/pie.entity';
+import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
 import { ethers } from 'ethers';
 import * as pieGetterABI from './abis/pieGetterABI.json';
 import * as erc20 from './abis/erc20.json';
@@ -11,10 +12,7 @@ import * as erc20byte32 from './abis/erc20byte32.json';
 import { PieHistoryDocument, PieHistoryEntity } from './entities/pie-history.entity';
 import { BigNumber } from 'bignumber.js';
 import { HttpService } from '@nestjs/axios';
-import * as moment from 'moment';
-import * as ethDater from 'ethereum-block-by-date';
-import { Command, Console, createSpinner } from 'nestjs-console';
-import * as fs from 'fs';
+import { Command, Console } from 'nestjs-console';
 import * as lodash from 'lodash';
 
 @Injectable()
@@ -131,266 +129,69 @@ export class PiesService {
     },
   ];
 
-  // 08/06/2021 - PieGetter Contract Creation Date
-  private startingBlockNumber = 12595880;
-
-  // 01/01/2022 - Custom Starting Date of your choise
-  // private startingBlockNumber = 13916166;
-
   private readonly logger = new Logger(PiesService.name);
-  private historySpin = createSpinner();
-  private historyToBeFetched = 0;
-  private historyResolved = 0;
-  private historyRejected = 0;
 
   constructor(
     private httpService: HttpService,
     @InjectModel(PieEntity.name) private pieModel: Model<PieDocument>,
-    @InjectModel(PieHistoryEntity.name) private pieHistoryModel: Model<PieHistoryDocument>
+    @InjectModel(PieHistoryEntity.name) private pieHistoryModel: Model<PieHistoryDocument>,
+    @InjectModel(CgCoinEntity.name) private cgCoinModel: Model<CgCoinDocument>
   ) {}
 
-  private async generateBackBlocks(provider: ethers.providers.JsonRpcProvider): Promise<Array<any>> {
-    let blockSpin = createSpinner();
+  @Cron('0 * * * *')
+  @Command({
+    command: 'update-cg-coins',
+    description: 'Update Coingecko Coins.'
+  })
+  async updateCgCoins(test?: boolean): Promise<boolean> {
+    // instance of the pie-getter contract...
+    let timestamp = Date.now();
+    const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
+    this.logger.debug(`updateCgCoins is running...`);
 
-    // retrieving the start block infos from the chain...
-    let startBlock = await provider.getBlock(this.startingBlockNumber);
-    // removing minutes and seconds, and add 1 hour, to start fresh and clean...
-    let startTimestamp = moment(startBlock.timestamp * 1000).minutes(0).seconds(0).add(1, 'hour');
-    // calculating latest hour timestamp, starting from current block from chain...
-    let endBlock = await provider.getBlock(await provider.getBlockNumber());
-    let endTimestamp = moment(endBlock.timestamp * 1000).minutes(0).seconds(0);
+    // retrieving all pies from database...
+    let pies = await this.getPies(undefined, undefined, test);
+    let coingeckoCoinsPromises = [];
 
-    blockSpin.info(`startBlock: ${startBlock.number} - startTimestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
-    blockSpin.info(`endBlock: ${endBlock.number} - endTimestamp: ${endTimestamp.toDate().getTime()} - ${endTimestamp.format('DD/MM/YYYY')}`);    
+    pies.forEach(pie => {
+      if(pie.coingecko_id) {
+        coingeckoCoinsPromises.push(this.fetchCgCoins(pie.coingecko_id, timestamp));
+      }
+    });
 
-    // iterating all over the timestamps in the range of interest...
-    let currentBlock = startBlock.number;
-    let backBlocks = [];
-
-    while(currentBlock < endBlock.number) {
-      backBlocks.push({
-        timestamp: startTimestamp.toDate().getTime(),
-        block: currentBlock
+    try {
+      let responses = await Promise.allSettled(coingeckoCoinsPromises);
+      responses.forEach((response: any) => {
+        console.log(response);
       });
-
-      startTimestamp = startTimestamp.add(1, 'hour');
-      currentBlock += 270;
+    } catch(error) {
+      console.error(error);
     }
 
-    blockSpin.info(`latest calculated block: ${currentBlock} - latest calculated timestamp: ${startTimestamp.toDate().getTime()} - ${startTimestamp.format('DD/MM/YYYY')}`);
-    blockSpin.succeed(`total blocks to be processed ${backBlocks.length}`);
-    return backBlocks;
+    return true;
   }
 
-  private async generatePieBackHistory(pie: PieDocument, backBlock: any, provider: ethers.providers.JsonRpcProvider): Promise<any> {
+  private async fetchCgCoins(coingeckoId: string, timestamp: number): Promise<CgCoinDocument> {
     return new Promise(async(resolve, reject) => {
       try {
-        const contract = new ethers.Contract(process.env.PIE_GETTER_CONTRACT, pieGetterABI, provider);
-        let pieContract = new ethers.Contract(pie.address, erc20, provider);        
-        let pieSupply = await pieContract.totalSupply({blockTag: backBlock.block});
-        let pieDecimals = await pieContract.decimals({blockTag: backBlock.block});
-        let piePrecision = new BigNumber(10).pow(pieDecimals);
-        let totalSupply = new BigNumber(pieSupply.toString()).div(piePrecision);
+        let url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}?localization=false&developer_data=false`;
   
-        // fetching the pie's market infos back in time...
-        let startDate = moment(backBlock.timestamp * 1000);
-        let marketHistory = null;
-
-        if(pie.coingecko_id) {
-          marketHistory = await this.httpService
-            .get(`https://api.coingecko.com/api/v3/coins/${pie.coingecko_id}/history?date=${startDate.format('DD-MM-YYYY')}&localization=false`).toPromise();          
-        }
-  
-        // creating the pieHistory Enity...
-        const history = new this.pieHistoryModel({timestamp: backBlock.timestamp * 1000, amount: 0, underlyingAssets: []});
-        let pieMarketCapUSD = new BigNumber(0);
-        // filling the values we've got so far...
-        history.totalSupply = pieSupply;
-        history.decimals = pieDecimals;        
-        // filling the pie details previously fetched...
-        history.pie = {
-          ticks: [], 
-          ...{
-            usd: marketHistory ? marketHistory.data.market_data.current_price.usd : 0,
-            usd_market_cap: marketHistory ? marketHistory.data.market_data.market_cap.usd : 0,
-            usd_24h_vol: marketHistory ? marketHistory.data.market_data.total_volume.usd : 0,
-            usd_24h_change: 0 // TODO: this can maybe be calculated somehow?
-          }
-        };
-        // trying to fetch the ticks, back in time...
-        try {
-          let endDate = startDate.subtract(1, 'months');
-          let ticksResponse = await this.httpService
-            .get(`https://api.coingecko.com/api/v3/coins/${pie.coingecko_id}/market_chart/range?vs_currency=usd&from=${endDate.unix()}&to=${backBlock.timestamp}`).toPromise();   
-          history.pie.ticks = ticksResponse.data;
-        } catch(error) {
-          this.logger.error(`${pie.name} - error fetching ticks: `, error.message);
-        }        
-  
-        /******************************************************************/
-        /*********************** Underlying Assets ************************/
-        // fetching all underlying assets for current pie...
-        let result = await contract.callStatic.getAssetsAndAmountsForAmount(pie.address, pieSupply, {blockTag: backBlock.block});
-        let underlyingAssets = lodash.get(result, 0);
-        let underylingTotals = lodash.get(result, 1);
-  
-        // calculating the underlyingAssets, populating it into the pieHistory
-        // and summing the total value of usd for each token price...
-        for(let i = 0; i < underlyingAssets.length; i++) {
-          let backDate = startDate.subtract(30, 'minutes');
-          let underlyingMarketDataResponse = await this.httpService
-          .get(`https://api.coingecko.com/api/v3/coins/ethereum/contract/${underlyingAssets[i]}/market_chart/range?vs_currency=usd&from=${backDate.unix()}&to=${backBlock.timestamp}`).toPromise();
-  
-          let tokenInfo = {
-            usd: lodash.get(underlyingMarketDataResponse.data.prices[underlyingMarketDataResponse.data.prices.length - 1], 1),
-            usd_market_cap: lodash.get(underlyingMarketDataResponse.data.market_caps[underlyingMarketDataResponse.data.market_caps.length - 1], 1),
-            usd_24h_vol: lodash.get(underlyingMarketDataResponse.data.total_volumes[underlyingMarketDataResponse.data.total_volumes.length - 1], 1),
-            usd_24h_change: 0 // TODO: this can maybe be calculated somehow?
-          };
-  
-          let underlyingContract = null;
-  
-          if(underlyingAssets[i].toLowerCase() !== '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2'.toLowerCase()) {
-            // instance of the underlying contract...
-            underlyingContract = new ethers.Contract(underlyingAssets[i], erc20, provider);
-          } else {
-            underlyingContract = new ethers.Contract(underlyingAssets[i], erc20byte32, provider);
-          }
-  
-          // fetching decimals and calculating precision for the underlyingAsset...
-          let decimals = await underlyingContract.decimals();
-          let symbol = await underlyingContract.symbol();
-          let precision = new BigNumber(10).pow(decimals);
-  
-          // calculating the value in usd for a given amount of underlyingAsset...
-          let marginalTVL = new BigNumber(underylingTotals[i].toString()).times(tokenInfo.usd).div(precision);
-  
-          // refilling the underlyingAssets of the History Entity...
-          history.underlyingAssets.push({
-            address: underlyingAssets[i], 
-            symbol: symbol, 
-            decimals: decimals,
-            amount: underylingTotals[i].toString(),
-            token_info: tokenInfo,
-            marginalTVL: marginalTVL,
-            marginalTVLPercentage: 0
-          });
-  
-          // updating the global amount of usd for the main pie of this history entity...
-          pieMarketCapUSD = pieMarketCapUSD.plus(marginalTVL);
-        };
-  
-        // adding the allocation percentage to each underlying asset...
-        history.underlyingAssets.forEach((asset: any) => {
-          asset.marginalTVLPercentage = asset.marginalTVL.times(100).div(pieMarketCapUSD).toString();
-          asset.marginalTVL = asset.marginalTVL.toString();
-        });
-        /******************************************************************/
-  
-        // finally updating the total amount in usd, and the relative nav...
-        history.marginalTVL = pieMarketCapUSD;
-        history.nav = (pieMarketCapUSD.toNumber() / totalSupply.toNumber());
-  
-        // and saving the history entity...
-        let historyDB = await history.save();
-        
-        // pushing the new history into the main Pie Entity...
-        pie.history.push(historyDB);
-  
-        // and finally saving the Pie Entity as well...
-        let pieDB = await pie.save();
-  
-        this.historySpin.text = `Generating a total of ${this.historyToBeFetched} back history: resolved ${++this.historyResolved} | rejected ${this.historyRejected}`;
-        resolve({pie: pie.symbol, block: backBlock.block, timestamp: backBlock.timestamp, id: historyDB._id});
+        // fetching the prices for each underlying contract...
+        let response = await this.httpService.get(url).toPromise();
+        let coin = new this.cgCoinModel({timestamp: timestamp, coin: response.data});
+        let coinDocument = await coin.save();
+        resolve(coinDocument);
       } catch(error) {
-        this.historySpin.text = `Generating a total of ${this.historyToBeFetched} back history: resolved ${this.historyResolved} | rejected ${++this.historyRejected}`;
-        reject({pie: pie.symbol, block: backBlock.block, timestamp: backBlock.timestamp, error: error.message});
+        reject(error);
       }
     });
-  }
-
-  private generateMarketCharts(backBlocks: Array<any>): Promise<any> {
-    return new Promise(async(resolve, reject) => {
-      let latestValidDate = moment(lodash.last(backBlocks).timestamp);
-      let startRange = moment(lodash.first(backBlocks).timestamp);
-      let days = latestValidDate.diff(startRange, 'days');
-      console.log(days, startRange.format('DD-MM-YYYY'), latestValidDate.format('DD-MM-YYYY'));
-
-      if(days <= 90) {
-        console.log(`we should just fetch the latest ${days} days`);
-      } else {
-        days = 90;
-        while(days > 0) {
-          let daysLeft = latestValidDate.diff(startRange, 'days');
-          days = daysLeft < days ? daysLeft : days;
-          let endRange = startRange.add(days, 'days');
-
-          if(days > 0) {
-            console.log(`fetching ${days} days from ${startRange.format('DD-MM-YYYY')} to ${endRange.format('DD-MM-YYYY')}...`);       
-          }
-
-          startRange = endRange;
-        }
-      }
-
-      resolve(true);
-      
-      // let underlyingMarketDataResponse = await this.httpService
-      // .get(`https://api.coingecko.com/api/v3/coins/ethereum/contract/${underlyingAssets[i]}/market_chart/range?vs_currency=usd&from=${backDate.unix()}&to=${backBlock.timestamp}`).toPromise();      
-    });
-  }
-
-  @Command({
-    command: 'generate-pies-back-histories',
-    description: 'Generate back histories for pies.'
-  })
-  async generatePiesBackHistories(): Promise<boolean> {
-    let beginning = moment().format('YYYY-MM-DD HH:mm:ss');
-    this.historySpin.info(`Generating the back history for all pies, started at ${beginning}`);
-        
-    const provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
-    
-    // retrieving all the backBlocks, from this.startingBlockNumber up to date...
-    let backBlocks = await this.generateBackBlocks(provider);
-    
-    // generating the marketCharts for all the pies, and the relative underlying assets...
-    let marketCharts = await this.generateMarketCharts(backBlocks);
-
-    // // retrieving all pies from database...
-    // let pies = await this.getPies(undefined, undefined, false);
-
-    // this.historyToBeFetched = backBlocks.length * pies.length;
-    // this.historySpin.start(`Generating a total of ${this.historyToBeFetched} back history...`);    
-
-    // // for each block, from past to present...
-    // let backBlocksHistoryPromises = [];
-
-    // backBlocks.forEach(async(backBlock) => {
-    //   // for each pie, we iterate to fetch the underlying assets...
-    //   let piesBackHistoryPromises = [];
-
-    //   for(let k = 0; k < pies.length; k++) {
-    //     const pie = new this.pieModel(pies[k]);
-    //     piesBackHistoryPromises.push(this.generatePieBackHistory(pie, backBlock, provider));
-    //   };
-
-    //   backBlocksHistoryPromises.push(Promise.allSettled(piesBackHistoryPromises));
-    // });
-
-    // let results = await Promise.allSettled(backBlocksHistoryPromises);
-    // console.log(JSON.stringify(results));
-
-    // let end = moment().format('YYYY-MM-DD HH:mm:ss');
-    // this.historySpin.succeed(`${this.historyToBeFetched} back histories have been generated, ended at ${end}`);
-
-    return true;
   }
 
   // Use this every 5 minutes cron setup for testing purposes.
   // */5 * * * *
   // USe this every hour cron setup for production releases.
   // 0 * * * *
-  // @Cron('0 * * * *')
+  @Cron('0 * * * *')
   async updateNAVs(test?: boolean): Promise<boolean> {
     // instance of the pie-getter contract...
     let timestamp = Date.now();
@@ -670,24 +471,6 @@ export class PiesService {
         reject("Sorry, can't find any Pie in our database which matches your query.");
       }      
     });    
-  }
-
-  async getPieNavChart(name?: string, address?: string): Promise<any> {
-    try {
-      let asset = await this.getPieHistory(name, address, null, null, 'descending', 1);
-
-      let response = {
-        name: asset.pie.name,
-        symbol: asset.pie.symbol,
-        address: asset.pie. address,
-        nav: asset.history[0].nav,
-        ticks: asset.history[0].pie.ticks.prices.slice(0, 16) // TODO: change me with real value...
-      };
-
-      return response;      
-    } catch(error) {
-      throw new Error(error);
-    }
   }
 
   createPie(pie: PieDto): Promise<PieEntity> {

@@ -48,10 +48,12 @@
     "mongoose": "^5.13.5",
     "mongoose-bignumber": "^1.2.0",
     "nestjs-console": "^7.0.1",
+    "nestjs-web3": "^0.1.0-alpha.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "web3": "^1.7.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

@@ -24,7 +24,7 @@ export class PieEntity {
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'PieHistoryEntity' }])
   @ApiProperty()
-  history: PieHistoryEntity[];  
+  history: PieHistoryEntity[];
 
   @Prop()
   @ApiProperty()

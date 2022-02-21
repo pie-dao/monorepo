@@ -83,23 +83,6 @@ export class PiesController {
     } catch(error) {
       throw new NotFoundException(error);
     }
-  }; 
-
-  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
-  @ApiNotFoundResponse()
-  @ApiBadRequestResponse()
-  @ApiQuery({name: 'name', required: false})
-  @ApiQuery({name: 'address', required: false})
-  @Get('pie-nav-chart')
-  async getPieNavChart(
-    @Query('name') name?: string, 
-    @Query('address') address?: string
-  ): Promise<any> {
-    try {
-      return await this.piesService.getPieNavChart(name, address);
-    } catch(error) {
-      throw new NotFoundException(error);
-    }
   };
 
   @ApiOkResponse({type: PieEntity, isArray: false})
