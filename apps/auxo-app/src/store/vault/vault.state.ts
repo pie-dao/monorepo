@@ -116,7 +116,7 @@ export const vaultState: VaultState = {
           allocation: 1,
           description: `
           Supplies FRAX on Tarot decentralized lending protocol. 
-          Tarot gives users the opportunity to partecipate as lenders in isolated lending pools. 
+          Tarot gives users the opportunity to participate as lenders in isolated lending pools. 
           
           The strategy rebalances the available FRAX between Tarot isolated lending pools to have the best yield possible.
           `,
@@ -160,7 +160,7 @@ export const vaultState: VaultState = {
           allocation: 1,
           description: `
           Supplies wFTM on Tarot decentralized lending protocol. 
-          Tarot gives users the opportunity to partecipate as lenders in isolated lending pools. 
+          Tarot gives users the opportunity to participate as lenders in isolated lending pools. 
           
           The strategy rebalances the available wFTM between Tarot isolated lending pools to have the best yield possible.          `,
           links: [

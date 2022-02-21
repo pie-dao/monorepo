@@ -4,6 +4,7 @@ import { Divider } from "../../UI/divider";
 import ExternalUrl from "../../UI/url";
 import { Disclosure, Transition } from '@headlessui/react'
 import { BiChevronRight } from "react-icons/bi";
+import { IoWarningOutline } from "react-icons/io5";
 
 
 const Card = ({ children, title }: { children?: React.ReactNode, title?: string }): JSX.Element => (
@@ -84,6 +85,13 @@ export const VaultExtendedInformationCard = ({ vault }: { vault: Vault | undefin
     const url = chainId && `${chainMap[chainId].blockExplorer}/address/${vault?.address}`;    
     return (
         <Card title='About this Vault'>
+          <div className="text-alert-error border-2 border-alert-error p-2 flex flex-col w-full rounded-lg my-3 bg-white">
+            <div className="flex mb-1 items-center">
+              <IoWarningOutline fill="white" className="mr-2" size={15}/>
+              <p className="font-bold">Auxo Vaults are in early release</p>
+            </div>
+            <p className="w-full">Please bear in mind that the underlying contracts are unaudited and experimental</p>
+          </div>
             {
                 vault ? vault.description :
                 <p>We couldn't find any information about this vault - is the url correct?</p>
