@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
+import { Popover } from "@headlessui/react";
+import popover from "../public/popover_icon.svg";
 import priceFormatter from "../utils/priceFormatter";
 import timeFormat from "../utils/timeFormat";
 import MarketCapChart from "./MarketCapChart";
@@ -62,6 +64,12 @@ const SubCharts = ({ underlyingData, marketCap, play }) => {
 
   const lastWeekMeanNavData = lastWeekMeanNav();
 
+  const premiumPerc =
+    ((play.market_data.current_price.usd -
+      underlyingData[underlyingData.length - 1].nav) /
+      play.market_data.current_price.usd) *
+    100;
+
   const [mcapPrice, setMcapPrice] = useState(
     getPieValue(lastWeekPrices[lastWeekPrices.length - 1])
   );
@@ -80,13 +88,54 @@ const SubCharts = ({ underlyingData, marketCap, play }) => {
   return (
     <section className="mb-10 gap-y-4 md:gap-4 grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <div className="flex flex-col">
-        <h4 className="font-bold text-white mb-2">{content.subcharts.nav}</h4>
+        <Popover className="relative">
+          <Popover.Button className="mb-2">
+            <div className="flex items-center">
+              <h4 className="font-bold text-white mr-1">
+                {content.subcharts.nav}
+              </h4>
+              <Image src={popover} alt="popover" />
+            </div>
+          </Popover.Button>
+          <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+            <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div className="relative bg-white p-7">
+                <p className="text-sm text-black">
+                  {content.explore_products.nav.tooltip}
+                </p>
+              </div>
+            </div>
+          </Popover.Panel>
+        </Popover>
         <div className="w-full flex flex-1 flex-col border border-deeper_purple rounded-lg py-2 px-4">
           <div className="w-full flex flex-wrap justify-between items-center">
             <p className="text-gradient text-2xl">
               {priceFormatter.format(navPrice)}
             </p>
             <p className="text-sm text-deep_purple">{timeFormat(navDate)}</p>
+          </div>
+          <div className="w-full flex">
+            <p>
+              {premiumPerc > 0 ? (
+                <>
+                  <span className="uppercase text-highlight">
+                    {content.subcharts.premium}
+                  </span>{" "}
+                  <span className="uppercase text-highlight font-bold">
+                    {premiumPerc.toFixed(2)}%
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="uppercase text-highlight">
+                    {content.subcharts.discount}
+                  </span>{" "}
+                  <span className="uppercase text-highlight font-bold">
+                    {Math.abs(premiumPerc).toFixed(2)}%
+                  </span>
+                </>
+              )}
+            </p>
           </div>
           <div className="w-full flex flex-col flex-1 mb-2">
             <ParentSize>
@@ -103,7 +152,7 @@ const SubCharts = ({ underlyingData, marketCap, play }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col order-none md:order-last lg:order-none">
+      <div className="flex flex-col">
         <h4 className="font-bold text-white mb-2">
           {content.subcharts.marketcap}
         </h4>

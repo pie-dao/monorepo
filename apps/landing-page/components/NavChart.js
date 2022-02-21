@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useMemo, useCallback } from "react";
 import { LinePath, Line, Bar } from "@visx/shape";
-import { curveMonotoneX } from "@visx/curve";
-import { GridRows, GridColumns } from "@visx/grid";
+import { curveStep } from "@visx/curve";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { withTooltip } from "@visx/tooltip";
 import { LinearGradient } from "@visx/gradient";
@@ -94,7 +93,7 @@ const PlayChart = ({
     <div>
       <svg width={width} height={height}>
         <LinearGradient
-          id="patatina"
+          id="gradient"
           from={accentColor}
           to={accentColorLight}
         />
@@ -104,8 +103,8 @@ const PlayChart = ({
           x={x}
           y={y}
           strokeWidth={2}
-          stroke={`url(#patatina)`}
-          curve={curveMonotoneX}
+          stroke={`url(#gradient)`}
+          curve={curveStep}
         />
         <Bar
           x={margin.left}
