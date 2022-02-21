@@ -29,16 +29,7 @@ export class PieEntity {
   @Prop()
   @ApiProperty()
   @IsHexadecimal()
-  coingecko_id: string;  
-
-  @Prop({type: Object})
-  @ApiProperty()
-  @IsObject()
-  image: {
-    thumb: string,
-    small: string,
-    large: string
-  }; 
+  coingecko_id: string;
 }
 
 export const PieSchema = SchemaFactory.createForClass(PieEntity);

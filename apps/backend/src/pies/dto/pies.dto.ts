@@ -18,13 +18,5 @@ export class PieDto {
 
   @ApiProperty()
   @IsHexadecimal()
-  coingecko_id: string;  
-
-  @ApiProperty()
-  @IsObject()
-  image: {
-    thumb: string,
-    small: string,
-    large: string
-  };  
+  coingecko_id: string;   
 }

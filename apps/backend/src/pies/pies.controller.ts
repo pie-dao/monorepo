@@ -7,6 +7,7 @@ import { PieDto } from './dto/pies.dto';
 import { PieHistoryEntity } from './entities/pie-history.entity';
 import { PieEntity } from './entities/pie.entity';
 import { PiesService } from './pies.service';
+import { CgCoinEntity } from './entities/cg_coin.entity';
 
 @ApiTags('Pies')
 @Controller('pies')
@@ -35,6 +36,36 @@ export class PiesController {
       throw new NotFoundException(error);
     }
   };
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({name: 'address', required: false})
+  @ApiQuery({name: 'from', required: false})
+  @ApiQuery({name: 'to', required: false})
+  @ApiQuery({name: 'order', required: false})
+  @Get('coin')
+  async getCgCoin(
+    @Query('address') address?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('limit') limit?: number,
+    @Query('order') order?: 'descending' | 'ascending'
+  ): Promise<CgCoinEntity[]> {
+    try {
+      if(order === undefined) {
+        order = 'descending';
+      }
+
+      if(limit === undefined) {
+        limit = 0;
+      }
+      // 0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c
+      return await this.piesService.getCgCoin(address, from, to, order, limit);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }; 
 
   @ApiOkResponse({type: PieHistoryEntity, isArray: true})
   @ApiNotFoundResponse()
