@@ -85,7 +85,7 @@ const WalletModal = (props: { setShow: SetStateType<boolean> }) => {
         "
         >
           <button className="absolute top-5 right-5" onClick={() => props.setShow(false)}>
-            <RiCloseCircleFill color="black"/>
+            <RiCloseCircleFill className="fill-baby-blue-dark"/>
           </button>
           <h1 className="my-2 text-xl text-gray-600">Select a Wallet</h1>
           <div className="w-full">

@@ -8,7 +8,7 @@ export type AwaitedReturn<F extends (...args: any) => any> = Awaited<
 
 // format 1000000000 -> '1,000,000,000'
 export const prettyNumber = (n?: number): string =>
-  n ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "--";
+  n ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0";
 
 export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));

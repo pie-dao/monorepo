@@ -48,13 +48,11 @@ function AlertMessage(): JSX.Element {
   const alert = useAppSelector(state => state.app.alert);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (alert.action !== 'SWITCH_NETWORK') {
-      const timeout = setTimeout(() => {
-        dispatch(setAlertDisplay(false));
-      }, 4_000);
-      return () => {
-        clearTimeout(timeout)
-      }
+    const timeout = setTimeout(() => {
+      dispatch(setAlertDisplay(false));
+    }, 4_000);
+    return () => {
+      clearTimeout(timeout)
     }
   },[alert, dispatch])
 

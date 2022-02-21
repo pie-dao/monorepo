@@ -69,7 +69,6 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
         await tx?.wait();
 
         const confirm = await authContract?.isDepositor(vault.address, account);
-        console.debug({ confirm })
         if (confirm) {
           dispatch(
             setIsDepositor({

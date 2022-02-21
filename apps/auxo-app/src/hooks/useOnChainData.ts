@@ -235,7 +235,7 @@ export const useChainData = (): { loading: boolean } => {
           }
         })
         .catch((err) => {
-          console.warn(err);
+          console.warn("Problem fetching on chain data");
         });
     }
   }, [

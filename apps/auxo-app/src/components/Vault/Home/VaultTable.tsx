@@ -1,26 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaSort } from "react-icons/fa";
-import { useAppSelector } from "../../../hooks";
 import { useNavigateToVault } from "../../../hooks/useSelectedVault";
-import { prettyNumber, zeroApyMessage } from "../../../utils";
-import { logoSwitcher } from "../../../utils/logos";
+import { useSortedVaultRows } from "../../../hooks/useVaultTableSort";
+import { SetStateType } from "../../../types/utilities";
+import { Sort, VaultRowEntry } from "../../../types/vaultTable";
 import StyledButton from "../../UI/button";
-
-type VaultRowEntry = {
-  value: any,
-  addStyles?: boolean,
-  icon?: React.ReactNode,
-  isAction?: boolean
-};
-
-type VaultRow = Record<string, VaultRowEntry>;
 
 const VaultTableActions = ({ vaultAddress }: { vaultAddress: string }) => {
   const selectVault = useNavigateToVault();
   return (
     <div className="flex w-full justify-end">
       <StyledButton 
-        className="min-w-0 px-5 border-1 mx-3 rounded-xl"
+        className="min-w-0 px-5 border-1 mx-3 rounded-lg"
         onClick={() => selectVault(vaultAddress)}
         >DEPOSIT
       </StyledButton>
@@ -28,8 +19,7 @@ const VaultTableActions = ({ vaultAddress }: { vaultAddress: string }) => {
   )
 }
 
-const VaultTableHeaders = ({ headers }: { headers: string[] }) => {
-  const [selected, setSelected] = useState(0) 
+const VaultTableHeaders = ({ headers, sort, setSort }: { headers: string[], sort: Sort, setSort: SetStateType<Sort> }) => {
   return (
     <thead className="
     bg-baby-blue-light 
@@ -53,9 +43,12 @@ const VaultTableHeaders = ({ headers }: { headers: string[] }) => {
           pl-2
           capitalize  
         "
-        onClick={() => setSelected(i)}
+        onClick={() => setSort({
+          index: i,
+          asc: false
+        })}
         >
-          {h &&<FaSort className={`mr-2 ${selected === i && 'fill-green-600'}`} />}{h}
+          {h &&<FaSort className={`mr-2 ${sort.index === i && (!sort.asc ? 'fill-green-600' : 'fill-red-600' ) }`} />}{h}
         </td>
       )
     }</tr>
@@ -77,50 +70,20 @@ const VaultTableRowEntry = ({ item, rowNumber }: { item: VaultRowEntry, rowNumbe
   }
   {
     !item.isAction
-      ? <p className={`md:text-xl ml-1 ${ item.addStyles && ('font-bold ' + getTextColorFromOrder())}`}>{item.value}</p>
-      : <VaultTableActions vaultAddress={item.value} />
+      ? <p className={`md:text-xl ml-1 ${ item.addStyles && ('font-bold ' + getTextColorFromOrder())}`}>{item.label}</p>
+      : <VaultTableActions vaultAddress={item.label} />
   }</>
   )
 }
 
-const useVaultRows = (): { rows: { address: string, data: VaultRow }[], headers: Array<keyof VaultRow> } => {
-  /**
-   * Take the vaults and decompose into table-readable format, also return the headers
-   */
-  const vaults = useAppSelector(state => state.vault.vaults);
-  const rows = vaults.map(v => ({
-    address: v.address,
-    data: {
-      deposit: {
-        icon: logoSwitcher(v.symbol),
-        value: v.symbol,
-        addStyles: true,
-      },
-      yield: {
-        value: (v.stats && v.token) ? zeroApyMessage(Number(v.stats?.currentAPY.value) / (10 ** v.token.decimals)) : '--',
-        addStyles: true
-      },
-        'total deposits': {
-        value: prettyNumber(v.stats?.deposits.label) ?? '--',
-      },
-        'my deposit': {
-        value: prettyNumber(v.userBalances?.vaultUnderlying.label) ?? '--',
-      },
-        '': {
-        value: v.address,
-        isAction: true
-      }
-    }})
-  );
-  return {
-    rows,
-    headers: Object.keys(rows[0].data)
-  }
-}
 
-const VaultTable = () => {
-  const { rows, headers } = useVaultRows();
+const VaultTable = (): JSX.Element => {
+  const [sort, setSort] = useState<Sort>({
+    index: 1,
+    asc: false
+  });
   const selectVault = useNavigateToVault();
+  const { rows, headers } = useSortedVaultRows(sort)
   return (
     <div className="overflow-x-auto ">
     <table className="
@@ -132,7 +95,7 @@ const VaultTable = () => {
       min-w-[700px]
       px-3 md:px-0
       ">
-      <VaultTableHeaders headers={headers} />
+      <VaultTableHeaders headers={headers} sort={sort} setSort={setSort}/>
       <tbody className="w-full">
         {
           rows.map((row, rowNumber) => {

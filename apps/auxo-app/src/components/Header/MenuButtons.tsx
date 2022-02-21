@@ -38,9 +38,8 @@ export const AlertButton = (): JSX.Element => {
         className="rounded-md shadow-md h-8 lg:h-10 w-auto p-2 flex items-center justify-center bg-white relative mb-1"
         onClick={() => {
           if (alert.message) {
-            console.debug('clicked')
             dispatch(setAlertDisplay(true));
-            setNotification(false);
+            if (alert.action !== 'SWITCH_NETWORK') setNotification(false);
           }
         }}    
         >
@@ -54,7 +53,6 @@ const toProperCase = (s: string): string => s.slice(0, 1).toUpperCase() + s.slic
 
 export const NetworkDisplay = () => {
     const chain = useChainHandler();
-    console.debug({ chain })
     return (
       <>
        { chain &&
@@ -69,7 +67,7 @@ export const NetworkDisplay = () => {
             font-bold
             text-left
             text-gray-600
-            text-sm
+            md:text-sm
             lg:text-base
             rounded-xl
             py-1
@@ -92,7 +90,7 @@ export const AccountConnector = ({ setShow }: { setShow: (s: boolean) => void })
     ;
     return (
       <StyledButton className="pt-1 mb-0 h-full px-8 mx-0 my-0 md:mx-5
-        text-xs md:text-sm lg:text-base "
+        md:text-sm lg:text-base "
         onClick={() => {
         setShow(true)
       }}>
