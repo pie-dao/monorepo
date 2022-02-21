@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import ParentSizeModern from "@visx/responsive/lib/components/ParentSizeModern";
 import SubCharts from "./SubCharts";
@@ -19,11 +19,8 @@ const getPieValue = (d) => d[1];
 const Chart = ({ play, playTickers, underlyingData }) => {
   const [chartTimeRange, setChartTimeRange] = useState("1m");
 
-  const today = useMemo(() => new Date(), []);
-  const threeMonths = useMemo(
-    () => new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000),
-    [today]
-  );
+  const today = new Date();
+  const threeMonths = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
 
   const lastThreeMonthsPrices = playTickers.prices.filter(
     (d) => getDate(d) > threeMonths
