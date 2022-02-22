@@ -6,11 +6,12 @@ import backgroundImage from "../public/explore_products_bg.svg";
 import popover from "../public/popover_icon.svg";
 import Button from "./Button";
 import content from "../content/en_EN.json";
+import priceFormatter from "../utils/priceFormatter";
 
-const PieCard = ({ pieData }) => {
+const PieCardPlain = ({ pieInfo, pieHistory }) => {
   const tokenImage = useMemo(
-    () => piesImages.find((token) => token.name === pieData.symbol),
-    [pieData.symbol]
+    () => piesImages.find((token) => token.name === pieInfo.symbol),
+    [pieInfo.symbol]
   );
 
   const swapWebsite = (pieAddress) => {
@@ -32,13 +33,13 @@ const PieCard = ({ pieData }) => {
               <Image
                 src={tokenImage.image}
                 className="rounded-full"
-                alt={pieData.symbol}
+                alt={pieInfo.symbol}
               />
             </div>
             <h3 className="text-3xl text-white font-extrabold uppercase mt-3">
-              {pieData.symbol}
+              {pieInfo.symbol}
             </h3>
-            <h4 className="text-sm text-white uppercase">{pieData.name}</h4>
+            <h4 className="text-sm text-white uppercase">{pieInfo.name}</h4>
           </div>
           <div className="text-2xl text-white font-extrabold mx-auto mt-auto flex items-end mb-2 z-10">
             <span>{content.explore_products.nav.name}</span>{" "}
@@ -56,7 +57,9 @@ const PieCard = ({ pieData }) => {
                 </div>
               </Popover.Panel>
             </Popover>
-            <span className="text-4xl ml-4">${pieData.nav.toFixed(2)}</span>
+            <span className="text-4xl ml-4">
+              {priceFormatter.format(pieHistory[0].nav)}
+            </span>
           </div>
         </div>
         <div className="absolute -bottom-2">
@@ -66,7 +69,7 @@ const PieCard = ({ pieData }) => {
       <div className="flex gap-x-4 mt-4 uppercase">
         <Button
           className="w-full"
-          href={`https://www.piedao.org/#/pie/${pieData.address}`}
+          href={`https://www.piedao.org/#/pie/${pieInfo.address}`}
           target="_blank"
           rel="noreferrer noopener"
           inverted
@@ -75,10 +78,10 @@ const PieCard = ({ pieData }) => {
         </Button>
         <Button
           className="w-full uppercase"
-          href={swapWebsite(pieData.address)}
+          href={swapWebsite(pieInfo.address)}
           target="_blank"
           rel="noreferrer noopener"
-          id={`btn-buy-${pieData.symbol}`}
+          id={`btn-buy-${pieInfo.symbol}`}
         >
           BUY
         </Button>
@@ -87,4 +90,4 @@ const PieCard = ({ pieData }) => {
   );
 };
 
-export default PieCard;
+export default PieCardPlain;

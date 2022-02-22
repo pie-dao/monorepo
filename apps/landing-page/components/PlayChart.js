@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useMemo, useCallback } from "react";
 import { LinePath, Line, Bar } from "@visx/shape";
-import { curveMonotoneX } from "@visx/curve";
+import { curveMonotoneX, curveStep } from "@visx/curve";
 import { GridRows, GridColumns } from "@visx/grid";
 import { scaleTime, scaleLinear } from "@visx/scale";
 import { AxisRight, AxisBottom } from "@visx/axis";
@@ -73,6 +73,15 @@ const PlayChart = ({
         return prices.filter((d) => getDate(d) > monthAgo);
     }
   }, [chartTimeRange, monthAgo, prices, weekAgo, yesterday]);
+
+  const selectLineByTime = useMemo(() => {
+    switch (chartTimeRange) {
+      case "1d":
+        return curveStep;
+      default:
+        return curveMonotoneX;
+    }
+  }, [chartTimeRange]);
 
   // scales
   const dateScale = useMemo(
@@ -171,7 +180,7 @@ const PlayChart = ({
           y={y}
           strokeWidth={2}
           stroke={accentColor}
-          curve={curveMonotoneX}
+          curve={selectLineByTime}
         />
         <Bar
           x={margin.left}

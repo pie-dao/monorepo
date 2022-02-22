@@ -1,7 +1,7 @@
 import PieCardPlain from "./PieCardPlain";
 import content from "../content/en_EN.json";
 
-const ExploreProducts = ({ pies }) => {
+const ExploreProducts = ({ morePies }) => {
   return (
     <section
       className={`bg-primary w-full justify-evenly flex-col content-center text-center flex md:flex-col overflow-hidden mb-20`}
@@ -17,8 +17,11 @@ const ExploreProducts = ({ pies }) => {
         </div>
       </div>
       <div className="container mx-auto px-6 gap-x-10 gap-y-16 w-full flex flex-col lg:flex-row items-center justify-center">
-        {pies.map((pie) => {
-          return <PieCardPlain key={pie.symbol} pieData={pie} />;
+        {morePies.map((singlePie) => {
+          const { history, pie } = singlePie;
+          return (
+            <PieCardPlain key={pie.symbol} pieInfo={pie} pieHistory={history} />
+          );
         })}
       </div>
     </section>

@@ -18,13 +18,12 @@ const getDate = (d) => new Date(d[0]);
 const getNavValue = (d) => d[1];
 const bisectDate = bisector((d) => new Date(d[0])).left;
 
-const PlayChart = ({
+const NavChart = ({
   lastWeekMeanNavData,
   width,
   height,
   margin = { top: 30, right: 0, bottom: 0, left: 0 },
   showTooltip,
-  hideTooltip,
   tooltipData,
   tooltipTop = 0,
   tooltipLeft = 0,
@@ -152,4 +151,4 @@ const PlayChart = ({
   );
 };
 
-export default withTooltip(PlayChart);
+export default withTooltip(NavChart);

@@ -1,7 +1,9 @@
 import Cookies from "cookies";
-import getPlayData from "./api/getPlayData";
-import getPlayTickers from "./api/getPlayTickers";
+import getCoinData from "./api/getCoinData";
+import getPieTickers from "./api/getPieTickers";
 import getPieHistory from "./api/getPieHistory";
+import getLatestHistory from "./api/getLatestHistory";
+import getSentiment from "./api/getSentiment";
 import Hero from "../components/Hero";
 import Metaverse from "../components/Metaverse";
 import ScrollingBoxes from "../components/ScrollingBoxes";
@@ -16,29 +18,45 @@ import Chart from "../components/Chart";
 import posts from "../content/twitterPosts.json";
 
 export async function getServerSideProps({ req, res }) {
-  const morePies = [
+  const expoloreMore = [
     "0x8d1ce361eb68e9e05573443c407d4a3bed23b033",
     "0xe4f726adc8e89c6a6017f01eada77865db22da14",
   ];
-  const play = await getPlayData();
-  const playTickers = await getPlayTickers(30);
-  const underlyingData = await getPieHistory(
-    "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
+  const playAddress = "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4";
+  const play = await getCoinData(playAddress);
+  const playTickers = await getPieTickers(playAddress);
+  const underlyingData = await getPieHistory(playAddress);
+
+  const morePies = await Promise.all(
+    expoloreMore.map(async (pie) => {
+      const pieData = await getLatestHistory(pie);
+      return pieData;
+    })
   );
 
   const cookies = new Cookies(req, res);
   const showCookiePolicy = cookies.get("cookiePolicy") !== "accepted";
+  const sentiment = await getSentiment();
+
   return {
     props: {
-      play,
+      play: play.coin,
       underlyingData,
       showCookiePolicy,
       playTickers,
+      morePies,
+      sentiment,
     },
   };
 }
 
-export default function Home({ play, underlyingData, playTickers }) {
+export default function Home({
+  play,
+  underlyingData,
+  playTickers,
+  morePies,
+  sentiment,
+}) {
   const { market_data } = play;
   const underlyingAssetsLatestHistory =
     underlyingData[underlyingData.length - 1];
@@ -55,13 +73,14 @@ export default function Home({ play, underlyingData, playTickers }) {
         play={play}
         playTickers={playTickers}
         underlyingData={underlyingData}
+        sentiment={sentiment}
       />
       <UnderlyingTokens underlyingData={underlyingAssetsLatestHistory} />
       <Methodology />
       <Roi />
       <AboutUsTwitter twitterPosts={posts} />
       <Ovens />
-      {/* <ExploreProducts pies={morePiesHistory} /> */}
+      <ExploreProducts morePies={morePies} />
     </div>
   );
 }

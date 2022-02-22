@@ -9,6 +9,8 @@ import MarketCapChart from "./MarketCapChart";
 import NavChart from "./NavChart";
 import arrowRed from "../public/arrow_red.svg";
 import arrowGreen from "../public/arrow_green.svg";
+import inceptionFire from "../public/inception_fire.svg";
+import sentimentHeart from "../public/sentiment_heart.svg";
 import SentimentCheck from "./SentimentCheck";
 import { mean } from "d3-array";
 import content from "../content/en_EN.json";
@@ -17,7 +19,7 @@ const getDate = (d) => new Date(d[0]);
 const getNavDate = (d) => d.timestamp;
 const getPieValue = (d) => d[1];
 
-const SubCharts = ({ underlyingData, marketCap, play }) => {
+const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const inceptionPerc = useMemo(() => {
     return ((play.market_data.current_price.usd - 1) * 100).toFixed();
@@ -157,7 +159,7 @@ const SubCharts = ({ underlyingData, marketCap, play }) => {
           {content.subcharts.marketcap}
         </h4>
         <div className="flex flex-col flex-1 border border-deeper_purple rounded-lg py-2 px-4">
-          <div className="flex flex-wrap justify-between items-center">
+          <div className="flex flex-wrap justify-between items-center mb-2">
             <p className="flex text-gradient text-2xl">
               {priceFormatter.format(mcapPrice)}
             </p>
@@ -179,17 +181,23 @@ const SubCharts = ({ underlyingData, marketCap, play }) => {
         </div>
       </div>
       <div className="flex flex-col">
-        <h4 className="font-bold text-white mb-2">
-          {content.subcharts.inception}
-        </h4>
-        <div className="h-24 flex border border-deeper_purple rounded-lg p-4 justify-center items-center mb-4">
+        <div className="flex items-center gap-x-2 mb-2">
+          <Image src={inceptionFire} alt="inception" />
+          <h4 className="font-bold text-white">
+            {content.subcharts.inception}
+          </h4>
+        </div>
+        <div className="flex-1 flex border border-deeper_purple rounded-lg p-4 justify-center items-center mb-4">
           <p className="text-gradient text-4xl mr-3">+ {inceptionPerc}%</p>
           <Image src={inceptionPerc >= 0 ? arrowGreen : arrowRed} alt="Arrow" />
         </div>
-        <h4 className="font-bold text-white mb-2">
-          {content.subcharts.sentiment.title}
-        </h4>
-        <SentimentCheck />
+        <div className="flex items-center gap-x-2 mb-2">
+          <Image src={sentimentHeart} alt="inception" />
+          <h4 className="font-bold text-white">
+            {content.subcharts.sentiment.title}
+          </h4>
+        </div>
+        <SentimentCheck {...sentiment} />
       </div>
     </section>
   );

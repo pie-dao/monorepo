@@ -16,7 +16,7 @@ import content from "../content/en_EN.json";
 const getDate = (d) => new Date(d[0]);
 const getPieValue = (d) => d[1];
 
-const Chart = ({ play, playTickers, underlyingData }) => {
+const Chart = ({ play, playTickers, underlyingData, sentiment }) => {
   const [chartTimeRange, setChartTimeRange] = useState("1m");
 
   const today = new Date();
@@ -155,19 +155,19 @@ const Chart = ({ play, playTickers, underlyingData }) => {
         </ParentSizeModern>
       </div>
       <div className="hidden md:flex text-deep_purple mb-2 gap-x-4">
-        <p>
+        <p className="gap-x-1 flex items-center justify-center">
           {content.chart.day}{" "}
           <PriceChange
             priceChange={play.market_data.price_change_percentage_24h}
           />
         </p>
-        <p>
+        <p className="gap-x-1 flex items-center justify-center">
           {content.chart.month}{" "}
           <PriceChange
             priceChange={play.market_data.price_change_percentage_30d}
           />
         </p>
-        <p>
+        <p className="gap-x-1 flex items-center justify-center">
           {content.chart.three_months}{" "}
           <PriceChange priceChange={priceDiffThreeMonthsPercentage} />
         </p>
@@ -178,6 +178,7 @@ const Chart = ({ play, playTickers, underlyingData }) => {
         underlyingData={underlyingData}
         play={play}
         playPrices={playTickers.prices}
+        sentiment={sentiment}
       />
       <div className="container mx-auto px-6 mb-12">
         <p className="text-center uppercase text-sm text-deep_purple mb-4">

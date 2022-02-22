@@ -260,7 +260,8 @@
     "sentiment": {
       "title": "How do you feel about PLAY?",
       "positive": "Great! Thanks for sharing",
-      "negative": "Thanks for sharing"
+      "negative": "Thanks for sharing",
+      "votes": "Votes"
     }
   },
   "cookies": {
