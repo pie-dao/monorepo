@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseGuards } from '@nestjs/common';
 import { SentimentService } from './sentiment.service';
 import { CreateSentimentDto } from './dto/create-sentiment.dto';
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { SentimentDocument, SentimentEntity } from './entities/sentiment.entity';
+import { SimpleAuthGuard } from 'src/authorization/simple-auth.guard';
 
 @Controller('sentiment')
 export class SentimentController {
@@ -11,6 +12,7 @@ export class SentimentController {
   @ApiOkResponse({type: SentimentEntity, isArray: false})
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
+  @UseGuards(SimpleAuthGuard)
   @Post()
   create(
     @Body() sentiment: CreateSentimentDto
