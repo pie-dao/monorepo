@@ -254,13 +254,13 @@
   "subcharts": {
     "nav": "NAV",
     "marketcap": "Marketcap",
-    "inception": "Incpetion: 21/02/2021",
+    "inception": "Inception: 21/02/2021",
     "premium": "Premium",
     "discount": "Discount",
     "sentiment": {
-      "title": "How do you feel about play?",
-      "positive": "You are positive",
-      "negative": "You are negative"
+      "title": "How do you feel about PLAY?",
+      "positive": "Great! Thanks for sharing",
+      "negative": "Thanks for sharing"
     }
   },
   "cookies": {
