@@ -11,6 +11,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { ConsoleModule } from 'nestjs-console';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { SentimentModule } from './sentiment/sentiment.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { join } from 'path';
     StakingModule,
     TreasuryModule,    
     TasksModule,
-    ConsoleModule
+    ConsoleModule,
+    SentimentModule
   ],  
   controllers: [AppController],
   providers: [AppService],
