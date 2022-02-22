@@ -275,7 +275,7 @@ export class PiesService {
     return new Promise(async(resolve, reject) => {
       try {
         let from = moment().subtract(days, 'days').unix() * 1000;
-        let coinEntries = await this.getCgCoin(address, from.toString(), null, 'descending');
+        let coinEntries = await this.getCgCoin(address, from.toString(), null, 'ascending');
         
         let marketCharts = {
           prices: [],
