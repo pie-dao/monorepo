@@ -5,7 +5,7 @@ const getCoinData = async (address) => {
   };
   try {
     const fetchPieHistory = await fetch(
-      `https://piedao-backend-stage.herokuapp.com/pies/coin?address=${address}&limit=1&order=descending`,
+      `https://piedao-nestjs.herokuapp.com/pies/coin?address=${address}&limit=1&order=descending`,
       { headers }
     );
     const coinData = await fetchPieHistory.json();

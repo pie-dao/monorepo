@@ -5,7 +5,7 @@ const getPieTickers = async (pie) => {
   };
   try {
     const fetchPieHistory = await fetch(
-      `https://piedao-backend-stage.herokuapp.com/pies/market_chart?address=${pie}&days=90`,
+      `https://piedao-nestjs.herokuapp.com/pies/market_chart?address=${pie}&days=90`,
       { headers }
     );
     const pieTickers = await fetchPieHistory.json();
