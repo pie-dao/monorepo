@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { useAppDispatch } from ".";
-import { Erc20, MerkleAuth, Mono, VaultCapped } from "../types/artifacts/abi";
+import { Erc20, MerkleAuth, Mono, Vault as VaultCapped } from "../types/artifacts/abi";
 import { useContracts } from "./useContract";
 import { Balance, Vault } from "../store/vault/Vault";
 import { AwaitedReturn, fromScale, toBalance } from "../utils";
@@ -37,7 +37,7 @@ const getAllBalances = async ({
       mono.lastHarvest(), // 1
       mono.estimatedReturn(), // 2
       mono.batchBurnRound(), // 3
-      cap.UNDERLYING_CAP(), // 4
+      cap.userDepositLimit(), // 4
     ];
 
     if (account) {
