@@ -102,7 +102,7 @@ export function useMultipleMonoContract(
 ): Mono[] {
   return useMultipleContracts<Mono>(
     vaultAddresses,
-    MonoABI,
+    VaultABI,
     preferMulticall,
     chainId
   ) as Mono[];
@@ -163,7 +163,7 @@ const getContract = (
     );
     return new Contract(address, ABI, providerSigner);
   } catch (error) {
-    console.error("Failed to get contract", error);
+    console.error("Failed to get contract", error, address, ABI);
     return undefined;
   }
 };
