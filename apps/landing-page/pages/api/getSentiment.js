@@ -4,13 +4,16 @@ const getSentiment = async () => {
     "Content-Type": "application/json",
   };
 
-  const fetchSentiment = await fetch(
-    `https://piedao-nestjs.herokuapp.com/sentiment/report?days=7`,
-    { headers }
-  );
-  const sentiment = await fetchSentiment.json();
-
-  return sentiment;
+  try {
+    const fetchSentiment = await fetch(
+      `https://piedao-nestjs.herokuapp.com/sentiment/report?days=7`,
+      { headers }
+    );
+    const sentiment = await fetchSentiment.json();
+    return sentiment;
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export default getSentiment;

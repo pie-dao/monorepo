@@ -19,15 +19,12 @@ function MyApp({ Component, pageProps }) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="title" content="PLAY" />
+        <meta name="title" content="PLAY Metaverse Token" />
         <meta
           name="description"
           content="The PLAY token captures the value of projects operating in the areas of blockchain gaming and virtual entertainment within the metaverse."
         />
-        <meta
-          property="og:url"
-          content="https://play-metaverse-token.netlify.app/"
-        />
+        <meta property="og:url" content={process.env.URL} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="PLAY" />
         <meta
@@ -36,7 +33,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           property="og:image"
-          content="https://play-metaverse-token.netlify.app/metaverse_man_fb.png"
+          content={`${process.env.URL}/metaverse_man_fb.png`}
         />
         <meta name="twitter:title" content="PLAY" />
         <meta
@@ -45,7 +42,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           name="twitter:image"
-          content="https://play-metaverse-token.netlify.app/metaverse_man_fb.png"
+          content={`${process.env.URL}/metaverse_man_fb.png`}
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
