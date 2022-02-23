@@ -99,7 +99,7 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
               <Image src={popover} alt="popover" />
             </div>
           </Popover.Button>
-          <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 sm:px-0 lg:max-w-3xl">
+          <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 sm:px-0">
             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
               <div className="relative bg-white p-7">
                 <p className="text-sm text-black">
@@ -180,24 +180,31 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
-        <div className="flex items-center gap-x-2 mb-2">
-          <Image src={inceptionFire} alt="inception" />
-          <h4 className="font-bold text-white">
-            {content.subcharts.inception}
-          </h4>
+      <div className="flex flex-col col-span-1 md:col-span-2 lg:col-span-1 md:flex-row lg:flex-col gap-4">
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-x-2 mb-2 flex-row">
+            <Image src={inceptionFire} alt="inception" />
+            <h4 className="font-bold text-white">
+              {content.subcharts.inception}
+            </h4>
+          </div>
+          <div className="flex-1 md:flex-none lg:flex-1 md:h-[102px] lg:h-auto flex border border-deeper_purple rounded-lg p-4 justify-center items-center lg:mb-4">
+            <p className="text-gradient text-4xl mr-3">+ {inceptionPerc}%</p>
+            <Image
+              src={inceptionPerc >= 0 ? arrowGreen : arrowRed}
+              alt="Arrow"
+            />
+          </div>
         </div>
-        <div className="flex-1 flex border border-deeper_purple rounded-lg p-4 justify-center items-center mb-4">
-          <p className="text-gradient text-4xl mr-3">+ {inceptionPerc}%</p>
-          <Image src={inceptionPerc >= 0 ? arrowGreen : arrowRed} alt="Arrow" />
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-x-2 mb-2">
+            <Image src={sentimentHeart} alt="inception" />
+            <h4 className="font-bold text-white">
+              {content.subcharts.sentiment.title}
+            </h4>
+          </div>
+          <SentimentCheck {...sentiment} />
         </div>
-        <div className="flex items-center gap-x-2 mb-2">
-          <Image src={sentimentHeart} alt="inception" />
-          <h4 className="font-bold text-white">
-            {content.subcharts.sentiment.title}
-          </h4>
-        </div>
-        <SentimentCheck {...sentiment} />
       </div>
     </section>
   );

@@ -46,7 +46,7 @@ const SentimentCheck = ({ positive, negative }) => {
   };
 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center border border-deeper_purple rounded-lg py-4 px-4 text-white">
+    <div className="flex-1 md:flex-none lg:flex-1 flex border border-deeper_purple rounded-lg p-4 justify-center items-center">
       {sentiment === null ? (
         <div className="flex flex-wrap w-full gap-y-4">
           <div className={`${styles.barGradient}`}></div>

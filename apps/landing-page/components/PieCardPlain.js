@@ -47,7 +47,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
               <Popover.Button className="ml-1">
                 <Image src={popover} alt="popover" />
               </Popover.Button>
-              <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 bottom-full sm:px-0 lg:max-w-xl">
+              <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-[40%] left-[50%] bottom-full sm:px-0">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative bg-white p-7">
                     <p className="text-sm text-black">
