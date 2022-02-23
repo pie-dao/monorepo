@@ -27,7 +27,6 @@ const txSlice = createSlice({
       state.queue = state.queue.filter(t => t.hash !== action.payload);
     },
     setConfirmTx: (state, action: PayloadAction<string>) => {
-      console.log('notify');
       const tx = state.queue.find(t => t.hash === action.payload);
       if (!tx) return;
       tx.status = 'SUCCESS';

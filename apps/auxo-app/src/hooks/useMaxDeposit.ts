@@ -22,11 +22,6 @@ export const useApproximatePendingAsUnderlying = (): Balance => {
     BigNumber.from(10).pow(decimals)
   );
 
-  console.debug({
-    value: amountPendingUnderlying.toString(),
-    label: amountPendingUnderlyingLabel.toNumber(),
-  });
-
   return {
     value: amountPendingUnderlying.toString(),
     label: amountPendingUnderlyingLabel.toNumber(),
