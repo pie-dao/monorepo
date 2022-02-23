@@ -99,10 +99,10 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
               <Image src={popover} alt="popover" />
             </div>
           </Popover.Button>
-          <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 sm:px-0">
+          <Popover.Panel className="absolute z-10 w-screen max-w-[19rem] mt-3 -translate-x-[42%] left-[50%]">
             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-              <div className="relative bg-white p-7">
-                <p className="text-sm text-black">
+              <div className="relative bg-white p-4">
+                <p className="text-sm text-black font-bold">
                   {content.explore_products.nav.tooltip}
                 </p>
               </div>
