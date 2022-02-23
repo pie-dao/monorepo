@@ -20,6 +20,7 @@ const getNavDate = (d) => d.timestamp;
 const getPieValue = (d) => d[1];
 
 const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
+  const { history } = underlyingData;
   const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
   const inceptionPerc = useMemo(() => {
     return ((play.market_data.current_price.usd - 1) * 100).toFixed();
@@ -47,7 +48,7 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
   const lastWeekPrices = markeCapMeanLastWeek();
 
   const lastWeekMeanNav = () => {
-    const lastWeek = underlyingData.filter((d) => getNavDate(d) >= weekAgo);
+    const lastWeek = history.filter((d) => getNavDate(d) >= weekAgo);
     let lastWeekPerDay = [];
     let todayCounter = Date.now();
     for (let i = 0; i < 7; i++) {
@@ -67,8 +68,7 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
   const lastWeekMeanNavData = lastWeekMeanNav();
 
   const premiumPerc =
-    ((play.market_data.current_price.usd -
-      underlyingData[underlyingData.length - 1].nav) /
+    ((play.market_data.current_price.usd - underlyingData.history[0].nav) /
       play.market_data.current_price.usd) *
     100;
 

@@ -58,8 +58,7 @@ export default function Home({
   sentiment,
 }) {
   const { market_data } = play;
-  const underlyingAssetsLatestHistory =
-    underlyingData[underlyingData.length - 1];
+  const underlyingAssetsLatestHistory = underlyingData.history[0];
   return (
     <div className="text-white">
       <Hero actualPrice={market_data.current_price.usd} />

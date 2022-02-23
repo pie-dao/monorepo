@@ -11,13 +11,13 @@ import content from "../content/en_EN.json";
 const UnderlyingTokens = ({ underlyingData }) => {
   const sortedAssets = useMemo(() => {
     return underlyingData.underlyingAssets.sort((a, b) => {
-      return b.marketCapUSD - a.marketCapUSD;
+      return b.marginalTVLPercentage - a.marginalTVLPercentage;
     });
   }, [underlyingData]);
 
-  const relativePercentage = (marketCapUSD) => {
-    const maxPercentage = sortedAssets[0].marketCapUSD;
-    return ((marketCapUSD * 100) / maxPercentage).toFixed(2);
+  const relativePercentage = (percentage) => {
+    const maxPercentage = sortedAssets[0].marginalTVLPercentage;
+    return ((percentage * 100) / maxPercentage).toFixed(2);
   };
 
   const barColor = (ratio) => {
@@ -54,43 +54,47 @@ const UnderlyingTokens = ({ underlyingData }) => {
           }}
           className={`mx-auto flex ${styles.underlyingTokensSlider}`}
         >
-          {sortedAssets.map(({ address, symbol, usdPrice, marketCapUSD }) => {
-            const imageObj = tokenImages.find((token) => token.name === symbol);
-            const percentage = (
-              (marketCapUSD * 100) /
-              underlyingData.marketCapUSD
-            ).toFixed(2);
-            const relPerc = relativePercentage(marketCapUSD);
-            return (
-              <SwiperSlide key={address} className="w-[150px] mt-6">
-                {({ isActive }) => (
-                  <div
-                    className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
-                      !isActive && "opacity-75 md:opacity-100"
-                    }`}
-                  >
-                    <div className="absolute -top-6 left-3">
-                      <Image src={imageObj.image} alt={symbol} />
+          {sortedAssets.map(
+            ({ address, symbol, usdPrice, marginalTVLPercentage }) => {
+              const imageObj = tokenImages.find(
+                (token) => token.name === symbol
+              );
+              const percentage = (+marginalTVLPercentage).toFixed(2);
+              return (
+                <SwiperSlide key={address} className="w-[150px] mt-6">
+                  {({ isActive }) => (
+                    <div
+                      className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
+                        !isActive && "opacity-75 md:opacity-100"
+                      }`}
+                    >
+                      <div className="absolute -top-6 left-3">
+                        <Image src={imageObj.image} alt={symbol} />
+                      </div>
+                      <div className="w-full relative">
+                        <p className="w-full text-md pt-8 pb-6">
+                          {percentage}%
+                        </p>
+                        <p className="text-xl font-extrabold">{symbol}</p>
+                        <p className="text-xl font-bold text-highlight">
+                          {priceFormatter.format(usdPrice)}
+                        </p>
+                        <div
+                          className={`bg-blue-600 rounded-full w-2.5 absolute bottom-0 right-0`}
+                          style={{
+                            height: `${relativePercentage(percentage)}%`,
+                            backgroundColor: `${barColor(
+                              relativePercentage(percentage)
+                            )}`,
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="w-full relative">
-                      <p className="w-full text-md pt-8 pb-6">{percentage}%</p>
-                      <p className="text-xl font-extrabold">{symbol}</p>
-                      <p className="text-xl font-bold text-highlight">
-                        {priceFormatter.format(usdPrice)}
-                      </p>
-                      <div
-                        className={`bg-blue-600 rounded-full w-2.5 absolute bottom-0 right-0`}
-                        style={{
-                          height: `${relPerc}%`,
-                          backgroundColor: `${barColor(relPerc)}`,
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                )}
-              </SwiperSlide>
-            );
-          })}
+                  )}
+                </SwiperSlide>
+              );
+            }
+          )}
         </Swiper>
       </div>
     </section>
