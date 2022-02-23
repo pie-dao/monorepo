@@ -5,7 +5,7 @@ const getPieHistory = async (pie) => {
   };
   try {
     const fetchPieHistory = await fetch(
-      `https://piedao-nestjs.herokuapp.com/pies/history?address=${pie}`,
+      `https://piedao-nestjs.herokuapp.com/pies/history?address=${pie}&limit=168`,
       { headers }
     );
     const pieHistory = await fetchPieHistory.json();
