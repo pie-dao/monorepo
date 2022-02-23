@@ -8,12 +8,12 @@ import { Erc20 } from "../types/artifacts/abi/Erc20";
 import ERC20ABI from "../abi/erc20.json";
 import MonoABI from "../abi/mono.json";
 import MerkleAuthABI from "../abi/MerkleAuth.json";
-import VaultCappedABI from "../abi/VaultCapped.json";
+import VaultABI from "../abi/Vault.json";
 import { MerkleAuth, Mono } from "../types/artifacts/abi";
 import { ProviderNotActivatedError } from "../errors";
 import { Web3ReactContextInterface } from "@web3-react/core/dist/types";
 import { useWeb3Cache } from "./useCachedWeb3";
-import { VaultCapped } from "../types/artifacts/abi/VaultCapped";
+import { Vault } from "../types/artifacts/abi/Vault";
 import {
   useMerkleAuthAddresses,
   useTokenAddresses,
@@ -79,7 +79,7 @@ export function useMerkleAuthContract(vaultAddress?: string) {
 }
 
 export function useVaultCapContract(vaultAddress?: string) {
-  return useContract<VaultCapped>(vaultAddress, VaultCappedABI);
+  return useContract<Vault>(vaultAddress, VaultABI);
 }
 
 export function useMultipleTokenContract(
@@ -102,7 +102,7 @@ export function useMultipleMonoContract(
 ): Mono[] {
   return useMultipleContracts<Mono>(
     vaultAddresses,
-    MonoABI,
+    VaultABI,
     preferMulticall,
     chainId
   ) as Mono[];
@@ -125,13 +125,13 @@ export function useMultipleCapContract(
   capAddresses?: string[],
   preferMulticall?: boolean,
   chainId?: number
-): VaultCapped[] {
-  return useMultipleContracts<VaultCapped>(
+): Vault[] {
+  return useMultipleContracts<Vault>(
     capAddresses,
-    VaultCappedABI,
+    VaultABI,
     preferMulticall,
     chainId
-  ) as VaultCapped[];
+  ) as Vault[];
 }
 
 export function useMultipleContracts<T extends Contract>(
@@ -163,7 +163,7 @@ const getContract = (
     );
     return new Contract(address, ABI, providerSigner);
   } catch (error) {
-    console.error("Failed to get contract", error);
+    console.error("Failed to get contract", error, address, ABI);
     return undefined;
   }
 };
