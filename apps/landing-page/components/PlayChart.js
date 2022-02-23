@@ -37,7 +37,7 @@ const PlayChart = ({
   prices,
   width,
   height,
-  margin = { top: 50, right: 30, bottom: 50, left: 0 },
+  margin = { top: 50, right: 0, bottom: 50, left: 0 },
   showTooltip,
   hideTooltip,
   tooltipData,
@@ -149,6 +149,14 @@ const PlayChart = ({
           strokeOpacity={0}
           pointerEvents="none"
         />
+        <LinePath
+          data={slicePricesByTime}
+          x={x}
+          y={y}
+          strokeWidth={2}
+          stroke={accentColor}
+          curve={selectLineByTime}
+        />
         <AxisBottom
           top={innerHeight + margin.top}
           scale={dateScale}
@@ -163,7 +171,7 @@ const PlayChart = ({
         />
         <AxisRight
           top={0}
-          left={innerWidth}
+          left={innerWidth - 30}
           scale={priceValueScale}
           numTicks={6}
           stroke="transparent"
@@ -173,14 +181,6 @@ const PlayChart = ({
             fontSize: 12,
             textAnchor: "middle",
           })}
-        />
-        <LinePath
-          data={slicePricesByTime}
-          x={x}
-          y={y}
-          strokeWidth={2}
-          stroke={accentColor}
-          curve={selectLineByTime}
         />
         <Bar
           x={margin.left}

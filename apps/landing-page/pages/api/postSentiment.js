@@ -12,7 +12,7 @@ const postSentiment = async (req, res) => {
   });
   try {
     const sentimentData = await fetch(
-      `https://piedao-backend-stage.herokuapp.com/sentiment`,
+      `https://piedao-nestjs.herokuapp.com/sentiment`,
       {
         method: "POST",
         headers,

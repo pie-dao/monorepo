@@ -5,7 +5,7 @@ const getSentiment = async () => {
   };
 
   const fetchSentiment = await fetch(
-    `https://piedao-backend-stage.herokuapp.com/sentiment/report?days=7`,
+    `https://piedao-nestjs.herokuapp.com/sentiment/report?days=7`,
     { headers }
   );
   const sentiment = await fetchSentiment.json();

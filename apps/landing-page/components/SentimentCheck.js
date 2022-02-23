@@ -1,6 +1,5 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import styles from "../styles/SentimentCheck.module.scss";
 import positiveImg from "../public/positive.svg";
 import negativeImg from "../public/negative.svg";
@@ -13,25 +12,20 @@ const SentimentCheck = ({ positive, negative }) => {
   const [positivePercent, setPositivePercent] = useState(positive.percentage);
   const [negativePercent, setNegativePercent] = useState(negative.percentage);
 
-  const router = useRouter();
-
-  const calculateSentimentPercentage = () => {
+  useEffect(() => {
     const total = positiveValue + negativeValue;
     const positivePercentage = (positiveValue / total) * 100;
     const negativePercentage = (negativeValue / total) * 100;
-    return { positivePercentage, negativePercentage };
-  };
+    setPositivePercent(positivePercentage.toFixed(2));
+    setNegativePercent(negativePercentage.toFixed(2));
+  }, [positiveValue, negativeValue]);
 
   const handleSentiment = async (sentiment) => {
-    const { positivePercentage, negativePercentage } =
-      calculateSentimentPercentage();
     if (sentiment === "positive") {
       setPositiveValue(positiveValue + 1);
-      setPositivePercent(positivePercentage.toFixed());
     }
     if (sentiment === "negative") {
       setNegativeValue(negativeValue + 1);
-      setNegativePercent(negativePercentage.toFixed());
     }
     setSentiment(sentiment);
     await sentimentPost(sentiment);
