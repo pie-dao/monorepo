@@ -17,7 +17,6 @@ export const addBalances = (b1: Balance, b2: Balance): Balance => {
     value,
   };
 };
-  
 
 export const subBalances = (b1: Balance, b2: Balance): Balance => {
   const label = b1.label - b2.label;

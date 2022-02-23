@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 export const rootReducer = combineReducers({
   vault: vaultReducer,
   app: appReducer,
-  tx: txReducer
+  tx: txReducer,
 });
 
 export const store = configureStore({

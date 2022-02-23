@@ -2,7 +2,7 @@ import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { Balance } from "../store/vault/Vault";
 import { zeroBalance } from "../utils/balances";
-import { useSelectedVault } from "./useSelectedVault";
+import { useDecimals, useSelectedVault } from "./useSelectedVault";
 
 const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber => {
   return b1.gt(b2) ? b2 : b1;
@@ -10,22 +10,27 @@ const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber => {
 
 export const useApproximatePendingAsUnderlying = (): Balance => {
   const vault = useSelectedVault();
+  const decimals = useDecimals();
   const sharesPending = vault?.userBalances?.batchBurn.shares ?? zeroBalance();
-  const decimals = vault?.token.decimals;
   const exchangeRate = vault?.stats?.exchangeRate;
 
   const amountPendingUnderlying = BigNumber.from(sharesPending.value)
-      .mul(exchangeRate?.value ?? 0)
+    .mul(exchangeRate?.value ?? 0)
+    .div(BigNumber.from(10).pow(decimals));
 
-  const amountPendingUnderlyingLabel = amountPendingUnderlying
-    .div(
-      BigNumber.from(10).pow((2*(decimals ?? 0)))
-    )
-      
+  const amountPendingUnderlyingLabel = amountPendingUnderlying.div(
+    BigNumber.from(10).pow(decimals)
+  );
+
+  console.debug({
+    value: amountPendingUnderlying.toString(),
+    label: amountPendingUnderlyingLabel.toNumber(),
+  });
+
   return {
     value: amountPendingUnderlying.toString(),
-    label: amountPendingUnderlyingLabel.toNumber()
-  }  
+    label: amountPendingUnderlyingLabel.toNumber(),
+  };
 };
 
 export const useMaxDeposit = (): Balance => {
@@ -33,7 +38,7 @@ export const useMaxDeposit = (): Balance => {
    * Return min of underlying balance or (cap - deposits)
    */
   const vault = useSelectedVault();
-  const sharesUnderlying = useApproximatePendingAsUnderlying();
+  const pendingWithdrawal = useApproximatePendingAsUnderlying();
   const [balance, setBalance] = useState<Balance>();
 
   useEffect(() => {
@@ -41,7 +46,6 @@ export const useMaxDeposit = (): Balance => {
       const currentDeposits = vault.userBalances?.vaultUnderlying;
       const capUnderlying = vault.cap.underlying;
       const inWallet = vault.userBalances.wallet;
-      const pendingWithdrawal = sharesUnderlying;
 
       // take the total capped per user, and sub anything
       // currently deposited or pending withdrawal
@@ -61,7 +65,7 @@ export const useMaxDeposit = (): Balance => {
 
       setBalance({ value, label });
     }
-  }, [vault]);
+  }, [vault, pendingWithdrawal]);
 
   return balance ?? zeroBalance();
 };

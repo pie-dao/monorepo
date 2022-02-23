@@ -3,11 +3,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract } from "../../../../hooks/useContract";
-import { useMaxDeposit } from "../../../../hooks/useMaxDeposit";
 import { useSelectedVault, useVaultTokenBalance } from "../../../../hooks/useSelectedVault";
-import { handleTransaction, handleTx, useAwaitPendingStateChange, usePendingTransaction } from "../../../../hooks/useTransactionHandler";
+import { handleTx, useAwaitPendingStateChange, usePendingTransaction } from "../../../../hooks/useTransactionHandler";
 import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
-import { setAlert } from "../../../../store/app/app.slice";
 import { Balance, Vault } from "../../../../store/vault/Vault";
 import { setVault } from "../../../../store/vault/vault.slice";
 import { SetStateType } from "../../../../types/utilities";
@@ -62,28 +60,7 @@ function ApproveWithdrawButton({ withdraw, setWithdraw }: { withdraw: Balance, s
             }});
             setApproving(false);
         }
-    }
-
-    const enterBatchBurn = async () => {
-        try {
-            if (auxoContract) {
-                setApproving(true);
-                const tx = await auxoContract?.enterBatchBurn(withdraw.value)
-                await handleTransaction(tx, eventName, dispatch);
-            } else {
-                console.error('Missing contract details for selected vault')
-            }
-        } catch (err) {
-            dispatch(
-                setAlert({
-                  message: "There was a problem with the transaction",
-                  type: "ERROR",
-                })
-              );
-        } finally {
-            setApproving(false)
-        }
-    }
+    };
 
     return (
         <StyledButton
@@ -96,7 +73,7 @@ function ApproveWithdrawButton({ withdraw, setWithdraw }: { withdraw: Balance, s
             }
         </StyledButton>
     )
-}
+};
 
 function WithdrawActions({ withdraw, setWithdraw }: { withdraw: Balance, setWithdraw: SetStateType<Balance> }) {
     return (
@@ -119,7 +96,6 @@ function WithdrawInput() {
     const currency = useSelectedVault()?.symbol;
     const vault = useSelectedVault();
     const balance = useVaultTokenBalance();
-    // const max = useMaxDeposit();
     const status = useStatus();
     const label = status === WITHDRAWAL.READY
         ? 'Ready to Withdraw'

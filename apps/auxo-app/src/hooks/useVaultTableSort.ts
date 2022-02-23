@@ -27,11 +27,7 @@ const useVaultRows = (): VaultRowReturnValue => {
           isSortable: true,
         },
         label:
-          v.stats && v.token
-            ? zeroApyMessage(
-                v.stats.currentAPY.label
-              )
-            : "--",
+          v.stats && v.token ? zeroApyMessage(v.stats.currentAPY.label) : "--",
         addStyles: true,
       },
       "total deposits": {

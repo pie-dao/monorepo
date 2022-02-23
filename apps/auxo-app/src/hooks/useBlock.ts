@@ -1,7 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { providers } from "ethers";
 import { useEffect, useState } from "react";
-import { useAppSelector } from ".";
 import { useWeb3Cache } from "./useCachedWeb3";
 
 type Block = {
@@ -9,24 +8,15 @@ type Block = {
   lastUpdated: Date | undefined;
 };
 
-enum TXStatus {
-  FAILED,
-  SUCCESS
-}
-
 export const useBlock = (): Block => {
-  const queue = useAppSelector(state => state.tx.queue);
-  const { library } = useWeb3React<
-    providers.Web3Provider | providers.JsonRpcProvider
-  >();
+  const { library } =
+    useWeb3React<providers.Web3Provider | providers.JsonRpcProvider>();
   const { chainId } = useWeb3Cache();
   const [block, setBlock] = useState<Block>({
     blockNumber: null,
     lastUpdated: new Date(),
   });
-  // @ts-ignore
-  useEffect(async () => {
-    try {
+  useEffect(() => {
     if (!!library) {
       let stale = false;
 
@@ -41,7 +31,7 @@ export const useBlock = (): Block => {
           }
         })
         .catch(() => {
-          console.debug('caught err')
+          console.warn("Error getting block");
           if (!stale) {
             setBlock({
               blockNumber: null,
@@ -51,18 +41,6 @@ export const useBlock = (): Block => {
         });
 
       const updateBlockNumber = (blockNumber: number) => {
-        // console.debug({ queue })
-        library.getBlockWithTransactions(blockNumber).then(block => {
-          block.transactions.forEach(async (tx, i) => {
-            // const foundTx = queue.find(q => q.hash = tx.hash);
-            // if (!foundTx) return;
-            // foundTx.status
-            if (i !== 0) return;
-            // console.debug({tx});
-            const receipt = await library.getTransactionReceipt(tx.hash);
-            // console.log(receipt?.status === TXStatus.SUCCESS ? 'SUCCESS' : 'FAIL')            
-          })
-        }).catch(err => console.log('caught err'));
         setBlock({
           blockNumber,
           lastUpdated: new Date(),
@@ -79,9 +57,6 @@ export const useBlock = (): Block => {
         });
       };
     }
-  } catch (Err) {
-    console.debug('caught err')
-  }
   }, [library, chainId]); // ensures refresh if referential identity of library doesn't change across chainIds
 
   return block;

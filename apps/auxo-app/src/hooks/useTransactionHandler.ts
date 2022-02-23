@@ -10,7 +10,7 @@ import { setAlert } from "../store/app/app.slice";
  * @param eventName string name of the event
  * @returns whether or not the event was fired
  */
- export const checkForEvent = async (
+export const checkForEvent = async (
   tx: ContractTransaction,
   eventName: string
 ): Promise<boolean> => {
@@ -21,37 +21,35 @@ import { setAlert } from "../store/app/app.slice";
   return !!targetEvent;
 };
 
-
 export const handleTx = async ({
   tx,
   onSuccess,
   library,
-  dispatch
+  dispatch,
 }: {
-  tx: ContractTransaction,
-  onSuccess: CallableFunction,
-  library: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider,
-  dispatch: Dispatch<AnyAction>
+  tx: ContractTransaction;
+  onSuccess: CallableFunction;
+  library: ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider;
+  dispatch: Dispatch<AnyAction>;
 }) => {
-  
   const receipt = await library.getTransactionReceipt(tx.hash);
   if (receipt.status === 1) {
-      await onSuccess()
-      dispatch(
-        setAlert({
-          message: 'TX Success (NEW)',
-          type: 'SUCCESS'
-        })
-      );
-    } else {
-      dispatch(
-        setAlert({
-          message: "There was a problem with the transaction",
-          type: "ERROR",
-        })
-      );
-    }
-}   
+    await onSuccess();
+    dispatch(
+      setAlert({
+        message: "Transaction Submitted Successfully",
+        type: "SUCCESS",
+      })
+    );
+  } else {
+    dispatch(
+      setAlert({
+        message: "There was a problem with the transaction",
+        type: "ERROR",
+      })
+    );
+  }
+};
 
 export const handleTransaction = async (
   transaction: ContractTransaction | undefined,

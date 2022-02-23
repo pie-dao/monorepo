@@ -2,9 +2,9 @@ import { BytesLike } from "ethers";
 import MerkleProofDev from "../static/stakers-merkle-tree.dev.json";
 import MerkleProofProd from "../static/stakers-merkle-tree.production.json";
 
-const isDevEnvironment = process.env.REACT_APP_MERKLE_ROOT === 'dev';
+const isDevEnvironment = process.env.REACT_APP_MERKLE_ROOT === "dev";
 
-if (isDevEnvironment) console.log('Dev Merkle Proof Loaded');
+if (isDevEnvironment) console.log("Dev Merkle Proof Loaded");
 
 const MerkleProof = isDevEnvironment ? MerkleProofDev : MerkleProofProd;
 

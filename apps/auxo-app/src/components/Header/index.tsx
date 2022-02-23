@@ -24,7 +24,7 @@ const useConnectedWallet = () => {
   const { connector } = useWeb3React();
   const [activatingConnector, setActivatingConnector] = useState<any>();
   const triedEager = useEagerConnect();
-
+  
   useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
       setActivatingConnector(undefined)

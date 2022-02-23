@@ -1,16 +1,11 @@
 import { Tab } from "@headlessui/react"
 import { Fragment } from "react"
 import { FaLock } from "react-icons/fa"
-import { useSelectedVault } from "../../../hooks/useSelectedVault"
+import { useIsDepositor } from "../../../hooks/useSelectedVault"
 import { Vault } from "../../../store/vault/Vault"
 import DepositInput from "./Deposit/DepositInput"
 import MerkleVerify from "./MerkleAuthCheck"
 import WithdrawInput from "./Withdraw/WithdrawInput"
-
-const useIsDepositor = (): boolean => {
-  const vault = useSelectedVault();
-  return !!vault?.auth.isDepositor;
-}
 
 const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.Element => {
     const isDepositor = useIsDepositor();

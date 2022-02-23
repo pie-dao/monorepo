@@ -1,5 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import Big from 'big.js';
+import Big from "big.js";
 import { Balance } from "../store/vault/Vault";
 
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
@@ -14,9 +14,13 @@ export const prettyNumber = (n?: number): string =>
 export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
 
-export const fromScale = (n: number | BigNumber, decimals: number, precision = 0): number => {
+export const fromScale = (
+  n: number | BigNumber,
+  decimals: number,
+  precision = 0
+): number => {
   if (typeof n === "number") return n;
-  
+
   // ethers BN implementaion ignores decimal point conversion when dividing, so we need
   // to use an alternative approach for decimals >= 0.5
   const numerator = Big(n.toString());

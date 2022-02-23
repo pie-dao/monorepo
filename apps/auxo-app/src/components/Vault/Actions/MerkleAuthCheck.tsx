@@ -1,13 +1,12 @@
 import { useWeb3React } from "@web3-react/core";
-import { useRef } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../../hooks";
 import { useMerkleAuthContract } from "../../../hooks/useContract"
-import { usePendingTransaction } from "../../../hooks/useTransactionHandler";
+import { handleTx, usePendingTransaction } from "../../../hooks/useTransactionHandler";
 import { setAlert } from "../../../store/app/app.slice";
 import { Vault } from "../../../store/vault/Vault";
-import { setIsDepositor, setLoading, setVault } from "../../../store/vault/vault.slice";
+import { setVault } from "../../../store/vault/vault.slice";
 import { AUXO_HELP_URL } from "../../../utils";
 import { getProof } from "../../../utils/merkleProof";
 import StyledButton from "../../UI/button";
@@ -16,128 +15,50 @@ import ExternalUrl from "../../UI/url";
 
 const veDoughLogo = process.env.PUBLIC_URL + '/veDough-only.png'
 
-export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
-  const [loading, setLoading] = useState(false);
-  const [depositor, setDespositor] = useState(false);
-  const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
-  const authContract = useMerkleAuthContract(authAddress);
-
-  useEffect(() => {
-    if (account && vaultAddress) {
-      setLoading(true);
-      authContract?.isDepositor(vaultAddress, account)
-        .then(res => {
-          dispatch(
-            setIsDepositor({
-              address: vaultAddress,
-              isDepositor: res
-            }))
-            setDespositor(res);
-        })
-        .catch(() => console.warn('isDepositor failed'))
-        .finally(() => setLoading(false))
-    }
-  }, [account, vaultAddress, authContract, dispatch]);
-  return { loading, depositor }
-}
-
 const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
+  const needsToVerifyString = 'You need to verify before you can use this vault'
+  const verifiedString = 'Account has been verfied';
+  const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
+
   const dispatch = useAppDispatch();
   const { account, library } = useWeb3React();
   const authContract = useMerkleAuthContract(vault.auth.address);
   const isDepositor = vault.auth.isDepositor
   const txPending = usePendingTransaction();
   const [authorizing, setAuthorizing] = useState(false);
-
-  const first = useRef(false);
-
-  useEffect(() => {
-    if (!first) {
-      dispatch(setAlert({
-        message: 'Authorization confirmed',
-        type: 'SUCCESS'
-      }))
-    }
-  }, [isDepositor, dispatch])
-
+  
   const proof = getProof(account);
 
-  const submitProofNew = async () => {
-    setAuthorizing(true)
+  const submitProof = async () => {
     try {
-        if (authContract && account && vault && proof) {
-            const tx = await authContract?.authorizeDepositor(account, proof);
-            const receipt = await library.getTransactionReceipt(tx.hash);
-            if (receipt.status === 1) {
-                const newVault: Vault = {
-                    ...vault,
-                    auth: {
-                      ...vault.auth,
-                      isDepositor: true
-                    }
-                }
-                dispatch(setVault(newVault))
-                dispatch(setAlert({
-                    message: 'TX Success (NEW)',
-                    type: 'SUCCESS'
-                }))
-            }
+      if (authContract && account && vault && proof) {
+        setAuthorizing(true)
+          const tx = await authContract?.authorizeDepositor(account, proof);
+          await handleTx({ tx, library, dispatch, onSuccess: () => {
+            const newVault: Vault = {
+              ...vault,
+              auth: {
+                ...vault.auth,
+                isDepositor: true
+              }
+            };  
+            dispatch(setVault(newVault));
+          }});
         } else {
-            console.error('Missing TX or account')
-        }
-    } catch (err) {
+          throw new Error('Missing TX or account')
+        } 
+    } catch {
         dispatch(
-            setAlert({
-              message: "There was a problem with the transaction",
-              type: "ERROR",
-            })
-          );
+          setAlert({
+            message: 'There was a problem submitting the transaction',
+            type: 'ERROR'
+          }
+        )
+      )
     } finally {
-        setAuthorizing(false)
+      setAuthorizing(false);
     }
-  }    
-
-  // const submitProof = useCallback(async () => {
-  //   console.debug('click')
-  //   if (proof && account) {
-  //     try {
-
-  //       const tx = await authContract?.authorizeDepositor(account, proof);
-  //       console.debug('here')
-  //       await tx?.wait();
-  //       const confirm = await authContract?.isDepositor(vault.address, account);
-  //       if (confirm) {
-  //         dispatch(
-  //           setIsDepositor({
-  //             address: vault.address,
-  //             isDepositor: confirm
-  //           })
-  //         );
-
-  //         dispatch(
-  //           setAlert({
-  //             message: 'Proof submitted, waiting to confirm',
-  //             type: 'PENDING'
-  //           })
-  //         );
-  //       }
-  //     } catch (err) {
-  //       dispatch(
-  //         setAlert({
-  //           message: 'There was a problem submitting the transaction',
-  //           type: 'ERROR'
-  //         })
-  //       )
-  //     }
-  //   } else {
-  //     console.warn('Proof or account missing')
-  //   }
-  // }, [account, proof, authContract, dispatch, vault.address]);
-
-  const needsToVerifyString = 'You need to verify before you can use this vault'
-  const verifiedString = 'Account has been verfied';
-  const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
+  }
 
   return (
     <div className="p-5 flex flex-col items-center justify-center">{ 
@@ -157,8 +78,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
       { 
         (!isDepositor && proof) && 
         <StyledButton className="md:w-1/2" 
-          // onClick={() => submitProof()} 
-          onClick={submitProofNew}
+          onClick={submitProof}
           disabled={txPending || authorizing}>{ authorizing ? <LoadingSpinner /> :'Opt In' }</StyledButton>
       }
       { 

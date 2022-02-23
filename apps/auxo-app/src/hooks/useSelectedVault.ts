@@ -42,3 +42,13 @@ export const useVaultTokenBalance = (): Balance => {
   const vault = useSelectedVault();
   return vault?.userBalances?.vault ?? zeroBalance();
 };
+
+export const useIsDepositor = (): boolean => {
+  const vault = useSelectedVault();
+  return !!vault?.auth.isDepositor;
+};
+
+export const useDecimals = (): number => {
+  const vault = useSelectedVault();
+  return vault?.token.decimals ?? 0;
+};

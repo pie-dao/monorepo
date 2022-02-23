@@ -1,15 +1,9 @@
 import { BigNumber } from 'ethers';
 import { Range, getTrackBackground } from 'react-range';
-import { useSelectedVault } from "../../../hooks/useSelectedVault";
+import { useDecimals } from "../../../hooks/useSelectedVault";
 import { Balance } from "../../../store/vault/Vault";
 import { SetStateType } from "../../../types/utilities";
 import { smallToBalance } from "../../../utils";
-import { zeroBalance } from '../../../utils/balances';
-
-const useDecimals = (): number => {
-  const vault = useSelectedVault();
-  return vault?.token.decimals ?? 0
-}
 
 function RangeWrapper({ max, value, setValue }: { max: Balance, value: Balance, setValue: SetStateType<Balance>}) {
     const thumbSize = '24px';

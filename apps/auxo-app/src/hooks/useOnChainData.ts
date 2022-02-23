@@ -1,7 +1,12 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { useAppDispatch } from ".";
-import { Erc20, MerkleAuth, Mono, Vault as VaultCapped } from "../types/artifacts/abi";
+import {
+  Erc20,
+  MerkleAuth,
+  Mono,
+  Vault as VaultCapped,
+} from "../types/artifacts/abi";
 import { useContracts } from "./useContract";
 import { Balance, Vault } from "../store/vault/Vault";
 import { AwaitedReturn, fromScale, toBalance } from "../utils";
@@ -55,7 +60,7 @@ const getAllBalances = async ({
       calls.push(mono.batchBurns(batchBurnRound - 1)); // 11
     }
 
-    calls.push(mono.exchangeRate()) // 12
+    calls.push(mono.exchangeRate()); // 12
 
     return await Promise.all(calls);
   } else {
@@ -113,7 +118,11 @@ const toState = ({
       lastHarvest: toNumber(data[1]),
       currentAPY: toBalance(data[2] as BigNumber, decimals, 2),
       batchBurnRound: toNumber(data[3]),
-      exchangeRate: toBalance(data[12] as BigNumber ?? BigNumber.from(0), decimals, 6)
+      exchangeRate: toBalance(
+        (data[12] as BigNumber) ?? BigNumber.from(0),
+        decimals,
+        6
+      ),
     },
     cap: {
       ...existing.cap,

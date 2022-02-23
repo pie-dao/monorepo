@@ -3,14 +3,14 @@ import { DepositInput } from "./Deposit"
 import { SwitcherButton } from "../../UI/button";
 import { WithdrawInput, WithdrawStatusBar } from "./Withdraw"
 import { useSelectedVault } from "../../../hooks/useSelectedVault";
-import MerkleVerify, { useDepositor } from "../Actions/MerkleAuthCheck";
+import MerkleVerify from "../Actions/MerkleAuthCheck";
 import CardItem from "../../UI/cardItem";
 import { prettyNumber } from "../../../utils";
 import { useStatus } from "../../../hooks/useWithdrawalStatus";
 
 function DepositCard({ loading }: { loading: boolean }) {
   const vault = useSelectedVault();
-  const loadingDepositor = useDepositor(vault?.auth.address, vault?.address);
+  const loadingDepositor = vault?.auth.address;
   if (!vault) return <p>Failed to Load</p> 
   return (
     <section className="flex flex-col justify-evenly h-full items-center">

@@ -6,7 +6,7 @@ import { Balance, Vault } from "../../../../store/vault/Vault";
 import { addBalances, compareBalances, subBalances, zeroBalance } from "../../../../utils/balances";
 import StyledButton from "../../../UI/button";
 import InputSlider from "../InputSlider";
-import { handleTransaction, handleTx, useAwaitPendingStateChange, usePendingTransaction } from '../../../../hooks/useTransactionHandler';
+import { handleTx, useAwaitPendingStateChange, usePendingTransaction } from '../../../../hooks/useTransactionHandler';
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract, useTokenContract } from "../../../../hooks/useContract";
 import { setAlert } from "../../../../store/app/app.slice";
@@ -15,7 +15,6 @@ import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 import { useWeb3React } from "@web3-react/core";
 import { prettyNumber } from "../../../../utils";
 import { SetStateType } from "../../../../types/utilities";
-import { useEffect } from "react";
 import { logoSwitcher } from "../../../../utils/logos";
 import { setVault } from "../../../../store/vault/vault.slice";
 
@@ -31,51 +30,25 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
     const eventName = 'Approval';
     useAwaitPendingStateChange(limit, eventName);
 
-    const approveDepositNew = async () => {
-        try {
-            if (tokenContract && vault && vault.userBalances) {
-                setApproving(true);
-                const pretx = tokenContract?.approve(vault?.address, deposit.value)
-                console.debug({ pretx });
-                const tx = await pretx;
-                const receipt = await library.getTransactionReceipt(tx.hash);
-                if (receipt.status === 1) {
-                    const newVault: Vault = {
-                        ...vault,
-                        userBalances: {
-                            ...vault.userBalances,
-                            allowance: deposit,
-                        }
-                    }
-                    dispatch(setVault(newVault))
-                    dispatch(setAlert({
-                        message: 'TX Success (NEW)',
-                        type: 'SUCCESS'
-                    }))
-                }
-            } else {
-                console.error('Missing TX or account')
-            }
-        } catch (err) {
-            dispatch(
-                setAlert({
-                  message: "There was a problem with the transaction",
-                  type: "ERROR",
-                })
-              );
-        } finally {
-            setApproving(false)
-        }
-    }
-
     const approveDeposit = async () => {
         try {
-            if (tokenContract && vault?.address) {
+            if (tokenContract && vault) {
                 setApproving(true);
                 const tx = await tokenContract?.approve(vault?.address, deposit.value)
-                await handleTransaction(tx, eventName, dispatch);
+                await handleTx({ library, tx, dispatch, onSuccess: () => {
+                    if(!(vault && vault.userBalances)) return;
+                    const newVault: Vault = {
+                            ...vault,
+                            userBalances: {
+                                ...vault.userBalances,
+                                allowance: deposit,
+                            }
+                        }
+                    dispatch(setVault(newVault))
+                    }
+                });
             } else {
-                console.error('Missing TX or account')
+                throw new Error('Missing TX or account')
             }
         } catch (err) {
             dispatch(
@@ -87,14 +60,12 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
         } finally {
             setApproving(false)
         }
-    }
+    };
 
     return (
         <StyledButton
             disabled={deposit.value === '0' || compareBalances(limit, 'gte', deposit) || txPending}
-            // onClick={approveDeposit}
-            onClick={approveDepositNew}
-            // onClick={() => console.debug({ deposit })}
+            onClick={approveDeposit}
         >
             { approving
                 ? <LoadingSpinner />
@@ -112,27 +83,8 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
     const { account } = useWeb3React();
     const auxoContract = useMonoVaultContract(vault?.address);
     const { limit } = useApprovalLimit();
-    const vaultUnderlying = vault?.userBalances?.vaultUnderlying;
     const txPending = usePendingTransaction();
     const { library } = useWeb3React();
-
-    // 
-    useEffect(() => {
-        if (!account) return;
-        auxoContract?.balanceOfUnderlying(account).then(r => console.debug('bou', r.toString()));
-        auxoContract?.balanceOf(account).then(r => console.debug('bo', r.toString()));
-        auxoContract?.exchangeRate().then(e => console.debug('er', e.toString()))
-    }, [vaultUnderlying])
-
-    const eventName = 'Deposit';
-    
-    const succeeded = useAwaitPendingStateChange(vaultUnderlying?.value, eventName);
-
-    useEffect(() => {
-        if (succeeded) {
-            setDeposit(zeroBalance());
-        }
-    }, [succeeded, setDeposit])
 
     const buttonDisabled = () => {
         const invalidDepost = deposit.label <= 0;
@@ -141,17 +93,13 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
         return !sufficientApproval || wrongNetwork || invalidDepost || depositing || txPending; 
     }
 
-    const makeDepositNew = async () => {
+    const makeDeposit = async () => {
         try {
-            if (auxoContract && account && vault && vault.userBalances) {
-                setDepositing(true)
+            if (auxoContract && account) {
                 setDepositing(true);
-                console.debug({ deposit })
-                const tx = await auxoContract?.deposit(account, deposit.value)
-                console.debug({ tx })
-                const receipt = await library.getTransactionReceipt(tx.hash);
-                if (receipt.status === 1) {
-                    console.debug(vault.userBalances.vaultUnderlying, deposit)
+                const tx = await auxoContract?.deposit(account, deposit.value);
+                await handleTx({ dispatch, library, tx, onSuccess: () => {
+                    if (!(vault && vault.userBalances)) return
                     const newVault: Vault = {
                         ...vault,
                         userBalances: {
@@ -159,16 +107,12 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
                             wallet:  subBalances(vault.userBalances.wallet, deposit),
                             vaultUnderlying: addBalances(vault.userBalances.vaultUnderlying, deposit),
                         }
-                    }
-                    dispatch(setVault(newVault))
-                    dispatch(setAlert({
-                        message: 'TX Success (NEW)',
-                        type: 'SUCCESS'
-                    }))
-                    setDeposit(zeroBalance())
-                }
+                    };
+                    dispatch(setVault(newVault));
+                    setDeposit(zeroBalance());
+                }});
             } else {
-                console.error('Missing TX or account')
+                throw new Error('Missing TX or account')
             }
         } catch (err) {
             dispatch(
@@ -176,31 +120,11 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
                   message: "There was a problem with the transaction",
                   type: "ERROR",
                 })
-              );
-        } finally {
-            setDepositing(false)
-        }
-    }    
-
-    const makeDeposit = async () => {
-        try {
-            if (auxoContract && account) {
-                setDepositing(true)
-                const tx = await auxoContract?.deposit(account, deposit.value)
-                await handleTransaction(tx, eventName, dispatch);
-            }
-        } catch (err) {
-            dispatch(
-                setAlert({
-                    message: "There was a problem with the transaction",
-                    type: "ERROR",
-                })
             );
         } finally {
-          setDepositing(false)
-        }    
-    }
-
+            setDepositing(false);
+        }
+    };    
     return (
         <>
         <div 
@@ -215,8 +139,7 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
         </div>
         <StyledButton
             disabled={buttonDisabled()}
-            // onClick={makeDeposit}
-            onClick={makeDepositNew}
+            onClick={makeDeposit}
             className={
                 !buttonDisabled()
                 ? 'bg-baby-blue-dark'
@@ -249,10 +172,7 @@ function DepositInput() {
     const label = prettyNumber(balance.label) + ' ' + currency
 
     return (
-        <div 
-            className="
-            sm:my-2 flex flex-col h-full w-full justify-evenly px-4
-        ">
+        <div className="sm:my-2 flex flex-col h-full w-full justify-evenly px-4">
             <div className="mb-2 mt-4 flex justify-center sm:justify-start items-center h-10 w-full">
                 <div className="h-6 w-6 sm:h-8 sm:w-8 mr-3">{ logoSwitcher(vault?.symbol) }</div>
                 <p className="text-gray-700 md:text-xl">Deposit {currency}</p>
