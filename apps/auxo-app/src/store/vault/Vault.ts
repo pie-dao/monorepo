@@ -48,6 +48,7 @@ export interface VaultStats {
   deposits: Balance;
   lastHarvest: number;
   batchBurnRound: number;
+  exchangeRate: Balance;
 }
 
 // Properties unique to a given user ie. own deposits

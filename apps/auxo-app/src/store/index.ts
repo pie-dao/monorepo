@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import vaultReducer from "./vault/vault.slice";
 import appReducer from "./app/app.slice";
+import txReducer from "./tx/tx.slice";
 import memoize from "proxy-memoize";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
@@ -13,6 +14,7 @@ import { useSelector } from "react-redux";
 export const rootReducer = combineReducers({
   vault: vaultReducer,
   app: appReducer,
+  tx: txReducer
 });
 
 export const store = configureStore({

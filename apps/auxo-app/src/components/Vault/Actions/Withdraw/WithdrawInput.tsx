@@ -1,15 +1,19 @@
+import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract } from "../../../../hooks/useContract";
+import { useMaxDeposit } from "../../../../hooks/useMaxDeposit";
 import { useSelectedVault, useVaultTokenBalance } from "../../../../hooks/useSelectedVault";
-import { handleTransaction, useAwaitPendingStateChange, usePendingTransaction } from "../../../../hooks/useTransactionHandler";
+import { handleTransaction, handleTx, useAwaitPendingStateChange, usePendingTransaction } from "../../../../hooks/useTransactionHandler";
 import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
 import { setAlert } from "../../../../store/app/app.slice";
-import { Balance } from "../../../../store/vault/Vault";
+import { Balance, Vault } from "../../../../store/vault/Vault";
+import { setVault } from "../../../../store/vault/vault.slice";
 import { SetStateType } from "../../../../types/utilities";
 import { AUXO_HELP_URL, prettyNumber } from "../../../../utils";
-import { zeroBalance } from "../../../../utils/balances";
+import { addBalances, subBalances, zeroBalance } from "../../../../utils/balances";
+import { logoSwitcher } from "../../../../utils/logos";
 import StyledButton from "../../../UI/button";
 import LoadingSpinner from "../../../UI/loadingSpinner";
 import ExternalUrl from "../../../UI/url";
@@ -24,6 +28,7 @@ function ApproveWithdrawButton({ withdraw, setWithdraw }: { withdraw: Balance, s
     const auxoContract = useMonoVaultContract(vault?.address);
     const status = useStatus();
     const txPending = usePendingTransaction();
+    const { library } = useWeb3React();
 
     const eventName = 'EnterBatchBurn';
     const succeeded = useAwaitPendingStateChange(batchBurnShares?.value, eventName);
@@ -33,6 +38,31 @@ function ApproveWithdrawButton({ withdraw, setWithdraw }: { withdraw: Balance, s
             setWithdraw(zeroBalance())
         }
     }, [succeeded, setWithdraw])
+
+    const newEnterBatchBurn = async () => {
+        if (auxoContract) {
+            setApproving(true);
+            const tx = await auxoContract?.enterBatchBurn(withdraw.value)
+            await handleTx({ tx, dispatch, library, onSuccess: () => {
+                if (vault && vault.userBalances && vault.userBalances.batchBurn) {
+                    const newVault: Vault = {
+                        ...vault,
+                        userBalances: {
+                            ...vault.userBalances,
+                            vault: subBalances(vault.userBalances.vault, withdraw),
+                            batchBurn: {
+                                ...vault.userBalances.batchBurn,
+                                shares: addBalances(vault.userBalances.batchBurn.shares, withdraw),
+                            }
+                        }
+                    };
+                    dispatch(setVault(newVault));
+                    setWithdraw(zeroBalance())
+                };
+            }});
+            setApproving(false);
+        }
+    }
 
     const enterBatchBurn = async () => {
         try {
@@ -58,7 +88,7 @@ function ApproveWithdrawButton({ withdraw, setWithdraw }: { withdraw: Balance, s
     return (
         <StyledButton
             disabled={withdraw.value === '0' || status === WITHDRAWAL.READY || txPending}
-            onClick={enterBatchBurn}
+            onClick={newEnterBatchBurn}
         >
             { approving
                 ? <LoadingSpinner />
@@ -89,18 +119,19 @@ function WithdrawInput() {
     const currency = useSelectedVault()?.symbol;
     const vault = useSelectedVault();
     const balance = useVaultTokenBalance();
+    // const max = useMaxDeposit();
     const status = useStatus();
     const label = status === WITHDRAWAL.READY
         ? 'Ready to Withdraw'
-        : prettyNumber(balance.label) + ' ' + currency
+        : prettyNumber(balance.label) + ' auxo' + currency
     return (
         <div 
             className="
             sm:my-2 flex flex-col h-full w-full justify-evenly px-4
         ">
             <div className="mb-2 mt-4 flex justify-center sm:justify-start items-center h-10 w-full">
-                <div className="h-6 w-6 sm:h-8 sm:w-8">{ vault?.symbol }</div>
-                <p className="text-gray-700 md:text-xl ml-3 mr-1">Withdraw {currency}</p>
+                <div className="h-6 w-6 sm:h-8 sm:w-8">{ logoSwitcher(vault?.symbol) }</div>
+                <p className="text-gray-700 md:text-xl ml-3 mr-1">Convert auxo{currency} to {currency}</p>
             </div>
             {   (status === WITHDRAWAL.READY) ?
                 <div className="h-64 bg-baby-blue-light rounded-xl p-3 text-baby-blue-dark mt-3 flex flex-col items-center justify-evenly">

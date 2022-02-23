@@ -9,7 +9,6 @@ import StyledButton from "../../UI/button";
 import { NotYetReadyToWithdrawError } from '../../../errors';
 import LoadingSpinner from "../../UI/loadingSpinner";
 import { zeroBalance } from "../../../utils/balances";
-import { checkForEvent } from "../../../utils/event";
 import { setReduceVaultTokens } from "../../../store/vault/vault.slice";
 import { useAppDispatch } from "../../../hooks";
 import { useWeb3Cache } from "../../../hooks/useCachedWeb3";
@@ -17,6 +16,7 @@ import { setAlert } from "../../../store/app/app.slice";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { WITHDRAWAL } from "../../../hooks/useWithdrawalStatus";
+import { checkForEvent } from "../../../hooks/useTransactionHandler";
 
 
 const getButtonText = (status: WITHDRAWAL): string => {

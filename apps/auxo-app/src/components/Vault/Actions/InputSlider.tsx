@@ -1,8 +1,10 @@
+import { BigNumber } from 'ethers';
 import { Range, getTrackBackground } from 'react-range';
 import { useSelectedVault } from "../../../hooks/useSelectedVault";
 import { Balance } from "../../../store/vault/Vault";
 import { SetStateType } from "../../../types/utilities";
 import { smallToBalance } from "../../../utils";
+import { zeroBalance } from '../../../utils/balances';
 
 const useDecimals = (): number => {
   const vault = useSelectedVault();
@@ -11,21 +13,22 @@ const useDecimals = (): number => {
 
 function RangeWrapper({ max, value, setValue }: { max: Balance, value: Balance, setValue: SetStateType<Balance>}) {
     const thumbSize = '24px';
+    const trackColor = '#7065F4';
     const decimals = useDecimals();
 
-    // library requires a number but this can cause big number underflows
-    const safeMax = Math.round(max.label);
+    const onChange = (v: number[]): void => {
+      const changeBalance = smallToBalance(v[0], decimals);
+      const roundingError = BigNumber.from(max.value).sub(changeBalance.value).isNegative();
+      roundingError ? setValue(max) : setValue(changeBalance);
+    }
     
     return (
       <Range
-        disabled={safeMax === 0}
+        disabled={max.label < 1}
         min={0}
-        max={safeMax === 0 ? 1 : safeMax}
+        max={max.value === '0' ? 1 : max.label}
         values={[value.label]}
-        onChange={v => setValue(
-          smallToBalance(
-            v[0], decimals)
-          )}
+        onChange={onChange}
         renderTrack={({ props, children }) => (
           <div
             {...props}
@@ -37,9 +40,9 @@ function RangeWrapper({ max, value, setValue }: { max: Balance, value: Balance, 
               borderRadius: '10px',
               background: getTrackBackground({
                 values: [value.label],
-                colors: ["#7065F4", "#FFF"],
+                colors: [trackColor, "#FFF"],
                 min: 0,
-                max: safeMax
+                max: max.label
               })              
             }}
           >
@@ -47,6 +50,7 @@ function RangeWrapper({ max, value, setValue }: { max: Balance, value: Balance, 
               </div>
         )}
         renderThumb={({ props }) => (
+          // taken straight from the docs but still throws TS error, happy to ignore
           // @ts-ignore
           <div
             {...props}
@@ -55,7 +59,7 @@ function RangeWrapper({ max, value, setValue }: { max: Balance, value: Balance, 
               height: thumbSize,
               width: thumbSize,
               borderRadius: '100%',
-              backgroundColor: '#7065F4' 
+              backgroundColor: max.label < 1 ? 'gray' : trackColor 
             }}
           />
         )}
@@ -87,7 +91,18 @@ function InputSlider({ value, setValue, max, label }: {
             </div>
             <button
               onClick={setMax}
-              className='text-baby-blue-dark font-bold border-4 border-white rounded-lg px-4 py-1'>MAX</button>
+              disabled={max.label < 1}
+              className='
+                text-baby-blue-dark
+                font-bold
+                border-4 
+                border-white
+                rounded-lg
+                px-4
+                py-1
+                disabled:text-gray-300
+                '
+              >MAX</button>
         </div>
     )
 }

@@ -55,6 +55,8 @@ const getAllBalances = async ({
       calls.push(mono.batchBurns(batchBurnRound - 1)); // 11
     }
 
+    calls.push(mono.exchangeRate()) // 12
+
     return await Promise.all(calls);
   } else {
     console.warn("Missing contracts");
@@ -109,8 +111,9 @@ const toState = ({
     stats: {
       deposits: toBalance(data[0] as BigNumber, decimals),
       lastHarvest: toNumber(data[1]),
-      currentAPY: toBalance(data[2] as BigNumber, decimals),
+      currentAPY: toBalance(data[2] as BigNumber, decimals, 2),
       batchBurnRound: toNumber(data[3]),
+      exchangeRate: toBalance(data[12] as BigNumber ?? BigNumber.from(0), decimals, 6)
     },
     cap: {
       ...existing.cap,

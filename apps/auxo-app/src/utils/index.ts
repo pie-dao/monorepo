@@ -1,4 +1,5 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import Big from 'big.js';
 import { Balance } from "../store/vault/Vault";
 
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
@@ -13,10 +14,14 @@ export const prettyNumber = (n?: number): string =>
 export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
 
-export const fromScale = (n: number | BigNumber, decimals: number): number => {
-  return typeof n === "number"
-    ? n
-    : n.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
+export const fromScale = (n: number | BigNumber, decimals: number, precision = 0): number => {
+  if (typeof n === "number") return n;
+  
+  // ethers BN implementaion ignores decimal point conversion when dividing, so we need
+  // to use an alternative approach for decimals >= 0.5
+  const numerator = Big(n.toString());
+  const raw = numerator.div(Big(10).pow(decimals)).toFixed(precision);
+  return Number(raw);
 };
 
 export const smallToBalance = (n: number, decimals: number): Balance => ({
@@ -29,12 +34,13 @@ export const smallToBalance = (n: number, decimals: number): Balance => ({
 
 export const toBalance = (
   n: number | BigNumber,
-  decimals: number
+  decimals: number,
+  precision = 0
 ): Balance => ({
   /**
    * Convert a big number to a balance object
    */
-  label: fromScale(n, decimals),
+  label: fromScale(n, decimals, precision),
   value: String(n),
 });
 

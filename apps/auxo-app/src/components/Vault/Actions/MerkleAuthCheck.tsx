@@ -7,7 +7,7 @@ import { useMerkleAuthContract } from "../../../hooks/useContract"
 import { usePendingTransaction } from "../../../hooks/useTransactionHandler";
 import { setAlert } from "../../../store/app/app.slice";
 import { Vault } from "../../../store/vault/Vault";
-import { setIsDepositor } from "../../../store/vault/vault.slice";
+import { setIsDepositor, setLoading, setVault } from "../../../store/vault/vault.slice";
 import { AUXO_HELP_URL } from "../../../utils";
 import { getProof } from "../../../utils/merkleProof";
 import StyledButton from "../../UI/button";
@@ -44,10 +44,11 @@ export const useDepositor = (authAddress?: string, vaultAddress?: string) => {
 
 const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const authContract = useMerkleAuthContract(vault.auth.address);
-  const isDepositor =  vault.auth.isDepositor;
+  const isDepositor = vault.auth.isDepositor
   const txPending = usePendingTransaction();
+  const [authorizing, setAuthorizing] = useState(false);
 
   const first = useRef(false);
 
@@ -62,40 +63,77 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
 
   const proof = getProof(account);
 
-  const submitProof = useCallback(async () => {
-    if (proof && account) {
-      try {
-        const tx = await authContract?.authorizeDepositor(account, proof);
-        await tx?.wait();
-
-        const confirm = await authContract?.isDepositor(vault.address, account);
-        if (confirm) {
-          dispatch(
-            setIsDepositor({
-              address: vault.address,
-              isDepositor: confirm
-            })
-          );
-
-          dispatch(
-            setAlert({
-              message: 'Proof submitted, waiting to confirm',
-              type: 'PENDING'
-            })
-          );
+  const submitProofNew = async () => {
+    setAuthorizing(true)
+    try {
+        if (authContract && account && vault && proof) {
+            const tx = await authContract?.authorizeDepositor(account, proof);
+            const receipt = await library.getTransactionReceipt(tx.hash);
+            if (receipt.status === 1) {
+                const newVault: Vault = {
+                    ...vault,
+                    auth: {
+                      ...vault.auth,
+                      isDepositor: true
+                    }
+                }
+                dispatch(setVault(newVault))
+                dispatch(setAlert({
+                    message: 'TX Success (NEW)',
+                    type: 'SUCCESS'
+                }))
+            }
+        } else {
+            console.error('Missing TX or account')
         }
-      } catch (err) {
+    } catch (err) {
         dispatch(
-          setAlert({
-            message: 'There was a problem submitting the transaction',
-            type: 'ERROR'
-          })
-        )
-      }
-    } else {
-      console.warn('Proof or account missing')
+            setAlert({
+              message: "There was a problem with the transaction",
+              type: "ERROR",
+            })
+          );
+    } finally {
+        setAuthorizing(false)
     }
-  }, [account, proof, authContract, dispatch, vault.address]);
+  }    
+
+  // const submitProof = useCallback(async () => {
+  //   console.debug('click')
+  //   if (proof && account) {
+  //     try {
+
+  //       const tx = await authContract?.authorizeDepositor(account, proof);
+  //       console.debug('here')
+  //       await tx?.wait();
+  //       const confirm = await authContract?.isDepositor(vault.address, account);
+  //       if (confirm) {
+  //         dispatch(
+  //           setIsDepositor({
+  //             address: vault.address,
+  //             isDepositor: confirm
+  //           })
+  //         );
+
+  //         dispatch(
+  //           setAlert({
+  //             message: 'Proof submitted, waiting to confirm',
+  //             type: 'PENDING'
+  //           })
+  //         );
+  //       }
+  //     } catch (err) {
+  //       dispatch(
+  //         setAlert({
+  //           message: 'There was a problem submitting the transaction',
+  //           type: 'ERROR'
+  //         })
+  //       )
+  //     }
+  //   } else {
+  //     console.warn('Proof or account missing')
+  //   }
+  // }, [account, proof, authContract, dispatch, vault.address]);
 
   const needsToVerifyString = 'You need to verify before you can use this vault'
   const verifiedString = 'Account has been verfied';
@@ -118,7 +156,10 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
       }
       { 
         (!isDepositor && proof) && 
-        <StyledButton className="md:w-1/2" onClick={() => submitProof()} disabled={txPending}>Opt In</StyledButton>
+        <StyledButton className="md:w-1/2" 
+          // onClick={() => submitProof()} 
+          onClick={submitProofNew}
+          disabled={txPending || authorizing}>{ authorizing ? <LoadingSpinner /> :'Opt In' }</StyledButton>
       }
       { 
         !isDepositor && 

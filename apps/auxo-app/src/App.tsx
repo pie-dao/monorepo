@@ -8,6 +8,7 @@ import AlertMessage from "./components/Header/AlertMessage";
 import Home from "./pages/Home";
 
 const ChainDataComponent = () => {
+  
   useSetWeb3Cache();
   const { loading } = useChainData();
   return <div>{loading}</div>;

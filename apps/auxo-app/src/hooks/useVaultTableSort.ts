@@ -29,7 +29,7 @@ const useVaultRows = (): VaultRowReturnValue => {
         label:
           v.stats && v.token
             ? zeroApyMessage(
-                Number(v.stats?.currentAPY.value) / 10 ** v.token.decimals
+                v.stats.currentAPY.label
               )
             : "--",
         addStyles: true,

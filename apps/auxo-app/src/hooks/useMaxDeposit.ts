@@ -8,11 +8,32 @@ const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber => {
   return b1.gt(b2) ? b2 : b1;
 };
 
+export const useApproximatePendingAsUnderlying = (): Balance => {
+  const vault = useSelectedVault();
+  const sharesPending = vault?.userBalances?.batchBurn.shares ?? zeroBalance();
+  const decimals = vault?.token.decimals;
+  const exchangeRate = vault?.stats?.exchangeRate;
+
+  const amountPendingUnderlying = BigNumber.from(sharesPending.value)
+      .mul(exchangeRate?.value ?? 0)
+
+  const amountPendingUnderlyingLabel = amountPendingUnderlying
+    .div(
+      BigNumber.from(10).pow((2*(decimals ?? 0)))
+    )
+      
+  return {
+    value: amountPendingUnderlying.toString(),
+    label: amountPendingUnderlyingLabel.toNumber()
+  }  
+};
+
 export const useMaxDeposit = (): Balance => {
   /**
    * Return min of underlying balance or (cap - deposits)
    */
   const vault = useSelectedVault();
+  const sharesUnderlying = useApproximatePendingAsUnderlying();
   const [balance, setBalance] = useState<Balance>();
 
   useEffect(() => {
@@ -20,7 +41,7 @@ export const useMaxDeposit = (): Balance => {
       const currentDeposits = vault.userBalances?.vaultUnderlying;
       const capUnderlying = vault.cap.underlying;
       const inWallet = vault.userBalances.wallet;
-      const pendingWithdrawal = vault.userBalances.batchBurn.shares;
+      const pendingWithdrawal = sharesUnderlying;
 
       // take the total capped per user, and sub anything
       // currently deposited or pending withdrawal

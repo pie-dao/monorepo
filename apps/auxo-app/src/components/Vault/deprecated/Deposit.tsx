@@ -12,7 +12,6 @@ import StyledButton from "../../UI/button";
 import CardItem from "../../UI/cardItem";
 import { useSelectedVault } from "../../../hooks/useSelectedVault";
 import LoadingSpinner from "../../UI/loadingSpinner";
-import { checkForEvent } from "../../../utils/event";
 import { zeroBalance } from "../../../utils/balances";
 import { useWeb3Cache } from "../../../hooks/useCachedWeb3";
 import MerkleVerify, { useDepositor } from "../Actions/MerkleAuthCheck";
@@ -20,6 +19,7 @@ import { setAlert } from "../../../store/app/app.slice";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useMaxDeposit } from "../../../hooks/useMaxDeposit";
+import { checkForEvent } from "../../../hooks/useTransactionHandler";
 
 const conditionallyApprove = async ({
   allowance,

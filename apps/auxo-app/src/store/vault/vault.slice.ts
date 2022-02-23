@@ -11,6 +11,12 @@ export const vaultSlice = createSlice({
     setVaults: (state, action: PayloadAction<Vault[]>) => {
       state.vaults = action.payload;
     },
+    setVault: (state, action: PayloadAction<Vault>) => {
+      const updatedVault = action.payload
+      state.vaults = state.vaults.map(originalVault => {
+        return originalVault.address === updatedVault.address ? updatedVault : originalVault;  
+      });
+    },
     setIsDepositor: (state, action: PayloadAction<VaultAuth>) => {
       const vault = state.vaults.find(v => v.address === action.payload.address);
       if (vault) {
@@ -78,6 +84,7 @@ export const {
   setIsDepositor,
   setCap,
   setVaults,
+  setVault,
 } = vaultSlice.actions;
 export default vaultSlice.reducer;
 
