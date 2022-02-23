@@ -7,20 +7,12 @@ import { PieDto } from './dto/pies.dto';
 import { PieHistoryEntity } from './entities/pie-history.entity';
 import { PieEntity } from './entities/pie.entity';
 import { PiesService } from './pies.service';
+import { CgCoinEntity } from './entities/cg_coin.entity';
 
 @ApiTags('Pies')
 @Controller('pies')
 export class PiesController {
   constructor(private readonly piesService: PiesService) {}
-
-  // @Get('updatenavs')
-  // async updateNavs(): Promise<boolean> {
-  //   try {
-  //     return await this.piesService.updateNAVs();
-  //   } catch(error) {
-  //     throw new NotFoundException(error);
-  //   }
-  // }
 
   @ApiOkResponse({type: PieEntity, isArray: true})
   @ApiNotFoundResponse()
@@ -39,16 +31,102 @@ export class PiesController {
   @ApiOkResponse({type: PieHistoryEntity, isArray: true})
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
+  @ApiQuery({name: 'address', required: true})
+  @ApiQuery({name: 'days', required: false})
+  @Get('market_chart')
+  async getMarketChart(
+    @Query('address') address: string,
+    @Query('days') days?: number
+  ): Promise<any> {
+    try {
+      if(days === undefined) {
+        days = 90;
+      }
+
+      return await this.piesService.getMarketChart(address, days);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }; 
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({name: 'address', required: false})
+  @ApiQuery({name: 'from', required: false})
+  @ApiQuery({name: 'to', required: false})
+  @ApiQuery({name: 'order', required: false})
+  @Get('coin')
+  async getCgCoin(
+    @Query('address') address?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('limit') limit?: number,
+    @Query('order') order?: 'descending' | 'ascending'
+  ): Promise<CgCoinEntity[]> {
+    try {
+      if(order === undefined) {
+        order = 'descending';
+      }
+
+      if(limit === undefined) {
+        limit = 0;
+      }
+
+      return await this.piesService.getCgCoin(address, from, to, order, limit);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  }; 
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
   @ApiQuery({name: 'name', required: false})
   @ApiQuery({name: 'address', required: false})
+  @ApiQuery({name: 'from', required: false})
+  @ApiQuery({name: 'to', required: false})
+  @ApiQuery({name: 'order', required: false})
   @Get('history')
-  async getPieHistory(@Query('name') name?: string, @Query('address') address?: string): Promise<PieHistoryEntity[]> {
+  async getPieHistory(
+    @Query('name') name?: string, 
+    @Query('address') address?: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+    @Query('limit') limit?: number,
+    @Query('order') order?: 'descending' | 'ascending'
+  ): Promise<any> {
     try {
-      return await this.piesService.getPieHistory(name, address);
+      if(order === undefined) {
+        order = 'descending';
+      }
+
+      if(limit === undefined) {
+        limit = 0;
+      }
+
+      return await this.piesService.getPieHistory(name, address, from, to, order, limit);
     } catch(error) {
       throw new NotFoundException(error);
     }
   };  
+
+  @ApiOkResponse({type: PieHistoryEntity, isArray: true})
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({name: 'name', required: false})
+  @ApiQuery({name: 'address', required: false})
+  @Get('latest-history')
+  async getLastPieHistory(
+    @Query('name') name?: string, 
+    @Query('address') address?: string
+  ): Promise<any> {
+    try {
+      return await this.piesService.getPieHistory(name, address, null, null, 'descending', 1);
+    } catch(error) {
+      throw new NotFoundException(error);
+    }
+  };
 
   @ApiOkResponse({type: PieEntity, isArray: false})
   @ApiNotFoundResponse()
@@ -73,16 +151,4 @@ export class PiesController {
       throw new NotFoundException(error);
     }
   }
-
-  // @ApiCreatedResponse({type: PieEntity})
-  // @ApiNotFoundResponse()
-  // @ApiBadRequestResponse()
-  // @Post('create')
-  // async createPie(@Body() pie: PieDto): Promise<PieEntity> {
-  //   try {
-  //     return await this.piesService.createPie(pie);
-  //   } catch(error) {
-  //     throw new NotFoundException(error);
-  //   }
-  // }
 }

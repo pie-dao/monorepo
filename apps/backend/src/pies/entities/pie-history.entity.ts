@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { IsObject } from "class-validator";
 import { Document } from 'mongoose';
 import { BigNumber } from 'bignumber.js';
 
@@ -13,7 +14,7 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  nav: number;  
+  nav: number;
 
   @Prop()
   @ApiProperty()
@@ -21,7 +22,7 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  marketCapUSD: BigNumber;
+  marginalTVL: BigNumber;
 
   @Prop()
   @ApiProperty()

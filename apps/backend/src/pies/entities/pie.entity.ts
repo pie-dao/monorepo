@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsHexadecimal } from "class-validator";
+import { IsHexadecimal, IsObject } from "class-validator";
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { PieHistoryEntity } from './pie-history.entity';
@@ -15,12 +15,21 @@ export class PieEntity {
 
   @Prop()
   @ApiProperty()
+  symbol: string;  
+
+  @Prop()
+  @ApiProperty()
   @IsHexadecimal()
   address: string;
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'PieHistoryEntity' }])
   @ApiProperty()
-  history: PieHistoryEntity[];  
+  history: PieHistoryEntity[];
+
+  @Prop()
+  @ApiProperty()
+  @IsHexadecimal()
+  coingecko_id: string;
 }
 
 export const PieSchema = SchemaFactory.createForClass(PieEntity);

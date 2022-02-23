@@ -8,10 +8,17 @@ const histories = [
       {address: "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD", amount: "20437259837801076081", usd: "5.22895467854075651963"}
     ], 
     timestamp: "1628253732831", 
-    marketCapUSD: new BigNumber("26.13762717355117514798"),
+    marginalTVL: new BigNumber("26.13762717355117514798"),
     totalSupply: new BigNumber("26.13762717355117514798"),
     nav: 0,
-    decimals: 18
+    decimals: 18,
+    pie: {
+      usd: 671863,
+      usd_market_cap: 8507603.84069643,
+      usd_24h_vol: 27.63934871442503,
+      usd_24h_change: 1536.874503249737,
+      ticks: []
+    }    
   },
   {
     underlyingAssets: [
@@ -19,10 +26,17 @@ const histories = [
       {address: "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD", amount: "20437259837801076081", usd: "5.22895467854075651963"}
     ], 
     timestamp: "1628253732831", 
-    marketCapUSD: new BigNumber("26.13762717355117514798"),
+    marginalTVL: new BigNumber("26.13762717355117514798"),
     totalSupply: new BigNumber("26.13762717355117514798"),
     nav: 0,
-    decimals: 18
+    decimals: 18,
+    pie: {
+      usd: 671863,
+      usd_market_cap: 8507603.84069643,
+      usd_24h_vol: 27.63934871442503,
+      usd_24h_change: 1536.874503249737,
+      ticks: []
+    }    
   },
 ]
 

@@ -261,7 +261,7 @@ describe('PiesService', () => {
       });
 
       test('it should throw an error', async() => {
-        await expect(service.getPieHistoryDetails(undefined))
+        await expect(service.getPieHistoryDetails(undefined, 'descending', null, null, null))
         .rejects
         .toThrow(Error);
       });
@@ -271,7 +271,7 @@ describe('PiesService', () => {
   describe('createPie', () => {
     describe('When createPie is called', () => {
       jest.setTimeout(50000);
-      let pie: PieDto = {name: "foobar", address: "foobar", history: []};
+      let pie: PieDto = {symbol: "foobar", name: "foobar", address: "foobar", history: [], coingecko_id: "", image: null};
       let pieDB: PieEntity;
 
       beforeEach(async () => {
