@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
           name="description"
           content="The PLAY token captures the value of projects operating in the areas of blockchain gaming and virtual entertainment within the metaverse."
         />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_URL} />
+        <meta property="og:url" content={process.env.URL} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="PLAY" />
         <meta
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/metaverse_man_fb.png`}
+          content={`${process.env.URL}/metaverse_man_fb.png`}
         />
         <meta name="twitter:title" content="PLAY" />
         <meta
@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/metaverse_man_fb.png`}
+          content={`${process.env.URL}/metaverse_man_fb.png`}
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
