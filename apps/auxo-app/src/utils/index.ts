@@ -15,10 +15,11 @@ export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
 
 export const fromScale = (
-  n: number | BigNumber,
+  n: number | BigNumber | undefined,
   decimals: number,
   precision = 0
 ): number => {
+  if (!n) return 0;
   if (typeof n === "number") return n;
 
   // ethers BN implementaion ignores decimal point conversion when dividing, so we need

@@ -4,8 +4,6 @@ import { WalletConnectConnector } from "./walletConnect";
 import { Web3Provider } from "@ethersproject/providers";
 import { NetworkConnector } from "@web3-react/network-connector";
 
-const isDevEnvironment = process.env.REACT_APP_MERKLE_ROOT === "dev";
-
 export const RPC_URLS = [
   "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY,
   "https://rpc.ftm.tools/",
@@ -36,7 +34,6 @@ export default function getLibrary(provider: any): Web3Provider {
       ? parseInt(provider.chainId)
       : "any"
   );
-  library.pollingInterval = isDevEnvironment ? 12000 : 1000;
   return library;
 }
 

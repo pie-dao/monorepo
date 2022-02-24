@@ -5,7 +5,7 @@ import ExternalUrl from "./UI/url";
 const logo = process.env.PUBLIC_URL + "/piedaologo.png";
 
 const Footer = () => {
-  const block = useBlock();
+  const { block: { number: blockNumber } } = useBlock();
   return (
     <footer
       className="
@@ -30,10 +30,10 @@ const Footer = () => {
             <p className="text-baby-blue-dark mr-5">FAQ</p>
           </ExternalUrl>
 
-          {block.blockNumber && (
-            <p>
+          {blockNumber && (
+            <p className="transition-colors duration-100">
               <span className="hidden sm:inline-block mr-2">Block:</span>
-              {block.blockNumber}
+              {blockNumber}
             </p>
           )}
         </section>

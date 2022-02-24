@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useAppDispatch } from ".";
 import {
   Erc20,
@@ -180,20 +180,50 @@ const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
 export const useChainData = (): { loading: boolean } => {
   const { account, active } = useWeb3React();
   const { chainId } = useWeb3Cache();
-  const { blockNumber } = useBlock();
+  const { block, firstLoad, refreshFrequency } = useBlock();
+
   const dispatch = useAppDispatch();
   const vaults = useProxySelector((state) => state.vault.vaults);
   const { monoContracts, tokenContracts, authContracts, capContracts } =
     useContracts(chainId);
 
-  useEffect(() => {
-    if (
-      active &&
+  const shouldUpdate = useMemo(() => {
+    // do not update state if vital data missing
+    if (!chainId || !block || !block.number) return false;
+
+    // Ensure we always fetch data when the user loads the page for the first time
+    if (firstLoad) return true;
+
+    // repeated state updates can cause rpc throttling with lower block times
+    const blockFrequencyConditionMet = block.number % refreshFrequency === 0;
+
+    // No point updating state if any of the contracts are missing
+    const contractsExist =
       tokenContracts.length > 0 &&
       monoContracts.length > 0 &&
-      chainId &&
-      chainMap[chainId]
-    ) {
+      authContracts.length > 0 &&
+      capContracts.length > 0;
+
+    return (
+      active &&
+      contractsExist &&
+      chainMap[chainId] &&
+      blockFrequencyConditionMet
+    );
+  }, [
+    active,
+    tokenContracts,
+    monoContracts,
+    authContracts,
+    capContracts,
+    firstLoad,
+    block,
+    chainId,
+    refreshFrequency,
+  ]);
+
+  useEffect(() => {
+    if (shouldUpdate) {
       // Multicall contract executes promise all as a batch request
       Promise.all(
         tokenContracts.map(async (token) => {
@@ -227,34 +257,33 @@ export const useChainData = (): { loading: boolean } => {
         })
       )
         .then((payload) => {
-          const newVaults = payload
-            .filter((p) => !!p)
-            .map((p) => {
-              return (
-                p &&
-                toState({
-                  existing: p.vault,
-                  address: p.address,
-                  decimals: p.vault.token.decimals,
-                  data: p.data,
-                  account,
-                })
-              );
-            }) as Vault[];
+          const newVaults = payload.filter(Boolean).map((p) => {
+            return (
+              p &&
+              toState({
+                existing: p.vault,
+                address: p.address,
+                decimals: p.vault.token.decimals,
+                data: p.data,
+                account,
+              })
+            );
+          }) as Vault[];
 
           if (newVaults && hasStateChanged(vaults, newVaults)) {
             dispatch(setVaults(newVaults));
           }
         })
         .catch((err) => {
-          console.warn("Problem fetching on chain data");
+          console.warn("Problem fetching on chain data", err);
         });
     }
   }, [
     account,
+    shouldUpdate,
     active,
     chainId,
-    blockNumber,
+    block.number,
     dispatch,
     monoContracts,
     capContracts,

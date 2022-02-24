@@ -60,7 +60,7 @@ export const useMaxDeposit = (): Balance => {
 
       setBalance({ value, label });
     }
-  }, [vault, pendingWithdrawal]);
+  }, [vault, pendingWithdrawal.label, pendingWithdrawal.value]);
 
   return balance ?? zeroBalance();
 };
