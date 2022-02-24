@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import ParentSize from "@visx/responsive/lib/components/ParentSize";
 import { Popover } from "@headlessui/react";
+import Loader from "./Loader";
+import useUnderlyingData from "../hooks/useUnderlyingData";
 import popover from "../public/popover_icon.svg";
 import priceFormatter from "../utils/priceFormatter";
 import timeFormat from "../utils/timeFormat";
@@ -19,14 +21,24 @@ const getDate = (d) => new Date(d[0]);
 const getNavDate = (d) => d.timestamp;
 const getPieValue = (d) => d[1];
 
-const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
-  const { history } = underlyingData;
-  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const inceptionPerc = useMemo(() => {
-    return ((play.market_data.current_price.usd - 1) * 100).toFixed();
-  }, [play.market_data.current_price.usd]);
+const SubCharts = ({ marketCap, play, sentiment }) => {
+  const [mcapPrice, setMcapPrice] = useState(null);
+  const [mcapDate, setMcapDate] = useState(null);
+  const [navPrice, setNavPrice] = useState(null);
+  const [navDate, setNavDate] = useState(null);
+  const [lastWeekMCap, setLastWeekMCap] = useState(null);
+  const [lastWeekMeanNav, setLastWeekMeanNav] = useState(null);
+  const [premiumPerc, setPremiumPerc] = useState(0);
 
-  const markeCapMeanLastWeek = () => {
+  const { underlyingData, isLoading, isError } = useUnderlyingData();
+
+  const weekAgo = useMemo(
+    () => new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+    []
+  );
+  const inceptionPerc = () => (play.market_data.current_price.usd - 1) * 100;
+
+  const marketCapMeanLastWeek = useCallback(() => {
     const lastWeek = marketCap.filter((d) => getDate(d) >= weekAgo);
     let lastWeekPerDay = [];
     let todayCounter = Date.now();
@@ -43,49 +55,56 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
     }
 
     return lastWeekPerDay.reverse();
-  };
+  }, [marketCap, weekAgo]);
 
-  const lastWeekPrices = markeCapMeanLastWeek();
+  const lastWeekMeanNavCalc = useCallback(
+    (history) => {
+      const lastWeek = history.filter((d) => getNavDate(d) >= weekAgo);
+      let lastWeekPerDay = [];
+      let todayCounter = Date.now();
+      for (let i = 0; i < 7; i++) {
+        const days = lastWeek.filter(
+          (d) =>
+            getNavDate(d) <= todayCounter &&
+            getNavDate(d) >= todayCounter - 24 * 60 * 60 * 1000
+        );
+        const meanPrice = mean(days.map((d) => d.nav));
+        const dayMean = [todayCounter, meanPrice];
+        lastWeekPerDay.push(dayMean);
+        todayCounter -= 24 * 60 * 60 * 1000;
+      }
+      return lastWeekPerDay.reverse();
+    },
+    [weekAgo]
+  );
 
-  const lastWeekMeanNav = () => {
-    const lastWeek = history.filter((d) => getNavDate(d) >= weekAgo);
-    let lastWeekPerDay = [];
-    let todayCounter = Date.now();
-    for (let i = 0; i < 7; i++) {
-      const days = lastWeek.filter(
-        (d) =>
-          getNavDate(d) <= todayCounter &&
-          getNavDate(d) >= todayCounter - 24 * 60 * 60 * 1000
+  useEffect(() => {
+    if (underlyingData) {
+      setPremiumPerc(
+        ((play.market_data.current_price.usd - underlyingData.history[0].nav) /
+          play.market_data.current_price.usd) *
+          100
       );
-      const meanPrice = mean(days.map((d) => d.nav));
-      const dayMean = [todayCounter, meanPrice];
-      lastWeekPerDay.push(dayMean);
-      todayCounter -= 24 * 60 * 60 * 1000;
     }
-    return lastWeekPerDay.reverse();
-  };
+  }, [play.market_data.current_price.usd, underlyingData]);
 
-  const lastWeekMeanNavData = lastWeekMeanNav();
+  useEffect(() => {
+    if (underlyingData) {
+      const lastWeek = marketCapMeanLastWeek();
+      const lastWeekMeanNav = lastWeekMeanNavCalc(underlyingData.history);
+      setLastWeekMCap(lastWeek);
+      setLastWeekMeanNav(lastWeekMeanNav);
+    }
+  }, [lastWeekMeanNavCalc, marketCapMeanLastWeek, underlyingData]);
 
-  const premiumPerc =
-    ((play.market_data.current_price.usd - underlyingData.history[0].nav) /
-      play.market_data.current_price.usd) *
-    100;
-
-  const [mcapPrice, setMcapPrice] = useState(
-    getPieValue(lastWeekPrices[lastWeekPrices.length - 1])
-  );
-  const [mcapDate, setMcapDate] = useState(
-    timeFormat(getDate(lastWeekPrices[lastWeekPrices.length - 1]))
-  );
-
-  const [navPrice, setNavPrice] = useState(
-    getPieValue(lastWeekMeanNavData[lastWeekMeanNavData.length - 1])
-  );
-
-  const [navDate, setNavDate] = useState(
-    getDate(lastWeekMeanNavData[lastWeekMeanNavData.length - 1])
-  );
+  useEffect(() => {
+    if (underlyingData && lastWeekMCap && lastWeekMeanNav) {
+      setMcapPrice(getPieValue(lastWeekMCap[lastWeekMCap.length - 1]));
+      setMcapDate(timeFormat(getDate(lastWeekMCap[lastWeekMCap.length - 1])));
+      setNavPrice(getPieValue(lastWeekMeanNav[lastWeekMeanNav.length - 1]));
+      setNavDate(getDate(lastWeekMeanNav[lastWeekMeanNav.length - 1]));
+    }
+  }, [lastWeekMCap, lastWeekMeanNav, underlyingData]);
 
   return (
     <section className="mb-10 gap-y-4 md:gap-4 grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -110,48 +129,56 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
           </Popover.Panel>
         </Popover>
         <div className="w-full flex flex-1 flex-col border border-deeper_purple rounded-lg py-2 px-4">
-          <div className="w-full flex flex-wrap justify-between items-center">
-            <p className="text-gradient text-2xl">
-              {priceFormatter.format(navPrice)}
-            </p>
-            <p className="text-sm text-deep_purple">{timeFormat(navDate)}</p>
-          </div>
-          <div className="w-full flex">
-            <p>
-              {premiumPerc > 0 ? (
-                <>
-                  <span className="uppercase text-highlight">
-                    {content.subcharts.premium}
-                  </span>{" "}
-                  <span className="uppercase text-highlight font-bold">
-                    {premiumPerc.toFixed(2)}%
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="uppercase text-highlight">
-                    {content.subcharts.discount}
-                  </span>{" "}
-                  <span className="uppercase text-highlight font-bold">
-                    {Math.abs(premiumPerc).toFixed(2)}%
-                  </span>
-                </>
-              )}
-            </p>
-          </div>
-          <div className="w-full flex flex-col flex-1 mb-2">
-            <ParentSize>
-              {({ width, height }) => (
-                <NavChart
-                  width={width}
-                  height={height}
-                  lastWeekMeanNavData={lastWeekMeanNavData}
-                  setNavPrice={setNavPrice}
-                  setNavDate={setNavDate}
-                />
-              )}
-            </ParentSize>
-          </div>
+          {isLoading || isError || !lastWeekMeanNav ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="w-full flex flex-wrap justify-between items-center">
+                <p className="text-gradient text-2xl">
+                  {priceFormatter.format(navPrice)}
+                </p>
+                <p className="text-sm text-deep_purple">
+                  {timeFormat(navDate)}
+                </p>
+              </div>
+              <div className="w-full flex">
+                <p>
+                  {premiumPerc > 0 ? (
+                    <>
+                      <span className="uppercase text-highlight">
+                        {content.subcharts.premium}
+                      </span>{" "}
+                      <span className="uppercase text-highlight font-bold">
+                        {premiumPerc.toFixed(2)}%
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="uppercase text-highlight">
+                        {content.subcharts.discount}
+                      </span>{" "}
+                      <span className="uppercase text-highlight font-bold">
+                        {Math.abs(premiumPerc).toFixed(2)}%
+                      </span>
+                    </>
+                  )}
+                </p>
+              </div>
+              <div className="w-full flex flex-col flex-1 mb-2">
+                <ParentSize>
+                  {({ width, height }) => (
+                    <NavChart
+                      width={width}
+                      height={height}
+                      lastWeekMeanNavData={lastWeekMeanNav}
+                      setNavPrice={setNavPrice}
+                      setNavDate={setNavDate}
+                    />
+                  )}
+                </ParentSize>
+              </div>
+            </>
+          )}
         </div>
       </div>
       <div className="flex flex-col">
@@ -159,27 +186,34 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
           {content.subcharts.marketcap}
         </h4>
         <div className="flex flex-col flex-1 border border-deeper_purple rounded-lg py-2 px-4">
-          <div className="flex flex-wrap justify-between items-center mb-2">
-            <p className="flex text-gradient text-2xl">
-              {priceFormatter.format(mcapPrice)}
-            </p>
-            <p className="flex text-sm text-deep_purple">{mcapDate}</p>
-          </div>
-          <div className="w-full flex flex-col flex-1 mb-2">
-            <ParentSize>
-              {({ width, height }) => (
-                <MarketCapChart
-                  width={width}
-                  height={height}
-                  setMcapPrice={setMcapPrice}
-                  setMcapDate={setMcapDate}
-                  marketcapData={lastWeekPrices}
-                />
-              )}
-            </ParentSize>
-          </div>
+          {isLoading || isError || !lastWeekMeanNav ? (
+            <Loader />
+          ) : (
+            <>
+              <div className="flex flex-wrap justify-between items-center mb-2">
+                <p className="flex text-gradient text-2xl">
+                  {priceFormatter.format(mcapPrice)}
+                </p>
+                <p className="flex text-sm text-deep_purple">{mcapDate}</p>
+              </div>
+              <div className="w-full flex flex-col flex-1 mb-2">
+                <ParentSize>
+                  {({ width, height }) => (
+                    <MarketCapChart
+                      width={width}
+                      height={height}
+                      setMcapPrice={setMcapPrice}
+                      setMcapDate={setMcapDate}
+                      marketcapData={lastWeekMCap}
+                    />
+                  )}
+                </ParentSize>
+              </div>
+            </>
+          )}
         </div>
       </div>
+
       <div className="flex flex-col col-span-1 md:col-span-2 lg:col-span-1 md:flex-row lg:flex-col gap-4">
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2 mb-2 flex-row">
@@ -189,9 +223,11 @@ const SubCharts = ({ underlyingData, marketCap, play, sentiment }) => {
             </h4>
           </div>
           <div className="flex-1 md:flex-none lg:flex-1 md:h-[102px] lg:h-auto flex border border-deeper_purple rounded-lg p-4 justify-center items-center lg:mb-4">
-            <p className="text-gradient text-4xl mr-3">+ {inceptionPerc}%</p>
+            <p className="text-gradient text-4xl mr-3">
+              + {inceptionPerc().toFixed()}%
+            </p>
             <Image
-              src={inceptionPerc >= 0 ? arrowGreen : arrowRed}
+              src={inceptionPerc() >= 0 ? arrowGreen : arrowRed}
               alt="Arrow"
             />
           </div>

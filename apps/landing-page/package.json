@@ -29,7 +29,8 @@
     "react-hotjar": "^5.0.0",
     "sass": "^1.49.0",
     "sharp": "^0.30.0",
-    "swiper": "^7.4.1"
+    "swiper": "^7.4.1",
+    "swr": "^1.2.2"
   },
   "devDependencies": {
     "@types/coingecko-api": "^1.0.10",

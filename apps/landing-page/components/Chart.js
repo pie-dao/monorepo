@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import ParentSizeModern from "@visx/responsive/lib/components/ParentSizeModern";
+import usePlayTickers from "../hooks/usePlayTickers";
 import SubCharts from "./SubCharts";
 import auditIcon from "../public/audit.svg";
 import mixBytesIcon from "../public/mixbytes.svg";
@@ -12,26 +13,31 @@ import coinmarketcap from "../public/coinmarketcap.svg";
 import PlayChart from "./PlayChart";
 import PriceChange from "./PriceChange";
 import content from "../content/en_EN.json";
+import Loader from "./Loader";
 
 const getDate = (d) => new Date(d[0]);
 const getPieValue = (d) => d[1];
 
-const Chart = ({ play, playTickers, underlyingData, sentiment }) => {
+const Chart = ({ play, sentiment }) => {
+  const { playTickers, isError, isLoading } = usePlayTickers();
   const [chartTimeRange, setChartTimeRange] = useState("1m");
+  const [priceDiffThreeMonthsPerc, setPriceDiffThreeMonthsPerc] = useState(0);
 
-  const today = new Date();
-  const threeMonths = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
-
-  const lastThreeMonthsPrices = playTickers.prices.filter(
-    (d) => getDate(d) > threeMonths
-  );
-
-  const priceDiffThreeMonths =
-    getPieValue(lastThreeMonthsPrices[lastThreeMonthsPrices.length - 1]) -
-    getPieValue(lastThreeMonthsPrices[0]);
-
-  const priceDiffThreeMonthsPercentage =
-    (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100;
+  useEffect(() => {
+    if (playTickers) {
+      const today = new Date();
+      const threeMonths = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
+      const lastThreeMonthsPrices = playTickers.prices?.filter(
+        (d) => getDate(d) > threeMonths
+      );
+      const priceDiffThreeMonths =
+        getPieValue(lastThreeMonthsPrices[lastThreeMonthsPrices.length - 1]) -
+        getPieValue(lastThreeMonthsPrices[0]);
+      setPriceDiffThreeMonthsPerc(
+        (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100
+      );
+    }
+  }, [playTickers]);
 
   const copyOnClipboard = () => {
     navigator.clipboard.writeText(play.contract_address);
@@ -51,7 +57,9 @@ const Chart = ({ play, playTickers, underlyingData, sentiment }) => {
           },
         },
       });
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
   };
   return (
     <section className="container mx-auto my-4 px-6">
@@ -143,16 +151,20 @@ const Chart = ({ play, playTickers, underlyingData, sentiment }) => {
         </div>
       </div>
       <div className="w-full h-[250px] md:h-[500px]">
-        <ParentSizeModern>
-          {({ width, height }) => (
-            <PlayChart
-              prices={playTickers.prices}
-              width={width}
-              height={height}
-              chartTimeRange={chartTimeRange}
-            />
-          )}
-        </ParentSizeModern>
+        {isLoading || isError ? (
+          <Loader />
+        ) : (
+          <ParentSizeModern>
+            {({ width, height }) => (
+              <PlayChart
+                prices={playTickers.prices}
+                width={width}
+                height={height}
+                chartTimeRange={chartTimeRange}
+              />
+            )}
+          </ParentSizeModern>
+        )}
       </div>
       <div className="hidden md:flex text-deep_purple mb-2 gap-x-4">
         <p className="gap-x-1 flex items-center justify-center">
@@ -169,17 +181,20 @@ const Chart = ({ play, playTickers, underlyingData, sentiment }) => {
         </p>
         <p className="gap-x-1 flex items-center justify-center">
           {content.chart.three_months}{" "}
-          <PriceChange priceChange={priceDiffThreeMonthsPercentage} />
+          <PriceChange priceChange={priceDiffThreeMonthsPerc} />
         </p>
       </div>
       <div className="w-full border-b border-highlight mb-10"></div>
-      <SubCharts
-        marketCap={playTickers.market_caps}
-        underlyingData={underlyingData}
-        play={play}
-        playPrices={playTickers.prices}
-        sentiment={sentiment}
-      />
+      {isLoading || isError ? (
+        <Loader />
+      ) : (
+        <SubCharts
+          marketCap={playTickers.market_caps}
+          play={play}
+          playPrices={playTickers.prices}
+          sentiment={sentiment}
+        />
+      )}
       <div className="container mx-auto px-6 mb-12">
         <p className="text-center uppercase text-sm text-deep_purple mb-4">
           {content.chart.check}

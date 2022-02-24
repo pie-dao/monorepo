@@ -1,7 +1,5 @@
 import Cookies from "cookies";
 import getCoinData from "./api/getCoinData";
-import getPieTickers from "./api/getPieTickers";
-import getPieHistory from "./api/getPieHistory";
 import getLatestHistory from "./api/getLatestHistory";
 import getSentiment from "./api/getSentiment";
 import Hero from "../components/Hero";
@@ -24,8 +22,6 @@ export async function getServerSideProps({ req, res }) {
   ];
   const playAddress = "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4";
   const play = await getCoinData(playAddress);
-  const playTickers = await getPieTickers(playAddress);
-  const underlyingData = await getPieHistory(playAddress);
 
   const morePies = await Promise.all(
     expoloreMore.map(async (pie) => {
@@ -41,24 +37,15 @@ export async function getServerSideProps({ req, res }) {
   return {
     props: {
       play: play.coin,
-      underlyingData,
       showCookiePolicy,
-      playTickers,
       morePies,
       sentiment,
     },
   };
 }
 
-export default function Home({
-  play,
-  underlyingData,
-  playTickers,
-  morePies,
-  sentiment,
-}) {
+export default function Home({ play, morePies, sentiment }) {
   const { market_data } = play;
-  const underlyingAssetsLatestHistory = underlyingData.history[0];
   return (
     <div className="text-white">
       <Hero actualPrice={market_data.current_price.usd} />
@@ -68,13 +55,8 @@ export default function Home({
       />
       <Metaverse />
       <ScrollingBoxes />
-      <Chart
-        play={play}
-        playTickers={playTickers}
-        underlyingData={underlyingData}
-        sentiment={sentiment}
-      />
-      <UnderlyingTokens underlyingData={underlyingAssetsLatestHistory} />
+      <Chart play={play} sentiment={sentiment} />
+      <UnderlyingTokens />
       <Methodology />
       <Roi />
       <AboutUsTwitter twitterPosts={posts} />
