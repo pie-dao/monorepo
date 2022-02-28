@@ -1,31 +1,17 @@
 import { BigNumber } from "ethers";
 import { useEffect, useState } from "react";
 import { Balance } from "../store/vault/Vault";
+import { BigNumberMin, convertToUnderlying } from "../utils";
 import { zeroBalance } from "../utils/balances";
 import { useDecimals, useSelectedVault } from "./useSelectedVault";
-
-const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber => {
-  return b1.gt(b2) ? b2 : b1;
-};
 
 export const useApproximatePendingAsUnderlying = (): Balance => {
   const vault = useSelectedVault();
   const decimals = useDecimals();
   const sharesPending = vault?.userBalances?.batchBurn.shares ?? zeroBalance();
-  const exchangeRate = vault?.stats?.exchangeRate;
+  const exchangeRate = vault?.stats?.exchangeRate ?? zeroBalance();
 
-  const amountPendingUnderlying = BigNumber.from(sharesPending.value)
-    .mul(exchangeRate?.value ?? 0)
-    .div(BigNumber.from(10).pow(decimals));
-
-  const amountPendingUnderlyingLabel = amountPendingUnderlying.div(
-    BigNumber.from(10).pow(decimals)
-  );
-
-  return {
-    value: amountPendingUnderlying.toString(),
-    label: amountPendingUnderlyingLabel.toNumber(),
-  };
+  return convertToUnderlying(sharesPending, exchangeRate, decimals);
 };
 
 export const useMaxDeposit = (): Balance => {

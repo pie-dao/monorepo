@@ -13,7 +13,7 @@ import { setAlert } from "../../../../store/app/app.slice";
 import LoadingSpinner from "../../../UI/loadingSpinner";
 import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 import { useWeb3React } from "@web3-react/core";
-import { prettyNumber } from "../../../../utils";
+import { convertFromUnderlying, prettyNumber } from "../../../../utils";
 import { SetStateType } from "../../../../types/utilities";
 import { logoSwitcher } from "../../../../utils/logos";
 import { setVault } from "../../../../store/vault/vault.slice";
@@ -99,13 +99,17 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
                 setDepositing(true);
                 const tx = await auxoContract?.deposit(account, deposit.value);
                 await handleTx({ dispatch, library, tx, onSuccess: () => {
-                    if (!(vault && vault.userBalances)) return
+                    if (!(vault && vault.userBalances && vault.stats)) return
                     const newVault: Vault = {
                         ...vault,
                         userBalances: {
                             ...vault.userBalances,
                             wallet:  subBalances(vault.userBalances.wallet, deposit),
                             vaultUnderlying: addBalances(vault.userBalances.vaultUnderlying, deposit),
+                            vault: addBalances(
+                                vault.userBalances.vault, 
+                                convertFromUnderlying(deposit, vault.stats?.exchangeRate, vault.token.decimals)
+                            )
                         }
                     };
                     dispatch(setVault(newVault));

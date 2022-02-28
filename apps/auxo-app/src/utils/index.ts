@@ -1,11 +1,52 @@
 import { BigNumber } from "@ethersproject/bignumber";
-import Big from "big.js";
+import { ethers } from "ethers";
 import { Balance } from "../store/vault/Vault";
 
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 export type AwaitedReturn<F extends (...args: any) => any> = Awaited<
   ReturnType<F>
 >;
+
+export const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber =>
+  b1.gt(b2) ? b2 : b1;
+
+export const convertFromUnderlying = (
+  original: Balance,
+  exchangeRate: Balance,
+  decimals: number
+): Balance => {
+  const valueBN = BigNumber.from(original.value)
+    .mul(BigNumber.from(10).pow(decimals))
+    .div(exchangeRate?.value ?? 0);
+
+  const stringLabel = ethers.utils.formatUnits(valueBN, decimals);
+
+  const label = Math.round(parseFloat(stringLabel));
+
+  return {
+    value: valueBN.toString(),
+    label,
+  };
+};
+
+export const convertToUnderlying = (
+  original: Balance,
+  exchangeRate: Balance,
+  decimals: number
+): Balance => {
+  const valueBN = BigNumber.from(original.value)
+    .mul(exchangeRate?.value ?? 0)
+    .div(BigNumber.from(10).pow(decimals));
+
+  const stringLabel = ethers.utils.formatUnits(valueBN, decimals);
+
+  const label = Math.round(parseFloat(stringLabel));
+
+  return {
+    value: valueBN.toString(),
+    label,
+  };
+};
 
 // format 1000000000 -> '1,000,000,000'
 export const prettyNumber = (n?: number): string =>
@@ -22,11 +63,8 @@ export const fromScale = (
   if (!n) return 0;
   if (typeof n === "number") return n;
 
-  // ethers BN implementaion ignores decimal point conversion when dividing, so we need
-  // to use an alternative approach for decimals >= 0.5
-  const numerator = Big(n.toString());
-  const raw = numerator.div(Big(10).pow(decimals)).toFixed(precision);
-  return Number(raw);
+  const stringLabel = ethers.utils.formatUnits(n, decimals);
+  return Number(parseFloat(stringLabel).toFixed(precision));
 };
 
 export const smallToBalance = (n: number, decimals: number): Balance => ({
@@ -43,7 +81,7 @@ export const toBalance = (
   precision = 0
 ): Balance => ({
   /**
-   * Convert a big number to a balance object
+   * Convert a big number or number to a balance object
    */
   label: fromScale(n, decimals, precision),
   value: String(n),

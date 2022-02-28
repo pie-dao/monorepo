@@ -23,7 +23,7 @@ const useVaultRows = (): VaultRowReturnValue => {
       },
       yield: {
         sort: {
-          value: Number(v.stats?.currentAPY.value),
+          value: v.stats?.currentAPY.label,
           isSortable: true,
         },
         label:

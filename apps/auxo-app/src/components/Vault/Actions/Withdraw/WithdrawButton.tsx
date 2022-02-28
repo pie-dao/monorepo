@@ -51,7 +51,9 @@ function WithdrawButton ({ showAvailable }: { showAvailable?: boolean }) {
                             wallet: addBalances(vault.userBalances.wallet, pendingSharesUnderlying),
                             batchBurn: {
                                 ...vault.userBalances.batchBurn,
+                                available: zeroBalance(),
                                 shares: zeroBalance(),
+                                round: vault.userBalances.batchBurn.round + 1
                             }
                         }
                     };
