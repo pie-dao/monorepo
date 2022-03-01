@@ -1,9 +1,10 @@
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { Range, getTrackBackground } from 'react-range';
 import { useDecimals } from "../../../hooks/useSelectedVault";
 import { Balance } from "../../../store/vault/Vault";
 import { SetStateType } from "../../../types/utilities";
 import { smallToBalance } from "../../../utils";
+import { zeroBalance } from '../../../utils/balances';
 
 function RangeWrapper({ max, value, setValue }: { max: Balance, value: Balance, setValue: SetStateType<Balance>}) {
     const thumbSize = '24px';
@@ -67,24 +68,50 @@ function InputSlider({ value, setValue, max, label }: {
   max: Balance
   label: string
 }): JSX.Element {
-    const setMax = () => {
-      setValue(max)
-    }
+    const decimals = useDecimals();
+    
+    const handleChange = (value: string | undefined, max: number) => {
+      if (!decimals) return;
+      if (!value) setValue(zeroBalance());
+
+      // Only supports integer values at this current time
+      // Mostly due to additional logic required for on-chain fetching decimals
+      const maximisedValue = Math.round(Math.min(Number(value), max));
+
+      setValue({
+        label: maximisedValue,
+        value: ethers.utils.parseUnits(maximisedValue.toString(), decimals).toString()
+      });  
+    }   
+
     return (
         <div className="
             bg-baby-blue-light rounded-xl px-1 py-7
             flex flex-col items-center w-full
         ">
-            <p className="
-                text-5xl font-bold text-baby-blue-dark
-                underline decoration-white underline-offset-4 mb-2"
-            >{value.label}</p>
+            <div className="
+              hide-arrows
+              w-full"
+            >
+              <input 
+                type="number"
+                min="0"
+                max={max.label}
+                className="
+                  focus:outline-none w-full bg-transparent text-center
+                  text-5xl font-bold text-baby-blue-dark
+                  underline decoration-white underline-offset-4 mb-2 
+                  "
+                value={value.label.toString()}
+                onChange={e => handleChange(e.target.value, max.label)}
+              /> 
+              </div>
             <p className="text-baby-blue-dark">{label}</p>
             <div className="w-full px-2 my-5">
                 <RangeWrapper max={max} value={value} setValue={setValue} />
             </div>
             <button
-              onClick={setMax}
+              onClick={() => setValue(max)}
               disabled={max.label < 1}
               className='
                 text-baby-blue-dark

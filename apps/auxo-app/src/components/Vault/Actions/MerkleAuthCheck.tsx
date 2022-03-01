@@ -19,12 +19,17 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const notAuthorizedString = 'This vault is restricted to veDOUGH holders only';
 
   const dispatch = useAppDispatch();
-  const { account, library } = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const authContract = useMerkleAuthContract(vault.auth.address);
   const isDepositor = vault.auth.isDepositor
   const [authorizing, setAuthorizing] = useState(false);
   
   const proof = getProof(account);
+  const isDisabled = (): boolean => {
+    const wrongNetwork = chainId !== vault.network.chainId;
+    return authorizing || wrongNetwork || !proof;
+  }
+    
 
   const submitProof = () => {
     setAuthorizing(true)
@@ -56,7 +61,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
         (!isDepositor && proof) && 
         <StyledButton className="md:w-1/2" 
           onClick={submitProof}
-          disabled={authorizing}>{ authorizing ? <LoadingSpinner /> :'Opt In' }</StyledButton>
+          disabled={isDisabled()}>{ authorizing ? <LoadingSpinner /> :'Opt In' }</StyledButton>
       }
       { 
         !isDepositor && 
