@@ -14,6 +14,8 @@ import { Balance, VaultState } from "./Vault";
  * Be handled by the 'fulfilled' hook, as an extra reducer in the vault slice.
  * 
  * Rejected values will be passed to the `rejected` handlers.
+ * This includes unhandled promise rejections from contract interactions so avoids the necessity
+ * for a try/catch block inside the thunk.
  * 
  * If you want notifications to be shown to the user, use the `addTxNotifications` 
  * in the application slice to automatically subscribe to the lifecycle methods 
