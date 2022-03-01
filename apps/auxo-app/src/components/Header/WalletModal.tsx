@@ -5,6 +5,7 @@ import { MetamaskIcon, WalletConnectIcon } from "../../assets/icons/connectors";
 import { injected, walletconnect } from "../../connectors";
 import { useAppDispatch } from "../../hooks";
 import { setAlert } from "../../store/app/app.slice";
+import { setResetUserVaultDetails } from "../../store/vault/vault.slice";
 import { SetStateType } from "../../types/utilities";
 import { supportedChainIds } from "../../utils/networks";
 import StyledButton from "../UI/button";
@@ -41,8 +42,7 @@ return (
 const WalletConnectButton = () => {
   const { activate } = useWeb3React()
   const handleConnect = () => { 
-    activate(walletconnect)
-      .then(v => console.debug(v))
+    activate(walletconnect).then(console.log)
   }
   return (
     <HoverButton 
@@ -67,7 +67,8 @@ const HoverButton: React.FC<{ children: React.ReactNode } & ButtonHTMLAttributes
 
 
 const WalletModal = (props: { setShow: SetStateType<boolean> }) => {
-  const { deactivate } = useWeb3React()
+  const { deactivate } = useWeb3React();
+  const dispatch = useAppDispatch();
   return (
     <div className="h-screen w-screen top-0 left-0 fixed z-10 bg-black bg-opacity-20" onClick={() => props.setShow(false)}>
       <section
@@ -94,8 +95,9 @@ const WalletModal = (props: { setShow: SetStateType<boolean> }) => {
           </div>
           <div className="mt-2">
             <StyledButton onClick={() => {
-              deactivate()
-              props.setShow(false)
+              deactivate();
+              dispatch(setResetUserVaultDetails());
+              props.setShow(false);
             }}
               className="px-5 sm:px-0"
             >Disconnect</StyledButton>

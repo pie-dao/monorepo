@@ -5,12 +5,9 @@ import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 import { useMonoVaultContract } from "../../../../hooks/useContract";
 import { useApproximatePendingAsUnderlying } from "../../../../hooks/useMaxDeposit";
 import { useSelectedVault } from "../../../../hooks/useSelectedVault";
-import { handleTx, useAwaitPendingStateChange, usePendingTransaction } from "../../../../hooks/useTransactionHandler";
 import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
-import { Vault } from "../../../../store/vault/Vault";
-import { setVault } from "../../../../store/vault/vault.slice";
+import { thunkConfirmWithdrawal } from "../../../../store/vault/vault.thunks";
 import { prettyNumber } from "../../../../utils";
-import { addBalances, zeroBalance } from "../../../../utils/balances";
 import StyledButton from "../../../UI/button";
 import LoadingSpinner from "../../../UI/loadingSpinner";
 
@@ -21,53 +18,34 @@ function WithdrawButton ({ showAvailable }: { showAvailable?: boolean }) {
     const dispatch = useAppDispatch();
     const { library } = useWeb3React();
     const auxoContract = useMonoVaultContract(vault?.address);
-    const vaultUnderlying = vault?.userBalances?.wallet;
     const available = vault?.userBalances?.batchBurn.available;
     const status = useStatus();
-    const txPending = usePendingTransaction();
     const pendingSharesUnderlying = useApproximatePendingAsUnderlying();
 
     const buttonText = showAvailable ? prettyNumber(available?.label) : 'WITHDRAW';
     
-    const eventName = 'ExitBatchBurn';
-    useAwaitPendingStateChange(vaultUnderlying?.value, eventName);
-
     const buttonDisabled = () => {
         const wrongStatus = status !== WITHDRAWAL.READY
         const wrongNetwork =  chainId !== vault?.network.chainId
-        return wrongNetwork || withdrawing || wrongStatus || txPending; 
+        return wrongNetwork || withdrawing || wrongStatus; 
     }
 
-    const newMakeWithdraw = async () => {
-        if (auxoContract) {
-            setWithdrawing(true);
-            const tx = await auxoContract?.exitBatchBurn()
-            await handleTx({ tx, dispatch, library, onSuccess: () => {
-                if (vault && vault.userBalances && vault.userBalances.batchBurn) {
-                    const newVault: Vault = {
-                        ...vault,
-                        userBalances: {
-                            ...vault.userBalances,
-                            wallet: addBalances(vault.userBalances.wallet, pendingSharesUnderlying),
-                            batchBurn: {
-                                ...vault.userBalances.batchBurn,
-                                available: zeroBalance(),
-                                shares: zeroBalance(),
-                                round: vault.userBalances.batchBurn.round + 1
-                            }
-                        }
-                    };
-                    dispatch(setVault(newVault));
-                };
-            }});
-            setWithdrawing(false);
-        }
+    const makeWithdrawal = () => {
+        setWithdrawing(true);
+        dispatch(
+            thunkConfirmWithdrawal({
+                auxo: auxoContract,
+                provider: library,
+                pendingSharesUnderlying
+            })
+        )
+        .finally(() => setWithdrawing(false))
     };
 
     return (
         <StyledButton
             disabled={buttonDisabled()}
-            onClick={newMakeWithdraw}
+            onClick={makeWithdrawal}
             className="min-w-[60px]"
         >
             { 

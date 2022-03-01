@@ -3,10 +3,8 @@ import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../../hooks";
 import { useMerkleAuthContract } from "../../../hooks/useContract"
-import { handleTx, usePendingTransaction } from "../../../hooks/useTransactionHandler";
-import { setAlert } from "../../../store/app/app.slice";
 import { Vault } from "../../../store/vault/Vault";
-import { setVault } from "../../../store/vault/vault.slice";
+import { thunkAuthorizeDepositor } from "../../../store/vault/vault.thunks";
 import { AUXO_HELP_URL } from "../../../utils";
 import { getProof } from "../../../utils/merkleProof";
 import StyledButton from "../../UI/button";
@@ -24,41 +22,20 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const { account, library } = useWeb3React();
   const authContract = useMerkleAuthContract(vault.auth.address);
   const isDepositor = vault.auth.isDepositor
-  const txPending = usePendingTransaction();
   const [authorizing, setAuthorizing] = useState(false);
   
   const proof = getProof(account);
 
-  const submitProof = async () => {
-    try {
-      if (authContract && account && vault && proof) {
-        setAuthorizing(true)
-          const tx = await authContract?.authorizeDepositor(account, proof);
-          await handleTx({ tx, library, dispatch, onSuccess: () => {
-            const newVault: Vault = {
-              ...vault,
-              auth: {
-                ...vault.auth,
-                isDepositor: true
-              }
-            };  
-            dispatch(setVault(newVault));
-          }});
-        } else {
-          throw new Error('Missing TX or account')
-        } 
-    } catch {
-        dispatch(
-          setAlert({
-            message: 'There was a problem submitting the transaction',
-            type: 'ERROR'
-          }
-        )
-      )
-    } finally {
-      setAuthorizing(false);
-    }
-  }
+  const submitProof = () => {
+    setAuthorizing(true)
+    dispatch(
+      thunkAuthorizeDepositor({
+        account, 
+        auth: authContract,
+        provider: library
+      })
+    ).finally(() => setAuthorizing(false));
+  };
 
   return (
     <div className="p-5 flex flex-col items-center justify-center">{ 
@@ -79,7 +56,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
         (!isDepositor && proof) && 
         <StyledButton className="md:w-1/2" 
           onClick={submitProof}
-          disabled={txPending || authorizing}>{ authorizing ? <LoadingSpinner /> :'Opt In' }</StyledButton>
+          disabled={authorizing}>{ authorizing ? <LoadingSpinner /> :'Opt In' }</StyledButton>
       }
       { 
         !isDepositor && 

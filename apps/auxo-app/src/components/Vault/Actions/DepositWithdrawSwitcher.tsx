@@ -14,8 +14,8 @@ const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.E
       <div className="w-full h-full">
         <Tab.Group>
           <Tab.List className="flex justify-evenly items-center text-sm sm:text-base">
-            {tabHeaders.map((t, i) => 
-              (<Tab key={i} as={Fragment as any}>
+            {tabHeaders.map(t => 
+              (<Tab key={t} as={Fragment as any}>
                 {({ selected }) => (
                   <button
                     className={
@@ -33,17 +33,19 @@ const DepositWithdrawSwitcher = ({ vault }: { vault: Vault | undefined }): JSX.E
           </Tab.List>
           <Tab.Panels className="flex items-center justify-center h-[80%]">
             { 
-              ! isDepositor && 
-              <Tab.Panel>
+              isDepositor 
+              ? <>
+                <Tab.Panel className="h-full w-full">
+                  <DepositInput />
+                </Tab.Panel>
+                <Tab.Panel className="h-full w-full">
+                  <WithdrawInput />
+                </Tab.Panel>
+              </>
+              : <Tab.Panel>
                 {vault ? (<MerkleVerify vault={vault} />) : 'Connect a vault'}
               </Tab.Panel>
             }
-            <Tab.Panel className="h-full w-full">
-              <DepositInput />
-            </Tab.Panel>
-            <Tab.Panel className="h-full w-full">
-              <WithdrawInput />
-            </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
       </div>

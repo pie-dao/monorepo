@@ -1,16 +1,14 @@
 import { useWeb3React } from "@web3-react/core";
-import { useEffect } from "react";
 import { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract } from "../../../../hooks/useContract";
-import { useDecimals, useSelectedVault, useVaultTokenBalance } from "../../../../hooks/useSelectedVault";
-import { handleTx, useAwaitPendingStateChange, usePendingTransaction } from "../../../../hooks/useTransactionHandler";
+import { useSelectedVault, useVaultTokenBalance } from "../../../../hooks/useSelectedVault";
 import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
-import { Balance, Vault } from "../../../../store/vault/Vault";
-import { setVault } from "../../../../store/vault/vault.slice";
+import { Balance } from "../../../../store/vault/Vault";
+import { thunkIncreaseWithdrawal } from "../../../../store/vault/vault.thunks";
 import { SetStateType } from "../../../../types/utilities";
-import { AUXO_HELP_URL, convertToUnderlying, prettyNumber } from "../../../../utils";
-import { addBalances, subBalances, zeroBalance } from "../../../../utils/balances";
+import { AUXO_HELP_URL, prettyNumber } from "../../../../utils";
+import { zeroBalance } from "../../../../utils/balances";
 import { logoSwitcher } from "../../../../utils/logos";
 import StyledButton from "../../../UI/button";
 import LoadingSpinner from "../../../UI/loadingSpinner";
@@ -22,55 +20,26 @@ function ApproveWithdrawButton({ withdraw, setWithdraw }: { withdraw: Balance, s
     const [approving, setApproving] = useState(false);
     const dispatch = useAppDispatch();
     const vault = useSelectedVault();
-    const batchBurnShares = vault?.userBalances?.batchBurn.shares;
     const auxoContract = useMonoVaultContract(vault?.address);
     const status = useStatus();
-    const txPending = usePendingTransaction();
     const { library } = useWeb3React();
-    const decimals = useDecimals()
 
-    const eventName = 'EnterBatchBurn';
-    const succeeded = useAwaitPendingStateChange(batchBurnShares?.value, eventName);
-
-    useEffect(() => {
-        if (succeeded) {
-            setWithdraw(zeroBalance())
-        }
-    }, [succeeded, setWithdraw])
-
-    const newEnterBatchBurn = async () => {
-        if (auxoContract) {
-            setApproving(true);
-            const tx = await auxoContract?.enterBatchBurn(withdraw.value)
-            await handleTx({ tx, dispatch, library, onSuccess: () => {
-                if (vault && vault.userBalances && vault.userBalances.batchBurn && vault.stats?.exchangeRate) {
-                    const newVault: Vault = {
-                        ...vault,
-                        userBalances: {
-                            ...vault.userBalances,
-                            vault: subBalances(vault.userBalances.vault, withdraw),
-                            vaultUnderlying: subBalances(
-                                vault.userBalances.vaultUnderlying,
-                                convertToUnderlying(withdraw, vault.stats.exchangeRate, decimals)
-                            ),
-                            batchBurn: {
-                                ...vault.userBalances.batchBurn,
-                                shares: addBalances(vault.userBalances.batchBurn.shares, withdraw),
-                            }
-                        }
-                    };
-                    dispatch(setVault(newVault));
-                    setWithdraw(zeroBalance())
-                };
-            }});
-            setApproving(false);
-        }
+    const enterBatchBurn = () => {
+        setApproving(true);
+        dispatch(
+            thunkIncreaseWithdrawal({
+                auxo: auxoContract,
+                provider: library,
+                withdraw
+            })
+        ).then(() => setWithdraw(zeroBalance()))
+        .finally(() => setApproving(false));
     };
 
     return (
         <StyledButton
-            disabled={withdraw.value === '0' || status === WITHDRAWAL.READY || txPending}
-            onClick={newEnterBatchBurn}
+            disabled={withdraw.value === '0' || status === WITHDRAWAL.READY || approving}
+            onClick={enterBatchBurn}
         >
             { approving
                 ? <LoadingSpinner />

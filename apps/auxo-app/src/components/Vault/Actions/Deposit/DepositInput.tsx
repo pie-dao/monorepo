@@ -2,21 +2,19 @@ import { useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import { useMaxDeposit } from "../../../../hooks/useMaxDeposit";
 import { useApprovalLimit, useSelectedVault, useUserTokenBalance } from "../../../../hooks/useSelectedVault";
-import { Balance, Vault } from "../../../../store/vault/Vault";
-import { addBalances, compareBalances, subBalances, zeroBalance } from "../../../../utils/balances";
+import { Balance } from "../../../../store/vault/Vault";
+import { compareBalances, zeroBalance } from "../../../../utils/balances";
 import StyledButton from "../../../UI/button";
 import InputSlider from "../InputSlider";
-import { handleTx, useAwaitPendingStateChange, usePendingTransaction } from '../../../../hooks/useTransactionHandler';
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract, useTokenContract } from "../../../../hooks/useContract";
-import { setAlert } from "../../../../store/app/app.slice";
 import LoadingSpinner from "../../../UI/loadingSpinner";
 import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 import { useWeb3React } from "@web3-react/core";
-import { convertFromUnderlying, prettyNumber } from "../../../../utils";
+import { prettyNumber } from "../../../../utils";
 import { SetStateType } from "../../../../types/utilities";
 import { logoSwitcher } from "../../../../utils/logos";
-import { setVault } from "../../../../store/vault/vault.slice";
+import { thunkApproveDeposit, thunkMakeDeposit } from "../../../../store/vault/vault.thunks";
 
 function ApproveDepositButton({ deposit }: { deposit: Balance }) {
     const [approving, setApproving] = useState(false);
@@ -24,47 +22,22 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
     const vault = useSelectedVault();
     const { limit } = useApprovalLimit();
     const tokenContract = useTokenContract(vault?.token.address);
-    const txPending = usePendingTransaction();
     const { library } = useWeb3React();
 
-    const eventName = 'Approval';
-    useAwaitPendingStateChange(limit, eventName);
-
-    const approveDeposit = async () => {
-        try {
-            if (tokenContract && vault) {
-                setApproving(true);
-                const tx = await tokenContract?.approve(vault?.address, deposit.value)
-                await handleTx({ library, tx, dispatch, onSuccess: () => {
-                    if(!(vault && vault.userBalances)) return;
-                    const newVault: Vault = {
-                            ...vault,
-                            userBalances: {
-                                ...vault.userBalances,
-                                allowance: deposit,
-                            }
-                        }
-                    dispatch(setVault(newVault))
-                    }
-                });
-            } else {
-                throw new Error('Missing TX or account')
-            }
-        } catch (err) {
-            dispatch(
-                setAlert({
-                  message: "There was a problem with the transaction",
-                  type: "ERROR",
-                })
-              );
-        } finally {
-            setApproving(false)
-        }
-    };
+    const approveDeposit = () => {
+        setApproving(true);
+        dispatch(
+            thunkApproveDeposit({
+                deposit,
+                provider: library,
+                token: tokenContract
+            })
+        ).finally(() => setApproving(false));
+    }
 
     return (
         <StyledButton
-            disabled={deposit.value === '0' || compareBalances(limit, 'gte', deposit) || txPending}
+            disabled={deposit.value === '0' || compareBalances(limit, 'gte', deposit)  || approving}
             onClick={approveDeposit}
         >
             { approving
@@ -83,52 +56,29 @@ function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit
     const { account } = useWeb3React();
     const auxoContract = useMonoVaultContract(vault?.address);
     const { limit } = useApprovalLimit();
-    const txPending = usePendingTransaction();
     const { library } = useWeb3React();
 
     const buttonDisabled = () => {
         const invalidDepost = deposit.label <= 0;
         const sufficientApproval = compareBalances(limit, 'gte', deposit);
         const wrongNetwork =  chainId !== vault?.network.chainId
-        return !sufficientApproval || wrongNetwork || invalidDepost || depositing || txPending; 
-    }
+        return !sufficientApproval || wrongNetwork || invalidDepost || depositing; 
+    }   
 
-    const makeDeposit = async () => {
-        try {
-            if (auxoContract && account) {
-                setDepositing(true);
-                const tx = await auxoContract?.deposit(account, deposit.value);
-                await handleTx({ dispatch, library, tx, onSuccess: () => {
-                    if (!(vault && vault.userBalances && vault.stats)) return
-                    const newVault: Vault = {
-                        ...vault,
-                        userBalances: {
-                            ...vault.userBalances,
-                            wallet:  subBalances(vault.userBalances.wallet, deposit),
-                            vaultUnderlying: addBalances(vault.userBalances.vaultUnderlying, deposit),
-                            vault: addBalances(
-                                vault.userBalances.vault, 
-                                convertFromUnderlying(deposit, vault.stats?.exchangeRate, vault.token.decimals)
-                            )
-                        }
-                    };
-                    dispatch(setVault(newVault));
-                    setDeposit(zeroBalance());
-                }});
-            } else {
-                throw new Error('Missing TX or account')
-            }
-        } catch (err) {
-            dispatch(
-                setAlert({
-                  message: "There was a problem with the transaction",
-                  type: "ERROR",
-                })
-            );
-        } finally {
-            setDepositing(false);
-        }
-    };    
+    const makeDeposit = () => { 
+        setDepositing(true);
+        dispatch(
+            thunkMakeDeposit({
+                account, 
+                auxo: auxoContract,
+                deposit,
+                provider: library
+            })
+        )
+        .then(() => setDeposit(zeroBalance()))
+        .finally(() => setDepositing(false));
+    }
+  
     return (
         <>
         <div 
