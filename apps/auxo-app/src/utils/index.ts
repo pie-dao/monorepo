@@ -1,10 +1,52 @@
 import { BigNumber } from "@ethersproject/bignumber";
+import { ethers } from "ethers";
 import { Balance } from "../store/vault/Vault";
 
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 export type AwaitedReturn<F extends (...args: any) => any> = Awaited<
   ReturnType<F>
 >;
+
+export const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber =>
+  b1.gt(b2) ? b2 : b1;
+
+export const convertFromUnderlying = (
+  original: Balance,
+  exchangeRate: Balance,
+  decimals: number
+): Balance => {
+  const valueBN = BigNumber.from(original.value)
+    .mul(BigNumber.from(10).pow(decimals))
+    .div(exchangeRate?.value ?? 0);
+
+  const stringLabel = ethers.utils.formatUnits(valueBN, decimals);
+
+  const label = Math.round(parseFloat(stringLabel));
+
+  return {
+    value: valueBN.toString(),
+    label,
+  };
+};
+
+export const convertToUnderlying = (
+  original: Balance,
+  exchangeRate: Balance,
+  decimals: number
+): Balance => {
+  const valueBN = BigNumber.from(original.value)
+    .mul(exchangeRate?.value ?? 0)
+    .div(BigNumber.from(10).pow(decimals));
+
+  const stringLabel = ethers.utils.formatUnits(valueBN, decimals);
+
+  const label = Math.round(parseFloat(stringLabel));
+
+  return {
+    value: valueBN.toString(),
+    label,
+  };
+};
 
 // format 1000000000 -> '1,000,000,000'
 export const prettyNumber = (n?: number): string =>
@@ -13,10 +55,16 @@ export const prettyNumber = (n?: number): string =>
 export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
 
-export const fromScale = (n: number | BigNumber, decimals: number): number => {
-  return typeof n === "number"
-    ? n
-    : n.div(BigNumber.from(10).pow(BigNumber.from(decimals))).toNumber();
+export const fromScale = (
+  n: number | BigNumber | undefined,
+  decimals: number,
+  precision = 0
+): number => {
+  if (!n) return 0;
+  if (typeof n === "number") return n;
+
+  const stringLabel = ethers.utils.formatUnits(n, decimals);
+  return Number(parseFloat(stringLabel).toFixed(precision));
 };
 
 export const smallToBalance = (n: number, decimals: number): Balance => ({
@@ -29,12 +77,13 @@ export const smallToBalance = (n: number, decimals: number): Balance => ({
 
 export const toBalance = (
   n: number | BigNumber,
-  decimals: number
+  decimals: number,
+  precision = 0
 ): Balance => ({
   /**
-   * Convert a big number to a balance object
+   * Convert a big number or number to a balance object
    */
-  label: fromScale(n, decimals),
+  label: fromScale(n, decimals, precision),
   value: String(n),
 });
 

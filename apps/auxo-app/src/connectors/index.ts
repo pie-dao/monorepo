@@ -34,7 +34,6 @@ export default function getLibrary(provider: any): Web3Provider {
       ? parseInt(provider.chainId)
       : "any"
   );
-  library.pollingInterval = 12000;
   return library;
 }
 

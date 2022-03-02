@@ -1,24 +1,34 @@
 import { useSelectedVault } from "../../../hooks/useSelectedVault"
 import { prettyNumber } from "../../../utils";
+import { zeroBalance } from "../../../utils/balances";
+import { useApproximatePendingAsUnderlying } from "../../../hooks/useMaxDeposit";
+
+export const useLocked = (): number => {
+    /**
+     * When computing total value locked in auxo, we take the deposits in underlying USDC
+     * We also add the shares in the batch burn process, multiplied by the Exchange rate
+     * NB: need to understand how much ER and Amount Per Share can differ
+     */
+    const vault = useSelectedVault();
+    const amountDepositedUnderlying = vault?.userBalances?.vaultUnderlying ?? zeroBalance();
+    const amountPendingUnderlying = useApproximatePendingAsUnderlying();
+    return amountPendingUnderlying.label + amountDepositedUnderlying.label  
+};
 
 const VaultCapSlider = () => {
     const vault = useSelectedVault()
     const deposits = vault?.userBalances?.vaultUnderlying
     const cap = vault?.cap.underlying;
     const currency = vault?.symbol;
-    const pendingWithdrawal = vault?.userBalances?.batchBurn.shares
-    const barWidth = () => {
-        if (deposits && cap && pendingWithdrawal) {
-            const pc = Math.round((deposits.label + pendingWithdrawal?.label) / cap.label * 100);
-            return pc + '%';    
-        }
-    }
+    const amount = useLocked();
+    const barWidth = (): string => (cap ? Math.round(amount / cap.label * 100) : 0) + '%';
+
     return (
         <div className="flex flex-col w-full text-baby-blue-dark text-xs sm:text-sm font-bold mb-3 sm:mb-2 px-1 sm:px-0">
             <div className="flex w-full justify-between px-1 mb-1 sm:mb-0">
                     {
                         deposits
-                        ? <p>{ prettyNumber(deposits?.label) } { currency }</p>
+                        ? <p>{ prettyNumber(amount) } { currency }</p>
                         : <p>0 {currency}</p>
                     }
                     <p><span className="hidden sm:inline-block">MAX:</span> { prettyNumber(cap?.label) } { currency }</p>
@@ -28,7 +38,7 @@ const VaultCapSlider = () => {
                     bg-gradient-to-r from-return-0 via-return-60 to-return-100
                    "
                    // cannot use string concat with arbitrary tailwind values
-                   style={{ width: barWidth()}}
+                   style={{ width: barWidth(), transitionDuration: '1s', transitionProperty: 'all' }}
                    ></div>
             </div>
         </div>

@@ -5,7 +5,9 @@ import ExternalUrl from "./UI/url";
 const logo = process.env.PUBLIC_URL + "/piedaologo.png";
 
 const Footer = () => {
-  const block = useBlock();
+  const {
+    block: { number: blockNumber },
+  } = useBlock();
   return (
     <footer
       className="
@@ -18,11 +20,13 @@ const Footer = () => {
       "
     >
       <div className="w-24 sm:w-36 md:w-48 mr-3">
-        <img
-          alt="piedao-logo"
-          src={logo}
-          className=" object-contain max-w-24"
-        />
+        <ExternalUrl to="https://piedao.org">
+          <img
+            alt="piedao-logo"
+            src={logo}
+            className=" object-contain max-w-24"
+          />
+        </ExternalUrl>
       </div>
       <div className=" items-end flex-grow">
         <section className="flex justify-end text-gray-700 w-full items-end">
@@ -30,10 +34,10 @@ const Footer = () => {
             <p className="text-baby-blue-dark mr-5">FAQ</p>
           </ExternalUrl>
 
-          {block.blockNumber && (
+          {blockNumber && (
             <p>
               <span className="hidden sm:inline-block mr-2">Block:</span>
-              {block.blockNumber}
+              {blockNumber}
             </p>
           )}
         </section>

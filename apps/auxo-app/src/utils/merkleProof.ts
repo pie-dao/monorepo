@@ -1,8 +1,14 @@
 import { BytesLike } from "ethers";
-// import MerkleProofs from "../static/stakers-merkle-tree.json";
-import MerkleProofs from "../static/stakers-merkle-tree.production.json";
+import MerkleProofDev from "../static/stakers-merkle-tree.dev.json";
+import MerkleProofProd from "../static/stakers-merkle-tree.production.json";
+
+const isDevEnvironment = process.env.NODE_ENV === "development";
+
+if (isDevEnvironment) console.log("Dev Merkle Proof Loaded");
+
+const MerkleProof = isDevEnvironment ? MerkleProofDev : MerkleProofProd;
 
 export const getProof = (account?: string | null): BytesLike[] | undefined => {
-  const input = MerkleProofs[account as keyof typeof MerkleProofs];
+  const input = MerkleProof[account as keyof typeof MerkleProof];
   return input;
 };

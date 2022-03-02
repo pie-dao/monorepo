@@ -1,83 +1,196 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { vaultState } from './vault.state';
-import { Balance, UserBalanceOnChainData, Vault, VaultAuth, VaultOnChainData } from './Vault';
-import { toBalance } from '../../utils';
-import { addBalances, subBalances } from '../../utils/balances';
+import { Balance, Vault } from './Vault';
+import { convertFromUnderlying, convertToUnderlying } from '../../utils';
+import { addBalances, subBalances, zeroBalance } from '../../utils/balances';
+import { thunkApproveDeposit, thunkMakeDeposit, thunkConfirmWithdrawal, thunkIncreaseWithdrawal, thunkAuthorizeDepositor } from './vault.thunks';
 
 export const vaultSlice = createSlice({
   name: 'vault',
   initialState: vaultState,
+
+  /**
+   * Extra reducers here subscribe to the async thunks 'fulfilled' hook
+   * and prepare the state transformations for the corresponding vault.
+   * To save repeating the find and update logic, we re-use the caseReducer 
+   * `setVault`, which finds and updates a single vault, according to
+   * the transformer function.
+   */
+  extraReducers: (builder) => {
+
+    builder.addCase(thunkApproveDeposit.fulfilled, (state, action) => {
+        vaultSlice.caseReducers.setVault(state, {
+          type: action.type,
+          payload: { 
+            transformer: (vault, allowance) => {
+              return (vault && vault.userBalances) && {
+                ...vault,
+                userBalances: {
+                  ...vault.userBalances,
+                  allowance,
+                }
+              }
+            },
+          change: action.payload.deposit,
+        }
+      })
+    });
+
+    builder.addCase(thunkMakeDeposit.fulfilled, (state, action) => {
+        vaultSlice.caseReducers.setVault(state, {
+          type: action.type,
+          payload: { 
+            transformer: (vault, deposit) => {
+              if (vault && vault.userBalances && vault.stats) return {
+                ...vault,
+                userBalances: {
+                  ...vault.userBalances,
+                  wallet:  subBalances(vault.userBalances.wallet, deposit),
+                  vaultUnderlying: addBalances(vault.userBalances.vaultUnderlying, deposit),
+                  vault: addBalances(
+                    vault.userBalances.vault, 
+                    convertFromUnderlying(deposit, vault.stats?.exchangeRate, vault.token.decimals)
+                  )
+                }
+              };
+            },
+          change: action.payload.deposit,
+        }
+      });
+  });
+
+  builder.addCase(thunkConfirmWithdrawal.fulfilled, (state, action) => {
+    vaultSlice.caseReducers.setVault(state, {
+      type: action.type,
+      payload: { 
+        transformer: (vault, pendingSharesUnderlying) => {
+          if (
+            vault
+            && vault.userBalances
+            && vault.userBalances.batchBurn
+          ) return {
+            ...vault,
+            userBalances: {
+              ...vault.userBalances,
+              wallet: addBalances(vault.userBalances.wallet, pendingSharesUnderlying),
+              batchBurn: {
+                ...vault.userBalances.batchBurn,
+                available: zeroBalance(),
+                shares: zeroBalance(),
+                round: vault.userBalances.batchBurn.round + 1
+              }
+            }
+          };
+        },
+        change: action.payload.pendingSharesUnderlying,
+      }
+      });
+    });
+
+    builder.addCase(thunkIncreaseWithdrawal.fulfilled, (state, action) => {
+      vaultSlice.caseReducers.setVault(state, {
+        type: action.type,
+        payload: { 
+          transformer: (vault, withdraw) => {
+            if (
+              vault
+              && vault.userBalances
+              && vault.userBalances.batchBurn
+              && vault.stats?.exchangeRate
+            ) return {
+                ...vault,
+                userBalances: {
+                    ...vault.userBalances,
+                    vault: subBalances(vault.userBalances.vault, withdraw),
+                    vaultUnderlying: subBalances(
+                        vault.userBalances.vaultUnderlying,
+                        convertToUnderlying(withdraw, vault.stats.exchangeRate, vault.token.decimals)
+                    ),
+                    batchBurn: {
+                        ...vault.userBalances.batchBurn,
+                        shares: addBalances(vault.userBalances.batchBurn.shares, withdraw),
+                    }
+                }
+              }
+          },
+          change: action.payload.withdraw,
+        }
+      });
+    });    
+
+    builder.addCase(thunkAuthorizeDepositor.fulfilled, (state, action) => {
+      vaultSlice.caseReducers.setVault(state, {
+        type: action.type,
+        payload: { 
+          transformer: (vault) => {
+            if (
+              vault
+              && vault.userBalances
+              && vault.userBalances.batchBurn
+              && vault.stats?.exchangeRate
+            ) return {
+              ...vault,
+              auth: {
+                ...vault.auth,
+                isDepositor: true
+              }
+            };
+          },
+          // No change as it is auth (Hack (?))
+          change: zeroBalance()
+        }
+      });
+    }); 
+  },  
+
+  // reducers actually apply the state changes
   reducers: {
+
+    // Use when setting the whole state
     setVaults: (state, action: PayloadAction<Vault[]>) => {
       state.vaults = action.payload;
     },
-    setIsDepositor: (state, action: PayloadAction<VaultAuth>) => {
-      const vault = state.vaults.find(v => v.address === action.payload.address);
-      if (vault) {
-        vault.auth.isDepositor = action.payload.isDepositor
-      }
+
+    // use when changing a single vault
+    setVault: (state, action: PayloadAction<{
+      change: Balance
+      // The transformation function to apply to the vault
+      transformer: (vault: Vault, change: Balance) => Vault | undefined,
+    }>) => {
+      /**
+       * Pass a vault transformer function, and this reducer will find and update the vault accordingly
+       */
+      state.vaults = state.vaults.map(originalVault => {
+        const newVault = action.payload.transformer(originalVault, action.payload.change);
+        return originalVault.address === state.selected 
+          ? newVault as Vault
+          : originalVault
+      })
     },
-    setOnChainVaultData: (state, action: PayloadAction<VaultOnChainData>) => {
-      const vault = state.vaults.find(v => v.address === action.payload.address);
-      if (vault) {
-        vault.stats = action.payload.stats;
-        vault.token = action.payload.token;
-      }
+
+    // call after sign out
+    setResetUserVaultDetails: (state) => {
+      state.vaults = state.vaults.map(vault => ({
+        ...vault,
+        userBalances: undefined,
+        auth: {
+          ...vault.auth,
+          isDepositor: false
+        }
+      }))
     },
-    setUserBalances: (state, action: PayloadAction<UserBalanceOnChainData>) => {
-      const vault = state.vaults.find(v => v.address === action.payload.address);
-      if (vault) {
-        vault.userBalances = action.payload.userBalances
-      }
-    },
+
+    // update the currently selected vault on the vault details page
     setSelectedVault: (state, action: PayloadAction<string>) => {
       state.selected = action.payload;
     },
-    setApproval: (state, action: PayloadAction<Balance>) => {
-      const vault = state.vaults.find(v => v.address === state.selected);
-      if (vault && vault.userBalances) {
-        vault.userBalances.allowance = action.payload;
-      }
-    },
-    setNewBalances: (state, action: PayloadAction<Balance>) => {
-      const vault = state.vaults.find(v => v.address === state.selected);
-      if (vault && vault.userBalances && vault.token?.decimals) {
-        const decimals = vault.token.decimals;
-        vault.userBalances.allowance = toBalance(0, decimals);
-        vault.userBalances.vaultUnderlying = addBalances(vault.userBalances.vaultUnderlying, action.payload);
-        vault.userBalances.wallet = subBalances(vault.userBalances.wallet, action.payload)
-      }
-    },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
-    },
-    setReduceVaultTokens: (state, action: PayloadAction<Balance>) => {
-      // to do - reduce the corresponding underlying balance
-      const vault = state.vaults.find(v => v.address === state.selected);
-      if (vault && vault.userBalances && vault.token?.decimals) {
-        vault.userBalances.vault = subBalances(vault.userBalances.vault, action.payload);
-      }
-    },
-    setCap: (state, action: PayloadAction<Balance>) => {
-      const vault = state.vaults.find(v => v.address === state.selected);
-      if (vault && vault.userBalances && vault.token?.decimals) {
-        vault.cap.underlying = action.payload;
-      }
-    }
   },
 });
 
 export const {
-  setUserBalances,
-  setOnChainVaultData,
   setSelectedVault,
-  setApproval,
-  setNewBalances,
-  setReduceVaultTokens,
-  setLoading,
-  setIsDepositor,
-  setCap,
   setVaults,
+  setResetUserVaultDetails,
 } = vaultSlice.actions;
 export default vaultSlice.reducer;
 

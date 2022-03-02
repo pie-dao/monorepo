@@ -23,15 +23,11 @@ const useVaultRows = (): VaultRowReturnValue => {
       },
       yield: {
         sort: {
-          value: Number(v.stats?.currentAPY.value),
+          value: v.stats?.currentAPY.label,
           isSortable: true,
         },
         label:
-          v.stats && v.token
-            ? zeroApyMessage(
-                Number(v.stats?.currentAPY.value) / 10 ** v.token.decimals
-              )
-            : "--",
+          v.stats && v.token ? zeroApyMessage(v.stats.currentAPY.label) : "--",
         addStyles: true,
       },
       "total deposits": {
