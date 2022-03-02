@@ -58,6 +58,8 @@
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-prettier": "^3.1.4",
     "hardhat": "^2.8.2",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.4",
     "typechain": "^6.1.0"
   },
   "scripts": {
@@ -68,7 +70,15 @@
     "eject": "react-scripts eject",
     "typechain": "typechain --target=ethers-v5 'src/abi/*.json' --out-dir src/types/artifacts/abi",
     "lint": "yarn format && npx eslint --fix src/*.{ts,tsx} src/**/*.{ts,tsx}",
-    "format": "npx prettier --write src/*.{ts,tsx} --write src/**/*.{ts,tsx}"
+    "format": "npx prettier --write src/*.{ts,tsx} --write src/**/*.{ts,tsx}",
+    "prepare": "cd ../../ && husky install ./apps/auxo-app/.husky"
+  },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "bash -c tsc -p .",
+      "yarn lint --max-warnings 0",
+      "yarn format"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
