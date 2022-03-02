@@ -2,6 +2,7 @@ import { useSelectedVault } from "../../../hooks/useSelectedVault"
 import { prettyNumber } from "../../../utils";
 import { zeroBalance } from "../../../utils/balances";
 import { useApproximatePendingAsUnderlying } from "../../../hooks/useMaxDeposit";
+import { FaLock } from "react-icons/fa";
 
 export const useLocked = (): number => {
     /**
@@ -26,11 +27,15 @@ const VaultCapSlider = () => {
     return (
         <div className="flex flex-col w-full text-baby-blue-dark text-xs sm:text-sm font-bold mb-3 sm:mb-2 px-1 sm:px-0">
             <div className="flex w-full justify-between px-1 mb-1 sm:mb-0">
+                    
+                    <div className="flex items-center">
+                    <FaLock className="mr-1"/>
                     {
                         deposits
                         ? <p>{ prettyNumber(amount) } { currency }</p>
                         : <p>0 {currency}</p>
                     }
+                    </div>
                     <p><span className="hidden sm:inline-block">MAX:</span> { prettyNumber(cap?.label) } { currency }</p>
             </div>
             <div className="w-full px-1 rounded-xl h-2 sm:h-4 flex items-center bg-white">
