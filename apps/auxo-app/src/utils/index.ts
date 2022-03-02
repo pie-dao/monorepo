@@ -2,6 +2,7 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { ethers } from "ethers";
 import { Balance } from "../store/vault/Vault";
 
+// Only needed for TS < 4.5
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
 export type AwaitedReturn<F extends (...args: any) => any> = Awaited<
   ReturnType<F>
