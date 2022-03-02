@@ -14,7 +14,9 @@ export const useChainHandler = (): NetworkDetail | undefined => {
   const dispatch = useAppDispatch();
   const [chain, setChain] = useState<NetworkDetail | undefined>(undefined);
   useEffect(() => {
-    if (chainId && isChainSupported(chainId)) {
+    // Prevent flickering error when the app is loading
+    if (!chainId) return;
+    if (isChainSupported(chainId)) {
       dispatch(clearAlert());
       setChain(chainMap[chainId]);
     } else {
