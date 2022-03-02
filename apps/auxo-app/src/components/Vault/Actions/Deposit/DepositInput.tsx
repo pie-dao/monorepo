@@ -9,7 +9,6 @@ import InputSlider from "../InputSlider";
 import { useAppDispatch } from "../../../../hooks";
 import { useMonoVaultContract, useTokenContract } from "../../../../hooks/useContract";
 import LoadingSpinner from "../../../UI/loadingSpinner";
-import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 import { useWeb3React } from "@web3-react/core";
 import { prettyNumber } from "../../../../utils";
 import { SetStateType } from "../../../../types/utilities";
@@ -50,13 +49,11 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
 
 function DepositButtons ({ deposit, setDeposit }: { deposit: Balance, setDeposit: SetStateType<Balance> }) {
     const [depositing, setDepositing] = useState(false);
-    const { chainId } = useWeb3Cache();
-    const vault = useSelectedVault();
     const dispatch = useAppDispatch();
-    const { account } = useWeb3React();
-    const auxoContract = useMonoVaultContract(vault?.address);
+    const { account, library, chainId } = useWeb3React();
     const { limit } = useApprovalLimit();
-    const { library } = useWeb3React();
+    const vault = useSelectedVault();
+    const auxoContract = useMonoVaultContract(vault?.address);
 
     const buttonDisabled = () => {
         const invalidDepost = deposit.label <= 0;

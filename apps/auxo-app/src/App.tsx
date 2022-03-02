@@ -6,10 +6,21 @@ import { Routes, Route } from "react-router-dom";
 import VaultDetails from "./pages/Vault";
 import AlertMessage from "./components/Header/AlertMessage";
 import Home from "./pages/Home";
+import { useEffect } from "react";
+import { useWeb3React } from "@web3-react/core";
+import { useAppDispatch } from "./hooks";
+import { setResetUserVaultDetails } from "./store/vault/vault.slice";
 
 const ChainDataComponent = () => {
   useSetWeb3Cache();
+  const { account } = useWeb3React();
   const { loading } = useChainData();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // Reset user-level stats if the account changes
+    dispatch(setResetUserVaultDetails());
+  }, [account, dispatch]);
   return <div>{loading}</div>;
 };
 
