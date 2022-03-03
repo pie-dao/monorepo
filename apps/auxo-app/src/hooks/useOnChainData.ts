@@ -18,8 +18,62 @@ import hash from "object-hash";
 import { useWeb3Cache } from "./useCachedWeb3";
 import { useBlock } from "./useBlock";
 import { zeroBalance } from "../utils/balances";
+import { promiseObject } from "../utils/promiseObject";
+import { Defined } from "../types/utilities";
 
-type BalancesProps = {
+/**
+ * Vault-wide calls that do not need the user signed in.
+ * These will always be available provided we have a network connection
+ */
+const vaultCalls = (mono: Mono, cap: VaultCapped) => ({
+  totalUnderlying: mono.totalUnderlying(),
+  lastHarvest: mono.lastHarvest(),
+  estimatedReturn: mono.estimatedReturn(),
+  batchBurnRound: mono.batchBurnRound(),
+  userDepositLimit: cap.userDepositLimit(),
+  exchangeRate: mono.exchangeRate(),
+});
+
+/**
+ * Account level on-chain information that is only available if the user is connected
+ */
+type AccountCallProps = {
+  account: string | null | undefined;
+  mono: Mono;
+  auth: MerkleAuth;
+  token: Erc20;
+};
+const accountCalls = ({ account, token, auth, mono }: AccountCallProps) => {
+  return (
+    account && {
+      balanceOfUnderlying: token.balanceOf(account),
+      balanceOfVault: mono.balanceOf(account),
+      balanceOfVaultUnderlying: mono.balanceOfUnderlying(account),
+      allowance: token.allowance(account, mono.address),
+      userBatchBurnReceipts: mono.userBatchBurnReceipts(account),
+      isDepositor: auth.isDepositor(mono.address, account),
+    }
+  );
+};
+
+/**
+ * Batch burns rounds need to be fetched from on-chain, so no guarantee we have them during first call.
+ * We also need to inspect the previous batch burn for our purposes, as that provides withdrawal data.
+ */
+const batchBurnCalls = (mono: Mono, batchBurnRound: number | undefined) => {
+  return (
+    batchBurnRound &&
+    batchBurnRound > 0 && {
+      batchBurns: mono.batchBurns(batchBurnRound - 1),
+    }
+  );
+};
+
+/**
+ * Call on chain data by constructing an object of promises, depending on the
+ * Available information we have on hand.
+ */
+type OnChainDataProps = {
   token: Erc20 | undefined;
   mono: Mono | undefined;
   auth: MerkleAuth | undefined;
@@ -27,55 +81,36 @@ type BalancesProps = {
   batchBurnRound?: number;
   account?: string | null;
 };
-
-const getAllBalances = async ({
+async function fetchOnChainData({
   token,
   mono,
   auth,
   cap,
-  batchBurnRound,
   account,
-}: BalancesProps) => {
-  if (mono && auth && cap && token) {
-    const calls: Promise<BigNumber | BigNumber[] | boolean>[] = [
-      mono.totalUnderlying(), // 0
-      mono.lastHarvest(), // 1
-      mono.estimatedReturn(), // 2
-      mono.batchBurnRound(), // 3
-      cap.userDepositLimit(), // 4
-    ];
+  batchBurnRound,
+}: OnChainDataProps) {
+  if (!(mono && token && auth && cap)) return;
+  let onChainCalls = {
+    ...vaultCalls(mono, cap),
+    ...accountCalls({ account, token, mono, auth }),
+    ...batchBurnCalls(mono, batchBurnRound),
+  };
+  return await promiseObject(onChainCalls);
+}
 
-    if (account) {
-      [
-        token.balanceOf(account), // 5
-        mono.balanceOf(account), // 6
-        mono.balanceOfUnderlying(account), // 7
-        token.allowance(account, mono.address), // 8
-        mono.userBatchBurnReceipts(account), // 9
-        auth.isDepositor(mono.address, account), // 10
-      ].forEach((call) => calls.push(call));
-    }
-
-    if (batchBurnRound && batchBurnRound > 0) {
-      calls.push(mono.batchBurns(batchBurnRound - 1)); // 11
-    }
-
-    calls.push(mono.exchangeRate()); // 12
-
-    return await Promise.all(calls);
-  } else {
-    console.warn("Missing contracts");
-    return await Promise.all([]);
-  }
-};
-
-const calculateAvailable = (
-  shares: BigNumber,
-  amountPerShare: BigNumber,
-  decimals: number,
-  batchBurnRound: number,
-  userBatchBurnRound: number
-): Balance => {
+const calculateAvailable = ({
+  shares,
+  amountPerShare,
+  decimals,
+  batchBurnRound,
+  userBatchBurnRound,
+}: {
+  shares: BigNumber;
+  amountPerShare: BigNumber;
+  decimals: number;
+  batchBurnRound: number;
+  userBatchBurnRound: number;
+}): Balance => {
   /**
    * Amount available depends on the batch burn round
    * If the BBR === UserBBR, available === 0, else it's amount per share * shares
@@ -83,9 +118,86 @@ const calculateAvailable = (
   if (userBatchBurnRound === batchBurnRound) {
     return zeroBalance();
   }
-  const _amountPerShare = fromScale(amountPerShare, decimals);
-  const bigAvailable = shares.mul(_amountPerShare);
+  const scaledPerShare = fromScale(amountPerShare, decimals);
+  const bigAvailable = shares.mul(scaledPerShare);
   return toBalance(bigAvailable, decimals);
+};
+
+/**
+ * Add the basic per-vault level data
+ */
+const addVaultStats = (
+  data: NonNullable<AwaitedReturn<typeof fetchOnChainData>>,
+  decimals: number
+): Vault["stats"] => ({
+  deposits: toBalance(data.totalUnderlying, decimals),
+  lastHarvest: data.lastHarvest.toNumber(),
+  currentAPY: toBalance(data.estimatedReturn, decimals, 2),
+  batchBurnRound: data.batchBurnRound.toNumber(),
+  exchangeRate: toBalance(data.exchangeRate, decimals, 6),
+});
+
+/**
+ * Take the existing state and add user level inforrmation
+ */
+const addUserBalanceData = (
+  data: NonNullable<AwaitedReturn<typeof fetchOnChainData>>,
+  currentVault: Vault,
+  decimals: number
+): Vault => {
+  const accountLevelData = data as Defined<typeof data>;
+  return {
+    ...currentVault,
+    auth: {
+      ...currentVault.auth,
+      isDepositor: accountLevelData.isDepositor,
+    },
+    userBalances: {
+      wallet: toBalance(accountLevelData.balanceOfUnderlying, decimals),
+      vault: toBalance(accountLevelData.balanceOfVault, decimals),
+      vaultUnderlying: toBalance(
+        accountLevelData.balanceOfVaultUnderlying,
+        decimals
+      ),
+      allowance: toBalance(data.allowance as BigNumber, decimals),
+      batchBurn: {
+        round: accountLevelData.userBatchBurnReceipts[0].toNumber(),
+        shares: toBalance(accountLevelData.userBatchBurnReceipts[1], decimals),
+        available:
+          currentVault.userBalances?.batchBurn.available ??
+          toBalance(0, decimals),
+      },
+    },
+  };
+};
+
+/**
+ * Take the existing state object and add informating relating to the batchburn and withdraw process
+ */
+const addBatchBurn = (
+  data: NonNullable<AwaitedReturn<typeof fetchOnChainData>>,
+  currentVault: Vault,
+  decimals: number
+) => {
+  console.debug({ data });
+  const batchBurnLevelData = data as Defined<typeof data>;
+  return {
+    ...currentVault,
+    userBalances: {
+      ...currentVault.userBalances!,
+      batchBurn: {
+        ...currentVault.userBalances?.batchBurn!,
+        available: calculateAvailable({
+          shares: batchBurnLevelData.userBatchBurnReceipts.shares,
+          amountPerShare: batchBurnLevelData.batchBurns.amountPerShare,
+          decimals,
+          batchBurnRound: batchBurnLevelData.batchBurnRound.toNumber(),
+          userBatchBurnRound:
+            batchBurnLevelData.userBatchBurnReceipts.round.toNumber(),
+        }),
+      },
+    },
+  };
 };
 
 const toState = ({
@@ -97,84 +209,37 @@ const toState = ({
   existing: Vault;
   address: string;
   decimals: number;
-  data: AwaitedReturn<typeof getAllBalances>;
+  data: AwaitedReturn<typeof fetchOnChainData>;
   account?: string | null;
-}): Vault => {
+}): Vault | undefined => {
   /**
    * Rebuilds the entire vault before making a dispatch call
    * This allows us to check we actually have changes before triggering
    * a state update. Useful for controlling re-renders and preventing
    * hammering of the node
-   *
-   * @dev - clean this up a bit for multichain.
-   * It works, but it's big and not easy to maintain
    */
-  const toNumber = (n: BigNumber | BigNumber[] | boolean): number =>
-    (n as BigNumber).toNumber();
+  if (!data) return;
+
   let returnValue: Vault = {
     ...existing,
-    stats: {
-      deposits: toBalance(data[0] as BigNumber, decimals),
-      lastHarvest: toNumber(data[1]),
-      currentAPY: toBalance(data[2] as BigNumber, decimals, 2),
-      batchBurnRound: toNumber(data[3]),
-      exchangeRate: toBalance(
-        (data[12] as BigNumber) ?? BigNumber.from(0),
-        decimals,
-        6
-      ),
-    },
+    ...addVaultStats(data, decimals),
     cap: {
       ...existing.cap,
-      underlying: toBalance(data[4] as BigNumber, decimals),
+      underlying: toBalance(data.userDepositLimit, decimals),
     },
   };
-  if (account)
-    returnValue = {
-      ...returnValue,
-      auth: {
-        ...returnValue.auth,
-        isDepositor: data[10] as boolean,
-      } as Vault["auth"],
-      userBalances: {
-        wallet: toBalance(data[5] as BigNumber, decimals),
-        vault: toBalance(data[6] as BigNumber, decimals),
-        vaultUnderlying: toBalance(data[7] as BigNumber, decimals),
-        allowance: toBalance(data[8] as BigNumber, decimals),
-        batchBurn: {
-          round: (data[9] as BigNumber[])[0].toNumber(),
-          shares: toBalance((data[9] as BigNumber[])[1], decimals),
-          available:
-            returnValue.userBalances?.batchBurn.available ??
-            toBalance(0, decimals),
-        },
-      },
-    };
-  if (data[11]) {
-    returnValue = {
-      ...returnValue,
-      userBalances: {
-        ...returnValue.userBalances!,
-        batchBurn: {
-          ...returnValue.userBalances?.batchBurn!,
-          available: calculateAvailable(
-            (data[9] as BigNumber[])[1],
-            (data[11] as BigNumber[])[1],
-            decimals,
-            toNumber(data[3]),
-            (data[9] as BigNumber[])[0].toNumber()
-          ),
-        },
-      },
-    };
-  }
+
+  if (account) returnValue = addUserBalanceData(data, returnValue, decimals);
+  if (data.batchBurnRound)
+    returnValue = addBatchBurn(data, returnValue, decimals);
+
   return returnValue;
 };
 
 const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
-  const hasChanged =
-    hash(old, { encoding: "base64" }) !== hash(change, { encoding: "base64" });
-  return hasChanged;
+  return (
+    hash(old, { encoding: "base64" }) !== hash(change, { encoding: "base64" })
+  );
 };
 
 export const useChainData = (): { loading: boolean } => {
@@ -232,18 +297,18 @@ export const useChainData = (): { loading: boolean } => {
           );
           const mono = monoContracts.find(
             (m) => m.address.toLowerCase() === vault?.address.toLowerCase()
-          )!;
+          );
           const auth = authContracts.find(
             (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
-          )!;
+          );
           const cap = capContracts.find(
             (c) => c.address.toLowerCase() === vault?.cap.address.toLowerCase()
-          )!;
+          );
           if (mono && vault) {
             const data = {
               vault,
               address: mono.address,
-              data: await getAllBalances({
+              data: await fetchOnChainData({
                 token,
                 mono,
                 auth,
@@ -257,8 +322,8 @@ export const useChainData = (): { loading: boolean } => {
         })
       )
         .then((payload) => {
-          const newVaults = payload.filter(Boolean).map((p) => {
-            return (
+          const newVaults = payload.filter(Boolean).map(
+            (p) =>
               p &&
               toState({
                 existing: p.vault,
@@ -267,8 +332,7 @@ export const useChainData = (): { loading: boolean } => {
                 data: p.data,
                 account,
               })
-            );
-          }) as Vault[];
+          ) as Vault[];
 
           if (newVaults && hasStateChanged(vaults, newVaults)) {
             dispatch(setVaults(newVaults));

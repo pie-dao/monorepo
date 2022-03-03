@@ -1,4 +1,10 @@
-import { DAIIcon, FRAXIcon, FTMLogo, MIMLogo, USDCIcon } from "../assets/icons/logos";
+import {
+  DAIIcon,
+  FRAXIcon,
+  FTMLogo,
+  MIMLogo,
+  USDCIcon,
+} from "../assets/icons/logos";
 
 const logo = process.env.PUBLIC_URL + "/auxo-icon-green.png";
 
