@@ -25,7 +25,10 @@ function getMulticallProvider(library: Web3Provider): MulticallProvider {
   /**
    * @dev ensure this is creating a multicall series of requests
    */
-  return new providers.MulticallProvider(library);
+  return new providers.MulticallProvider(library, {
+    // ftm
+    contract: "0x6c31De530342b4F6681B2fE7c420248b920A63A2",
+  });
 }
 
 function getSigner(library: Web3Provider, account: string): JsonRpcSigner {
@@ -54,7 +57,7 @@ export function useContract<T extends Contract>(
   const { library, account, active } = useWeb3React<Web3Provider>();
 
   return useMemo(() => {
-    if (!address || !ABI || !library || !chainId) return undefined;
+    if (!address || !ABI || !library || !chainId) return;
     try {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
