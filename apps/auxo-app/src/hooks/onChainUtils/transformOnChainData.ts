@@ -163,6 +163,5 @@ export const toVault = ({
       decimals
     );
   }
-
   return newVault;
 };

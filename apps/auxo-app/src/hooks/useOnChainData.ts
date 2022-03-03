@@ -41,6 +41,7 @@ export const useChainData = (): { loading: boolean } => {
   const { account, active } = useWeb3React();
   const [loading, setLoading] = useState(false);
   const lastUpdatedBlock = useRef<null | number | undefined>(null);
+  const latestRequest = useRef(0);
   const { chainId } = useWeb3Cache();
   const { block, refreshFrequency } = useBlock();
 
@@ -49,15 +50,21 @@ export const useChainData = (): { loading: boolean } => {
   const { monoContracts, tokenContracts, authContracts, capContracts } =
     useContracts(chainId);
 
+  useEffect(() => {
+    // Reset last updated (force a reload) if the chain ID or account changes
+    if (!chainId) return;
+    lastUpdatedBlock.current = null;
+  }, [account, chainId]);
+
   const shouldUpdate = useCallback(() => {
     // do not update state if vital data missing
     if (!chainId || !block || !block.number) return false;
 
+    // Ensure we always fetch data on first load or if key variables change
+    if (!lastUpdatedBlock.current) return true;
+
     // don't update if state is updating
     if (loading) return false;
-
-    // Ensure we always fetch data when the user loads the app for the first time
-    if (!lastUpdatedBlock.current) return true;
 
     // don't update the state if the block number hasn't changed
     if (block.number === lastUpdatedBlock.current) return false;
@@ -94,10 +101,13 @@ export const useChainData = (): { loading: boolean } => {
   useEffect(() => {
     if (shouldUpdate()) {
       setLoading(true);
+      // Capture when request sent to ensure state doesn't get overwritten with async stale data
+      const thisRequest = new Date().getTime();
+      latestRequest.current = thisRequest;
 
       // Multicall contract executes promise all as a batch request
-      // Get all relevant contracts for the underlying token
       Promise.all(
+        // Get all relevant contracts for the underlying token
         tokenContracts.map(async (token) => {
           const vault = vaults.find(
             (v) => v.token.address.toLowerCase() === token.address.toLowerCase()
@@ -136,6 +146,9 @@ export const useChainData = (): { loading: boolean } => {
                   account,
                 })
             ) as Vault[];
+
+          // discard data that has taken too long to reach us
+          if (thisRequest < latestRequest.current) return;
 
           // Only trigger a state update if we have new data
           if (newVaults && hasStateChanged(vaults, newVaults)) {

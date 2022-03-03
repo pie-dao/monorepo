@@ -87,5 +87,6 @@ export async function fetchOnChainData({
     // pass existing vault data for reference
     existing: vault,
   };
-  return await promiseObject(onChainCalls);
+  const obj = await promiseObject(onChainCalls);
+  return obj;
 }
