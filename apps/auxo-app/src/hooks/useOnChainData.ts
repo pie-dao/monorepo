@@ -57,8 +57,9 @@ export const useChainData = (): { loading: boolean } => {
   }, [account, chainId]);
 
   const shouldUpdate = useCallback(() => {
-    // do not update state if vital data missing
-    if (!chainId || !block || !block.number) return false;
+    // do not update state if vital data missing, account null is valid
+    if (!chainId || !block || !block.number || account === undefined)
+      return false;
 
     // Ensure we always fetch data on first load or if key variables change
     if (!lastUpdatedBlock.current) return true;
@@ -96,6 +97,7 @@ export const useChainData = (): { loading: boolean } => {
     capContracts,
     chainId,
     active,
+    account,
   ]);
 
   useEffect(() => {

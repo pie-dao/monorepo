@@ -156,7 +156,7 @@ export const toVault = ({
     );
   }
 
-  if (data.batchBurns) {
+  if (data.batchBurns && account) {
     newVault = addBatchBurnDataToState(
       data as Defined<ReturnedChainData>,
       newVault,
