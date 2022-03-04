@@ -5,7 +5,7 @@ import { LibraryProvider, SetStateType } from "../types/utilities";
 import { useWeb3Cache } from "./useCachedWeb3";
 
 // react.strict mode causes double renders which can lead to throttling in dev mode
-const REFRESH_FREQUENCY = process.env.NODE_ENV === "development" ? 20 : 20;
+const REFRESH_FREQUENCY = process.env.NODE_ENV === "development" ? 10 : 20;
 
 type Block = {
   number: number | null | undefined;
