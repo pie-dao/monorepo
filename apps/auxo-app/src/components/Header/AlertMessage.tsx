@@ -53,13 +53,11 @@ function AlertMessage(): JSX.Element {
   const alert = useAppSelector((state) => state.app.alert);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    const timeout = setTimeout(
-      () => {
-        dispatch(setAlertDisplay(false));
-        // nicer to have pending alerts hang around a bit longer
-      },
-      alert.type === "PENDING" ? 6000 : 4000
-    );
+    // pending TX should show for duration
+    if (alert.type === "PENDING") return;
+    const timeout = setTimeout(() => {
+      dispatch(setAlertDisplay(false));
+    }, 4000);
     return () => {
       clearTimeout(timeout);
     };
