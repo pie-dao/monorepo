@@ -167,19 +167,19 @@
       "points": [
         {
           "id": 1,
-          "description": "The total market cap of the assets is divided by the total market cap of the PIEs."
+          "description": "Minimum allocation of 2% for each underlying asset."
         },
         {
           "id": 2,
-          "description": "The percentage allocation is adjusted by the following factors:"
+          "description": "The maximum allocation of 30% for a single large-cap holding."
         },
         {
           "id": 3,
-          "description": "The percentage allocation is adjusted by the following factors:"
+          "description": "Maximum cumulative allocation of 60% for the top three large-cap holdings."
         },
         {
           "id": 4,
-          "description": "The percentage allocation is adjusted by the following factors:"
+          "description": "The maximum allocation of the underlying asset is capped to limit slippage."
         }
       ],
       "description_2": "Weighting in the momentum of the asset Market Cap over the past 30 days, defined as the ratio between the 15days and the 30days average Market Caps"

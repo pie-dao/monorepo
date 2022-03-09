@@ -85,7 +85,7 @@ const ModalContent = () => {
       <div className="mt-4">
         <Button
           className="text-white uppercase"
-          href="https://gateway.pinata.cloud/ipfs/QmcNBx57qyjsuENaTZunsG7C12PN8i9t9BKjzaWzGSaBVK"
+          href="/PLAY_PROSPECTUS.pdf"
           target="_blank"
         >
           {content.modal.download}
