@@ -1,17 +1,17 @@
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useAppDispatch } from ".";
-import { useContracts } from "./useContract";
-import { Vault } from "../store/vault/Vault";
-import { setVaults } from "../store/vault/vault.slice";
-import { chainMap, SUPPORTED_CHAIN_ID } from "../utils/networks";
-import { useProxySelector } from "../store";
+import { useAppDispatch } from "../";
+import { useContracts } from "./useMultichainContract";
+import { Vault } from "../../store/vault/Vault";
+import { setVaults } from "../../store/vault/vault.slice";
+import { chainMap, SUPPORTED_CHAIN_ID } from "../../utils/networks";
+import { useProxySelector } from "../../store";
 import hash from "object-hash";
-import { useWeb3Cache } from "./useCachedWeb3";
-import { useBlock } from "./useBlock";
-import { fetchOnChainData } from "./onChainUtils/fetchOnChainData";
-import { toVault } from "./onChainUtils/transformOnChainData";
-import { Mono } from "../types/artifacts/abi";
+import { useWeb3Cache } from "../useCachedWeb3";
+import { useBlock } from "../useBlock";
+import { fetchOnChainData } from "../onChainUtils/fetchOnChainData";
+import { toVault } from "../onChainUtils/transformOnChainData";
+import { Vault as Auxo } from "../../types/artifacts/abi";
 
 const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
   const oldState = hash(old, { encoding: "base64" });
@@ -47,8 +47,8 @@ export const useChainData = (): { loading: boolean } => {
 
   const dispatch = useAppDispatch();
   const vaults = useProxySelector((state) => state.vault.vaults);
-  const { monoContracts, tokenContracts, authContracts, capContracts } =
-    useContracts(chainId);
+  const { tokenContracts, authContracts, auxoContracts } =
+    useContracts();
 
   useEffect(() => {
     // Reset last updated (force a reload) if the chain ID or account changes
@@ -76,9 +76,8 @@ export const useChainData = (): { loading: boolean } => {
     // No point updating state if any of the contracts are missing
     const contractsExist =
       tokenContracts.length > 0 &&
-      monoContracts.length > 0 &&
-      authContracts.length > 0 &&
-      capContracts.length > 0;
+      auxoContracts.length > 0 &&
+      authContracts.length > 0;
 
     return (
       active &&
@@ -93,8 +92,7 @@ export const useChainData = (): { loading: boolean } => {
     refreshFrequency,
     tokenContracts,
     authContracts,
-    monoContracts,
-    capContracts,
+    auxoContracts,
     chainId,
     active,
     account,
@@ -122,21 +120,17 @@ export const useChainData = (): { loading: boolean } => {
           const vault = vaults.find(
             (v) => v.token.address.toLowerCase() === token.address.toLowerCase()
           ) as Vault;
-          const mono = monoContracts.find(
+          const auxo = auxoContracts.find(
             (m) => m.address.toLowerCase() === vault?.address.toLowerCase()
-          ) as Mono;
+          ) as Auxo;
           const auth = authContracts.find(
             (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
           );
-          const cap = capContracts.find(
-            (c) => c.address.toLowerCase() === vault?.cap.address.toLowerCase()
-          );
+
           return await fetchOnChainData({
             token,
-            // @ts-ignore
-            mono,
+            auxo,
             auth,
-            cap,
             batchBurnRound: vault.stats?.batchBurnRound,
             account,
             vault,
@@ -181,8 +175,7 @@ export const useChainData = (): { loading: boolean } => {
     chainId,
     block.number,
     dispatch,
-    monoContracts,
-    capContracts,
+    auxoContracts,
     authContracts,
     tokenContracts,
     vaults,

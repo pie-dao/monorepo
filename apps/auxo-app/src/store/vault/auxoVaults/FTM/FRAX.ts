@@ -1,15 +1,11 @@
-import { Vault } from "../../Vault";
+import { VaultSpecifics } from "../../Vault";
 
-const FRAX: Omit<Vault, 'id'> = {
+const FRAX: VaultSpecifics = {
   name: 'FRAX FTM',
   description: `
   Frax is a stable coin pegged to U.S. dollar value issued by Frax Finance.
   Auxo FRAX Vault seeks yield by allocating deposited FRAX on strategies involving lending, liquidity provision, yield farming and more.
   `,
-  network: {
-    name: 'FANTOM',
-    chainId: 250
-  },
   symbol: 'FRAX',
   address: '0xBC4639e6056c299b5A957C213bcE3ea47210e2BD',
   token: {
@@ -43,4 +39,4 @@ const FRAX: Omit<Vault, 'id'> = {
     }
   ]
 }
-  export default FRAX;
+export default FRAX;

@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { ethers } from "ethers";
 import { BaseProvider } from "@ethersproject/providers";
-import { RPC_URLS } from ".";
-import { SUPPORTED_CHAINS } from "../utils/networks";
+import { RPC_URLS } from "../../connectors";
+import { SUPPORTED_CHAINS } from "../../utils/networks";
+import { LibraryProvider } from "../../types/utilities";
 
 /**
  * We borrow pretty heavily from Ribbon.finance here, but essentially we need to instantiate
@@ -12,13 +13,13 @@ import { SUPPORTED_CHAINS } from "../utils/networks";
  */
 
 export type Web3ContextData = {
-  provider: BaseProvider;
+  provider: LibraryProvider;
 };
 
-const ftmProvider = new ethers.providers.StaticJsonRpcProvider(
+const ftmProvider = new ethers.providers.JsonRpcProvider(
   RPC_URLS[SUPPORTED_CHAINS.FANTOM]
 );
-const polygonProvider = new ethers.providers.StaticJsonRpcProvider(
+const polygonProvider = new ethers.providers.JsonRpcProvider(
   RPC_URLS[SUPPORTED_CHAINS.POLYGON]
 );
 
@@ -29,24 +30,6 @@ export const FTMWeb3Context = React.createContext<Web3ContextData>({
 export const PolygonWeb3Context = React.createContext<Web3ContextData>({
   provider: ftmProvider,
 });
-
-export const useWeb3Context = (chainId: number): Web3ContextData => {
-  let context: React.Context<Web3ContextData>;
-  switch (chainId) {
-    case SUPPORTED_CHAINS.FANTOM: {
-      context = FTMWeb3Context;
-      break;
-    }
-    case SUPPORTED_CHAINS.POLYGON: {
-      context = PolygonWeb3Context;
-      break;
-    }
-    default: {
-      context = FTMWeb3Context;
-    }
-  }
-  return useContext(context);
-};
 
 // Use this meta context object to make all providers available in the application
 export const Web3ContextProvider = ({
