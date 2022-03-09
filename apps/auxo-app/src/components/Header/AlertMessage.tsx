@@ -50,7 +50,8 @@ function AlertMessage(): JSX.Element {
   useEffect(() => {
     const timeout = setTimeout(() => {
       dispatch(setAlertDisplay(false));
-    }, 4_000);
+      // nicer to have pending alerts hang around a bit longer
+    }, alert.type === 'PENDING' ? 6000 : 4000);
     return () => {
       clearTimeout(timeout)
     }
