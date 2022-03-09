@@ -4,7 +4,7 @@ import { useAppDispatch } from ".";
 import { useContracts } from "./useContract";
 import { Vault } from "../store/vault/Vault";
 import { setVaults } from "../store/vault/vault.slice";
-import { chainMap } from "../utils/networks";
+import { chainMap, SUPPORTED_CHAIN_ID } from "../utils/networks";
 import { useProxySelector } from "../store";
 import hash from "object-hash";
 import { useWeb3Cache } from "./useCachedWeb3";
@@ -83,7 +83,7 @@ export const useChainData = (): { loading: boolean } => {
     return (
       active &&
       contractsExist &&
-      chainMap[chainId] &&
+      chainMap[chainId as SUPPORTED_CHAIN_ID] &&
       blockFrequencyConditionMet
     );
   }, [
@@ -105,6 +105,14 @@ export const useChainData = (): { loading: boolean } => {
       setLoading(true);
       // Capture when request sent to ensure state doesn't get overwritten with async stale data
       const thisRequest = new Date().getTime();
+      console.debug(
+        "Network call at",
+        thisRequest,
+        "Last Call at",
+        latestRequest.current,
+        "diff",
+        (thisRequest - latestRequest.current) / 1000
+      );
       latestRequest.current = thisRequest;
 
       // Multicall contract executes promise all as a batch request

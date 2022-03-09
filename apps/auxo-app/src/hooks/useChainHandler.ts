@@ -6,6 +6,7 @@ import {
   chainMap,
   isChainSupported,
   NetworkDetail,
+  SUPPORTED_CHAIN_ID,
   supportedChains,
 } from "../utils/networks";
 
@@ -18,7 +19,7 @@ export const useChainHandler = (): NetworkDetail | undefined => {
     if (!chainId) return;
     if (isChainSupported(chainId)) {
       dispatch(clearAlert());
-      setChain(chainMap[chainId]);
+      setChain(chainMap[chainId as SUPPORTED_CHAIN_ID]);
     } else {
       dispatch(
         setAlert({

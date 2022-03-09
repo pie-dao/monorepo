@@ -3,7 +3,7 @@ import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
 import VaultTable from "../components/Vault/Home/VaultTable";
-import { chainMap } from "../utils/networks";
+import { chainMap, SUPPORTED_CHAIN_ID } from "../utils/networks";
 import { SetStateType } from "../types/utilities";
 import { useEffect } from "react";
 import { useWindowWide } from "../hooks/useWindowWidth";
@@ -47,7 +47,7 @@ const VaultHomeMenu: React.FC<{
   setView: SetStateType<ViewType>;
 }> = ({ view, setView }) => {
   const { chainId } = useWeb3React();
-  const chain = chainId && chainMap[chainId];
+  const chain = chainId && chainMap[chainId as SUPPORTED_CHAIN_ID];
   return (
     <section
       className="

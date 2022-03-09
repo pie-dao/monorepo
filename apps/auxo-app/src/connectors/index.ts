@@ -3,22 +3,24 @@ import { SafeAppConnector } from "@gnosis.pm/safe-apps-web3-react";
 import { WalletConnectConnector } from "./walletConnect";
 import { Web3Provider } from "@ethersproject/providers";
 import { NetworkConnector } from "@web3-react/network-connector";
+import { SUPPORTED_CHAINS } from "../utils/networks";
 
-export const RPC_URLS = [
-  "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY,
-  "https://rpc.ftm.tools/",
-];
+export const RPC_URLS: Record<number, string> = {
+  [SUPPORTED_CHAINS.FANTOM]: "https://rpc.ftm.tools/",
+  [SUPPORTED_CHAINS.POLYGON]:
+    "https://polygon-mainnet.infura.io/v3/" +
+    process.env.REACT_APP_INFURA_API_KEY,
+};
+
+console.debug({ RPC_URLS });
 
 export const network = new NetworkConnector({
-  urls: {
-    1: RPC_URLS[0],
-    250: RPC_URLS[1],
-  },
-  defaultChainId: 250,
+  urls: RPC_URLS,
+  defaultChainId: SUPPORTED_CHAINS.FANTOM,
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 250],
+  supportedChainIds: [1, SUPPORTED_CHAINS.FANTOM, SUPPORTED_CHAINS.POLYGON],
 });
 
 export default function getLibrary(provider: any): Web3Provider {
@@ -41,9 +43,9 @@ export const gnosisSafe = new SafeAppConnector();
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
-    1: RPC_URLS[0],
+    [SUPPORTED_CHAINS.FANTOM]: RPC_URLS[SUPPORTED_CHAINS.FANTOM],
   },
-  chainId: 1,
+  chainId: SUPPORTED_CHAINS.FANTOM,
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
 });
