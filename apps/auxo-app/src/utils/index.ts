@@ -92,6 +92,6 @@ export const AUXO_HELP_URL =
   "https://www.notion.so/piedao/Auxo-Vaults-12adac7ebc1e43eeb0c5db4c7cd828e2";
 
 export const zeroApyMessage = (apy: number | undefined): string => {
-  if (apy !== 0 && !apy) return "N/A";
+  if (apy !== 0 && !apy) return "--";
   else return apy === 0 ? "New Vault" : apy.toFixed(2) + " %";
 };

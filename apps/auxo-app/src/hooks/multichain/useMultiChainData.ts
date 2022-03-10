@@ -17,23 +17,21 @@ import { fetchOnChainData } from "../onChainUtils/fetchOnChainData";
 import { toVault } from "../onChainUtils/transformOnChainData";
 import { Vault as Auxo } from "../../types/artifacts/abi";
 
-const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
+export const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
   const oldState = hash(old, { encoding: "base64" });
   const newState = hash(change, { encoding: "base64" });
   return oldState !== newState;
 };
 
-export const useRefreshFrequency = (): number => {
-  // change frequency based on chain to achieve a target state latency
-  const fallbackFrequency = 10;
-  const { chainId } = useWeb3Cache();
-  if (!isChainSupported(chainId)) return fallbackFrequency;
-  const averageBlockTime = chainMap[chainId as SUPPORTED_CHAIN_ID].blockTime;
+// change frequency of updates based on chain to achieve a target state latency
+export const getRefreshFrequency = (chainId: number | undefined): number => {
+  const targetLatency = 60; // seconds
+  const fallbackFrequency = 10; // blocks
+  if (!isChainSupported(chainId)) return fallbackFrequency; // blocks
+  const averageBlockTime = chainMap[chainId as SUPPORTED_CHAIN_ID].blockTime; // seconds
 
   // update each min - wont work for BTC
-  const targetLatency = 60;
-
-  return Math.round(targetLatency / averageBlockTime);
+  return Math.round(targetLatency / averageBlockTime); // blocks
 };
 
 /**
@@ -61,8 +59,7 @@ export const useChainData = (): { loading: boolean } => {
   const latestRequest = useRef(0);
   const { chainId } = useWeb3Cache();
   const { block } = useBlock();
-  const refreshFrequency = useRefreshFrequency();
-
+  const refreshFrequency = getRefreshFrequency(chainId);
   const dispatch = useAppDispatch();
   const vaults = useProxySelector((state) => state.vault.vaults);
   const { tokenContracts, authContracts, auxoContracts } = useContracts();

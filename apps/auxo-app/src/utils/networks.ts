@@ -34,7 +34,7 @@ export const chainMap: ChainMap = {
     blockExplorerUrls: ["https://ftmscan.com"],
   },
   [SUPPORTED_CHAINS.POLYGON]: {
-    blockTime: 3,
+    blockTime: 1.5,
     chainId: `0x${Number(SUPPORTED_CHAINS.POLYGON).toString(16)}`,
     chainName: "Polygon Mainnet",
     nativeCurrency: {

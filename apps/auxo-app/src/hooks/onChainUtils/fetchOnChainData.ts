@@ -1,10 +1,5 @@
 import { Vault } from "../../store/vault/Vault";
-import {
-  Erc20,
-  MerkleAuth,
-  Mono,
-  Vault as Auxo,
-} from "../../types/artifacts/abi";
+import { Erc20, MerkleAuth, Vault as Auxo } from "../../types/artifacts/abi";
 import { promiseObject } from "../../utils/promiseObject";
 
 // ** All network calls to smart contracts **
@@ -13,7 +8,7 @@ import { promiseObject } from "../../utils/promiseObject";
  * Vault-wide calls that do not need the user signed in.
  * These will always be available provided we have a network connection
  */
-const vaultCalls = (auxo: Auxo) => ({
+export const vaultCalls = (auxo: Auxo) => ({
   totalUnderlying: auxo.totalUnderlying(),
   lastHarvest: auxo.lastHarvest(),
   estimatedReturn: auxo.estimatedReturn(),
@@ -31,30 +26,35 @@ type AccountCallProps = {
   auth: MerkleAuth;
   token: Erc20;
 };
-const accountCalls = ({ account, token, auth, auxo }: AccountCallProps) => {
-  return (
-    account && {
+export const accountCalls = ({
+  account,
+  token,
+  auth,
+  auxo,
+}: AccountCallProps) => {
+  if (account)
+    return {
       balanceOfUnderlying: token.balanceOf(account),
       balanceOfVault: auxo.balanceOf(account),
       balanceOfVaultUnderlying: auxo.balanceOfUnderlying(account),
       allowance: token.allowance(account, auxo.address),
       userBatchBurnReceipts: auxo.userBatchBurnReceipts(account),
       isDepositor: auth.isDepositor(auxo.address, account),
-    }
-  );
+    };
 };
 
 /**
  * Batch burns rounds need to be fetched from on-chain, so no guarantee we have them during first call.
  * We also need to inspect the previous batch burn for our purposes, as that provides withdrawal data.
  */
-const batchBurnCalls = (auxo: Auxo, batchBurnRound: number | undefined) => {
-  return (
-    batchBurnRound &&
-    batchBurnRound > 0 && {
+export const batchBurnCalls = (
+  auxo: Auxo,
+  batchBurnRound: number | undefined
+) => {
+  if (batchBurnRound && batchBurnRound > 0)
+    return {
       batchBurns: auxo.batchBurns(batchBurnRound - 1),
-    }
-  );
+    };
 };
 
 /**
