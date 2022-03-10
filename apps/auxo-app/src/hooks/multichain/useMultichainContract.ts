@@ -123,6 +123,8 @@ export const useMultipleContracts = <T extends Contract>(
   const { getProviderForNetwork } = useMultipleProvider();
 
   return useMemo(() => {
+    if (!currentChainId || !library) return;
+
     return contractArgs.map((args) => {
       // default to using the library provider
       let provider: LibraryProvider = library;
