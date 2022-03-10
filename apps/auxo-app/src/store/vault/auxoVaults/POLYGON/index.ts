@@ -29,7 +29,7 @@ export const Polygon: Vault[] = [USDC]
     .map((vault) => ({
         network: {
             name: 'POLYGON',
-            chainId: 250,
+            chainId: 137,
             multicall: '0xd130B43062D875a4B7aF3f8fc036Bc6e9D3E1B3E'
         },
         ...vault,

@@ -126,39 +126,41 @@ export const useChainData = (): { loading: boolean } => {
           const auth = authContracts.find(
             (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
           );
-
-          return await fetchOnChainData({
-            token,
-            auxo,
-            auth,
-            batchBurnRound: vault.stats?.batchBurnRound,
-            account,
-            vault,
-          });
+          // console.debug({ vault, token })
+          // return await fetchOnChainData({
+          //   token,
+          //   auxo,
+          //   auth,
+          //   batchBurnRound: vault.stats?.batchBurnRound,
+          //   account,
+          //   vault,
+          // });
+          return await auxo.totalUnderlying()
         })
       )
         .then((vaultChainData) => {
-          // convert the vaults to a state object
-          const newVaults = vaultChainData
-            // filter ensures undefined responses are removed and can be safely cast
-            .filter(Boolean)
-            .map(
-              (data) =>
-                data &&
-                toVault({
-                  existing: data.existing,
-                  data,
-                  account,
-                })
-            ) as Vault[];
+          // // convert the vaults to a state object
+          // const newVaults = vaultChainData
+          //   // filter ensures undefined responses are removed and can be safely cast
+          //   .filter(Boolean)
+          //   .map(
+          //     (data) =>
+          //       data &&
+          //       toVault({
+          //         existing: data.existing,
+          //         data,
+          //         account,
+          //       })
+          //   ) as Vault[];
 
-          // discard data that has taken too long to reach us
-          if (thisRequest < latestRequest.current) return;
+          // // discard data that has taken too long to reach us
+          // if (thisRequest < latestRequest.current) return;
 
-          // Only trigger a state update if we have new data
-          if (newVaults && hasStateChanged(vaults, newVaults)) {
-            dispatch(setVaults(newVaults));
-          }
+          // // Only trigger a state update if we have new data
+          // if (newVaults && hasStateChanged(vaults, newVaults)) {
+          //   dispatch(setVaults(newVaults));
+          // }
+          console.debug({ vaultChainData })
         })
         .catch((err) => {
           console.warn("Problem fetching on chain data", err);

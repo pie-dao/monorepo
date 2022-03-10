@@ -3,6 +3,6 @@ import { FTM } from './FTM';
 import { Polygon } from './POLYGON';
 
 export const vaults: Vault[] = [
-    ...FTM,
-    // ...Polygon
+    ...[FTM[0]],
+    ...Polygon
 ];

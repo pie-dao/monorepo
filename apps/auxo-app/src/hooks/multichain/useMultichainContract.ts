@@ -96,6 +96,7 @@ export const useMultipleContracts = <T extends Contract>(
                 // we need to use a backup provider
                 provider = getProviderForNetwork(args.chainId);
             };
+
             const { address, ABI, multicallAddress } = args;
             return getContract<T>({
                 provider, address, account, ABI, multicallAddress
@@ -135,11 +136,12 @@ const useAuxoParams = (): Array<Omit<MultipleMulticallContractArgs, 'ABI'>> => {
 };
 
 const useTokenParams = (): Array<Omit<MultipleMulticallContractArgs, 'ABI'>> => {
-    return useProxySelector(state => state.vault.vaults.map(v => ({
+    const args = useProxySelector(state => state.vault.vaults.map(v => ({
         address: v.token.address,
         chainId: v.network.chainId,
         multicallAddress: v.network.multicall
-    })))
+    })));
+    return args
 }
 
 const useAuthParams = (): Array<Omit<MultipleMulticallContractArgs, 'ABI'>> => {

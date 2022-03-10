@@ -36,10 +36,10 @@ export const Web3ContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
-}) => {
+}) => (
   <FTMWeb3Context.Provider value={{ provider: ftmProvider }}>
     <PolygonWeb3Context.Provider value={{ provider: polygonProvider }}>
       {children}
     </PolygonWeb3Context.Provider>
-  </FTMWeb3Context.Provider>;
-};
+  </FTMWeb3Context.Provider>
+);
