@@ -1,4 +1,3 @@
-import { useWeb3React } from "@web3-react/core";
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
@@ -8,6 +7,7 @@ import { SetStateType } from "../types/utilities";
 import { useEffect } from "react";
 import { useWindowWide } from "../hooks/useWindowWidth";
 import VaultCardView from "../components/Vault/Home/VaultCard";
+import { useWeb3Cache } from "../hooks/useCachedWeb3";
 
 type ViewType = "TABLE" | "CARD";
 
@@ -46,7 +46,7 @@ const VaultHomeMenu: React.FC<{
   view: ViewType;
   setView: SetStateType<ViewType>;
 }> = ({ view, setView }) => {
-  const { chainId } = useWeb3React();
+  const { chainId } = useWeb3Cache();
   const chain = chainId && chainMap[chainId as SUPPORTED_CHAIN_ID];
   return (
     <section
@@ -69,7 +69,7 @@ const VaultHomeMenu: React.FC<{
                 "
         >
           <div className="border-b-2 border-baby-blue-dark shadow-xl w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6">
-            <p className="mb-2 text-gray-700 ">{chain.name}</p>
+            <p className="mb-2 text-gray-700 ">{chain.chainName}</p>
           </div>
           <section className="flex">
             <div

@@ -71,7 +71,6 @@ export interface VaultAuth {
 
 // information about the per-account deposit limits (note, the vaultcap contract extends the vault base)
 export interface VaultCap {
-  address: string;
   underlying: Balance | null;
 }
 
@@ -92,6 +91,6 @@ export interface VaultState {
   isLoading: boolean;
 }
 
-export type VaultSpecifics = Omit<Vault, 'network'>
+export type VaultSpecifics = Omit<Vault, "network">;
 export type VaultOnChainData = Pick<Vault, "address" | "stats" | "token">;
 export type UserBalanceOnChainData = Pick<Vault, "address" | "userBalances">;

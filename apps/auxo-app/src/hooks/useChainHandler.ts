@@ -1,4 +1,3 @@
-import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from ".";
 import { setAlert, clearAlert } from "../store/app/app.slice";
@@ -9,9 +8,10 @@ import {
   SUPPORTED_CHAIN_ID,
   supportedChains,
 } from "../utils/networks";
+import { useWeb3Cache } from "./useCachedWeb3";
 
 export const useChainHandler = (): NetworkDetail | undefined => {
-  const { chainId } = useWeb3React();
+  const { chainId } = useWeb3Cache();
   const dispatch = useAppDispatch();
   const [chain, setChain] = useState<NetworkDetail | undefined>(undefined);
   useEffect(() => {

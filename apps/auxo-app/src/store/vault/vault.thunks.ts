@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Erc20, MerkleAuth, Mono } from "../../types/artifacts/abi";
+import { Erc20, MerkleAuth, Vault as Auxo } from "../../types/artifacts/abi";
 import { getProof } from "../../utils/merkleProof";
 import { Balance, VaultState } from "./Vault";
 
@@ -50,7 +50,7 @@ export const thunkApproveDeposit = createAsyncThunk(
  */
 export type ThunkMakeDepositProps = {
   deposit: Balance;
-  auxo: Mono | undefined;
+  auxo: Auxo | undefined;
   account: string | null | undefined;
 };
 export const thunkMakeDeposit = createAsyncThunk(
@@ -78,7 +78,7 @@ export const thunkMakeDeposit = createAsyncThunk(
  */
 export type ThunkConfirmWithdrawProps = {
   pendingSharesUnderlying: Balance;
-  auxo: Mono | undefined;
+  auxo: Auxo | undefined;
 };
 export const thunkConfirmWithdrawal = createAsyncThunk(
   "vault/confirmWithdrawal",
@@ -103,7 +103,7 @@ export const thunkConfirmWithdrawal = createAsyncThunk(
  */
 export type ThunkIncreaseWithdrawalProps = {
   withdraw: Balance;
-  auxo: Mono | undefined;
+  auxo: Auxo | undefined;
 };
 export const thunkIncreaseWithdrawal = createAsyncThunk(
   "vault/increaseWithdrawal",

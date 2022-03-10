@@ -4,7 +4,11 @@ import { useAppDispatch } from "../";
 import { useContracts } from "./useMultichainContract";
 import { Vault } from "../../store/vault/Vault";
 import { setVaults } from "../../store/vault/vault.slice";
-import { chainMap, SUPPORTED_CHAIN_ID } from "../../utils/networks";
+import {
+  chainMap,
+  isChainSupported,
+  SUPPORTED_CHAIN_ID,
+} from "../../utils/networks";
 import { useProxySelector } from "../../store";
 import hash from "object-hash";
 import { useWeb3Cache } from "../useCachedWeb3";
@@ -17,6 +21,19 @@ const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
   const oldState = hash(old, { encoding: "base64" });
   const newState = hash(change, { encoding: "base64" });
   return oldState !== newState;
+};
+
+export const useRefreshFrequency = (): number => {
+  // change frequency based on chain to achieve a target state latency
+  const fallbackFrequency = 10;
+  const { chainId } = useWeb3Cache();
+  if (!isChainSupported(chainId)) return fallbackFrequency;
+  const averageBlockTime = chainMap[chainId as SUPPORTED_CHAIN_ID].blockTime;
+
+  // update each min - wont work for BTC
+  const targetLatency = 60;
+
+  return Math.round(targetLatency / averageBlockTime);
 };
 
 /**
@@ -43,12 +60,12 @@ export const useChainData = (): { loading: boolean } => {
   const lastUpdatedBlock = useRef<null | number | undefined>(null);
   const latestRequest = useRef(0);
   const { chainId } = useWeb3Cache();
-  const { block, refreshFrequency } = useBlock();
+  const { block } = useBlock();
+  const refreshFrequency = useRefreshFrequency();
 
   const dispatch = useAppDispatch();
   const vaults = useProxySelector((state) => state.vault.vaults);
-  const { tokenContracts, authContracts, auxoContracts } =
-    useContracts();
+  const { tokenContracts, authContracts, auxoContracts } = useContracts();
 
   useEffect(() => {
     // Reset last updated (force a reload) if the chain ID or account changes
@@ -126,41 +143,38 @@ export const useChainData = (): { loading: boolean } => {
           const auth = authContracts.find(
             (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
           );
-          // console.debug({ vault, token })
-          // return await fetchOnChainData({
-          //   token,
-          //   auxo,
-          //   auth,
-          //   batchBurnRound: vault.stats?.batchBurnRound,
-          //   account,
-          //   vault,
-          // });
-          return await auxo.totalUnderlying()
+          return await fetchOnChainData({
+            token,
+            auxo,
+            auth,
+            batchBurnRound: vault.stats?.batchBurnRound,
+            account,
+            vault,
+          });
         })
       )
         .then((vaultChainData) => {
-          // // convert the vaults to a state object
-          // const newVaults = vaultChainData
-          //   // filter ensures undefined responses are removed and can be safely cast
-          //   .filter(Boolean)
-          //   .map(
-          //     (data) =>
-          //       data &&
-          //       toVault({
-          //         existing: data.existing,
-          //         data,
-          //         account,
-          //       })
-          //   ) as Vault[];
+          // convert the vaults to a state object
+          const newVaults = vaultChainData
+            // filter ensures undefined responses are removed and can be safely cast
+            .filter(Boolean)
+            .map(
+              (data) =>
+                data &&
+                toVault({
+                  existing: data.existing,
+                  data,
+                  account,
+                })
+            ) as Vault[];
 
-          // // discard data that has taken too long to reach us
-          // if (thisRequest < latestRequest.current) return;
+          // discard data that has taken too long to reach us
+          if (thisRequest < latestRequest.current) return;
 
-          // // Only trigger a state update if we have new data
-          // if (newVaults && hasStateChanged(vaults, newVaults)) {
-          //   dispatch(setVaults(newVaults));
-          // }
-          console.debug({ vaultChainData })
+          // Only trigger a state update if we have new data
+          if (newVaults && hasStateChanged(vaults, newVaults)) {
+            dispatch(setVaults(newVaults));
+          }
         })
         .catch((err) => {
           console.warn("Problem fetching on chain data", err);

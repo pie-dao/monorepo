@@ -1,6 +1,5 @@
 import React from "react";
 import { ethers } from "ethers";
-import { BaseProvider } from "@ethersproject/providers";
 import { RPC_URLS } from "../../connectors";
 import { SUPPORTED_CHAINS } from "../../utils/networks";
 import { LibraryProvider } from "../../types/utilities";

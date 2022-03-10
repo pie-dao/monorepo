@@ -4,16 +4,12 @@ import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { LibraryProvider, SetStateType } from "../types/utilities";
 import { useWeb3Cache } from "./useCachedWeb3";
 
-// react.strict mode causes double renders which can lead to throttling in dev mode
-const REFRESH_FREQUENCY = process.env.NODE_ENV === "development" ? 120 : 10;
-
 type Block = {
   number: number | null | undefined;
 };
 
 type UseBlockReturnType = {
   block: Block;
-  refreshFrequency: number;
 };
 
 const getCurrentBlock = (
@@ -74,5 +70,5 @@ export const useBlock = (): UseBlockReturnType => {
     };
   }, [library, chainId]);
 
-  return { block, refreshFrequency: REFRESH_FREQUENCY };
+  return { block };
 };

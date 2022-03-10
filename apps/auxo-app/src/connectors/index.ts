@@ -12,11 +12,9 @@ export const RPC_URLS: Record<number, string> = {
     process.env.REACT_APP_INFURA_API_KEY,
 };
 
-console.debug({ RPC_URLS });
-
 export const network = new NetworkConnector({
   urls: RPC_URLS,
-  defaultChainId: SUPPORTED_CHAINS.POLYGON,
+  defaultChainId: SUPPORTED_CHAINS.FANTOM,
 });
 
 export const injected = new InjectedConnector({
@@ -33,8 +31,8 @@ export default function getLibrary(provider: any): Web3Provider {
     typeof provider.chainId === "number"
       ? provider.chainId
       : typeof provider.chainId === "string"
-        ? parseInt(provider.chainId)
-        : "any"
+      ? parseInt(provider.chainId)
+      : "any"
   );
   return library;
 }
