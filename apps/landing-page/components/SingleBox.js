@@ -12,6 +12,8 @@ const SingleBox = ({ singleBox }) => {
           alt={`${singleBox.title} icon`}
           width={300}
           height={300}
+          placeholder="blur"
+          blurDataURL={`/metaverse_${singleBox.id}.svg`}
         />
       </div>
       <p className="text-highlight uppercase text-2xl md:text-3xl mb-4">
