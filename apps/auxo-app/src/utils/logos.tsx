@@ -3,6 +3,7 @@ import {
   FRAXIcon,
   FTMLogo,
   MIMLogo,
+  PolygonIcon,
   USDCIcon,
 } from "../assets/icons/logos";
 
@@ -35,6 +36,10 @@ export const logoSwitcher = (
     }
     case "mim": {
       return <MIMLogo />;
+    }
+    case "matic":
+    case "polygon": {
+      return <PolygonIcon {...props} />;
     }
     default: {
       return <AuxoLogo {...props} />;

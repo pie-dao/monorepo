@@ -64,14 +64,11 @@ export const changeNetwork = async ({
     if (!window.ethereum) throw new Error("No crypto wallet found");
     if (!chainId) throw new Error("No Chain Id defined");
     if (!isChainSupported) throw new Error("Unsupported chain");
+    // block time is not allowed
+    const { blockTime, ...params } = chainMap[chainId as SUPPORTED_CHAIN_ID];
     await window.ethereum.request({
       method: "wallet_addEthereumChain",
-      params: [
-        {
-          // cast is safe due to guard above
-          ...chainMap[chainId as SUPPORTED_CHAIN_ID],
-        },
-      ],
+      params: [params],
     });
   } catch (err) {
     console.debug(err);

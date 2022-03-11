@@ -8,7 +8,7 @@ type Block = {
   number: number | null | undefined;
 };
 
-type UseBlockReturnType = {
+export type UseBlockReturnType = {
   block: Block;
 };
 
@@ -51,8 +51,7 @@ export const useBlock = (): UseBlockReturnType => {
 
   useEffect(() => {
     if (!library) return;
-
-    // get the current block to set the initial state
+    // // get the current block to set the initial state
     getCurrentBlock(library, setBlock);
 
     // attach the event listener
@@ -68,7 +67,6 @@ export const useBlock = (): UseBlockReturnType => {
       library.removeListener("block", updateBlockNumber);
       setBlock({ number: undefined });
     };
-  }, [library, chainId]);
-
+  }, [chainId, library]);
   return { block };
 };
