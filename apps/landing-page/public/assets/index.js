@@ -1,11 +1,11 @@
-import audio from "./audio.svg";
-import axs from "./axs.svg";
-import enj from "./enj.svg";
-import gala from "./gala.svg";
-import ilv from "./ilv.svg";
-import mana from "./mana.svg";
-import sand from "./sand.svg";
-import ygg from "./ygg.svg";
+import audio from "./audio.png";
+import axs from "./axs.png";
+import enj from "./enj.png";
+import gala from "./gala.png";
+import ilv from "./ilv.png";
+import mana from "./mana.png";
+import sand from "./sand.png";
+import ygg from "./ygg.png";
 
 const tokenImages = [
   { name: "AUDIO", image: audio },

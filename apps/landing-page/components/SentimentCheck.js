@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import styles from "../styles/SentimentCheck.module.scss";
-import positiveImg from "../public/positive.svg";
-import negativeImg from "../public/negative.svg";
+import positiveImg from "../public/positive.png";
+import negativeImg from "../public/negative.png";
 import content from "../content/en_EN.json";
 
 const SentimentCheck = ({ positive, negative }) => {
@@ -51,7 +51,7 @@ const SentimentCheck = ({ positive, negative }) => {
               onClick={() => handleSentiment("positive")}
               id="sentiment-positive"
             >
-              <Image src={positiveImg} alt="positive" />
+              <Image placeholder="blur" src={positiveImg} alt="positive" />
             </button>
           </div>
           <div className="flex w-1/2 justify-center items-center">
@@ -61,7 +61,7 @@ const SentimentCheck = ({ positive, negative }) => {
               onClick={() => handleSentiment("negative")}
               id="sentiment-negative"
             >
-              <Image src={negativeImg} alt="negative" />
+              <Image placeholder="blur" src={negativeImg} alt="negative" />
             </button>
           </div>
         </div>

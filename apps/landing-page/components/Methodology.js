@@ -5,7 +5,7 @@ import { Navigation } from "swiper";
 import { Dialog } from "@headlessui/react";
 import Button from "./Button";
 import Modal from "./Modal";
-import greenCheckmark from "../public/double-checkmark.svg";
+import greenCheckmark from "../public/double-checkmark.png";
 import styles from "../styles/Methodology.module.scss";
 import content from "../content/en_EN.json";
 
@@ -19,15 +19,19 @@ const ModalContent = () => {
         {content.modal.section_1.title}
       </Dialog.Title>
       <div className="mt-4 mb-8 text-sm text-white">
-        <p>{content.modal.section_1.description}</p>
+        <p className="mb-2">{content.modal.section_1.description}</p>
         <ul>
           {content.modal.section_1.points.map((point) => (
-            <li key={point.id} className="text-sm text-white flex items-center">
+            <li
+              key={point.id}
+              className="text-sm text-white flex items-center mb-2"
+            >
               <Image
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
                 width={20}
+                height={14}
               />
               <span className="ml-2">{point.description}</span>
             </li>
@@ -43,30 +47,38 @@ const ModalContent = () => {
         {content.modal.section_2.title}
       </Dialog.Title>
       <div className="mt-4 mb-8 text-sm text-white">
-        <p>{content.modal.section_2.description_1}</p>
+        <p className="mb-2">{content.modal.section_2.description_1}</p>
         <ul>
           {content.modal.section_2.points_1.map((point) => (
-            <li key={point.id} className="text-sm text-white flex items-center">
+            <li
+              key={point.id}
+              className="text-sm text-white flex items-center mb-2"
+            >
               <Image
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
                 width={20}
+                height={14}
               />
               <span className="ml-2">{point.description}</span>
             </li>
           ))}
         </ul>
         <p className="mb-2">{content.modal.section_2.notes}</p>
-        <p>{content.modal.section_2.description_2}</p>
+        <p className="mb-2">{content.modal.section_2.description_2}</p>
         <ul>
           {content.modal.section_2.points_2.map((point) => (
-            <li key={point.id} className="text-sm text-white flex items-center">
+            <li
+              key={point.id}
+              className="text-sm text-white flex items-center mb-2"
+            >
               <Image
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
                 width={20}
+                height={14}
               />
               <span className="ml-2">{point.description}</span>
             </li>

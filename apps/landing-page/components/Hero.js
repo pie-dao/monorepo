@@ -20,10 +20,10 @@ const Hero = ({ actualPrice }) => {
     >
       <div className="container mx-auto px-6">
         <div className="hidden md:block mb-8">
-          <Image src={pieDaoLogo} alt="PieDao Logo" />
+          <Image priority src={pieDaoLogo} alt="PieDao Logo" />
         </div>
         <div className="hidden md:block mb-10">
-          <Image src={separator} alt="separator" />
+          <Image priority src={separator} alt="separator" />
         </div>
         <div className="mb-12">
           <h2 className="font-bold uppercase text-sm md:text-3xl">
@@ -61,7 +61,7 @@ const Hero = ({ actualPrice }) => {
           {inceptionPerc > 0 && (
             <div className="flex justify-center relative flex-col items-center">
               <div>
-                <Image src={arrowUp} alt="arrow up" className="up" />
+                <Image priority src={arrowUp} alt="arrow up" className="up" />
               </div>
               <h5 className="glitch mt-2">
                 <span aria-hidden="true">+{inceptionPerc}%</span>+

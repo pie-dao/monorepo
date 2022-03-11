@@ -33,7 +33,7 @@ const Metaverse = ({}) => {
             </div>
           </div>
           <div className="w-full order-first md:order-last">
-            <Image src={metaverseMan} alt="metaverse man" />
+            <Image placeholder="blur" src={metaverseMan} alt="metaverse man" />
           </div>
         </div>
       </div>

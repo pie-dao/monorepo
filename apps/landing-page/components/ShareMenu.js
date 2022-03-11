@@ -3,7 +3,7 @@ import pushShareData from "../utils/GTM/operations/share";
 import { Fragment } from "react";
 import Image from "next/image";
 import content from "../content/en_EN.json";
-import shareIcon from "../public/share.svg";
+import shareIcon from "../public/share.png";
 import styles from "../styles/ShareMenu.module.scss";
 
 const ShareMenu = () => {

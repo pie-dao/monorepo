@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import TwitterCard from "../components/TwitterCard";
 import content from "../content/en_EN.json";
-import leftArrow from "../public/left_arrow.svg";
-import rightArrow from "../public/right_arrow.svg";
+import leftArrow from "../public/left_arrow.png";
+import rightArrow from "../public/right_arrow.png";
 
 const AboutUsTwitter = ({ twitterPosts }) => {
   return (

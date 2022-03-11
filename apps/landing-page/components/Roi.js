@@ -1,9 +1,9 @@
 import Button from "./Button";
 import Image from "next/image";
 import sushiswapLogo from "../public/sushiswap_logo.png";
-import oneInch from "../public/1inch.svg";
-import uniswap from "../public/uniswap.svg";
-import roiPlaceholder from "../public/roi_placeholder.svg";
+import oneInch from "../public/1inch.png";
+import uniswap from "../public/uniswap.png";
+import roiPlaceholder from "../public/roi_placeholder.png";
 import content from "../content/en_EN.json";
 
 const Roi = ({}) => {
@@ -26,7 +26,11 @@ const Roi = ({}) => {
                 </p>
               </div>
               <div className="w-full md:w-3/4">
-                <Image src={roiPlaceholder} alt="ROI Placeholder" />
+                <Image
+                  placeholder="blur"
+                  src={roiPlaceholder}
+                  alt="ROI Placeholder"
+                />
               </div>
               <div className="w-full md:w-1/4 flex flex-col items-center text-center justify-center">
                 <p className="text-gradient">

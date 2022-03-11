@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
-import close from "../public/close.svg";
+import close from "../public/close.png";
 
 const Modal = ({ isOpen, closeModal, children }) => {
   return (
@@ -43,7 +43,7 @@ const Modal = ({ isOpen, closeModal, children }) => {
                 className="absolute cursor-pointer top-0 right-0 m-4"
                 onClick={closeModal}
               >
-                <Image src={close} alt="close popup" />
+                <Image priority src={close} alt="close popup" />
               </button>
               {children}
             </div>

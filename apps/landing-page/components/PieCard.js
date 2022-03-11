@@ -116,6 +116,7 @@ const PieCard = ({
         <div className="w-full absolute -top-6 flex flex-col h-[90%]">
           <div className="w-[50px] h-[50px] mx-auto">
             <Image
+              placeholder="blur"
               src={tokenImage.image}
               className="rounded-full"
               alt={pieData.symbol}
@@ -129,7 +130,7 @@ const PieCard = ({
             <span className="self-end">NAV</span>{" "}
             <Popover className="relative">
               <Popover.Button className="self-start ml-1">
-                <Image src={popover} alt="popover" />
+                <Image placeholder="blur" src={popover} alt="popover" />
               </Popover.Button>
               <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-1/2 left-1/2 bottom-full sm:px-0 lg:max-w-xl">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">

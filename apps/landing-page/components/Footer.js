@@ -8,7 +8,7 @@ import discord from "../public/social/discord_blue.svg";
 import twitter from "../public/social/twitter_blue.svg";
 import telegram from "../public/social/telegram_blue.svg";
 import medium from "../public/social/medium_blue.svg";
-import greenCheckmark from "../public/double-checkmark.svg";
+import greenCheckmark from "../public/double-checkmark.png";
 
 const ModalCookie = () => {
   return (
@@ -32,6 +32,7 @@ const ModalCookie = () => {
                   alt="Green checkmark"
                   aria-hidden="true"
                   width={20}
+                  height={14}
                 />
               </div>
               <span className="ml-2">{point.description}</span>
@@ -76,12 +77,16 @@ const ModalTerms = () => {
       <div className="mt-4 text-sm text-white">
         <ul>
           {content.terms_modal.points.map((point) => (
-            <li key={point.id} className="text-sm text-white flex items-center">
+            <li
+              key={point.id}
+              className="text-sm text-white flex items-center mb-2"
+            >
               <Image
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
                 width={20}
+                height={14}
               />
               <span className="ml-2">{point.description}</span>
             </li>
@@ -109,7 +114,7 @@ const Footer = ({ margin }) => {
         rel="noreferrer noopener"
         className="flex mb-6 md:mb-0"
       >
-        <Image src={piedaoLogo} alt="PieDao Logo" />
+        <Image placeholder="blur" src={piedaoLogo} alt="PieDao Logo" />
       </a>
       <ul className="flex items-center flex-1 md:ml-6 mb-6 md:mb-0 gap-6">
         <li>

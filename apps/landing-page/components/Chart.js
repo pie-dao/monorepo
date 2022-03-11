@@ -3,13 +3,13 @@ import Image from "next/image";
 import ParentSizeModern from "@visx/responsive/lib/components/ParentSizeModern";
 import usePlayTickers from "../hooks/usePlayTickers";
 import SubCharts from "./SubCharts";
-import auditIcon from "../public/audit.svg";
-import mixBytesIcon from "../public/mixbytes.svg";
-import ethIcon from "../public/ethereum.svg";
-import copyIcon from "../public/copy.svg";
-import metamaskIcon from "../public/metamask.svg";
-import coingecko from "../public/coingecko.svg";
-import coinmarketcap from "../public/coinmarketcap.svg";
+import auditIcon from "../public/audit.png";
+import mixBytesIcon from "../public/mixbytes.png";
+import ethIcon from "../public/ethereum.png";
+import copyIcon from "../public/copy.png";
+import metamaskIcon from "../public/metamask.png";
+import coingecko from "../public/coingecko.png";
+import coinmarketcap from "../public/coinmarketcap.png";
 import PlayChart from "./PlayChart";
 import PriceChange from "./PriceChange";
 import content from "../content/en_EN.json";
@@ -105,7 +105,7 @@ const Chart = ({ play, sentiment }) => {
             className="flex"
             rel="noreferrer noopener"
           >
-            <Image src={mixBytesIcon} alt="Mix Bytes Icon" />
+            <Image placeholder="blur" src={mixBytesIcon} alt="Mix Bytes Icon" />
           </a>
         </div>
       </div>
@@ -207,7 +207,7 @@ const Chart = ({ play, sentiment }) => {
             className="flex justify-center items-center"
             id="coingecko"
           >
-            <Image src={coingecko} alt="coingecko Logo" />
+            <Image placeholder="blur" src={coingecko} alt="coingecko Logo" />
           </a>
           <a
             href="https://coinmarketcap.com/currencies/metaverse-nft-index"
@@ -217,7 +217,11 @@ const Chart = ({ play, sentiment }) => {
             id="coinmarketcap"
           >
             <div>
-              <Image src={coinmarketcap} alt="coinmarketcap Logo" />
+              <Image
+                placeholder="blur"
+                src={coinmarketcap}
+                alt="coinmarketcap Logo"
+              />
             </div>
           </a>
         </div>

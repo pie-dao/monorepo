@@ -5,7 +5,7 @@ import useUnderlyingData from "../hooks/useUnderlyingData";
 import priceFormatter from "../utils/priceFormatter";
 import Image from "next/image";
 import tokenImages from "../public/assets";
-import playLogo from "../public/play_icon.svg";
+import playLogo from "../public/play_icon.png";
 import gradientPicker from "../utils/gradientPicker";
 import styles from "../styles/UnderlyingTokens.module.scss";
 import content from "../content/en_EN.json";
@@ -43,7 +43,7 @@ const UnderlyingTokens = () => {
         </div>
       </div>
       <div className="-mt-12 relative z-1">
-        <Image src={playLogo} alt="play logo" />
+        <Image placeholder="blur" src={playLogo} alt="play logo" />
       </div>
       <div className="mx-4">
         {isLoading || isError ? (
@@ -76,7 +76,11 @@ const UnderlyingTokens = () => {
                         }`}
                       >
                         <div className="absolute -top-6 left-3">
-                          <Image src={imageObj.image} alt={symbol} />
+                          <Image
+                            placeholder="blur"
+                            src={imageObj.image}
+                            alt={symbol}
+                          />
                         </div>
                         <div className="w-full relative">
                           <p className="w-full text-md pt-8 pb-6">

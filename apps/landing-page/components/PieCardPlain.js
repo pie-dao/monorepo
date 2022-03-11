@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useMemo } from "react";
 import { Popover } from "@headlessui/react";
 import piesImages from "../public/pies";
-import backgroundImage from "../public/explore_products_bg.svg";
+import backgroundImage from "../public/explore_products_bg.png";
 import popover from "../public/popover_icon.svg";
 import Button from "./Button";
 import content from "../content/en_EN.json";
@@ -63,7 +63,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
           </div>
         </div>
         <div className="absolute -bottom-2">
-          <Image src={backgroundImage} alt="background" />
+          <Image priority src={backgroundImage} alt="background" />
         </div>
       </div>
       <div className="flex gap-x-4 mt-4 uppercase">

@@ -1,5 +1,5 @@
-import bcp from "./BCP.svg";
-import defiplusplus from "./DEFI++.svg";
+import bcp from "./BCP.png";
+import defiplusplus from "./DEFI.png";
 
 const tokenImages = [
   { name: "BCP", image: bcp },

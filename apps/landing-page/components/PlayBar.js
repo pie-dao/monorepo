@@ -3,7 +3,7 @@ import Button from "./Button";
 import PriceChange from "./PriceChange";
 import ShareMenu from "./ShareMenu";
 import priceFormat from "../utils/priceFormatter";
-import playLogo from "../public/play_logo.svg";
+import playLogo from "../public/play_logo.png";
 import piedaoLogo from "../public/piedao_logo_text.png";
 import styles from "../styles/PlayBar.module.scss";
 import content from "../content/en_EN.json";
@@ -21,7 +21,7 @@ const PlayBar = ({ actualPrice, priceChange }) => {
             rel="noopener noreferrer"
             className="flex"
           >
-            <Image src={piedaoLogo} alt="PieDao Logo" />
+            <Image placeholder="blur" src={piedaoLogo} alt="PieDao Logo" />
           </a>
         </div>
         <Image src={playLogo} alt="play logo" />
