@@ -27,6 +27,7 @@ const Roi = ({}) => {
               </div>
               <div className="w-full md:w-3/4">
                 <Image
+                  lazyBoundary="325px"
                   placeholder="blur"
                   src={roiPlaceholder}
                   alt="ROI Placeholder"
@@ -57,7 +58,11 @@ const Roi = ({}) => {
             >
               <>
                 <span className="font-bold mr-2">{content.roi.cta}</span>
-                <Image src={sushiswapLogo} alt="sushiswap logo" />
+                <Image
+                  lazyBoundary="325px"
+                  src={sushiswapLogo}
+                  alt="sushiswap logo"
+                />
               </>
             </Button>
           </div>
@@ -75,7 +80,7 @@ const Roi = ({}) => {
             className="flex justify-center items-center uppercase"
             id="btn-1inch-cta"
           >
-            <Image src={oneInch} alt="1inch Logo" />
+            <Image lazyBoundary="325px" src={oneInch} alt="1inch Logo" />
             <p className="ml-2">{content.roi.one_inch}</p>
           </a>
           <a
@@ -86,7 +91,7 @@ const Roi = ({}) => {
             id="btn-uniswap-cta"
           >
             <div>
-              <Image src={uniswap} alt="uniswap Logo" />
+              <Image lazyBoundary="325px" src={uniswap} alt="uniswap Logo" />
             </div>
             <p className="ml-2">{content.roi.uniswap}</p>
           </a>

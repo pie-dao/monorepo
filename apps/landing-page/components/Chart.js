@@ -73,7 +73,7 @@ const Chart = ({ play, sentiment }) => {
             rel="noopener noreferrer"
             href="https://etherscan.io/token/0x33e18a092a93ff21ad04746c7da12e35d34dc7c4"
           >
-            <Image src={ethIcon} alt="Ethereum Icon" />
+            <Image lazyBoundary="325px" src={ethIcon} alt="Ethereum Icon" />
             <p className="text-light_blue text-xs	md:text-sm relative top-0.5 ml-1">
               {play.contract_address}
             </p>
@@ -85,7 +85,7 @@ const Chart = ({ play, sentiment }) => {
             type="button"
             className="hidden md:flex"
           >
-            <Image src={copyIcon} alt="Copy Icon" />
+            <Image lazyBoundary="325px" src={copyIcon} alt="Copy Icon" />
           </button>
           <button
             onClick={addPlayToMetamask}
@@ -93,11 +93,15 @@ const Chart = ({ play, sentiment }) => {
             className="flex"
             id="btn-metamask"
           >
-            <Image src={metamaskIcon} alt="Metamask Icon" />
+            <Image
+              lazyBoundary="325px"
+              src={metamaskIcon}
+              alt="Metamask Icon"
+            />
           </button>
         </div>
         <div className="flex items-center md:ml-auto">
-          <Image src={auditIcon} alt="Chart Icon" />
+          <Image lazyBoundary="325px" src={auditIcon} alt="Chart Icon" />
           <p className="ml-1 mr-2 font-bold">{content.chart.audit}</p>
           <a
             href="https://github.com/pie-dao/audits"
@@ -105,7 +109,12 @@ const Chart = ({ play, sentiment }) => {
             className="flex"
             rel="noreferrer noopener"
           >
-            <Image placeholder="blur" src={mixBytesIcon} alt="Mix Bytes Icon" />
+            <Image
+              lazyBoundary="325px"
+              placeholder="blur"
+              src={mixBytesIcon}
+              alt="Mix Bytes Icon"
+            />
           </a>
         </div>
       </div>
@@ -207,7 +216,12 @@ const Chart = ({ play, sentiment }) => {
             className="flex justify-center items-center"
             id="coingecko"
           >
-            <Image placeholder="blur" src={coingecko} alt="coingecko Logo" />
+            <Image
+              lazyBoundary="325px"
+              placeholder="blur"
+              src={coingecko}
+              alt="coingecko Logo"
+            />
           </a>
           <a
             href="https://coinmarketcap.com/currencies/metaverse-nft-index"
@@ -218,6 +232,7 @@ const Chart = ({ play, sentiment }) => {
           >
             <div>
               <Image
+                lazyBoundary="325px"
                 placeholder="blur"
                 src={coinmarketcap}
                 alt="coinmarketcap Logo"

@@ -6,6 +6,7 @@ const TwitterCard = ({ twitterPost }) => {
       <div className="w-full flex mb-4">
         <div className="overflow-hidden rounded-full w-10 h-10">
           <Image
+            lazyBoundary="325px"
             src={twitterPost.author.profile_image_url}
             alt={twitterPost.author.name}
             width={48}

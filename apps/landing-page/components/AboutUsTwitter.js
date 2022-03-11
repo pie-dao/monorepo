@@ -20,7 +20,7 @@ const AboutUsTwitter = ({ twitterPosts }) => {
       </div>
       <div className="max-w-screen-sm mx-auto flex items-center gap-x-6 px-6">
         <div className="swiper-arrow-left-custom h-[25px] w-[16px] flex-none">
-          <Image src={leftArrow} alt="left arrow" />
+          <Image lazyBoundary="325px" src={leftArrow} alt="left arrow" />
         </div>
         <Swiper
           spaceBetween={30}
@@ -45,7 +45,7 @@ const AboutUsTwitter = ({ twitterPosts }) => {
           })}
         </Swiper>
         <div className="swiper-arrow-right-custom h-[25px] w-[16px] flex-none">
-          <Image src={rightArrow} alt="right arrow" />
+          <Image lazyBoundary="325px" src={rightArrow} alt="right arrow" />
         </div>
       </div>
     </section>

@@ -11,7 +11,7 @@ const ShareMenu = () => {
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="inline-flex justify-center w-full p-2 text-sm font-medium text-white bg-black rounded-lg bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-        <Image src={shareIcon} alt="share" />
+        <Image lazyBoundary="325px" src={shareIcon} alt="share" />
       </Menu.Button>
       <Transition
         as={Fragment}

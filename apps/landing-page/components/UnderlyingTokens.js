@@ -43,7 +43,12 @@ const UnderlyingTokens = () => {
         </div>
       </div>
       <div className="-mt-12 relative z-1">
-        <Image placeholder="blur" src={playLogo} alt="play logo" />
+        <Image
+          lazyBoundary="325px"
+          placeholder="blur"
+          src={playLogo}
+          alt="play logo"
+        />
       </div>
       <div className="mx-4">
         {isLoading || isError ? (
@@ -77,6 +82,7 @@ const UnderlyingTokens = () => {
                       >
                         <div className="absolute -top-6 left-3">
                           <Image
+                            lazyBoundary="325px"
                             placeholder="blur"
                             src={imageObj.image}
                             alt={symbol}

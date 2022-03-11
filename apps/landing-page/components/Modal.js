@@ -43,7 +43,12 @@ const Modal = ({ isOpen, closeModal, children }) => {
                 className="absolute cursor-pointer top-0 right-0 m-4"
                 onClick={closeModal}
               >
-                <Image priority src={close} alt="close popup" />
+                <Image
+                  lazyBoundary="325px"
+                  priority
+                  src={close}
+                  alt="close popup"
+                />
               </button>
               {children}
             </div>

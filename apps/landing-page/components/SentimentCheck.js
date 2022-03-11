@@ -51,7 +51,12 @@ const SentimentCheck = ({ positive, negative }) => {
               onClick={() => handleSentiment("positive")}
               id="sentiment-positive"
             >
-              <Image placeholder="blur" src={positiveImg} alt="positive" />
+              <Image
+                lazyBoundary="325px"
+                placeholder="blur"
+                src={positiveImg}
+                alt="positive"
+              />
             </button>
           </div>
           <div className="flex w-1/2 justify-center items-center">
@@ -61,7 +66,12 @@ const SentimentCheck = ({ positive, negative }) => {
               onClick={() => handleSentiment("negative")}
               id="sentiment-negative"
             >
-              <Image placeholder="blur" src={negativeImg} alt="negative" />
+              <Image
+                lazyBoundary="325px"
+                placeholder="blur"
+                src={negativeImg}
+                alt="negative"
+              />
             </button>
           </div>
         </div>
@@ -90,6 +100,7 @@ const SentimentCheck = ({ positive, negative }) => {
             </div>
             <div className="w-1/3 flex items-center justify-center">
               <Image
+                lazyBoundary="325px"
                 src={sentiment === "positive" ? positiveImg : negativeImg}
                 alt={sentiment}
               />

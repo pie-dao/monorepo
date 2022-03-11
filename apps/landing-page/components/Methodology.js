@@ -27,6 +27,7 @@ const ModalContent = () => {
               className="text-sm text-white flex items-center mb-2"
             >
               <Image
+                lazyBoundary="325px"
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
@@ -55,6 +56,7 @@ const ModalContent = () => {
               className="text-sm text-white flex items-center mb-2"
             >
               <Image
+                lazyBoundary="325px"
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
@@ -74,6 +76,7 @@ const ModalContent = () => {
               className="text-sm text-white flex items-center mb-2"
             >
               <Image
+                lazyBoundary="325px"
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
@@ -157,7 +160,11 @@ const Methodology = ({}) => {
                       </p>
                     </div>
                     <div>
-                      <Image src={greenCheckmark} alt="green checkmark" />
+                      <Image
+                        lazyBoundary="325px"
+                        src={greenCheckmark}
+                        alt="green checkmark"
+                      />
                     </div>
                   </div>
                 </div>

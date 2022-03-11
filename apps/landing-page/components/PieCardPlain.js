@@ -31,6 +31,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
           <div className="relative -top-6">
             <div className="w-[50px] h-[50px] mx-auto z-10">
               <Image
+                lazyBoundary="325px"
                 src={tokenImage.image}
                 className="rounded-full"
                 alt={pieInfo.symbol}
@@ -45,7 +46,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
             <span>{content.explore_products.nav.name}</span>{" "}
             <Popover className="relative flex self-start">
               <Popover.Button className="ml-1">
-                <Image src={popover} alt="popover" />
+                <Image lazyBoundary="325px" src={popover} alt="popover" />
               </Popover.Button>
               <Popover.Panel className="absolute z-10 w-screen max-w-sm px-4 mt-3 transform -translate-x-[40%] left-[50%] bottom-full sm:px-0">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
@@ -63,7 +64,12 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
           </div>
         </div>
         <div className="absolute -bottom-2">
-          <Image priority src={backgroundImage} alt="background" />
+          <Image
+            lazyBoundary="325px"
+            priority
+            src={backgroundImage}
+            alt="background"
+          />
         </div>
       </div>
       <div className="flex gap-x-4 mt-4 uppercase">

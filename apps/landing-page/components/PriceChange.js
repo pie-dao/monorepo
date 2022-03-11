@@ -7,14 +7,14 @@ const PriceChange = ({ priceChange }) => {
   return priceChange > 0 ? (
     <>
       <span className="text-light_green mr-1">+{priceChangeUsd}%</span>
-      <Image src={arrowIconGreen} alt="arrow up" />
+      <Image lazyBoundary="325px" src={arrowIconGreen} alt="arrow up" />
     </>
   ) : priceChange === 0 ? (
     `0%`
   ) : (
     <>
       <span className="text-highlight mr-1">{priceChangeUsd}%</span>
-      <Image src={arrowIconRed} alt="arrow down" />
+      <Image lazyBoundary="325px" src={arrowIconRed} alt="arrow down" />
     </>
   );
 };

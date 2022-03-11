@@ -115,7 +115,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
               <h4 className="font-bold text-white mr-1">
                 {content.subcharts.nav}
               </h4>
-              <Image src={popover} alt="popover" />
+              <Image lazyBoundary="325px" src={popover} alt="popover" />
             </div>
           </Popover.Button>
           <Popover.Panel className="absolute z-10 w-screen max-w-[19rem] mt-3 -translate-x-[42%] left-[50%]">
@@ -217,7 +217,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
       <div className="flex flex-col col-span-1 md:col-span-2 lg:col-span-1 md:flex-row lg:flex-col gap-4">
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2 mb-2 flex-row">
-            <Image src={inceptionFire} alt="inception" />
+            <Image lazyBoundary="325px" src={inceptionFire} alt="inception" />
             <h4 className="font-bold text-white">
               {content.subcharts.inception}
             </h4>
@@ -227,6 +227,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
               + {inceptionPerc().toFixed()}%
             </p>
             <Image
+              lazyBoundary="325px"
               src={inceptionPerc() >= 0 ? arrowGreen : arrowRed}
               alt="Arrow"
             />
@@ -234,7 +235,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center gap-x-2 mb-2">
-            <Image src={sentimentHeart} alt="inception" />
+            <Image lazyBoundary="325px" src={sentimentHeart} alt="inception" />
             <h4 className="font-bold text-white">
               {content.subcharts.sentiment.title}
             </h4>

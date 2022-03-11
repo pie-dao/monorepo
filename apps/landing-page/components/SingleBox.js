@@ -8,6 +8,7 @@ const SingleBox = ({ singleBox }) => {
     >
       <div className="-mt-32 md:mb-4 w-[70%] md:w-[180px]">
         <Image
+          lazyBoundary="325px"
           src={singleBox.icon}
           alt={`${singleBox.title} icon`}
           width={300}

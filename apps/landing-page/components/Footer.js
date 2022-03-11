@@ -28,6 +28,7 @@ const ModalCookie = () => {
             >
               <div className="flex-none">
                 <Image
+                  lazyBoundary="325px"
                   src={greenCheckmark}
                   alt="Green checkmark"
                   aria-hidden="true"
@@ -82,6 +83,7 @@ const ModalTerms = () => {
               className="text-sm text-white flex items-center mb-2"
             >
               <Image
+                lazyBoundary="325px"
                 src={greenCheckmark}
                 alt="Green checkmark"
                 aria-hidden="true"
@@ -114,7 +116,12 @@ const Footer = ({ margin }) => {
         rel="noreferrer noopener"
         className="flex mb-6 md:mb-0"
       >
-        <Image placeholder="blur" src={piedaoLogo} alt="PieDao Logo" />
+        <Image
+          lazyBoundary="325px"
+          placeholder="blur"
+          src={piedaoLogo}
+          alt="PieDao Logo"
+        />
       </a>
       <ul className="flex items-center flex-1 md:ml-6 mb-6 md:mb-0 gap-6">
         <li>
@@ -124,7 +131,7 @@ const Footer = ({ margin }) => {
             rel="noreferrer noopener"
             className="flex"
           >
-            <Image src={discord} alt="Discord" />
+            <Image lazyBoundary="325px" src={discord} alt="Discord" />
             <p className="ml-2 hidden md:flex">
               {content.socials.discord.name}
             </p>
@@ -137,7 +144,7 @@ const Footer = ({ margin }) => {
             rel="noreferrer noopener"
             className="flex"
           >
-            <Image src={telegram} alt="Telegram" />
+            <Image lazyBoundary="325px" src={telegram} alt="Telegram" />
             <p className="ml-2 hidden md:flex">
               {content.socials.telegram.name}
             </p>
@@ -150,7 +157,7 @@ const Footer = ({ margin }) => {
             rel="noreferrer noopener"
             className="flex"
           >
-            <Image src={twitter} alt="Twitter" />
+            <Image lazyBoundary="325px" src={twitter} alt="Twitter" />
             <p className="ml-2 hidden md:flex">
               {content.socials.twitter.name}
             </p>
@@ -163,7 +170,7 @@ const Footer = ({ margin }) => {
             rel="noreferrer noopener"
             className="flex"
           >
-            <Image src={medium} alt="Medium" />
+            <Image lazyBoundary="325px" src={medium} alt="Medium" />
             <p className="ml-2 hidden md:flex">{content.socials.medium.name}</p>
           </a>
         </li>

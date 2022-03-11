@@ -21,10 +21,15 @@ const PlayBar = ({ actualPrice, priceChange }) => {
             rel="noopener noreferrer"
             className="flex"
           >
-            <Image placeholder="blur" src={piedaoLogo} alt="PieDao Logo" />
+            <Image
+              lazyBoundary="325px"
+              placeholder="blur"
+              src={piedaoLogo}
+              alt="PieDao Logo"
+            />
           </a>
         </div>
-        <Image src={playLogo} alt="play logo" />
+        <Image lazyBoundary="325px" src={playLogo} alt="play logo" />
         <div className="ml-2 align-baseline">
           <p className="text-gradient text-xl md:text-xl leading-none md:leading-none flex">
             {content.navbar.play}{" "}
