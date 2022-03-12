@@ -7,6 +7,7 @@ export type VaultRowEntry = {
   addStyles?: boolean;
   icon?: React.ReactNode;
   isAction?: boolean;
+  hide?: boolean;
 };
 
 export type VaultRow = Record<string, VaultRowEntry>;
