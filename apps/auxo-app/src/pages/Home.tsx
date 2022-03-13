@@ -7,7 +7,10 @@ import { useEffect } from "react";
 import { useWindowWide } from "../hooks/useWindowWidth";
 import VaultCardView from "../components/Vault/Home/VaultCard";
 import VaultTable from "../components/Vault/Home/VaultTable";
-import { useTableData } from "../hooks/useVaultTableSort";
+import {
+  initialTableState,
+  useVaultTableData,
+} from "../hooks/useVaultTableSort";
 import { useGlobalFilter, useSortBy, useTable } from "react-table";
 
 type ViewType = "TABLE" | "CARD";
@@ -28,14 +31,14 @@ const Callout = (): JSX.Element => {
     <section className="w-full pb-5">
       <div
         className="
-                    flex
-                    items-center
-                    justify-center
-                    rounded-lg
-                    py-5 sm:py-2 sm:h-48
-                    mx-5 sm:mx-3 md:mx-0
-                    bg-baby-blue-light
-                "
+          flex
+          items-center
+          justify-center
+          rounded-lg
+          py-5 sm:py-2 sm:h-48
+          mx-5 sm:mx-3 md:mx-0
+          bg-baby-blue-light
+        "
       >
         <FancyTitle />
       </div>
@@ -48,6 +51,7 @@ type GlobalFilterProps = {
   setFilter: SetStateType<keyof typeof SUPPORTED_CHAINS | "">;
 };
 
+// Filter vaults according to the network
 const NetworkSorter = ({ filter, setFilter }: GlobalFilterProps) => {
   return (
     <section className="flex justify-start ml-0">
@@ -74,6 +78,41 @@ const NetworkSorter = ({ filter, setFilter }: GlobalFilterProps) => {
   );
 };
 
+// toggle view between table and card using icons
+const ViewSwitcher = ({
+  view,
+  setView,
+}: {
+  view: ViewType;
+  setView: SetStateType<ViewType>;
+}): JSX.Element => (
+  <section className="flex">
+    <div
+      className={
+        (view === "CARD" ? "bg-baby-blue-dark " : " bg-white shadow-md") +
+        " p-2 rounded-lg mb-1"
+      }
+      onClick={() => setView("CARD")}
+    >
+      <BsFillGrid3X3GapFill
+        className={view === "CARD" ? "fill-white" : "fill-baby-blue-dark"}
+      />
+    </div>
+    <div
+      className={
+        (view === "TABLE" ? "bg-baby-blue-dark " : " bg-white shadow-md") +
+        " p-2 rounded-lg mb-1 ml-1"
+      }
+      onClick={() => setView("TABLE")}
+    >
+      <GiHamburgerMenu
+        className={view === "TABLE" ? "fill-white" : "fill-baby-blue-dark"}
+      />
+    </div>
+  </section>
+);
+
+// Menu above the vault card and vault table, allows for switching views and filtering
 const VaultHomeMenu: React.FC<
   {
     view: ViewType;
@@ -83,50 +122,24 @@ const VaultHomeMenu: React.FC<
   return (
     <section
       className="
-            flex
-            mb-5
-            px-5 sm:px-3
-            w-full
-            justify-center
-            "
+        flex
+        mb-5
+        px-5 sm:px-3
+        w-full
+        justify-center
+      "
     >
       <div
         className="
-                border-gray-500
-                border-b-2
-                w-full
-                flex
-                justify-between
-                "
+          border-gray-500
+          border-b-2
+          w-full
+          flex
+          justify-between
+        "
       >
         <NetworkSorter filter={filter} setFilter={setFilter} />
-        <section className="flex">
-          <div
-            className={
-              (view === "CARD" ? "bg-baby-blue-dark " : " bg-white shadow-md") +
-              " p-2 rounded-lg mb-1"
-            }
-            onClick={() => setView("CARD")}
-          >
-            <BsFillGrid3X3GapFill
-              className={view === "CARD" ? "fill-white" : "fill-baby-blue-dark"}
-            />
-          </div>
-          <div
-            className={
-              (view === "TABLE"
-                ? "bg-baby-blue-dark "
-                : " bg-white shadow-md") + " p-2 rounded-lg mb-1 ml-1"
-            }
-            onClick={() => setView("TABLE")}
-          >
-            <GiHamburgerMenu
-              className={
-                view === "TABLE" ? "fill-white" : "fill-baby-blue-dark"
-              }
-            />
-          </div>
-        </section>
+        <ViewSwitcher view={view} setView={setView} />
       </div>
     </section>
   );
@@ -136,25 +149,18 @@ const Home = () => {
   const DEFAULT_TO_MOBILE_SIZE = 600;
   const [view, setView] = useState<ViewType>("TABLE");
   const biggerThanMobile = useWindowWide(DEFAULT_TO_MOBILE_SIZE);
-  const { rows: data, headers: columns } = useTableData();
+  const { rows: data, headers: columns } = useVaultTableData();
 
   useEffect(() => {
     biggerThanMobile ? setView("TABLE") : setView("CARD");
   }, [biggerThanMobile, setView]);
 
+  // global filter for table is shared with the cards, so we instantiate here
   const table = useTable(
     {
       columns,
       data,
-      initialState: {
-        hiddenColumns: ["network"],
-        sortBy: [
-          {
-            id: "yield",
-            desc: true,
-          },
-        ],
-      },
+      initialState: initialTableState,
     },
     useGlobalFilter,
     useSortBy

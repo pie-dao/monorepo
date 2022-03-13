@@ -1,9 +1,13 @@
 import { FaSort } from "react-icons/fa";
 import { TableInstance } from "react-table";
 import { useNavigateToVault } from "../../../hooks/useSelectedVault";
-import { TableRow } from "../../../hooks/useVaultTableSort";
+import { VaultTableRow } from "../../../hooks/useVaultTableSort";
 
-function VaultTable({ tableProps }: { tableProps: TableInstance<TableRow> }) {
+function VaultTable({
+  tableProps,
+}: {
+  tableProps: TableInstance<VaultTableRow>;
+}) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableProps;
   const navigateToVault = useNavigateToVault();
@@ -11,6 +15,7 @@ function VaultTable({ tableProps }: { tableProps: TableInstance<TableRow> }) {
     <table
       {...getTableProps()}
       className="w-full"
+      // spacing between rows
       style={{
         borderSpacing: "0 1em",
         borderCollapse: "separate",
@@ -21,35 +26,34 @@ function VaultTable({ tableProps }: { tableProps: TableInstance<TableRow> }) {
           <tr
             {...headerGroup.getHeaderGroupProps()}
             className="
-                        bg-baby-blue-light
-                        h-12
+            bg-baby-blue-light
+              h-12
                     "
           >
             {headerGroup.headers.map((column) => (
               <th
                 {...column.getHeaderProps(column.getSortByToggleProps())}
+                // rounded borders with border-collapse
                 className="
-                                first-of-type:rounded-tl-lg
-                                first-of-type:rounded-bl-lg
-                            
-                                last-of-type:rounded-tr-lg                                
-                                last-of-type:rounded-br-lg
-
-                                text-gray-700
-                                "
+                  first-of-type:rounded-tl-lg
+                  first-of-type:rounded-bl-lg
+                  last-of-type:rounded-tr-lg                                
+                  last-of-type:rounded-br-lg
+                  text-gray-700
+                "
               >
                 <div className="flex items-center justify-center">
                   {column.Header !== "" && (
                     <FaSort
                       className={`
-                                    mx-1
-                                    ${
-                                      column.isSorted &&
-                                      (column.isSortedDesc
-                                        ? "fill-red-600"
-                                        : "fill-green-600")
-                                    }
-                                `}
+                        mx-1
+                        ${
+                          column.isSorted &&
+                          (column.isSortedDesc
+                            ? "fill-red-600"
+                            : "fill-green-600")
+                        }
+                      `}
                     />
                   )}
                   <p className="mr-2">{column.render("Header")}</p>
@@ -72,17 +76,17 @@ function VaultTable({ tableProps }: { tableProps: TableInstance<TableRow> }) {
                 return (
                   <td
                     {...cell.getCellProps()}
-                    // rounded borders with border-collapse
+                    // adjust padding at corners for consistent hover gradient
                     className="
-                                            px-0 py-[2px] h-16
-                                            first-of-type:rounded-tl-lg
-                                            first-of-type:rounded-bl-lg
-                                            first-of-type:pl-[2px]
-                                            
-                                            last-of-type:rounded-tr-lg                                
-                                            last-of-type:rounded-br-lg
-                                            last-of-type:pr-[2px]
-                                            "
+                      px-0 py-[2px] h-16
+                      first-of-type:rounded-tl-lg
+                      first-of-type:rounded-bl-lg                      
+                      last-of-type:rounded-tr-lg                                
+                      last-of-type:rounded-br-lg
+
+                      first-of-type:pl-[2px]
+                      last-of-type:pr-[2px]
+                    "
                   >
                     {cell.render("Cell")}
                   </td>

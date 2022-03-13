@@ -3,6 +3,8 @@ export const SUPPORTED_CHAINS = {
   POLYGON: 137,
 } as const;
 
+export type SUPPORTED_CHAIN_NAMES = keyof typeof SUPPORTED_CHAINS;
+
 export type SUPPORTED_CHAIN_ID =
   typeof SUPPORTED_CHAINS[keyof typeof SUPPORTED_CHAINS];
 
