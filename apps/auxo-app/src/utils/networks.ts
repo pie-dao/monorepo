@@ -1,6 +1,7 @@
 export const SUPPORTED_CHAINS = {
   FANTOM: 250,
   POLYGON: 137,
+  MAINNET: 1,
 } as const;
 
 export type SUPPORTED_CHAIN_NAMES = keyof typeof SUPPORTED_CHAINS;
@@ -23,6 +24,18 @@ export type NetworkDetail = {
 export type ChainMap = Record<SUPPORTED_CHAIN_ID, NetworkDetail>;
 
 export const chainMap: ChainMap = {
+  [SUPPORTED_CHAINS.MAINNET]: {
+    blockTime: 12,
+    chainId: `0x${Number(SUPPORTED_CHAINS.MAINNET).toString(16)}`,
+    chainName: "Ethereum Mainnet",
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18,
+    },
+    rpcUrls: ["https://cloudflare-eth.com"],
+    blockExplorerUrls: ["https://etherscan.io"],
+  },
   [SUPPORTED_CHAINS.FANTOM]: {
     blockTime: 1,
     chainId: `0x${Number(SUPPORTED_CHAINS.FANTOM).toString(16)}`,

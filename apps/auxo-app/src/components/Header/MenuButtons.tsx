@@ -3,10 +3,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setAlert, setAlertDisplay } from "../../store/app/app.slice";
 import StyledButton from "../UI/button";
 import { FaBell } from "react-icons/fa";
-import { useChainHandler } from "../../hooks/useChainHandler";
 import { useState } from "react";
 import { useEffect } from "react";
-import { logoSwitcher } from "../../utils/logos";
 
 const trimAccount = (account: string): string => {
   return account.slice(0, 6) + "..." + account.slice(38);
@@ -51,43 +49,6 @@ export const AlertButton = (): JSX.Element => {
         <div className="bg-alert-error rounded-full h-3 w-3 absolute -top-0 -right-1" />
       )}
     </button>
-  );
-};
-
-const toProperCase = (s: string): string =>
-  s.slice(0, 1).toUpperCase() + s.slice(1, s.length).toLowerCase();
-
-export const NetworkDisplay = () => {
-  const chain = useChainHandler();
-  return (
-    <>
-      {chain && (
-        <div
-          className="py-1 pl-2 mb-1 pr-0 md:pr-10 
-          flex items-center justify-center bg-white md:justify-start
-          shadow-none md:shadow-md rounded-md"
-        >
-          <div className="h-6 w-6">
-            {logoSwitcher(chain.nativeCurrency.symbol, { height: 6 })}
-          </div>
-          <p
-            className={`
-            font-bold
-            text-left
-            text-gray-600
-            md:text-sm
-            lg:text-base
-            rounded-xl
-            py-1
-            px-3
-            ${chain ? "text-black" : "text-red-600"}
-          `}
-          >
-            {chain ? toProperCase(chain.chainName) : "Network Not Supported"}
-          </p>
-        </div>
-      )}
-    </>
   );
 };
 

@@ -117,17 +117,24 @@ const VaultCardView = ({
       : vaults;
   }, [filter, vaults]);
   return (
-    <div
-      className="
+    <>
+      {filteredVaults.length === 0 && (
+        <div className="my-5 h-48 flex items-center justify-center text-gray-500">
+          No Vaults for this Network
+        </div>
+      )}
+      <div
+        className="
                 px-5 
                 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 
                 gap-8 md:gap-6
             "
-    >
-      {filteredVaults.map((v, i) => (
-        <VaultCard key={i} vault={v} />
-      ))}
-    </div>
+      >
+        {filteredVaults.map((v, i) => (
+          <VaultCard key={i} vault={v} />
+        ))}
+      </div>
+    </>
   );
 };
 

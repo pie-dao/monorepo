@@ -69,7 +69,9 @@ export const DepositCell = ({
   const symbol = useMemo(() => getNetworkTokenSymbolForCell(cell), [cell]);
   return (
     <div className="flex justify-evenly w-full items-center">
-      <div className={`flex justify-between w-24 font-bold ${textColor}`}>
+      <div
+        className={`flex justify-start md:justify-between w-24 font-bold ${textColor}`}
+      >
         <div className="mr-2 h-8 w-8 relative flex justify-start">
           {logoSwitcher(cell.value as string)}
           <div className="h-4 w-4 absolute -bottom-1 -right-1">
