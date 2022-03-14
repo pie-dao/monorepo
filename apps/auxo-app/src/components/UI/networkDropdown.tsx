@@ -13,7 +13,6 @@ import {
 } from "../../utils/networks";
 
 export const ChainAndLogo = ({ chain }: { chain: NetworkDetail | null }) => {
-  // console.debug({ chain })
   return (
     <div className="flex items-center">
       <div className="w-6 h-6 mr-2">

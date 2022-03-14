@@ -136,6 +136,7 @@ export function NetworkSwitchModal({
                 <div className="pt-3">
                   {Object.entries(chainMap).map(([id, chain]) => (
                     <button
+                      key={id}
                       onClick={() => {
                         changeNetwork({ chainId: Number(id) })
                           .then(() => {

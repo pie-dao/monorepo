@@ -12,9 +12,6 @@ type LogoColorProps = {
 export const EthereumIcon = ({ colors }: LogoColorProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    shape-rendering="geometricPrecision"
-    text-rendering="geometricPrecision"
-    image-rendering="optimizeQuality"
     viewBox="0 0 784.37 1277.39"
     className="bg-baby-blue-dark rounded-full h-6 w-6"
   >
