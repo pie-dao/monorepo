@@ -10,7 +10,7 @@ import VaultTable from "../components/Vault/Home/VaultTable";
 import {
   initialTableState,
   useVaultTableData,
-} from "../hooks/useVaultTableSort";
+} from "../hooks/useVaultTableRows";
 import { useGlobalFilter, useSortBy, useTable } from "react-table";
 import { MenuTransition } from "../components/UI/networkDropdown";
 import { Menu } from "@headlessui/react";

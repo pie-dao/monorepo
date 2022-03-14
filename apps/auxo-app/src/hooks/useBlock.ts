@@ -50,7 +50,13 @@ export const useBlock = (): UseBlockReturnType => {
   const previousBlockNumber = useRef(0);
 
   useEffect(() => {
+    // reset previous block fetch if the chain id changes
+    if (chainId) previousBlockNumber.current = 0;
+  }, [chainId]);
+
+  useEffect(() => {
     if (!library) return;
+
     // // get the current block to set the initial state
     getCurrentBlock(library, setBlock);
 
@@ -67,6 +73,6 @@ export const useBlock = (): UseBlockReturnType => {
       library.removeListener("block", updateBlockNumber);
       setBlock({ number: undefined });
     };
-  }, [chainId, library]);
+  }, [library]);
   return { block };
 };

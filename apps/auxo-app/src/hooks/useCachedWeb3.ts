@@ -20,21 +20,19 @@ export const getChainFromLibrary = (
 export const useSetWeb3Cache = () => {
   const dispatch = useAppDispatch();
   const { account, active, library } = useWeb3React<Web3Provider>();
+  const chainId = getChainFromLibrary(library);
   useEffect(() => {
-    const chainId = getChainFromLibrary(library);
-    if (chainId) dispatch(setChainId(chainId));
-  }, [account, active, library, dispatch]);
+    if (chainId) {
+      console.debug({ chainId });
+      dispatch(setChainId(chainId));
+    }
+  }, [account, active, library, dispatch, chainId]);
 };
 
 export const useCachedChainId = () => {
   return useAppSelector((state) => state.app.chainId);
 };
 
-/**
- * Caching helps reduce network calls but is best to use the actual web3react hook for things like
- * getting the current account, this is because the cache gets stale if changing chains while signed into
- * the same provider.
- */
 export const useWeb3Cache = () => {
   const chainId = useCachedChainId();
   return {
