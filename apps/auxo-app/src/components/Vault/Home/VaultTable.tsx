@@ -1,7 +1,46 @@
 import { FaSort } from "react-icons/fa";
-import { TableInstance } from "react-table";
+import { Row, TableInstance } from "react-table";
 import { useNavigateToVault } from "../../../hooks/useSelectedVault";
-import { VaultTableRow } from "../../../hooks/useVaultTableSort";
+import { VaultTableRow } from "../../../hooks/useVaultTableRows";
+
+function VaultRow({
+  row,
+  prepareRow,
+}: {
+  row: Row<VaultTableRow>;
+  prepareRow: (row: Row<VaultTableRow>) => void;
+}): JSX.Element {
+  prepareRow(row);
+  const navigateToVault = useNavigateToVault();
+  return (
+    <tr
+      {...row.getRowProps()}
+      onClick={() => navigateToVault(row.original.address)}
+      className="bg-white shadow-sm hover:border-gradient cursor-pointer hover:p-0"
+    >
+      {row.cells.map((cell) => {
+        return (
+          <td
+            {...cell.getCellProps()}
+            // adjust padding at corners for consistent hover gradient
+            className="
+            px-0 py-[2px] h-16
+            first-of-type:rounded-tl-lg
+            first-of-type:rounded-bl-lg                      
+            last-of-type:rounded-tr-lg                                
+            last-of-type:rounded-br-lg
+
+            first-of-type:pl-[2px]
+            last-of-type:pr-[2px]
+          "
+          >
+            {cell.render("Cell")}
+          </td>
+        );
+      })}
+    </tr>
+  );
+}
 
 function VaultTable({
   tableProps,
@@ -10,7 +49,6 @@ function VaultTable({
 }) {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     tableProps;
-  const navigateToVault = useNavigateToVault();
   return (
     <section className="overflow-x-auto mx-2">
       <table
@@ -65,37 +103,9 @@ function VaultTable({
           ))}
         </thead>
         <tbody {...getTableBodyProps()} className="p-2">
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr
-                {...row.getRowProps()}
-                onClick={() => navigateToVault(row.original.address)}
-                className="bg-white shadow-sm hover:border-gradient cursor-pointer hover:p-0"
-              >
-                {row.cells.map((cell) => {
-                  return (
-                    <td
-                      {...cell.getCellProps()}
-                      // adjust padding at corners for consistent hover gradient
-                      className="
-                      px-0 py-[2px] h-16
-                      first-of-type:rounded-tl-lg
-                      first-of-type:rounded-bl-lg                      
-                      last-of-type:rounded-tr-lg                                
-                      last-of-type:rounded-br-lg
-
-                      first-of-type:pl-[2px]
-                      last-of-type:pr-[2px]
-                    "
-                    >
-                      {cell.render("Cell")}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {rows.map((row, id) => (
+            <VaultRow key={id} row={row} prepareRow={prepareRow} />
+          ))}
         </tbody>
       </table>
       {rows.length === 0 && (

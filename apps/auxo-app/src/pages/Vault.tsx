@@ -25,7 +25,9 @@ function VaultContentBlocks({
   return (
     <section className="grid grid-cols-1 gap-4">
       <VaultExtendedInformationCard vault={vault} />
-      <VaultStrategiesCard vault={vault} />
+      {vault && vault.strategies.length > 0 && (
+        <VaultStrategiesCard vault={vault} />
+      )}
     </section>
   );
 }

@@ -84,6 +84,22 @@ export const DepositCell = ({
   );
 };
 
+const ToVaultDepositButton = ({
+  address,
+}: {
+  address: string;
+}): JSX.Element => {
+  const navigate = useNavigateToVault();
+  return (
+    <StyledButton
+      onClick={() => navigate(address)}
+      className="flex justify-evenly items-center"
+    >
+      Deposit
+    </StyledButton>
+  );
+};
+
 // Control settings of table on first load
 export const initialTableState: Partial<TableState<VaultTableRow>> = {
   hiddenColumns: ["network", "chainId"],
@@ -158,12 +174,7 @@ export const useVaultTableData = (): {
       {
         accessor: "address",
         Header: "",
-        Cell: ({ value }): JSX.Element => {
-          const navigate = useNavigateToVault();
-          return (
-            <StyledButton onClick={() => navigate(value)}>Deposit</StyledButton>
-          );
-        },
+        Cell: ({ value }) => <ToVaultDepositButton address={value} />,
       },
     ],
     []

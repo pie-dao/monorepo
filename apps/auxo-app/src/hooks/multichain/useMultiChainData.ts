@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAppDispatch } from "../";
 import { useContracts } from "./useMultichainContract";
 import { Vault } from "../../store/vault/Vault";
@@ -25,7 +25,7 @@ export const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
 
 // change frequency of updates based on chain to achieve a target state latency
 export const getRefreshFrequency = (chainId: number | undefined): number => {
-  const targetLatency = 60; // seconds
+  const targetLatency = 10; // seconds
   const fallbackFrequency = 10; // blocks
   if (!isChainSupported(chainId)) return fallbackFrequency; // blocks
   const averageBlockTime = chainMap[chainId as SUPPORTED_CHAIN_ID].blockTime; // seconds
@@ -70,7 +70,7 @@ export const useChainData = (): { loading: boolean } => {
     lastUpdatedBlock.current = null;
   }, [account, chainId]);
 
-  const shouldUpdate = useCallback(() => {
+  const shouldUpdate = useMemo(() => {
     // do not update state if vital data missing, account null is valid
     if (!chainId || !block || !block.number || account === undefined)
       return false;
@@ -113,18 +113,21 @@ export const useChainData = (): { loading: boolean } => {
   ]);
 
   useEffect(() => {
-    if (shouldUpdate()) {
+    if (shouldUpdate) {
       setLoading(true);
       // Capture when request sent to ensure state doesn't get overwritten with async stale data
       const thisRequest = new Date().getTime();
-      console.debug(
-        "Network call at",
-        thisRequest,
-        "Last Call at",
-        latestRequest.current,
-        "diff",
-        (thisRequest - latestRequest.current) / 1000
-      );
+
+      // dev logging is too useful to keep adding and removing
+      if (process.env.NODE_ENV === "development")
+        console.debug(
+          "Network call at",
+          thisRequest,
+          "Last Call at",
+          latestRequest.current,
+          "diff",
+          (thisRequest - latestRequest.current) / 1000
+        );
       latestRequest.current = thisRequest;
 
       // Multicall contract executes promise all as a batch request

@@ -21,6 +21,11 @@ const VaultSummaryUser = ({
     >
       <CardItem
         loading={loading}
+        left={`Your ${vault?.symbol} Wallet Balance`}
+        right={prettyNumber(vault?.userBalances?.wallet.label)}
+      />
+      <CardItem
+        loading={loading}
         left={`Your auxo${vault?.symbol} Balance`}
         right={prettyNumber(vault?.userBalances?.vault.label)}
       />
@@ -34,11 +39,7 @@ const VaultSummaryUser = ({
         className="
           h-[1px] bg-gray-300 w-full my-5"
       />
-      <CardItem
-        loading={loading}
-        left={`Your ${vault?.symbol} Wallet Balance`}
-        right={prettyNumber(vault?.userBalances?.wallet.label)}
-      />
+
       <CardItem
         loading={loading}
         left={`Shares Pending Withdrawal`}

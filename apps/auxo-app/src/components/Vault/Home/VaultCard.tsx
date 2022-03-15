@@ -20,7 +20,7 @@ const VaultCardActions: React.FC<{ addr: string }> = ({ addr }) => {
       <span className="absolute -bottom-5 left-1/2 transform -translate-x-1/2">
         <StyledButton
           onClick={() => selectVault(addr)}
-          className="hover:bg-white"
+          className="hover:bg-white disabled:hover:bg-gray-300 flex justify-evenly items-center"
         >
           DEPOSIT
         </StyledButton>
@@ -92,9 +92,9 @@ const VaultCard: React.FC<{ vault: Vault }> = ({ vault }) => {
     <div
       onClick={() => selectVault(vault.address)}
       className="
-            hover:border-gradient p-[2px] bg-white shadow-md rounded-lg h-48 
-            flex flex-col items-center justify-between cursor-pointer
-            "
+        hover:border-gradient p-[2px] bg-white shadow-md rounded-lg h-48 
+        flex flex-col items-center justify-between cursor-pointer
+      "
     >
       <VaultCardHeader vault={vault} />
       <Divider />
