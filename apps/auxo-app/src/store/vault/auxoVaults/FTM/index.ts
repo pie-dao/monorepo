@@ -1,13 +1,13 @@
 import DAI from "./DAI";
 import USDC from "./USDC";
 import FRAX from "./FRAX";
-import wFTM from "./wFTM";
+import WFTM from "./WFTM";
 import MIM from "./MIM";
 import { Vault } from "../../Vault";
 import { SUPPORTED_CHAINS } from "../../../../utils/networks";
 
 // instantiate top level vault info here
-export const FTM: Vault[] = [DAI, USDC, FRAX, wFTM, MIM].map((vault) => ({
+export const FTM: Vault[] = [DAI, USDC, FRAX, WFTM, MIM].map((vault) => ({
   network: {
     name: "FANTOM",
     chainId: SUPPORTED_CHAINS.FANTOM,

@@ -1,12 +1,12 @@
 import { VaultSpecifics } from "../../Vault";
 
-const wFTM: VaultSpecifics = {
-  name: "wFTM FTM",
+const WFTM: VaultSpecifics = {
+  name: "WFTM FTM",
   description: `
-        Fantom is a smart contract platform that intends to solve the scalability issues of existing public distributed ledger technologies. FTM is the native token of the Fantom ecosystem and wFTM is its wrapped version.
-        You can wrap your FTM for wFTM at Sushi.
+        Fantom is a smart contract platform that intends to solve the scalability issues of existing public distributed ledger technologies. FTM is the native token of the Fantom ecosystem and WFTM is its wrapped version.
+        You can wrap your FTM for WFTM at Sushi.
         `,
-  symbol: "wFTM",
+  symbol: "WFTM",
   address: "0x16AD251B49E62995eC6f1b6A8F48A7004666397C",
   token: {
     decimals: 18,
@@ -24,10 +24,10 @@ const wFTM: VaultSpecifics = {
       name: "Tarot Lender",
       allocation: 1,
       description: `
-            Supplies wFTM on Tarot decentralized lending protocol. 
+            Supplies WFTM on Tarot decentralized lending protocol. 
             Tarot gives users the opportunity to participate as lenders in isolated lending pools. 
             
-            The strategy rebalances the available wFTM between Tarot isolated lending pools to have the best yield possible.          `,
+            The strategy rebalances the available WFTM between Tarot isolated lending pools to have the best yield possible.          `,
       links: [
         {
           name: "Tarot",
@@ -38,4 +38,4 @@ const wFTM: VaultSpecifics = {
   ],
 };
 
-export default wFTM;
+export default WFTM;

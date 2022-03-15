@@ -6,6 +6,8 @@ import { NetworkConnector } from "@web3-react/network-connector";
 import { SUPPORTED_CHAINS } from "../utils/networks";
 
 export const RPC_URLS: Record<number, string> = {
+  [SUPPORTED_CHAINS.MAINNET]:
+    "https://mainnet.infura.io/v3/" + process.env.REACT_APP_INFURA_API_KEY,
   [SUPPORTED_CHAINS.FANTOM]: "https://rpc.ftm.tools/",
   [SUPPORTED_CHAINS.POLYGON]:
     "https://polygon-mainnet.infura.io/v3/" +
@@ -18,7 +20,11 @@ export const network = new NetworkConnector({
 });
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, SUPPORTED_CHAINS.FANTOM, SUPPORTED_CHAINS.POLYGON],
+  supportedChainIds: [
+    SUPPORTED_CHAINS.MAINNET,
+    SUPPORTED_CHAINS.FANTOM,
+    SUPPORTED_CHAINS.POLYGON,
+  ],
 });
 
 export default function getLibrary(provider: any): Web3Provider {

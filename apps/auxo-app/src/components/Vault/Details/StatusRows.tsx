@@ -5,6 +5,7 @@ import { useApy } from "../../../hooks/useApy";
 import { Vault } from "../../../store/vault/Vault";
 import { logoSwitcher } from "../../../utils/logos";
 import { getProof } from "../../../utils/merkleProof";
+import { chainMap, SUPPORTED_CHAIN_ID } from "../../../utils/networks";
 
 export const VEDoughChecker = (): JSX.Element => {
   const { account } = useWeb3React();
@@ -58,7 +59,15 @@ export const VaultPoolAPY = ({ vault }: { vault: Vault | undefined }) => {
   if (message !== "New Vault") message = message + " APY";
   return (
     <div className="hidden lg:flex h-6 justify-start mb-5 items-center z-20">
-      <div className="h-7 w-7 flex ml-3">{logoSwitcher(vault?.symbol)}</div>
+      <div className="mr-2 h-8 w-8 relative flex justify-start">
+        {logoSwitcher(vault?.symbol)}
+        <div className="h-4 w-4 absolute -bottom-1 -right-1">
+          {logoSwitcher(
+            chainMap[vault?.network.chainId as SUPPORTED_CHAIN_ID]
+              ?.nativeCurrency.symbol
+          )}
+        </div>
+      </div>
       <p className="ml-3 md:font-bold md:text-2xl text-gray-700">
         {vault?.symbol} pool{" "}
         <span className="font-extrabold text-return-100 mr-3">{message}</span>

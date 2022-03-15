@@ -20,10 +20,12 @@ export const getChainFromLibrary = (
 export const useSetWeb3Cache = () => {
   const dispatch = useAppDispatch();
   const { account, active, library } = useWeb3React<Web3Provider>();
+  const chainId = getChainFromLibrary(library);
   useEffect(() => {
-    const chainId = getChainFromLibrary(library);
-    if (chainId) dispatch(setChainId(chainId));
-  }, [account, active, library, dispatch]);
+    if (chainId) {
+      dispatch(setChainId(chainId));
+    }
+  }, [account, active, library, dispatch, chainId]);
 };
 
 export const useCachedChainId = () => {

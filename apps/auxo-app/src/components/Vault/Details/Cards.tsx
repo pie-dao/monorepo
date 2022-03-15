@@ -1,10 +1,11 @@
 import { Strategy, Vault } from "../../../store/vault/Vault";
-import { chainMap } from "../../../utils/networks";
+import { chainMap, SUPPORTED_CHAIN_ID } from "../../../utils/networks";
 import { Divider } from "../../UI/divider";
 import ExternalUrl from "../../UI/url";
 import { Disclosure, Transition } from "@headlessui/react";
 import { BiChevronRight } from "react-icons/bi";
 import { IoWarningOutline } from "react-icons/io5";
+import { useMemo } from "react";
 
 const Card = ({
   children,
@@ -98,27 +99,39 @@ export const VaultStrategiesCard = ({
   );
 };
 
+const ExperimentalWarning = (): JSX.Element => (
+  <div className="text-alert-error border-2 border-alert-error p-2 flex flex-col w-full rounded-lg my-3 bg-white">
+    <div className="flex mb-1 items-center">
+      <IoWarningOutline fill="white" className="mr-2" size={15} />
+      <p className="font-bold">Auxo Vaults are in early release</p>
+    </div>
+    <p className="w-full">
+      Please bear in mind that the underlying contracts are unaudited and
+      experimental
+    </p>
+  </div>
+);
+
 export const VaultExtendedInformationCard = ({
   vault,
 }: {
   vault: Vault | undefined;
 }): JSX.Element => {
   const chainId = vault?.network.chainId;
-  const url =
-    chainId &&
-    `${chainMap[chainId].blockExplorerUrls[0]}/address/${vault?.address}`;
+
+  const urls = useMemo(() => {
+    const blockExplorer =
+      chainId && `${chainMap[chainId].blockExplorerUrls[0]}/address/`;
+    return (
+      vault && {
+        contract: blockExplorer + vault.address,
+        token: blockExplorer + vault.token.address,
+      }
+    );
+  }, [chainId, vault]);
   return (
     <Card title="About this Vault">
-      <div className="text-alert-error border-2 border-alert-error p-2 flex flex-col w-full rounded-lg my-3 bg-white">
-        <div className="flex mb-1 items-center">
-          <IoWarningOutline fill="white" className="mr-2" size={15} />
-          <p className="font-bold">Auxo Vaults are in early release</p>
-        </div>
-        <p className="w-full">
-          Please bear in mind that the underlying contracts are unaudited and
-          experimental
-        </p>
-      </div>
+      <ExperimentalWarning />
       {vault ? (
         vault.description
       ) : (
@@ -128,17 +141,35 @@ export const VaultExtendedInformationCard = ({
         </p>
       )}
       <Divider className="my-3" />
-      {url && (
-        <div className="flex justify-between w-full flex-wrap mb-2">
-          <p className="font-bold">Contract:</p>
-          <ExternalUrl to={url}>
-            <p className="truncate overflow-hidden">
-              <span className="text-baby-blue-dark underline mr-1 truncate overflow-hidden">
-                {vault?.address}
-              </span>
+      {urls && (
+        <>
+          <section className="flex justify-between my-1 mr-1">
+            <p className="font-bold">Network:</p>
+            <p className="text-baby-blue-dark">
+              {chainMap[chainId as SUPPORTED_CHAIN_ID].chainName}
             </p>
-          </ExternalUrl>
-        </div>
+          </section>
+          <div className="flex justify-between w-full flex-wrap mb-2">
+            <p className="font-bold">Contract:</p>
+            <ExternalUrl to={urls.contract}>
+              <p className="truncate overflow-hidden">
+                <span className="text-baby-blue-dark underline mr-1 truncate overflow-hidden">
+                  {vault?.address}
+                </span>
+              </p>
+            </ExternalUrl>
+          </div>
+          <div className="flex justify-between w-full flex-wrap mb-2">
+            <p className="font-bold">{vault?.symbol}</p>
+            <ExternalUrl to={urls.token}>
+              <p className="truncate overflow-hidden">
+                <span className="text-baby-blue-dark underline mr-1 truncate overflow-hidden">
+                  {vault?.token.address}
+                </span>
+              </p>
+            </ExternalUrl>
+          </div>
+        </>
       )}
     </Card>
   );

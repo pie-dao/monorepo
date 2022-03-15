@@ -7,7 +7,10 @@ module.exports = {
     {
       pattern: /text-return-(100|80|60|40|20)/,
     },
-  ],  
+    {
+      pattern: /text-gray-(100|200|300|400|500|600|700)/
+    }
+  ],
   theme: {
     fontFamily: {
       'primary': 'Rubik, sans-serif',
