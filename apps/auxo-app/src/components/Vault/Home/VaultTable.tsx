@@ -1,6 +1,5 @@
 import { FaSort } from "react-icons/fa";
 import { Row, TableInstance } from "react-table";
-import { useIsCorrectNetwork } from "../../../hooks/useIsCurrentNetwork";
 import { useNavigateToVault } from "../../../hooks/useSelectedVault";
 import { VaultTableRow } from "../../../hooks/useVaultTableRows";
 
@@ -13,11 +12,10 @@ function VaultRow({
 }): JSX.Element {
   prepareRow(row);
   const navigateToVault = useNavigateToVault();
-  const correctNetwork = useIsCorrectNetwork(row.original.address);
   return (
     <tr
       {...row.getRowProps()}
-      onClick={() => correctNetwork && navigateToVault(row.original.address)}
+      onClick={() => navigateToVault(row.original.address)}
       className="bg-white shadow-sm hover:border-gradient cursor-pointer hover:p-0"
     >
       {row.cells.map((cell) => {

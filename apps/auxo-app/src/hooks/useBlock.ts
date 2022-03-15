@@ -26,8 +26,8 @@ const getCurrentBlock = (
         chainId,
       });
     })
-    .catch(() => {
-      console.warn("Error getting first block");
+    .catch((err) => {
+      console.warn("Error getting first block", err);
       setBlock({
         number: null,
         chainId: null,

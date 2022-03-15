@@ -5,6 +5,7 @@ import ExternalUrl from "../../UI/url";
 import { Disclosure, Transition } from "@headlessui/react";
 import { BiChevronRight } from "react-icons/bi";
 import { IoWarningOutline } from "react-icons/io5";
+import { useMemo } from "react";
 
 const Card = ({
   children,
@@ -117,9 +118,17 @@ export const VaultExtendedInformationCard = ({
   vault: Vault | undefined;
 }): JSX.Element => {
   const chainId = vault?.network.chainId;
-  const url =
-    chainId &&
-    `${chainMap[chainId].blockExplorerUrls[0]}/address/${vault?.address}`;
+
+  const urls = useMemo(() => {
+    const blockExplorer =
+      chainId && `${chainMap[chainId].blockExplorerUrls[0]}/address/`;
+    return (
+      vault && {
+        contract: blockExplorer + vault.address,
+        token: blockExplorer + vault.token.address,
+      }
+    );
+  }, [chainId, vault]);
   return (
     <Card title="About this Vault">
       <ExperimentalWarning />
@@ -132,9 +141,9 @@ export const VaultExtendedInformationCard = ({
         </p>
       )}
       <Divider className="my-3" />
-      {url && (
+      {urls && (
         <>
-          <section className="flex justify-between my-1">
+          <section className="flex justify-between my-1 mr-1">
             <p className="font-bold">Network:</p>
             <p className="text-baby-blue-dark">
               {chainMap[chainId as SUPPORTED_CHAIN_ID].chainName}
@@ -142,10 +151,20 @@ export const VaultExtendedInformationCard = ({
           </section>
           <div className="flex justify-between w-full flex-wrap mb-2">
             <p className="font-bold">Contract:</p>
-            <ExternalUrl to={url}>
+            <ExternalUrl to={urls.contract}>
               <p className="truncate overflow-hidden">
                 <span className="text-baby-blue-dark underline mr-1 truncate overflow-hidden">
                   {vault?.address}
+                </span>
+              </p>
+            </ExternalUrl>
+          </div>
+          <div className="flex justify-between w-full flex-wrap mb-2">
+            <p className="font-bold">{vault?.symbol}</p>
+            <ExternalUrl to={urls.token}>
+              <p className="truncate overflow-hidden">
+                <span className="text-baby-blue-dark underline mr-1 truncate overflow-hidden">
+                  {vault?.token.address}
                 </span>
               </p>
             </ExternalUrl>

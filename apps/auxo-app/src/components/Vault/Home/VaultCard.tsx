@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-import { FaLock } from "react-icons/fa";
 import { useAppSelector } from "../../../hooks";
 import { useApy } from "../../../hooks/useApy";
-import { useIsCorrectNetwork } from "../../../hooks/useIsCurrentNetwork";
 import { useNavigateToVault } from "../../../hooks/useSelectedVault";
 import { Vault } from "../../../store/vault/Vault";
 import { prettyNumber } from "../../../utils";
@@ -17,16 +15,13 @@ import { Divider } from "../../UI/divider";
 
 const VaultCardActions: React.FC<{ addr: string }> = ({ addr }) => {
   const selectVault = useNavigateToVault();
-  const correctNetwork = useIsCorrectNetwork(addr);
   return (
     <section className="w-full relative">
       <span className="absolute -bottom-5 left-1/2 transform -translate-x-1/2">
         <StyledButton
-          disabled={!correctNetwork}
           onClick={() => selectVault(addr)}
           className="hover:bg-white disabled:hover:bg-gray-300 flex justify-evenly items-center"
         >
-          {!correctNetwork && <FaLock className="fill-white" />}
           DEPOSIT
         </StyledButton>
       </span>
@@ -93,10 +88,9 @@ const VaultCardContent: React.FC<{ vault: Vault }> = ({ vault }) => {
 
 const VaultCard: React.FC<{ vault: Vault }> = ({ vault }) => {
   const selectVault = useNavigateToVault();
-  const correctNetwork = useIsCorrectNetwork(vault.address);
   return (
     <div
-      onClick={() => correctNetwork && selectVault(vault.address)}
+      onClick={() => selectVault(vault.address)}
       className="
         hover:border-gradient p-[2px] bg-white shadow-md rounded-lg h-48 
         flex flex-col items-center justify-between cursor-pointer

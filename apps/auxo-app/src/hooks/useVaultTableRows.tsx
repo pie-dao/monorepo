@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { FaLock } from "react-icons/fa";
 import { CellProps, Column, TableState } from "react-table";
 import { useAppSelector } from ".";
 import StyledButton from "../components/UI/button";
@@ -11,7 +10,6 @@ import {
   SUPPORTED_CHAIN_ID,
   SUPPORTED_CHAIN_NAMES,
 } from "../utils/networks";
-import { useIsCorrectNetwork } from "./useIsCurrentNetwork";
 import { useNavigateToVault } from "./useSelectedVault";
 
 export type VaultTableRow = {
@@ -92,14 +90,12 @@ const ToVaultDepositButton = ({
   address: string;
 }): JSX.Element => {
   const navigate = useNavigateToVault();
-  const correctNetwork = useIsCorrectNetwork(address);
   return (
     <StyledButton
-      disabled={!correctNetwork}
       onClick={() => navigate(address)}
       className="flex justify-evenly items-center"
     >
-      {!correctNetwork && <FaLock className="fill-white" />} Deposit
+      Deposit
     </StyledButton>
   );
 };
