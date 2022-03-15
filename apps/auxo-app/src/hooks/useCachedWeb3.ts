@@ -23,7 +23,6 @@ export const useSetWeb3Cache = () => {
   const chainId = getChainFromLibrary(library);
   useEffect(() => {
     if (chainId) {
-      console.debug({ chainId });
       dispatch(setChainId(chainId));
     }
   }, [account, active, library, dispatch, chainId]);
