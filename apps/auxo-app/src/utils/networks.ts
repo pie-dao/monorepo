@@ -58,7 +58,7 @@ export const chainMap: ChainMap = {
       decimals: 18,
     },
     rpcUrls: ["https://polygon-rpc.com/"],
-    blockExplorerUrls: ["https://polgonscan.com"],
+    blockExplorerUrls: ["https://polygonscan.com"],
   },
 };
 

@@ -27,6 +27,15 @@ const getCurrentBlock = (
       });
     })
     .catch((err) => {
+      if (chainId !== library._network.chainId) {
+        console.warn(
+          "Chain ID discrepancy between the provider and the application"
+        );
+        // Chain Ids can decouple when switching from an unsupported chain
+        // adding this line appears to solve the issue for the time being, but we need to look
+        // for a better solution
+        library._network.chainId = chainId;
+      }
       console.warn("Error getting first block", err);
       setBlock({
         number: null,
@@ -42,6 +51,8 @@ export const useBlock = (): UseBlockReturnType => {
 
   useEffect(() => {
     if (!library || !chainId) return;
+
+    console.debug({ chainId, library });
 
     // get the current block to set the initial state
     getCurrentBlock(library, setBlock, chainId);
