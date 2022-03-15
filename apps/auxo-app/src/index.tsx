@@ -8,15 +8,18 @@ import * as serviceWorker from "./serviceWorker";
 import { Web3ReactProvider } from "@web3-react/core";
 import getLibrary from "./connectors";
 import { BrowserRouter } from "react-router-dom";
+import { Web3ContextProvider } from "./hooks/multichain/MultipleProviderContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </Web3ReactProvider>
+      <Web3ContextProvider>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </Web3ReactProvider>
+      </Web3ContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
 import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
-import { useMonoVaultContract } from "../../../../hooks/useContract";
+import { useAuxoVaultContract } from "../../../../hooks/multichain/useMultichainContract";
 import { useApproximatePendingAsUnderlying } from "../../../../hooks/useMaxDeposit";
 import { useSelectedVault } from "../../../../hooks/useSelectedVault";
 import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
@@ -15,7 +15,7 @@ function WithdrawButton({ showAvailable }: { showAvailable?: boolean }) {
   const { chainId } = useWeb3Cache();
   const vault = useSelectedVault();
   const dispatch = useAppDispatch();
-  const auxoContract = useMonoVaultContract(vault?.address);
+  const auxoContract = useAuxoVaultContract(vault?.address);
   const available = vault?.userBalances?.batchBurn.available;
   const status = useStatus();
   const pendingSharesUnderlying = useApproximatePendingAsUnderlying();

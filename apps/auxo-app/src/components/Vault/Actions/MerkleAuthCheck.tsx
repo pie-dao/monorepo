@@ -2,7 +2,8 @@ import { useWeb3React } from "@web3-react/core";
 import { useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { useAppDispatch } from "../../../hooks";
-import { useMerkleAuthContract } from "../../../hooks/useContract";
+import { useWeb3Cache } from "../../../hooks/useCachedWeb3";
+import { useMerkleAuthContract } from "../../../hooks/multichain/useMultichainContract";
 import { Vault } from "../../../store/vault/Vault";
 import { thunkAuthorizeDepositor } from "../../../store/vault/vault.thunks";
 import { AUXO_HELP_URL } from "../../../utils";
@@ -21,7 +22,8 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
     "This vault is restricted to veDOUGH holders only";
 
   const dispatch = useAppDispatch();
-  const { account, chainId } = useWeb3React();
+  const { account } = useWeb3React();
+  const { chainId } = useWeb3Cache();
   const authContract = useMerkleAuthContract(vault.auth.address);
   const isDepositor = vault.auth.isDepositor;
   const [authorizing, setAuthorizing] = useState(false);

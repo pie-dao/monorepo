@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppDispatch } from "../../../../hooks";
-import { useMonoVaultContract } from "../../../../hooks/useContract";
+import { useAuxoVaultContract } from "../../../../hooks/multichain/useMultichainContract";
 import {
   useSelectedVault,
   useVaultTokenBalance,
@@ -28,7 +28,7 @@ function ApproveWithdrawButton({
   const [approving, setApproving] = useState(false);
   const dispatch = useAppDispatch();
   const vault = useSelectedVault();
-  const auxoContract = useMonoVaultContract(vault?.address);
+  const auxoContract = useAuxoVaultContract(vault?.address);
   const status = useStatus();
 
   const enterBatchBurn = () => {

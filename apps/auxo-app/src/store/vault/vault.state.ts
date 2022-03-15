@@ -1,8 +1,8 @@
 import { VaultState } from "./Vault";
-import { FTM } from './auxoVaults'
+import { vaults } from './auxoVaults'
 
 export const vaultState: VaultState = {
-  vaults: FTM,
+  vaults,
   selected: null,
   isLoading: false,
 };

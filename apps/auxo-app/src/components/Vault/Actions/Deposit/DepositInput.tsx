@@ -12,9 +12,9 @@ import StyledButton from "../../../UI/button";
 import InputSlider from "../InputSlider";
 import { useAppDispatch } from "../../../../hooks";
 import {
-  useMonoVaultContract,
+  useAuxoVaultContract,
   useTokenContract,
-} from "../../../../hooks/useContract";
+} from "../../../../hooks/multichain/useMultichainContract";
 import LoadingSpinner from "../../../UI/loadingSpinner";
 import { useWeb3React } from "@web3-react/core";
 import { prettyNumber } from "../../../../utils";
@@ -24,6 +24,7 @@ import {
   thunkApproveDeposit,
   thunkMakeDeposit,
 } from "../../../../store/vault/vault.thunks";
+import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
 
 function ApproveDepositButton({ deposit }: { deposit: Balance }) {
   const [approving, setApproving] = useState(false);
@@ -65,10 +66,11 @@ function DepositButtons({
 }) {
   const [depositing, setDepositing] = useState(false);
   const dispatch = useAppDispatch();
-  const { account, chainId } = useWeb3React();
+  const { account } = useWeb3React();
+  const { chainId } = useWeb3Cache();
   const { limit } = useApprovalLimit();
   const vault = useSelectedVault();
-  const auxoContract = useMonoVaultContract(vault?.address);
+  const auxoContract = useAuxoVaultContract(vault?.address);
 
   const buttonDisabled = () => {
     const invalidDepost = deposit.label <= 0;

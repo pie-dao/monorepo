@@ -18,5 +18,4 @@ coverage.json
 !.yarn/sdks
 !.yarn/versions
 
-# prefix directories with '_' to keep private
-_*/
+_scrapbook

@@ -1,8 +1,10 @@
 import {
   DAIIcon,
+  EthereumIcon,
   FRAXIcon,
   FTMLogo,
   MIMLogo,
+  PolygonIcon,
   USDCIcon,
 } from "../assets/icons/logos";
 
@@ -35,6 +37,13 @@ export const logoSwitcher = (
     }
     case "mim": {
       return <MIMLogo />;
+    }
+    case "matic":
+    case "polygon": {
+      return <PolygonIcon {...props} />;
+    }
+    case "eth": {
+      return <EthereumIcon {...props} />;
     }
     default: {
       return <AuxoLogo {...props} />;

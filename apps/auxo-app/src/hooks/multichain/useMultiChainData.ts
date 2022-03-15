@@ -1,22 +1,37 @@
 import { useWeb3React } from "@web3-react/core";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useAppDispatch } from ".";
-import { useContracts } from "./useContract";
-import { Vault } from "../store/vault/Vault";
-import { setVaults } from "../store/vault/vault.slice";
-import { chainMap } from "../utils/networks";
-import { useProxySelector } from "../store";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useAppDispatch } from "../";
+import { useContracts } from "./useMultichainContract";
+import { Vault } from "../../store/vault/Vault";
+import { setVaults } from "../../store/vault/vault.slice";
+import {
+  chainMap,
+  isChainSupported,
+  SUPPORTED_CHAIN_ID,
+} from "../../utils/networks";
+import { useProxySelector } from "../../store";
 import hash from "object-hash";
-import { useWeb3Cache } from "./useCachedWeb3";
-import { useBlock } from "./useBlock";
-import { fetchOnChainData } from "./onChainUtils/fetchOnChainData";
-import { toVault } from "./onChainUtils/transformOnChainData";
-import { Mono } from "../types/artifacts/abi";
+import { useWeb3Cache } from "../useCachedWeb3";
+import { useBlock } from "../useBlock";
+import { fetchOnChainData } from "../onChainUtils/fetchOnChainData";
+import { toVault } from "../onChainUtils/transformOnChainData";
+import { Vault as Auxo } from "../../types/artifacts/abi";
 
-const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
+export const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
   const oldState = hash(old, { encoding: "base64" });
   const newState = hash(change, { encoding: "base64" });
   return oldState !== newState;
+};
+
+// change frequency of updates based on chain to achieve a target state latency
+export const getRefreshFrequency = (chainId: number | undefined): number => {
+  const targetLatency = 10; // seconds
+  const fallbackFrequency = 10; // blocks
+  if (!isChainSupported(chainId)) return fallbackFrequency; // blocks
+  const averageBlockTime = chainMap[chainId as SUPPORTED_CHAIN_ID].blockTime; // seconds
+
+  // update each min - wont work for BTC
+  return Math.round(targetLatency / averageBlockTime); // blocks
 };
 
 /**
@@ -43,12 +58,11 @@ export const useChainData = (): { loading: boolean } => {
   const lastUpdatedBlock = useRef<null | number | undefined>(null);
   const latestRequest = useRef(0);
   const { chainId } = useWeb3Cache();
-  const { block, refreshFrequency } = useBlock();
-
+  const { block } = useBlock();
+  const refreshFrequency = getRefreshFrequency(chainId);
   const dispatch = useAppDispatch();
   const vaults = useProxySelector((state) => state.vault.vaults);
-  const { monoContracts, tokenContracts, authContracts, capContracts } =
-    useContracts(chainId);
+  const { tokenContracts, authContracts, auxoContracts } = useContracts();
 
   useEffect(() => {
     // Reset last updated (force a reload) if the chain ID or account changes
@@ -56,7 +70,7 @@ export const useChainData = (): { loading: boolean } => {
     lastUpdatedBlock.current = null;
   }, [account, chainId]);
 
-  const shouldUpdate = useCallback(() => {
+  const shouldUpdate = useMemo(() => {
     // do not update state if vital data missing, account null is valid
     if (!chainId || !block || !block.number || account === undefined)
       return false;
@@ -76,14 +90,13 @@ export const useChainData = (): { loading: boolean } => {
     // No point updating state if any of the contracts are missing
     const contractsExist =
       tokenContracts.length > 0 &&
-      monoContracts.length > 0 &&
-      authContracts.length > 0 &&
-      capContracts.length > 0;
+      auxoContracts.length > 0 &&
+      authContracts.length > 0;
 
     return (
       active &&
       contractsExist &&
-      chainMap[chainId] &&
+      chainMap[chainId as SUPPORTED_CHAIN_ID] &&
       blockFrequencyConditionMet
     );
   }, [
@@ -93,18 +106,28 @@ export const useChainData = (): { loading: boolean } => {
     refreshFrequency,
     tokenContracts,
     authContracts,
-    monoContracts,
-    capContracts,
+    auxoContracts,
     chainId,
     active,
     account,
   ]);
 
   useEffect(() => {
-    if (shouldUpdate()) {
+    if (shouldUpdate) {
       setLoading(true);
       // Capture when request sent to ensure state doesn't get overwritten with async stale data
       const thisRequest = new Date().getTime();
+
+      // dev logging is too useful to keep adding and removing
+      if (process.env.NODE_ENV === "development")
+        console.debug(
+          "Network call at",
+          thisRequest,
+          "Last Call at",
+          latestRequest.current,
+          "diff",
+          (thisRequest - latestRequest.current) / 1000
+        );
       latestRequest.current = thisRequest;
 
       // Multicall contract executes promise all as a batch request
@@ -114,20 +137,16 @@ export const useChainData = (): { loading: boolean } => {
           const vault = vaults.find(
             (v) => v.token.address.toLowerCase() === token.address.toLowerCase()
           ) as Vault;
-          const mono = monoContracts.find(
+          const auxo = auxoContracts.find(
             (m) => m.address.toLowerCase() === vault?.address.toLowerCase()
-          ) as Mono;
+          ) as Auxo;
           const auth = authContracts.find(
             (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
           );
-          const cap = capContracts.find(
-            (c) => c.address.toLowerCase() === vault?.cap.address.toLowerCase()
-          );
           return await fetchOnChainData({
             token,
-            mono,
+            auxo,
             auth,
-            cap,
             batchBurnRound: vault.stats?.batchBurnRound,
             account,
             vault,
@@ -172,8 +191,7 @@ export const useChainData = (): { loading: boolean } => {
     chainId,
     block.number,
     dispatch,
-    monoContracts,
-    capContracts,
+    auxoContracts,
     authContracts,
     tokenContracts,
     vaults,
