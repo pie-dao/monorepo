@@ -25,7 +25,7 @@ export const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
 
 // change frequency of updates based on chain to achieve a target state latency
 export const getRefreshFrequency = (chainId: number | undefined): number => {
-  const targetLatency = 60; // seconds
+  const targetLatency = 10; // seconds
   const fallbackFrequency = 10; // blocks
   if (!isChainSupported(chainId)) return fallbackFrequency; // blocks
   const averageBlockTime = chainMap[chainId as SUPPORTED_CHAIN_ID].blockTime; // seconds
