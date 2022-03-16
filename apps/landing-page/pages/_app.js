@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_URL} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="PLAY" />
+        <meta property="og:title" content="PLAY Metaverse Token" />
         <meta
           property="og:description"
           content="The PLAY token captures the value of projects operating in the areas of blockchain gaming and virtual entertainment within the metaverse."
@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps }) {
           property="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/metaverse_man_fb.png`}
         />
-        <meta name="twitter:title" content="PLAY" />
+        <meta name="twitter:title" content="PLAY Metaverse Token" />
         <meta
           name="twitter:description"
           content="The PLAY token captures the value of projects operating in the areas of blockchain gaming and virtual entertainment within the metaverse."
