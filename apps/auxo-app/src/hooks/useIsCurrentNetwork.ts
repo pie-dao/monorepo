@@ -8,6 +8,7 @@ export const useIsCorrectNetwork = (address: string | undefined): boolean => {
   );
   const { chainId } = useWeb3Cache();
   return useMemo(() => {
+    // @ts-ignore
     return chainId === vault?.network.chainId;
   }, [vault, chainId]);
 };

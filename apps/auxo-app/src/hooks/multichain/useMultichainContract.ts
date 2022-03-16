@@ -15,7 +15,7 @@ import { useMultipleProvider } from "./useMultipleWeb3Provider";
 import { useProxySelector } from "../../store";
 import { ProviderNotActivatedError } from "../../errors";
 
-function getMulticallProvider(
+export function getMulticallProvider(
   provider: LibraryProvider,
   multicallContract?: string | null
 ): MulticallProvider {
@@ -34,7 +34,7 @@ function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
 }
 
-function getProviderOrSigner(
+export function getProviderOrSigner(
   provider: LibraryProvider,
   account?: string | null,
   multicallAddress?: string | null
@@ -42,7 +42,7 @@ function getProviderOrSigner(
   /**
    * If passing the account details, we will return the signer
    */
-  return !multicallAddress && account
+  return account
     ? getSigner(provider, account)
     : getMulticallProvider(provider, multicallAddress);
 }

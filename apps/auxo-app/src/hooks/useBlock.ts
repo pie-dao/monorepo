@@ -52,8 +52,6 @@ export const useBlock = (): UseBlockReturnType => {
   useEffect(() => {
     if (!library || !chainId) return;
 
-    console.debug({ chainId, library });
-
     // get the current block to set the initial state
     getCurrentBlock(library, setBlock, chainId);
 
