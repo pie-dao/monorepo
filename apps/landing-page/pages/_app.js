@@ -37,6 +37,7 @@ function MyApp({ Component, pageProps }) {
           content={`${process.env.NEXT_PUBLIC_URL}/play_metaverse_card_social.png`}
         />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@PieDAO_DeFi" />
       </Head>
       <Layout>
         <Component {...pageProps} />
