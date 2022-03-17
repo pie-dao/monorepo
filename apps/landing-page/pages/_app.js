@@ -36,15 +36,6 @@ function MyApp({ Component, pageProps }) {
           property="og:image"
           content={`${process.env.NEXT_PUBLIC_URL}/play_metaverse_card_social.png`}
         />
-        <meta name="twitter:title" content="PLAY Metaverse Token" />
-        <meta
-          name="twitter:description"
-          content="The PLAY token captures the value of projects operating in the areas of blockchain gaming and virtual entertainment within the metaverse."
-        />
-        <meta
-          name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/play_metaverse_card_social.png`}
-        />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <Layout>
