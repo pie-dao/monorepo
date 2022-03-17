@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/metaverse_man_fb.png`}
+          content={`${process.env.NEXT_PUBLIC_URL}/play_metaverse_card_social.png`}
         />
         <meta name="twitter:title" content="PLAY Metaverse Token" />
         <meta
@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }) {
         />
         <meta
           name="twitter:image"
-          content={`${process.env.NEXT_PUBLIC_URL}/metaverse_man_fb.png`}
+          content={`${process.env.NEXT_PUBLIC_URL}/play_metaverse_card_social.png`}
         />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
