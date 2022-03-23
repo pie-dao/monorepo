@@ -79,8 +79,6 @@ export function useInactiveListener(suppress = false) {
 
     if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleChainChanged = () => {
-        // eat errors
-        debugger;
         activate(injected, undefined, true).catch((error) => {
           console.error("Failed to activate after chain changed", error);
         });
