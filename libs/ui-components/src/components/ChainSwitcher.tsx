@@ -81,7 +81,13 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
                 />
               </motion.span>
             </NetworkSwitcher.Button>
-            <NetworkSwitcher.Options className="flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <NetworkSwitcher.Options
+              as={motion.ul}
+              animate={{ opacity: open ? 1 : 0 }}
+              transition={{ duration: 0.1 }}
+              static
+              className="flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            >
               {Object.entries(availableChains).map(([, chain]) => (
                 <NetworkSwitcher.Option
                   key={chain.chainId}

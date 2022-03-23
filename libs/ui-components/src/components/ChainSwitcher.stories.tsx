@@ -9,4 +9,10 @@ export default {
 
 // Reuse that template for creating different stories
 export const Basic = (args: any) => <ChainSwitcher {...args} />;
-Basic.args = { allowedChains: ["MAINNET"] };
+Basic.args = { allowedChains: ["MAINNET", "POLYGON", "FANTOM"] };
+
+export const withoutNetworkName = (args: any) => <ChainSwitcher {...args} />;
+withoutNetworkName.args = {
+  allowedChains: ["MAINNET", "POLYGON", "FANTOM"],
+  showNetworkName: false,
+};
