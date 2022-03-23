@@ -111,6 +111,7 @@ export const changeNetwork = async ({
       if (err?.code === 4902) {
         console.warn("Network missing, attempting to add network...");
         await addNetwork({ chainId });
+        await switchNetwork({ chainId });
       } else {
         console.warn("Unexpected error switching networks", err);
       }
