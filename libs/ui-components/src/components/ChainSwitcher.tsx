@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useMemo, useState } from "react";
+import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { NetworkSwitcher } from "./NetworkSwitcher";
 import { logoSwitcher } from "./ChainIcons/ChainIcons";
@@ -8,7 +8,7 @@ import {
   SUPPORTED_CHAIN_NAMES,
   NetworkDetail,
 } from "../types/types";
-import { isChainSupported, chainMap } from "../utils/network";
+import { isChainSupported, chainMap, filteredChainMap } from "../utils/network";
 import Icon from "../ui-atoms/Icon";
 import { classNames } from "../utils/class-names";
 
@@ -24,19 +24,28 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   className,
   showNetworkIcon = true,
   showNetworkName = true,
+  allowedChains = ["MAINNET"],
 }: Props) => {
   let { chainId } = useWeb3React();
   if (!chainId) {
     chainId = Number(chainMap[1].chainId);
   }
+
+  const availableChains = useMemo(() => {
+    return filteredChainMap(allowedChains);
+  }, [allowedChains]);
+
   const supportedChain = useMemo(() => {
-    console.log("we swithced!", chainId);
     return isChainSupported(chainId)
-      ? chainMap[chainId as SUPPORTED_CHAIN_ID]
+      ? availableChains[chainId as SUPPORTED_CHAIN_ID]
       : null;
   }, [chainId]);
 
   const [chain, setChain] = useState(supportedChain);
+
+  useEffect(() => {
+    setChain(supportedChain);
+  }, [supportedChain]);
 
   if (!chain) {
     return <span>chain not supported</span>;
@@ -73,7 +82,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
               </motion.span>
             </NetworkSwitcher.Button>
             <NetworkSwitcher.Options className="flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {Object.entries(chainMap).map(([, chain]) => (
+              {Object.entries(availableChains).map(([, chain]) => (
                 <NetworkSwitcher.Option
                   key={chain.chainId}
                   className={({ active }) =>

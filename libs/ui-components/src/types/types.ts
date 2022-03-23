@@ -66,7 +66,6 @@ export type SUPPORTED_CHAIN_ID =
 
 export type NetworkDetail = {
   chainId: string;
-  blockTime: number;
   chainName: string;
   nativeCurrency: {
     name: string;
@@ -83,6 +82,12 @@ export interface EthereumProvider {
   removeListener?: (...args: any[]) => void;
   autoRefreshOnNetworkChange?: boolean;
   request: ({ method, params }: { method: string; params?: any[] }) => any;
+}
+
+export interface ProviderRpcError extends Error {
+  message: string;
+  code: number;
+  data?: unknown;
 }
 
 declare global {

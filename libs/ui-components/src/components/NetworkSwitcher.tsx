@@ -47,7 +47,7 @@ import { useOutsideClick } from "../hooks/use-outside-click";
 import { VisuallyHidden } from "../utils/visually-hidden";
 import { objectToFormEntries } from "../utils/form";
 import { getOwnerDocument } from "../utils/owner";
-import { changeNetwork } from "../utils/network";
+import { changeNetwork, addNetwork } from "../utils/network";
 
 enum NetworkSwitcherStates {
   Open,
@@ -586,6 +586,15 @@ let Options = forwardRefWithAs(function Options<
               });
               state.propsRef.current.onChange(dataRef.current.value);
             } catch (e) {
+              if (e?.code === 4902) {
+                try {
+                  await addNetwork({
+                    chainId: Number(dataRef.current.value.chainId),
+                  });
+                } catch (e) {
+                  console.error(e);
+                }
+              }
               console.error(e);
             }
           }
@@ -758,7 +767,16 @@ let Option = forwardRefWithAs(function Option<
       });
       state.propsRef.current.onChange(value);
     } catch (e) {
-      console.error(e);
+      if (e?.code === 4902) {
+        try {
+          await addNetwork({
+            chainId: Number(value.chainId),
+          });
+          state.propsRef.current.onChange(value);
+        } catch (e) {
+          console.error(e);
+        }
+      }
     }
   }, [state.propsRef, value]);
 
