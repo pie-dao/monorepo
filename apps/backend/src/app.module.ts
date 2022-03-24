@@ -12,6 +12,7 @@ import { ConsoleModule } from 'nestjs-console';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SentimentModule } from './sentiment/sentiment.module';
+import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { SentimentModule } from './sentiment/sentiment.module';
     TreasuryModule,    
     TasksModule,
     ConsoleModule,
-    SentimentModule
+    SentimentModule,
+    AuthorizationModule
   ],  
   controllers: [AppController],
   providers: [AppService],
