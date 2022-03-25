@@ -44,7 +44,7 @@ import {
 import { useOpenClosed, State, OpenClosedProvider } from "../utils/open-closed";
 import { useResolveButtonType } from "../hooks/use-resolve-button-type";
 import { useOutsideClick } from "../hooks/use-outside-click";
-import { VisuallyHidden } from "../utils/visually-hidden";
+import { VisuallyHidden } from "../internal/visually-hidden";
 import { objectToFormEntries } from "../utils/form";
 import { getOwnerDocument } from "../utils/owner";
 import { changeNetwork, addNetwork } from "../utils/network";

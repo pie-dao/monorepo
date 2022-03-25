@@ -11,7 +11,7 @@ export const userAgent = parser.getResult();
 
 export const isMobile = type === "mobile" || type === "tablet";
 
-export const IS_IN_IFRAME = window.parent !== window;
+export const IS_IN_IFRAME = false;
 
 export function useEagerConnect() {
   const { activate, active } = useWeb3React();

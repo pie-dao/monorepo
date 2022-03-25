@@ -1,16 +1,17 @@
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { NetworkSwitcher } from "./NetworkSwitcher";
-import { logoSwitcher } from "./ChainIcons/ChainIcons";
 import { useWeb3React } from "@web3-react/core";
 import {
   SUPPORTED_CHAIN_ID,
   SUPPORTED_CHAIN_NAMES,
   NetworkDetail,
 } from "../types/types";
+import { NetworkSwitcher } from "./NetworkSwitcher";
+import { logoSwitcher } from "./ChainIcons/ChainIcons";
 import { isChainSupported, chainMap, filteredChainMap } from "../utils/network";
 import Icon from "../ui-atoms/Icon";
 import { classNames } from "../utils/class-names";
+import { useConnectedWallet } from "../hooks/use-connected-wallet";
 
 export const ChainAndLogo = ({ chain }: { chain: NetworkDetail | null }) => {
   return (
@@ -26,10 +27,8 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   showNetworkName = true,
   allowedChains = ["MAINNET"],
 }: Props) => {
+  useConnectedWallet();
   let { chainId } = useWeb3React();
-  if (!chainId) {
-    chainId = Number(chainMap[1].chainId);
-  }
 
   const availableChains = useMemo(() => {
     return filteredChainMap(allowedChains);
@@ -44,7 +43,11 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   const [chain, setChain] = useState(supportedChain);
 
   useEffect(() => {
-    setChain(supportedChain);
+    if (!supportedChain) {
+      setChain(null);
+    } else {
+      setChain(supportedChain);
+    }
   }, [supportedChain]);
 
   if (!chain) {
@@ -62,10 +65,10 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
       <NetworkSwitcher value={chain} onChange={setChain}>
         {({ open }) => (
           <div className="relative mt-1">
-            <NetworkSwitcher.Button className="flex justify-start relative w-full py-2 px-3 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm">
+            <NetworkSwitcher.Button className="flex justify-start relative w-full py-2 px-3 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm">
               {showNetworkIcon && <ChainAndLogo chain={chain} />}
               {showNetworkName && (
-                <span className="block truncate font-bold">
+                <span className="block truncate font-bold text-primary">
                   {chain ? chain.chainName : "Unsupported Chain"}
                 </span>
               )}
@@ -78,6 +81,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
                   height="20px"
                   icon="arrow_dropdown"
                   aria-hidden="true"
+                  className="fill-primary"
                 />
               </motion.span>
             </NetworkSwitcher.Button>
