@@ -56,11 +56,16 @@
     "@web3-react/injected-connector": "^6.0.7",
     "@web3-react/network-connector": "^6.2.9",
     "@web3-react/types": "^6.0.7",
+    "@web3-react/walletconnect-connector": "^6.2.13",
+    "assert": "^2.0.0",
     "autoprefixer": "^10.4.2",
+    "buffer": "^6.0.3",
     "framer-motion": "^6.2.8",
     "react-table": "^7.7.0",
+    "stream-browserify": "^3.0.0",
     "tailwindcss": "^3.0.13",
-    "ua-parser-js": "^1.0.2"
+    "ua-parser-js": "^1.0.2",
+    "util": "^0.12.4"
   },
   "resolutions": {
     "webpack": "^5"

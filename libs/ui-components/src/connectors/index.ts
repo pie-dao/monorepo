@@ -1,6 +1,6 @@
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { SafeAppConnector } from "@gnosis.pm/safe-apps-web3-react";
-import { WalletConnectConnector } from "./walletConnect";
+import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { Web3Provider } from "@ethersproject/providers";
 import { NetworkConnector } from "@web3-react/network-connector";
 import { SUPPORTED_CHAINS } from "../types/types";

@@ -13,7 +13,6 @@ export const ConnectButton: FunctionComponent = () => {
   useConnectedWallet();
   const { account, active, library } = useWeb3React();
   const ensName = useENSName(library, account);
-
   let [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -49,7 +48,7 @@ export const ConnectButton: FunctionComponent = () => {
           >
             {({ connected }) => (
               <div className="min-h-screen px-4 text-center">
-                <Connect.Overlay className="fixed inset-0" />
+                <Connect.Overlay className="fixed inset-0 bg-primary bg-overlay-70" />
 
                 {/* This element is to trick the browser into centering the modal contents. */}
                 <span
@@ -64,27 +63,34 @@ export const ConnectButton: FunctionComponent = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    {connected ? "connected title" : "connect title"}
+                    {connected ? "Account" : "Connect"}
+                    {console.log(connected)}
                   </Connect.Title>
                   <div className="mt-4">
-                    <Connect.MetamaskButton className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-900 bg-opacity-80 border border-transparent rounded-md hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
-                      {({ connecting, connected }) => (
-                        <>
-                          {!connected && !connecting && (
-                            <span>Connect With Metamask</span>
+                    {!connected && (
+                      <>
+                        <Connect.MetamaskButton className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-900 bg-opacity-80 border border-transparent rounded-md hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
+                          {({ connecting, connected }) => (
+                            <>
+                              {!connected && !connecting && (
+                                <span>Connect With Metamask</span>
+                              )}
+                              {connecting && <span>Connecting...</span>}
+                            </>
                           )}
-                          {connecting && <span>Connecting...</span>}
-                          {connected && !connecting && <span>Connected</span>}
-                        </>
-                      )}
-                    </Connect.MetamaskButton>
-                    <button
-                      type="button"
-                      className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-primary bg-opacity-80 border border-transparent rounded-md hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
-                      onClick={closeModal}
-                    >
-                      Got it, thanks!
-                    </button>
+                        </Connect.MetamaskButton>
+                        <Connect.WalletConnectButton className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-900 bg-opacity-80 border border-transparent rounded-md hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
+                          {({ connecting, connected }) => (
+                            <>
+                              {!connected && !connecting && (
+                                <span>Connect With Wallet Connect</span>
+                              )}
+                              {connecting && <span>Connecting...</span>}
+                            </>
+                          )}
+                        </Connect.WalletConnectButton>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

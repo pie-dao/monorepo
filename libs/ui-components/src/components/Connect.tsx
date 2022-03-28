@@ -48,7 +48,7 @@ import { useOwnerDocument } from "../hooks/use-owner";
 import { useEventListener } from "../hooks/use-event-listener";
 import { useResolveButtonType } from "../hooks/use-resolve-button-type";
 import { useWeb3React } from "@web3-react/core";
-import { injected } from "../connectors";
+import { injected, walletconnect } from "../connectors";
 
 enum ConnectStates {
   Open,
@@ -620,9 +620,149 @@ let MetamaskButton = forwardRefWithAs(function Button<
 
 // ---
 
+// ---
+
+let DEFAULT_WALLETCONNECTBUTTON_TAG = "button" as const;
+
+interface WalletConnectButtonRenderPropArg {
+  connected: boolean;
+  connecting: boolean;
+}
+
+type WalletConnectButtonPropsWeControl =
+  | "id"
+  | "type"
+  | "aria-expanded"
+  | "onKeyDown"
+  | "onClick";
+
+let WalletConnectButton = forwardRefWithAs(function Button<
+  TTag extends ElementType = typeof DEFAULT_WALLETCONNECTBUTTON_TAG
+>(
+  props: Props<
+    TTag,
+    WalletConnectButtonRenderPropArg,
+    WalletConnectButtonPropsWeControl
+  >,
+  ref: Ref<HTMLButtonElement>
+) {
+  let [{ connectState, close }, stateDefinition, dispatch] =
+    useConnectContext("Connect.Button");
+  const { active, activate, account } = useWeb3React();
+  let internalButtonRef = useRef<HTMLButtonElement | null>(null);
+  let buttonRef = useSyncRefs(
+    internalButtonRef,
+    ref,
+    stateDefinition.buttonRef
+  );
+
+  let handleKeyDown = useCallback(
+    async (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+      switch (event.key) {
+        case Keys.Space:
+        case Keys.Enter:
+          event.preventDefault();
+          event.stopPropagation();
+          try {
+            dispatch({
+              type: ActionTypes.SetWalletState,
+              walletState: WalletStates.Connecting,
+            });
+            await activate(walletconnect, undefined, true);
+            dispatch({
+              type: ActionTypes.SetWalletState,
+              walletState: WalletStates.Connected,
+            });
+            close();
+          } catch (e) {
+            console.error(e);
+            dispatch({
+              type: ActionTypes.SetWalletState,
+              walletState: WalletStates.NotConnected,
+            });
+          }
+          break;
+      }
+    },
+    [dispatch]
+  );
+
+  let handleKeyUp = useCallback(
+    (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+      switch (event.key) {
+        case Keys.Space:
+          // Required for firefox, event.preventDefault() in handleKeyDown for
+          // the Space key doesn't cancel the handleKeyUp, which in turn
+          // triggers a *click*.
+          event.preventDefault();
+          break;
+      }
+    },
+    []
+  );
+
+  let slot = useMemo<WalletConnectButtonRenderPropArg>(
+    () => ({
+      connected: active && !!account,
+      connecting: stateDefinition.walletState === WalletStates.Connecting,
+    }),
+    [stateDefinition.walletState]
+  );
+
+  let handleClick = useCallback(
+    async (event: ReactMouseEvent) => {
+      if (isDisabledReactIssue7711(event.currentTarget)) return;
+      if (props.disabled) return;
+      try {
+        dispatch({
+          type: ActionTypes.SetWalletState,
+          walletState: WalletStates.Connecting,
+        });
+        await activate(walletconnect, undefined, true);
+        dispatch({
+          type: ActionTypes.SetWalletState,
+          walletState: WalletStates.Connected,
+        });
+        close();
+      } catch (e) {
+        console.error(e);
+        dispatch({
+          type: ActionTypes.SetWalletState,
+          walletState: WalletStates.NotConnected,
+        });
+      }
+    },
+    [dispatch, props.disabled, stateDefinition.buttonRef]
+  );
+
+  let type = useResolveButtonType(props, internalButtonRef);
+  let passthroughProps = props;
+  let propsWeControl = {
+    ref: buttonRef,
+    id: "piedao-walletconnect-connect-button",
+    type,
+    "aria-expanded": props.disabled
+      ? undefined
+      : connectState === ConnectStates.Open,
+    onKeyDown: handleKeyDown,
+    onKeyUp: handleKeyUp,
+    onClick: handleClick,
+  };
+
+  return render({
+    props: { ...passthroughProps, ...propsWeControl },
+    slot,
+    defaultTag: DEFAULT_WALLETCONNECTBUTTON_TAG,
+    name: "Connect.WalletConnectButton",
+  });
+});
+
+// ---
+
 export let Connect = Object.assign(ConnectRoot, {
   Overlay,
   Title,
   Description,
   MetamaskButton,
+  WalletConnectButton,
 });
