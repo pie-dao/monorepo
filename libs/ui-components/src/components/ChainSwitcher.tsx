@@ -13,7 +13,20 @@ import Icon from "../ui-atoms/Icon";
 import { classNames } from "../utils/class-names";
 import { useConnectedWallet } from "../hooks/use-connected-wallet";
 
-export const ChainAndLogo = ({ chain }: { chain: NetworkDetail | null }) => {
+interface Props {
+  allowedChains?: SUPPORTED_CHAIN_NAMES[];
+  showNetworkIcon?: boolean;
+  showNetworkName?: boolean;
+  className?: string;
+}
+
+interface ChainProps {
+  chain: NetworkDetail | null;
+}
+
+export const ChainAndLogo: FunctionComponent<ChainProps> = ({
+  chain,
+}: ChainProps) => {
   return (
     <span className="h-6 w-6 block mr-2">
       {logoSwitcher(chain?.nativeCurrency?.symbol)}
@@ -130,10 +143,3 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
     </div>
   );
 };
-
-interface Props {
-  allowedChains?: SUPPORTED_CHAIN_NAMES[];
-  showNetworkIcon?: boolean;
-  showNetworkName?: boolean;
-  className?: string;
-}

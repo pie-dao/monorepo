@@ -8,9 +8,9 @@ import {
   // Types
   ElementType,
   ReactElement,
-} from 'react'
-import { Props, XOR, __, Expand } from '../types'
-import { match } from './match'
+} from "react";
+import { Props, XOR, __, Expand } from "../types/types";
+import { match } from "./match";
 
 export enum Features {
   /** No features at all */
@@ -37,16 +37,24 @@ export enum RenderStrategy {
   Hidden,
 }
 
-type PropsForFeature<TPassedInFeatures extends Features, TForFeature extends Features, TProps> = {
-  [P in TPassedInFeatures]: P extends TForFeature ? TProps : __
-}[TPassedInFeatures]
+type PropsForFeature<
+  TPassedInFeatures extends Features,
+  TForFeature extends Features,
+  TProps
+> = {
+  [P in TPassedInFeatures]: P extends TForFeature ? TProps : __;
+}[TPassedInFeatures];
 
 export type PropsForFeatures<T extends Features> = XOR<
   PropsForFeature<T, Features.Static, { static?: boolean }>,
   PropsForFeature<T, Features.RenderStrategy, { unmount?: boolean }>
->
+>;
 
-export function render<TFeature extends Features, TTag extends ElementType, TSlot>({
+export function render<
+  TFeature extends Features,
+  TTag extends ElementType,
+  TSlot
+>({
   props,
   slot,
   defaultTag,
@@ -54,46 +62,48 @@ export function render<TFeature extends Features, TTag extends ElementType, TSlo
   visible = true,
   name,
 }: {
-  props: Expand<Props<TTag, TSlot, any> & PropsForFeatures<TFeature>>
-  slot?: TSlot
-  defaultTag: ElementType
-  features?: TFeature
-  visible?: boolean
-  name: string
+  props: Expand<Props<TTag, TSlot, any> & PropsForFeatures<TFeature>>;
+  slot?: TSlot;
+  defaultTag: ElementType;
+  features?: TFeature;
+  visible?: boolean;
+  name: string;
 }) {
   // Visible always render
-  if (visible) return _render(props, slot, defaultTag, name)
+  if (visible) return _render(props, slot, defaultTag, name);
 
-  let featureFlags = features ?? Features.None
+  let featureFlags = features ?? Features.None;
 
   if (featureFlags & Features.Static) {
-    let { static: isStatic = false, ...rest } = props as PropsForFeatures<Features.Static>
+    let { static: isStatic = false, ...rest } =
+      props as PropsForFeatures<Features.Static>;
 
     // When the `static` prop is passed as `true`, then the user is in control, thus we don't care about anything else
-    if (isStatic) return _render(rest, slot, defaultTag, name)
+    if (isStatic) return _render(rest, slot, defaultTag, name);
   }
 
   if (featureFlags & Features.RenderStrategy) {
-    let { unmount = true, ...rest } = props as PropsForFeatures<Features.RenderStrategy>
-    let strategy = unmount ? RenderStrategy.Unmount : RenderStrategy.Hidden
+    let { unmount = true, ...rest } =
+      props as PropsForFeatures<Features.RenderStrategy>;
+    let strategy = unmount ? RenderStrategy.Unmount : RenderStrategy.Hidden;
 
     return match(strategy, {
       [RenderStrategy.Unmount]() {
-        return null
+        return null;
       },
       [RenderStrategy.Hidden]() {
         return _render(
-          { ...rest, ...{ hidden: true, style: { display: 'none' } } },
+          { ...rest, ...{ hidden: true, style: { display: "none" } } },
           slot,
           defaultTag,
           name
-        )
+        );
       },
-    })
+    });
   }
 
   // No features enabled, just render
-  return _render(props, slot, defaultTag, name)
+  return _render(props, slot, defaultTag, name);
 }
 
 function _render<TTag extends ElementType, TSlot>(
@@ -105,20 +115,23 @@ function _render<TTag extends ElementType, TSlot>(
   let {
     as: Component = tag,
     children,
-    refName = 'ref',
+    refName = "ref",
     ...passThroughProps
-  } = omit(props, ['unmount', 'static'])
+  } = omit(props, ["unmount", "static"]);
 
   // This allows us to use `<HeadlessUIComponent as={MyComponent} refName="innerRef" />`
-  let refRelatedProps = props.ref !== undefined ? { [refName]: props.ref } : {}
+  let refRelatedProps = props.ref !== undefined ? { [refName]: props.ref } : {};
 
-  let resolvedChildren = (typeof children === 'function' ? children(slot) : children) as
-    | ReactElement
-    | ReactElement[]
+  let resolvedChildren = (
+    typeof children === "function" ? children(slot) : children
+  ) as ReactElement | ReactElement[];
 
   // Allow for className to be a function with the slot as the contents
-  if (passThroughProps.className && typeof passThroughProps.className === 'function') {
-    ;(passThroughProps as any).className = passThroughProps.className(slot)
+  if (
+    passThroughProps.className &&
+    typeof passThroughProps.className === "function"
+  ) {
+    (passThroughProps as any).className = passThroughProps.className(slot);
   }
 
   if (Component === Fragment) {
@@ -130,22 +143,22 @@ function _render<TTag extends ElementType, TSlot>(
         throw new Error(
           [
             'Passing props on "Fragment"!',
-            '',
+            "",
             `The current component <${name} /> is rendering a "Fragment".`,
             `However we need to passthrough the following props:`,
             Object.keys(passThroughProps)
               .map((line) => `  - ${line}`)
-              .join('\n'),
-            '',
-            'You can apply a few solutions:',
+              .join("\n"),
+            "",
+            "You can apply a few solutions:",
             [
               'Add an `as="..."` prop, to ensure that we render an actual element instead of a "Fragment".',
-              'Render a single element as the child so that we can forward the props onto that element.',
+              "Render a single element as the child so that we can forward the props onto that element.",
             ]
               .map((line) => `  - ${line}`)
-              .join('\n'),
-          ].join('\n')
-        )
+              .join("\n"),
+          ].join("\n")
+        );
       }
 
       return cloneElement(
@@ -153,20 +166,26 @@ function _render<TTag extends ElementType, TSlot>(
         Object.assign(
           {},
           // Filter out undefined values so that they don't override the existing values
-          mergeEventFunctions(compact(omit(passThroughProps, ['ref'])), resolvedChildren.props, [
-            'onClick',
-          ]),
+          mergeEventFunctions(
+            compact(omit(passThroughProps, ["ref"])),
+            resolvedChildren.props,
+            ["onClick"]
+          ),
           refRelatedProps
         )
-      )
+      );
     }
   }
 
   return createElement(
     Component,
-    Object.assign({}, omit(passThroughProps, ['ref']), Component !== Fragment && refRelatedProps),
+    Object.assign(
+      {},
+      omit(passThroughProps, ["ref"]),
+      Component !== Fragment && refRelatedProps
+    ),
     resolvedChildren
-  )
+  );
 }
 
 /**
@@ -188,48 +207,54 @@ function mergeEventFunctions(
   existingProps: Record<string, any>,
   functionsToMerge: string[]
 ) {
-  let clone = Object.assign({}, passThroughProps)
+  let clone = Object.assign({}, passThroughProps);
   for (let func of functionsToMerge) {
-    if (passThroughProps[func] !== undefined && existingProps[func] !== undefined) {
+    if (
+      passThroughProps[func] !== undefined &&
+      existingProps[func] !== undefined
+    ) {
       Object.assign(clone, {
         [func](event: { defaultPrevented: boolean }) {
           // Props we control
-          if (!event.defaultPrevented) passThroughProps[func](event)
+          if (!event.defaultPrevented) passThroughProps[func](event);
 
           // Existing props on the component
-          if (!event.defaultPrevented) existingProps[func](event)
+          if (!event.defaultPrevented) existingProps[func](event);
         },
-      })
+      });
     }
   }
 
-  return clone
+  return clone;
 }
 
 /**
  * This is a hack, but basically we want to keep the full 'API' of the component, but we do want to
  * wrap it in a forwardRef so that we _can_ passthrough the ref
  */
-export function forwardRefWithAs<T extends { name: string; displayName?: string }>(
-  component: T
-): T & { displayName: string } {
+export function forwardRefWithAs<
+  T extends { name: string; displayName?: string }
+>(component: T): T & { displayName: string } {
   return Object.assign(forwardRef(component as unknown as any) as any, {
     displayName: component.displayName ?? component.name,
-  })
+  });
 }
 
 export function compact<T extends Record<any, any>>(object: T) {
-  let clone = Object.assign({}, object)
+  let clone = Object.assign({}, object);
   for (let key in clone) {
-    if (clone[key] === undefined) delete clone[key]
+    if (clone[key] === undefined) delete clone[key];
   }
-  return clone
+  return clone;
 }
 
-function omit<T extends Record<any, any>>(object: T, keysToOmit: string[] = []) {
-  let clone = Object.assign({}, object)
+function omit<T extends Record<any, any>>(
+  object: T,
+  keysToOmit: string[] = []
+) {
+  let clone = Object.assign({}, object);
   for (let key of keysToOmit) {
-    if (key in clone) delete clone[key]
+    if (key in clone) delete clone[key];
   }
-  return clone
+  return clone;
 }

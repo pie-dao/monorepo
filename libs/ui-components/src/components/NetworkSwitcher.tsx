@@ -23,7 +23,7 @@ import { useId } from "../hooks/use-id";
 import { useIsoMorphicEffect } from "../hooks/use-iso-morphic-effect";
 import { useComputed } from "../hooks/use-computed";
 import { useSyncRefs } from "../hooks/use-sync-refs";
-import { Props, NetworkDetail } from "../types/types";
+import { Props, NetworkDetail, ProviderRpcError } from "../types/types";
 import {
   Features,
   forwardRefWithAs,
@@ -585,13 +585,14 @@ let Options = forwardRefWithAs(function Options<
                 chainId: Number(dataRef.current.value.chainId),
               });
               state.propsRef.current.onChange(dataRef.current.value);
-            } catch (e) {
-              if (e?.code === 4902) {
+            } catch (e: unknown) {
+              const error = e as ProviderRpcError;
+              if (error?.code === 4902) {
                 try {
                   await addNetwork({
                     chainId: Number(dataRef.current.value.chainId),
                   });
-                } catch (e) {
+                } catch (e: unknown) {
                   console.error(e);
                 }
               }
@@ -766,14 +767,15 @@ let Option = forwardRefWithAs(function Option<
         chainId: Number(value.chainId),
       });
       state.propsRef.current.onChange(value);
-    } catch (e) {
-      if (e?.code === 4902) {
+    } catch (e: unknown) {
+      const error = e as ProviderRpcError;
+      if (error?.code === 4902) {
         try {
           await addNetwork({
             chainId: Number(value.chainId),
           });
           state.propsRef.current.onChange(value);
-        } catch (e) {
+        } catch (e: unknown) {
           console.error(e);
         }
       }

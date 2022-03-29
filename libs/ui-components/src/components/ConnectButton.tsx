@@ -6,6 +6,11 @@ import { useConnectedWallet } from "../hooks/use-connected-wallet";
 import { useENSName } from "../hooks/use-ens-name";
 import { MetamaskIcon, WalletConnectIcon } from "../shared/external-icons";
 
+interface ConnectWalletRenderPropArg {
+  connected: boolean;
+  connecting: boolean;
+}
+
 const trimAccount = (account: string): string => {
   return account.slice(0, 6) + "..." + account.slice(38);
 };
@@ -55,10 +60,9 @@ export const ConnectButton: FunctionComponent = () => {
             className="fixed inset-0 z-10 overflow-y-auto"
             onClose={closeModal}
           >
-            {({ connected, connecting }) => (
+            {({ connected, connecting }: ConnectWalletRenderPropArg) => (
               <div className="min-h-screen px-4 text-center">
                 <Connect.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-
                 {/* This element is to trick the browser into centering the modal contents. */}
                 <span
                   className="inline-block h-screen align-middle"
@@ -79,23 +83,19 @@ export const ConnectButton: FunctionComponent = () => {
                     {!connected && !connecting && (
                       <>
                         <Connect.MetamaskButton className="flex items-center px-4 py-2 text-sm font-medium border text-left border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
-                          {({ connected }) => (
-                            <>
-                              <MetamaskIcon className="h-10 w-10 mr-4" />
-                              {!connected && <span>Connect With Metamask</span>}
-                              {connecting && <span>Connecting...</span>}
-                            </>
-                          )}
+                          <>
+                            <MetamaskIcon className="h-10 w-10 mr-4" />
+                            {!connected && <span>Connect With Metamask</span>}
+                            {connecting && <span>Connecting...</span>}
+                          </>
                         </Connect.MetamaskButton>
                         <Connect.WalletConnectButton className="flex items-center px-4 py-2 text-sm font-medium text-left border border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
-                          {({ connected }) => (
-                            <>
-                              <WalletConnectIcon className="h-10 w-10 mr-4" />
-                              {!connected && (
-                                <span>Connect With Wallet Connect</span>
-                              )}
-                            </>
-                          )}
+                          <>
+                            <WalletConnectIcon className="h-10 w-10 mr-4" />
+                            {!connected && (
+                              <span>Connect With Wallet Connect</span>
+                            )}
+                          </>
                         </Connect.WalletConnectButton>
                       </>
                     )}

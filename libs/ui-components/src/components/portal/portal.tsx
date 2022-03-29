@@ -152,5 +152,5 @@ let Group = forwardRefWithAs(function Group<
 });
 
 // ---
-
+// @ts-ignore
 export let Portal = Object.assign(PortalRoot, { Group });
