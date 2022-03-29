@@ -8,7 +8,7 @@ import {
 } from "../types/types";
 import { NetworkSwitcher } from "./NetworkSwitcher";
 import { logoSwitcher } from "./ChainIcons/ChainIcons";
-import { isChainSupported, chainMap, filteredChainMap } from "../utils/network";
+import { isChainSupported, filteredChainMap } from "../utils/network";
 import Icon from "../ui-atoms/Icon";
 import { classNames } from "../utils/class-names";
 import { useConnectedWallet } from "../hooks/use-connected-wallet";

@@ -129,6 +129,7 @@ let DEFAULT_CONNECT_TAG = "div" as const;
 interface ConnectRenderPropArg {
   open: boolean;
   connected: boolean;
+  connecting: boolean;
 }
 type ConnectPropsWeControl =
   | "id"
@@ -333,8 +334,9 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     () => ({
       open: connectState === ConnectStates.Open,
       connected: active && !!account,
+      connecting: state.walletState === WalletStates.Connecting,
     }),
-    [connectState]
+    [connectState, state, active, account]
   );
 
   let propsWeControl = {
@@ -491,7 +493,6 @@ let DEFAULT_METAMASKBUTTON_TAG = "button" as const;
 
 interface MetamaskButtonRenderPropArg {
   connected: boolean;
-  connecting: boolean;
 }
 
 type MetamaskButtonPropsWeControl =
@@ -565,9 +566,8 @@ let MetamaskButton = forwardRefWithAs(function Button<
   let slot = useMemo<MetamaskButtonRenderPropArg>(
     () => ({
       connected: active && !!account,
-      connecting: stateDefinition.walletState === WalletStates.Connecting,
     }),
-    [stateDefinition.walletState]
+    [active, account]
   );
 
   let handleClick = useCallback(
@@ -626,7 +626,6 @@ let DEFAULT_WALLETCONNECTBUTTON_TAG = "button" as const;
 
 interface WalletConnectButtonRenderPropArg {
   connected: boolean;
-  connecting: boolean;
 }
 
 type WalletConnectButtonPropsWeControl =
@@ -704,7 +703,6 @@ let WalletConnectButton = forwardRefWithAs(function Button<
   let slot = useMemo<WalletConnectButtonRenderPropArg>(
     () => ({
       connected: active && !!account,
-      connecting: stateDefinition.walletState === WalletStates.Connecting,
     }),
     [stateDefinition.walletState]
   );
