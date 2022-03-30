@@ -27,5 +27,5 @@ async function bootstrap() {
   return app;
 }
 
-let app = bootstrap();
+const app = bootstrap();
 export default app;

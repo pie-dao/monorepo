@@ -15,7 +15,7 @@ describe('PiesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [],      
+      imports: [],
       controllers: [PiesController],
       providers: [PiesService],
     }).compile();
@@ -44,15 +44,15 @@ describe('PiesController', () => {
 
       test('then it should return an array of PieEntity', () => {
         expect(pies).toEqual(PiesStub());
-      });     
+      });
 
-      test('it should throw an error if no records are found', async() => {
-        await expect(controller.getPies("not_existing_token", null))
-        .rejects
-        .toThrow(NotFoundException);
-      });      
+      test('it should throw an error if no records are found', async () => {
+        await expect(
+          controller.getPies('not_existing_token', null),
+        ).rejects.toThrow(NotFoundException);
+      });
     });
-  }); 
+  });
 
   describe('getPieByAddress', () => {
     describe('When getPieByAddress is called', () => {
@@ -70,11 +70,11 @@ describe('PiesController', () => {
         expect(pie).toEqual(PieStub());
       });
 
-      test('it should throw an error if no records are found', async() => {
-        await expect(controller.getPieByAddress("not_existing_address"))
-        .rejects
-        .toThrow(NotFoundException);
-      });       
+      test('it should throw an error if no records are found', async () => {
+        await expect(
+          controller.getPieByAddress('not_existing_address'),
+        ).rejects.toThrow(NotFoundException);
+      });
     });
   });
 
@@ -94,11 +94,11 @@ describe('PiesController', () => {
         expect(pie).toEqual(PieStub());
       });
 
-      test('it should throw an error if no records are found', async() => {
-        await expect(controller.getPieByName("not_existing_name"))
-        .rejects
-        .toThrow(NotFoundException);
-      });       
+      test('it should throw an error if no records are found', async () => {
+        await expect(
+          controller.getPieByName('not_existing_name'),
+        ).rejects.toThrow(NotFoundException);
+      });
     });
   });
 
@@ -107,22 +107,28 @@ describe('PiesController', () => {
       let pieHistory: PieHistoryEntity[];
 
       beforeEach(async () => {
-        pieHistory = await controller.getPieHistory(undefined, PieStub().address);
+        pieHistory = await controller.getPieHistory(
+          undefined,
+          PieStub().address,
+        );
       });
 
       test('then it should call pieService.getPieHistory', () => {
-        expect(service.getPieHistory).toHaveBeenCalledWith(undefined, PieStub().address);
+        expect(service.getPieHistory).toHaveBeenCalledWith(
+          undefined,
+          PieStub().address,
+        );
       });
 
       test('then it should return a PieHistoryEntity', () => {
         expect(pieHistory).toEqual(PieHistoryStub());
       });
 
-      test('it should throw an error if no records are found', async() => {
-        await expect(controller.getPieHistory(undefined, "not_existing_address"))
-        .rejects
-        .toThrow(NotFoundException);
-      });      
+      test('it should throw an error if no records are found', async () => {
+        await expect(
+          controller.getPieHistory(undefined, 'not_existing_address'),
+        ).rejects.toThrow(NotFoundException);
+      });
     });
   });
 });

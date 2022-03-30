@@ -1,16 +1,19 @@
-import { PiesStub, PieStub } from "../test/stubs/pies.stubs";
-import { PieHistoryStub } from "../test/stubs/pies-history.stubs";
-import { NotFoundException } from "@nestjs/common";
+import { PiesStub } from '../test/stubs/pies.stubs';
+import { PieHistoryStub } from '../test/stubs/pies-history.stubs';
+import { NotFoundException } from '@nestjs/common';
 
 export const PiesService = jest.fn().mockReturnValue({
-  getPies: jest.fn().mockImplementation((name, address) => { 
+  getPies: jest.fn().mockImplementation((name, address) => {
     return new Promise((resolve, reject) => {
       let pies = PiesStub();
 
-      if(name === undefined && address == undefined) {
+      if (name === undefined && address == undefined) {
         resolve(pies);
       } else {
-        if(pies.find(pie => pie.name == name) || pies.find(pie => pie.address == address)) {
+        if (
+          pies.find((pie) => pie.name == name) ||
+          pies.find((pie) => pie.address == address)
+        ) {
           resolve(pies);
         } else {
           reject(new NotFoundException());
@@ -18,40 +21,40 @@ export const PiesService = jest.fn().mockReturnValue({
       }
     });
   }),
-  getPieByAddress: jest.fn().mockImplementation((address) => { 
+  getPieByAddress: jest.fn().mockImplementation((address) => {
     return new Promise((resolve, reject) => {
       let pies = PiesStub();
-      let pie = pies.find(pie => pie.address == address);
+      let pie = pies.find((pie) => pie.address == address);
 
-      if(pie) {
+      if (pie) {
         resolve(pie);
       } else {
         reject(new NotFoundException());
       }
     });
   }),
-  getPieByName: jest.fn().mockImplementation((name) => { 
+  getPieByName: jest.fn().mockImplementation((name) => {
     return new Promise((resolve, reject) => {
       let pies = PiesStub();
-      let pie = pies.find(pie => pie.name == name);
+      let pie = pies.find((pie) => pie.name == name);
 
-      if(pie) {
+      if (pie) {
         resolve(pie);
       } else {
         reject(new NotFoundException());
       }
     });
   }),
-  getPieHistory: jest.fn().mockImplementation((name, address) => { 
+  getPieHistory: jest.fn().mockImplementation((name, address) => {
     return new Promise((resolve, reject) => {
       let pies = PiesStub();
-      let pie = pies.find(pie => pie.address == address);
+      let pie = pies.find((pie) => pie.address == address);
 
-      if(pie) {
+      if (pie) {
         resolve(PieHistoryStub());
       } else {
         reject(new NotFoundException());
       }
     });
-  })
+  }),
 });

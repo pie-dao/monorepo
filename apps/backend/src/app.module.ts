@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { BotModule } from './bot/bot.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PiesModule } from './pies/pies.module';
@@ -16,6 +17,7 @@ import { AuthorizationModule } from './authorization/authorization.module';
 
 @Module({
   imports: [
+    BotModule,
     PiesModule,
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
@@ -23,17 +25,17 @@ import { AuthorizationModule } from './authorization/authorization.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*', '/pies*', '/staking*'],
-      serveRoot: '/public/'
-    }),     
+      serveRoot: '/public/',
+    }),
     StakingModule,
-    TreasuryModule,    
+    TreasuryModule,
     TasksModule,
     ConsoleModule,
     SentimentModule,
-    AuthorizationModule
-  ],  
+    AuthorizationModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [AppService]
+  exports: [AppService],
 })
 export class AppModule {}
