@@ -7,11 +7,11 @@ import {
 
 function filter<T extends object>(
   obj: T,
-  predicate: <K extends keyof T>(key: K) => boolean
+  predicate: <K extends keyof T>(value: T[K], key: K) => boolean
 ) {
   const result: { [K in keyof T]?: T[K] } = {};
   (Object.keys(obj) as Array<keyof T>).forEach((name) => {
-    if (predicate(name)) {
+    if (predicate(obj[name], name)) {
       result[name] = obj[name];
     }
   });
@@ -63,8 +63,10 @@ export const isChainSupported = (chainId: number | undefined): boolean =>
   chainId ? supportedChainIds.includes(chainId) : false;
 
 export const filteredChainMap = (allowedChains: SUPPORTED_CHAIN_NAMES[]) => {
-  const supportedChainsById = allowedChains.map((s) => SUPPORTED_CHAINS[s]);
-  return filter(chainMap, (key) => {
+  const supportedChainsById = allowedChains.map((s) =>
+    String(SUPPORTED_CHAINS[s])
+  );
+  return filter(chainMap, (value, key) => {
     return supportedChainsById.includes(key);
   });
 };
