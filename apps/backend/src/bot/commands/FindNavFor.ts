@@ -26,13 +26,13 @@ export const FindNavForPie = (piesRepository: PiesRepository): Command => {
       if (!selectedPie.value) {
         content = 'Please specify a pie';
       } else {
-        const pie = await piesRepository.findOneByName(
+        const pie = await piesRepository.findOneBySymbol(
           selectedPie.value.toString(),
         );
 
         const nav = pie.history[pie.history.length - 1]?.nav ?? 0.0;
 
-        content = `${selectedPie} NAV: ${nav}`;
+        content = `${pie.name} NAV: ${nav}`;
       }
 
       await interaction.followUp({

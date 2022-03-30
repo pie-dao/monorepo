@@ -46,9 +46,9 @@ export class PiesRepository {
     return this.pieModel.find({ name }).populate('history').map(entityToPie);
   }
 
-  async findOneByName(name: string): Promise<Pie> {
+  async findOneBySymbol(symbol: string): Promise<Pie> {
     const result = await this.pieModel
-      .findOne({ name })
+      .findOne({ symbol })
       .populate('history')
       .exec();
     return entityToPie([result])[0];

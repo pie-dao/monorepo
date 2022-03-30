@@ -354,7 +354,7 @@ export class PiesService {
     });
   }
 
-  @Interval(EVERY_HOUR)
+  @Interval(EVERY_MINUTE)
   async updateNAVs(test?: boolean): Promise<boolean> {
     // instance of the pie-getter contract...
     const timestamp = Date.now();
@@ -388,10 +388,15 @@ export class PiesService {
     // for each pie, we iterate to fetch the underlying assets...
     const pieHistoryPromises = [];
 
-    for (let k = 0; k < pies.length; k++) {
-      const pie = new this.pieModel(pies[k]);
+    for (const pie of pies) {
+      const pieModel = new this.pieModel(pie);
       pieHistoryPromises.push(
-        this.CalculatePieHistory(provider, pie, coingeckoPiesInfos, timestamp),
+        this.calculatePieHistory(
+          provider,
+          pieModel,
+          coingeckoPiesInfos,
+          timestamp,
+        ),
       );
     }
 
@@ -409,7 +414,7 @@ export class PiesService {
     return true;
   }
 
-  CalculatePieHistory(
+  calculatePieHistory(
     provider: ethers.providers.JsonRpcProvider,
     pie: PieDocument,
     coingeckoPiesInfos: any,
@@ -566,7 +571,7 @@ export class PiesService {
 
           // if db is empty, we'll initialize the Pies...
           if (pies.length === 0) {
-            for (const pie of pies) {
+            for (const pie of this.pies) {
               pies.push(await this.createPie(pie));
             }
           }
