@@ -1,23 +1,23 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Cron } from '@nestjs/schedule';
-import { Model } from 'mongoose';
-import { PieDto } from './dto/pies.dto';
-import { PieDocument, PieEntity } from './entities/pie.entity';
-import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
+import { Interval } from '@nestjs/schedule';
+import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
-import * as pieGetterABI from './abis/pieGetterABI.json';
+import * as lodash from 'lodash';
+import * as moment from 'moment';
+import { Model } from 'mongoose';
+import { Command, Console, createSpinner } from 'nestjs-console';
 import * as erc20 from './abis/erc20.json';
 import * as erc20byte32 from './abis/erc20byte32.json';
+import * as pieGetterABI from './abis/pieGetterABI.json';
+import { PieDto } from './dto/pies.dto';
+import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
 import {
   PieHistoryDocument,
   PieHistoryEntity,
 } from './entities/pie-history.entity';
-import { BigNumber } from 'bignumber.js';
-import { HttpService } from '@nestjs/axios';
-import { Command, Console, createSpinner } from 'nestjs-console';
-import * as lodash from 'lodash';
-import * as moment from 'moment';
+import { PieDocument, PieEntity } from './entities/pie.entity';
 
 const EVERY_HOUR = 1000 * 60 * 60;
 const EVERY_MINUTE = 1000 * 60;
@@ -190,7 +190,7 @@ export class PiesService {
     }
   }
 
-  @Cron('0 * * * *')
+  @Interval(EVERY_HOUR)
   async updateCgCoins(test?: boolean): Promise<boolean> {
     try {
       const timestamp = moment().unix() * 1000;
@@ -354,11 +354,7 @@ export class PiesService {
     });
   }
 
-  // Use this every 5 minutes cron setup for testing purposes.
-  // */5 * * * *
-  // USe this every hour cron setup for production releases.
-  // 0 * * * *
-  @Cron('0 * * * *')
+  @Interval(EVERY_HOUR)
   async updateNAVs(test?: boolean): Promise<boolean> {
     // instance of the pie-getter contract...
     const timestamp = Date.now();
