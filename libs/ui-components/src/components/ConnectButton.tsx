@@ -31,7 +31,7 @@ export const ConnectButton: FunctionComponent = () => {
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="">
         <button
           type="button"
           onClick={openModal}
@@ -40,14 +40,6 @@ export const ConnectButton: FunctionComponent = () => {
           {active && account && ensName}
           {!account && "Connect Wallet"}
           {active && account && !ensName && trimAccount(account)}
-          {console.log(
-            "is active",
-            active,
-            "account",
-            account,
-            "ensName",
-            ensName
-          )}
         </button>
       </div>
 

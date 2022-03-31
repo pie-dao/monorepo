@@ -4,7 +4,6 @@
     "outDir": "lib",
     "lib": ["dom", "dom.iterable", "esnext"],
     "declaration": true,
-    "declarationMap": true,
     "declarationDir": "lib",
     "allowJs": true,
     "skipLibCheck": true,
@@ -16,18 +15,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react",
     "downlevelIteration": true,
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*", "node_modules/*"]
-    },
-    "sourceMap": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noEmit": true,
+    "jsx": "react"
   },
   "include": ["src"],
   "exclude": ["node_modules", "lib"]

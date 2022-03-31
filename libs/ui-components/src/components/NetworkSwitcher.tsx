@@ -255,7 +255,7 @@ let NetworkSwitcherRoot = forwardRefWithAs(function NetworkSwitcher<
     NetworkSwitcherRenderPropArg,
     "value" | "disabled" | "name" | "onChange"
   > & {
-    value: NetworkDetail;
+    value: NetworkDetail | null | undefined;
     onChange(value: NetworkDetail): void;
     disabled?: boolean;
     name?: string;

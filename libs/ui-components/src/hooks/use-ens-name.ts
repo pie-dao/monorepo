@@ -9,11 +9,9 @@ export function useENSName(
   useMemo(async () => {
     if (provider && account) {
       try {
-        console.log(provider);
-
         const name = await provider.lookupAddress(account);
         setENSName(name);
-      } catch (e) {
+      } catch (e: unknown) {
         console.warn(e);
       }
     }

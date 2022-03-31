@@ -1,3 +1,4 @@
-import Button from "./ui-atoms/Button";
-import Logo from "./ui-atoms/Logo";
-export { Button, Logo };
+import Icon from "./ui-atoms/Icon";
+import { ChainSwitcher } from "./components/ChainSwitcher";
+import { ConnectButton } from "./components/ConnectButton";
+export { Icon, ChainSwitcher, ConnectButton };

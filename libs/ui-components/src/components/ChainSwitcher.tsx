@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useWeb3React } from "@web3-react/core";
 import {
   SUPPORTED_CHAIN_ID,
@@ -21,7 +21,7 @@ interface Props {
 }
 
 interface ChainProps {
-  chain: NetworkDetail | null;
+  chain: NetworkDetail | null | undefined;
 }
 
 export const ChainAndLogo: FunctionComponent<ChainProps> = ({
@@ -54,23 +54,26 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   }, [chainId]);
 
   const [chain, setChain] = useState(supportedChain);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!supportedChain) {
-      setChain(null);
-    } else {
+    setLoading(true);
+    if (supportedChain) {
       setChain(supportedChain);
+    } else {
+      setChain(null);
     }
+    setLoading(false);
   }, [supportedChain]);
 
-  if (!chain) {
-    return <span>chain not supported</span>;
+  if (loading) {
+    return <SkeletonUI />;
   }
 
   return (
     <div
       className={classNames(
-        "w-60 fixed",
+        "w-60",
         className,
         showNetworkName ? "w-60" : "w-20"
       )}
@@ -141,5 +144,31 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
         )}
       </NetworkSwitcher>
     </div>
+  );
+};
+
+const SkeletonUI = () => {
+  return (
+    <AnimatePresence>
+      <motion.section exit={{ opacity: 0 }}>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="relative overflow-hidden"
+        >
+          <div className="w-60 h-10 bg-gray-200 rounded-lg shadow-md"></div>
+          <motion.div
+            initial={{ x: -200 }}
+            animate={{ x: 400 }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              repeatDelay: 1,
+            }}
+            className="absolute bg-primary bg-opacity-20 top-0 rotate-12 left-0 w-[30%] h-full"
+          ></motion.div>
+        </motion.div>
+      </motion.section>
+    </AnimatePresence>
   );
 };

@@ -66,8 +66,8 @@ export const filteredChainMap = (allowedChains: SUPPORTED_CHAIN_NAMES[]) => {
   const supportedChainsById = allowedChains.map((s) =>
     String(SUPPORTED_CHAINS[s])
   );
-  return filter(chainMap, (value, key) => {
-    return supportedChainsById.includes(key);
+  return filter(chainMap, (_value, key) => {
+    return supportedChainsById.includes(String(key));
   });
 };
 
