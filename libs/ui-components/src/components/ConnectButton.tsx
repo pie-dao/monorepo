@@ -6,11 +6,6 @@ import { useConnectedWallet } from "../hooks/use-connected-wallet";
 import { useENSName } from "../hooks/use-ens-name";
 import { MetamaskIcon, WalletConnectIcon } from "../shared/external-icons";
 
-interface ConnectWalletRenderPropArg {
-  connected: boolean;
-  connecting: boolean;
-}
-
 const trimAccount = (account: string): string => {
   return account.slice(0, 6) + "..." + account.slice(38);
 };
@@ -52,7 +47,7 @@ export const ConnectButton: FunctionComponent = () => {
             className="fixed inset-0 z-10 overflow-y-auto"
             onClose={closeModal}
           >
-            {({ connected, connecting }: ConnectWalletRenderPropArg) => (
+            {({ connected, connecting, waiting }) => (
               <div className="min-h-screen px-4 text-center">
                 <Connect.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
                 {/* This element is to trick the browser into centering the modal contents. */}
@@ -67,12 +62,13 @@ export const ConnectButton: FunctionComponent = () => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    {!connected && !connecting && "Connect Wallet"}
+                    {!connected && !connecting && !waiting && "Connect Wallet"}
                     {connected && !connecting && "Account"}
-                    {connecting && "Awaiting confirmation from your wallet..."}
+                    {connecting ||
+                      (waiting && "Awaiting confirmation from your wallet...")}
                   </Connect.Title>
                   <div className="mt-4 flex flex-col gap-y-3">
-                    {!connected && !connecting && (
+                    {!connected && !connecting && !waiting && (
                       <>
                         <Connect.MetamaskButton className="flex items-center px-4 py-2 text-sm font-medium border text-left border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
                           <>
@@ -91,10 +87,16 @@ export const ConnectButton: FunctionComponent = () => {
                         </Connect.WalletConnectButton>
                       </>
                     )}
-                    {connecting && (
-                      <div className="flex items-center justify-center h-20">
-                        <Rotate />
-                      </div>
+                    {connecting ||
+                      (waiting && (
+                        <div className="flex items-center justify-center h-20">
+                          <Rotate />
+                        </div>
+                      ))}
+                    {connected && (
+                      <Connect.DisconnectButton className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                        Disconnect
+                      </Connect.DisconnectButton>
                     )}
                   </div>
                 </div>

@@ -19,7 +19,7 @@ import React, {
   Ref,
 } from "react";
 
-import { Props } from "../types/types";
+import { Props, ProviderRpcError } from "../types/types";
 import { match } from "../utils/match";
 import {
   forwardRefWithAs,
@@ -59,6 +59,7 @@ enum WalletStates {
   NotConnected,
   Connecting,
   Connected,
+  Waiting,
 }
 
 interface StateDefinition {
@@ -130,6 +131,7 @@ interface ConnectRenderPropArg {
   open: boolean;
   connected: boolean;
   connecting: boolean;
+  waiting: boolean;
 }
 type ConnectPropsWeControl =
   | "id"
@@ -335,6 +337,7 @@ let ConnectRoot = forwardRefWithAs(function Connect<
       open: connectState === ConnectStates.Open,
       connected: active && !!account,
       connecting: state.walletState === WalletStates.Connecting,
+      waiting: state.walletState === WalletStates.Waiting,
     }),
     [connectState, state, active, account]
   );
@@ -508,8 +511,9 @@ let MetamaskButton = forwardRefWithAs(function Button<
   props: Props<TTag, MetamaskButtonRenderPropArg, MetamaskButtonPropsWeControl>,
   ref: Ref<HTMLButtonElement>
 ) {
-  let [{ connectState, close }, stateDefinition, dispatch] =
-    useConnectContext("Connect.Button");
+  let [{ connectState, close }, stateDefinition, dispatch] = useConnectContext(
+    "Connect.MetamaskButton"
+  );
   const { active, activate, account } = useWeb3React();
   let internalButtonRef = useRef<HTMLButtonElement | null>(null);
   let buttonRef = useSyncRefs(
@@ -536,12 +540,20 @@ let MetamaskButton = forwardRefWithAs(function Button<
               walletState: WalletStates.Connected,
             });
             close();
-          } catch (e) {
-            console.error(e);
-            dispatch({
-              type: ActionTypes.SetWalletState,
-              walletState: WalletStates.NotConnected,
-            });
+          } catch (e: unknown) {
+            const error = e as ProviderRpcError;
+            console.error(error);
+            if (error.code === -32002) {
+              dispatch({
+                type: ActionTypes.SetWalletState,
+                walletState: WalletStates.Waiting,
+              });
+            } else {
+              dispatch({
+                type: ActionTypes.SetWalletState,
+                walletState: WalletStates.NotConnected,
+              });
+            }
           }
           break;
       }
@@ -585,12 +597,20 @@ let MetamaskButton = forwardRefWithAs(function Button<
           walletState: WalletStates.Connected,
         });
         close();
-      } catch (e) {
-        console.error(e);
-        dispatch({
-          type: ActionTypes.SetWalletState,
-          walletState: WalletStates.NotConnected,
-        });
+      } catch (e: unknown) {
+        const error = e as ProviderRpcError;
+        console.error(error);
+        if (error.code === -32002) {
+          dispatch({
+            type: ActionTypes.SetWalletState,
+            walletState: WalletStates.Waiting,
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SetWalletState,
+            walletState: WalletStates.NotConnected,
+          });
+        }
       }
     },
     [dispatch, props.disabled, stateDefinition.buttonRef]
@@ -600,7 +620,7 @@ let MetamaskButton = forwardRefWithAs(function Button<
   let passthroughProps = props;
   let propsWeControl = {
     ref: buttonRef,
-    id: "piedao-connect-button",
+    id: "piedao-metamask-connect-button",
     type,
     "aria-expanded": props.disabled
       ? undefined
@@ -645,8 +665,9 @@ let WalletConnectButton = forwardRefWithAs(function Button<
   >,
   ref: Ref<HTMLButtonElement>
 ) {
-  let [{ connectState, close }, stateDefinition, dispatch] =
-    useConnectContext("Connect.Button");
+  let [{ connectState, close }, stateDefinition, dispatch] = useConnectContext(
+    "Connect.WalletConnectButton"
+  );
   const { active, activate, account } = useWeb3React();
   let internalButtonRef = useRef<HTMLButtonElement | null>(null);
   let buttonRef = useSyncRefs(
@@ -673,12 +694,20 @@ let WalletConnectButton = forwardRefWithAs(function Button<
               walletState: WalletStates.Connected,
             });
             close();
-          } catch (e) {
-            console.error(e);
-            dispatch({
-              type: ActionTypes.SetWalletState,
-              walletState: WalletStates.NotConnected,
-            });
+          } catch (e: unknown) {
+            const error = e as ProviderRpcError;
+            console.error(error);
+            if (error.code === -32002) {
+              dispatch({
+                type: ActionTypes.SetWalletState,
+                walletState: WalletStates.Waiting,
+              });
+            } else {
+              dispatch({
+                type: ActionTypes.SetWalletState,
+                walletState: WalletStates.NotConnected,
+              });
+            }
           }
           break;
       }
@@ -722,12 +751,20 @@ let WalletConnectButton = forwardRefWithAs(function Button<
           walletState: WalletStates.Connected,
         });
         close();
-      } catch (e) {
-        console.error(e);
-        dispatch({
-          type: ActionTypes.SetWalletState,
-          walletState: WalletStates.NotConnected,
-        });
+      } catch (e: unknown) {
+        const error = e as ProviderRpcError;
+        console.error(error);
+        if (error.code === -32002) {
+          dispatch({
+            type: ActionTypes.SetWalletState,
+            walletState: WalletStates.Waiting,
+          });
+        } else {
+          dispatch({
+            type: ActionTypes.SetWalletState,
+            walletState: WalletStates.NotConnected,
+          });
+        }
       }
     },
     [dispatch, props.disabled, stateDefinition.buttonRef]
@@ -757,10 +794,131 @@ let WalletConnectButton = forwardRefWithAs(function Button<
 
 // ---
 
+let DEFAULT_DISCONNECTBUTTON_TAG = "button" as const;
+
+interface DisconnectButtonRenderPropArg {
+  connected: boolean;
+}
+
+type DisconnectButtonPropsWeControl =
+  | "id"
+  | "type"
+  | "aria-expanded"
+  | "onKeyDown"
+  | "onClick";
+
+let DisconnectButton = forwardRefWithAs(function Button<
+  TTag extends ElementType = typeof DEFAULT_DISCONNECTBUTTON_TAG
+>(
+  props: Props<
+    TTag,
+    DisconnectButtonRenderPropArg,
+    DisconnectButtonPropsWeControl
+  >,
+  ref: Ref<HTMLButtonElement>
+) {
+  let [{ connectState, close }, stateDefinition, dispatch] = useConnectContext(
+    "Connect.DisconnectButton"
+  );
+  const { active, account, deactivate } = useWeb3React();
+  let internalButtonRef = useRef<HTMLButtonElement | null>(null);
+  let buttonRef = useSyncRefs(
+    internalButtonRef,
+    ref,
+    stateDefinition.buttonRef
+  );
+
+  let handleKeyDown = useCallback(
+    (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+      switch (event.key) {
+        case Keys.Space:
+        case Keys.Enter:
+          event.preventDefault();
+          event.stopPropagation();
+          try {
+            deactivate();
+            dispatch({
+              type: ActionTypes.SetWalletState,
+              walletState: WalletStates.NotConnected,
+            });
+            close();
+          } catch (e) {
+            console.error(e);
+          }
+          break;
+      }
+    },
+    [dispatch]
+  );
+
+  let handleKeyUp = useCallback(
+    (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+      switch (event.key) {
+        case Keys.Space:
+          // Required for firefox, event.preventDefault() in handleKeyDown for
+          // the Space key doesn't cancel the handleKeyUp, which in turn
+          // triggers a *click*.
+          event.preventDefault();
+          break;
+      }
+    },
+    []
+  );
+
+  let slot = useMemo<MetamaskButtonRenderPropArg>(
+    () => ({
+      connected: active && !!account,
+    }),
+    [active, account]
+  );
+
+  let handleClick = useCallback(
+    (event: ReactMouseEvent) => {
+      if (isDisabledReactIssue7711(event.currentTarget)) return;
+      if (props.disabled) return;
+      try {
+        deactivate();
+        dispatch({
+          type: ActionTypes.SetWalletState,
+          walletState: WalletStates.NotConnected,
+        });
+        close();
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    [dispatch, props.disabled, stateDefinition.buttonRef]
+  );
+
+  let type = useResolveButtonType(props, internalButtonRef);
+  let passthroughProps = props;
+  let propsWeControl = {
+    ref: buttonRef,
+    id: "piedao-disconnect-button",
+    type,
+    "aria-expanded": props.disabled
+      ? undefined
+      : connectState === ConnectStates.Open,
+    onKeyDown: handleKeyDown,
+    onKeyUp: handleKeyUp,
+    onClick: handleClick,
+  };
+
+  return render({
+    props: { ...passthroughProps, ...propsWeControl },
+    slot,
+    defaultTag: DEFAULT_DISCONNECTBUTTON_TAG,
+    name: "Connect.DisconnectButton",
+  });
+});
+
+// ---
+
 export let Connect = Object.assign(ConnectRoot, {
   Overlay,
   Title,
   Description,
   MetamaskButton,
   WalletConnectButton,
+  DisconnectButton,
 });

@@ -35,7 +35,7 @@ function usePortalTarget(
 
     // No group context is used, let's create a default portal root
     if (typeof window === "undefined") return null;
-    let existingRoot = ownerDocument?.getElementById("piedao-portal-root");
+    let existingRoot = ownerDocument?.getElementById("root");
     if (existingRoot) return existingRoot;
 
     if (ownerDocument === null) return null;
@@ -152,5 +152,4 @@ let Group = forwardRefWithAs(function Group<
 });
 
 // ---
-// @ts-ignore
 export let Portal = Object.assign(PortalRoot, { Group });

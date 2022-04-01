@@ -69,7 +69,8 @@
   "scripts": {
     "storybook": "start-storybook -p -s ./public 6006",
     "build-storybook": "build-storybook",
-    "build": "rollup -c  && npx tailwindcss -i ./index.css -o ./public/output.css"
+    "build": "rollup -c  && npx tailwindcss -i ./index.css -o ./public/output.css",
+    "watch": "rollup -c -w"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",

@@ -71,13 +71,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   }
 
   return (
-    <div
-      className={classNames(
-        "w-60",
-        className,
-        showNetworkName ? "w-60" : "w-20"
-      )}
-    >
+    <div className={classNames(className, showNetworkName ? "w-60" : "w-20")}>
       <NetworkSwitcher value={chain} onChange={setChain}>
         {({ open }) => (
           <div className="relative mt-1">
@@ -103,10 +97,13 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
             </NetworkSwitcher.Button>
             <NetworkSwitcher.Options
               as={motion.ul}
+              initial={{ opacity: 0 }}
               animate={{ opacity: open ? 1 : 0 }}
               transition={{ duration: 0.1 }}
               static
-              className="flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              className={`flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${
+                open ? "" : "pointer-events-none"
+              }`}
             >
               {Object.entries(availableChains).map(([, chain]) => (
                 <NetworkSwitcher.Option
