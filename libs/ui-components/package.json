@@ -41,7 +41,9 @@
   "scripts": {
     "storybook": "start-storybook -p -s ./public 6006",
     "build-storybook": "build-storybook",
-    "build": "rollup -c  && npx tailwindcss -i ./index.css -o ./public/output.css"
+    "build": "rollup -c  && npx tailwindcss -i ./index.css -o ./public/output.css",
+    "watch": "rollup -c -w",
+    "tailwind-watch": " npx tailwindcss -i ./index.css -o ./public/output.css --watch"
   },
   "dependencies": {
     "@storybook/addon-postcss": "^2.0.0",
