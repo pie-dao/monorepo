@@ -119,7 +119,7 @@ const DesktopMenu = ({
         className="z-10"
       />
       {/* <NetworkDisplay /> */}
-      <ConnectButton className="my-1" />
+      <ConnectButton className="mx-4" />
       <AlertButton />
     </div>
   );

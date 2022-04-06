@@ -11259,8 +11259,8 @@ var ChainSwitcher = function (_a) {
     return (React__default.createElement("div", { className: classNames(className, showNetworkName ? "w-60" : "w-20") },
         React__default.createElement(NetworkSwitcher, { value: chain, onChange: setChain }, function (_a) {
             var open = _a.open;
-            return (React__default.createElement("div", { className: "relative mt-1" },
-                React__default.createElement(NetworkSwitcher.Button, { className: "flex justify-start relative w-full py-2 px-3 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm" },
+            return (React__default.createElement("div", { className: "relative" },
+                React__default.createElement(NetworkSwitcher.Button, { className: "flex justify-start items-center relative w-full py-2 px-4 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm" },
                     showNetworkIcon && React__default.createElement(ChainAndLogo, { chain: chain }),
                     showNetworkName && (React__default.createElement("span", { className: "block truncate font-bold text-primary" }, chain ? chain.chainName : "Unsupported Chain")),
                     React__default.createElement(motion.span, { className: "ml-auto flex pointer-events-none", animate: { rotate: open ? 180 : 0 } },
@@ -12540,7 +12540,7 @@ var ConnectButton = function (_a) {
         setIsOpen(true);
     }
     return (React__default.createElement(React__default.Fragment, null,
-        React__default.createElement("button", { type: "button", onClick: openModal, className: classNames("px-4 py-2 text-sm font-medium text-white bg-primary rounded-md border-2 border-current hover:bg-transparent hover:text-primary", className) },
+        React__default.createElement("button", { type: "button", onClick: openModal, className: classNames("px-4 py-2 text-md font-medium text-white bg-primary rounded-lg border-2 border-current hover:bg-transparent hover:text-primary", className) },
             active && account && ensName,
             !account && "Connect Wallet",
             active && account && !ensName && trimAccount(account)),

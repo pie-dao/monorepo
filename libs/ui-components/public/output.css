@@ -424,7 +424,7 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 
 [data-theme="auxo"] {
-  --color-primary: 255 15 30;
+  --color-primary: 112 101 244;
   --color-secondary: 99 44 255;
   --color-dark: 29 24 44;
   --color-light: 255 255 255;
