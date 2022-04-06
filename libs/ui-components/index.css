@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  [data-theme="auxo"] {
+    --color-primary: 255 15 30;
+    --color-secondary: 99 44 255;
+    --color-dark: 29 24 44;
+    --color-light: 255 255 255;
+    --color-light-blue: 138 171 255;
+  }
+
+  [data-theme="landing"] {
+    --color-primary: 2 82 204;
+    --color-secondary: 255 196 2;
+    --color-tertiary: 255 255 255;
+    --color-dark: 0 0 0;
+    --color-light: 255 255 255;
+    --color-link: 255 255 255;
+  }
+}

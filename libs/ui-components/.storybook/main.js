@@ -1,4 +1,6 @@
 const path = require("path");
+const webpack = require("webpack");
+
 module.exports = {
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
@@ -16,6 +18,9 @@ module.exports = {
   ],
   core: {
     builder: "webpack5",
+  },
+  features: {
+    storyStoreV7: true,
   },
   webpackFinal: (config) => {
     /**
@@ -35,6 +40,20 @@ module.exports = {
       path.resolve(__dirname, "../public"),
       "node_modules",
     ];
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      stream: require.resolve("stream-browserify"),
+      buffer: require.resolve("buffer/"),
+      util: require.resolve("util/"),
+      assert: require.resolve("assert/"),
+    };
+
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        Buffer: ["buffer", "Buffer"],
+      })
+    );
 
     return config;
   },
