@@ -39,7 +39,7 @@ export const globalTypes = {
 export const decorators = [
   (Story, context) => (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <div data-theme={context.globals.theme}>
+      <div data-theme={context.globals.theme} id="storybook-portal">
         <Story />
       </div>
     </Web3ReactProvider>

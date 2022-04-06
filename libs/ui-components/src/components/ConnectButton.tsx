@@ -70,8 +70,8 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                   >
                     {!connected && !connecting && !waiting && "Connect Wallet"}
                     {connected && !connecting && "Account"}
-                    {connecting ||
-                      (waiting && "Awaiting confirmation from your wallet...")}
+                    {(waiting || connecting) &&
+                      "Awaiting confirmation from your wallet..."}
                   </Connect.Title>
                   <div className="mt-4 flex flex-col gap-y-3">
                     {!connected && !connecting && !waiting && (
@@ -93,12 +93,11 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                         </Connect.WalletConnectButton>
                       </>
                     )}
-                    {connecting ||
-                      (waiting && (
-                        <div className="flex items-center justify-center h-20">
-                          <Rotate />
-                        </div>
-                      ))}
+                    {(waiting || connecting) && (
+                      <div className="flex items-center justify-center h-20">
+                        <Rotate />
+                      </div>
+                    )}
                     {connected && (
                       <Connect.DisconnectButton className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
                         Disconnect
