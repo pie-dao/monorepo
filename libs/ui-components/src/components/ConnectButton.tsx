@@ -5,12 +5,17 @@ import { Connect } from "./Connect";
 import { useConnectedWallet } from "../hooks/use-connected-wallet";
 import { useENSName } from "../hooks/use-ens-name";
 import { MetamaskIcon, WalletConnectIcon } from "../shared/external-icons";
+import { classNames } from "../utils/class-names";
+
+interface Props {
+  className?: string;
+}
 
 const trimAccount = (account: string): string => {
   return account.slice(0, 6) + "..." + account.slice(38);
 };
 
-export const ConnectButton: FunctionComponent = () => {
+export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
   useConnectedWallet();
   const { account, active, library } = useWeb3React();
   const ensName = useENSName(library, account);
@@ -26,17 +31,18 @@ export const ConnectButton: FunctionComponent = () => {
 
   return (
     <>
-      <div className="">
-        <button
-          type="button"
-          onClick={openModal}
-          className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          {active && account && ensName}
-          {!account && "Connect Wallet"}
-          {active && account && !ensName && trimAccount(account)}
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={openModal}
+        className={classNames(
+          "px-4 py-2 text-sm font-medium text-white bg-primary rounded-md border-2 border-current hover:bg-transparent hover:text-primary",
+          className
+        )}
+      >
+        {active && account && ensName}
+        {!account && "Connect Wallet"}
+        {active && account && !ensName && trimAccount(account)}
+      </button>
 
       <AnimatePresence>
         {isOpen && (

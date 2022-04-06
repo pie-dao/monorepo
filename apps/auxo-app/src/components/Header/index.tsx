@@ -10,6 +10,7 @@ import { Divider } from "../UI/divider";
 import { RiCloseCircleFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import NetworkSwitcher from "../UI/networkDropdown";
+import { ChainSwitcher, ConnectButton } from "@piedao/ui-components";
 
 const auxoLogo = process.env.PUBLIC_URL + "/auxo-logo.png";
 
@@ -113,9 +114,12 @@ const DesktopMenu = ({
     "
     >
       {show && <WalletModal setShow={setShow} />}
+      <ChainSwitcher
+        allowedChains={["MAINNET", "FANTOM", "POLYGON"]}
+        className="z-10"
+      />
       {/* <NetworkDisplay /> */}
-      <NetworkSwitcher disabled={!account} />
-      <AccountConnector setShow={setShow} />
+      <ConnectButton className="my-1" />
       <AlertButton />
     </div>
   );
