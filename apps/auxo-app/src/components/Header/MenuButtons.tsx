@@ -5,7 +5,6 @@ import StyledButton from "../UI/button";
 import { FaBell } from "react-icons/fa";
 import { useState } from "react";
 import { useEffect } from "react";
-import { ConnectButton } from "@piedao/ui-components";
 
 const trimAccount = (account: string): string => {
   return account.slice(0, 6) + "..." + account.slice(38);
