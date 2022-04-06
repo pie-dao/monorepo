@@ -63,7 +63,7 @@
     "hardhat": "^2.8.2",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.4",
-    "typechain": "^6.1.0"
+    "typechain": "^8.0.0"
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false react-scripts start",
