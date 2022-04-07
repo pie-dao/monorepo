@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useWeb3React } from "@web3-react/core";
 import { Connect } from "./Connect";
+import Icon from "../ui-atoms/Icon";
 import { useConnectedWallet } from "../hooks/use-connected-wallet";
 import { useENSName } from "../hooks/use-ens-name";
 import { MetamaskIcon, WalletConnectIcon } from "../shared/external-icons";
@@ -73,6 +74,12 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                     {(waiting || connecting) &&
                       "Awaiting confirmation from your wallet..."}
                   </Connect.Title>
+                  <button
+                    className="absolute top-5 right-5"
+                    onClick={closeModal}
+                  >
+                    <Icon className="fill-primary" icon="close" />
+                  </button>
                   <div className="mt-4 flex flex-col gap-y-3">
                     {!connected && !connecting && !waiting && (
                       <>
@@ -98,10 +105,17 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                         <Rotate />
                       </div>
                     )}
-                    {connected && (
-                      <Connect.DisconnectButton className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                        Disconnect
-                      </Connect.DisconnectButton>
+                    {connected && account && (
+                      <div className="flex px-2 py-4 border rounded-md border-primary justify-between">
+                        <div>
+                          <p className="text-md font-medium">
+                            {trimAccount(account)}
+                          </p>
+                        </div>
+                        <Connect.DisconnectButton className="px-2 py-1 text-xs font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
+                          Disconnect
+                        </Connect.DisconnectButton>
+                      </div>
                     )}
                   </div>
                 </div>
