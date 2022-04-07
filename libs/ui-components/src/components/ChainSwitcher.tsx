@@ -74,8 +74,8 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
     <div className={classNames(className, showNetworkName ? "w-60" : "w-20")}>
       <NetworkSwitcher value={chain} onChange={setChain}>
         {({ open }) => (
-          <div className="relative mt-1">
-            <NetworkSwitcher.Button className="flex justify-start relative w-full py-2 px-3 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm">
+          <div className="relative">
+            <NetworkSwitcher.Button className="flex justify-start items-center relative w-full py-2 px-4 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm">
               {showNetworkIcon && <ChainAndLogo chain={chain} />}
               {showNetworkName && (
                 <span className="block truncate font-bold text-primary">

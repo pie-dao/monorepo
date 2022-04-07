@@ -1,3 +1,7 @@
 import { FunctionComponent } from "react";
-export declare const ConnectButton: FunctionComponent;
+interface Props {
+    className?: string;
+}
+export declare const ConnectButton: FunctionComponent<Props>;
 export declare const Rotate: () => JSX.Element;
+export {};

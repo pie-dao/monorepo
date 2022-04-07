@@ -163,6 +163,14 @@ var Icon = function (_a) {
         React__default.createElement("path", { d: icons[icon] })));
 };
 
+/**
+ * Browser-safe usage of process
+ */
+var mockProcess = { env: { NODE_ENV: "production" } };
+var safeProcess = typeof process === "undefined" ? mockProcess : process;
+// eslint-disable-next-line import/no-default-export
+var process$1 = safeProcess;
+
 var createDefinition = function (propNames) { return ({
     isEnabled: function (props) { return propNames.some(function (name) { return !!props[name]; }); },
 }); };
@@ -239,7 +247,7 @@ function useFeatures(props, visualElement, preloadedFeatures) {
      * If we're in development mode, check to make sure we're not rendering a motion component
      * as a child of LazyMotion, as this will break the file-size benefits of using it.
      */
-    if (process.env.NODE_ENV !== "production" &&
+    if (process$1.env.NODE_ENV !== "production" &&
         preloadedFeatures &&
         lazyContext.strict) {
         invariant(false, "You have rendered a `motion` component within a `LazyMotion` component. This will break tree shaking. Import and render a `m` component instead.");
@@ -5577,7 +5585,7 @@ function useMissingIntersectionObserver(shouldObserve, state, visualElement, _a)
     useEffect(function () {
         if (!shouldObserve || !fallback)
             return;
-        if (process.env.NODE_ENV !== "production") {
+        if (process$1.env.NODE_ENV !== "production") {
             warnOnce(false, "IntersectionObserver not available on this device. whileInView animations will trigger on mount.");
         }
         /**
@@ -8372,7 +8380,7 @@ function newChildrenMap() {
 }
 
 var getChildKey = function (child) { return child.key || ""; };
-var isDev = process.env.NODE_ENV !== "production";
+var isDev = process$1.env.NODE_ENV !== "production";
 function updateChildLookup(children, allChildren) {
     var seenChildren = isDev ? new Set() : null;
     children.forEach(function (child) {
@@ -8512,7 +8520,7 @@ var AnimatePresence = function (_a) {
         var key = child.key;
         return exiting.has(key) ? (child) : (React.createElement(PresenceChild, { key: getChildKey(child), isPresent: true, presenceAffectsLayout: presenceAffectsLayout }, child));
     });
-    if (process.env.NODE_ENV !== "production" &&
+    if (process$1.env.NODE_ENV !== "production" &&
         exitBeforeEnter &&
         childrenToRender.length > 1) {
         console.warn("You're attempting to animate multiple children within AnimatePresence, but its exitBeforeEnter prop is set to true. This will lead to odd visual behaviour.");
@@ -11248,16 +11256,16 @@ var ChainSwitcher = function (_a) {
     if (loading) {
         return React__default.createElement(SkeletonUI, null);
     }
-    return (React__default.createElement("div", { className: classNames("w-60", className, showNetworkName ? "w-60" : "w-20") },
+    return (React__default.createElement("div", { className: classNames(className, showNetworkName ? "w-60" : "w-20") },
         React__default.createElement(NetworkSwitcher, { value: chain, onChange: setChain }, function (_a) {
             var open = _a.open;
-            return (React__default.createElement("div", { className: "relative mt-1" },
-                React__default.createElement(NetworkSwitcher.Button, { className: "flex justify-start relative w-full py-2 px-3 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm" },
+            return (React__default.createElement("div", { className: "relative" },
+                React__default.createElement(NetworkSwitcher.Button, { className: "flex justify-start items-center relative w-full py-2 px-4 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm" },
                     showNetworkIcon && React__default.createElement(ChainAndLogo, { chain: chain }),
                     showNetworkName && (React__default.createElement("span", { className: "block truncate font-bold text-primary" }, chain ? chain.chainName : "Unsupported Chain")),
                     React__default.createElement(motion.span, { className: "ml-auto flex pointer-events-none", animate: { rotate: open ? 180 : 0 } },
                         React__default.createElement(Icon, { width: "20px", height: "20px", icon: "arrow_dropdown", "aria-hidden": "true", className: "fill-primary" }))),
-                React__default.createElement(NetworkSwitcher.Options, { as: motion.ul, animate: { opacity: open ? 1 : 0 }, transition: { duration: 0.1 }, static: true, className: "flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" }, Object.entries(availableChains).map(function (_a) {
+                React__default.createElement(NetworkSwitcher.Options, { as: motion.ul, initial: { opacity: 0 }, animate: { opacity: open ? 1 : 0 }, transition: { duration: 0.1 }, static: true, className: "flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ".concat(open ? "" : "pointer-events-none") }, Object.entries(availableChains).map(function (_a) {
                     var _b = __read(_a, 2), chain = _b[1];
                     return (React__default.createElement(NetworkSwitcher.Option, { key: chain.chainId, className: function (_a) {
                             var active = _a.active;
@@ -11609,7 +11617,7 @@ function usePortalTarget(ref) {
         // No group context is used, let's create a default portal root
         if (typeof window === "undefined")
             return null;
-        var existingRoot = ownerDocument === null || ownerDocument === void 0 ? void 0 : ownerDocument.getElementById("piedao-portal-root");
+        var existingRoot = ownerDocument === null || ownerDocument === void 0 ? void 0 : ownerDocument.getElementById("root");
         if (existingRoot)
             return existingRoot;
         if (ownerDocument === null)
@@ -11693,7 +11701,6 @@ var Group = forwardRefWithAs(function Group(props, ref) {
     })));
 });
 // ---
-// @ts-ignore
 var Portal = Object.assign(PortalRoot, { Group: Group });
 
 var DescriptionContext = createContext(null);
@@ -11807,6 +11814,7 @@ var WalletStates;
     WalletStates[WalletStates["NotConnected"] = 0] = "NotConnected";
     WalletStates[WalletStates["Connecting"] = 1] = "Connecting";
     WalletStates[WalletStates["Connected"] = 2] = "Connected";
+    WalletStates[WalletStates["Waiting"] = 3] = "Waiting";
 })(WalletStates || (WalletStates = {}));
 var ActionTypes;
 (function (ActionTypes) {
@@ -11991,6 +11999,7 @@ var ConnectRoot = forwardRefWithAs(function Connect(props, ref) {
         open: connectState === ConnectStates.Open,
         connected: active && !!account,
         connecting: state.walletState === WalletStates.Connecting,
+        waiting: state.walletState === WalletStates.Waiting,
     }); }, [connectState, state, active, account]);
     var propsWeControl = {
         ref: connectRef,
@@ -12088,12 +12097,12 @@ var Title = forwardRefWithAs(function Title(props, ref) {
 var DEFAULT_METAMASKBUTTON_TAG = "button";
 var MetamaskButton = forwardRefWithAs(function Button(props, ref) {
     var _this = this;
-    var _a = __read(useConnectContext("Connect.Button"), 3), _b = _a[0], connectState = _b.connectState, close = _b.close, stateDefinition = _a[1], dispatch = _a[2];
+    var _a = __read(useConnectContext("Connect.MetamaskButton"), 3), _b = _a[0], connectState = _b.connectState, close = _b.close, stateDefinition = _a[1], dispatch = _a[2];
     var _c = useWeb3React(), active = _c.active, activate = _c.activate, account = _c.account;
     var internalButtonRef = useRef(null);
     var buttonRef = useSyncRefs(internalButtonRef, ref, stateDefinition.buttonRef);
     var handleKeyDown = useCallback(function (event) { return __awaiter(_this, void 0, void 0, function () {
-        var _a, e_2;
+        var _a, e_2, error;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -12124,11 +12133,20 @@ var MetamaskButton = forwardRefWithAs(function Button(props, ref) {
                     return [3 /*break*/, 5];
                 case 4:
                     e_2 = _b.sent();
-                    console.error(e_2);
-                    dispatch({
-                        type: ActionTypes.SetWalletState,
-                        walletState: WalletStates.NotConnected,
-                    });
+                    error = e_2;
+                    console.error(error);
+                    if (error.code === -32002) {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.Waiting,
+                        });
+                    }
+                    else {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.NotConnected,
+                        });
+                    }
                     return [3 /*break*/, 5];
                 case 5: return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
@@ -12149,7 +12167,7 @@ var MetamaskButton = forwardRefWithAs(function Button(props, ref) {
         connected: active && !!account,
     }); }, [active, account]);
     var handleClick = useCallback(function (event) { return __awaiter(_this, void 0, void 0, function () {
-        var e_3;
+        var e_3, error;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -12175,11 +12193,20 @@ var MetamaskButton = forwardRefWithAs(function Button(props, ref) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_3 = _a.sent();
-                    console.error(e_3);
-                    dispatch({
-                        type: ActionTypes.SetWalletState,
-                        walletState: WalletStates.NotConnected,
-                    });
+                    error = e_3;
+                    console.error(error);
+                    if (error.code === -32002) {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.Waiting,
+                        });
+                    }
+                    else {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.NotConnected,
+                        });
+                    }
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -12189,7 +12216,7 @@ var MetamaskButton = forwardRefWithAs(function Button(props, ref) {
     var passthroughProps = props;
     var propsWeControl = {
         ref: buttonRef,
-        id: "piedao-connect-button",
+        id: "piedao-metamask-connect-button",
         type: type,
         "aria-expanded": props.disabled
             ? undefined
@@ -12210,12 +12237,12 @@ var MetamaskButton = forwardRefWithAs(function Button(props, ref) {
 var DEFAULT_WALLETCONNECTBUTTON_TAG = "button";
 var WalletConnectButton = forwardRefWithAs(function Button(props, ref) {
     var _this = this;
-    var _a = __read(useConnectContext("Connect.Button"), 3), _b = _a[0], connectState = _b.connectState, close = _b.close, stateDefinition = _a[1], dispatch = _a[2];
+    var _a = __read(useConnectContext("Connect.WalletConnectButton"), 3), _b = _a[0], connectState = _b.connectState, close = _b.close, stateDefinition = _a[1], dispatch = _a[2];
     var _c = useWeb3React(), active = _c.active, activate = _c.activate, account = _c.account;
     var internalButtonRef = useRef(null);
     var buttonRef = useSyncRefs(internalButtonRef, ref, stateDefinition.buttonRef);
     var handleKeyDown = useCallback(function (event) { return __awaiter(_this, void 0, void 0, function () {
-        var _a, e_4;
+        var _a, e_4, error;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -12246,11 +12273,20 @@ var WalletConnectButton = forwardRefWithAs(function Button(props, ref) {
                     return [3 /*break*/, 5];
                 case 4:
                     e_4 = _b.sent();
-                    console.error(e_4);
-                    dispatch({
-                        type: ActionTypes.SetWalletState,
-                        walletState: WalletStates.NotConnected,
-                    });
+                    error = e_4;
+                    console.error(error);
+                    if (error.code === -32002) {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.Waiting,
+                        });
+                    }
+                    else {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.NotConnected,
+                        });
+                    }
                     return [3 /*break*/, 5];
                 case 5: return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
@@ -12271,7 +12307,7 @@ var WalletConnectButton = forwardRefWithAs(function Button(props, ref) {
         connected: active && !!account,
     }); }, [stateDefinition.walletState]);
     var handleClick = useCallback(function (event) { return __awaiter(_this, void 0, void 0, function () {
-        var e_5;
+        var e_5, error;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -12297,11 +12333,20 @@ var WalletConnectButton = forwardRefWithAs(function Button(props, ref) {
                     return [3 /*break*/, 4];
                 case 3:
                     e_5 = _a.sent();
-                    console.error(e_5);
-                    dispatch({
-                        type: ActionTypes.SetWalletState,
-                        walletState: WalletStates.NotConnected,
-                    });
+                    error = e_5;
+                    console.error(error);
+                    if (error.code === -32002) {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.Waiting,
+                        });
+                    }
+                    else {
+                        dispatch({
+                            type: ActionTypes.SetWalletState,
+                            walletState: WalletStates.NotConnected,
+                        });
+                    }
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
             }
@@ -12328,12 +12373,90 @@ var WalletConnectButton = forwardRefWithAs(function Button(props, ref) {
     });
 });
 // ---
+var DEFAULT_DISCONNECTBUTTON_TAG = "button";
+var DisconnectButton = forwardRefWithAs(function Button(props, ref) {
+    var _a = __read(useConnectContext("Connect.DisconnectButton"), 3), _b = _a[0], connectState = _b.connectState, close = _b.close, stateDefinition = _a[1], dispatch = _a[2];
+    var _c = useWeb3React(), active = _c.active, account = _c.account, deactivate = _c.deactivate;
+    var internalButtonRef = useRef(null);
+    var buttonRef = useSyncRefs(internalButtonRef, ref, stateDefinition.buttonRef);
+    var handleKeyDown = useCallback(function (event) {
+        switch (event.key) {
+            case Keys.Space:
+            case Keys.Enter:
+                event.preventDefault();
+                event.stopPropagation();
+                try {
+                    deactivate();
+                    dispatch({
+                        type: ActionTypes.SetWalletState,
+                        walletState: WalletStates.NotConnected,
+                    });
+                    close();
+                }
+                catch (e) {
+                    console.error(e);
+                }
+                break;
+        }
+    }, [dispatch]);
+    var handleKeyUp = useCallback(function (event) {
+        switch (event.key) {
+            case Keys.Space:
+                // Required for firefox, event.preventDefault() in handleKeyDown for
+                // the Space key doesn't cancel the handleKeyUp, which in turn
+                // triggers a *click*.
+                event.preventDefault();
+                break;
+        }
+    }, []);
+    var slot = useMemo(function () { return ({
+        connected: active && !!account,
+    }); }, [active, account]);
+    var handleClick = useCallback(function (event) {
+        if (isDisabledReactIssue7711(event.currentTarget))
+            return;
+        if (props.disabled)
+            return;
+        try {
+            deactivate();
+            dispatch({
+                type: ActionTypes.SetWalletState,
+                walletState: WalletStates.NotConnected,
+            });
+            close();
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }, [dispatch, props.disabled, stateDefinition.buttonRef]);
+    var type = useResolveButtonType(props, internalButtonRef);
+    var passthroughProps = props;
+    var propsWeControl = {
+        ref: buttonRef,
+        id: "piedao-disconnect-button",
+        type: type,
+        "aria-expanded": props.disabled
+            ? undefined
+            : connectState === ConnectStates.Open,
+        onKeyDown: handleKeyDown,
+        onKeyUp: handleKeyUp,
+        onClick: handleClick,
+    };
+    return render({
+        props: __assign(__assign({}, passthroughProps), propsWeControl),
+        slot: slot,
+        defaultTag: DEFAULT_DISCONNECTBUTTON_TAG,
+        name: "Connect.DisconnectButton",
+    });
+});
+// ---
 var Connect = Object.assign(ConnectRoot, {
     Overlay: Overlay,
     Title: Title,
     Description: Description,
     MetamaskButton: MetamaskButton,
     WalletConnectButton: WalletConnectButton,
+    DisconnectButton: DisconnectButton,
 });
 
 function useENSName(provider, account) {
@@ -12404,11 +12527,12 @@ var WalletConnectIcon = function (props) {
 var trimAccount = function (account) {
     return account.slice(0, 6) + "..." + account.slice(38);
 };
-var ConnectButton = function () {
+var ConnectButton = function (_a) {
+    var className = _a.className;
     useConnectedWallet();
-    var _a = useWeb3React(), account = _a.account, active = _a.active, library = _a.library;
+    var _b = useWeb3React(), account = _b.account, active = _b.active, library = _b.library;
     var ensName = useENSName(library, account);
-    var _b = __read(useState(false), 2), isOpen = _b[0], setIsOpen = _b[1];
+    var _c = __read(useState(false), 2), isOpen = _c[0], setIsOpen = _c[1];
     function closeModal() {
         setIsOpen(false);
     }
@@ -12416,23 +12540,23 @@ var ConnectButton = function () {
         setIsOpen(true);
     }
     return (React__default.createElement(React__default.Fragment, null,
-        React__default.createElement("div", { className: "" },
-            React__default.createElement("button", { type: "button", onClick: openModal, className: "px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" },
-                active && account && ensName,
-                !account && "Connect Wallet",
-                active && account && !ensName && trimAccount(account))),
+        React__default.createElement("button", { type: "button", onClick: openModal, className: classNames("px-4 py-2 text-md font-medium text-white bg-primary rounded-lg border-2 border-current hover:bg-transparent hover:text-primary", className) },
+            active && account && ensName,
+            !account && "Connect Wallet",
+            active && account && !ensName && trimAccount(account)),
         React__default.createElement(AnimatePresence, null, isOpen && (React__default.createElement(Connect, { static: true, as: "div", open: isOpen, className: "fixed inset-0 z-10 overflow-y-auto", onClose: closeModal }, function (_a) {
-            var connected = _a.connected, connecting = _a.connecting;
+            var connected = _a.connected, connecting = _a.connecting, waiting = _a.waiting;
             return (React__default.createElement("div", { className: "min-h-screen px-4 text-center" },
                 React__default.createElement(Connect.Overlay, { className: "fixed inset-0 bg-black bg-opacity-50" }),
                 React__default.createElement("span", { className: "inline-block h-screen align-middle", "aria-hidden": "true" }, "\u200B"),
                 React__default.createElement("div", { className: "inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl" },
                     React__default.createElement(Connect.Title, { as: "h3", className: "text-lg font-medium leading-6 text-gray-900" },
-                        !connected && !connecting && "Connect Wallet",
+                        !connected && !connecting && !waiting && "Connect Wallet",
                         connected && !connecting && "Account",
-                        connecting && "Awaiting confirmation from your wallet..."),
+                        connecting ||
+                            (waiting && "Awaiting confirmation from your wallet...")),
                     React__default.createElement("div", { className: "mt-4 flex flex-col gap-y-3" },
-                        !connected && !connecting && (React__default.createElement(React__default.Fragment, null,
+                        !connected && !connecting && !waiting && (React__default.createElement(React__default.Fragment, null,
                             React__default.createElement(Connect.MetamaskButton, { className: "flex items-center px-4 py-2 text-sm font-medium border text-left border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary" },
                                 React__default.createElement(React__default.Fragment, null,
                                     React__default.createElement(MetamaskIcon, { className: "h-10 w-10 mr-4" }),
@@ -12442,8 +12566,10 @@ var ConnectButton = function () {
                                 React__default.createElement(React__default.Fragment, null,
                                     React__default.createElement(WalletConnectIcon, { className: "h-10 w-10 mr-4" }),
                                     !connected && (React__default.createElement("span", null, "Connect With Wallet Connect")))))),
-                        connecting && (React__default.createElement("div", { className: "flex items-center justify-center h-20" },
-                            React__default.createElement(Rotate, null)))))));
+                        connecting ||
+                            (waiting && (React__default.createElement("div", { className: "flex items-center justify-center h-20" },
+                                React__default.createElement(Rotate, null)))),
+                        connected && (React__default.createElement(Connect.DisconnectButton, { className: "px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" }, "Disconnect"))))));
         })))));
 };
 var Rotate = function () { return (React__default.createElement(motion.div, { className: "w-8 h-8 bg-primary", animate: {

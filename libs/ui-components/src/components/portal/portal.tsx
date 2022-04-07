@@ -36,6 +36,9 @@ function usePortalTarget(
     // No group context is used, let's create a default portal root
     if (typeof window === "undefined") return null;
     let existingRoot = ownerDocument?.getElementById("root");
+    if (window.location !== window.parent.location) {
+      existingRoot = ownerDocument?.getElementById("storybook-portal");
+    }
     if (existingRoot) return existingRoot;
 
     if (ownerDocument === null) return null;
