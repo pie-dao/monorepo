@@ -11644,6 +11644,9 @@ function usePortalTarget(ref) {
         if (typeof window === "undefined")
             return null;
         var existingRoot = ownerDocument === null || ownerDocument === void 0 ? void 0 : ownerDocument.getElementById("root");
+        if (window.location !== window.parent.location) {
+            existingRoot = ownerDocument === null || ownerDocument === void 0 ? void 0 : ownerDocument.getElementById("storybook-portal");
+        }
         if (existingRoot)
             return existingRoot;
         if (ownerDocument === null)
@@ -12579,8 +12582,10 @@ var ConnectButton = function (_a) {
                     React__default["default"].createElement(Connect.Title, { as: "h3", className: "text-lg font-medium leading-6 text-gray-900" },
                         !connected && !connecting && !waiting && "Connect Wallet",
                         connected && !connecting && "Account",
-                        connecting ||
-                            (waiting && "Awaiting confirmation from your wallet...")),
+                        (waiting || connecting) &&
+                            "Awaiting confirmation from your wallet..."),
+                    React__default["default"].createElement("button", { className: "absolute top-5 right-5", onClick: closeModal },
+                        React__default["default"].createElement(Icon, { className: "fill-primary", icon: "close" })),
                     React__default["default"].createElement("div", { className: "mt-4 flex flex-col gap-y-3" },
                         !connected && !connecting && !waiting && (React__default["default"].createElement(React__default["default"].Fragment, null,
                             React__default["default"].createElement(Connect.MetamaskButton, { className: "flex items-center px-4 py-2 text-sm font-medium border text-left border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary" },
@@ -12592,10 +12597,12 @@ var ConnectButton = function (_a) {
                                 React__default["default"].createElement(React__default["default"].Fragment, null,
                                     React__default["default"].createElement(WalletConnectIcon, { className: "h-10 w-10 mr-4" }),
                                     !connected && (React__default["default"].createElement("span", null, "Connect With Wallet Connect")))))),
-                        connecting ||
-                            (waiting && (React__default["default"].createElement("div", { className: "flex items-center justify-center h-20" },
-                                React__default["default"].createElement(Rotate, null)))),
-                        connected && (React__default["default"].createElement(Connect.DisconnectButton, { className: "px-4 py-2 text-sm font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" }, "Disconnect"))))));
+                        (waiting || connecting) && (React__default["default"].createElement("div", { className: "flex items-center justify-center h-20" },
+                            React__default["default"].createElement(Rotate, null))),
+                        connected && account && (React__default["default"].createElement("div", { className: "flex px-2 py-4 border rounded-md border-primary justify-between" },
+                            React__default["default"].createElement("div", null,
+                                React__default["default"].createElement("p", { className: "text-md font-medium" }, trimAccount(account))),
+                            React__default["default"].createElement(Connect.DisconnectButton, { className: "px-2 py-1 text-xs font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75" }, "Disconnect")))))));
         })))));
 };
 var Rotate = function () { return (React__default["default"].createElement(motion.div, { className: "w-8 h-8 bg-primary", animate: {
