@@ -395,6 +395,7 @@ export class PiesService {
             symbol: symbol, 
             decimals: decimals,
             amount: underylingTotals[i].toString(),
+            usdPrice: usdPrice.toString(),
             marginalTVL: marginalTVL,
             marginalTVLPercentage: 0
           });

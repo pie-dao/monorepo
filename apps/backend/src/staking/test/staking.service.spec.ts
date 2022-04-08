@@ -307,24 +307,4 @@ describe('StakingService', () => {
       });      
     });
   });
-
-  describe('getFreeRiders', () => {
-    describe('When getFreeRiders is called', () => {
-      jest.setTimeout(50000);
-      let freeRiders: any; 
-
-      beforeEach(async () => {
-        jest.spyOn(service, 'getFreeRiders');
-        freeRiders = service.getFreeRiders(month, blockNumber, null);
-      });   
-
-      test('then it should call stakingService.getFreeRiders', () => {
-        expect(service.getFreeRiders).toHaveBeenCalled();
-      });
-
-      test('then it should return an array of FreeRiders', () => {
-        expect(typeof freeRiders).toEqual("object");
-      });      
-    });
-  });
 });

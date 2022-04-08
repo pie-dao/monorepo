@@ -129,27 +129,5 @@ describe('StakingController', () => {
         .toThrow(NotFoundException);
       });       
     });
-  });   
-
-  describe('getFreeRiders', () => {
-    describe('When getFreeRiders is called', () => {
-      let freeRiders: any;
-
-      beforeEach(async() => {
-        freeRiders = await controller.getFreeRiders(month, blockNumber, proposals); 
-      });
-
-      test('it should call stakingService.getFreeRiders()', () => {
-        let proposalsIds = proposals.split(",").map(id => '"' + id + '"');
-        expect(service.getFreeRiders).toHaveBeenCalledWith(month, blockNumber, proposalsIds);
-      });
-
-      test('it should throw an error if no records are found', async() => {
-        await expect(controller.getFreeRiders())
-        .rejects
-        .toThrow(NotFoundException);
-      });      
-    });
   });
-
 });
