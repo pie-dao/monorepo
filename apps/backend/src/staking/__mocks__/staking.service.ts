@@ -76,17 +76,6 @@ export const StakingService = jest.fn().mockReturnValue({
       }
     });
   }),
-  getFreeRiders: jest.fn().mockImplementation(() => {
-    return new Promise((resolve, reject) => {
-      let freeRiders = {};
-
-      if(freeRiders) {
-        resolve(freeRiders)
-      } else {
-        reject(new Error());
-      }
-    });
-  }),
   generateEpoch: jest.fn().mockImplementation((
     month: number, 
     distributedRewards: string, 
