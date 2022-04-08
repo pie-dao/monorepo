@@ -17,3 +17,5 @@ coverage.json
 !.yarn/plugins
 !.yarn/sdks
 !.yarn/versions
+
+_scrapbook
