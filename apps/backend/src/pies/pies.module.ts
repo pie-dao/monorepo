@@ -8,8 +8,14 @@ import {
 } from './entities/pie-history.entity';
 import { PieEntity, PieSchema } from './entities/pie.entity';
 import { PiesController } from './pies.controller';
-import { PieRepository } from './pies.repository';
 import { PiesService } from './pies.service';
+import { MongoPieRepository } from './repository/MongoPieRepository';
+import { PieRepository } from './repository/PieRepository';
+
+export const MongoPieRepositoryProvider = {
+  provide: PieRepository,
+  useClass: MongoPieRepository,
+};
 
 @Module({
   imports: [
@@ -23,7 +29,7 @@ import { PiesService } from './pies.service';
     ]),
   ],
   controllers: [PiesController],
-  providers: [PiesService, PieRepository],
-  exports: [PieRepository],
+  providers: [PiesService, MongoPieRepositoryProvider],
+  exports: [MongoPieRepositoryProvider],
 })
 export class PiesModule {}

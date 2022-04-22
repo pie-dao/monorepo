@@ -1,5 +1,5 @@
 import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js';
-import { PieRepository } from 'src/pies/pies.repository';
+import { PieRepository } from 'src/pies/repository/PieRepository';
 import { Command } from './Command';
 
 const DOUGH_PINK = 0xd60a99;

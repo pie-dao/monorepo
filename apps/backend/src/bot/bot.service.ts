@@ -6,8 +6,7 @@ import {
   Client,
   Interaction,
 } from 'discord.js';
-import { basename } from 'path';
-import { PieRepository } from 'src/pies/pies.repository';
+import { PieRepository } from 'src/pies/repository/PieRepository';
 import { Command } from './commands/Command';
 import { FindNavForPie } from './commands/FindNavFor';
 
