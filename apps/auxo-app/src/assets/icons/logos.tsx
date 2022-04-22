@@ -11,9 +11,10 @@ type LogoColorProps = {
 
 export const EthereumIcon = ({ colors }: LogoColorProps) => (
   <svg
+    id="ethereum-logo"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 784.37 1277.39"
-    className="bg-baby-blue-dark rounded-full h-6 w-6"
+    className="logo bg-baby-blue-dark rounded-full h-6 w-6"
   >
     <g id="Layer_x0020_1">
       <metadata id="CorelCorpID_0Corel-Layer" />
@@ -57,12 +58,12 @@ export const EthereumIcon = ({ colors }: LogoColorProps) => (
 
 export const PolygonIcon = ({ colors }: LogoColorProps) => (
   <svg
+    id="matic-logo"
     xmlns="http://www.w3.org/2000/svg"
     version="1.1"
-    id="Layer_1"
     x="0px"
     y="0px"
-    className="bg-baby-blue-dark rounded-full p-1"
+    className="logo bg-baby-blue-dark rounded-full p-1"
     viewBox="0 0 38.4 33.5"
   >
     <g>
@@ -82,6 +83,8 @@ export const PolygonIcon = ({ colors }: LogoColorProps) => (
 
 export const USDCIcon = ({ colors }: LogoColorProps) => (
   <svg
+    className="logo"
+    id="usdc-logo"
     xmlns="http://www.w3.org/2000/svg"
     data-name="86977684-12db-4850-8f30-233a7c267d11"
     viewBox="0 0 2000 2000"
@@ -103,9 +106,10 @@ export const USDCIcon = ({ colors }: LogoColorProps) => (
 
 export const FRAXIcon = ({ colors }: LogoColorProps) => (
   <svg
+    className="logo"
+    id="frax-logo"
     xmlns="http://www.w3.org/2000/svg"
     version="1.1"
-    id="svg8"
     x="0px"
     y="0px"
     viewBox="0 0 570.4 570.4"
@@ -141,6 +145,8 @@ export const FRAXIcon = ({ colors }: LogoColorProps) => (
 
 export const DAIIcon = ({ colors }: LogoColorProps) => (
   <svg
+    className="logo"
+    id="dai-logo"
     xmlns="http://www.w3.org/2000/svg"
     version="1.1"
     shapeRendering="geometricPrecision"
@@ -173,9 +179,10 @@ export const FTMLogo = ({
   const proportions = `h-${height} w-${height}`;
   return (
     <svg
+      id="ftm-logo"
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 32 32"
-      className={proportions}
+      className={'logo ' + proportions}
     >
       <circle
         fill={colors ? colors.bg : themeColors["baby-blue"].dark}
@@ -195,5 +202,5 @@ export const FTMLogo = ({
 };
 
 export const MIMLogo = () => {
-  return <img src={MimiLogoFile} alt="MIM Logo" />;
+  return <img src={MimiLogoFile} className="logo" alt="MIM Logo" id="mim-logo" />;
 };

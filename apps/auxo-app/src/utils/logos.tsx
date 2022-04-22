@@ -12,7 +12,7 @@ const logo = process.env.PUBLIC_URL + "/auxo-icon-green.png";
 
 const AuxoLogo = () => (
   <div className="h-8 w-auto">
-    <img alt="auxo-logo" src={logo} className="object-contain max-w-24" />
+    <img alt="auxo-logo" id="auxo-logo" src={logo} className="logo object-contain max-w-24" />
   </div>
 );
 
@@ -45,6 +45,7 @@ export const logoSwitcher = (
     case "eth": {
       return <EthereumIcon {...props} />;
     }
+    case "auxo":
     default: {
       return <AuxoLogo {...props} />;
     }

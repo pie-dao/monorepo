@@ -40,9 +40,7 @@ export const convertToUnderlying = (
     .div(BigNumber.from(10).pow(decimals));
 
   const stringLabel = ethers.utils.formatUnits(valueBN, decimals);
-
   const label = Math.round(parseFloat(stringLabel));
-
   return {
     value: valueBN.toString(),
     label,
