@@ -7,18 +7,18 @@ import {
   PieHistorySchema,
 } from './entities/pie-history.entity';
 import { PieDocument, PieEntity, PieSchema } from './entities/pie.entity';
-import { PiesRepository } from './pies.repository';
+import { PieRepository } from './pies.repository';
 import { v4 as uuid } from 'uuid';
 import BigNumber from 'bignumber.js';
 
 describe('Given a PieRepository', () => {
-  let target: PiesRepository;
+  let target: PieRepository;
   let app: TestingModule;
 
   beforeEach(async () => {
     app = await Test.createTestingModule({
       controllers: [],
-      providers: [PiesRepository],
+      providers: [PieRepository],
       imports: [
         MongooseModule.forRoot(process.env.MONGO_DB_TEST),
         MongooseModule.forFeature([
@@ -30,7 +30,7 @@ describe('Given a PieRepository', () => {
       ],
     }).compile();
 
-    target = app.get<PiesRepository>(PiesRepository);
+    target = app.get<PieRepository>(PieRepository);
   });
 
   afterEach(async () => {
@@ -92,7 +92,7 @@ describe('Given a PieRepository', () => {
 
       await target.create(pie);
 
-      const result = await target.findByName(name);
+      const result = await target.findOneByName(name);
 
       expect(jsonify(result)).toEqual(jsonify([pie]));
     });

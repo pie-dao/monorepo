@@ -1,8 +1,10 @@
-import { BaseCommandInteraction, Client } from 'discord.js';
-import { PiesRepository } from 'src/pies/pies.repository';
+import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js';
+import { PieRepository } from 'src/pies/pies.repository';
 import { Command } from './Command';
 
-export const FindNavForPie = (piesRepository: PiesRepository): Command => {
+const DOUGH_PINK = 0xd60a99;
+
+export const FindNavForPie = (piesRepository: PieRepository): Command => {
   return {
     name: 'nav',
     description: 'Finds a NAV for a pie',
@@ -22,22 +24,37 @@ export const FindNavForPie = (piesRepository: PiesRepository): Command => {
     async run(_: Client, interaction: BaseCommandInteraction) {
       const selectedPie = interaction.options.get('pie');
 
-      let content: string;
-      if (!selectedPie.value) {
-        content = 'Please specify a pie';
+      let embed: MessageEmbed;
+      if (!selectedPie?.value) {
+        embed = new MessageEmbed({
+          title: 'No pie selected',
+          description: 'Please select a *pie* from the possible choices',
+          timestamp: new Date(),
+          color: DOUGH_PINK,
+        });
       } else {
+        console.log(typeof piesRepository);
+
         const pie = await piesRepository.findOneBySymbol(
           selectedPie.value.toString(),
         );
 
         const nav = pie.history[pie.history.length - 1]?.nav ?? 0.0;
 
-        content = `${pie.name} NAV: ${nav}`;
+        embed = new MessageEmbed({
+          title: `${pie.name}`,
+          description: `
+                    💰 **NAV**     👉 ${nav.toFixed(3)}
+                    📉 **Discount** 👉 1
+                    `,
+          timestamp: new Date(),
+          color: DOUGH_PINK,
+        });
       }
 
       await interaction.followUp({
         ephemeral: true,
-        content,
+        embeds: [embed],
       });
     },
   };

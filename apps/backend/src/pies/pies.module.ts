@@ -8,7 +8,7 @@ import {
 } from './entities/pie-history.entity';
 import { PieEntity, PieSchema } from './entities/pie.entity';
 import { PiesController } from './pies.controller';
-import { PiesRepository } from './pies.repository';
+import { PieRepository } from './pies.repository';
 import { PiesService } from './pies.service';
 
 @Module({
@@ -23,7 +23,7 @@ import { PiesService } from './pies.service';
     ]),
   ],
   controllers: [PiesController],
-  providers: [PiesService, PiesRepository],
-  exports: [PiesRepository],
+  providers: [PiesService, PieRepository],
+  exports: [PieRepository],
 })
 export class PiesModule {}

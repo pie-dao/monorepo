@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { Pie, PieHistory } from './domain/pie';
 import {
   PieHistoryDocument,
@@ -9,7 +9,7 @@ import {
 import { PieDocument, PieEntity } from './entities/pie.entity';
 
 @Injectable()
-export class PiesRepository {
+export class PieRepository {
   constructor(
     @InjectModel(PieEntity.name) private pieModel: Model<PieDocument>,
     @InjectModel(PieHistoryEntity.name)
@@ -42,16 +42,20 @@ export class PiesRepository {
     return pie;
   }
 
-  async findByName(name: string): Promise<Pie[]> {
-    return this.pieModel.find({ name }).populate('history').map(entityToPie);
+  async findOneByName(name: string): Promise<Pie | null> {
+    const result = await this.pieModel
+      .findOne({ name })
+      .populate('history')
+      .exec();
+    return result ? entityToPie([result])[0] : null;
   }
 
-  async findOneBySymbol(symbol: string): Promise<Pie> {
+  async findOneBySymbol(symbol: string): Promise<Pie | null> {
     const result = await this.pieModel
       .findOne({ symbol })
       .populate('history')
       .exec();
-    return entityToPie([result])[0];
+    return result ? entityToPie([result])[0] : null;
   }
 
   async findAll(): Promise<Pie[]> {

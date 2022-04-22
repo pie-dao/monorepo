@@ -6,7 +6,8 @@ import {
   Client,
   Interaction,
 } from 'discord.js';
-import { PiesRepository } from 'src/pies/pies.repository';
+import { basename } from 'path';
+import { PieRepository } from 'src/pies/pies.repository';
 import { Command } from './commands/Command';
 import { FindNavForPie } from './commands/FindNavFor';
 
@@ -25,14 +26,16 @@ export class BotService {
     intents: [],
   });
 
-  constructor(private piesRepository: PiesRepository) {
-    this.init();
-    this.commands.push(FindNavForPie(this.piesRepository));
+  constructor(private pieRepository: PieRepository) {
+    this.commands.push(FindNavForPie(pieRepository));
+    this.onReady();
+    this.onInteractionCreate();
+    this.initialize();
   }
 
   @Interval(EVERY_HOUR)
   public async updateNAVChannels(): Promise<void> {
-    const pies = await this.piesRepository.findAll();
+    const pies = await this.pieRepository.findAll();
     const guilds = await this.client.guilds.fetch();
     for (const [id] of guilds.entries()) {
       const guild = await this.client.guilds.fetch(id);
@@ -81,10 +84,18 @@ export class BotService {
     }
   }
 
-  private async init() {
-    this.onReady();
-    this.onInteractionCreate();
+  public async initialize() {
     await this.client.login(this.token);
+  }
+
+  private onReady() {
+    this.client.on('ready', async () => {
+      if (!this.client.user || !this.client.application) {
+        return;
+      }
+      await this.client.application.commands.set(this.commands);
+      this.logger.log(`${this.client.user.username} is online`);
+    });
   }
 
   private onInteractionCreate() {
@@ -107,15 +118,5 @@ export class BotService {
     await interaction.deferReply();
 
     slashCommand.run(this.client, interaction);
-  }
-
-  private onReady() {
-    this.client.on('ready', async () => {
-      if (!this.client.user || !this.client.application) {
-        return;
-      }
-      await this.client.application.commands.set(this.commands);
-      this.logger.log(`${this.client.user.username} is online`);
-    });
   }
 }

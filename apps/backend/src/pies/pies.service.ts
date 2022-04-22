@@ -98,7 +98,8 @@ export class PiesService {
     @InjectModel(PieEntity.name) private pieModel: Model<PieDocument>,
     @InjectModel(PieHistoryEntity.name)
     private pieHistoryModel: Model<PieHistoryDocument>,
-    @InjectModel(CgCoinEntity.name) private cgCoinModel: Model<CgCoinDocument>,
+    @InjectModel(CgCoinEntity.name)
+    private cgCoinModel: Model<CgCoinDocument>,
   ) {}
 
   @Command({
@@ -161,9 +162,15 @@ export class PiesService {
                 image: coinModel.value.image,
                 contract_address: coinModel.value.contract_address,
                 market_data: {
-                  current_price: { usd: lodash.get(currentPrice, 1) },
-                  market_cap: { usd: lodash.get(marketCap, 1) },
-                  total_volume: { usd: lodash.get(totalVolume, 1) },
+                  current_price: {
+                    usd: lodash.get(currentPrice, 1),
+                  },
+                  market_cap: {
+                    usd: lodash.get(marketCap, 1),
+                  },
+                  total_volume: {
+                    usd: lodash.get(totalVolume, 1),
+                  },
                 },
               },
             }),
@@ -452,7 +459,7 @@ export class PiesService {
         const response = await this.httpService.get(url).toPromise();
         const prices = response.data;
 
-        // creating the pieHistory Enity...
+        // creating the pieHistory Entity...
         const history = new this.pieHistoryModel({
           timestamp: timestamp,
           amount: 0,
@@ -676,7 +683,7 @@ export class PiesService {
     });
   }
 
-  //! TODO: something is fishy in these methods as these operations doesn't return a promise! 👇
+  //! TODO: 👇 something is fishy in these methods as these operations doesn't return a promise!
   getPieByAddress(address: string): Promise<PieEntity> {
     return new Promise(async (resolve, reject) => {
       const pies = await this.pieModel
