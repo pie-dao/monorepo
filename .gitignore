@@ -11,5 +11,10 @@ cache/
 coverage/
 .coverage_cache/
 coverage.json
-.yarn/
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
 _scrapbook
