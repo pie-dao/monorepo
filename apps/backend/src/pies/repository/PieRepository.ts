@@ -16,14 +16,17 @@ export class PieRepositoryStub extends PieRepository {
     this.pies.push(pie);
     return Promise.resolve(pie);
   }
+
   findOneByName(name: string): Promise<Pie> {
     const result = this.pies.find((p) => p.name === name);
     return result ? Promise.resolve(result) : Promise.resolve(null);
   }
+
   findOneBySymbol(symbol: string): Promise<Pie> {
     const result = this.pies.find((p) => p.symbol === symbol);
     return result ? Promise.resolve(result) : Promise.resolve(null);
   }
+
   findAll(): Promise<Pie[]> {
     return Promise.resolve(this.pies);
   }
