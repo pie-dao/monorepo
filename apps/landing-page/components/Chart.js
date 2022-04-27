@@ -30,12 +30,14 @@ const Chart = ({ play, sentiment }) => {
       const lastThreeMonthsPrices = playTickers.prices?.filter(
         (d) => getDate(d) > threeMonths
       );
-      const priceDiffThreeMonths =
-        getPieValue(lastThreeMonthsPrices[lastThreeMonthsPrices.length - 1]) -
-        getPieValue(lastThreeMonthsPrices[0]);
-      setPriceDiffThreeMonthsPerc(
-        (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100
-      );
+      if (lastThreeMonthsPrices) {
+        const priceDiffThreeMonths =
+          getPieValue(lastThreeMonthsPrices[lastThreeMonthsPrices.length - 1]) -
+          getPieValue(lastThreeMonthsPrices[0]);
+        setPriceDiffThreeMonthsPerc(
+          (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100
+        );
+      }
     }
   }, [playTickers]);
 
