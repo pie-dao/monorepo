@@ -100,7 +100,7 @@ export let Description = forwardRefWithAs(function Description<
   TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG
 >(props: Props<TTag, {}, "id">, ref: Ref<HTMLParagraphElement>) {
   let context = useDescriptionContext();
-  let id = `headlessui-description-${useId()}`;
+  let id = `piedao-description-${useId()}`;
   let descriptionRef = useSyncRefs(ref);
 
   useIsoMorphicEffect(() => context.register(id), [id, context.register]);

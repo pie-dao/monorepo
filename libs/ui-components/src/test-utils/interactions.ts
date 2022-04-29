@@ -347,6 +347,16 @@ export function getNetworkSwitcherOptions(): HTMLElement[] {
   return Array.from(document.querySelectorAll('[role="option"]'));
 }
 
+export function getConnectButton(): HTMLElement | null {
+  return document.querySelector('button,[role="button"],[id="connect-button"]');
+}
+
+export function getConnectMetamaskButton(): HTMLElement | null {
+  return document.querySelector(
+    'button,[role="button"],[id="piedao-metamask-connect-button"]'
+  );
+}
+
 function getFocusableElements(container = document.body) {
   if (!container) return [];
   return Array.from(container.querySelectorAll(focusableSelector));
@@ -372,7 +382,7 @@ export function assertActiveNetworkSwticherOption(
   }
 }
 
-export function assertListboxButton(
+export function assertNetworkSwitcherButton(
   options: {
     attributes?: Record<string, string | null>;
     textContent?: string;
@@ -427,7 +437,26 @@ export function assertListboxButton(
       );
     }
   } catch (err) {
-    if (err instanceof Error) Error.captureStackTrace(err, assertListboxButton);
+    if (err instanceof Error)
+      Error.captureStackTrace(err, assertNetworkSwitcherButton);
+    throw err;
+  }
+}
+
+export function assertConnectButton(
+  options: {
+    textContent: string;
+  },
+  button = getConnectButton()
+) {
+  try {
+    if (button === null) return expect(button).not.toBe(null);
+
+    // Ensure connect button have these properties
+    expect(button).toHaveAttribute("id");
+    expect(button).toHaveTextContent(options.textContent);
+  } catch (err) {
+    if (err instanceof Error) Error.captureStackTrace(err, assertConnectButton);
     throw err;
   }
 }

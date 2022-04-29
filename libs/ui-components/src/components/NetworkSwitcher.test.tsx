@@ -1,21 +1,10 @@
-import React, { createElement, useState } from "react";
+import React, { createElement } from "react";
 import { setImmediate, clearImmediate } from "timers";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { generateTestingUtils } from "eth-testing";
-import { ethers } from "ethers";
 import { NetworkSwitcher } from "./NetworkSwitcher";
-import * as chainIdUtils from "../test-utils/network";
 import { chainMap } from "../utils/network";
-import { Web3ReactProvider } from "@web3-react/core";
 import { suppressConsoleLogs } from "../test-utils/suppress-console-logs";
-import {
-  click,
-  getNetworkSwitcherOptions,
-  getNetworkSwitcherButton,
-  mouseMove,
-  Keys,
-  press,
-} from "../test-utils/interactions";
 
 jest.mock("../hooks/use-id");
 
@@ -81,31 +70,6 @@ describe("safeguards", () => {
 
 describe("Rendering", () => {
   describe("NetworkSwitcher", () => {
-    beforeEach(() => {
-      mainNetTestingUtils.mockReadonlyProvider();
-      readTestingUtils.mockReadonlyProvider({ chainId: "0x1" });
-
-      mainNetTestingUtils.ens.mockAllToEmpty();
-
-      jest
-        .spyOn(chainIdUtils, "getChainProvider")
-        .mockImplementation((chainId: string) => {
-          if (chainId === "0x1")
-            return new ethers.providers.Web3Provider(
-              mainNetTestingUtils.getProvider() as any
-            );
-          return new ethers.providers.Web3Provider(
-            readTestingUtils.getProvider() as any
-          );
-        });
-    });
-
-    afterEach(() => {
-      mainNetTestingUtils.clearAllMocks();
-      metaMaskTestingUtils.clearAllMocks();
-      readTestingUtils.clearAllMocks();
-    });
-
     it(
       "should be possible to render a Listbox using a render prop",
       suppressConsoleLogs(async () => {

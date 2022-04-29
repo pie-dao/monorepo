@@ -119,7 +119,7 @@ function _render<TTag extends ElementType, TSlot>(
     ...passThroughProps
   } = omit(props, ["unmount", "static"]);
 
-  // This allows us to use `<HeadlessUIComponent as={MyComponent} refName="innerRef" />`
+  // This allows us to use `<PieDaoComponent as={MyComponent} refName="innerRef" />`
   let refRelatedProps = props.ref !== undefined ? { [refName]: props.ref } : {};
 
   let resolvedChildren = (

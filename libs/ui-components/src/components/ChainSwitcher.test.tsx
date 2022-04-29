@@ -9,7 +9,7 @@ import {
   click,
   getNetworkSwitcherOptions,
   getNetworkSwitcherButton,
-  assertListboxButton,
+  assertNetworkSwitcherButton,
   NetworkSwitcherState,
 } from "../test-utils/interactions";
 
@@ -64,7 +64,7 @@ describe("Rendering", () => {
       let options = getNetworkSwitcherOptions();
       await waitFor(() => click(options[1]));
 
-      assertListboxButton({
+      assertNetworkSwitcherButton({
         state: NetworkSwitcherState.InvisibleHidden,
         textContent: "Polygon Mainnet",
       });

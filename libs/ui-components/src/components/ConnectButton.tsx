@@ -39,6 +39,7 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
           "px-4 py-2 text-md font-medium text-white bg-primary rounded-lg border-2 border-current hover:bg-transparent hover:text-primary",
           className
         )}
+        id="connect-button"
       >
         {active && account && ensName}
         {!account && "Connect Wallet"}
