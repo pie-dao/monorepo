@@ -9,8 +9,6 @@ import { suppressConsoleLogs } from "../test-utils/suppress-console-logs";
 jest.mock("../hooks/use-id");
 
 const metaMaskTestingUtils = generateTestingUtils({ providerType: "MetaMask" });
-const readTestingUtils = generateTestingUtils();
-const mainNetTestingUtils = generateTestingUtils();
 
 let originalEth: unknown;
 
