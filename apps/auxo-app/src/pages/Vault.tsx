@@ -10,12 +10,12 @@ import {
   VEDoughStatusRow,
   FloatingBackground,
 } from "../components/Vault/Details/StatusRows";
-import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { Vault } from "../store/vault/Vault";
 import { useAppDispatch } from "../hooks";
 import { setSelectedVault } from "../store/vault/vault.slice";
 import VaultCapSlider from "../components/Vault/Details/VaultCapSlider";
+import { useRouter } from "next/router";
 
 function VaultContentBlocks({
   vault,
@@ -51,14 +51,16 @@ function VaultActionBlocks({
 
 function VaultDetails(): JSX.Element {
   const vault = useSelectedVault();
-  const params = useParams();
   const dispatch = useAppDispatch();
+  const {
+    query: { vaultId },
+  } = useRouter();
 
   useEffect(() => {
-    if (!vault && params && params.vaultId) {
-      dispatch(setSelectedVault(params.vaultId));
+    if (!vault && vaultId && typeof vaultId === "string") {
+      dispatch(setSelectedVault(vaultId));
     }
-  }, [vault, dispatch, params]);
+  }, [vault, dispatch, vaultId]);
 
   return (
     <section className="">

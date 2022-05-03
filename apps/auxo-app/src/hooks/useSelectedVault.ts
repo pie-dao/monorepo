@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import { useAppDispatch } from ".";
 import { useProxySelector } from "../store";
 import { Balance, Vault } from "../store/vault/Vault";
@@ -9,11 +9,11 @@ export const useNavigateToVault = () => {
   /**
    * @returns a function that can be invoked to navigate to the passed vault page
    */
-  const navigate = useNavigate();
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const selectVault = (addr: string): void => {
     dispatch(setSelectedVault(addr));
-    navigate(`/vault/${addr}`);
+    router.push(`/vault/${addr}`);
   };
   return selectVault;
 };

@@ -1,11 +1,11 @@
 import { useWeb3React } from "@web3-react/core";
 import { IoChevronBack, IoWarningOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import { useApy } from "../../../hooks/useApy";
-import { Vault } from "../../../store/vault/Vault";
-import { logoSwitcher } from "../../../utils/logos";
-import { getProof } from "../../../utils/merkleProof";
-import { chainMap, SUPPORTED_CHAIN_ID } from "../../../utils/networks";
+import { useApy } from "@hooks/useApy";
+import { Vault } from "@store/vault/Vault";
+import { logoSwitcher } from "@utils/logos";
+import { getProof } from "@utils/merkleProof";
+import { chainMap, SUPPORTED_CHAIN_ID } from "@utils/networks";
+import { useRouter } from "next/router";
 
 export const VEDoughChecker = (): JSX.Element => {
   const { account } = useWeb3React();
@@ -27,14 +27,12 @@ export const VEDoughChecker = (): JSX.Element => {
 };
 
 export const VEDoughStatusRow = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   return (
     <div className="flex flex-wrap items-center justify-between mt-5 px-1 sm:px-0 sm:mt-0">
       <div className="flex items-center text-baby-blue-dark">
         <button
-          onClick={() => {
-            navigate("/");
-          }}
+          onClick={() => router.push("/")}
           className="bg-white rounded-md shadow-sm sm:shadow-md p-2 sm:p-3"
         >
           <IoChevronBack />

@@ -8,8 +8,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { AccountConnector, AlertButton } from "./MenuButtons";
 import { Divider } from "../UI/divider";
 import { RiCloseCircleFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
 import NetworkSwitcher from "../UI/networkDropdown";
+import { useRouter } from "next/router";
 
 const auxoLogo = process.env.PUBLIC_URL + "/auxo-logo.png";
 
@@ -123,7 +123,7 @@ const DesktopMenu = ({
 
 const Header = () => {
   useConnectedWallet();
-  const navigate = useNavigate();
+  const router = useRouter();
   const { account } = useWeb3React();
   return (
     <>
@@ -140,7 +140,7 @@ const Header = () => {
       >
         <div
           className="w-24 sm:w-32 md:w-36 my-5 lg:my-0 ml-1 sm:ml-0 cursor-pointer"
-          onClick={() => navigate("/")}
+          onClick={() => router.push("/")}
         >
           <img src={auxoLogo} alt="auxo-logo" className="object-contain" />
         </div>

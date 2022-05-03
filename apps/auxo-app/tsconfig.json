@@ -27,6 +27,7 @@
       "@store/*": ["store/*"],
       "@errors/*": ["errors/*"],
       "@constants/*": ["constants/*"],
+      "@utils/*": ["utils/*"],
     }
   },
   "include": [
