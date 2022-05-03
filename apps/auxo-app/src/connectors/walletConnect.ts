@@ -10,7 +10,7 @@ import { Buffer } from "buffer";
 
 // need to add global Buffer to avoid typedArraytoBuffer error
 // @ts-ignore
-window.Buffer = Buffer;
+if (typeof window !== "undefined") window.Buffer = Buffer;
 
 export const URI_AVAILABLE = "URI_AVAILABLE";
 const __DEV__ = true;

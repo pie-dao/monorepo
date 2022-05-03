@@ -7,6 +7,9 @@ export const useWindowWide = (size: number): boolean => {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {
+    // SSR
+    if (typeof window === "undefined") return;
+
     function handleResize() {
       setWidth(window.innerWidth);
     }
