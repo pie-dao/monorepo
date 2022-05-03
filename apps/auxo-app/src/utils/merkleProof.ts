@@ -1,6 +1,6 @@
 import { BytesLike } from "ethers";
-import MerkleProofDev from "../static/stakers-merkle-tree.dev.json";
-import MerkleProofProd from "../static/stakers-merkle-tree.production.json";
+import MerkleProofDev from "../../public/stakers-merkle-tree.dev.json";
+import MerkleProofProd from "../../public/stakers-merkle-tree.production.json";
 
 const isDevEnvironment = process.env.NODE_ENV === "development";
 

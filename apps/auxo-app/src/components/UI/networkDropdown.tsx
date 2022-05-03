@@ -4,9 +4,9 @@ import { useMemo } from "react";
 import { Fragment, ReactNode } from "react";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
 import { logoSwitcher } from "../../utils/logos";
-import { changeNetwork, NetworkDetail } from "../../utils/networks";
-
 import {
+  changeNetwork,
+  NetworkDetail,
   chainMap,
   isChainSupported,
   SUPPORTED_CHAIN_ID,

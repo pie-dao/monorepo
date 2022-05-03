@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "commit": "cz",
-    "start:auxo-app": "yarn workspace @piedao/auxo-app start",
+    "start:auxo-app": "yarn workspace @piedao/auxo-app dev",
     "test:auxo-app": "yarn workspace @piedao/auxo-app test:unit",
     "coverage:auxo-app": "yarn workspace @piedao/auxo-app test:coverage",
     "build": "yarn workspaces foreach --parallel --verbose run build",
