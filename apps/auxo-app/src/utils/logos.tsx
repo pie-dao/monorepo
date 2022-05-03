@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   DAIIcon,
   EthereumIcon,
@@ -7,12 +8,11 @@ import {
   PolygonIcon,
   USDCIcon,
 } from "../assets/icons/logos";
-
-const logo = process.env.PUBLIC_URL + "/auxo-icon-green.png";
+import Logo from "/public/auxo-icon-green.png";
 
 const AuxoLogo = () => (
   <div className="h-8 w-auto">
-    <img alt="auxo-logo" src={logo} className="object-contain max-w-24" />
+    <Image alt="auxo-logo" src={Logo} className="object-contain max-w-24" />
   </div>
 );
 

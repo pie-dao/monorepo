@@ -11,8 +11,7 @@ import { getProof } from "../../../utils/merkleProof";
 import StyledButton from "../../UI/button";
 import LoadingSpinner from "../../UI/loadingSpinner";
 import ExternalUrl from "../../UI/url";
-
-const veDoughLogo = process.env.PUBLIC_URL + "/veDough-only.png";
+import veDoughLogo from "public/veDough-only.png";
 
 const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const needsToVerifyString =
@@ -52,7 +51,12 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
         <>
           {!isDepositor && (
             <div className="m-auto w-1/2">
-              <img src={veDoughLogo} alt="veDough-holders-only" />
+              <img
+                src={veDoughLogo}
+                alt="veDough-holders-only"
+                width={196}
+                height={64}
+              />
             </div>
           )}
           <p className="my-3 text-lg text-gray-700">

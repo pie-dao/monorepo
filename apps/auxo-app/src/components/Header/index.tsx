@@ -1,4 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
+import Image from "next/image";
 import WalletModal from "./WalletModal";
 import { useEffect, useState } from "react";
 import { useWeb3Cache } from "../../hooks/useCachedWeb3";
@@ -10,8 +11,7 @@ import { Divider } from "../UI/divider";
 import { RiCloseCircleFill } from "react-icons/ri";
 import NetworkSwitcher from "../UI/networkDropdown";
 import { useRouter } from "next/router";
-
-const auxoLogo = process.env.PUBLIC_URL + "/auxo-logo.png";
+import auxoLogo from "public/auxo-logo.png";
 
 const useFallBack = () => {
   const { active, activate } = useWeb3React();
@@ -142,7 +142,7 @@ const Header = () => {
           className="w-24 sm:w-32 md:w-36 my-5 lg:my-0 ml-1 sm:ml-0 cursor-pointer"
           onClick={() => router.push("/")}
         >
-          <img src={auxoLogo} alt="auxo-logo" className="object-contain" />
+          <Image src={auxoLogo} alt="auxo-logo" width={144} height={36} />
         </div>
         <div className="hidden md:flex justify-end items-center">
           <DesktopMenu account={account} />

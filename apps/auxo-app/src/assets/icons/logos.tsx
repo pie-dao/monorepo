@@ -1,6 +1,6 @@
+import Image from "next/image";
 import themeColors from "../../tailwind/colors";
-
-const MimiLogoFile = process.env.PUBLIC_URL + "/MIMLogo.png";
+import MimiLogoFile from "public/MIMLogo.png";
 
 type LogoColorProps = {
   colors?: {
@@ -195,5 +195,5 @@ export const FTMLogo = ({
 };
 
 export const MIMLogo = () => {
-  return <img src={MimiLogoFile} alt="MIM Logo" />;
+  return <Image src={MimiLogoFile} alt="MIM Logo" height={32} width={32} />;
 };
