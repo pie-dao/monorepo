@@ -1,20 +1,20 @@
-import { useSelectedVault } from "../hooks/useSelectedVault";
-import DepositWithdrawSwitcher from "../components/Vault/Actions/DepositWithdrawSwitcher";
+import { useSelectedVault } from "../src/hooks/useSelectedVault";
+import DepositWithdrawSwitcher from "../src/components/Vault/Actions/DepositWithdrawSwitcher";
 import {
   VaultExtendedInformationCard,
   VaultStrategiesCard,
-} from "../components/Vault/Details/Cards";
-import VaultSummaryUser from "../components/Vault/Details/VaultSummaryUser";
+} from "../src/components/Vault/Details/Cards";
+import VaultSummaryUser from "../src/components/Vault/Details/VaultSummaryUser";
 import {
   VaultPoolAPY,
   VEDoughStatusRow,
   FloatingBackground,
-} from "../components/Vault/Details/StatusRows";
+} from "../src/components/Vault/Details/StatusRows";
 import { useEffect } from "react";
-import { Vault } from "../store/vault/Vault";
-import { useAppDispatch } from "../hooks";
-import { setSelectedVault } from "../store/vault/vault.slice";
-import VaultCapSlider from "../components/Vault/Details/VaultCapSlider";
+import { Vault } from "../src/store/vault/Vault";
+import { useAppDispatch } from "../src/hooks";
+import { setSelectedVault } from "../src/store/vault/vault.slice";
+import VaultCapSlider from "../src/components/Vault/Details/VaultCapSlider";
 import { useRouter } from "next/router";
 
 function VaultContentBlocks({

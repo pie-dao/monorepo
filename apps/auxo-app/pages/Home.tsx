@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import { SUPPORTED_CHAINS } from "../utils/networks";
-import { SetStateType } from "../types/utilities";
+import { SUPPORTED_CHAINS } from "../src/utils/networks";
+import { SetStateType } from "../src/types/utilities";
 import { useEffect } from "react";
-import { useWindowWide } from "../hooks/useWindowWidth";
-import VaultCardView from "../components/Vault/Home/VaultCard";
-import VaultTable from "../components/Vault/Home/VaultTable";
+import { useWindowWide } from "../src/hooks/useWindowWidth";
+import VaultCardView from "../src/components/Vault/Home/VaultCard";
+import VaultTable from "../src/components/Vault/Home/VaultTable";
 import {
   initialTableState,
   useVaultTableData,
-} from "../hooks/useVaultTableRows";
+} from "../src/hooks/useVaultTableRows";
 import { useGlobalFilter, useSortBy, useTable } from "react-table";
-import { MenuTransition } from "../components/UI/networkDropdown";
+import { MenuTransition } from "../src/components/UI/networkDropdown";
 import { Menu } from "@headlessui/react";
 import { FaCheck, FaChevronDown } from "react-icons/fa";
 
