@@ -12,7 +12,6 @@ coverage/
 .coverage_cache/
 coverage.json
 .yarn/*
-!.yarn/cache
 !.yarn/releases
 !.yarn/plugins
 !.yarn/sdks
