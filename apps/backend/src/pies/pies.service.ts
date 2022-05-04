@@ -6,9 +6,7 @@ import { PieDto } from './dto/pies.dto';
 import { PieDocument, PieEntity } from './entities/pie.entity';
 import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
 import { ethers } from 'ethers';
-import * as pieGetterABI from './abis/pieGetterABI.json';
-import * as erc20 from './abis/erc20.json';
-import * as erc20byte32 from './abis/erc20byte32.json';
+import { pieGetterABI, erc20, erc20byte32 } from './'
 import { PieHistoryDocument, PieHistoryEntity } from './entities/pie-history.entity';
 import { BigNumber } from 'bignumber.js';
 import { HttpService } from '@nestjs/axios';

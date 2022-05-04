@@ -1,20 +1,58 @@
-node_modules
+# compiled output
+node_modules/
+dist/
+tmp/
+out-tsc/
 build
-.vscode
-.env
 artifacts/
 typechain/
 cache/
-.coverage/
+.yarn/
+.next/
+out/
+.vercel/
+
+# testing
+coverage/
 .coverage_artifacts/
 .coverage_contracts/
-coverage/
 .coverage_cache/
 coverage.json
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
 
-_scrapbook
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode
+
+# Env file
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# pnp
+.pnp/
+.pnp.js
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# misc
+.sass-cache/
+connect.lock/
+libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+typings/
+*.pem
+.DS_Store
+Thumbs.db

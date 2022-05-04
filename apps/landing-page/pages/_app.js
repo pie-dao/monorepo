@@ -1,5 +1,6 @@
 import "../styles/globals.css";
-import "@piedao/ui-components/public/output.css";
+// TODO: 👇 figure out how to get rollup working with nx
+import "@shared/util-ui-components/public/output.css";
 
 import Layout from "../components/Layout";
 

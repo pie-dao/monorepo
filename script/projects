@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+
+source includes/projects
+
+echo "Current projects (alias=project name):"
+echo ""
+for x in "${!project_names[@]}"; do printf "%s=%s\n" "$x" "${project_names[$x]}" ; done
+echo ""
