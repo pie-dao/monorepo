@@ -22,6 +22,7 @@ export type UnderlyingAsset = {
   amount: string;
   usdPrice: string;
   symbol?: string;
+  price?: Record<string, number>;
   decimals?: number;
   marginalTVL?: BigNumber;
   marginalTVLPercentage?: number;
