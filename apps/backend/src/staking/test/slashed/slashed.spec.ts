@@ -22,7 +22,7 @@ and include the compound/claim/unclaim edge cases.
 describe('Slashing Mechanism Tests', () => {
   let module: TestingModule;
 
-  let votes_epochs = [
+  const votes_epochs = [
     // 31/10/2021
     {
       windowIndex: 1,
@@ -61,7 +61,7 @@ describe('Slashing Mechanism Tests', () => {
     },
   ];
 
-  let { stakers, accounts } = StakersStub();
+  const { stakers, accounts } = StakersStub();
   let service: StakingService;
   let provider: any;
 
@@ -89,7 +89,7 @@ describe('Slashing Mechanism Tests', () => {
   });
 
   describe('Generate Epoch 1', () => {
-    let epoch = votes_epochs[0];
+    const epoch = votes_epochs[0];
     jest.setTimeout(100000);
     let generatedEpoch = null;
 
@@ -114,7 +114,7 @@ describe('Slashing Mechanism Tests', () => {
 
       const ethDaterHelper = new ethDater(provider);
 
-      let blockNumber = await ethDaterHelper.getDate(
+      const blockNumber = await ethDaterHelper.getDate(
         epoch.timestamp * 1000,
         true,
       );
@@ -178,7 +178,7 @@ describe('Slashing Mechanism Tests', () => {
   });
 
   describe('Generate Epoch 2', () => {
-    let epoch = votes_epochs[1];
+    const epoch = votes_epochs[1];
     jest.setTimeout(100000);
     let generatedEpoch = null;
 
@@ -203,7 +203,7 @@ describe('Slashing Mechanism Tests', () => {
 
       const ethDaterHelper = new ethDater(provider);
 
-      let blockNumber = await ethDaterHelper.getDate(
+      const blockNumber = await ethDaterHelper.getDate(
         epoch.timestamp * 1000,
         true,
       );
@@ -264,7 +264,7 @@ describe('Slashing Mechanism Tests', () => {
   });
 
   describe('Generate Epoch 3', () => {
-    let epoch = votes_epochs[2];
+    const epoch = votes_epochs[2];
 
     jest.setTimeout(100000);
     let generatedEpoch = null;
@@ -290,7 +290,7 @@ describe('Slashing Mechanism Tests', () => {
 
       const ethDaterHelper = new ethDater(provider);
 
-      let blockNumber = await ethDaterHelper.getDate(
+      const blockNumber = await ethDaterHelper.getDate(
         epoch.timestamp * 1000,
         true,
       );
@@ -356,7 +356,7 @@ describe('Slashing Mechanism Tests', () => {
   });
 
   describe('Generate Epoch 4', () => {
-    let epoch = votes_epochs[3];
+    const epoch = votes_epochs[3];
 
     jest.setTimeout(100000);
     let generatedEpoch = null;
@@ -382,7 +382,7 @@ describe('Slashing Mechanism Tests', () => {
 
       const ethDaterHelper = new ethDater(provider);
 
-      let blockNumber = await ethDaterHelper.getDate(
+      const blockNumber = await ethDaterHelper.getDate(
         epoch.timestamp * 1000,
         true,
       );

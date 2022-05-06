@@ -16,11 +16,11 @@ describe('StakingController', () => {
   let controller: StakingController;
   let service: StakingService;
 
-  let blockNumber = 13527858;
-  let month = 10;
-  let distributedRewards = '1350000';
-  let windowIndex = 0;
-  let proposals =
+  const blockNumber = 13527858;
+  const month = 10;
+  const distributedRewards = '1350000';
+  const windowIndex = 0;
+  const proposals =
     'QmRkF9A2NigXcBBFfASnM7akNvAo6c9jgNxpt1faX6hvjK,QmebDo3uTVJ5bHWgYhf7CvcK7by1da1WUX4jw5uX6M7EUW,QmRakdstZdU1Mx1vYhjon8tYnv5o1dkir8v3HDBmmnCGUc';
 
   beforeEach(async () => {
@@ -99,7 +99,7 @@ describe('StakingController', () => {
       });
 
       test('then it should return an Epoch', () => {
-        let epochs = EpochsStub();
+        const epochs = EpochsStub();
         expect(epoch).toEqual(epochs[epochs.length - 1]);
       });
 

@@ -16,78 +16,64 @@ export class TasksService {
 
   constructor(private httpService: HttpService) {}
 
-  getKpiAirdrop(blockNumber: number): Promise<AirdropResponse> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let veBalances: AccountVeBalance[] = [];
-        let balances: AccountVeBalance[];
+  async getKpiAirdrop(blockNumber: number): Promise<AirdropResponse> {
+    let veBalances: AccountVeBalance[] = [];
+    let balances: AccountVeBalance[];
 
-        balances = await this.fetchVeDoughBalances(
-          this.GRAPH_MAX_PAGE_LENGTH,
-          '',
-          blockNumber,
-        );
+    balances = await this.fetchVeDoughBalances(
+      this.GRAPH_MAX_PAGE_LENGTH,
+      '',
+      blockNumber,
+    );
 
-        while (balances.length > 0) {
-          veBalances = veBalances.concat(balances);
-          balances = await this.fetchVeDoughBalances(
-            this.GRAPH_MAX_PAGE_LENGTH,
-            veBalances[veBalances.length - 1].id,
-            blockNumber,
-          );
-        }
+    while (balances.length > 0) {
+      veBalances = veBalances.concat(balances);
+      balances = await this.fetchVeDoughBalances(
+        this.GRAPH_MAX_PAGE_LENGTH,
+        veBalances[veBalances.length - 1].id,
+        blockNumber,
+      );
+    }
 
-        let response: AirdropResponse = this.getResponse(veBalances);
+    const response: AirdropResponse = this.getResponse(veBalances);
 
-        resolve(response);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
-    });
+    return response;
   }
 
-  private fetchVeDoughBalances(
+  private async fetchVeDoughBalances(
     first: number,
     lastID: string,
     blockNumber: number,
   ): Promise<AccountVeBalance[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let response = await this.httpService
-          .post(this.graphUrl, {
-            query: `{
+    const response = await this.httpService
+      .post(this.graphUrl, {
+        query: `{
               stakers(first: ${first}, block: { number: ${blockNumber} }, where: { id_gt: "${lastID}" }) {
                 id
                 accountVeTokenBalance
               }
             }`,
-          })
-          .toPromise();
+      })
+      .toPromise();
 
-        resolve(response.data.data.stakers);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
-    });
+    return response.data.data.stakers;
   }
 
   private getResponse(veBalances: AccountVeBalance[]): AirdropResponse {
     const AIRDROP_UNITS = ethers.utils.parseEther(this.KPI_AIRDROP_AMOUNT); // 10 millions KPIs
-    let totalVeDoughs = veBalances.reduce(
+    const totalVeDoughs = veBalances.reduce(
       (sum, { accountVeTokenBalance }) =>
         sum.add(BigNumber.from(accountVeTokenBalance)),
       BigNumber.from(0),
     );
-    let proRata = AIRDROP_UNITS.mul(BigNumber.from(1e15)).div(totalVeDoughs); // 24 decimals
+    const proRata = AIRDROP_UNITS.mul(BigNumber.from(1e15)).div(totalVeDoughs); // 24 decimals
 
     let airdropped = BigNumber.from(0);
-    let airdropAmounts: AirdropAmount[] = [];
+    const airdropAmounts: AirdropAmount[] = [];
 
     veBalances.forEach(({ id, accountVeTokenBalance }): any => {
-      let userBalance = BigNumber.from(accountVeTokenBalance);
-      let proRataAmount = proRata.mul(userBalance).div(BigNumber.from(1e15));
+      const userBalance = BigNumber.from(accountVeTokenBalance);
+      const proRataAmount = proRata.mul(userBalance).div(BigNumber.from(1e15));
       airdropped = airdropped.add(proRataAmount);
       airdropAmounts.push({
         id: id,
@@ -95,7 +81,7 @@ export class TasksService {
       } as AirdropAmount);
     });
 
-    let airdroppedString = ethers.utils.formatEther(airdropped.toString());
+    const airdroppedString = ethers.utils.formatEther(airdropped.toString());
 
     return <AirdropResponse>{
       amount: airdroppedString,

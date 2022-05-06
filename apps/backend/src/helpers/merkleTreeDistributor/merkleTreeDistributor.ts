@@ -54,36 +54,29 @@ export class MerkleTreeDistributor {
     return { proRata: proRata, totalVeDoughSupply: totalVeDoughSupply };
   }
 
-  private getUnclaimed(rewards, epoch: EpochEntity): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const claims = epoch.merkleTree.claims;
+  private getUnclaimed(rewards, epoch: EpochEntity): any {
+    const claims = epoch.merkleTree.claims;
 
-        let unclaimedTokens = new Decimal(0);
-        let unclaimed = [];
+    let unclaimedTokens = new Decimal(0);
+    const unclaimed = [];
 
-        Object.keys(claims).forEach((address) => {
-          let hasClaimed = rewards.find((reward) => reward.account === address);
-          /* istanbul ignore next */
-          if (!hasClaimed) {
-            unclaimed.push({
-              address: address,
-              amount: claims[address].amount,
-            });
-            unclaimedTokens = unclaimedTokens.plus(claims[address].amount);
-          }
+    Object.keys(claims).forEach((address) => {
+      const hasClaimed = rewards.find((reward) => reward.account === address);
+      /* istanbul ignore next */
+      if (!hasClaimed) {
+        unclaimed.push({
+          address: address,
+          amount: claims[address].amount,
         });
-
-        resolve({
-          addresses: unclaimed,
-          total: unclaimed.length,
-          tokens: unclaimedTokens,
-        });
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
+        unclaimedTokens = unclaimedTokens.plus(claims[address].amount);
       }
     });
+
+    return {
+      addresses: unclaimed,
+      total: unclaimed.length,
+      tokens: unclaimedTokens,
+    };
   }
 
   private buildNotVotingAddresses(
@@ -92,7 +85,7 @@ export class MerkleTreeDistributor {
     previousEpoch: EpochEntity,
     unclaimed: any,
   ): any {
-    let notVotingAddresses = {};
+    const notVotingAddresses = {};
 
     participations.forEach((participation) => {
       /* istanbul ignore next */
@@ -100,7 +93,7 @@ export class MerkleTreeDistributor {
         // if the address is inactive on this window...
         if (windowIndex != 0) {
           // ----- ACTIVE -> INACTIVE -----
-          let notVotingStakerAddress =
+          const notVotingStakerAddress =
             previousEpoch && previousEpoch.merkleTree.stats.notVotingAddresses
               ? Object.keys(
                   previousEpoch.merkleTree.stats.notVotingAddresses,
@@ -121,7 +114,7 @@ export class MerkleTreeDistributor {
           }
           // ----- INACTIVE -> INACTIVE -----
           else {
-            let notVotingStaker =
+            const notVotingStaker =
               previousEpoch.merkleTree.stats.notVotingAddresses[
                 notVotingStakerAddress
               ];
@@ -143,13 +136,13 @@ export class MerkleTreeDistributor {
     claims: any,
     unclaimed: any,
   ): any {
-    let notVotingAddresses = {};
+    const notVotingAddresses = {};
 
     participations.forEach((participation) => {
       /* istanbul ignore next */
       if (!participation.participation) {
         if (windowIndex != 0) {
-          let stakerBalance = new Decimal(
+          const stakerBalance = new Decimal(
             participation.staker.accountVeTokenBalance,
           );
           let stakerProRata = stakerBalance
@@ -158,7 +151,7 @@ export class MerkleTreeDistributor {
             .truncated();
 
           // let's check if there is any unclaimed amount that must be accrued...
-          let unclaimedAddress = unclaimed
+          const unclaimedAddress = unclaimed
             ? unclaimed.addresses.find(
                 (element) =>
                   ethers.utils.getAddress(participation.address) ===
@@ -170,7 +163,7 @@ export class MerkleTreeDistributor {
             stakerProRata = stakerProRata.plus(unclaimedAddress.amount);
           }
 
-          let notVotingStakerAddress = Object.keys(
+          const notVotingStakerAddress = Object.keys(
             claims.stats.notVotingAddresses,
           ).find(
             (address) =>
@@ -179,7 +172,7 @@ export class MerkleTreeDistributor {
           );
 
           if (notVotingStakerAddress) {
-            let notVotingStaker =
+            const notVotingStaker =
               claims.stats.notVotingAddresses[notVotingStakerAddress];
             notVotingStaker.amount = stakerProRata.plus(notVotingStaker.amount);
             notVotingAddresses[notVotingStakerAddress] = notVotingStaker;
@@ -198,19 +191,19 @@ export class MerkleTreeDistributor {
     windowIndex: number,
   ): any {
     let totalCalculatedRewards = new Decimal(0);
-    let sliceUnits = new Decimal(totalRewardsDistributed).times(
+    const sliceUnits = new Decimal(totalRewardsDistributed).times(
       this.EXPLODE_DECIMALS,
     );
     let minRewarded = sliceUnits;
     let minRewardedStaker = null;
-    let recipients = {};
+    const recipients = {};
 
     // distributing the rewards to all the users...
     participations.forEach((participation) => {
-      let stakerBalance = new Decimal(
+      const stakerBalance = new Decimal(
         participation.staker.accountVeTokenBalance,
       );
-      let stakerProRata = stakerBalance
+      const stakerProRata = stakerBalance
         .times(calculations.proRata)
         .div(this.EXPLODE_DECIMALS)
         .truncated();
@@ -238,7 +231,7 @@ export class MerkleTreeDistributor {
     // adding delta to the min reward item...
     /* istanbul ignore next */
     if (!minRewarded.eq(sliceUnits)) {
-      let delta = new Decimal(
+      const delta = new Decimal(
         sliceUnits.minus(totalCalculatedRewards).toFixed(0),
       );
 
@@ -258,7 +251,7 @@ export class MerkleTreeDistributor {
     previousEpoch: EpochEntity,
     rewards: any[],
   ): Promise<MerkleTree> {
-    let claims = await this.generateClaims(
+    const claims = await this.generateClaims(
       totalRewardsDistributed,
       windowIndex,
       participations,
@@ -306,7 +299,7 @@ export class MerkleTreeDistributor {
       - were active on the previous Epoch
       - did NOT claimed their rewards
     */
-    let unclaimed = previousEpoch
+    const unclaimed = previousEpoch
       ? await this.getUnclaimed(rewards, previousEpoch)
       : null;
 
@@ -314,7 +307,7 @@ export class MerkleTreeDistributor {
       Inactive: all those addresses that 
       - were inactive on the previous Epoch
     */
-    let inactive = previousEpoch
+    const inactive = previousEpoch
       ? previousEpoch.merkleTree.stats.notVotingAddresses
       : null;
 
@@ -331,7 +324,7 @@ export class MerkleTreeDistributor {
     /*
       Generating the empty/default claims object
     */
-    let claims = {
+    const claims = {
       stats: {
         proRata: calculations.proRata.toString(),
         totalVeDoughSupply: calculations.totalVeDoughSupply.toString(),
@@ -365,12 +358,12 @@ export class MerkleTreeDistributor {
     // filtering out the notVotingAddresses, in order to grab the accounts to be slashed
     // and calculating the total amount of rewards to be slashed as well...
     Object.keys(claims.stats.notVotingAddresses).forEach((address) => {
-      let holder = claims.stats.notVotingAddresses[address];
+      const holder = claims.stats.notVotingAddresses[address];
 
       if (holder.windowIndex.length >= 3) {
         // let's check if the latest 3 windows are in the correct sequence...
-        let latest_3 = holder.windowIndex.slice(-3);
-        let areInSequence = latest_3.every((window, index) => {
+        const latest_3 = holder.windowIndex.slice(-3);
+        const areInSequence = latest_3.every((window, index) => {
           if (index > 0) {
             return window == latest_3[index - 1] + 1;
           } else {
@@ -393,7 +386,7 @@ export class MerkleTreeDistributor {
     if (claims.stats.toBeSlashed.accounts.length) {
       // then we remove the toBeSlashed.account from the participations...
       participations = participations.filter((participation) => {
-        let founded = claims.stats.toBeSlashed.accounts.find(
+        const founded = claims.stats.toBeSlashed.accounts.find(
           (x) => x.toLowerCase() == participation.address.toLocaleLowerCase(),
         );
         return !founded;
@@ -440,7 +433,7 @@ export class MerkleTreeDistributor {
     // calculating the compounds for the unclaimed ones...
     // ----- ACTIVE -> ACTIVE -----
     participations.forEach((participation) => {
-      let unclaimedAddress = unclaimed
+      const unclaimedAddress = unclaimed
         ? unclaimed.addresses.find(
             (element) =>
               ethers.utils.getAddress(participation.address) ===
@@ -459,7 +452,7 @@ export class MerkleTreeDistributor {
     // ----- INACTIVE -> ACTIVE -----
     if (inactive) {
       participations.forEach((participation) => {
-        let founded = Object.keys(inactive).find(
+        const founded = Object.keys(inactive).find(
           (x) => x.toLowerCase() == participation.address.toLocaleLowerCase(),
         );
 
@@ -474,7 +467,7 @@ export class MerkleTreeDistributor {
     // finally, we re-iterate all over the claims, and we remove the not-active ones...
     let finalCalculatedRewards = new Decimal(0);
     Object.keys(claims.recipients).forEach((key) => {
-      let claim = claims.recipients[key];
+      const claim = claims.recipients[key];
 
       if (!claim.participation) {
         delete claims.recipients[key];

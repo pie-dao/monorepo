@@ -56,7 +56,7 @@ describe('PiesService', () => {
       beforeAll(async () => {
         jest.spyOn(service, 'getPies');
 
-        let pies = PiesStub();
+        const pies = PiesStub();
 
         for (let i = 0; i < pies.length; i++) {
           await service.deletePie(pies[i]);
@@ -86,7 +86,7 @@ describe('PiesService', () => {
       });
 
       test('then it should return an Array of PieEntity', () => {
-        let piesMock = PiesStub();
+        const piesMock = PiesStub();
 
         expect(pies).toEqual(
           expect.arrayContaining([
@@ -343,7 +343,7 @@ describe('PiesService', () => {
   describe('createPie', () => {
     describe('When createPie is called', () => {
       jest.setTimeout(50000);
-      let pie: PieDto = {
+      const pie: PieDto = {
         symbol: 'foobar',
         name: 'foobar',
         address: 'foobar',

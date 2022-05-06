@@ -9,7 +9,7 @@ describe('StakingController', () => {
   let controller: TasksController;
   let service: TasksService;
 
-  let TESTING_BLOCK = 13352729;
+  const TESTING_BLOCK = 13352729;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

@@ -1,26 +1,26 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Interval } from '@nestjs/schedule';
+import { BigNumber } from 'bignumber.js';
+import { ethers } from 'ethers';
+import * as lodash from 'lodash';
+import * as moment from 'moment';
 import { Model } from 'mongoose';
+import { Command, Console, createSpinner } from 'nestjs-console';
+import { StakingService } from '../staking';
 import {
   CgCoinDocument,
   CgCoinEntity,
-  PieDocument,
-  PieEntity,
-  PieDto,
-  pieGetterABI,
   erc20,
   erc20byte32,
+  PieDocument,
+  PieDto,
+  PieEntity,
+  pieGetterABI,
   PieHistoryDocument,
   PieHistoryEntity,
 } from './';
-import { ethers } from 'ethers';
-import { Interval } from '@nestjs/schedule';
-import { BigNumber } from 'bignumber.js';
-import * as lodash from 'lodash';
-import * as moment from 'moment';
-import { Command, Console, createSpinner } from 'nestjs-console';
-import { StakingService } from '../staking';
 
 const EVERY_HOUR = 1000 * 60 * 60;
 const EVERY_MINUTE = 1000 * 60;
@@ -192,7 +192,7 @@ export class PiesService {
 
       try {
         spinner.text = `Saving all the items into db...`;
-        let result = await this.cgCoinModel.collection.insertMany(
+        const result = await this.cgCoinModel.collection.insertMany(
           coinsDbPromises,
         );
         spinner.succeed(
@@ -246,46 +246,26 @@ export class PiesService {
     return true;
   }
 
-  private async saveCgCoins(
+  private saveCgCoins(
     coingeckoCoin: any,
     timestamp: number,
   ): Promise<CgCoinDocument> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const coin = new this.cgCoinModel({
-          timestamp: timestamp,
-          coin: coingeckoCoin,
-        });
-        const coinDocument = await coin.save();
-        resolve(coinDocument);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return new this.cgCoinModel({
+      timestamp: timestamp,
+      coin: coingeckoCoin,
+    }).save();
   }
 
   private async fetchCgCoins(coingeckoId: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}?localization=false&developer_data=false`;
-        const response = await this.httpService.get(url).toPromise();
-        resolve(response.data);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}?localization=false&developer_data=false`;
+    const response = await this.httpService.get(url).toPromise();
+    return response.data;
   }
 
   private async fetchCgChart(coingeckoId: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}/market_chart?vs_currency=usd&days=90&interval=hourly`;
-        const response = await this.httpService.get(url).toPromise();
-        resolve({ id: coingeckoId, chart: response.data });
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}/market_chart?vs_currency=usd&days=90&interval=hourly`;
+    const response = await this.httpService.get(url).toPromise();
+    return { id: coingeckoId, chart: response.data };
   }
 
   async getSliceDoughRatio(): Promise<number> {
@@ -304,39 +284,32 @@ export class PiesService {
     order?: 'descending' | 'ascending',
     limit?: number,
   ): Promise<CgCoinEntity[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const filters = {
-          'coin.contract_address': address,
-        };
+    const filters = {
+      'coin.contract_address': address,
+    };
 
-        if (from || to) {
-          if (from && to) {
-            filters['timestamp'] = { $gte: from, $lte: to };
-          } else {
-            if (from) {
-              filters['timestamp'] = { $gte: from };
-            }
-            if (to) {
-              filters['timestamp'] = { $lte: to };
-            }
-          }
+    if (from || to) {
+      if (from && to) {
+        filters['timestamp'] = { $gte: from, $lte: to };
+      } else {
+        if (from) {
+          filters['timestamp'] = { $gte: from };
         }
-
-        const cgCoinEntity = this.cgCoinModel
-          .find(filters)
-          .sort({ timestamp: order })
-          .limit(Number(limit))
-          .lean();
-
-        resolve(cgCoinEntity);
-      } catch (error) {
-        reject(error);
+        if (to) {
+          filters['timestamp'] = { $lte: to };
+        }
       }
-    });
+    }
+
+    return this.cgCoinModel
+      .find(filters)
+      .sort({ timestamp: order })
+      .limit(Number(limit))
+      .lean()
+      .exec();
   }
 
-  getMarketChart(
+  async getMarketChart(
     address: string,
     days: number,
   ): Promise<{
@@ -344,42 +317,36 @@ export class PiesService {
     market_caps: Array<Array<number>>;
     total_volumes: Array<Array<number>>;
   }> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const from = moment().subtract(days, 'days').unix() * 1000;
-        const coinEntries = await this.getCgCoin(
-          address,
-          from.toString(),
-          null,
-          'ascending',
-        );
+    const from = moment().subtract(days, 'days').unix() * 1000;
+    const coinEntries = await this.getCgCoin(
+      address,
+      from.toString(),
+      null,
+      'ascending',
+    );
 
-        const marketCharts = {
-          prices: [],
-          market_caps: [],
-          total_volumes: [],
-        };
+    const marketCharts = {
+      prices: [],
+      market_caps: [],
+      total_volumes: [],
+    };
 
-        coinEntries.forEach((coinEntry: any) => {
-          marketCharts.prices.push([
-            Number(coinEntry.timestamp),
-            coinEntry.coin.market_data.current_price.usd,
-          ]);
-          marketCharts.market_caps.push([
-            Number(coinEntry.timestamp),
-            coinEntry.coin.market_data.market_cap.usd,
-          ]);
-          marketCharts.total_volumes.push([
-            Number(coinEntry.timestamp),
-            coinEntry.coin.market_data.total_volume.usd,
-          ]);
-        });
-
-        resolve(marketCharts);
-      } catch (error) {
-        reject(error);
-      }
+    coinEntries.forEach((coinEntry: any) => {
+      marketCharts.prices.push([
+        Number(coinEntry.timestamp),
+        coinEntry.coin.market_data.current_price.usd,
+      ]);
+      marketCharts.market_caps.push([
+        Number(coinEntry.timestamp),
+        coinEntry.coin.market_data.market_cap.usd,
+      ]);
+      marketCharts.total_volumes.push([
+        Number(coinEntry.timestamp),
+        coinEntry.coin.market_data.total_volume.usd,
+      ]);
     });
+
+    return marketCharts;
   }
 
   @Interval(EVERY_MINUTE)
@@ -442,182 +409,157 @@ export class PiesService {
     return true;
   }
 
-  calculatePieHistory(
+  async calculatePieHistory(
     provider: ethers.providers.JsonRpcProvider,
     pie: PieDocument,
     coingeckoPiesInfos: any,
     timestamp: number,
   ): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        this.logger.debug(`${pie.symbol} - updating nav...`);
-        const contract = new ethers.Contract(
-          process.env.PIE_GETTER_CONTRACT,
-          pieGetterABI,
+    this.logger.debug(`${pie.symbol} - updating nav...`);
+    const contract = new ethers.Contract(
+      process.env.PIE_GETTER_CONTRACT,
+      pieGetterABI,
+      provider,
+    );
+
+    const pieContract = new ethers.Contract(pie.address, erc20, provider);
+    const pieSupply = await pieContract.totalSupply();
+    const pieDecimals = await pieContract.decimals();
+    const piePrecision = new BigNumber(10).pow(pieDecimals);
+    const totalSupply = new BigNumber(pieSupply.toString()).div(piePrecision);
+
+    const result = await contract.callStatic.getAssetsAndAmountsForAmount(
+      pie.address,
+      pieSupply,
+    );
+    const underlyingAssets = lodash.get(result, 0);
+    const underylingTotals = lodash.get(result, 1);
+
+    const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(
+      ',',
+    )}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+
+    // fetching the prices for each underlying contract...
+    const response = await this.httpService.get(url).toPromise();
+    const prices = response.data;
+
+    // creating the pieHistory Entity...
+    const history = new this.pieHistoryModel({
+      timestamp: timestamp,
+      amount: 0,
+      underlyingAssets: [],
+    });
+    let pieMarketCapUSD = new BigNumber(0);
+
+    // calculating the underlyingAssets, populating it into the pieHistory
+    // and summing the total value of usd for each token price...
+    for (let i = 0; i < underlyingAssets.length; i++) {
+      let underlyingContract = null;
+
+      if (
+        underlyingAssets[i].toLowerCase() !==
+        '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2'.toLowerCase()
+      ) {
+        // instance of the underlying contract...
+        underlyingContract = new ethers.Contract(
+          underlyingAssets[i],
+          erc20,
           provider,
         );
-
-        const pieContract = new ethers.Contract(pie.address, erc20, provider);
-        const pieSupply = await pieContract.totalSupply();
-        const pieDecimals = await pieContract.decimals();
-        const piePrecision = new BigNumber(10).pow(pieDecimals);
-        const totalSupply = new BigNumber(pieSupply.toString()).div(
-          piePrecision,
+      } else {
+        underlyingContract = new ethers.Contract(
+          underlyingAssets[i],
+          erc20byte32,
+          provider,
         );
-
-        const result = await contract.callStatic.getAssetsAndAmountsForAmount(
-          pie.address,
-          pieSupply,
-        );
-        const underlyingAssets = lodash.get(result, 0);
-        const underylingTotals = lodash.get(result, 1);
-
-        const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${underlyingAssets.join(
-          ',',
-        )}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
-
-        // fetching the prices for each underlying contract...
-        const response = await this.httpService.get(url).toPromise();
-        const prices = response.data;
-
-        // creating the pieHistory Entity...
-        const history = new this.pieHistoryModel({
-          timestamp: timestamp,
-          amount: 0,
-          underlyingAssets: [],
-        });
-        let pieMarketCapUSD = new BigNumber(0);
-
-        // calculating the underlyingAssets, populating it into the pieHistory
-        // and summing the total value of usd for each token price...
-        for (let i = 0; i < underlyingAssets.length; i++) {
-          let underlyingContract = null;
-
-          if (
-            underlyingAssets[i].toLowerCase() !==
-            '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2'.toLowerCase()
-          ) {
-            // instance of the underlying contract...
-            underlyingContract = new ethers.Contract(
-              underlyingAssets[i],
-              erc20,
-              provider,
-            );
-          } else {
-            underlyingContract = new ethers.Contract(
-              underlyingAssets[i],
-              erc20byte32,
-              provider,
-            );
-          }
-
-          // fetching decimals and calculating precision for the underlyingAsset...
-          const decimals = await underlyingContract.decimals();
-          const symbol = await underlyingContract.symbol();
-          const precision = new BigNumber(10).pow(decimals);
-
-          // calculating the value in usd for a given amount of underlyingAsset...
-          const usdPrice = prices[underlyingAssets[i].toLowerCase()].usd;
-          const marginalTVL = new BigNumber(underylingTotals[i].toString())
-            .times(usdPrice)
-            .div(precision);
-
-          // refilling the underlyingAssets of the History Entity...
-          history.underlyingAssets.push({
-            address: underlyingAssets[i],
-            symbol: symbol,
-            decimals: decimals,
-            amount: underylingTotals[i].toString(),
-            usdPrice: usdPrice.toString(),
-            marginalTVL: marginalTVL,
-            marginalTVLPercentage: 0,
-          });
-
-          // updating the global amount of usd for the main pie of this history entity...
-          pieMarketCapUSD = pieMarketCapUSD.plus(marginalTVL);
-        }
-
-        // adding the allocation percentage to each underlying asset...
-        history.underlyingAssets.forEach((asset: any) => {
-          asset.marginalTVLPercentage = asset.marginalTVL
-            .times(100)
-            .div(pieMarketCapUSD)
-            .toString();
-          asset.marginalTVL = asset.marginalTVL.toString();
-        });
-
-        // finally updating the total amount in usd...
-        history.marginalTVL = pieMarketCapUSD;
-        history.totalSupply = pieSupply;
-        history.decimals = pieDecimals;
-        history.nav = pieMarketCapUSD.toNumber() / totalSupply.toNumber();
-
-        // and saving the history entity...
-        const historyDB = await history.save();
-
-        // pushing the new history into the main Pie Entity...
-        pie.history.push(historyDB);
-
-        // and finally saving the Pie Entity as well...
-        const pieDB = await pie.save();
-
-        this.logger.debug(`${pie.name} - nav updated`);
-        resolve(pieDB);
-      } catch (error) {
-        this.logger.error(pie.name, error.message);
-        reject(error);
       }
+
+      // fetching decimals and calculating precision for the underlyingAsset...
+      const decimals = await underlyingContract.decimals();
+      const symbol = await underlyingContract.symbol();
+      const precision = new BigNumber(10).pow(decimals);
+
+      // calculating the value in usd for a given amount of underlyingAsset...
+      const usdPrice = prices[underlyingAssets[i].toLowerCase()].usd;
+      const marginalTVL = new BigNumber(underylingTotals[i].toString())
+        .times(usdPrice)
+        .div(precision);
+
+      // refilling the underlyingAssets of the History Entity...
+      history.underlyingAssets.push({
+        address: underlyingAssets[i],
+        symbol: symbol,
+        decimals: decimals,
+        amount: underylingTotals[i].toString(),
+        usdPrice: usdPrice.toString(),
+        marginalTVL: marginalTVL,
+        marginalTVLPercentage: 0,
+      });
+
+      // updating the global amount of usd for the main pie of this history entity...
+      pieMarketCapUSD = pieMarketCapUSD.plus(marginalTVL);
+    }
+
+    // adding the allocation percentage to each underlying asset...
+    history.underlyingAssets.forEach((asset: any) => {
+      asset.marginalTVLPercentage = asset.marginalTVL
+        .times(100)
+        .div(pieMarketCapUSD)
+        .toString();
+      asset.marginalTVL = asset.marginalTVL.toString();
     });
+
+    // finally updating the total amount in usd...
+    history.marginalTVL = pieMarketCapUSD;
+    history.totalSupply = pieSupply;
+    history.decimals = pieDecimals;
+    history.nav = pieMarketCapUSD.toNumber() / totalSupply.toNumber();
+
+    // and saving the history entity...
+    const historyDB = await history.save();
+
+    // pushing the new history into the main Pie Entity...
+    pie.history.push(historyDB);
+
+    // and finally saving the Pie Entity as well...
+    const pieDB = await pie.save();
+
+    this.logger.debug(`${pie.name} - nav updated`);
+    return pieDB;
   }
 
-  getPies(
+  async getPies(
     name?: string,
     address?: string,
     test?: boolean,
   ): Promise<PieEntity[]> {
-    return new Promise(async (resolve, reject) => {
-      let pies = [];
-      let error = null;
+    let pies = [];
 
-      switch (true) {
-        case name !== undefined:
-          try {
-            pies.push(await this.getPieByName(name));
-          } catch (caughtError) {
-            error = caughtError;
-          }
-          break;
-        case address !== undefined:
-          try {
-            pies.push(await this.getPieByAddress(address));
-          } catch (caughtError) {
-            error = caughtError;
-          }
-          break;
-        default:
-          pies = await this.pieModel.find().exec();
+    switch (true) {
+      case name !== undefined:
+        pies.push(await this.getPieByName(name));
+        break;
+      case address !== undefined:
+        pies.push(await this.getPieByAddress(address));
+        break;
+      default:
+        pies = await this.pieModel.find().exec();
 
-          // if db is empty, we'll initialize the Pies...
-          if (pies.length === 0) {
-            for (const pie of this.pies) {
-              pies.push(await this.createPie(pie));
-            }
+        // if db is empty, we'll initialize the Pies...
+        if (pies.length === 0) {
+          for (const pie of this.pies) {
+            pies.push(await this.createPie(pie));
           }
+        }
 
-          if (!test) {
-            pies = pies.filter((pie) => pie.name != 'NOT_EXISTING_PIE');
-          }
-      }
-
-      if (error) {
-        reject(error);
-      } else {
-        resolve(pies);
-      }
-    });
+        if (!test) {
+          pies = pies.filter((pie) => pie.name != 'NOT_EXISTING_PIE');
+        }
+    }
+    return pies;
   }
 
-  getPieHistory(
+  async getPieHistory(
     name?,
     address?,
     from?: string,
@@ -625,43 +567,30 @@ export class PiesService {
     order?: 'descending' | 'ascending',
     limit?: number,
   ): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      let pie = null;
-      let error = null;
+    let pie = null;
 
-      switch (true) {
-        case name !== undefined:
-          try {
-            pie = await this.getPieByName(name);
-          } catch (caughtError) {
-            error = caughtError;
-          }
-          break;
-        case address !== undefined:
-          try {
-            pie = await this.getPieByAddress(address);
-          } catch (caughtError) {
-            error = caughtError;
-          }
-          break;
-        default:
-          error = 'either a Pie-Name or a Pie-Address must be provided';
-      }
+    switch (true) {
+      case name !== undefined:
+        pie = await this.getPieByName(name);
+        break;
+      case address !== undefined:
+        pie = await this.getPieByAddress(address);
+        break;
+    }
 
-      if (pie) {
-        const history = await this.getPieHistoryDetails(
-          pie,
-          order,
-          from,
-          to,
-          limit,
-        );
-        delete pie.history;
-        resolve({ history: history, pie: pie });
-      } else {
-        reject(error);
-      }
-    });
+    if (pie) {
+      const history = await this.getPieHistoryDetails(
+        pie,
+        order,
+        from,
+        to,
+        limit,
+      );
+      delete pie.history;
+      return { history: history, pie: pie };
+    } else {
+      throw new Error('either a Pie-Name or a Pie-Address must be provided');
+    }
   }
 
   getPieHistoryDetails(
@@ -671,97 +600,78 @@ export class PiesService {
     to: string,
     limit: number,
   ): Promise<PieHistoryEntity[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const filters = {
-          _id: { $in: pie.history },
-        };
+    const filters = {
+      _id: { $in: pie.history },
+    };
 
-        if (from || to) {
-          if (from && to) {
-            filters['timestamp'] = { $gte: from, $lte: to };
-          } else {
-            if (from) {
-              filters['timestamp'] = { $gte: from };
-            }
-
-            if (to) {
-              filters['timestamp'] = { $lte: to };
-            }
-          }
+    if (from || to) {
+      if (from && to) {
+        filters['timestamp'] = { $gte: from, $lte: to };
+      } else {
+        if (from) {
+          filters['timestamp'] = { $gte: from };
         }
 
-        const pieHistories = this.pieHistoryModel
-          .find(filters)
-          .sort({ timestamp: order })
-          .limit(Number(limit))
-          .lean();
-
-        resolve(pieHistories);
-      } catch (error) {
-        reject(error);
+        if (to) {
+          filters['timestamp'] = { $lte: to };
+        }
       }
-    });
+    }
+
+    return this.pieHistoryModel
+      .find(filters)
+      .sort({ timestamp: order })
+      .limit(Number(limit))
+      .lean()
+      .exec();
   }
 
-  //! TODO: 👇 something is fishy in these methods as these operations doesn't return a promise!
-  getPieByAddress(address: string): Promise<PieEntity> {
-    return new Promise(async (resolve, reject) => {
-      const pies = await this.pieModel
-        .find()
-        .where('address')
-        .equals(address)
-        .lean();
+  async getPieByAddress(address: string): Promise<PieEntity> {
+    const pies = await this.pieModel
+      .find()
+      .where('address')
+      .equals(address)
+      .lean()
+      .exec();
 
-      if (pies[0]) {
-        resolve(pies[0]);
-      } else {
-        reject(
-          "Sorry, can't find any Pie in our database which matches your query.",
-        );
-      }
-    });
+    if (pies[0]) {
+      return pies[0];
+    } else {
+      throw new Error(
+        "Sorry, can't find any Pie in our database which matches your query.",
+      );
+    }
   }
 
-  getPieByName(name: string): Promise<PieEntity> {
-    return new Promise(async (resolve, reject) => {
-      const pies = await this.pieModel.find().where('name').equals(name).lean();
+  async getPieByName(name: string): Promise<PieEntity> {
+    const pies = await this.pieModel
+      .find()
+      .where('name')
+      .equals(name)
+      .lean()
+      .exec();
 
-      if (pies[0]) {
-        resolve(pies[0]);
-      } else {
-        reject(
-          "Sorry, can't find any Pie in our database which matches your query.",
-        );
-      }
-    });
+    if (pies[0]) {
+      return pies[0];
+    } else {
+      throw new Error(
+        "Sorry, can't find any Pie in our database which matches your query.",
+      );
+    }
   }
 
-  createPie(pie: PieDto): Promise<PieEntity> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        pie.address = pie.address.toLocaleLowerCase();
+  async createPie(pie: PieDto): Promise<PieEntity> {
+    pie.address = pie.address.toLocaleLowerCase();
 
-        const createdPie = new this.pieModel(pie);
-        const pieDB = await createdPie.save();
-
-        resolve(pieDB);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const createdPie = new this.pieModel(pie);
+    return createdPie.save();
   }
 
-  deletePie(pie: PieEntity): Promise<PieEntity> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const pieDB = await this.pieModel.findOneAndDelete({
-          address: pie.address.toLocaleLowerCase(),
-        });
-        resolve(pieDB);
-      } catch (error) {
-        reject(error);
-      }
-    });
+  async deletePie(pie: PieEntity): Promise<PieEntity> {
+    return this.pieModel
+      .findOneAndDelete({
+        address: pie.address.toLocaleLowerCase(),
+      })
+      .exec();
   }
 }

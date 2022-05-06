@@ -1,22 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { ethers } from 'ethers';
-import * as moment from 'moment';
 import * as ethDater from 'ethereum-block-by-date';
-import { EpochDocument, EpochEntity } from './entities/epoch.entity';
-import { MerkleTreeDistributor } from '../helpers/merkleTreeDistributor/merkleTreeDistributor';
-import { Staker, Lock } from './types/staking.types.Staker';
-import { Vote } from './types/staking.types.Vote';
-import { FreeRider } from './types/staking.types.FreeRider';
-import { Participation } from './types/staking.types.Participation';
-import { Delegate } from './types/staking.types.Delegate';
-import * as lodash from 'lodash';
-import { Console, Command, createSpinner } from 'nestjs-console';
+import { ethers } from 'ethers';
 import * as inquirer from 'inquirer';
-import { antoEpoch, totoEpoch } from './test/stubs';
+import * as lodash from 'lodash';
+import * as moment from 'moment';
+import { Model } from 'mongoose';
+import { Command, Console, createSpinner } from 'nestjs-console';
+import { MerkleTreeDistributor } from '../helpers/merkleTreeDistributor/merkleTreeDistributor';
 import { pieAbi as pieABI } from './abis';
+import { EpochDocument, EpochEntity } from './entities/epoch.entity';
+import { antoEpoch, totoEpoch } from './test/stubs';
+import { Delegate } from './types/staking.types.Delegate';
+import { Participation } from './types/staking.types.Participation';
+import { Lock, Staker } from './types/staking.types.Staker';
+import { Vote } from './types/staking.types.Vote';
 @Injectable()
 @Console()
 export class StakingService {
@@ -39,8 +38,8 @@ export class StakingService {
   })
   async crossCheckEpochs(): Promise<void> {
     Object.keys(totoEpoch['merkleTree']['claims']).forEach((address) => {
-      let antoClaim = antoEpoch['claims'][ethers.utils.getAddress(address)];
-      let totoClaim = totoEpoch['merkleTree']['claims'][address];
+      const antoClaim = antoEpoch['claims'][ethers.utils.getAddress(address)];
+      const totoClaim = totoEpoch['merkleTree']['claims'][address];
 
       if (totoClaim.amount != antoClaim.amount) {
         console.log(address, totoClaim.amount, antoClaim.amount);
@@ -55,7 +54,7 @@ export class StakingService {
     description: 'Generate a new Epoch using CLI.',
   })
   async generateEpochCommand(): Promise<void> {
-    let params = await inquirer.prompt([
+    const params = await inquirer.prompt([
       {
         type: 'input',
         name: 'month',
@@ -113,9 +112,11 @@ export class StakingService {
       spin.start(`Generating the epoch...`);
 
       /* istanbul ignore next */
-      let proposalsIds = params.proposals ? params.proposals.split(',') : null; // .map(id => '"' + id + '"')
+      const proposalsIds = params.proposals
+        ? params.proposals.split(',')
+        : null; // .map(id => '"' + id + '"')
 
-      let epoch = await this.generateEpoch(
+      const epoch = await this.generateEpoch(
         params.month,
         params.year,
         params.distributedRewards,
@@ -148,231 +149,178 @@ export class StakingService {
   }
 
   // TODO: we shall add pagination here...
-  getEpochs(startDate?: number): Promise<Array<EpochEntity>> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let epochsDB = null;
+  async getEpochs(startDate?: number): Promise<Array<EpochEntity>> {
+    let epochsDB = null;
 
-        if (startDate) {
-          epochsDB = await this.epochModel
-            .find({ startDate: { $gte: startDate } })
-            .lean();
-        } else {
-          epochsDB = await this.epochModel.find().lean();
-        }
+    if (startDate) {
+      epochsDB = await this.epochModel
+        .find({ startDate: { $gte: startDate } })
+        .lean()
+        .exec();
+    } else {
+      epochsDB = await this.epochModel.find().lean().exec();
+    }
 
-        if (epochsDB.length) {
-          resolve(epochsDB);
-        } else {
-          throw new NotFoundException(
-            'Sorry, no epochs has been founded on our database.',
-          );
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
+    if (epochsDB.length) {
+      return epochsDB;
+    } else {
+      throw new NotFoundException(
+        'Sorry, no epochs has been founded on our database.',
+      );
+    }
   }
 
-  getEpoch(windowIndex?: number): Promise<EpochEntity> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let epochDB = null;
+  async getEpoch(windowIndex?: number): Promise<EpochEntity> {
+    let epochDB = null;
 
-        if (windowIndex) {
-          epochDB = await this.epochModel
-            .findOne({ 'merkleTree.windowIndex': windowIndex })
-            .lean();
-        } else {
-          epochDB = await this.epochModel.findOne().sort({ _id: -1 }).lean();
-        }
+    if (windowIndex) {
+      epochDB = await this.epochModel
+        .findOne({ 'merkleTree.windowIndex': windowIndex })
+        .lean()
+        .exec();
+    } else {
+      epochDB = await this.epochModel.findOne().sort({ _id: -1 }).lean().exec();
+    }
 
-        if (epochDB) {
-          resolve(epochDB);
-        } else {
-          throw new NotFoundException(
-            "Sorry, can't find any epoch with this id.",
-          );
-        }
-      } catch (error) {
-        reject(error);
-      }
-    });
+    if (epochDB) {
+      return epochDB;
+    } else {
+      throw new NotFoundException("Sorry, can't find any epoch with this id.");
+    }
   }
 
-  getStakers(
+  async getStakers(
     ids?: Array<string>,
     blockNumber?: number,
     condition?: string,
   ): Promise<Staker[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let lastID = '';
-        let blocks = 1000;
-        let stakers = [];
+    const lastID = '';
+    const blocks = 1000;
+    let stakers = [];
 
-        let holders = await this.fetchStakers(
-          blocks,
-          lastID,
-          ids,
-          condition,
-          blockNumber,
-        );
+    let holders = await this.fetchStakers(
+      blocks,
+      lastID,
+      ids,
+      condition,
+      blockNumber,
+    );
 
-        while (holders.length > 0) {
-          stakers = stakers.concat(holders);
-          holders = await this.fetchStakers(
-            blocks,
-            holders[holders.length - 1].id,
-            ids,
-            condition,
-            blockNumber,
-          );
-        }
+    while (holders.length > 0) {
+      stakers = stakers.concat(holders);
+      holders = await this.fetchStakers(
+        blocks,
+        holders[holders.length - 1].id,
+        ids,
+        condition,
+        blockNumber,
+      );
+    }
 
-        resolve(stakers);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
-    });
+    return stakers;
   }
 
-  getRewards(windowIndex: number): Promise<any[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let lastID = '';
-        let blocks = 1000;
-        let rewards = [];
+  async getRewards(windowIndex: number): Promise<any[]> {
+    const lastID = '';
+    const blocks = 1000;
+    let rewards = [];
 
-        let claimedRewards = await this.fetchRewards(
-          blocks,
-          lastID,
-          windowIndex,
-        );
+    let claimedRewards = await this.fetchRewards(blocks, lastID, windowIndex);
 
-        /* istanbul ignore next */
-        while (claimedRewards.length > 0) {
-          rewards = rewards.concat(claimedRewards);
-          claimedRewards = await this.fetchRewards(
-            blocks,
-            claimedRewards[claimedRewards.length - 1].id,
-            windowIndex,
-          );
-        }
+    /* istanbul ignore next */
+    while (claimedRewards.length > 0) {
+      rewards = rewards.concat(claimedRewards);
+      claimedRewards = await this.fetchRewards(
+        blocks,
+        claimedRewards[claimedRewards.length - 1].id,
+        windowIndex,
+      );
+    }
 
-        resolve(rewards);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
-    });
+    return rewards;
   }
 
-  getLocks(lockedAt?: string, ids?: Array<string>): Promise<Lock[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let lastID = '';
-        let blocks = 1000;
-        let locks = [];
+  async getLocks(lockedAt?: string, ids?: Array<string>): Promise<Lock[]> {
+    const lastID = '';
+    const blocks = 1000;
+    let locks = [];
 
-        if (!lockedAt) {
-          let date = new Date();
-          lockedAt = Math.floor(Number(date) / 1000).toString();
-        }
+    if (!lockedAt) {
+      const date = new Date();
+      lockedAt = Math.floor(Number(date) / 1000).toString();
+    }
 
-        let stakersLocks = await this.fetchLocks(blocks, lastID, lockedAt, ids);
+    let stakersLocks = await this.fetchLocks(blocks, lastID, lockedAt, ids);
 
-        while (stakersLocks.length > 0) {
-          locks = locks.concat(stakersLocks);
-          stakersLocks = await this.fetchLocks(
-            blocks,
-            stakersLocks[stakersLocks.length - 1].id,
-            lockedAt,
-            ids,
-          );
-        }
+    while (stakersLocks.length > 0) {
+      locks = locks.concat(stakersLocks);
+      stakersLocks = await this.fetchLocks(
+        blocks,
+        stakersLocks[stakersLocks.length - 1].id,
+        lockedAt,
+        ids,
+      );
+    }
 
-        resolve(locks);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return locks;
   }
 
-  getDelegates(): Promise<Delegate[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let lastID = '';
-        let blocks = 1000;
-        let delegates = [];
+  async getDelegates(): Promise<Delegate[]> {
+    const lastID = '';
+    const blocks = 1000;
+    let delegates = [];
 
-        let delegatesArray = await this.fetchDelegates(blocks, lastID);
+    let delegatesArray = await this.fetchDelegates(blocks, lastID);
 
-        while (delegatesArray.length > 0) {
-          delegates = delegates.concat(delegatesArray);
-          delegatesArray = await this.fetchDelegates(
-            blocks,
-            delegatesArray[delegatesArray.length - 1].id,
-          );
-        }
+    while (delegatesArray.length > 0) {
+      delegates = delegates.concat(delegatesArray);
+      delegatesArray = await this.fetchDelegates(
+        blocks,
+        delegatesArray[delegatesArray.length - 1].id,
+      );
+    }
 
-        resolve(delegates);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
-    });
+    return delegates;
   }
 
-  getParticipations(
+  async getParticipations(
     votes: Vote[],
     blockNumber: number,
   ): Promise<Participation[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (votes && votes.length == 0) {
-          throw new NotFoundException("sorry, votes can't be an empty array");
-        }
+    if (votes && votes.length == 0) {
+      throw new NotFoundException("sorry, votes can't be an empty array");
+    }
 
-        // retrieving the stakers from our subgraph...
-        let stakers = await this.getStakers(null, blockNumber, null);
+    // retrieving the stakers from our subgraph...
+    const stakers = await this.getStakers(null, blockNumber, null);
 
-        // generating the participations...
-        const participations = [];
+    // generating the participations...
+    const participations = [];
 
-        stakers.forEach((staker) => {
-          let stakerVotes: Vote[] = votes.filter(
-            (vote) => vote.voter.toLowerCase() == staker.id.toLowerCase(),
-          );
-          let participation = stakerVotes.length ? 1 : 0;
+    stakers.forEach((staker) => {
+      const stakerVotes: Vote[] = votes.filter(
+        (vote) => vote.voter.toLowerCase() == staker.id.toLowerCase(),
+      );
+      const participation = stakerVotes.length ? 1 : 0;
 
-          let element: Participation = {
-            address: staker.id,
-            participation: participation,
-            staker: staker,
-            votes: stakerVotes,
-            delegatedTo: undefined,
-          };
+      const element: Participation = {
+        address: staker.id,
+        participation: participation,
+        staker: staker,
+        votes: stakerVotes,
+        delegatedTo: undefined,
+      };
 
-          participations.push(element);
-        });
-
-        // retrieving the delegators...
-        let delegates: Delegate[] = await this.getDelegates();
-        // including the delegtors into participations...
-        let participationsIncludesDelegates = this.includeDelegates(
-          participations,
-          delegates,
-        );
-        resolve(participationsIncludesDelegates);
-      } catch (error) {
-        reject(error);
-      }
+      participations.push(element);
     });
+
+    // retrieving the delegators...
+    const delegates: Delegate[] = await this.getDelegates();
+    // including the delegtors into participations...
+    return this.includeDelegates(participations, delegates);
   }
 
-  generateEpoch(
+  async generateEpoch(
     month: number,
     year: number,
     distributedRewards: string,
@@ -381,173 +329,149 @@ export class StakingService {
     blockNumber: number,
     proposalsIds: Array<string>,
   ): Promise<EpochEntity> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        // fetching all votes from snapshot in the last month...
-        let from = moment({ year: year, month: month - 1, day: 1 });
-        let to = from.clone().endOf('month');
-        let votes: Vote[] = await this.getSnapshotVotes(
-          from.unix(),
-          to.unix(),
-          proposalsIds,
-          'not_in',
-        );
+    // fetching all votes from snapshot in the last month...
+    const from = moment({ year: year, month: month - 1, day: 1 });
+    const to = from.clone().endOf('month');
+    const votes: Vote[] = await this.getSnapshotVotes(
+      from.unix(),
+      to.unix(),
+      proposalsIds,
+      'not_in',
+    );
 
-        let previousEpoch: EpochEntity = null;
-        let rewards: any[] = [];
+    let previousEpoch: EpochEntity = null;
+    let rewards: any[] = [];
 
-        if (prevWindowIndex !== undefined && prevWindowIndex >= 0) {
-          // retrieving previous epoch from database...
-          previousEpoch = await this.getEpoch(prevWindowIndex);
-          // genereting the rewards array...
-          rewards = await this.getRewards(prevWindowIndex);
-        }
+    if (prevWindowIndex !== undefined && prevWindowIndex >= 0) {
+      // retrieving previous epoch from database...
+      previousEpoch = await this.getEpoch(prevWindowIndex);
+      // genereting the rewards array...
+      rewards = await this.getRewards(prevWindowIndex);
+    }
 
-        // generating the participations...
-        let participations: Participation[] = await this.getParticipations(
-          votes,
-          blockNumber,
-        );
-        // generating the merkleTreeDistribution...
-        let merkleTreeDistributor = new MerkleTreeDistributor();
-        const merkleTree = await merkleTreeDistributor.generateMerkleTree(
-          distributedRewards,
-          windowIndex,
-          participations,
-          previousEpoch,
-          rewards,
-        );
-        // finally, saving the epoch into database...
-        let epoch = await this.saveEpoch(
-          participations,
-          merkleTree,
-          votes,
-          rewards,
-          from.unix(),
-          to.unix(),
-          blockNumber,
-        );
-        /* istanbul ignore next */
-        resolve(epoch);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    // generating the participations...
+    const participations: Participation[] = await this.getParticipations(
+      votes,
+      blockNumber,
+    );
+    // generating the merkleTreeDistribution...
+    const merkleTreeDistributor = new MerkleTreeDistributor();
+    const merkleTree = await merkleTreeDistributor.generateMerkleTree(
+      distributedRewards,
+      windowIndex,
+      participations,
+      previousEpoch,
+      rewards,
+    );
+    return this.saveEpoch(
+      participations,
+      merkleTree,
+      votes,
+      rewards,
+      from.unix(),
+      to.unix(),
+      blockNumber,
+    );
   }
 
-  private saveEpoch(
+  private async saveEpoch(
     participations: Array<Participation>,
-    merkleTree: Object,
+    merkleTree: Record<string, any>,
     votes: Vote[],
     rewards: any[],
     startDate: number,
     endDate: number,
     blockNumber: number,
   ): Promise<EpochEntity> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const provider = new ethers.providers.JsonRpcProvider(this.ethProvider);
-        const ethDaterHelper = new ethDater(provider);
+    const provider = new ethers.providers.JsonRpcProvider(this.ethProvider);
+    const ethDaterHelper = new ethDater(provider);
 
-        let startBlock = await ethDaterHelper.getDate(startDate * 1000, true);
+    const startBlock = await ethDaterHelper.getDate(startDate * 1000, true);
 
-        let endBlock = await ethDaterHelper.getDate(endDate * 1000, true);
+    const endBlock = await ethDaterHelper.getDate(endDate * 1000, true);
 
-        const epochModel = new this.epochModel();
-        epochModel.startDate = startDate;
-        epochModel.endDate = endDate;
-        epochModel.startBlock = startBlock.block;
-        epochModel.endBlock = endBlock.block;
-        epochModel.merkleTree = merkleTree;
-        epochModel.rewards = rewards;
-        epochModel.participants = await this.getVotersFromShapshotVotes(
-          votes,
-          blockNumber,
-        );
-        epochModel.proposals =
-          this.getProposalsFromParticipations(participations);
-        epochModel.stakingStats = lodash.get(
-          await this.fetchstakingStats(1, blockNumber),
-          0,
-        );
-        epochModel.slice = await this.getSliceBreakdown();
+    const epochModel = new this.epochModel();
+    epochModel.startDate = startDate;
+    epochModel.endDate = endDate;
+    epochModel.startBlock = startBlock.block;
+    epochModel.endBlock = endBlock.block;
+    epochModel.merkleTree = merkleTree;
+    epochModel.rewards = rewards;
+    epochModel.participants = await this.getVotersFromShapshotVotes(
+      votes,
+      blockNumber,
+    );
+    epochModel.proposals = this.getProposalsFromParticipations(participations);
+    epochModel.stakingStats = lodash.get(
+      await this.fetchstakingStats(1, blockNumber),
+      0,
+    );
+    epochModel.slice = await this.getSliceBreakdown();
 
-        let epochDB = await epochModel.save();
-        resolve(epochDB);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return epochModel.save();
   }
 
-  getSliceBreakdown(): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const provider = new ethers.providers.JsonRpcProvider(
-          process.env.INFURA_RPC,
-        );
-        let rewardsContract = new ethers.Contract(
-          this.SLICE_ADDRESS,
-          pieABI,
-          provider,
-        );
+  async getSliceBreakdown(): Promise<any> {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.INFURA_RPC,
+    );
+    const rewardsContract = new ethers.Contract(
+      this.SLICE_ADDRESS,
+      pieABI,
+      provider,
+    );
 
-        let decimals = await rewardsContract.decimals();
-        let totalSupply = await rewardsContract.totalSupply();
-        let tokens = await rewardsContract.calcTokensForAmount(
-          totalSupply.toString(),
-        );
-        let underlying = [];
+    const decimals = await rewardsContract.decimals();
+    const totalSupply = await rewardsContract.totalSupply();
+    const tokens = await rewardsContract.calcTokensForAmount(
+      totalSupply.toString(),
+    );
+    const underlying = [];
 
-        for (let i = 0; i < tokens.length; i += 2) {
-          let underlyingAddress = lodash.get(tokens[i], 0).toLowerCase();
-          let underlyingContract = new ethers.Contract(
-            underlyingAddress,
-            pieABI,
-            provider,
-          );
+    for (let i = 0; i < tokens.length; i += 2) {
+      const underlyingAddress = lodash.get(tokens[i], 0).toLowerCase();
+      const underlyingContract = new ethers.Contract(
+        underlyingAddress,
+        pieABI,
+        provider,
+      );
 
-          underlying.push({
-            address: underlyingAddress,
-            amount: tokens[i + 1].toString(),
-            symbol: await underlyingContract.symbol(),
-            decimals: await underlyingContract.decimals(),
-            price: 0,
-          });
-        }
+      underlying.push({
+        address: underlyingAddress,
+        amount: tokens[i + 1].toString(),
+        symbol: await underlyingContract.symbol(),
+        decimals: await underlyingContract.decimals(),
+        price: 0,
+      });
+    }
 
-        let assets = underlying.map((asset) => asset.address).join(',');
+    const assets = underlying.map((asset) => asset.address).join(',');
 
-        let url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${assets}&vs_currencies=usd`;
-        let response = await this.httpService.get(url).toPromise();
-        let prices = response.data;
-        let marginalTVL = 0;
+    const url = `https://api.coingecko.com/api/v3/simple/token_price/ethereum?contract_addresses=${assets}&vs_currencies=usd`;
+    const response = await this.httpService.get(url).toPromise();
+    const prices = response.data;
+    let marginalTVL = 0;
 
-        Object.keys(prices).forEach((address) => {
-          let underlyingAsset = underlying.find(
-            (asset) => asset.address == address,
-          );
-          underlyingAsset.price = prices[address];
+    Object.keys(prices).forEach((address) => {
+      const underlyingAsset = underlying.find(
+        (asset) => asset.address == address,
+      );
+      underlyingAsset.price = prices[address];
 
-          let underlyingMarketCapUSD =
-            parseFloat(underlyingAsset.amount) * underlyingAsset.price.usd;
-          marginalTVL += underlyingMarketCapUSD;
-        });
-
-        resolve({
-          nav: parseFloat(
-            (marginalTVL / parseFloat(totalSupply.toString())).toFixed(2),
-          ),
-          totalSupply: totalSupply.toString(),
-          decimals: decimals,
-          symbol: await rewardsContract.symbol(),
-          underlying: underlying,
-        });
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
+      const underlyingMarketCapUSD =
+        parseFloat(underlyingAsset.amount) * underlyingAsset.price.usd;
+      marginalTVL += underlyingMarketCapUSD;
     });
+
+    return {
+      nav: parseFloat(
+        (marginalTVL / parseFloat(totalSupply.toString())).toFixed(2),
+      ),
+      totalSupply: totalSupply.toString(),
+      decimals: decimals,
+      symbol: await rewardsContract.symbol(),
+      underlying: underlying,
+    };
   }
 
   private includeDelegates(
@@ -558,13 +482,13 @@ export class StakingService {
       entry.address = ethers.utils.getAddress(entry.address);
     });
 
-    let mappedDelegates = {};
+    const mappedDelegates = {};
     delegates.forEach((entry) => {
       mappedDelegates[ethers.utils.getAddress(entry.delegate)] =
         ethers.utils.getAddress(entry.delegator);
     });
 
-    let mappedEntries = {};
+    const mappedEntries = {};
     entries.forEach((entry) => {
       mappedEntries[entry.address] = entry;
     });
@@ -587,43 +511,37 @@ export class StakingService {
     return entries;
   }
 
-  private fetchDelegates(blocks: number, lastID: string): Promise<Delegate[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let query = `{
-          delegates(first: ${blocks}, where: {id_gt: "${lastID}"}) {
-            id
-            delegator
-            delegate
-          }
-        }`;
-
-        let response = await this.httpService
-          .post(this.graphUrl, {
-            query: query,
-          })
-          .toPromise();
-
-        resolve(response.data.data.delegates);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
+  private async fetchDelegates(
+    blocks: number,
+    lastID: string,
+  ): Promise<Delegate[]> {
+    const query = `{
+      delegates(first: ${blocks}, where: {id_gt: "${lastID}"}) {
+        id
+        delegator
+        delegate
       }
-    });
+    }`;
+
+    const response = await this.httpService
+      .post(this.graphUrl, {
+        query: query,
+      })
+      .toPromise();
+
+    return response.data.data.delegates;
   }
 
-  private fetchLocks(
+  private async fetchLocks(
     blocks: number,
     lastID: string,
     lockedAt?: string,
     ids?: Array<string>,
   ): Promise<Lock[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let query = null;
+    let query = null;
 
-        if (ids) {
-          query = `{
+    if (ids) {
+      query = `{
             locks(first: ${blocks}, where: {id_gt: "${lastID}", lockedAt_lt: ${lockedAt}, staker_in: [${ids}]}) {
               id
               lockDuration
@@ -639,8 +557,8 @@ export class StakingService {
               }
             }
           }`;
-        } else {
-          query = `{
+    } else {
+      query = `{
             locks(first: ${blocks}, where: {id_gt: "${lastID}", lockedAt_lt: ${lockedAt}}) {
               id
               lockDuration
@@ -656,210 +574,177 @@ export class StakingService {
               }
             }
           }`;
-        }
+    }
 
-        let response = await this.httpService
-          .post(this.graphUrl, {
-            query: query,
-          })
-          .toPromise();
+    const response = await this.httpService
+      .post(this.graphUrl, {
+        query: query,
+      })
+      .toPromise();
 
-        resolve(response.data.data.locks);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return response.data.data.locks;
   }
 
-  private fetchStakers(
+  private async fetchStakers(
     blocks: number,
     lastID: string,
     ids?: Array<string>,
     condition?: string,
     blockNumber?: number,
   ): Promise<Staker[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        /* istanbul ignore next */
-        if (!condition) {
-          condition = 'id_in';
+    if (!condition) {
+      condition = 'id_in';
+    }
+
+    let query = `{
+      stakers(first: ${blocks}, `;
+
+    if (blockNumber) {
+      query += `, block: {number: ${blockNumber}}`;
+    }
+
+    query += `, where: {id_gt: "${lastID}"`;
+
+    /* istanbul ignore next */
+    if (ids) {
+      query += `, ${condition}: [${ids.map((id) => '"' + id + '"')}]`;
+    }
+
+    query += `}) {
+        id
+        accountVeTokenBalance
+        accountWithdrawableRewards
+        accountWithdrawnRewards
+        accountLocks {
+          id
+          lockId
+          lockDuration
+          lockedAt
+          amount
+          withdrawn
+          ejected
+          boosted
         }
-
-        let query = `{
-          stakers(first: ${blocks}, `;
-
-        if (blockNumber) {
-          query += `, block: {number: ${blockNumber}}`;
+        accountRewards {
+          id
+          timestamp
+          amount
+          type
         }
-
-        query += `, where: {id_gt: "${lastID}"`;
-
-        /* istanbul ignore next */
-        if (ids) {
-          query += `, ${condition}: [${ids.map((id) => '"' + id + '"')}]`;
-        }
-
-        query += `}) {
-            id
-            accountVeTokenBalance
-            accountWithdrawableRewards
-            accountWithdrawnRewards
-            accountLocks {
-              id
-              lockId
-              lockDuration
-              lockedAt
-              amount
-              withdrawn
-              ejected
-              boosted
-            }
-            accountRewards {
-              id
-              timestamp
-              amount
-              type
-            }
-          }
-        }`;
-
-        let response = await this.httpService
-          .post(this.graphUrl, {
-            query: query,
-          })
-          .toPromise();
-
-        resolve(response.data.data.stakers);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
       }
-    });
+    }`;
+
+    const response = await this.httpService
+      .post(this.graphUrl, {
+        query: query,
+      })
+      .toPromise();
+
+    return response.data.data.stakers;
   }
 
-  private fetchstakingStats(
+  private async fetchstakingStats(
     blocks: number,
     blockNumber: number,
   ): Promise<Staker[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let query = `{
-          globalStats(
-            first: ${blocks}, 
-            orderBy: timestamp, 
-            orderDirection: desc,
-            block: {number: ${blockNumber}}
-          ) {
-            id
-            depositedLocksCounter
-            depositedLocksValue
-            withdrawnLocksCounter
-            withdrawnLocksValue
-            ejectedLocksCounter
-            ejectedLocksValue
-            boostedLocksCounter
-            boostedLocksValue
-            averageTimeLock
-            totalDoughStaked
-            veTokenTotalSupply
-            stakersCounter
-            timestamp
-          }
-        }`;
-
-        let response = await this.httpService
-          .post(this.graphUrl, {
-            query: query,
-          })
-          .toPromise();
-
-        resolve(response.data.data.globalStats);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
+    const query = `{
+      globalStats(
+        first: ${blocks}, 
+        orderBy: timestamp, 
+        orderDirection: desc,
+        block: {number: ${blockNumber}}
+      ) {
+        id
+        depositedLocksCounter
+        depositedLocksValue
+        withdrawnLocksCounter
+        withdrawnLocksValue
+        ejectedLocksCounter
+        ejectedLocksValue
+        boostedLocksCounter
+        boostedLocksValue
+        averageTimeLock
+        totalDoughStaked
+        veTokenTotalSupply
+        stakersCounter
+        timestamp
       }
-    });
+    }`;
+
+    const response = await this.httpService
+      .post(this.graphUrl, {
+        query: query,
+      })
+      .toPromise();
+
+    return response.data.data.globalStats;
   }
 
-  private fetchRewards(
+  private async fetchRewards(
     blocks: number,
     lastID: string,
     windowIndex: number,
   ): Promise<Staker[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let query = `{
-          rewards(
-            first: ${blocks}, 
-            where: {id_gt: "${lastID}", windowIndex: ${windowIndex}}) {
-              id
-              timestamp
-              amount
-              account
-              rewardToken
-              windowIndex
-              accountIndex
-              type
-          }
-        }`;
-
-        let response = await this.httpService
-          .post(this.graphUrl, {
-            query: query,
-          })
-          .toPromise();
-
-        resolve(response.data.data.rewards);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
+    const query = `{
+      rewards(
+        first: ${blocks}, 
+        where: {id_gt: "${lastID}", windowIndex: ${windowIndex}}) {
+          id
+          timestamp
+          amount
+          account
+          rewardToken
+          windowIndex
+          accountIndex
+          type
       }
-    });
+    }`;
+
+    const response = await this.httpService
+      .post(this.graphUrl, {
+        query: query,
+      })
+      .toPromise();
+
+    return response.data.data.rewards;
   }
 
-  private getSnapshotVotes(
+  private async getSnapshotVotes(
     from: number,
     to: number,
     proposalsIds: Array<string>,
     condition: string,
   ): Promise<Vote[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let blocks = 1000;
-        let skip = 0;
-        let snapshotVotes = [];
+    const blocks = 1000;
+    let skip = 0;
+    let snapshotVotes = [];
 
-        let votes = await this.fetchSnapshotVotes(
-          from,
-          to,
-          blocks,
-          skip,
-          proposalsIds,
-          condition,
-        );
+    let votes = await this.fetchSnapshotVotes(
+      from,
+      to,
+      blocks,
+      skip,
+      proposalsIds,
+      condition,
+    );
 
-        while (votes.length > 0) {
-          snapshotVotes = snapshotVotes.concat(votes);
-          skip += blocks;
-          votes = await this.fetchSnapshotVotes(
-            from,
-            to,
-            blocks,
-            skip,
-            proposalsIds,
-            condition,
-          );
-        }
+    while (votes.length > 0) {
+      snapshotVotes = snapshotVotes.concat(votes);
+      skip += blocks;
+      votes = await this.fetchSnapshotVotes(
+        from,
+        to,
+        blocks,
+        skip,
+        proposalsIds,
+        condition,
+      );
+    }
 
-        resolve(snapshotVotes);
-      } catch (error) {
-        /* istanbul ignore next */
-        reject(error);
-      }
-    });
+    return snapshotVotes;
   }
 
-  private fetchSnapshotVotes(
+  private async fetchSnapshotVotes(
     from,
     to,
     blocks,
@@ -867,14 +752,11 @@ export class StakingService {
     proposalsIds,
     condition,
   ): Promise<Vote[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        /* istanbul ignore next */
-        let proposalsIdsString = proposalsIds ? proposalsIds.join(',') : '';
+    const proposalsIdsString = proposalsIds ? proposalsIds.join(',') : '';
 
-        let response = await this.httpService
-          .post(this.snapshotUrl, {
-            query: `{
+    const response = await this.httpService
+      .post(this.snapshotUrl, {
+        query: `{
               votes (
                 first: ${blocks},
                 skip: ${skip},
@@ -904,29 +786,24 @@ export class StakingService {
                 }
               }
             }`,
-          })
-          .toPromise();
+      })
+      .toPromise();
 
-        let votes = response.data.data.votes;
+    let votes = response.data.data.votes;
 
-        if (proposalsIds && proposalsIds.length) {
-          votes = votes.filter((vote) => {
-            /* istanbul ignore next */
-            if (
-              // filtering out the proposal, excluding the ones we want to exclude...
-              !proposalsIds.includes(vote.proposal.id)
-            ) {
-              return vote;
-            }
-          });
-        }
-
-        resolve(votes);
-      } catch (error) {
+    if (proposalsIds && proposalsIds.length) {
+      votes = votes.filter((vote) => {
         /* istanbul ignore next */
-        reject(error);
-      }
-    });
+        if (
+          // filtering out the proposal, excluding the ones we want to exclude...
+          !proposalsIds.includes(vote.proposal.id)
+        ) {
+          return vote;
+        }
+      });
+    }
+
+    return votes;
   }
 
   /* istanbul ignore next */
@@ -934,7 +811,7 @@ export class StakingService {
     months: number,
     milliseconds: boolean,
   ): number {
-    let date = new Date();
+    const date = new Date();
     date.setMonth(date.getMonth() - months);
 
     /* istanbul ignore next */
@@ -952,12 +829,12 @@ export class StakingService {
 
     participations.forEach((staker) => {
       staker.votes.forEach((vote) => {
-        let exists = proposals.find(
+        const exists = proposals.find(
           (proposal) => proposal.id == vote.proposal.id,
         );
 
         if (!exists) {
-          let proposal = {
+          const proposal = {
             id: vote.proposal.id,
             snapshot: vote.proposal.snapshot,
             title: vote.proposal.title,
@@ -986,7 +863,7 @@ export class StakingService {
     // removing duplicates from the voters array...
     voters = Array.from(new Set(voters)).sort();
     // retrieving the delegations...
-    let delegations = await this.getDelegates();
+    const delegations = await this.getDelegates();
     // adding the delegator into the participants...
     delegations.forEach((delegation) => {
       if (voters.includes(delegation.delegate)) {
@@ -995,10 +872,10 @@ export class StakingService {
       }
     });
     // creating the final voters struct...
-    let votersStruct = [];
+    const votersStruct = [];
 
     voters.forEach((voter) => {
-      let votesArray = votes.filter(
+      const votesArray = votes.filter(
         (vote) => vote.voter.toLowerCase() == voter,
       );
 

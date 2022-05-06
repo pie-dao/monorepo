@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import {
-  SentimentEntity,
-  SentimentDocument,
-} from './entities/sentiment.entity';
 import * as moment from 'moment';
+import { Model } from 'mongoose';
 import { CreateSentimentDto } from './dto/create-sentiment.dto';
+import {
+  SentimentDocument,
+  SentimentEntity,
+} from './entities/sentiment.entity';
 
 @Injectable()
 export class SentimentService {
@@ -15,26 +15,19 @@ export class SentimentService {
     private sentimentModel: Model<SentimentDocument>,
   ) {}
 
-  async create(sentiment: CreateSentimentDto): Promise<SentimentDocument> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (!sentiment.timestamp) {
-          sentiment.timestamp = moment().unix().toString();
-        }
+  create(sentiment: CreateSentimentDto): Promise<SentimentDocument> {
+    if (!sentiment.timestamp) {
+      sentiment.timestamp = moment().unix().toString();
+    }
 
-        let sentimentModel = new this.sentimentModel(sentiment);
-        let sentimentDB = await sentimentModel.save();
-        resolve(sentimentDB);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    const sentimentModel = new this.sentimentModel(sentiment);
+    return sentimentModel.save();
   }
 
   async report(days: number): Promise<any> {
-    let sentiments = await this.getSentiments(days);
+    const sentiments = await this.getSentiments(days);
 
-    let report = {
+    const report = {
       positive: {
         amount: 0,
         percentage: 0,
@@ -56,7 +49,7 @@ export class SentimentService {
       }
     });
 
-    let totalVotes = report.positive.amount + report.negative.amount;
+    const totalVotes = report.positive.amount + report.negative.amount;
     report.positive.percentage = Math.round(
       (report.positive.amount * 100) / totalVotes,
     );
@@ -68,20 +61,12 @@ export class SentimentService {
   }
 
   private async getSentiments(days: number): Promise<SentimentEntity[]> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        let filters = {
-          timestamp: {
-            $gte: moment().subtract(days, 'days').unix().toString(),
-          },
-        };
+    const filters = {
+      timestamp: {
+        $gte: moment().subtract(days, 'days').unix().toString(),
+      },
+    };
 
-        let cgCoinEntity = await this.sentimentModel.find(filters).lean();
-
-        resolve(cgCoinEntity);
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return this.sentimentModel.find(filters).lean();
   }
 }

@@ -7,7 +7,7 @@ import { AirdropResponse } from '../types/tasks.types.AirdropResponse';
 
 describe('TasksService', () => {
   let service: TasksService;
-  let TESTING_BLOCK = 13352729;
+  const TESTING_BLOCK = 13352729;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,7 +39,7 @@ describe('TasksService', () => {
         });
 
         test('then it should return an object for the airdrop', () => {
-          let airdropStub = AirdropStub();
+          const airdropStub = AirdropStub();
 
           expect(airdropStub).toEqual(
             expect.objectContaining({ amount: '9999999.99999999996965821' }),

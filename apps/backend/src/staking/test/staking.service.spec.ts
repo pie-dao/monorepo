@@ -12,12 +12,12 @@ describe('StakingService', () => {
   let service: StakingService;
   let generatedEpoch = null;
 
-  let blockNumber = 13527858;
-  let month = 10;
-  let year = 2021;
-  let distributedRewards = '1350000';
-  let windowIndex = 0;
-  let proposals = [
+  const blockNumber = 13527858;
+  const month = 10;
+  const year = 2021;
+  const distributedRewards = '1350000';
+  const windowIndex = 0;
+  const proposals = [
     '"QmRkF9A2NigXcBBFfASnM7akNvAo6c9jgNxpt1faX6hvjK"',
     '"QmebDo3uTVJ5bHWgYhf7CvcK7by1da1WUX4jw5uX6M7EUW"',
     '"QmRakdstZdU1Mx1vYhjon8tYnv5o1dkir8v3HDBmmnCGUc"',
@@ -85,7 +85,7 @@ describe('StakingService', () => {
       });
 
       test('then new snapshotUrl should be set', () => {
-        let snapshotUrl = service.getSnapshotUrl();
+        const snapshotUrl = service.getSnapshotUrl();
         expect(snapshotUrl).toEqual('wrong_url');
       });
     });
@@ -105,7 +105,7 @@ describe('StakingService', () => {
       });
 
       test('then new snapshotUrl should be set', () => {
-        let ethProvider = service.getEthProvider();
+        const ethProvider = service.getEthProvider();
         expect(ethProvider).toEqual('wrong_provider');
       });
 
@@ -211,7 +211,7 @@ describe('StakingService', () => {
         });
 
         test('then it should return an EpochEntity', () => {
-          let epochObj = <any>epoch;
+          const epochObj = <any>epoch;
           expect(JSON.stringify(epochObj.merkleTree.windowIndex)).toEqual(
             JSON.stringify(epoch.merkleTree.windowIndex),
           );
@@ -274,7 +274,7 @@ describe('StakingService', () => {
     describe('When getLocks is called with params', () => {
       jest.setTimeout(50000);
       let locks: any[];
-      let timestamp = Number(Date.now()).toString();
+      const timestamp = Number(Date.now()).toString();
 
       beforeEach(async () => {
         jest.spyOn(service, 'getLocks');

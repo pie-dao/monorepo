@@ -15,8 +15,8 @@ export class SimpleAuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const headerFieldValue = request.headerField;
-    let bearerIndex = request.rawHeaders.findIndex((x) => x == 'Bearer');
-    let bearer = request.rawHeaders[bearerIndex + 1];
+    const bearerIndex = request.rawHeaders.findIndex((x) => x == 'Bearer');
+    const bearer = request.rawHeaders[bearerIndex + 1];
 
     if (bearer == this.BEARER) {
       return true;
