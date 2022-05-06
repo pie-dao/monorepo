@@ -70,7 +70,7 @@ const stakers = [
     ],
     accountVeTokenBalance: '10000000000000000000000',
     id: '0xb5BA664321aeb345A8207430d94a5130ecCA4259',
-  }, 
+  },
   {
     accountLocks: [
       {
@@ -84,7 +84,7 @@ const stakers = [
     ],
     accountVeTokenBalance: '10000000000000000000000',
     id: '0x087933667B22e8403cCb3E9169526484414f3336',
-  },    
+  },
 ];
 
 const accounts = {
@@ -93,7 +93,7 @@ const accounts = {
   paul: '0xabf26352aadaaa1cabffb3a55e378bac6bf15791',
   mickie: '0x3fe4d5d50fd7694b07589510621930aa14ce396e',
   mouse: '0xb5BA664321aeb345A8207430d94a5130ecCA4259',
-  foobar: '0x087933667B22e8403cCb3E9169526484414f3336'
+  foobar: '0x087933667B22e8403cCb3E9169526484414f3336',
 };
 
 export const StakersStub = (): any => {

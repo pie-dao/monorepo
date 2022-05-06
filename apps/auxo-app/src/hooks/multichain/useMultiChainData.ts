@@ -1,25 +1,25 @@
-import { useWeb3React } from "@web3-react/core";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useAppDispatch } from "../";
-import { useContracts } from "./useMultichainContract";
-import { Vault } from "../../store/vault/Vault";
-import { setVaults } from "../../store/vault/vault.slice";
+import { useWeb3React } from '@web3-react/core';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useAppDispatch } from '../';
+import { useContracts } from './useMultichainContract';
+import { Vault } from '../../store/vault/Vault';
+import { setVaults } from '../../store/vault/vault.slice';
 import {
   chainMap,
   isChainSupported,
   SUPPORTED_CHAIN_ID,
-} from "../../utils/networks";
-import { useProxySelector } from "../../store";
-import hash from "object-hash";
-import { useWeb3Cache } from "../useCachedWeb3";
-import { useBlock } from "../useBlock";
-import { fetchOnChainData } from "../onChainUtils/fetchOnChainData";
-import { toVault } from "../onChainUtils/transformOnChainData";
-import { Vault as Auxo } from "../../types/artifacts/abi";
+} from '../../utils/networks';
+import { useProxySelector } from '../../store';
+import hash from 'object-hash';
+import { useWeb3Cache } from '../useCachedWeb3';
+import { useBlock } from '../useBlock';
+import { fetchOnChainData } from '../onChainUtils/fetchOnChainData';
+import { toVault } from '../onChainUtils/transformOnChainData';
+import { Vault as Auxo } from '../../types/artifacts/abi';
 
 export const hasStateChanged = (old: Vault[], change: Vault[]): boolean => {
-  const oldState = hash(old, { encoding: "base64" });
-  const newState = hash(change, { encoding: "base64" });
+  const oldState = hash(old, { encoding: 'base64' });
+  const newState = hash(change, { encoding: 'base64' });
   return oldState !== newState;
 };
 
@@ -119,14 +119,14 @@ export const useChainData = (): { loading: boolean } => {
       const thisRequest = new Date().getTime();
 
       // dev logging is too useful to keep adding and removing
-      if (process.env.NODE_ENV === "development")
+      if (process.env.NODE_ENV === 'development')
         console.debug(
-          "Network call at",
+          'Network call at',
           thisRequest,
-          "Last Call at",
+          'Last Call at',
           latestRequest.current,
-          "diff",
-          (thisRequest - latestRequest.current) / 1000
+          'diff',
+          (thisRequest - latestRequest.current) / 1000,
         );
       latestRequest.current = thisRequest;
 
@@ -135,13 +135,15 @@ export const useChainData = (): { loading: boolean } => {
         // Get all relevant contracts for the underlying token
         tokenContracts.map(async (token) => {
           const vault = vaults.find(
-            (v) => v.token.address.toLowerCase() === token.address.toLowerCase()
+            (v) =>
+              v.token.address.toLowerCase() === token.address.toLowerCase(),
           ) as Vault;
           const auxo = auxoContracts.find(
-            (m) => m.address.toLowerCase() === vault?.address.toLowerCase()
+            (m) => m.address.toLowerCase() === vault?.address.toLowerCase(),
           ) as Auxo;
           const auth = authContracts.find(
-            (a) => a.address.toLowerCase() === vault?.auth.address.toLowerCase()
+            (a) =>
+              a.address.toLowerCase() === vault?.auth.address.toLowerCase(),
           );
           return await fetchOnChainData({
             token,
@@ -151,7 +153,7 @@ export const useChainData = (): { loading: boolean } => {
             account,
             vault,
           });
-        })
+        }),
       )
         .then((vaultChainData) => {
           // convert the vaults to a state object
@@ -165,7 +167,7 @@ export const useChainData = (): { loading: boolean } => {
                   existing: data.existing,
                   data,
                   account,
-                })
+                }),
             ) as Vault[];
 
           // discard data that has taken too long to reach us
@@ -177,7 +179,7 @@ export const useChainData = (): { loading: boolean } => {
           }
         })
         .catch((err) => {
-          console.warn("Problem fetching on chain data", err);
+          console.warn('Problem fetching on chain data', err);
         })
         .finally(() => {
           lastUpdatedBlock.current = block.number;

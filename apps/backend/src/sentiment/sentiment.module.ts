@@ -7,10 +7,12 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: SentimentEntity.name, schema: SentimentSchema }]),
-    ConfigModule
+    MongooseModule.forFeature([
+      { name: SentimentEntity.name, schema: SentimentSchema },
+    ]),
+    ConfigModule,
   ],
   controllers: [SentimentController],
-  providers: [SentimentService]
+  providers: [SentimentService],
 })
 export class SentimentModule {}

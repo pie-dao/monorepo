@@ -1,11 +1,11 @@
-import { useWeb3React } from "@web3-react/core";
-import { IoChevronBack, IoWarningOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
-import { useApy } from "../../../hooks/useApy";
-import { Vault } from "../../../store/vault/Vault";
-import { logoSwitcher } from "../../../utils/logos";
-import { getProof } from "../../../utils/merkleProof";
-import { chainMap, SUPPORTED_CHAIN_ID } from "../../../utils/networks";
+import { useWeb3React } from '@web3-react/core';
+import { IoChevronBack, IoWarningOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
+import { useApy } from '../../../hooks/useApy';
+import { Vault } from '../../../store/vault/Vault';
+import { logoSwitcher } from '../../../utils/logos';
+import { getProof } from '../../../utils/merkleProof';
+import { chainMap, SUPPORTED_CHAIN_ID } from '../../../utils/networks';
 
 export const VEDoughChecker = (): JSX.Element => {
   const { account } = useWeb3React();
@@ -33,7 +33,7 @@ export const VEDoughStatusRow = () => {
       <div className="flex items-center text-baby-blue-dark">
         <button
           onClick={() => {
-            navigate("/");
+            navigate('/');
           }}
           className="bg-white rounded-md shadow-sm sm:shadow-md p-2 sm:p-3"
         >
@@ -56,7 +56,7 @@ export const FloatingBackground = (): JSX.Element => {
 
 export const VaultPoolAPY = ({ vault }: { vault: Vault | undefined }) => {
   let message = useApy(vault);
-  if (message !== "New Vault") message = message + " APY";
+  if (message !== 'New Vault') message = message + ' APY';
   return (
     <div className="hidden lg:flex h-6 justify-start mb-5 items-center z-20">
       <div className="mr-2 h-8 w-8 relative flex justify-start">
@@ -64,12 +64,12 @@ export const VaultPoolAPY = ({ vault }: { vault: Vault | undefined }) => {
         <div className="h-4 w-4 absolute -bottom-1 -right-1">
           {logoSwitcher(
             chainMap[vault?.network.chainId as SUPPORTED_CHAIN_ID]
-              ?.nativeCurrency.symbol
+              ?.nativeCurrency.symbol,
           )}
         </div>
       </div>
       <p className="ml-3 md:font-bold md:text-2xl text-gray-700">
-        {vault?.symbol} pool{" "}
+        {vault?.symbol} pool{' '}
         <span className="font-extrabold text-return-100 mr-3">{message}</span>
       </p>
     </div>

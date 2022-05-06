@@ -42,5 +42,5 @@ describe('StakingController', () => {
         expect(airdrop).toEqual(AirdropStub());
       });
     });
-  });  
+  });
 });

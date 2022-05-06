@@ -1,5 +1,5 @@
-import { VaultState } from "./Vault";
-import { vaults } from './auxoVaults'
+import { VaultState } from './Vault';
+import { vaults } from './auxoVaults';
 
 export const vaultState: VaultState = {
   vaults,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const useWindowWide = (size: number): boolean => {
   /**
@@ -11,12 +11,12 @@ export const useWindowWide = (size: number): boolean => {
       setWidth(window.innerWidth);
     }
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [setWidth]);
   return width > size;

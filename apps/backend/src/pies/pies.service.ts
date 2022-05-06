@@ -22,7 +22,6 @@ import * as moment from 'moment';
 import { Command, Console, createSpinner } from 'nestjs-console';
 import { StakingService } from '../staking';
 
-
 const EVERY_HOUR = 1000 * 60 * 60;
 const EVERY_MINUTE = 1000 * 60;
 const DOUGH_ADDRESS = '0xad32a8e6220741182940c5abf610bde99e737b2d';

@@ -1,8 +1,8 @@
-import { useWeb3React } from "@web3-react/core";
-import { providers } from "ethers";
-import { useEffect, useState } from "react";
-import { LibraryProvider, SetStateType } from "../types/utilities";
-import { useWeb3Cache } from "./useCachedWeb3";
+import { useWeb3React } from '@web3-react/core';
+import { providers } from 'ethers';
+import { useEffect, useState } from 'react';
+import { LibraryProvider, SetStateType } from '../types/utilities';
+import { useWeb3Cache } from './useCachedWeb3';
 
 type Block = {
   number: number | null | undefined;
@@ -16,7 +16,7 @@ export type UseBlockReturnType = {
 const getCurrentBlock = (
   library: providers.Web3Provider | providers.JsonRpcProvider,
   setBlock: SetStateType<Block>,
-  chainId: number
+  chainId: number,
 ): void => {
   library
     .getBlockNumber()
@@ -29,14 +29,14 @@ const getCurrentBlock = (
     .catch((err) => {
       if (chainId !== library._network.chainId) {
         console.warn(
-          "Chain ID discrepancy between the provider and the application"
+          'Chain ID discrepancy between the provider and the application',
         );
         // Chain Ids can decouple when switching from an unsupported chain
         // adding this line appears to solve the issue for the time being, but we need to look
         // for a better solution
         library._network.chainId = chainId;
       }
-      console.warn("Error getting first block", err);
+      console.warn('Error getting first block', err);
       setBlock({
         number: null,
         chainId: null,
@@ -70,11 +70,11 @@ export const useBlock = (): UseBlockReturnType => {
     };
 
     // attach the event listener
-    library.on("block", updateBlockNumber);
+    library.on('block', updateBlockNumber);
 
     // remove the event listener when the component unmounts
     return () => {
-      library.removeListener("block", updateBlockNumber);
+      library.removeListener('block', updateBlockNumber);
       setBlock({ number: undefined, chainId: null });
     };
   }, [library, chainId]);

@@ -1,30 +1,30 @@
-import { useState } from "react";
-import { FaCheck } from "react-icons/fa";
-import { useMaxDeposit } from "../../../../hooks/useMaxDeposit";
+import { useState } from 'react';
+import { FaCheck } from 'react-icons/fa';
+import { useMaxDeposit } from '../../../../hooks/useMaxDeposit';
 import {
   useApprovalLimit,
   useSelectedVault,
   useUserTokenBalance,
-} from "../../../../hooks/useSelectedVault";
-import { Balance } from "../../../../store/vault/Vault";
-import { compareBalances, zeroBalance } from "../../../../utils/balances";
-import StyledButton from "../../../UI/button";
-import InputSlider from "../InputSlider";
-import { useAppDispatch } from "../../../../hooks";
+} from '../../../../hooks/useSelectedVault';
+import { Balance } from '../../../../store/vault/Vault';
+import { compareBalances, zeroBalance } from '../../../../utils/balances';
+import StyledButton from '../../../UI/button';
+import InputSlider from '../InputSlider';
+import { useAppDispatch } from '../../../../hooks';
 import {
   useAuxoVaultContract,
   useTokenContract,
-} from "../../../../hooks/multichain/useMultichainContract";
-import LoadingSpinner from "../../../UI/loadingSpinner";
-import { useWeb3React } from "@web3-react/core";
-import { prettyNumber } from "../../../../utils";
-import { SetStateType } from "../../../../types/utilities";
-import { logoSwitcher } from "../../../../utils/logos";
+} from '../../../../hooks/multichain/useMultichainContract';
+import LoadingSpinner from '../../../UI/loadingSpinner';
+import { useWeb3React } from '@web3-react/core';
+import { prettyNumber } from '../../../../utils';
+import { SetStateType } from '../../../../types/utilities';
+import { logoSwitcher } from '../../../../utils/logos';
 import {
   thunkApproveDeposit,
   thunkMakeDeposit,
-} from "../../../../store/vault/vault.thunks";
-import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
+} from '../../../../store/vault/vault.thunks';
+import { useWeb3Cache } from '../../../../hooks/useCachedWeb3';
 
 function ApproveDepositButton({ deposit }: { deposit: Balance }) {
   const [approving, setApproving] = useState(false);
@@ -39,20 +39,20 @@ function ApproveDepositButton({ deposit }: { deposit: Balance }) {
       thunkApproveDeposit({
         deposit,
         token: tokenContract,
-      })
+      }),
     ).finally(() => setApproving(false));
   };
 
   return (
     <StyledButton
       disabled={
-        deposit.value === "0" ||
-        compareBalances(limit, "gte", deposit) ||
+        deposit.value === '0' ||
+        compareBalances(limit, 'gte', deposit) ||
         approving
       }
       onClick={approveDeposit}
     >
-      {approving ? <LoadingSpinner /> : "Approve"}
+      {approving ? <LoadingSpinner /> : 'Approve'}
     </StyledButton>
   );
 }
@@ -74,7 +74,7 @@ function DepositButtons({
 
   const buttonDisabled = () => {
     const invalidDepost = deposit.label <= 0;
-    const sufficientApproval = compareBalances(limit, "gte", deposit);
+    const sufficientApproval = compareBalances(limit, 'gte', deposit);
     const wrongNetwork = chainId !== vault?.network.chainId;
     return !sufficientApproval || wrongNetwork || invalidDepost || depositing;
   };
@@ -86,7 +86,7 @@ function DepositButtons({
         account,
         auxo: auxoContract,
         deposit,
-      })
+      }),
     )
       .then(() => setDeposit(zeroBalance()))
       .finally(() => setDepositing(false));
@@ -96,14 +96,14 @@ function DepositButtons({
     <>
       <div
         className={`rounded-full p-2 
-            ${!buttonDisabled() ? "bg-baby-blue-dark" : "bg-gray-300"}`}
+            ${!buttonDisabled() ? 'bg-baby-blue-dark' : 'bg-gray-300'}`}
       >
         <FaCheck className="fill-white w-4 h-4" />
       </div>
       <StyledButton
         disabled={buttonDisabled()}
         onClick={makeDeposit}
-        className={!buttonDisabled() ? "bg-baby-blue-dark" : "bg-gray-300"}
+        className={!buttonDisabled() ? 'bg-baby-blue-dark' : 'bg-gray-300'}
       >
         Deposit
       </StyledButton>
@@ -132,7 +132,7 @@ function DepositInput() {
   const max = useMaxDeposit();
   const currency = useSelectedVault()?.symbol;
   const balance = useUserTokenBalance();
-  const label = prettyNumber(balance.label) + " " + currency;
+  const label = prettyNumber(balance.label) + ' ' + currency;
 
   return (
     <div className="sm:my-2 flex flex-col h-full w-full justify-evenly px-4">

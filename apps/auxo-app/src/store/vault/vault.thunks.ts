@@ -1,7 +1,7 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Erc20, MerkleAuth, Vault as Auxo } from "../../types/artifacts/abi";
-import { getProof } from "../../utils/merkleProof";
-import { Balance, VaultState } from "./Vault";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Erc20, MerkleAuth, Vault as Auxo } from '../../types/artifacts/abi';
+import { getProof } from '../../utils/merkleProof';
+import { Balance, VaultState } from './Vault';
 
 /**
  * Thunks allow us to execute asynchronous actions while maintaining a predictable state.
@@ -29,20 +29,20 @@ export type ThunkApproveDepositProps = {
   token: Erc20 | undefined;
 };
 export const thunkApproveDeposit = createAsyncThunk(
-  "vault/approveDeposit",
+  'vault/approveDeposit',
   async (
     { deposit, token }: ThunkApproveDepositProps,
-    { getState, rejectWithValue }
+    { getState, rejectWithValue },
   ) => {
     const { vault } = getState() as { vault: VaultState };
     if (!token || !vault.selected)
-      return rejectWithValue("Missing token or selected vault");
+      return rejectWithValue('Missing token or selected vault');
     const tx = await token.approve(vault.selected, deposit.value);
     const receipt = await tx.wait();
     return receipt.status === 1
       ? { deposit }
-      : rejectWithValue("Approval Failed");
-  }
+      : rejectWithValue('Approval Failed');
+  },
 );
 
 /**
@@ -54,22 +54,22 @@ export type ThunkMakeDepositProps = {
   account: string | null | undefined;
 };
 export const thunkMakeDeposit = createAsyncThunk(
-  "vault/makeDeposit",
+  'vault/makeDeposit',
   async (
     { deposit, auxo, account }: ThunkMakeDepositProps,
-    { getState, rejectWithValue }
+    { getState, rejectWithValue },
   ) => {
     const { vault } = getState() as { vault: VaultState };
     if (!auxo || !account || !vault.selected)
       return rejectWithValue(
-        "Missing Contract, Selected Vault or Account Details"
+        'Missing Contract, Selected Vault or Account Details',
       );
     const tx = await auxo.deposit(account, deposit.value);
     const receipt = await tx.wait();
     return receipt.status === 1
       ? { deposit }
-      : rejectWithValue("Deposit Failed");
-  }
+      : rejectWithValue('Deposit Failed');
+  },
 );
 
 /**
@@ -81,20 +81,20 @@ export type ThunkConfirmWithdrawProps = {
   auxo: Auxo | undefined;
 };
 export const thunkConfirmWithdrawal = createAsyncThunk(
-  "vault/confirmWithdrawal",
+  'vault/confirmWithdrawal',
   async (
     { pendingSharesUnderlying, auxo }: ThunkConfirmWithdrawProps,
-    { getState, rejectWithValue }
+    { getState, rejectWithValue },
   ) => {
     const { vault } = getState() as { vault: VaultState };
     if (!auxo || !vault.selected)
-      return rejectWithValue("Missing Contract or Selected Vault");
+      return rejectWithValue('Missing Contract or Selected Vault');
     const tx = await auxo.exitBatchBurn();
     const receipt = await tx.wait();
     return receipt.status === 1
       ? { pendingSharesUnderlying }
-      : rejectWithValue("Enter Batch Burn Failed");
-  }
+      : rejectWithValue('Enter Batch Burn Failed');
+  },
 );
 
 /**
@@ -106,20 +106,20 @@ export type ThunkIncreaseWithdrawalProps = {
   auxo: Auxo | undefined;
 };
 export const thunkIncreaseWithdrawal = createAsyncThunk(
-  "vault/increaseWithdrawal",
+  'vault/increaseWithdrawal',
   async (
     { withdraw, auxo }: ThunkIncreaseWithdrawalProps,
-    { getState, rejectWithValue }
+    { getState, rejectWithValue },
   ) => {
     const { vault } = getState() as { vault: VaultState };
     if (!auxo || !vault.selected)
-      return rejectWithValue("Missing Contract or Selected Vault");
+      return rejectWithValue('Missing Contract or Selected Vault');
     const tx = await auxo.enterBatchBurn(withdraw.value);
     const receipt = await tx.wait();
     return receipt.status === 1
       ? { withdraw }
-      : rejectWithValue("Exit Batch Burn Failed");
-  }
+      : rejectWithValue('Exit Batch Burn Failed');
+  },
 );
 
 /**
@@ -135,23 +135,23 @@ export type ThunkAuthorizeDepositorProps = {
   auth: MerkleAuth | undefined;
 };
 export const thunkAuthorizeDepositor = createAsyncThunk(
-  "vault/authorizeDepositor",
+  'vault/authorizeDepositor',
   async (
     { account, auth }: ThunkAuthorizeDepositorProps,
-    { getState, rejectWithValue }
+    { getState, rejectWithValue },
   ) => {
     const { vault } = getState() as { vault: VaultState };
     if (!auth || !vault.selected || !account)
       return rejectWithValue(
-        "Missing Auth Contract, Selected Vault or account details"
+        'Missing Auth Contract, Selected Vault or account details',
       );
     const proof = getProof(account);
     if (!proof)
       return rejectWithValue(
-        "The current account is unauthorized to use this vault."
+        'The current account is unauthorized to use this vault.',
       );
     const tx = await auth.authorizeDepositor(account, proof);
     const receipt = await tx.wait();
-    if (receipt.status !== 1) return rejectWithValue("Authorization Failed");
-  }
+    if (receipt.status !== 1) return rejectWithValue('Authorization Failed');
+  },
 );

@@ -1,7 +1,7 @@
-import { FaSort } from "react-icons/fa";
-import { Row, TableInstance } from "react-table";
-import { useNavigateToVault } from "../../../hooks/useSelectedVault";
-import { VaultTableRow } from "../../../hooks/useVaultTableRows";
+import { FaSort } from 'react-icons/fa';
+import { Row, TableInstance } from 'react-table';
+import { useNavigateToVault } from '../../../hooks/useSelectedVault';
+import { VaultTableRow } from '../../../hooks/useVaultTableRows';
 
 function VaultRow({
   row,
@@ -34,7 +34,7 @@ function VaultRow({
             last-of-type:pr-[2px]
           "
           >
-            {cell.render("Cell")}
+            {cell.render('Cell')}
           </td>
         );
       })}
@@ -56,8 +56,8 @@ function VaultTable({
         className="w-full min-w-[500px]"
         // spacing between rows
         style={{
-          borderSpacing: "0 1em",
-          borderCollapse: "separate",
+          borderSpacing: '0 1em',
+          borderCollapse: 'separate',
         }}
       >
         <thead>
@@ -82,20 +82,20 @@ function VaultTable({
                 "
                 >
                   <div className="flex items-center justify-center">
-                    {column.Header !== "" && (
+                    {column.Header !== '' && (
                       <FaSort
                         className={`
                         mx-1
                         ${
                           column.isSorted &&
                           (column.isSortedDesc
-                            ? "fill-red-600"
-                            : "fill-green-600")
+                            ? 'fill-red-600'
+                            : 'fill-green-600')
                         }
                       `}
                       />
                     )}
-                    <p className="mr-2">{column.render("Header")}</p>
+                    <p className="mr-2">{column.render('Header')}</p>
                   </div>
                 </th>
               ))}

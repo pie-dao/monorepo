@@ -1,4 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -24,28 +24,28 @@ export class EpochEntity {
 
   @Prop()
   @ApiProperty()
-  participants: Array<any>
+  participants: Array<any>;
 
   @Prop()
   @ApiProperty()
-  proposals: Array<string>
+  proposals: Array<string>;
 
-  @Prop({type: Object})
+  @Prop({ type: Object })
   @ApiProperty()
-  merkleTree: any
+  merkleTree: any;
 
-  @Prop({type: Object})
+  @Prop({ type: Object })
   @ApiProperty()
-  stakingStats: any
+  stakingStats: any;
 
-  @Prop({type: Object})
+  @Prop({ type: Object })
   @ApiProperty()
-  slice: any  
+  slice: any;
 
   // TODO: to be completed, and transformed into one-to-many relationship...
   @Prop()
   @ApiProperty()
-  rewards: Array<any> 
+  rewards: Array<any>;
 }
 
 export const EpochSchema = SchemaFactory.createForClass(EpochEntity);

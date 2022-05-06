@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+import { ethers } from 'ethers';
 
 export type SetStateType<T extends any> = (t: T) => void;
 export type LibraryProvider =

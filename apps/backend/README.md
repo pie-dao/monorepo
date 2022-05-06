@@ -33,6 +33,7 @@ $ npm install
 ```
 
 ## Running the app
+
 Create a .env file inside the root of the project, with this content
 (remember to change "YOUR_INFURA_KEY_HERE" with your actual Infura's Key, and follow the steps described in the Test section regarding the setup for the docker-mongoDB on your local environment)
 
@@ -61,30 +62,38 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
 ## Deploy the App
+
 This app runs on Heroku, deploy is pretty simple.
 
 First you login into heroku:
+
 ```bash
 $ heroku login
 ```
 
 then you move into the backend folder:
+
 ```bash
 $ cd apps/backend
 ```
 
 once there, you can add the heroku repository:
+
 ```bash
 $ git remote add heroku https://git.heroku.com/piedao-nestjs.git
 ```
 
 finally, you can simply commit/push on this repo to trigger the build process
+
 ```bash
 $ git commit -am "love piedao"
 $ git push heroku master
 ```
+
 ## Test
+
 In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB on a docker.
 Supposing you have docker already installed, all you need to do is
 
@@ -110,6 +119,7 @@ $ npm run test:cov
 ```
 
 ## API Playground
+
 Once running it locally, you can go to
 http://localhost:3000/playground/
 and test it out.

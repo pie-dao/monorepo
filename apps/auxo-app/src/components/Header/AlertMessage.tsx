@@ -1,35 +1,35 @@
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   AlertTypes,
   AppState,
   clearAlert,
   setAlert,
   setAlertDisplay,
-} from "../../store/app/app.slice";
-import { RiCloseCircleFill } from "react-icons/ri";
-import LoadingSpinner from "../UI/loadingSpinner";
-import { chainMap, changeNetwork } from "../../utils/networks";
-import { useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
-import { SetStateType } from "../../types/utilities";
-import { useWeb3React } from "@web3-react/core";
-import { injected } from "../../connectors";
-import { ChainAndLogo } from "../UI/networkDropdown";
+} from '../../store/app/app.slice';
+import { RiCloseCircleFill } from 'react-icons/ri';
+import LoadingSpinner from '../UI/loadingSpinner';
+import { chainMap, changeNetwork } from '../../utils/networks';
+import { useEffect } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment, useState } from 'react';
+import { SetStateType } from '../../types/utilities';
+import { useWeb3React } from '@web3-react/core';
+import { injected } from '../../connectors';
+import { ChainAndLogo } from '../UI/networkDropdown';
 
 const alertColor = (type: AlertTypes) => {
   switch (type) {
-    case "SUCCESS": {
-      return "bg-alert-success";
+    case 'SUCCESS': {
+      return 'bg-alert-success';
     }
-    case "PENDING": {
-      return "bg-alert-pending";
+    case 'PENDING': {
+      return 'bg-alert-pending';
     }
-    case "ERROR": {
-      return "bg-alert-error";
+    case 'ERROR': {
+      return 'bg-alert-error';
     }
     default: {
-      return "bg-alert-error";
+      return 'bg-alert-error';
     }
   }
 };
@@ -56,11 +56,11 @@ function ActionButton({
   alert,
   action,
 }: {
-  alert: AppState["alert"];
+  alert: AppState['alert'];
   action: { state: boolean; setter: SetStateType<boolean> };
 }) {
   switch (alert.action) {
-    case "SWITCH_NETWORK": {
+    case 'SWITCH_NETWORK': {
       return (
         <SwitchNetworkButton setShow={action.setter} show={action.state} />
       );
@@ -147,10 +147,10 @@ export function NetworkSwitchModal({
                           .catch(() =>
                             dispatch(
                               setAlert({
-                                type: "ERROR",
-                                message: "Problem Switching Networks",
-                              })
-                            )
+                                type: 'ERROR',
+                                message: 'Problem Switching Networks',
+                              }),
+                            ),
                           );
                       }}
                       className="hover:bg-baby-blue-light hover:text-baby-blue-dark text-gray-700
@@ -176,7 +176,7 @@ function AlertMessage(): JSX.Element {
 
   useEffect(() => {
     // pending TX should show for duration
-    if (alert.type === "PENDING") return;
+    if (alert.type === 'PENDING') return;
     const timeout = setTimeout(() => {
       dispatch(setAlertDisplay(false));
     }, 4000);
@@ -190,7 +190,7 @@ function AlertMessage(): JSX.Element {
       <NetworkSwitchModal show={showModal} setShow={setShowModal} />
       <div
         className={`
-        ${alert.show ? "opacity-100 z-10" : "opacity-0 -z-10"}
+        ${alert.show ? 'opacity-100 z-10' : 'opacity-0 -z-10'}
           transition ease-in-out shadow-lg
           absolute flex justify-center w-full
         `}
@@ -201,7 +201,7 @@ function AlertMessage(): JSX.Element {
           justify-center rounded-lg w-full items-center`}
         >
           <p className="text-white mr-2 m-1 sm:m-0">{alert.message}</p>
-          {alert.type === "PENDING" && (
+          {alert.type === 'PENDING' && (
             <span className="mx-2">
               <LoadingSpinner
                 spinnerClass="fill-white"
