@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "projects": {
+    "backend": "apps/backend",
+    "landing-page": "apps/landing-page",
+    "shared-util-ui-components": "libs/shared/util-ui-components"
+  }
+}

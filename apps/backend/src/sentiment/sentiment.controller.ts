@@ -3,7 +3,7 @@ import { SentimentService } from './sentiment.service';
 import { CreateSentimentDto } from './dto/create-sentiment.dto';
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery } from '@nestjs/swagger';
 import { SentimentDocument, SentimentEntity } from './entities/sentiment.entity';
-import { SimpleAuthGuard } from 'src/authorization/simple-auth.guard';
+import { SimpleAuthGuard } from '../authorization';
 
 @Controller('sentiment')
 export class SentimentController {

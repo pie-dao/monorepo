@@ -1,0 +1,9 @@
+{
+  "name": "@shared/util-ui-components",
+  "version": "0.0.1",
+  "scripts": {
+    "storybook": "start-storybook -p -s ./public 6006",
+    "build-storybook": "build-storybook",
+    "build": "rollup -c  && npx tailwindcss -i ./index.css -o ./public/output.css"
+  }
+}

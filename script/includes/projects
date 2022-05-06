@@ -1,0 +1,13 @@
+#!/bin/bash
+
+declare -A projects
+projects=(
+    ["backend"]="apps/backend"
+    ["landing"]="apps/landing-page"
+)
+
+declare -A project_names
+project_names=(
+    ["backend"]="backend"
+    ["landing"]="landing-page"
+)

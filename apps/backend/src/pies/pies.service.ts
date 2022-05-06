@@ -1,6 +1,13 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { PieDto } from './dto/pies.dto';
+import { PieDocument, PieEntity } from './entities/pie.entity';
+import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
+import { ethers } from 'ethers';
+import { pieGetterABI, erc20, erc20byte32 } from './'
+import { PieHistoryDocument, PieHistoryEntity } from './entities/pie-history.entity';
 import { Interval } from '@nestjs/schedule';
 import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
