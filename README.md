@@ -21,7 +21,9 @@ In addition, familiarity with [TypeScript](https://typescriptlang.org/) and [Rea
 You need to install the dependencies:
 
 ```bash
-npm install
+yarn set version berry
+yarn plugin import workspace-tools
+yarn
 ```
 
 Now you can start making changes.
