@@ -1,4 +1,4 @@
-import { UnderlyingAsset } from 'src/pies/domain/pie';
+import { UnderlyingAsset } from '../../pies';
 
 export type SLICEBreakdown = {
   nav: number;
