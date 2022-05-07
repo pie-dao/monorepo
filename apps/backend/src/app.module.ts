@@ -23,17 +23,17 @@ import { AuthorizationModule } from './authorization/authorization.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
       exclude: ['/api*', '/pies*', '/staking*'],
-      serveRoot: '/public/'
-    }),     
+      serveRoot: '/public/',
+    }),
     StakingModule,
-    TreasuryModule,    
+    TreasuryModule,
     TasksModule,
     ConsoleModule,
     SentimentModule,
-    AuthorizationModule
-  ],  
+    AuthorizationModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [AppService]
+  exports: [AppService],
 })
 export class AppModule {}

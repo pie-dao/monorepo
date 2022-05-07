@@ -1,5 +1,5 @@
-import Image from "next/image";
-import styles from "../styles/Layout.module.css";
+import Image from 'next/image';
+import styles from '../styles/Layout.module.css';
 import { Button, Logo } from "@shared/util-ui-components'";
 
 const Layout = ({ children }) => {

@@ -1,8 +1,8 @@
-import { IWCEthRpcConnectionOptions } from "@walletconnect/types";
-import { AbstractConnector } from "@web3-react/abstract-connector";
-import { ConnectorUpdate } from "@web3-react/types";
-import WalletConnectProvider from "@walletconnect/ethereum-provider";
-import { Buffer } from "buffer";
+import { IWCEthRpcConnectionOptions } from '@walletconnect/types';
+import { AbstractConnector } from '@web3-react/abstract-connector';
+import { ConnectorUpdate } from '@web3-react/types';
+import WalletConnectProvider from '@walletconnect/ethereum-provider';
+import { Buffer } from 'buffer';
 
 /**
  * We had to rebuild this from source because connecting broke.
@@ -12,7 +12,7 @@ import { Buffer } from "buffer";
 // @ts-ignore
 window.Buffer = Buffer;
 
-export const URI_AVAILABLE = "URI_AVAILABLE";
+export const URI_AVAILABLE = 'URI_AVAILABLE';
 const __DEV__ = true;
 
 export interface WalletConnectConnectorArguments
@@ -24,7 +24,7 @@ export class UserRejectedRequestError extends Error {
   public constructor() {
     super();
     this.name = this.constructor.name;
-    this.message = "The user rejected the request.";
+    this.message = 'The user rejected the request.';
   }
 }
 
@@ -74,12 +74,12 @@ export class WalletConnectConnector extends AbstractConnector {
     if (this.walletConnectProvider) {
       this.walletConnectProvider.stop();
       this.walletConnectProvider.removeListener(
-        "chainChanged",
-        this.handleChainChanged
+        'chainChanged',
+        this.handleChainChanged,
       );
       this.walletConnectProvider.removeListener(
-        "accountsChanged",
-        this.handleAccountsChanged
+        'accountsChanged',
+        this.handleAccountsChanged,
       );
       this.walletConnectProvider = undefined;
     }
@@ -97,7 +97,7 @@ export class WalletConnectConnector extends AbstractConnector {
     // ensure that the uri is going to be available, and emit an event if there's a new uri
     if (!this.walletConnectProvider.wc.connected) {
       await this.walletConnectProvider.wc.createSession(
-        this.config.chainId ? { chainId: this.config.chainId } : undefined
+        this.config.chainId ? { chainId: this.config.chainId } : undefined,
       );
       this.emit(URI_AVAILABLE, this.walletConnectProvider.wc.uri);
     }
@@ -111,7 +111,7 @@ export class WalletConnectConnector extends AbstractConnector {
       };
 
       // Workaround to bubble up the error when user reject the connection
-      this.walletConnectProvider.wc.on("disconnect", () => {
+      this.walletConnectProvider.wc.on('disconnect', () => {
         // Check provider has not been enabled to prevent this event callback from being called in the future
         if (!account) {
           userReject();
@@ -123,7 +123,7 @@ export class WalletConnectConnector extends AbstractConnector {
         .then((accounts: string[]) => resolve(accounts[0]))
         .catch((error: Error): void => {
           // TODO ideally this would be a better check
-          if (error.message === "User closed modal") {
+          if (error.message === 'User closed modal') {
             userReject();
             return;
           }
@@ -133,11 +133,11 @@ export class WalletConnectConnector extends AbstractConnector {
       throw err;
     });
 
-    this.walletConnectProvider.on("disconnect", this.handleDisconnect);
-    this.walletConnectProvider.on("chainChanged", this.handleChainChanged);
+    this.walletConnectProvider.on('disconnect', this.handleDisconnect);
+    this.walletConnectProvider.on('chainChanged', this.handleChainChanged);
     this.walletConnectProvider.on(
-      "accountsChanged",
-      this.handleAccountsChanged
+      'accountsChanged',
+      this.handleAccountsChanged,
     );
 
     return { provider: this.walletConnectProvider, account };
@@ -153,23 +153,23 @@ export class WalletConnectConnector extends AbstractConnector {
 
   public async getAccount(): Promise<null | string> {
     return Promise.resolve(this.walletConnectProvider.accounts).then(
-      (accounts: string[]): string => accounts[0]
+      (accounts: string[]): string => accounts[0],
     );
   }
 
   public deactivate() {
     if (this.walletConnectProvider) {
       this.walletConnectProvider.removeListener(
-        "disconnect",
-        this.handleDisconnect
+        'disconnect',
+        this.handleDisconnect,
       );
       this.walletConnectProvider.removeListener(
-        "chainChanged",
-        this.handleChainChanged
+        'chainChanged',
+        this.handleChainChanged,
       );
       this.walletConnectProvider.removeListener(
-        "accountsChanged",
-        this.handleAccountsChanged
+        'accountsChanged',
+        this.handleAccountsChanged,
       );
       this.walletConnectProvider.disconnect();
     }

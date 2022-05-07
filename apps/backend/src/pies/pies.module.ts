@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { StakingModule } from 'src/staking/staking.module';
+import { StakingModule } from '../staking/staking.module';
 import { CgCoinEntity, CgCoinSchema } from './entities/cg_coin.entity';
 import {
   PieHistoryEntity,

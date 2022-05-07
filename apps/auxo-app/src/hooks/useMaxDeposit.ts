@@ -1,9 +1,9 @@
-import { BigNumber } from "ethers";
-import { useEffect, useState } from "react";
-import { Balance } from "../store/vault/Vault";
-import { BigNumberMin, convertToUnderlying } from "../utils";
-import { zeroBalance } from "../utils/balances";
-import { useDecimals, useSelectedVault } from "./useSelectedVault";
+import { BigNumber } from 'ethers';
+import { useEffect, useState } from 'react';
+import { Balance } from '../store/vault/Vault';
+import { BigNumberMin, convertToUnderlying } from '../utils';
+import { zeroBalance } from '../utils/balances';
+import { useDecimals, useSelectedVault } from './useSelectedVault';
 
 export const useApproximatePendingAsUnderlying = (): Balance => {
   const vault = useSelectedVault();
@@ -41,7 +41,7 @@ export const useMaxDeposit = (): Balance => {
 
       const label: number = Math.min(
         capUnderlying.label - (currentDeposits.label + pendingWithdrawal.label),
-        inWallet.label
+        inWallet.label,
       );
 
       setBalance({ value, label });

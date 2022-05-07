@@ -1,14 +1,14 @@
-import { useState } from "react";
-import { useAppDispatch } from "../../../../hooks";
-import { useWeb3Cache } from "../../../../hooks/useCachedWeb3";
-import { useAuxoVaultContract } from "../../../../hooks/multichain/useMultichainContract";
-import { useApproximatePendingAsUnderlying } from "../../../../hooks/useMaxDeposit";
-import { useSelectedVault } from "../../../../hooks/useSelectedVault";
-import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
-import { thunkConfirmWithdrawal } from "../../../../store/vault/vault.thunks";
-import { prettyNumber } from "../../../../utils";
-import StyledButton from "../../../UI/button";
-import LoadingSpinner from "../../../UI/loadingSpinner";
+import { useState } from 'react';
+import { useAppDispatch } from '../../../../hooks';
+import { useWeb3Cache } from '../../../../hooks/useCachedWeb3';
+import { useAuxoVaultContract } from '../../../../hooks/multichain/useMultichainContract';
+import { useApproximatePendingAsUnderlying } from '../../../../hooks/useMaxDeposit';
+import { useSelectedVault } from '../../../../hooks/useSelectedVault';
+import { useStatus, WITHDRAWAL } from '../../../../hooks/useWithdrawalStatus';
+import { thunkConfirmWithdrawal } from '../../../../store/vault/vault.thunks';
+import { prettyNumber } from '../../../../utils';
+import StyledButton from '../../../UI/button';
+import LoadingSpinner from '../../../UI/loadingSpinner';
 
 function WithdrawButton({ showAvailable }: { showAvailable?: boolean }) {
   const [withdrawing, setWithdrawing] = useState(false);
@@ -22,7 +22,7 @@ function WithdrawButton({ showAvailable }: { showAvailable?: boolean }) {
 
   const buttonText = showAvailable
     ? prettyNumber(available?.label)
-    : "WITHDRAW";
+    : 'WITHDRAW';
 
   const buttonDisabled = () => {
     const wrongStatus = status !== WITHDRAWAL.READY;
@@ -36,7 +36,7 @@ function WithdrawButton({ showAvailable }: { showAvailable?: boolean }) {
       thunkConfirmWithdrawal({
         auxo: auxoContract,
         pendingSharesUnderlying,
-      })
+      }),
     ).finally(() => setWithdrawing(false));
   };
 

@@ -2,30 +2,25 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { PieDto } from './dto/pies.dto';
-import { PieDocument, PieEntity } from './entities/pie.entity';
-import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
-import { ethers } from 'ethers';
-import { pieGetterABI, erc20, erc20byte32 } from './'
-import { PieHistoryDocument, PieHistoryEntity } from './entities/pie-history.entity';
-import { Interval } from '@nestjs/schedule';
-import { BigNumber } from 'bignumber.js';
-import { ethers } from 'ethers';
-import * as lodash from 'lodash';
-import * as moment from 'moment';
-import { Model } from 'mongoose';
-import { Command, Console, createSpinner } from 'nestjs-console';
-import { StakingService } from 'src/staking/staking.service';
-import * as erc20 from './abis/erc20.json';
-import * as erc20byte32 from './abis/erc20byte32.json';
-import * as pieGetterABI from './abis/pieGetterABI.json';
-import { PieDto } from './dto/pies.dto';
-import { CgCoinDocument, CgCoinEntity } from './entities/cg_coin.entity';
 import {
+  CgCoinDocument,
+  CgCoinEntity,
+  PieDocument,
+  PieEntity,
+  PieDto,
+  pieGetterABI,
+  erc20,
+  erc20byte32,
   PieHistoryDocument,
   PieHistoryEntity,
-} from './entities/pie-history.entity';
-import { PieDocument, PieEntity } from './entities/pie.entity';
+} from './';
+import { ethers } from 'ethers';
+import { Interval } from '@nestjs/schedule';
+import { BigNumber } from 'bignumber.js';
+import * as lodash from 'lodash';
+import * as moment from 'moment';
+import { Command, Console, createSpinner } from 'nestjs-console';
+import { StakingService } from '../staking';
 
 const EVERY_HOUR = 1000 * 60 * 60;
 const EVERY_MINUTE = 1000 * 60;

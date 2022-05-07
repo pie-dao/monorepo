@@ -5,5 +5,24 @@
     "module": "commonjs",
     "types": ["jest", "node"]
   },
-  "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts", "src/tasks/__mocks__/tasks.service.ts", "src/staking/__mocks__/staking.service.ts", "src/pies/__mocks__/pies.service.ts", "src/tasks/__mocks__/tasks.service.ts", "src/pies/__mocks__/pies.service.ts", "src/staking/__mocks__/staking.service.ts", "src/tasks/__mocks__/tasks.service.ts", "src/staking/__mocks__/staking.service.ts", "src/tasks/__mocks__/tasks.service.ts", "src/pies/__mocks__/pies.service.ts", "src/staking/__mocks__/staking.service.ts", "src/tasks/__mocks__/tasks.service.ts", "src/staking/__mocks__/staking.service.ts", "src/pies/__mocks__/pies.service.ts"]
+  "include": [
+    "jest.config.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.d.ts",
+    "src/tasks/__mocks__/tasks.service.ts",
+    "src/staking/__mocks__/staking.service.ts",
+    "src/pies/__mocks__/pies.service.ts",
+    "src/tasks/__mocks__/tasks.service.ts",
+    "src/pies/__mocks__/pies.service.ts",
+    "src/staking/__mocks__/staking.service.ts",
+    "src/tasks/__mocks__/tasks.service.ts",
+    "src/staking/__mocks__/staking.service.ts",
+    "src/tasks/__mocks__/tasks.service.ts",
+    "src/pies/__mocks__/pies.service.ts",
+    "src/staking/__mocks__/staking.service.ts",
+    "src/tasks/__mocks__/tasks.service.ts",
+    "src/staking/__mocks__/staking.service.ts",
+    "src/pies/__mocks__/pies.service.ts"
+  ]
 }

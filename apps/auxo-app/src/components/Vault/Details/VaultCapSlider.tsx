@@ -1,8 +1,8 @@
-import { useSelectedVault } from "../../../hooks/useSelectedVault";
-import { prettyNumber } from "../../../utils";
-import { zeroBalance } from "../../../utils/balances";
-import { useApproximatePendingAsUnderlying } from "../../../hooks/useMaxDeposit";
-import { FaLock } from "react-icons/fa";
+import { useSelectedVault } from '../../../hooks/useSelectedVault';
+import { prettyNumber } from '../../../utils';
+import { zeroBalance } from '../../../utils/balances';
+import { useApproximatePendingAsUnderlying } from '../../../hooks/useMaxDeposit';
+import { FaLock } from 'react-icons/fa';
 
 export const useLocked = (): number => {
   /**
@@ -24,7 +24,7 @@ const VaultCapSlider = () => {
   const currency = vault?.symbol;
   const amount = useLocked();
   const barWidth = (): string =>
-    (cap ? Math.round((amount / cap.label) * 100) : 0) + "%";
+    (cap ? Math.round((amount / cap.label) * 100) : 0) + '%';
 
   return (
     <div className="flex flex-col w-full text-baby-blue-dark text-xs sm:text-sm font-bold mb-3 sm:mb-2 px-1 sm:px-0">
@@ -40,7 +40,7 @@ const VaultCapSlider = () => {
           )}
         </div>
         <p>
-          <span className="hidden sm:inline-block">MAX:</span>{" "}
+          <span className="hidden sm:inline-block">MAX:</span>{' '}
           {prettyNumber(cap?.label)} {currency}
         </p>
       </div>
@@ -52,8 +52,8 @@ const VaultCapSlider = () => {
           // cannot use string concat with arbitrary tailwind values
           style={{
             width: barWidth(),
-            transitionDuration: "1s",
-            transitionProperty: "all",
+            transitionDuration: '1s',
+            transitionProperty: 'all',
           }}
         ></div>
       </div>

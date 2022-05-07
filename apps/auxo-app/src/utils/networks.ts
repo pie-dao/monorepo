@@ -27,43 +27,43 @@ export const chainMap: ChainMap = {
   [SUPPORTED_CHAINS.MAINNET]: {
     blockTime: 12,
     chainId: `0x${Number(SUPPORTED_CHAINS.MAINNET).toString(16)}`,
-    chainName: "Ethereum Mainnet",
+    chainName: 'Ethereum Mainnet',
     nativeCurrency: {
-      name: "Ether",
-      symbol: "ETH",
+      name: 'Ether',
+      symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ["https://cloudflare-eth.com"],
-    blockExplorerUrls: ["https://etherscan.io"],
+    rpcUrls: ['https://cloudflare-eth.com'],
+    blockExplorerUrls: ['https://etherscan.io'],
   },
   [SUPPORTED_CHAINS.FANTOM]: {
     blockTime: 1,
     chainId: `0x${Number(SUPPORTED_CHAINS.FANTOM).toString(16)}`,
-    chainName: "Fantom Opera",
+    chainName: 'Fantom Opera',
     nativeCurrency: {
-      name: "FTM",
-      symbol: "FTM",
+      name: 'FTM',
+      symbol: 'FTM',
       decimals: 18,
     },
-    rpcUrls: ["https://rpc.ftm.tools/"],
-    blockExplorerUrls: ["https://ftmscan.com"],
+    rpcUrls: ['https://rpc.ftm.tools/'],
+    blockExplorerUrls: ['https://ftmscan.com'],
   },
   [SUPPORTED_CHAINS.POLYGON]: {
     blockTime: 1.5,
     chainId: `0x${Number(SUPPORTED_CHAINS.POLYGON).toString(16)}`,
-    chainName: "Polygon Mainnet",
+    chainName: 'Polygon Mainnet',
     nativeCurrency: {
-      name: "Matic",
-      symbol: "MATIC",
+      name: 'Matic',
+      symbol: 'MATIC',
       decimals: 18,
     },
-    rpcUrls: ["https://polygon-rpc.com/"],
-    blockExplorerUrls: ["https://polygonscan.com"],
+    rpcUrls: ['https://polygon-rpc.com/'],
+    blockExplorerUrls: ['https://polygonscan.com'],
   },
 };
 
 export const supportedChains = Object.values(chainMap).map(
-  ({ chainName }) => chainName
+  ({ chainName }) => chainName,
 );
 export const supportedChainIds = Object.keys(chainMap).map((s) => Number(s));
 
@@ -82,12 +82,12 @@ export const changeNetwork = async ({
   try {
     await switchNetwork({ chainId });
   } catch (err: any) {
-    console.warn("Could not switch networks");
+    console.warn('Could not switch networks');
     if (err?.code === 4902) {
-      console.warn("Network missing, attempting to add network...");
+      console.warn('Network missing, attempting to add network...');
       await addNetwork({ chainId });
     } else {
-      console.warn("Unexpected error switching networks", err);
+      console.warn('Unexpected error switching networks', err);
     }
   }
 };
@@ -97,13 +97,13 @@ const switchNetwork = async ({
 }: {
   chainId: number | null | undefined;
 }): Promise<void> => {
-  if (!window.ethereum) throw new Error("No crypto wallet found");
-  if (!chainId) throw new Error("No Chain Id defined");
-  if (!isChainSupported) throw new Error("Unsupported chain");
+  if (!window.ethereum) throw new Error('No crypto wallet found');
+  if (!chainId) throw new Error('No Chain Id defined');
+  if (!isChainSupported) throw new Error('Unsupported chain');
   // block time is not allowed
   const { blockTime, ...params } = chainMap[chainId as SUPPORTED_CHAIN_ID];
   await window.ethereum.request({
-    method: "wallet_switchEthereumChain",
+    method: 'wallet_switchEthereumChain',
     params: [{ chainId: params.chainId }],
   });
 };
@@ -114,13 +114,13 @@ const addNetwork = async ({
   chainId: number | null | undefined;
 }): Promise<void> => {
   try {
-    if (!window.ethereum) throw new Error("No crypto wallet found");
+    if (!window.ethereum) throw new Error('No crypto wallet found');
     const { blockTime, ...params } = chainMap[chainId as SUPPORTED_CHAIN_ID];
     await window.ethereum.request({
-      method: "wallet_addEthereumChain",
+      method: 'wallet_addEthereumChain',
       params: [params],
     });
   } catch (err) {
-    console.warn("Could not add the network", err);
+    console.warn('Could not add the network', err);
   }
 };

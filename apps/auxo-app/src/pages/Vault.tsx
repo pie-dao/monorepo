@@ -1,21 +1,21 @@
-import { useSelectedVault } from "../hooks/useSelectedVault";
-import DepositWithdrawSwitcher from "../components/Vault/Actions/DepositWithdrawSwitcher";
+import { useSelectedVault } from '../hooks/useSelectedVault';
+import DepositWithdrawSwitcher from '../components/Vault/Actions/DepositWithdrawSwitcher';
 import {
   VaultExtendedInformationCard,
   VaultStrategiesCard,
-} from "../components/Vault/Details/Cards";
-import VaultSummaryUser from "../components/Vault/Details/VaultSummaryUser";
+} from '../components/Vault/Details/Cards';
+import VaultSummaryUser from '../components/Vault/Details/VaultSummaryUser';
 import {
   VaultPoolAPY,
   VEDoughStatusRow,
   FloatingBackground,
-} from "../components/Vault/Details/StatusRows";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { Vault } from "../store/vault/Vault";
-import { useAppDispatch } from "../hooks";
-import { setSelectedVault } from "../store/vault/vault.slice";
-import VaultCapSlider from "../components/Vault/Details/VaultCapSlider";
+} from '../components/Vault/Details/StatusRows';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Vault } from '../store/vault/Vault';
+import { useAppDispatch } from '../hooks';
+import { setSelectedVault } from '../store/vault/vault.slice';
+import VaultCapSlider from '../components/Vault/Details/VaultCapSlider';
 
 function VaultContentBlocks({
   vault,

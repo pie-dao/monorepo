@@ -1,9 +1,9 @@
-import { Balance, Vault, VaultStats } from "../../store/vault/Vault";
-import { AwaitedReturn, fromScale, toBalance } from "../../utils";
-import { BigNumber } from "@ethersproject/bignumber";
-import { zeroBalance } from "../../utils/balances";
-import { Defined } from "../../types/utilities";
-import { fetchOnChainData } from "./fetchOnChainData";
+import { Balance, Vault, VaultStats } from '../../store/vault/Vault';
+import { AwaitedReturn, fromScale, toBalance } from '../../utils';
+import { BigNumber } from '@ethersproject/bignumber';
+import { zeroBalance } from '../../utils/balances';
+import { Defined } from '../../types/utilities';
+import { fetchOnChainData } from './fetchOnChainData';
 
 export type ReturnedChainData = NonNullable<
   AwaitedReturn<typeof fetchOnChainData>
@@ -43,7 +43,7 @@ const calculateSharesAvailable = ({
  */
 const addVaultStatsToVault = (
   data: ReturnedChainData,
-  decimals: number
+  decimals: number,
 ): VaultStats => ({
   deposits: toBalance(data.totalUnderlying, decimals),
   lastHarvest: data.lastHarvest.toNumber(),
@@ -59,7 +59,7 @@ const addVaultStatsToVault = (
 const addUserBalanceDataToVault = (
   accountLevelData: Defined<ReturnedChainData>,
   currentVault: Vault,
-  decimals: number
+  decimals: number,
 ): Vault => {
   return {
     ...currentVault,
@@ -74,7 +74,7 @@ const addUserBalanceDataToVault = (
       vault: toBalance(accountLevelData.balanceOfVault, decimals),
       vaultUnderlying: toBalance(
         accountLevelData.balanceOfVaultUnderlying,
-        decimals
+        decimals,
       ),
       allowance: toBalance(accountLevelData.allowance as BigNumber, decimals),
 
@@ -96,7 +96,7 @@ const addUserBalanceDataToVault = (
 const addBatchBurnDataToState = (
   batchBurnLevelData: Defined<ReturnedChainData>,
   currentVault: Vault,
-  decimals: number
+  decimals: number,
 ) => {
   return {
     ...currentVault,
@@ -152,7 +152,7 @@ export const toVault = ({
     newVault = addUserBalanceDataToVault(
       data as Defined<ReturnedChainData>,
       newVault,
-      decimals
+      decimals,
     );
   }
 
@@ -160,7 +160,7 @@ export const toVault = ({
     newVault = addBatchBurnDataToState(
       data as Defined<ReturnedChainData>,
       newVault,
-      decimals
+      decimals,
     );
   }
   return newVault;

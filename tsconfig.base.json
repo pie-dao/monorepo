@@ -11,10 +11,7 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
@@ -23,12 +20,7 @@
         "libs/shared/util-ui-components/src/index.ts"
       ]
     },
-    "types": [
-      "jest"
-    ]
+    "types": ["jest"]
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

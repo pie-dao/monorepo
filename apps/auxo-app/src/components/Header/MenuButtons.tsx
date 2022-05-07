@@ -1,13 +1,13 @@
-import { useWeb3React } from "@web3-react/core";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { setAlert, setAlertDisplay } from "../../store/app/app.slice";
-import StyledButton from "../UI/button";
-import { FaBell } from "react-icons/fa";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useWeb3React } from '@web3-react/core';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setAlert, setAlertDisplay } from '../../store/app/app.slice';
+import StyledButton from '../UI/button';
+import { FaBell } from 'react-icons/fa';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const trimAccount = (account: string): string => {
-  return account.slice(0, 6) + "..." + account.slice(38);
+  return account.slice(0, 6) + '...' + account.slice(38);
 };
 
 export const CreateAlert = () => {
@@ -16,10 +16,10 @@ export const CreateAlert = () => {
     dispatch(
       setAlert({
         message:
-          "Tehre was a problem connecting to the network etc etc etc etc blaj ffekekfekak  adalelglgl ",
-        type: "ERROR",
-        action: "SWITCH_NETWORK",
-      })
+          'Tehre was a problem connecting to the network etc etc etc etc blaj ffekekfekak  adalelglgl ',
+        type: 'ERROR',
+        action: 'SWITCH_NETWORK',
+      }),
     );
   };
   return <button onClick={onClick}>Test Alert</button>;
@@ -40,7 +40,7 @@ export const AlertButton = (): JSX.Element => {
       onClick={() => {
         if (alert.message) {
           dispatch(setAlertDisplay(true));
-          if (alert.action !== "SWITCH_NETWORK") setNotification(false);
+          if (alert.action !== 'SWITCH_NETWORK') setNotification(false);
         }
       }}
     >
@@ -58,7 +58,7 @@ export const AccountConnector = ({
   setShow: (s: boolean) => void;
 }) => {
   const { active, account } = useWeb3React();
-  const buttonText = active && account ? trimAccount(account) : "Connect Web3";
+  const buttonText = active && account ? trimAccount(account) : 'Connect Web3';
   return (
     <StyledButton
       className="pt-1 mb-0 h-full px-8 mx-0 my-0 md:mx-5

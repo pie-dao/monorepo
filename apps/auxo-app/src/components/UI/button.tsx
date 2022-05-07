@@ -1,12 +1,12 @@
-import { ButtonHTMLAttributes } from "react"
+import { ButtonHTMLAttributes } from 'react';
 
 export const StyledButton = (
-  props: ButtonHTMLAttributes<HTMLButtonElement>
+  props: ButtonHTMLAttributes<HTMLButtonElement>,
 ) => {
-  const { className, ...rest } = props; 
+  const { className, ...rest } = props;
   return (
     <button
-        className={`
+      className={`
           bg-baby-blue-dark font-bold
           border-baby-blue-dark
           text-white
@@ -30,16 +30,16 @@ export const StyledButton = (
           disabled:border-gray-300
           ${className ? className : ''}
           `}
-        onClick={rest.onClick}
-        { ...rest }
-      >
-        {rest.children}
-  </button>
-  )
-}
+      onClick={rest.onClick}
+      {...rest}
+    >
+      {rest.children}
+    </button>
+  );
+};
 
 export const SwitcherButton = (
-  props: ButtonHTMLAttributes<HTMLButtonElement>
+  props: ButtonHTMLAttributes<HTMLButtonElement>,
 ) => (
   <button
     className="
@@ -52,11 +52,10 @@ export const SwitcherButton = (
       disabled:decoration-transparent
       disabled:text-purple-900
     "
-    { ...props }
+    {...props}
   >
-    { props.children }
+    {props.children}
   </button>
-)
+);
 
-
-export default StyledButton
+export default StyledButton;
