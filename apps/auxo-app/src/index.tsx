@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "@piedao/ui-components/public/output.css";
 import "./index.css";
 import App from "./App";
 import { store } from "./store";
