@@ -15,7 +15,7 @@
   },
   "license": "GPL-3.0-only",
   "name": "@piedao/monorepo",
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@3.1.1",
   "devDependencies": {
     "cz-conventional-changelog": "^3.3.0"
   },
@@ -23,8 +23,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "dependencies": {
-    "@web3-react/core": "^6.1.9"
   }
 }
