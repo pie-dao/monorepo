@@ -1,0 +1,60 @@
+.swiperSlider {
+  :global {
+    .swiper-slide {
+      transition: 0.6s all;
+      transform: scale(0.8);
+      opacity: 0;
+      transform-origin: center center;
+      z-index: 1;
+    }
+
+    .swiper-slide-next,
+    .swiper-slide-prev {
+      opacity: 0.6;
+      z-index: 2;
+    }
+
+    .swiper-slide-active {
+      transform: scale(1.2);
+      z-index: 3;
+      opacity: 1;
+    }
+
+    .swiper-slide-next {
+      transform: scale(0.8) translateX(-20px);
+    }
+
+    .swiper-slide-prev {
+      transform: scale(0.8) translateX(20px);
+    }
+
+    .swiper-button-next {
+      right: 0;
+      display: none;
+
+      @media screen and (min-width: 768px) {
+        display: block;
+      }
+    }
+
+    .swiper-button-prev {
+      left: 0;
+      display: none;
+
+      @media screen and (min-width: 768px) {
+        display: block;
+      }
+    }
+  }
+}
+
+.gradient {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0)
+    ),
+    linear-gradient(135deg, #d7099c, #28d2ff);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  box-shadow: 2px 1000px 1px #150110 inset;
+}

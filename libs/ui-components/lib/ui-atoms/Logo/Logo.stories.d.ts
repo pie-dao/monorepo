@@ -1,5 +1,5 @@
 import { Story } from "@storybook/react";
-import { LogoProps } from "./Logo";
+import { LogoProps } from './Logo';
 declare const _default: {
     title: string;
     component: {

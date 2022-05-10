@@ -1,0 +1,9 @@
+.barGradient {
+  @apply w-full h-2.5 rounded-md;
+
+  background-image: linear-gradient(
+    to right,
+    #1bd10b 50%,
+    theme("colors.highlight") 50%
+  );
+}

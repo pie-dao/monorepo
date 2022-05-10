@@ -1,22 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
-import logoFile from "./logo.png";
-import "./logo.css";
+import React from 'react'
+import PropTypes from "prop-types"
+import "./logo.css"
+// @ts-ignore
+import logoFile from "./logo-piedao.svg"
 
-export interface LogoProps {
+export interface LogoProps  {
   size: "small" | "medium" | "large" | "extra-large";
-}
+};
 
 const Logo = ({ size }: LogoProps) => {
-  return (
-    <div>
-      <img className={size} src={logoFile} />
+  return (      
+    <div className="text-blue-300">
+        <img className={size} src={logoFile} />
     </div>
-  );
-};
+  )
+}
 
 Logo.protoTypes = {
   size: PropTypes.string,
-};
+}
 
 export default Logo;
