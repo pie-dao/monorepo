@@ -9,13 +9,13 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-jest",
     {
-      name: "@storybook/addon-postcss",
-      options: {
-        postcssLoaderOptions: {
-          implementation: require("postcss"),
-        },
-      },
-    },
+     name: '@storybook/addon-postcss',
+     options: {
+       postcssLoaderOptions: {
+         implementation: require('postcss'),
+       },
+     },
+   },
   ],
   core: {
     builder: "webpack5",

@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
 import typescript from "rollup-plugin-typescript2";
 import postcss from "rollup-plugin-postcss";
+import image from '@rollup/plugin-image';
 
 const packageJson = require("./package.json");
 
@@ -23,6 +24,7 @@ export default {
     },
   ],
   plugins: [
+    image(),
     peerDepsExternal(),
     resolve(),
     commonjs(),

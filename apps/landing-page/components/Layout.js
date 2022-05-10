@@ -1,38 +1,9 @@
-import Image from "next/image";
-import styles from "../styles/Layout.module.css";
-import { Button, Logo } from "@piedao/ui-components";
+import Footer from "./Footer";
 
 const Layout = ({ children }) => {
   return (
-    <div className={styles.container}>
-      <header className={styles.header}>
-        <Button label="test" size="large" />
-        <Logo size="xl" />
-        {/* <a
-          href="https://piedao.org"
-          target="_blank"
-          rel="piedao"
-        >
-          <span className={styles.logo}>
-            <Image src="/DOUGH2v.png" alt="Vercel Logo" width={50} height={50} />
-          </span>
-        </a> */}
-      </header>
-
-      <main className={styles.main}>{children}</main>
-
-      <footer className={styles.footer}>
-        <a href="https://piedao.org" target="_blank" rel="piedao">
-          <span className={styles.logo}>
-            <Image
-              src="/DOUGH2v.png"
-              alt="Vercel Logo"
-              width={50}
-              height={50}
-            />
-          </span>
-        </a>
-      </footer>
+    <div className={`w-full bg-primary flex flex-col h-screen font-sans`}>
+      <main className="flex-1 overflow-y-auto">{children}</main>
     </div>
   );
 };
