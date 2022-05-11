@@ -1,13 +1,10 @@
 {
-  "root": "apps/landing-page",
   "sourceRoot": "apps/landing-page",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/next:build",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/landing-page",
@@ -44,9 +41,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/landing-page"
-      ],
+      "outputs": ["coverage/apps/landing-page"],
       "options": {
         "jestConfig": "apps/landing-page/jest.config.ts",
         "passWithNoTests": true
@@ -54,13 +49,9 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/landing-page/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["apps/landing-page/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

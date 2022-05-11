@@ -3,8 +3,6 @@ import Head from "next/head";
 import { hotjar } from "react-hotjar";
 import "swiper/css/bundle";
 import "../styles/globals.css";
-// TODO: 👇 figure out how to get rollup working with nx
-import "@shared/ui-components/public/output.css";
 
 import Footer from "../components/Footer";
 import Layout from "../components/Layout";
