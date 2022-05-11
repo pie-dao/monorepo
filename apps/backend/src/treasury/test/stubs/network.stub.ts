@@ -1,4 +1,4 @@
-import { SupportedNetwork } from 'src/treasury/types/treasury.types.Network';
+import { SupportedNetwork } from '../../';
 
 export const networkStub: SupportedNetwork[] = [
   {

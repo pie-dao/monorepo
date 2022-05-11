@@ -13,11 +13,10 @@ import { FreeRider } from './types/staking.types.FreeRider';
 import { Participation } from './types/staking.types.Participation';
 import { Delegate } from './types/staking.types.Delegate';
 import * as lodash from 'lodash';
-import * as pieABI from './abis/Pie.json';
 import { Console, Command, createSpinner } from 'nestjs-console';
 import * as inquirer from 'inquirer';
-import * as antoEpoch from './test/stubs/anto_epoch_4.json';
-import * as totoEpoch from './test/stubs/toto_epoch_4.json';
+import { antoEpoch, totoEpoch } from './test/stubs';
+import { pieAbi as pieABI } from './abis';
 @Injectable()
 @Console()
 export class StakingService {
