@@ -1,8 +1,8 @@
-import { ApiProperty } from "@nestjs/swagger";
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { IsObject } from "class-validator";
-import { Document } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { BigNumber } from 'bignumber.js';
+import { Document } from 'mongoose';
+import { UnderlyingAsset } from '../domain/pie';
 
 export type PieHistoryDocument = PieHistoryEntity & Document;
 
@@ -18,7 +18,7 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  decimals: number;  
+  decimals: number;
 
   @Prop()
   @ApiProperty()
@@ -26,11 +26,11 @@ export class PieHistoryEntity {
 
   @Prop()
   @ApiProperty()
-  totalSupply: BigNumber;  
+  totalSupply: BigNumber;
 
   @Prop()
   @ApiProperty()
-  underlyingAssets: object[];  
+  underlyingAssets: UnderlyingAsset[];
 }
 
 export const PieHistorySchema = SchemaFactory.createForClass(PieHistoryEntity);

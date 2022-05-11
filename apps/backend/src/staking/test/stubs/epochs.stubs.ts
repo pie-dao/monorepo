@@ -1,4 +1,4 @@
-import { EpochEntity } from "src/staking/entities/epoch.entity";
+import { EpochEntity } from "../../";
 
 const epochs = [
   {

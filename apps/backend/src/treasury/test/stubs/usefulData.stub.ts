@@ -1,4 +1,4 @@
-import { AssetEntity } from 'src/treasury/entities/treasury.entity';
+import { AssetEntity } from '../../';
 export const TREASURY_TOTAL = 19201559;
 export const usefulDataStub: AssetEntity[] = [
   {
