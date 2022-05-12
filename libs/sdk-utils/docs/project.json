@@ -1,0 +1,23 @@
+{
+  "root": "libs/sdk-utils/docs",
+  "sourceRoot": "libs/sdk-utils/docs/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/sdk-utils/docs/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/sdk-utils/docs"],
+      "options": {
+        "jestConfig": "libs/sdk-utils/docs/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,23 @@
+{
+  "root": "libs/sdk-utils/state-listener",
+  "sourceRoot": "libs/sdk-utils/state-listener/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/sdk-utils/state-listener/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/sdk-utils/state-listener"],
+      "options": {
+        "jestConfig": "libs/sdk-utils/state-listener/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

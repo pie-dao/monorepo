@@ -1,0 +1,23 @@
+{
+  "root": "libs/sdk-utils/multichain",
+  "sourceRoot": "libs/sdk-utils/multichain/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/sdk-utils/multichain/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/sdk-utils/multichain"],
+      "options": {
+        "jestConfig": "libs/sdk-utils/multichain/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

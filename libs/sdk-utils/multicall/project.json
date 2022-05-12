@@ -1,0 +1,23 @@
+{
+  "root": "libs/sdk-utils/multicall",
+  "sourceRoot": "libs/sdk-utils/multicall/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/sdk-utils/multicall/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/sdk-utils/multicall"],
+      "options": {
+        "jestConfig": "libs/sdk-utils/multicall/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
