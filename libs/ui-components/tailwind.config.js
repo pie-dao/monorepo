@@ -1,3 +1,6 @@
+const { join } = require('path');
+const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind');
+
 function withOpacityValue(variable) {
   return ({ opacityValue }) => {
     if (opacityValue === undefined) {
@@ -8,17 +11,19 @@ function withOpacityValue(variable) {
 }
 
 module.exports = {
-  content: ["./src/**/**/*.{js,jsx,ts,tsx}"],
-  darkMode: "media", // or 'media' or 'class',
+  content: [
+    join(__dirname, './src/**/**/*.{js,jsx,ts,tsx}'),
+    ...createGlobPatternsForDependencies(__dirname),
+  ],
   theme: {
     extend: {
       colors: {
-        primary: withOpacityValue("--color-primary"),
-        secondary: withOpacityValue("--color-secondary"),
-        tertiary: withOpacityValue("--color-tertiary"),
-        dark: withOpacityValue("--color-dark"),
-        light: withOpacityValue("--color-light"),
-        link: withOpacityValue("--color-link"),
+        primary: withOpacityValue('--color-primary'),
+        secondary: withOpacityValue('--color-secondary'),
+        tertiary: withOpacityValue('--color-tertiary'),
+        dark: withOpacityValue('--color-dark'),
+        light: withOpacityValue('--color-light'),
+        link: withOpacityValue('--color-link'),
       },
     },
   },
@@ -26,4 +31,5 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  presets: [require('../../tailwind-workspace-preset.js')],
 };
