@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
-    "landing-page": "apps/landing-page"
+    "landing-page": "apps/landing-page",
+    "shared-ui-library": "libs/shared/ui-library"
   }
 }
