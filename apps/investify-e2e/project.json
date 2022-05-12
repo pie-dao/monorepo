@@ -1,0 +1,27 @@
+{
+  "sourceRoot": "apps/investify-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/investify-e2e/cypress.json",
+        "devServerTarget": "investify:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "investify:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/investify-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["investify"]
+}

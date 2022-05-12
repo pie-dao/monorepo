@@ -2,6 +2,8 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
+    "investify": "apps/investify",
+    "investify-e2e": "apps/investify-e2e",
     "landing-page": "apps/landing-page",
     "shared-ui-library": "libs/shared/ui-library"
   }
