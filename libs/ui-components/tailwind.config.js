@@ -15,8 +15,6 @@ module.exports = {
     join(__dirname, './src/**/**/*.{js,jsx,ts,tsx}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
-
-  darkMode: 'media', // or 'media' or 'class',
   theme: {
     extend: {
       colors: {
