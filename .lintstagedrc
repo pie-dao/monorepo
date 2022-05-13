@@ -1,3 +1,6 @@
 {
-  "*.{none}": ["eslint --fix", "prettier --write"]
-} 
+  "*.none": [
+    "eslint --fix",
+    "prettier --write"
+  ]
+}
