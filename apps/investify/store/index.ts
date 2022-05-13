@@ -6,7 +6,7 @@ import {
   AnyAction,
 } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-import vaultReducer from './vault/vault.slice';
+import vaultReducer from './example/example.slice';
 
 export const rootReducer = combineReducers({
   vault: vaultReducer,
