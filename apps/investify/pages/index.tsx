@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { wrapper } from '../store';
-import { setX } from '../store/vault/vault.slice';
+import { setX } from '../store/example/example.slice';
 
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
   // this gets rendered on the server, then not on the client
