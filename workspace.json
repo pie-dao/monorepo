@@ -3,7 +3,6 @@
   "projects": {
     "backend": "apps/backend",
     "landing-page": "apps/landing-page",
-    "sdk-utils-docs": "libs/sdk-utils/docs",
     "sdk-utils-multicall": "libs/sdk-utils/multicall",
     "sdk-utils-multichain": "libs/sdk-utils/multichain",
     "sdk-utils-state-listener": "libs/sdk-utils/state-listener"

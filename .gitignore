@@ -12,6 +12,9 @@ cache/
 out/
 .vercel/
 
+# docs
+docs/src
+
 # testing
 coverage/
 .coverage_artifacts/
