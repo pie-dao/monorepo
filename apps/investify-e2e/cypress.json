@@ -8,5 +8,8 @@
   "video": true,
   "videosFolder": "../../dist/cypress/apps/investify-e2e/videos",
   "screenshotsFolder": "../../dist/cypress/apps/investify-e2e/screenshots",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "env": {
+    "ELECTRON_ENABLE_LOGGING": true
+  }
 }
