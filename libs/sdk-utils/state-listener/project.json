@@ -3,6 +3,17 @@
   "sourceRoot": "libs/sdk-utils/state-listener/src",
   "projectType": "library",
   "targets": {
+
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/sdk-utils/state-listener",
+        "main": "libs/sdk-utils/state-listener/src/index.ts",
+        "tsConfig": "libs/sdk-utils/state-listener/tsconfig.lib.json",
+        "assets": ["libs/sdk-utils/state-listener/*.md"]
+      }
+    },       
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

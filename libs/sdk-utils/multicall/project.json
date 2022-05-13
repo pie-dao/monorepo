@@ -3,6 +3,16 @@
   "sourceRoot": "libs/sdk-utils/multicall/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/sdk-utils/multicall",
+        "main": "libs/sdk-utils/multicall/src/index.ts",
+        "tsConfig": "libs/sdk-utils/multicall/tsconfig.lib.json",
+        "assets": ["libs/sdk-utils/multicall/*.md"]
+      }
+    },    
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
