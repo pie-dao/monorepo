@@ -9,6 +9,7 @@
     "sdk-utils-state-listener": "libs/sdk-utils/state-listener",
     "investify": "apps/investify",
     "investify-e2e": "apps/investify-e2e",
-    "shared-ui-library": "libs/shared/ui-library"
+    "shared-ui-library": "libs/shared/ui-library",
+    "shared-util-blockchain": "libs/shared/util-blockchain"
   }
 }
