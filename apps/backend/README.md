@@ -1,40 +1,9 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
+# Backend
 
 ## Running the app
+
 Create a .env file inside the root of the project, with this content
-(remember to change "YOUR_INFURA_KEY_HERE" with your actual Infura's Key, and follow the steps described in the Test section regarding the setup for the docker-mongoDB on your local environment)
+(remember to change `"YOUR_INFURA_KEY_HERE"` and `YOUR_ZAPPER_KEY_HERE` with your actual API keys and follow the steps described in the Test section regarding the setup for the docker-mongoDB on your local environment).
 
 ```bash
 NODE_ENV=development
@@ -49,19 +18,31 @@ TREASURY_ADDRESS=0x3bcf3db69897125aa61496fc8a8b55a5e3f245d5
 ZAPPER_API_KEY=YOUR_ZAPPER_KEY_HERE
 ```
 
-Once done, you'll be able to run the project locally by doing
+Once you set this up you can build the project by running
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+script/build-all
+```
+
+and then you can use
+
+```
+script/serve backend
+```
+
+to have a development version of the backend served (with hot code replace).
+
+For a production build you can simply call
+
+```
+script/run backend
+```
+
+> 📙 Note that `script/run` will only work after a `script/build` is performed.
+
+
 ## Deploy the App
+
 This app runs on Heroku, deploy is pretty simple.
 
 First you login into heroku:
@@ -84,9 +65,13 @@ finally, you can simply commit/push on this repo to trigger the build process
 $ git commit -am "love piedao"
 $ git push heroku master
 ```
+
+
 ## Test
-In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB on a docker.
-Supposing you have docker already installed, all you need to do is
+
+In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB in Docker.
+
+If you have Docker already installed, all you need to do is
 
 ```bash
 # install the mongoDB docker, and initialize it as follows
@@ -101,19 +86,75 @@ Once this setup is done, you can then run the tests
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
+> 📘 The coverage will be recorded in `coverage/apps/backend` if you add the `--collect-coverage` flag
+
+
 ## API Playground
+
 Once running it locally, you can go to
 http://localhost:3000/playground/
 and test it out.
 
-## License
 
-Nest is [MIT licensed](LICENSE).
+## PieDAO Investify Token Aggregator (PITA)
+
+The *backend* serves as the backend for the Investify application. These features are implemented as Nest modules and the architecture looks like this:
+
+![PITA Architecture](pie_backend_architecture.png)
+
+The goal of this project is to
+
+- load the blockchain data from the PieDAO vaults to store the latest state
+- load token data from the blockchain (using *The Graph*)
+- load price data from CoinGecko
+
+The app uses all this data to present an aggregated state of the world and also to allow for creating simulations based on this data.
+
+### Architecture
+
+
+#### SDK
+
+The project contains an SDK that can be used to load information from the blockchain in an effective manner (using *multicall* and also allowing for multichain calls).
+
+The SDK allows for the usage of `Contract` classes that are generated from ABIs.
+
+
+#### Data Loading
+
+*Data loader*s come in multiple kinds
+
+- An *SDK loader* uses the *`SDK`* to load the state of the blockchain
+- A *Graph loader* uses *GraphQL* to load token data
+- A *HTTP* loader can load data from external *HTTP* endpoints
+
+*Data loader*s are run periodically using a `Scheduler`. The information is persisted into the database (MongoDB at the time of writing).
+
+
+#### Domain model
+
+This multi-faceted data structure is represented by a domain model *(blue boxes with in a dotted box on the diagram)*
+
+The data in the domain model can be queried through a GraphQL API.
+
+Apart from the blockchain state, the *(read)* operations are also available as part of the *Fund Operations* code.
+
+The `User` of the application is represented by the `User` type. Each *user* can own multiple `Fund`s and `Token`s, and we also store user events *(things they did on the UI)* in the database.
+
+
+#### Event Bus
+
+The `backend` contains an *Event bus* that can be used as indirect communication with other parts of the application *(publish / subscribe pattern)* This can be used to trigger events from loaders and to receive user events as well.
+
+
+#### Simulator
+
+The `Simulator` can be used to create new `Fund` objects to test out theories. Simulation works as follows:
+
+- A new `Fund` is created with abitrary data *(underlying tokens, ratios, etc)*
+- Triggers are added to the `Simulation` that will evaluate the token time series data. This can be used to change the state of the `Fund` *(for example if the weight of a token goes above 50% trigger a rebalancing)*
+- Then the `Simulator` uses a repository to supply the token data to the `Simulation` which will keep chaning the state of the underlying `Fund` as the simulation goes. All these changes are recoderd as a list of snapshots with the corresponding trigger event:
+
+![The Simulator](the_simulator.png)
