@@ -16,7 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@monorepo/shared/ui-library": ["libs/shared/ui-library/src/index.ts"]
+      "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"]
     },
     "types": ["jest"]
   },
