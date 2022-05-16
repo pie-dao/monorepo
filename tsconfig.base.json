@@ -24,6 +24,7 @@
         "libs/sdk-utils/state-listener/src/index.ts"
       ],
       "@shared/helpers": ["libs/shared/helpers/src/index.ts"]
+      "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"]
     },
     "types": ["jest", "node"]
   },
