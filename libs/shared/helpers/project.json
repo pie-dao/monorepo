@@ -1,29 +1,29 @@
 {
-  "sourceRoot": "libs/helpers/shared/src",
+  "sourceRoot": "libs/shared/helpers/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/helpers/shared",
-        "main": "libs/helpers/shared/src/index.ts",
-        "tsConfig": "libs/helpers/shared/tsconfig.lib.json",
-        "assets": ["libs/helpers/shared/*.md"]
+        "outputPath": "dist/libs/shared/helpers",
+        "main": "libs/shared/helpers/src/index.ts",
+        "tsConfig": "libs/shared/helpers/tsconfig.lib.json",
+        "assets": ["libs/shared/helpers/*.md"]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/helpers/shared/**/*.ts"]
+        "lintFilePatterns": ["libs/shared/helpers/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/helpers/shared"],
+      "outputs": ["coverage/libs/shared/helpers"],
       "options": {
-        "jestConfig": "libs/helpers/shared/jest.config.ts",
+        "jestConfig": "libs/shared/helpers/jest.config.ts",
         "passWithNoTests": true
       }
     }
