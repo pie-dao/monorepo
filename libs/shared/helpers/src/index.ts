@@ -1,1 +1,1 @@
-export * from './lib/helpers-shared';
+export * from './lib/fractionalDivide';

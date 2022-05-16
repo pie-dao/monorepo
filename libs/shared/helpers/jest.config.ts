@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'helpers-shared',
+  displayName: 'shared-helpers',
   preset: '../../../jest.preset.ts',
   globals: {
     'ts-jest': {

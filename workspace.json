@@ -2,7 +2,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
-    "helpers-shared": "libs/helpers/shared",
+    "shared-helpers": "libs/shared/helpers",
     "landing-page": "apps/landing-page",
     "sdk-utils-multicall": "libs/sdk-utils/multicall",
     "sdk-utils-multichain": "libs/sdk-utils/multichain",
