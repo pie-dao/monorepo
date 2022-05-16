@@ -22,7 +22,8 @@
       "@sdk-utils/multichain": ["libs/sdk-utils/multichain/src/index.ts"],
       "@sdk-utils/state-listener": [
         "libs/sdk-utils/state-listener/src/index.ts"
-      ]
+      ],
+      "@shared/helpers": ["libs/helpers/shared/src/index.ts"]
     },
     "types": ["jest", "node"]
   },
