@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppDispatch } from '../hooks';
 import { wrapper } from '../store';
 import { setX } from '../store/example/example.slice';
 
@@ -14,14 +14,11 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 });
 
 const Index: NextPage<{ someKey?: string }> = (props) => {
-  const data = useAppSelector((state) => state.vault.x);
   const dispatch = useAppDispatch();
-  const [input, setInput] = useState(props.someKey ?? '');
+  const [input] = useState(props.someKey ?? '');
   return (
     <div>
-      <p>{data}</p>
-      <p>{props.someKey}</p>
-      <input value={input} onChange={(e) => setInput(e.target.value)} />
+      <h1>Welcome to the Investify Platform</h1>
       <button onClick={() => dispatch(setX(input))}>Change</button>
     </div>
   );
