@@ -1,7 +1,6 @@
-import { AppProps } from 'next/app';
+import { AppProps, NextWebVitalsMetric } from 'next/app';
 import { Provider } from 'react-redux';
 import Head from 'next/head';
-import type { NextWebVitalsMetric } from 'next/app';
 import { GoogleAnalytics, usePagesViews, event } from 'nextjs-google-analytics';
 import { wrapper } from '../store';
 
