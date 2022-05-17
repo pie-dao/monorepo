@@ -22,7 +22,7 @@
       "@sdk-utils/multichain": ["libs/sdk-utils/multichain/src/index.ts"],
       "@sdk-utils/state-listener": [
         "libs/sdk-utils/state-listener/src/index.ts"
-      ]
+      ],
       "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"]
     },
     "types": ["jest", "node"]
