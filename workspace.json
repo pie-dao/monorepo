@@ -7,5 +7,9 @@
     "sdk-utils-multicall": "libs/sdk-utils/multicall",
     "sdk-utils-multichain": "libs/sdk-utils/multichain",
     "sdk-utils-state-listener": "libs/sdk-utils/state-listener"
+    "investify": "apps/investify",
+    "investify-e2e": "apps/investify-e2e",
+    "landing-page": "apps/landing-page",
+    "shared-ui-library": "libs/shared/ui-library"
   }
 }
