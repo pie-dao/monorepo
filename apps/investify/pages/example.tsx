@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { useState } from 'react';
 import { useAppDispatch } from '../hooks';
 import { wrapper } from '../store';
@@ -21,7 +20,6 @@ const Index: NextPage<{ someKey?: string }> = (props) => {
     <div>
       <h1>Welcome to the Investify Platform</h1>
       <button onClick={() => dispatch(setX(input))}>Change</button>
-      <Link href="/example">example page</Link>
     </div>
   );
 };
