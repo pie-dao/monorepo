@@ -2,12 +2,14 @@
 
 Monorepo implementing the PieDAO application layer.
 
+
 ## Contributing
 
 Feel free to dive in! [Open](https://github.com/pie-dao/monorepo/issues/new) an issue.
 For any concerns or feedback, join us on [Discord](https://discord.piedao.org).
 
-### Prerequisites
+
+## Prerequisites
 
 You will need the following software on your machine:
 
@@ -16,7 +18,8 @@ You will need the following software on your machine:
 
 In addition, familiarity with [TypeScript](https://typescriptlang.org/) and [React](https://reactjs.org/) is a prerequisite.
 
-### Set Up
+
+## Set Up
 
 You need to install the dependencies:
 
@@ -28,49 +31,15 @@ yarn
 
 Now you can start making changes.
 
-## How to generate an NX application
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+## Packages
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+This project contains multiple individual packages that can be deployed separately:
 
-## Generate a library
+- [Backend](/apps/backend/README.md) contains the server component of the project.
+- [Landing Page](/apps/landing-page/) the landing page
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+You can follow the links above to refer to the documentation of those projects.
 
-> You can also use any of the plugins above to generate libraries as well.
 
-Libraries are shareable across libraries and applications. They can be imported from `@monorepo/mylib`.
-
-## Development server
-
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
 
