@@ -29,6 +29,12 @@ yarn plugin import workspace-tools
 yarn
 ```
 
+The next step is to call the setup script:
+
+```bash
+script/setup
+```
+
 Now you can start making changes.
 
 

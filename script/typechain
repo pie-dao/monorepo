@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+
+cd ..
+
+npx typechain --target=ethers-v5 --out-dir=libs/shared/util-blockchain/src --always-generate-overloads --discriminate-types "libs/shared/util-blockchain/abis/**/*.abi.json"
