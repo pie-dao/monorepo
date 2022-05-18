@@ -5,8 +5,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TestMessage } from 'rxjs/internal/testing/TestMessage';
-import { StakingModule } from 'src/staking/staking.module';
+import { StakingModule } from '../../staking';
 import { PieDto } from '../dto/pies.dto';
+import { CgCoinEntity, CgCoinSchema } from '../entities';
 import {
   PieHistoryEntity,
   PieHistorySchema,
@@ -32,6 +33,9 @@ describe('PiesService', () => {
         ]),
         MongooseModule.forFeature([
           { name: PieHistoryEntity.name, schema: PieHistorySchema },
+        ]),
+        MongooseModule.forFeature([
+          { name: CgCoinEntity.name, schema: CgCoinSchema },
         ]),
       ],
       providers: [PiesService],
@@ -67,6 +71,17 @@ describe('PiesService', () => {
 
       test('then it return an array of 9 PieEntity', () => {
         expect(piesDB).toHaveLength(9);
+      });
+    });
+  });
+
+  describe('getCgCoin', () => {
+    describe('When getCgCoin is called', () => {
+      test('then it should perform well', async () => {
+        await service.getMarketChart(
+          '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
+          90
+        );
       });
     });
   });
@@ -349,7 +364,6 @@ describe('PiesService', () => {
         address: 'foobar',
         history: [],
         coingecko_id: '',
-        image: null,
       };
       let pieDB: PieEntity;
 
