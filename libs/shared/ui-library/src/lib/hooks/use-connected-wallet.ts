@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { network } from "../connectors";
-import { useEagerConnect, useInactiveListener } from "./useWeb3";
+import { useState, useEffect } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { network } from '../connectors';
+import { useEagerConnect, useInactiveListener } from './useWeb3';
 
 const useFallBack = () => {
   const { active, activate, chainId } = useWeb3React();

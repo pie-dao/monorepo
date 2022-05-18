@@ -1,5 +1,11 @@
 import { Controller, Get, NotFoundException, Query } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { TasksService } from './tasks.service';
 
 @ApiTags('Tasks')
@@ -7,15 +13,17 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
-  @ApiOkResponse({type: Object, isArray: true})
+  @ApiOkResponse({ type: Object, isArray: true })
   @ApiNotFoundResponse()
   @ApiBadRequestResponse()
-  @ApiQuery({name: 'blockNumber', required: true})
+  @ApiQuery({ name: 'blockNumber', required: true })
   @Get('kpi-airdrop')
-  async getKpiAirdrop(@Query('blockNumber') blockNumber: number): Promise<Object> {
+  async getKpiAirdrop(
+    @Query('blockNumber') blockNumber: number,
+  ): Promise<Object> {
     try {
       return await this.tasksService.getKpiAirdrop(blockNumber);
-    } catch(error) {
+    } catch (error) {
       /* istanbul ignore next */
       throw new NotFoundException(error);
     }

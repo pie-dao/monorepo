@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMemo, useCallback } from "react";
-import { LinePath, Line, Bar } from "@visx/shape";
-import { curveStep } from "@visx/curve";
-import { scaleTime, scaleLinear } from "@visx/scale";
-import { withTooltip } from "@visx/tooltip";
-import { LinearGradient } from "@visx/gradient";
-import { localPoint } from "@visx/event";
-import { max, extent, bisector } from "d3-array";
+import { useMemo, useCallback } from 'react';
+import { LinePath, Line, Bar } from '@visx/shape';
+import { curveStep } from '@visx/curve';
+import { scaleTime, scaleLinear } from '@visx/scale';
+import { withTooltip } from '@visx/tooltip';
+import { LinearGradient } from '@visx/gradient';
+import { localPoint } from '@visx/event';
+import { max, extent, bisector } from 'd3-array';
 
-export const background = "#3b6978";
-export const background2 = "#204051";
-export const accentColor = "#d7099c";
-export const accentColorLight = "#28D2FF";
-export const axisColor = "#9388DB";
+export const background = '#3b6978';
+export const background2 = '#204051';
+export const accentColor = '#d7099c';
+export const accentColorLight = '#28D2FF';
+export const axisColor = '#9388DB';
 
 const getDate = (d) => new Date(d[0]);
 const getNavValue = (d) => d[1];
@@ -41,7 +41,7 @@ const NavChart = ({
         range: [margin.left, innerWidth + margin.left],
         domain: extent(lastWeekMeanNavData, getDate),
       }),
-    [innerWidth, margin.left, lastWeekMeanNavData]
+    [innerWidth, margin.left, lastWeekMeanNavData],
   );
   const navValueScale = useMemo(
     () =>
@@ -50,7 +50,7 @@ const NavChart = ({
         domain: [0, max(lastWeekMeanNavData, getNavValue) || 0],
         nice: true,
       }),
-    [innerHeight, margin.top, lastWeekMeanNavData]
+    [innerHeight, margin.top, lastWeekMeanNavData],
   );
 
   const handleTooltip = useCallback(
@@ -83,7 +83,7 @@ const NavChart = ({
       navValueScale,
       setNavPrice,
       setNavDate,
-    ]
+    ],
   );
 
   const x = (d) => dateScale(getDate(d));

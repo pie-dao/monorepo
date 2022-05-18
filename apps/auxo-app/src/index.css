@@ -5,26 +5,25 @@
 @tailwind utilities;
 
 @layer components {
-  .hide-arrows input[type=number]::-webkit-outer-spin-button,
-  .hide-arrows input[type=number]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+  .hide-arrows input[type='number']::-webkit-outer-spin-button,
+  .hide-arrows input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
-  .hide-arrows input[type=number] {
-      -moz-appearance:textfield;
+  .hide-arrows input[type='number'] {
+    -moz-appearance: textfield;
   }
 
   .border-gradient {
     padding: 2px;
-    background-image: 
-      linear-gradient(white, white),
+    background-image: linear-gradient(white, white),
       radial-gradient(
         circle at top left,
         theme('colors.orange.400'),
         theme('colors.purple.700'),
         theme('colors.blue.400'),
         theme('colors.green.400')
-        );
+      );
     background-origin: border-box;
     background-clip: content-box, border-box;
   }

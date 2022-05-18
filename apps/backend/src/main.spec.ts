@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import main from './main';
 
-describe("myApp", () => {
+describe('myApp', () => {
   jest.setTimeout(50000);
   let app: INestApplication;
 
@@ -10,7 +10,7 @@ describe("myApp", () => {
     app = await main;
   });
 
-  it('should implement CORS', async() => {
+  it('should implement CORS', async () => {
     const { headers } = await request(app.getHttpServer()).get('/');
     expect(headers['access-control-allow-origin']).toEqual('*');
   });

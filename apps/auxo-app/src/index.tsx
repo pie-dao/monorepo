@@ -1,14 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import { store } from "./store";
-import { Provider } from "react-redux";
-import * as serviceWorker from "./serviceWorker";
-import { Web3ReactProvider } from "@web3-react/core";
-import getLibrary from "./connectors";
-import { BrowserRouter } from "react-router-dom";
-import { Web3ContextProvider } from "./hooks/multichain/MultipleProviderContext";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import { store } from './store';
+import { Provider } from 'react-redux';
+import * as serviceWorker from './serviceWorker';
+import { Web3ReactProvider } from '@web3-react/core';
+import getLibrary from './connectors';
+import { BrowserRouter } from 'react-router-dom';
+import { Web3ContextProvider } from './hooks/multichain/MultipleProviderContext';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,7 +22,7 @@ ReactDOM.render(
       </Web3ContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

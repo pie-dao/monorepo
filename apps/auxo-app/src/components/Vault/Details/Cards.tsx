@@ -1,11 +1,11 @@
-import { Strategy, Vault } from "../../../store/vault/Vault";
-import { chainMap, SUPPORTED_CHAIN_ID } from "../../../utils/networks";
-import { Divider } from "../../UI/divider";
-import ExternalUrl from "../../UI/url";
-import { Disclosure, Transition } from "@headlessui/react";
-import { BiChevronRight } from "react-icons/bi";
-import { IoWarningOutline } from "react-icons/io5";
-import { useMemo } from "react";
+import { Strategy, Vault } from '../../../store/vault/Vault';
+import { chainMap, SUPPORTED_CHAIN_ID } from '../../../utils/networks';
+import { Divider } from '../../UI/divider';
+import ExternalUrl from '../../UI/url';
+import { Disclosure, Transition } from '@headlessui/react';
+import { BiChevronRight } from 'react-icons/bi';
+import { IoWarningOutline } from 'react-icons/io5';
+import { useMemo } from 'react';
 
 const Card = ({
   children,
@@ -39,7 +39,7 @@ export const VaultStrategyDetails = ({
             <div className="flex">
               <BiChevronRight
                 className={`${
-                  open ? "transform rotate-90" : ""
+                  open ? 'transform rotate-90' : ''
                 } w-5 h-5 text-baby-blue-dark`}
               />
               <span className="flex items-center text-left ml-1">

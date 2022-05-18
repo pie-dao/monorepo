@@ -1,5 +1,5 @@
-import PieCardPlain from "./PieCardPlain";
-import content from "../content/en_EN.json";
+import PieCardPlain from './PieCardPlain';
+import content from '../content/en_EN.json';
 
 const ExploreProducts = ({ morePies }) => {
   return (
@@ -9,7 +9,7 @@ const ExploreProducts = ({ morePies }) => {
       <div className="flex ml-12 mr-12">
         <div className="w-full mb-10 content-center text-center">
           <h3 className="text-highlight uppercase text-4xl md:text-5xl mb-4">
-            {content.explore_products.title.first}{" "}
+            {content.explore_products.title.first}{' '}
             <span className="text-highlight font-bold">
               {content.explore_products.title.highlighted}
             </span>

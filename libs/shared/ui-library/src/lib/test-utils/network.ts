@@ -1,6 +1,6 @@
-import { ethers } from "ethers";
-import { RPC_URLS } from "../connectors";
-import { Web3Provider } from "@ethersproject/providers";
+import { ethers } from 'ethers';
+import { RPC_URLS } from '../connectors';
+import { Web3Provider } from '@ethersproject/providers';
 
 function getChainEndpoint(chainId: string) {
   const chainEndpoint = RPC_URLS[Number(chainId)];
@@ -22,11 +22,11 @@ export function getLibrary(provider: any): Web3Provider {
    */
   const library = new Web3Provider(
     provider,
-    typeof provider.chainId === "number"
+    typeof provider.chainId === 'number'
       ? provider.chainId
-      : typeof provider.chainId === "string"
+      : typeof provider.chainId === 'string'
       ? parseInt(provider.chainId)
-      : "any"
+      : 'any',
   );
   return library;
 }

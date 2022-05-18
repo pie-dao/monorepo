@@ -15,8 +15,8 @@
   @apply font-bold text-transparent bg-clip-text;
   background-image: linear-gradient(
     135deg,
-    theme("colors.highlight") 46%,
-    theme("colors.highlight_secondary") 68%
+    theme('colors.highlight') 46%,
+    theme('colors.highlight_secondary') 68%
   );
 }
 

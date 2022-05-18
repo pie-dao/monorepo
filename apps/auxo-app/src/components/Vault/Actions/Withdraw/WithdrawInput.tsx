@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { useAppDispatch } from "../../../../hooks";
-import { useAuxoVaultContract } from "../../../../hooks/multichain/useMultichainContract";
+import { useState } from 'react';
+import { useAppDispatch } from '../../../../hooks';
+import { useAuxoVaultContract } from '../../../../hooks/multichain/useMultichainContract';
 import {
   useSelectedVault,
   useVaultTokenBalance,
-} from "../../../../hooks/useSelectedVault";
-import { useStatus, WITHDRAWAL } from "../../../../hooks/useWithdrawalStatus";
-import { Balance } from "../../../../store/vault/Vault";
-import { thunkIncreaseWithdrawal } from "../../../../store/vault/vault.thunks";
-import { SetStateType } from "../../../../types/utilities";
-import { AUXO_HELP_URL, prettyNumber } from "../../../../utils";
-import { zeroBalance } from "../../../../utils/balances";
-import { logoSwitcher } from "../../../../utils/logos";
-import StyledButton from "../../../UI/button";
-import LoadingSpinner from "../../../UI/loadingSpinner";
-import ExternalUrl from "../../../UI/url";
-import InputSlider from "../InputSlider";
-import WithdrawButton from "./WithdrawButton";
+} from '../../../../hooks/useSelectedVault';
+import { useStatus, WITHDRAWAL } from '../../../../hooks/useWithdrawalStatus';
+import { Balance } from '../../../../store/vault/Vault';
+import { thunkIncreaseWithdrawal } from '../../../../store/vault/vault.thunks';
+import { SetStateType } from '../../../../types/utilities';
+import { AUXO_HELP_URL, prettyNumber } from '../../../../utils';
+import { zeroBalance } from '../../../../utils/balances';
+import { logoSwitcher } from '../../../../utils/logos';
+import StyledButton from '../../../UI/button';
+import LoadingSpinner from '../../../UI/loadingSpinner';
+import ExternalUrl from '../../../UI/url';
+import InputSlider from '../InputSlider';
+import WithdrawButton from './WithdrawButton';
 
 function ApproveWithdrawButton({
   withdraw,
@@ -37,7 +37,7 @@ function ApproveWithdrawButton({
       thunkIncreaseWithdrawal({
         auxo: auxoContract,
         withdraw,
-      })
+      }),
     )
       .then(() => setWithdraw(zeroBalance()))
       .finally(() => setApproving(false));
@@ -46,11 +46,11 @@ function ApproveWithdrawButton({
   return (
     <StyledButton
       disabled={
-        withdraw.value === "0" || status === WITHDRAWAL.READY || approving
+        withdraw.value === '0' || status === WITHDRAWAL.READY || approving
       }
       onClick={enterBatchBurn}
     >
-      {approving ? <LoadingSpinner /> : "Request"}
+      {approving ? <LoadingSpinner /> : 'Request'}
     </StyledButton>
   );
 }
@@ -65,7 +65,7 @@ function WithdrawActions({
   return (
     <div className="flex w-full justify-start items-center">
       <button className="w-full flex justify-start ml-1 text-sm text-gray-500">
-        <ExternalUrl to={AUXO_HELP_URL + "#c49e2f5991784b7fbb9e7cfac16def3f"}>
+        <ExternalUrl to={AUXO_HELP_URL + '#c49e2f5991784b7fbb9e7cfac16def3f'}>
           <p>
             <span className="underline decoration-baby-blue-dark">
               More Info
@@ -87,8 +87,8 @@ function WithdrawInput() {
   const status = useStatus();
   const label =
     status === WITHDRAWAL.READY
-      ? "Ready to Withdraw"
-      : prettyNumber(balance.label) + " auxo" + currency;
+      ? 'Ready to Withdraw'
+      : prettyNumber(balance.label) + ' auxo' + currency;
   return (
     <div
       className="

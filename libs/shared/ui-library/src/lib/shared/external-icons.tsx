@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent } from 'react';
 
 const MetamaskIcon: FunctionComponent<Props> = (props: Props) => {
   return (

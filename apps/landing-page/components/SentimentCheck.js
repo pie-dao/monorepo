@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import styles from "../styles/SentimentCheck.module.scss";
-import positiveImg from "../public/positive.png";
-import negativeImg from "../public/negative.png";
-import content from "../content/en_EN.json";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import styles from '../styles/SentimentCheck.module.scss';
+import positiveImg from '../public/positive.png';
+import negativeImg from '../public/negative.png';
+import content from '../content/en_EN.json';
 
 const SentimentCheck = ({ positive, negative }) => {
   const [sentiment, setSentiment] = useState(null);
@@ -21,10 +21,10 @@ const SentimentCheck = ({ positive, negative }) => {
   }, [positiveValue, negativeValue]);
 
   const handleSentiment = async (sentiment) => {
-    if (sentiment === "positive") {
+    if (sentiment === 'positive') {
       setPositiveValue(positiveValue + 1);
     }
-    if (sentiment === "negative") {
+    if (sentiment === 'negative') {
       setNegativeValue(negativeValue + 1);
     }
     setSentiment(sentiment);
@@ -34,7 +34,7 @@ const SentimentCheck = ({ positive, negative }) => {
   const sentimentPost = async (sentiment) => {
     fetch(`/api/postSentiment?sentiment=${sentiment}`, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   };
@@ -48,7 +48,7 @@ const SentimentCheck = ({ positive, negative }) => {
             <button
               type="button"
               className="positive"
-              onClick={() => handleSentiment("positive")}
+              onClick={() => handleSentiment('positive')}
               id="sentiment-positive"
             >
               <Image
@@ -63,7 +63,7 @@ const SentimentCheck = ({ positive, negative }) => {
             <button
               type="button"
               className="negative"
-              onClick={() => handleSentiment("negative")}
+              onClick={() => handleSentiment('negative')}
               id="sentiment-negative"
             >
               <Image
@@ -83,7 +83,7 @@ const SentimentCheck = ({ positive, negative }) => {
                 ? {
                     background: `linear-gradient(to right, #1bd10b ${positivePercent}%, #D7099C ${negativePercent}%)`,
                   }
-                : ""
+                : ''
             }
             className={styles.barGradient}
           ></div>
@@ -101,7 +101,7 @@ const SentimentCheck = ({ positive, negative }) => {
             <div className="w-1/3 flex items-center justify-center">
               <Image
                 lazyBoundary="325px"
-                src={sentiment === "positive" ? positiveImg : negativeImg}
+                src={sentiment === 'positive' ? positiveImg : negativeImg}
                 alt={sentiment}
               />
             </div>

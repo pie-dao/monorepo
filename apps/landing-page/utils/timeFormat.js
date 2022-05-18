@@ -1,3 +1,3 @@
-import { timeFormat } from "d3-time-format";
+import { timeFormat } from 'd3-time-format';
 
-export default timeFormat("%d/%m/%Y");
+export default timeFormat('%d/%m/%Y');

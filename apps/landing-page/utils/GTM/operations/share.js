@@ -1,9 +1,9 @@
-import GTM from "../constants";
+import GTM from '../constants';
 
 const pushShareData = (socialName, id) => {
-  gtag("event", GTM.EVENT.SHARE, {
+  gtag('event', GTM.EVENT.SHARE, {
     method: socialName,
-    content_type: "url",
+    content_type: 'url',
     item_id: id,
   });
 };

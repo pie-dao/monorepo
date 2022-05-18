@@ -1,9 +1,9 @@
-import { vaults } from "../../../store/vault/auxoVaults";
-import * as utils from "../../../utils/promiseObject";
-import * as f from "../../onChainUtils/fetchOnChainData";
-import { Vault as Auxo } from "../../../types/artifacts/abi";
+import { vaults } from '../../../store/vault/auxoVaults';
+import * as utils from '../../../utils/promiseObject';
+import * as f from '../../onChainUtils/fetchOnChainData';
+import { Vault as Auxo } from '../../../types/artifacts/abi';
 
-describe("Testing calling onchain data", () => {
+describe('Testing calling onchain data', () => {
   let [spyPromise] = [] as Array<jest.SpyInstance>;
   const auxo = undefined;
   const auth = undefined;
@@ -13,14 +13,14 @@ describe("Testing calling onchain data", () => {
   const vault = vaults[0];
 
   beforeEach(() => {
-    spyPromise = jest.spyOn(utils, "promiseObject").mockResolvedValue({});
+    spyPromise = jest.spyOn(utils, 'promiseObject').mockResolvedValue({});
   });
 
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  it("returns nothing if the contracts are missing", async () => {
+  it('returns nothing if the contracts are missing', async () => {
     await f.fetchOnChainData({
       token,
       auxo,
@@ -32,7 +32,7 @@ describe("Testing calling onchain data", () => {
     expect(spyPromise).not.toHaveBeenCalled();
   });
 
-  it("Calls the batch burn only if we have a batch burn > 0", async () => {
+  it('Calls the batch burn only if we have a batch burn > 0', async () => {
     let expectUndefined = f.batchBurnCalls(auxo as unknown as Auxo, undefined);
     expect(expectUndefined).toEqual(undefined);
     expectUndefined = f.batchBurnCalls(auxo as unknown as Auxo, 0);

@@ -1,5 +1,5 @@
-import Button from "../components/Button";
-import content from "../content/en_EN.json";
+import Button from '../components/Button';
+import content from '../content/en_EN.json';
 
 const Ovens = () => {
   return (
@@ -11,7 +11,7 @@ const Ovens = () => {
           <span className="font-bold">{content.ovens.title.highlighted}</span>
         </h3>
         <p className="max-w-[70%] mx-auto text-sm md:text-xl">
-          {content.ovens.description.first}{" "}
+          {content.ovens.description.first}{' '}
           <span className="font-bold">
             {content.ovens.description.highlighted}
           </span>

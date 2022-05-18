@@ -1,26 +1,26 @@
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import ParentSizeModern from "@visx/responsive/lib/components/ParentSizeModern";
-import usePlayTickers from "../hooks/usePlayTickers";
-import SubCharts from "./SubCharts";
-import auditIcon from "../public/audit.png";
-import mixBytesIcon from "../public/mixbytes.png";
-import ethIcon from "../public/ethereum.png";
-import copyIcon from "../public/copy.png";
-import metamaskIcon from "../public/metamask.png";
-import coingecko from "../public/coingecko.png";
-import coinmarketcap from "../public/coinmarketcap.png";
-import PlayChart from "./PlayChart";
-import PriceChange from "./PriceChange";
-import content from "../content/en_EN.json";
-import Loader from "./Loader";
+import { useEffect, useState } from 'react';
+import Image from 'next/image';
+import ParentSizeModern from '@visx/responsive/lib/components/ParentSizeModern';
+import usePlayTickers from '../hooks/usePlayTickers';
+import SubCharts from './SubCharts';
+import auditIcon from '../public/audit.png';
+import mixBytesIcon from '../public/mixbytes.png';
+import ethIcon from '../public/ethereum.png';
+import copyIcon from '../public/copy.png';
+import metamaskIcon from '../public/metamask.png';
+import coingecko from '../public/coingecko.png';
+import coinmarketcap from '../public/coinmarketcap.png';
+import PlayChart from './PlayChart';
+import PriceChange from './PriceChange';
+import content from '../content/en_EN.json';
+import Loader from './Loader';
 
 const getDate = (d) => new Date(d[0]);
 const getPieValue = (d) => d[1];
 
 const Chart = ({ play, sentiment }) => {
   const { playTickers, isError, isLoading } = usePlayTickers();
-  const [chartTimeRange, setChartTimeRange] = useState("1m");
+  const [chartTimeRange, setChartTimeRange] = useState('1m');
   const [priceDiffThreeMonthsPerc, setPriceDiffThreeMonthsPerc] = useState(0);
 
   useEffect(() => {
@@ -28,14 +28,14 @@ const Chart = ({ play, sentiment }) => {
       const today = new Date();
       const threeMonths = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
       const lastThreeMonthsPrices = playTickers.prices?.filter(
-        (d) => getDate(d) > threeMonths
+        (d) => getDate(d) > threeMonths,
       );
       if (lastThreeMonthsPrices) {
         const priceDiffThreeMonths =
           getPieValue(lastThreeMonthsPrices[lastThreeMonthsPrices.length - 1]) -
           getPieValue(lastThreeMonthsPrices[0]);
         setPriceDiffThreeMonthsPerc(
-          (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100
+          (priceDiffThreeMonths / getPieValue(lastThreeMonthsPrices[0])) * 100,
         );
       }
     }
@@ -48,9 +48,9 @@ const Chart = ({ play, sentiment }) => {
   const addPlayToMetamask = async () => {
     try {
       const wasAddded = await ethereum.request({
-        method: "wallet_watchAsset",
+        method: 'wallet_watchAsset',
         params: {
-          type: "ERC20",
+          type: 'ERC20',
           options: {
             address: play.contract_address,
             symbol: play.symbol,
@@ -124,7 +124,7 @@ const Chart = ({ play, sentiment }) => {
         <div className="flex align-center justify-between mb-4">
           <div className="flex">
             <p className="flex font-bold items-center">
-              {content.chart.fees}{" "}
+              {content.chart.fees}{' '}
               <span className="text-gradient ml-2">
                 {content.chart.fees_percentage}
               </span>
@@ -134,27 +134,27 @@ const Chart = ({ play, sentiment }) => {
             <button
               type="button"
               className={`text-sm text-white uppercase border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
-                chartTimeRange === "1d" && `border-light_blue opacity-100`
+                chartTimeRange === '1d' && `border-light_blue opacity-100`
               }`}
-              onClick={() => setChartTimeRange("1d")}
+              onClick={() => setChartTimeRange('1d')}
             >
               {content.chart.day}
             </button>
             <button
               type="button"
               className={`text-sm text-white uppercase border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
-                chartTimeRange === "1w" && `border-light_blue opacity-100`
+                chartTimeRange === '1w' && `border-light_blue opacity-100`
               }`}
-              onClick={() => setChartTimeRange("1w")}
+              onClick={() => setChartTimeRange('1w')}
             >
               {content.chart.week}
             </button>
             <button
               type="button"
               className={`text-sm text-white uppercase border-2 opacity-50 border-secondary hover:border-light_blue rounded-lg px-2 py-1 leading-snug hover:opacity-100 ${
-                chartTimeRange === "1m" && `border-light_blue opacity-100`
+                chartTimeRange === '1m' && `border-light_blue opacity-100`
               }`}
-              onClick={() => setChartTimeRange("1m")}
+              onClick={() => setChartTimeRange('1m')}
             >
               {content.chart.month}
             </button>
@@ -179,19 +179,19 @@ const Chart = ({ play, sentiment }) => {
       </div>
       <div className="hidden md:flex text-deep_purple mb-2 gap-x-4">
         <p className="gap-x-1 flex items-center justify-center">
-          {content.chart.day}{" "}
+          {content.chart.day}{' '}
           <PriceChange
             priceChange={play.market_data.price_change_percentage_24h}
           />
         </p>
         <p className="gap-x-1 flex items-center justify-center">
-          {content.chart.month}{" "}
+          {content.chart.month}{' '}
           <PriceChange
             priceChange={play.market_data.price_change_percentage_30d}
           />
         </p>
         <p className="gap-x-1 flex items-center justify-center">
-          {content.chart.three_months}{" "}
+          {content.chart.three_months}{' '}
           <PriceChange priceChange={priceDiffThreeMonthsPerc} />
         </p>
       </div>

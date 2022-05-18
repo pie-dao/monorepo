@@ -1,27 +1,27 @@
-import React from "react";
-import { setImmediate, clearImmediate } from "timers";
-import { render, waitFor } from "@testing-library/react";
-import { generateTestingUtils } from "eth-testing";
-import { ChainSwitcher } from "./ChainSwitcher";
-import * as chainIdUtils from "../test-utils/network";
-import { Web3ReactProvider } from "@web3-react/core";
+import React from 'react';
+import { setImmediate, clearImmediate } from 'timers';
+import { render, waitFor } from '@testing-library/react';
+import { generateTestingUtils } from 'eth-testing';
+import { ChainSwitcher } from './ChainSwitcher';
+import * as chainIdUtils from '../test-utils/network';
+import { Web3ReactProvider } from '@web3-react/core';
 import {
   click,
   getNetworkSwitcherOptions,
   getNetworkSwitcherButton,
   assertNetworkSwitcherButton,
   NetworkSwitcherState,
-} from "../test-utils/interactions";
+} from '../test-utils/interactions';
 
-jest.mock("../hooks/use-id");
-jest.mock("../hooks/use-connected-wallet");
-jest.mock("@web3-react/core", () => {
+jest.mock('../hooks/use-id');
+jest.mock('../hooks/use-connected-wallet');
+jest.mock('@web3-react/core', () => {
   return {
-    ...jest.requireActual("@web3-react/core"),
+    ...jest.requireActual('@web3-react/core'),
     useWeb3React: jest.fn().mockReturnValue({
       active: true,
       error: undefined,
-      account: "0xFoo",
+      account: '0xFoo',
       chainId: 1,
       activate: jest.fn(),
       deactivate: jest.fn(),
@@ -30,7 +30,7 @@ jest.mock("@web3-react/core", () => {
   };
 });
 
-const metaMaskTestingUtils = generateTestingUtils({ providerType: "MetaMask" });
+const metaMaskTestingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
 let originalEth: unknown;
 
@@ -40,22 +40,22 @@ beforeAll(() => {
   window.ethereum = metaMaskTestingUtils.getProvider();
 
   jest
-    .spyOn(window, "requestAnimationFrame")
+    .spyOn(window, 'requestAnimationFrame')
     .mockImplementation(setImmediate as any);
   jest
-    .spyOn(window, "cancelAnimationFrame")
+    .spyOn(window, 'cancelAnimationFrame')
     .mockImplementation(clearImmediate as any);
 });
 
 afterAll(() => jest.restoreAllMocks());
 
-describe("Rendering", () => {
-  describe("NetworkSwitcher", () => {
-    it("should be possible to switch chain", async () => {
+describe('Rendering', () => {
+  describe('NetworkSwitcher', () => {
+    it('should be possible to switch chain', async () => {
       function Example() {
         return (
           <Web3ReactProvider getLibrary={chainIdUtils.getLibrary}>
-            <ChainSwitcher allowedChains={["MAINNET", "POLYGON", "FANTOM"]} />
+            <ChainSwitcher allowedChains={['MAINNET', 'POLYGON', 'FANTOM']} />
           </Web3ReactProvider>
         );
       }
@@ -66,7 +66,7 @@ describe("Rendering", () => {
 
       assertNetworkSwitcherButton({
         state: NetworkSwitcherState.InvisibleHidden,
-        textContent: "Polygon Mainnet",
+        textContent: 'Polygon Mainnet',
       });
     });
   });

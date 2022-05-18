@@ -1,12 +1,12 @@
-import Image from "next/image";
-import Button from "./Button";
-import PriceChange from "./PriceChange";
-import ShareMenu from "./ShareMenu";
-import priceFormat from "../utils/priceFormatter";
-import playLogo from "../public/play_logo.png";
-import piedaoLogo from "../public/piedao_logo_text.png";
-import styles from "../styles/PlayBar.module.scss";
-import content from "../content/en_EN.json";
+import Image from 'next/image';
+import Button from './Button';
+import PriceChange from './PriceChange';
+import ShareMenu from './ShareMenu';
+import priceFormat from '../utils/priceFormatter';
+import playLogo from '../public/play_logo.png';
+import piedaoLogo from '../public/piedao_logo_text.png';
+import styles from '../styles/PlayBar.module.scss';
+import content from '../content/en_EN.json';
 
 const PlayBar = ({ actualPrice, priceChange }) => {
   return (
@@ -32,7 +32,7 @@ const PlayBar = ({ actualPrice, priceChange }) => {
         <Image lazyBoundary="325px" src={playLogo} alt="play logo" />
         <div className="ml-2 align-baseline">
           <p className="text-gradient text-xl md:text-xl leading-none md:leading-none flex">
-            {content.navbar.play}{" "}
+            {content.navbar.play}{' '}
             <span className="text-white text-sm hidden md:block ml-2">
               <PriceChange priceChange={priceChange} />
             </span>

@@ -1,15 +1,15 @@
-import React from "react";
-import { Meta } from "@storybook/react/types-6-0";
-import Icon from "./Icon";
-import { icons } from "../../shared/icons";
+import React from 'react';
+import { Meta } from '@storybook/react/types-6-0';
+import Icon from './Icon';
+import { icons } from '../../shared/icons';
 
 export default {
-  title: "Ui Atoms/Icon",
+  title: 'Ui Atoms/Icon',
   component: Icon,
 } as Meta;
 
 export const Basic = (args: any) => <Icon {...args} />;
-Basic.args = { icon: "close" };
+Basic.args = { icon: 'close' };
 
 export const Labels = () => (
   <>

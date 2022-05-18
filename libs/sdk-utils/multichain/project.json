@@ -3,7 +3,6 @@
   "sourceRoot": "libs/sdk-utils/multichain/src",
   "projectType": "library",
   "targets": {
-
     "build": {
       "executor": "@nrwl/js:tsc",
       "outputs": ["{options.outputPath}"],
@@ -13,7 +12,7 @@
         "tsConfig": "libs/sdk-utils/multichain/tsconfig.lib.json",
         "assets": ["libs/sdk-utils/multichain/*.md"]
       }
-    },   
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],

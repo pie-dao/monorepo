@@ -1,16 +1,16 @@
-import { useMemo } from "react";
-import { CellProps, Column, TableState } from "react-table";
-import { useAppSelector } from ".";
-import StyledButton from "../components/UI/button";
-import { Vault } from "../store/vault/Vault";
-import { prettyNumber, zeroApyMessage } from "../utils";
-import { logoSwitcher } from "../utils/logos";
+import { useMemo } from 'react';
+import { CellProps, Column, TableState } from 'react-table';
+import { useAppSelector } from '.';
+import StyledButton from '../components/UI/button';
+import { Vault } from '../store/vault/Vault';
+import { prettyNumber, zeroApyMessage } from '../utils';
+import { logoSwitcher } from '../utils/logos';
 import {
   chainMap,
   SUPPORTED_CHAIN_ID,
   SUPPORTED_CHAIN_NAMES,
-} from "../utils/networks";
-import { useNavigateToVault } from "./useSelectedVault";
+} from '../utils/networks';
+import { useNavigateToVault } from './useSelectedVault';
 
 export type VaultTableRow = {
   chainId: number;
@@ -31,7 +31,7 @@ type VaultTableCell = React.PropsWithChildren<
 export const generateTextColor = (cell: VaultTableCell): string => {
   const rowNumber = getSortedRowIndex(cell);
   return rowNumber > 5
-    ? " text-gray-700"
+    ? ' text-gray-700'
     : ` text-return-${100 - 20 * rowNumber}`;
 };
 
@@ -43,7 +43,7 @@ const getSortedRowIndex = (cell: VaultTableCell) => {
 // Fetch the symbol of the network, so we can display next to the deposit token
 const getNetworkTokenSymbolForCell = (cell: VaultTableCell): string => {
   const rows = cell.row.allCells;
-  const chainIdCell = rows.find((r) => r.column.id === "chainId")!;
+  const chainIdCell = rows.find((r) => r.column.id === 'chainId')!;
   const chainID = chainIdCell.value;
   const symbol = chainMap[chainID as SUPPORTED_CHAIN_ID].nativeCurrency.symbol;
   return symbol;
@@ -102,10 +102,10 @@ const ToVaultDepositButton = ({
 
 // Control settings of table on first load
 export const initialTableState: Partial<TableState<VaultTableRow>> = {
-  hiddenColumns: ["network", "chainId"],
+  hiddenColumns: ['network', 'chainId'],
   sortBy: [
     {
-      id: "yield",
+      id: 'yield',
       desc: true,
     },
   ],
@@ -127,28 +127,28 @@ export const useVaultTableData = (): {
 
   const rows = useMemo<VaultTableRow[]>(
     () => vaults.map((v) => getVaultTableRow(v)),
-    [vaults]
+    [vaults],
   );
 
   const headers = useMemo<Column<VaultTableRow>[]>(
     () => [
       {
-        accessor: "chainId",
-        Header: "Chain Id",
+        accessor: 'chainId',
+        Header: 'Chain Id',
       },
       {
-        accessor: "network",
-        Header: "Network",
-        filter: "includes",
+        accessor: 'network',
+        Header: 'Network',
+        filter: 'includes',
       },
       {
-        accessor: "deposit",
-        Header: "Deposit",
+        accessor: 'deposit',
+        Header: 'Deposit',
         Cell: (cell): JSX.Element => <DepositCell cell={cell} />,
       },
       {
-        accessor: "yield",
-        Header: "Yield",
+        accessor: 'yield',
+        Header: 'Yield',
         sortDescFirst: true,
         Cell: (cell): JSX.Element => {
           const textColor = useMemo(() => generateTextColor(cell), [cell]);
@@ -160,24 +160,24 @@ export const useVaultTableData = (): {
         },
       },
       {
-        accessor: "totalDeposits",
-        Header: "Total Deposits",
+        accessor: 'totalDeposits',
+        Header: 'Total Deposits',
         sortDescFirst: true,
-        Cell: ({ value }): string => prettyNumber(value) ?? "--",
+        Cell: ({ value }): string => prettyNumber(value) ?? '--',
       },
       {
-        accessor: "myDeposits",
-        Header: "My Deposits",
+        accessor: 'myDeposits',
+        Header: 'My Deposits',
         sortDescFirst: true,
-        Cell: ({ value }): string => prettyNumber(value) ?? "--",
+        Cell: ({ value }): string => prettyNumber(value) ?? '--',
       },
       {
-        accessor: "address",
-        Header: "",
+        accessor: 'address',
+        Header: '',
         Cell: ({ value }) => <ToVaultDepositButton address={value} />,
       },
     ],
-    []
+    [],
   );
   return {
     headers,

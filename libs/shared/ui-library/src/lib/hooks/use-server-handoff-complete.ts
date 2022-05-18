@@ -1,19 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-let state = { serverHandoffComplete: false }
+let state = { serverHandoffComplete: false };
 
 export function useServerHandoffComplete() {
-  let [serverHandoffComplete, setServerHandoffComplete] = useState(state.serverHandoffComplete)
+  let [serverHandoffComplete, setServerHandoffComplete] = useState(
+    state.serverHandoffComplete,
+  );
 
   useEffect(() => {
-    if (serverHandoffComplete === true) return
+    if (serverHandoffComplete === true) return;
 
-    setServerHandoffComplete(true)
-  }, [serverHandoffComplete])
+    setServerHandoffComplete(true);
+  }, [serverHandoffComplete]);
 
   useEffect(() => {
-    if (state.serverHandoffComplete === false) state.serverHandoffComplete = true
-  }, [])
+    if (state.serverHandoffComplete === false)
+      state.serverHandoffComplete = true;
+  }, []);
 
-  return serverHandoffComplete
+  return serverHandoffComplete;
 }
