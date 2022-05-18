@@ -162,7 +162,7 @@ const Chart = ({ play, sentiment }) => {
         </div>
       </div>
       <div className="w-full h-[250px] md:h-[500px]">
-        {isLoading || isError ? (
+        {isLoading || isError || !(playTickers && playTickers.prices) ? (
           <Loader />
         ) : (
           <ParentSizeModern>
@@ -196,7 +196,7 @@ const Chart = ({ play, sentiment }) => {
         </p>
       </div>
       <div className="w-full border-b border-highlight mb-10"></div>
-      {isLoading || isError ? (
+      {isLoading || isError || !(playTickers && playTickers.prices) ? (
         <Loader />
       ) : (
         <SubCharts
