@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
+    "jsx": "preserve",
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
@@ -16,9 +17,15 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@sdk-utils/docs": ["libs/sdk-utils/docs/src/index.ts"],
+      "@sdk-utils/multicall": ["libs/sdk-utils/multicall/src/index.ts"],
+      "@sdk-utils/multichain": ["libs/sdk-utils/multichain/src/index.ts"],
+      "@sdk-utils/state-listener": [
+        "libs/sdk-utils/state-listener/src/index.ts"
+      ]
       "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"]
     },
-    "types": ["jest"]
+    "types": ["jest", "node"]
   },
   "exclude": ["node_modules", "tmp"]
 }

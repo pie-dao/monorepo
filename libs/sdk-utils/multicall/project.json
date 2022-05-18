@@ -1,0 +1,33 @@
+{
+  "root": "libs/sdk-utils/multicall",
+  "sourceRoot": "libs/sdk-utils/multicall/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/sdk-utils/multicall",
+        "main": "libs/sdk-utils/multicall/src/index.ts",
+        "tsConfig": "libs/sdk-utils/multicall/tsconfig.lib.json",
+        "assets": ["libs/sdk-utils/multicall/*.md"]
+      }
+    },    
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/sdk-utils/multicall/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/sdk-utils/multicall"],
+      "options": {
+        "jestConfig": "libs/sdk-utils/multicall/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
