@@ -1,7 +1,5 @@
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { useState } from 'react';
-import useTranslation from 'next-translate/useTranslation';
 import { useAppDispatch } from '../hooks';
 import { wrapper } from '../store';
 import { setX } from '../store/example/example.slice';
@@ -16,15 +14,12 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 });
 
 const Index: NextPage<{ someKey?: string }> = (props) => {
-  const { t } = useTranslation();
-  const title = t('title');
   const dispatch = useAppDispatch();
   const [input] = useState(props.someKey ?? '');
   return (
     <div>
-      <h1>{title}</h1>
+      <h1>Welcome to the Investify Platform</h1>
       <button onClick={() => dispatch(setX(input))}>Change</button>
-      <Link href="/example">example page</Link>
     </div>
   );
 };
