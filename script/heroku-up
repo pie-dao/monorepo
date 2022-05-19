@@ -1,0 +1,17 @@
+#!/bin/bash
+
+print_usage() {
+    echo "💀 $1"
+    echo "Help below 👇"
+    echo ""
+    echo "Pushes your local state to the specified remote"
+    echo ""
+    echo "Usage: ./heroku-up <nx-project-name>"
+    exit 1
+}
+
+if [ -z "$1" ]; then
+    print_usage "Remote is missing!"
+fi
+
+git push $1
