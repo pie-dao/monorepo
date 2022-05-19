@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Silka';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Silka/silka-regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Silka';
+  font-style: bold;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Silka/silka-bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Silka';
+  font-style: medium;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Silka/silka-medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Silka';
+  font-style: light;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/Silka/silka-light.woff2') format('woff2');
+}
+
+@layer base {
+  [data-theme='investify'] {
+    --color-primary: 11 120 221;
+    --color-secondary: 35 216 129;
+    --color-tertiary: 68 62 80;
+    --color-text: 31 8 96;
+    --color-sub-dark: 115 120 165;
+    --color-sub-light: 186 189 220;
+    --color-cards: 255 255 255;
+    --color-background: 250 249 255;
+    --color-custom-border: 235 239 250;
+    --color-success: 20 80 34;
+    --color-error: 139 11 11;
+    --color-warning: 198 125 16;
+    --color-info: 23 52 106;
+    --color-red: 246 112 112;
+  }
+}

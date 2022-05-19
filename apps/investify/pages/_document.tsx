@@ -1,15 +1,39 @@
-import { createGetInitialProps } from '@mantine/next';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
-const getInitialProps = createGetInitialProps();
-
 export default class _Document extends Document {
-  static getInitialProps = getInitialProps;
-
   render() {
     return (
       <Html className="h-full">
-        <Head />
+        <Head>
+          <link
+            rel="preload"
+            href="fonts/Silka/silka-regular.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="fonts/Silka/silka-light.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="fonts/Silka/silka-medium.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="fonts/Silka/silka-bold.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
+        </Head>
         <body className="h-full">
           <Main />
           <NextScript />
