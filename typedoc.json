@@ -1,15 +1,16 @@
 {
-    "$schema": "https://typedoc.org/schema.json",
-    "entryPoints": [
-        "libs/sdk-utils/multicall/src/index.ts",
-        "libs/sdk-utils/multichain/src/index.ts",
-        "libs/sdk-utils/state-listener/src/index.ts"
-    ],
-    "out": "docs/src",
-    "excludeInternal": false,
-    "excludePrivate": false,
-    "excludeExternals": true,
-    "tsconfig": "./libs/sdk-utils/tsconfig.docs.json",
-    "exclude": ["**/node_modules/**"],
-    "excludeNotDocumented": false
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "libs/sdk-utils/multicall/src/index.ts",
+    "libs/sdk-utils/multichain/src/index.ts",
+    "libs/sdk-utils/state-listener/src/index.ts",
+    "libs/sdk-utils/core/src/index.ts"
+  ],
+  "out": "docs/src",
+  "excludeInternal": false,
+  "excludePrivate": false,
+  "excludeExternals": true,
+  "tsconfig": "./libs/sdk-utils/tsconfig.docs.json",
+  "exclude": ["**/node_modules/**"],
+  "excludeNotDocumented": false
 }
