@@ -1,0 +1,32 @@
+import { MenuAlt2Icon } from '@heroicons/react/solid';
+import { useCycle } from 'framer-motion';
+import Navigation from '../Navigation/Navigation';
+
+export default function Layout({ children }) {
+  const [open, cycleOpen] = useCycle(true, false);
+  return (
+    <>
+      <div className="flex h-full">
+        <Navigation open={open} />
+        <div className="flex flex-col flex-1">
+          <div className="flex-shrink-0 flex h-16 bg-white">
+            <button
+              type="button"
+              className="px-4 text-gray-500 focus:outline-none"
+              onClick={() => cycleOpen()}
+            >
+              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
+          <main>{children}</main>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        #__next {
+          height: 100%;
+        }
+      `}</style>
+    </>
+  );
+}
