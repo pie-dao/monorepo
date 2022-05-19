@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { decorate, typesafeContract } from './utils';
+import smartPool from '../../../../shared/util-blockchain/abis/smart-pool/smartpool.abi.json';
 
 describe('Testing sdk core utils', () => {
   it('decorates', () => {
@@ -18,10 +19,17 @@ describe('Testing sdk core utils', () => {
 
   it('Returns the contract instance when typesafe cast', () => {
     // const
-    const original = new ethers.Contract('', '');
+    const original = new ethers.Contract(
+      '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
+      smartPool.abi,
+    );
 
-    const newContract = typesafeContract('');
+    const newContract = typesafeContract(
+      '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
+      smartPool.abi,
+    );
 
-    expect(original).toEqual(newContract);
+    // stringify because checks to different refs in memory will not equal
+    expect(JSON.stringify(original)).toEqual(JSON.stringify(newContract));
   });
 });

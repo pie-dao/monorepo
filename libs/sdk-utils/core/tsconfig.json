@@ -11,9 +11,13 @@
     }
   ],
   "compilerOptions": {
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
-    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "module": "commonJs",
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": true
   }
 }
