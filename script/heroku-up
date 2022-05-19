@@ -6,7 +6,7 @@ print_usage() {
     echo ""
     echo "Pushes your local state to the specified remote"
     echo ""
-    echo "Usage: ./heroku-up <nx-project-name>"
+    echo "Usage: ./heroku-up <remote>"
     exit 1
 }
 
