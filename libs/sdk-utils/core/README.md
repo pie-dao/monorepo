@@ -1,11 +1,35 @@
-# sdk-utils-core
+#
 
-This library was generated with [Nx](https://nx.dev).
+# On ethers
 
-## Running unit tests
+Working closely with Ethers JS requires us to have an understanding of the internal state of the library. In particular, we need to understand how function calls are made to solidity contracts.
 
-Run `nx test sdk-utils-core` to execute the unit tests via [Jest](https://jestjs.io).
+When ethers contracts are instantiated, calldata (read data) is faciliated through the _provider_. Specifically:
 
-## Running lint
+1. The contract is created with a provider.
+2. The contract functions delegate the call to the `provider.call` method.
+3. The `provider.call` method takes a `TransactionRequest` object:
 
-Run `nx lint sdk-utils-core` to execute the lint via [ESLint](https://eslint.org/).
+```ts
+export type TransactionRequest = {
+  to?: string;
+  from?: string;
+  nonce?: BigNumberish;
+
+  gasLimit?: BigNumberish;
+  gasPrice?: BigNumberish;
+
+  data?: BytesLike;
+  value?: BigNumberish;
+  chainId?: number;
+
+  type?: number;
+  accessList?: AccessListish;
+
+  maxPriorityFeePerGas?: BigNumberish;
+  maxFeePerGas?: BigNumberish;
+
+  customData?: Record<string, any>;
+  ccipReadEnabled?: boolean;
+};
+```
