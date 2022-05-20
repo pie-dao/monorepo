@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 import { Layout } from '../components';
 import { wrapper } from '../store';
@@ -21,7 +22,7 @@ export default function Page() {
       <main className="flex-1 overflow-y-auto">
         <section className="min-w-0 flex-1 h-full flex flex-col">
           <h1>{title}</h1>
-          {/* Your content */}
+      <Link href="/example">example page</Link>
         </section>
       </main>
     </div>

@@ -11,9 +11,15 @@ import { Command, Console, createSpinner } from 'nestjs-console';
 import { StakingService } from '../staking';
 import {
   CgCoinDocument,
-  CgCoinEntity, erc20,
-  erc20byte32, PieDocument, PieDto, PieEntity, pieGetterABI, PieHistoryDocument,
-  PieHistoryEntity
+  CgCoinEntity,
+  erc20,
+  erc20byte32,
+  PieDocument,
+  PieDto,
+  PieEntity,
+  pieGetterABI,
+  PieHistoryDocument,
+  PieHistoryEntity,
 } from './';
 
 const EVERY_HOUR = 1000 * 60 * 60;
@@ -318,7 +324,13 @@ export class PiesService {
         }
 
         const cgCoinEntity = this.cgCoinModel
-          .find(filters)
+          .find(filters, {
+            // ❗ 👇 This is to prevent bandwidth issues with Atlas
+            timestamp: 1,
+            'coin.market_data.current_price.usd': 1,
+            'coin.market_data.market_cap.usd': 1,
+            'coin.market_data.total_volume.usd': 1,
+          })
           .sort({ timestamp: order })
           .limit(Number(limit))
           .lean();

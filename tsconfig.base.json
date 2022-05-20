@@ -23,7 +23,9 @@
       "@sdk-utils/state-listener": [
         "libs/sdk-utils/state-listener/src/index.ts"
       ],
-      "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"]
+      "@shared/helpers": ["libs/shared/helpers/src/index.ts"],
+      "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"],
+      "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"]
     },
     "types": ["jest", "node"]
   },
