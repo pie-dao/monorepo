@@ -6,7 +6,7 @@ export default function Layout({ children }) {
   const [open, setOpen] = useState(true);
   return (
     <>
-      <div className="flex h-full">
+      <div className="flex h-full bg-background">
         <Navigation open={open} setOpen={setOpen} />
         <div className="flex flex-col flex-1">
           <div className="flex-shrink-0 flex h-16 bg-white">
