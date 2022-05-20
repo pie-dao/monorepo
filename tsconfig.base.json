@@ -26,7 +26,8 @@
       ],
       "@shared/helpers": ["libs/shared/helpers/src/index.ts"],
       "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"],
-      "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"]
+      "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"],
+      "@shared/util-blockchain/abis": ["libs/shared/util-blockchain/abis"]
     },
     "types": ["jest", "node"]
   },

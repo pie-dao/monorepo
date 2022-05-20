@@ -2,6 +2,7 @@ import { ContractWrapper, decorate } from '@sdk-utils/core';
 import { providers as _0xS } from '@0xsequence/multicall';
 import { Contract, ethers } from 'ethers';
 import { Provider } from '@ethersproject/providers';
+import { MulticallProvider } from '@0xsequence/multicall/dist/declarations/src/providers';
 
 /**
  * Multicall implementation with 0xSequence happens automatically.
@@ -9,6 +10,13 @@ import { Provider } from '@ethersproject/providers';
  */
 type Multicall = {
   isMulticallEnabled: boolean;
+};
+
+/**
+ * We need to extend the internal provider to get type inference on multicall provider properties.
+ */
+type WrapMulticallProvder<C extends Contract> = C & {
+  provider: MulticallProvider;
 };
 
 /**
@@ -22,7 +30,8 @@ export const MULTICALLCONTRACTS = {
 };
 
 export class MultiCallWrapper extends ContractWrapper<Multicall> {
-  private multicallProvider?: _0xS.MulticallProvider;
+  // Set in the constructor through the set function
+  private multicallProvider!: _0xS.MulticallProvider;
   public contracts: Contract[] = [];
 
   constructor(provider?: Provider) {
@@ -30,6 +39,12 @@ export class MultiCallWrapper extends ContractWrapper<Multicall> {
     this.setMulticallProvider(provider);
   }
 
+  /**
+   * Wraps the existing provider in the 0x Multicall provider.
+   * Batch calls together with Promise.all to execute through multicall.
+   * Alternatively, see the [The 0xSequence Multicall page](https://github.com/0xsequence/sequence.js/tree/master/packages/multicall) page for usage details.
+   * @param provider an ethers provider.
+   */
   private setMulticallProvider(provider: undefined | Provider) {
     const actualProvider = this.getProvider(provider);
     this.multicallProvider = new _0xS.MulticallProvider(actualProvider);
@@ -39,10 +54,17 @@ export class MultiCallWrapper extends ContractWrapper<Multicall> {
     return provider ?? ethers.providers.getDefaultProvider();
   }
 
-  public wrap<C extends Contract>(contract: C): C & Multicall {
+  /**
+   * Reconnects to the contract with the multicall provider and adds the multicall decorator.
+   * @returns the original contract with the multichain indicator added.
+   */
+  public wrap<C extends Contract>(
+    contract: C,
+  ): WrapMulticallProvder<C> & Multicall {
     const multicallEnabledContract = contract.connect(
-      this.multicallProvider!,
-    ) as C;
+      this.multicallProvider,
+    ) as WrapMulticallProvder<C>;
+
     return decorate(multicallEnabledContract, { isMulticallEnabled: true });
   }
 }
