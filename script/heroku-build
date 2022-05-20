@@ -1,0 +1,23 @@
+#!/bin/bash
+
+cd "$(dirname "$0")"
+
+source includes/projects
+
+print_usage() {
+    echo "💀 $1"
+    echo "Help below 👇"
+    echo ""
+    echo "Builds the specified project for Heroku."
+    echo ""
+    echo "Usage: ./heroku-build <nx-project-name>"
+    echo ""
+    echo "__Note that__ this script is intended to be used from CI/CD, you probably won't need it during development."
+    exit 1
+}
+
+if [ -z "$1" ]; then
+    print_usage "Project name is missing!"
+fi
+
+nx build $1 --prod
