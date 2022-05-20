@@ -114,6 +114,12 @@ Finally, we push it to _Heroku_
 git push <your-remote> main
 ```
 
+## Troubleshooting
+
+There are some known issues with the project that are outlined here:
+
+- There is a bandwidth bottleneck between the app and Atlas, so make sure that if you are running queries that return huge payloads (eg: `>1MB`) then please use projections to limit the size of the payload (only query the fields you read).
+
 ## Test
 
 In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB in Docker.
