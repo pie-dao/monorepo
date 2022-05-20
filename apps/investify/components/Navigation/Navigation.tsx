@@ -59,7 +59,7 @@ export default function Navigation({
   const { pathname } = useRouter();
   const x = useMotionValue(0);
   const handleDragEnd = (event: any, info: PanInfo) => {
-    if (info.offset.x < -120) {
+    if (info.offset.x < -80) {
       setOpen(false);
     }
     handleDrag(event, info);
