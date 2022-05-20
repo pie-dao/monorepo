@@ -22,7 +22,7 @@ export default function Page() {
       <main className="flex-1 overflow-y-auto">
         <section className="min-w-0 flex-1 h-full flex flex-col">
           <h1>{title}</h1>
-      <Link href="/example">example page</Link>
+          <Link href="/example">example page</Link>
         </section>
       </main>
     </div>
