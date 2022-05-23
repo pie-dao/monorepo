@@ -53,7 +53,9 @@ export default function Home({ play, morePies, sentiment }) {
       />
       <Metaverse />
       <ScrollingBoxes />
-      {play && sentiment && <Chart play={play.coin} sentiment={sentiment} />}
+      {play && play.coin && sentiment && (
+        <Chart play={play.coin} sentiment={sentiment} />
+      )}
       <UnderlyingTokens />
       <Methodology />
       <Roi />
