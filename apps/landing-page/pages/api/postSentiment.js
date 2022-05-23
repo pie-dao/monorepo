@@ -1,9 +1,11 @@
+import { BACKEND_URL } from './apiConfig';
+
 const postSentiment = async (req, res) => {
   const {
     query: { sentiment },
   } = req;
   const headers = {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
     Bearer: process.env.API_TOKEN,
   };
   const body = JSON.stringify({
@@ -11,14 +13,11 @@ const postSentiment = async (req, res) => {
     timestamp: +new Date(),
   });
   try {
-    const sentimentData = await fetch(
-      `https://piedao-nestjs.herokuapp.com/sentiment`,
-      {
-        method: "POST",
-        headers,
-        body,
-      }
-    );
+    const sentimentData = await fetch(`${BACKEND_URL}/sentiment`, {
+      method: 'POST',
+      headers,
+      body,
+    });
     const sentiment = await sentimentData.json();
     return res.status(200).json({
       data: sentiment.data,
