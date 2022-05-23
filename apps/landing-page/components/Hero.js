@@ -1,10 +1,10 @@
-import { useMemo } from "react";
-import Image from "next/image";
-import pieDaoLogo from "../public/piedao_logo.png";
-import separator from "../public/separator.svg";
-import arrowUp from "../public/arrow_green.svg";
-import content from "../content/en_EN.json";
-import Button from "./Button";
+import { useMemo } from 'react';
+import Image from 'next/image';
+import pieDaoLogo from '../public/piedao_logo.png';
+import separator from '../public/separator.svg';
+import arrowUp from '../public/arrow_green.svg';
+import content from '../content/en_EN.json';
+import Button from './Button';
 
 const Hero = ({ actualPrice }) => {
   const inceptionPerc = useMemo(() => {
@@ -68,7 +68,7 @@ const Hero = ({ actualPrice }) => {
           >
             {content.hero.call_to_action}
           </Button>
-          {inceptionPerc > 0 && (
+          {inceptionPerc && inceptionPerc > 0 && (
             <div className="flex justify-center relative flex-col items-center">
               <div>
                 <Image
