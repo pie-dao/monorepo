@@ -1,21 +1,21 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import ParentSize from "@visx/responsive/lib/components/ParentSize";
-import { Popover } from "@headlessui/react";
-import Loader from "./Loader";
-import useUnderlyingData from "../hooks/useUnderlyingData";
-import popover from "../public/popover_icon.svg";
-import priceFormatter from "../utils/priceFormatter";
-import timeFormat from "../utils/timeFormat";
-import MarketCapChart from "./MarketCapChart";
-import NavChart from "./NavChart";
-import arrowRed from "../public/arrow_red.svg";
-import arrowGreen from "../public/arrow_green.svg";
-import inceptionFire from "../public/inception_fire.png";
-import sentimentHeart from "../public/sentiment_heart.png";
-import SentimentCheck from "./SentimentCheck";
-import { mean } from "d3-array";
-import content from "../content/en_EN.json";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
+import ParentSize from '@visx/responsive/lib/components/ParentSize';
+import { Popover } from '@headlessui/react';
+import Loader from './Loader';
+import useUnderlyingData from '../hooks/useUnderlyingData';
+import popover from '../public/popover_icon.svg';
+import priceFormatter from '../utils/priceFormatter';
+import timeFormat from '../utils/timeFormat';
+import MarketCapChart from './MarketCapChart';
+import NavChart from './NavChart';
+import arrowRed from '../public/arrow_red.svg';
+import arrowGreen from '../public/arrow_green.svg';
+import inceptionFire from '../public/inception_fire.png';
+import sentimentHeart from '../public/sentiment_heart.png';
+import SentimentCheck from './SentimentCheck';
+import { mean } from 'd3-array';
+import content from '../content/en_EN.json';
 
 const getDate = (d) => new Date(d[0]);
 const getNavDate = (d) => d.timestamp;
@@ -34,7 +34,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
 
   const weekAgo = useMemo(
     () => new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-    []
+    [],
   );
   const inceptionPerc = () => (play.market_data.current_price.usd - 1) * 100;
 
@@ -46,7 +46,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
       const days = lastWeek.filter(
         (d) =>
           getDate(d) <= todayCounter &&
-          getDate(d) >= todayCounter - 24 * 60 * 60 * 1000
+          getDate(d) >= todayCounter - 24 * 60 * 60 * 1000,
       );
       const meanPrice = mean(days.map((d) => getPieValue(d)));
       const dayMean = [todayCounter, meanPrice];
@@ -66,7 +66,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
         const days = lastWeek.filter(
           (d) =>
             getNavDate(d) <= todayCounter &&
-            getNavDate(d) >= todayCounter - 24 * 60 * 60 * 1000
+            getNavDate(d) >= todayCounter - 24 * 60 * 60 * 1000,
         );
         const meanPrice = mean(days.map((d) => d.nav));
         const dayMean = [todayCounter, meanPrice];
@@ -75,7 +75,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
       }
       return lastWeekPerDay.reverse();
     },
-    [weekAgo]
+    [weekAgo],
   );
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
       setPremiumPerc(
         ((play.market_data.current_price.usd - underlyingData.history[0].nav) /
           play.market_data.current_price.usd) *
-          100
+          100,
       );
     }
   }, [play.market_data.current_price.usd, underlyingData]);
@@ -147,7 +147,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
                     <>
                       <span className="uppercase text-highlight">
                         {content.subcharts.premium}
-                      </span>{" "}
+                      </span>{' '}
                       <span className="uppercase text-highlight font-bold">
                         {premiumPerc.toFixed(2)}%
                       </span>
@@ -156,7 +156,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
                     <>
                       <span className="uppercase text-highlight">
                         {content.subcharts.discount}
-                      </span>{" "}
+                      </span>{' '}
                       <span className="uppercase text-highlight font-bold">
                         {Math.abs(premiumPerc).toFixed(2)}%
                       </span>
@@ -186,7 +186,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
           {content.subcharts.marketcap}
         </h4>
         <div className="flex flex-col flex-1 border border-deeper_purple rounded-lg py-2 px-4">
-          {isLoading || isError || !lastWeekMeanNav ? (
+          {isLoading || isError || !lastWeekMCap ? (
             <Loader />
           ) : (
             <>
