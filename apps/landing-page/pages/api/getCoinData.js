@@ -1,12 +1,14 @@
+import { BACKEND_URL } from './apiConfig';
+
 const getCoinData = async (address) => {
   const headers = {
-    method: "GET",
-    "Content-Type": "application/json",
+    method: 'GET',
+    'Content-Type': 'application/json',
   };
   try {
     const fetchPieHistory = await fetch(
-      `https://piedao-nestjs.herokuapp.com/pies/coin?address=${address}&limit=1&order=descending`,
-      { headers }
+      `${BACKEND_URL}/pies/coin?address=${address}&limit=1&order=descending`,
+      { headers },
     );
     const coinData = await fetchPieHistory.json();
     return coinData[0];
