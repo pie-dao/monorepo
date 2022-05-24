@@ -1,3 +1,3 @@
 import Layout from './Layout/Layout';
-
-export { Layout };
+import Socials from './Socials/Socials';
+export { Layout, Socials };
