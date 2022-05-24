@@ -1,8 +1,4 @@
-import {
-  logDirectory,
-  loggerFactory,
-  LOG_FILE_NAMES,
-} from './multicall-logging';
+import { logDirectory, loggerFactory, LOG_FILE_NAMES } from './logging';
 import fs from 'fs';
 import { exec } from 'child_process';
 import { promisify } from 'node:util';
