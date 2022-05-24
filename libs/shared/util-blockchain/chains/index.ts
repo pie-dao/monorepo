@@ -12,7 +12,7 @@ const SUPPORTED_CHAINS = {
   OPTIMISM: 11,
   ARBITRUM: 42161,
   GNOSIS: 100,
-};
+} as const;
 
 /**
  * @SUPPORTED_CHAIN_NAMES is the user friendly name of the network defined above
