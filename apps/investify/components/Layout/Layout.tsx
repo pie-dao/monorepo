@@ -10,7 +10,7 @@ export default function Layout({ children }) {
         <div className="flex-1 flex flex-row">
           <div className="flex flex-col flex-1 h-full overflow-y-auto">
             <Header open={open} setOpen={setOpen} />
-            <main className="flex-1 max-h-full p-5">{children}</main>
+            <main className="flex-1 max-h-full px-7">{children}</main>
           </div>
           <Sidebar />
         </div>
