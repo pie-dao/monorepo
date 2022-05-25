@@ -49,21 +49,50 @@ It's possible to pass a global error handler that will override the default hand
 
 ## Under the hood
 
+For details on how ethers works, see the core SDK README.
+
+When fetching data from multiple chains, we have a couple of challenges:
+
+1. The result of a multichain call does not match the return signature of the `provider.call` for the single contract call. (`Promise<string>`, where string is the encoded response data). We need additional metadata to be returned.
+2. It's challenging to return a typesafe representation of an ethers contract, across multiple chains:
+   - The provider and address are readonly properties, so new contracts must be instantiated before calling.
+   - We can't access contract calldata to send to other chains in a callback (at least not easily)
+   - We need to defer execution of the contract until we have built the other calls
+
+The main solution from reviewing ethers involves:
+
+1. Subclass the provider with a new MultichainProvider.
+2. Override and `super()` the `provider.call` method.
+3. Access the current contract, calldata and address, when the provider is called.
+4. Invoke subsequent calls to different providers.
+
+- At this stage we could either:
+  1.  Save the latest calldata against the contract (in a `contract.multicallData`) value
+  2.  Return the calldata in a wrapped result
+
+TBC on whether to wrap the contract with a `withMultichain({ /** options **/ })` method that returns the contract with the multichain provider activated OR to just save the data against multichain prop.
+
 The Multichain sdk wraps the ethers Contract instance, by default, contract calls will still be single chain, such as:
 
 ```ts
-const mcw = new MultiChainWrapper({ /** config **/ });
+const mcw = new MultiChainWrapper({
+  /** config **/
+});
 
 const contract = mcw.create('0x...', abi);
 
 // will return a single value
-contract.getSomeOnChainData()
+contract.getSomeOnChainData();
 ```
 
 Multichain instead allows you to return a multichain call as follows:
 
 ```ts
-contract.withMultichain({ /** overrides **/}).getSomeOnChainData();
+contract
+  .withMultichain({
+    /** overrides **/
+  })
+  .getSomeOnChainData();
 ```
 
 ---
