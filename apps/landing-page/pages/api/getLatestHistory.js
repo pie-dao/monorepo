@@ -1,3 +1,5 @@
+import { BACKEND_URL } from './apiConfig';
+
 const getLatestHistory = async (pie) => {
   const headers = {
     method: 'GET',
@@ -5,7 +7,7 @@ const getLatestHistory = async (pie) => {
   };
   try {
     const fetchPieHistory = await fetch(
-      `https://piedao-nestjs.herokuapp.com/pies/latest-history?address=${pie}`,
+      `${BACKEND_URL}/pies/latest-history?address=${pie}`,
       { headers },
     );
     const pieHistory = await fetchPieHistory.json();

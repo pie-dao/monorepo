@@ -186,7 +186,7 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
           {content.subcharts.marketcap}
         </h4>
         <div className="flex flex-col flex-1 border border-deeper_purple rounded-lg py-2 px-4">
-          {isLoading || isError || !lastWeekMeanNav ? (
+          {isLoading || isError || !lastWeekMCap ? (
             <Loader />
           ) : (
             <>

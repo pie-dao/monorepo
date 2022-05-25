@@ -22,7 +22,6 @@ export async function getServerSideProps({ req, res }) {
   ];
   const playAddress = '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4';
   const play = await getCoinData(playAddress);
-
   const morePies = await Promise.all(
     expoloreMore.map(async (pie) => {
       const pieData = await getLatestHistory(pie);
@@ -36,7 +35,7 @@ export async function getServerSideProps({ req, res }) {
 
   return {
     props: {
-      play: play.coin,
+      play,
       showCookiePolicy,
       morePies,
       sentiment,
@@ -45,23 +44,24 @@ export async function getServerSideProps({ req, res }) {
 }
 
 export default function Home({ play, morePies, sentiment }) {
-  const { market_data } = play;
   return (
     <div className="text-white">
-      <Hero actualPrice={market_data.current_price.usd} />
+      <Hero actualPrice={play?.coin?.market_data?.current_price?.usd} />
       <PlayBar
-        actualPrice={market_data.current_price.usd}
-        priceChange={market_data.price_change_percentage_24h}
+        actualPrice={play?.coin?.market_data?.current_price?.usd}
+        priceChange={play?.coin?.market_data?.price_change_percentage_24h}
       />
       <Metaverse />
       <ScrollingBoxes />
-      <Chart play={play} sentiment={sentiment} />
+      {play && play.coin && sentiment && (
+        <Chart play={play.coin} sentiment={sentiment} />
+      )}
       <UnderlyingTokens />
       <Methodology />
       <Roi />
       <AboutUsTwitter twitterPosts={posts} />
       <Ovens />
-      <ExploreProducts morePies={morePies} />
+      {morePies && <ExploreProducts morePies={morePies} />}
     </div>
   );
 }

@@ -2,13 +2,14 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
-    "shared-helpers": "libs/shared/helpers",
+    "investify": "apps/investify",
+    "investify-e2e": "apps/investify-e2e",
     "landing-page": "apps/landing-page",
+    "sdk-utils-core": "libs/sdk-utils/core",
     "sdk-utils-multicall": "libs/sdk-utils/multicall",
     "sdk-utils-multichain": "libs/sdk-utils/multichain",
     "sdk-utils-state-listener": "libs/sdk-utils/state-listener",
-    "investify": "apps/investify",
-    "investify-e2e": "apps/investify-e2e",
+    "shared-helpers": "libs/shared/helpers",
     "shared-ui-library": "libs/shared/ui-library",
     "shared-util-blockchain": "libs/shared/util-blockchain"
   }

@@ -17,6 +17,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@sdk-utils/core": ["libs/sdk-utils/core/src/index.ts"],
       "@sdk-utils/docs": ["libs/sdk-utils/docs/src/index.ts"],
       "@sdk-utils/multicall": ["libs/sdk-utils/multicall/src/index.ts"],
       "@sdk-utils/multichain": ["libs/sdk-utils/multichain/src/index.ts"],
@@ -25,7 +26,8 @@
       ],
       "@shared/helpers": ["libs/shared/helpers/src/index.ts"],
       "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"],
-      "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"]
+      "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"],
+      "@shared/util-blockchain/abis": ["libs/shared/util-blockchain/abis"]
     },
     "types": ["jest", "node"]
   },

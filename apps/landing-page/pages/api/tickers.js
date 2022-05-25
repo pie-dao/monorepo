@@ -1,3 +1,5 @@
+import { BACKEND_URL } from './apiConfig';
+
 const getPieTickers = async (req, res) => {
   const headers = {
     method: 'GET',
@@ -5,7 +7,7 @@ const getPieTickers = async (req, res) => {
   };
   try {
     const fetchPieHistory = await fetch(
-      `https://piedao-nestjs.herokuapp.com/pies/market_chart?address=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4&days=90`,
+      `${BACKEND_URL}/pies/market_chart?address=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4&days=90`,
       { headers },
     );
     const pieTickers = await fetchPieHistory.json();

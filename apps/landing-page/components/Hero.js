@@ -68,7 +68,7 @@ const Hero = ({ actualPrice }) => {
           >
             {content.hero.call_to_action}
           </Button>
-          {inceptionPerc > 0 && (
+          {inceptionPerc && inceptionPerc > 0 && (
             <div className="flex justify-center relative flex-col items-center">
               <div>
                 <Image

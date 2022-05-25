@@ -1,3 +1,5 @@
+import { BACKEND_URL } from './apiConfig';
+
 const getSentiment = async () => {
   const headers = {
     method: 'GET',
@@ -6,7 +8,7 @@ const getSentiment = async () => {
 
   try {
     const fetchSentiment = await fetch(
-      `https://piedao-nestjs.herokuapp.com/sentiment/report?days=7`,
+      `${BACKEND_URL}/sentiment/report?days=7`,
       { headers },
     );
     const sentiment = await fetchSentiment.json();

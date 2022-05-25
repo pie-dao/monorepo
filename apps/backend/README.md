@@ -40,34 +40,85 @@ script/run backend
 
 > 📙 Note that `script/run` will only work after a `script/build` is performed.
 
-## Deploy the App
 
-This app runs on Heroku, deploy is pretty simple.
+## Heroku Deployment
 
-First you login into heroku:
+> 📘 Note that we already have some deployments on Heroku. If you want to use them
+> you don't need to create your own ones! These are the remotes that we have deployed:
+> staging: `https://git.heroku.com/piedao-backend-stage.git`
+> prod:    `https://git.heroku.com/piedao-nestjs.git`
 
-```bash
-$ heroku login
-```
 
-then you move into the backend folder:
+If you want to deploy an instance to _Heroku_, these are the necessary steps:
 
-```bash
-$ cd apps/backend
-```
+> 📙 Make sure that you call `heroku login` before trying to do this. You'll also need the Heroku CLI installed
 
-once there, you can add the heroku repository:
+First, we create the app on Heroku:
 
 ```bash
-$ git remote add heroku https://git.heroku.com/piedao-nestjs.git
+heroku create <pick-an-app-name> --remote <pick-a-remote-name> # --team if you use teams
 ```
 
-finally, you can simply commit/push on this repo to trigger the build process
+Now you need to add the [multi-procfile buildpack](https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-multi-procfile) to them.
+
+This is because Heroku assumes that you have one app per repo by default, and this enables to have multiple `Procfile`s (deployments) in a repo
 
 ```bash
-$ git commit -am "love piedao"
-$ git push heroku master
+heroku buildpacks:add --app <app-name-you-picked> heroku-community/multi-procfile
 ```
+
+Of course this won't work because Heroku doesn't know about node, so we need to add the node buildpack too:
+
+```bash
+heroku buildpacks:add --app <app-name-you-picked> heroku/nodejs
+```
+
+Then we'll have to tell Heroku where these `Procfile`s are:
+
+```bash
+heroku config:set --app <app-name-you-picked> PROCFILE=apps/backend/Procfile
+```
+
+Then we'll need to add a `heroku-postbuild` script to override the default build behavior of Heroku and let it build the project we need. This goes into the `package.json` in the root folder:
+
+> 📘 We already have this in `package.json`, we include this instruction here so that you know how this works.
+
+```bash
+
+```json
+scripts: {
+  "heroku-postbuild": "script/heroku-build $PROJECT_NAME"
+}
+```
+
+> 📘 A note on the `script` folder: this project follows the [Scripts to Rule them All](https://github.com/github/scripts-to-rule-them-all) guidelines.
+> You'll find scripts for most tasks that you might want to execute there. If you call a script you'll see some documentation too.
+
+Heroku needs to know the value of `$PROJECT_NAME` for each deployment so let's set it:
+
+```bash
+heroku config:set --app <app-name-you-picked> PROJECT_NAME=backend
+```
+
+If you need to set any configuration values (like `MONGO_DB`) you can do it like this:
+
+```bash
+heroku config:set MONGO_DB=<mongo-url> --remote <your-remote>
+```
+
+Finally, we push it to _Heroku_
+
+> 📙 Don't forget to commit your changes before pushing 😅. Also make sure that you're on the fully up-to-date `main` branch.
+
+```bash
+git push <your-remote> main
+```
+
+## Troubleshooting
+
+There are some known issues with the project that are outlined here:
+
+- There is a bandwidth bottleneck between the app and Atlas, so make sure that if you are running queries that return huge payloads (eg: `>1MB`) then please use projections to limit the size of the payload (only query the fields you read).
 
 ## Test
 

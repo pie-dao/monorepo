@@ -34,7 +34,7 @@ const PlayBar = ({ actualPrice, priceChange }) => {
           <p className="text-gradient text-xl md:text-xl leading-none md:leading-none flex">
             {content.navbar.play}{' '}
             <span className="text-white text-sm hidden md:block ml-2">
-              <PriceChange priceChange={priceChange} />
+              {priceChange && <PriceChange priceChange={priceChange} />}
             </span>
           </p>
           <p className="text-white text-[0.75rem] uppercase leading-none md:leading-none hidden md:block">
@@ -44,7 +44,7 @@ const PlayBar = ({ actualPrice, priceChange }) => {
       </div>
       <div className="flex w-auto ml-auto items-center">
         <p className="text-white text-xl md:text-2xl mr-2 md:mr-4">
-          {priceFormat.format(actualPrice)}
+          {actualPrice && priceFormat.format(actualPrice)}
         </p>
         <Button
           className="md:mr-4 px-8"
