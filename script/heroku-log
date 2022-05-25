@@ -1,0 +1,17 @@
+#!/bin/bash
+
+print_usage() {
+    echo "💀 $1"
+    echo "Help below 👇"
+    echo ""
+    echo "Shows the Heroku logs for the given remote"
+    echo ""
+    echo "Usage: ./heroku-log <remote>"
+    exit 1
+}
+
+if [ -z "$1" ]; then
+    print_usage "Remote is missing!"
+fi
+
+heroku logs --remote $1 --tail

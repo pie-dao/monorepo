@@ -4,7 +4,8 @@
   "private": true,
   "license": "GPL-3.0-only",
   "scripts": {
-    "prepare": "npx husky install"
+    "prepare": "npx husky install",
+    "heroku-postbuild": "script/heroku-build $PROJECT_NAME"
   },
   "config": {
     "commitizen": {
