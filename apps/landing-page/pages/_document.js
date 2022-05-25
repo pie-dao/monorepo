@@ -1,5 +1,5 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import { GA_TRACKING_ID } from "../utils/GTM/gtag";
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { GA_TRACKING_ID } from '../utils/GTM/gtag';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {

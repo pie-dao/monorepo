@@ -1,5 +1,5 @@
-import { act, renderHook } from "@testing-library/react-hooks";
-import { useBlock } from "../useBlock";
+import { act, renderHook } from '@testing-library/react-hooks';
+import { useBlock } from '../useBlock';
 
 class MockLibrary {
   constructor(public currentBlock = 100) {}
@@ -19,16 +19,16 @@ class MockLibrary {
 
 const mockLib = new MockLibrary(100) as any;
 
-jest.mock("../useCachedWeb3", () => ({
+jest.mock('../useCachedWeb3', () => ({
   useWeb3Cache: () => ({ chainId: 250 }),
 }));
 
-jest.mock("@web3-react/core", () => ({
+jest.mock('@web3-react/core', () => ({
   useWeb3React: () => ({ library: mockLib }),
 }));
 
-describe("testing fetching blocks", () => {
-  it("gets the current block", async () => {
+describe('testing fetching blocks', () => {
+  it('gets the current block', async () => {
     const expectedBlock = 100;
     let [first, second] = [] as Array<number | null | undefined>;
     await act(async () => {

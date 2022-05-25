@@ -1,7 +1,7 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import Image from "next/image";
-import close from "../public/close.png";
+import { Dialog, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import Image from 'next/image';
+import close from '../public/close.png';
 
 const Modal = ({ isOpen, closeModal, children }) => {
   return (

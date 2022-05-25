@@ -1,4 +1,3 @@
-
 const Layout = ({ children }) => {
   return (
     <div className={`w-full bg-primary flex flex-col h-screen font-sans`}>

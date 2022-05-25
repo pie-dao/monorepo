@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch } from ".";
-import { setAlert, clearAlert } from "../store/app/app.slice";
+import { useEffect, useState } from 'react';
+import { useAppDispatch } from '.';
+import { setAlert, clearAlert } from '../store/app/app.slice';
 import {
   chainMap,
   isChainSupported,
   NetworkDetail,
   SUPPORTED_CHAIN_ID,
   supportedChains,
-} from "../utils/networks";
-import { useWeb3Cache } from "./useCachedWeb3";
+} from '../utils/networks';
+import { useWeb3Cache } from './useCachedWeb3';
 
 export const useChainHandler = (): NetworkDetail | undefined => {
   const { chainId } = useWeb3Cache();
@@ -24,9 +24,9 @@ export const useChainHandler = (): NetworkDetail | undefined => {
       dispatch(
         setAlert({
           message: `You are currently connected to an unsupported chain, supported chains are: ${supportedChains}`,
-          type: "ERROR",
-          action: "SWITCH_NETWORK",
-        })
+          type: 'ERROR',
+          action: 'SWITCH_NETWORK',
+        }),
       );
     }
   }, [chainId, dispatch]);

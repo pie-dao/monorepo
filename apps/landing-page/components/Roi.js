@@ -1,10 +1,10 @@
-import Button from "./Button";
-import Image from "next/image";
-import sushiswapLogo from "../public/sushiswap_logo.png";
-import oneInch from "../public/1inch.png";
-import uniswap from "../public/uniswap.png";
-import roiPlaceholder from "../public/roi_placeholder.png";
-import content from "../content/en_EN.json";
+import Button from './Button';
+import Image from 'next/image';
+import sushiswapLogo from '../public/sushiswap_logo.png';
+import oneInch from '../public/1inch.png';
+import uniswap from '../public/uniswap.png';
+import roiPlaceholder from '../public/roi_placeholder.png';
+import content from '../content/en_EN.json';
 
 const Roi = ({}) => {
   return (

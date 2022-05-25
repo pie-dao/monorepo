@@ -1,4 +1,4 @@
 export interface AccountVeBalance {
-    id: string;
-    accountVeTokenBalance: string;
+  id: string;
+  accountVeTokenBalance: string;
 }

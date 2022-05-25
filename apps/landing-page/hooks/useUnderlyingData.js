@@ -1,5 +1,5 @@
-import useSWR from "swr";
-import fetcher from "../utils/fetcher";
+import useSWR from 'swr';
+import fetcher from '../utils/fetcher';
 
 function useUnderlyingData() {
   const { data, error } = useSWR(`/api/history`, fetcher);

@@ -16,38 +16,38 @@ import React, {
   MutableRefObject,
   Ref,
   useEffect,
-} from "react";
+} from 'react';
 
-import { useDisposables } from "../hooks/use-disposables";
-import { useId } from "../hooks/use-id";
-import { useIsoMorphicEffect } from "../hooks/use-iso-morphic-effect";
-import { useComputed } from "../hooks/use-computed";
-import { useSyncRefs } from "../hooks/use-sync-refs";
-import { Props, NetworkDetail, ProviderRpcError } from "../types/types";
+import { useDisposables } from '../hooks/use-disposables';
+import { useId } from '../hooks/use-id';
+import { useIsoMorphicEffect } from '../hooks/use-iso-morphic-effect';
+import { useComputed } from '../hooks/use-computed';
+import { useSyncRefs } from '../hooks/use-sync-refs';
+import { Props, NetworkDetail, ProviderRpcError } from '../types/types';
 import {
   Features,
   forwardRefWithAs,
   PropsForFeatures,
   render,
   compact,
-} from "../utils/render";
-import { match } from "../utils/match";
-import { disposables } from "../utils/disposables";
-import { Keys } from "../utils/keyboard";
-import { Focus, calculateActiveIndex } from "../utils/calculate-active-index";
-import { isDisabledReactIssue7711 } from "../utils/bugs";
+} from '../utils/render';
+import { match } from '../utils/match';
+import { disposables } from '../utils/disposables';
+import { Keys } from '../utils/keyboard';
+import { Focus, calculateActiveIndex } from '../utils/calculate-active-index';
+import { isDisabledReactIssue7711 } from '../utils/bugs';
 import {
   isFocusableElement,
   FocusableMode,
   sortByDomNode,
-} from "../utils/focus-management";
-import { useOpenClosed, State, OpenClosedProvider } from "../utils/open-closed";
-import { useResolveButtonType } from "../hooks/use-resolve-button-type";
-import { useOutsideClick } from "../hooks/use-outside-click";
-import { VisuallyHidden } from "../internal/visually-hidden";
-import { objectToFormEntries } from "../utils/form";
-import { getOwnerDocument } from "../utils/owner";
-import { changeNetwork, addNetwork } from "../utils/network";
+} from '../utils/focus-management';
+import { useOpenClosed, State, OpenClosedProvider } from '../utils/open-closed';
+import { useResolveButtonType } from '../hooks/use-resolve-button-type';
+import { useOutsideClick } from '../hooks/use-outside-click';
+import { VisuallyHidden } from '../internal/visually-hidden';
+import { objectToFormEntries } from '../utils/form';
+import { getOwnerDocument } from '../utils/owner';
+import { changeNetwork, addNetwork } from '../utils/network';
 
 enum NetworkSwitcherStates {
   Open,
@@ -98,8 +98,8 @@ enum ActionTypes {
 function adjustOrderedState(
   state: StateDefinition,
   adjustment: (
-    options: StateDefinition["options"]
-  ) => StateDefinition["options"] = (i) => i
+    options: StateDefinition['options'],
+  ) => StateDefinition['options'] = (i) => i,
 ) {
   let currentActiveOption =
     state.activeOptionIndex !== null
@@ -108,7 +108,7 @@ function adjustOrderedState(
 
   let sortedOptions = sortByDomNode(
     adjustment(state.options.slice()),
-    (option) => option.dataRef.current.domRef.current
+    (option) => option.dataRef.current.domRef.current,
   );
 
   // If we inserted an option before the current active option then the active option index
@@ -153,7 +153,7 @@ type Actions =
 let reducers: {
   [P in ActionTypes]: (
     state: StateDefinition,
-    action: Extract<Actions, { type: P }>
+    action: Extract<Actions, { type: P }>,
   ) => StateDefinition;
 } = {
   [ActionTypes.CloseNetworkSwitcher](state) {
@@ -218,15 +218,16 @@ let reducers: {
   },
 };
 
-let NetworkSwitcherContext =
-  createContext<[StateDefinition, Dispatch<Actions>] | null>(null);
-NetworkSwitcherContext.displayName = "NetworkSwitcherContext";
+let NetworkSwitcherContext = createContext<
+  [StateDefinition, Dispatch<Actions>] | null
+>(null);
+NetworkSwitcherContext.displayName = 'NetworkSwitcherContext';
 
 function useNetworkSwitcherContext(component: string) {
   let context = useContext(NetworkSwitcherContext);
   if (context === null) {
     let err = new Error(
-      `<${component} /> is missing a parent <NetworkSwitcher /> component.`
+      `<${component} /> is missing a parent <NetworkSwitcher /> component.`,
     );
     if (Error.captureStackTrace)
       Error.captureStackTrace(err, useNetworkSwitcherContext);
@@ -248,19 +249,19 @@ interface NetworkSwitcherRenderPropArg {
 }
 
 let NetworkSwitcherRoot = forwardRefWithAs(function NetworkSwitcher<
-  TTag extends ElementType = typeof DEFAULT_NETWORKSWITCHER_TAG
+  TTag extends ElementType = typeof DEFAULT_NETWORKSWITCHER_TAG,
 >(
   props: Props<
     TTag,
     NetworkSwitcherRenderPropArg,
-    "value" | "disabled" | "name" | "onChange"
+    'value' | 'disabled' | 'name' | 'onChange'
   > & {
     value: NetworkDetail | null | undefined;
     onChange(value: NetworkDetail): void;
     disabled?: boolean;
     name?: string;
   },
-  ref: Ref<TTag>
+  ref: Ref<TTag>,
 ) {
   let { value, name, onChange, disabled = false, ...passThroughProps } = props;
   let networkSwitcherRef = useSyncRefs(ref);
@@ -284,7 +285,7 @@ let NetworkSwitcherRoot = forwardRefWithAs(function NetworkSwitcher<
   }, [value, propsRef]);
   useIsoMorphicEffect(
     () => dispatch({ type: ActionTypes.SetDisabled, disabled }),
-    [disabled]
+    [disabled],
   );
 
   // Handle outside click
@@ -304,14 +305,14 @@ let NetworkSwitcherRoot = forwardRefWithAs(function NetworkSwitcher<
       open: networkSwitcherState === NetworkSwitcherStates.Open,
       disabled,
     }),
-    [networkSwitcherState, disabled]
+    [networkSwitcherState, disabled],
   );
 
   let renderConfiguration = {
     props: { ref: networkSwitcherRef, ...passThroughProps },
     slot,
     defaultTag: DEFAULT_NETWORKSWITCHER_TAG,
-    name: "NetworkSwitcher",
+    name: 'NetworkSwitcher',
   };
 
   return (
@@ -328,8 +329,8 @@ let NetworkSwitcherRoot = forwardRefWithAs(function NetworkSwitcher<
               <VisuallyHidden
                 {...compact({
                   key: name,
-                  as: "input",
-                  type: "hidden",
+                  as: 'input',
+                  type: 'hidden',
                   hidden: true,
                   readOnly: true,
                   name,
@@ -349,29 +350,29 @@ let NetworkSwitcherRoot = forwardRefWithAs(function NetworkSwitcher<
 
 // ---
 
-let DEFAULT_BUTTON_TAG = "button" as const;
+let DEFAULT_BUTTON_TAG = 'button' as const;
 interface ButtonRenderPropArg {
   open: boolean;
   disabled: boolean;
 }
 type ButtonPropsWeControl =
-  | "id"
-  | "type"
-  | "aria-haspopup"
-  | "aria-controls"
-  | "aria-expanded"
-  | "aria-labelledby"
-  | "disabled"
-  | "onKeyDown"
-  | "onClick";
+  | 'id'
+  | 'type'
+  | 'aria-haspopup'
+  | 'aria-controls'
+  | 'aria-expanded'
+  | 'aria-labelledby'
+  | 'disabled'
+  | 'onKeyDown'
+  | 'onClick';
 
 let Button = forwardRefWithAs(function Button<
-  TTag extends ElementType = typeof DEFAULT_BUTTON_TAG
+  TTag extends ElementType = typeof DEFAULT_BUTTON_TAG,
 >(
   props: Props<TTag, ButtonRenderPropArg, ButtonPropsWeControl>,
-  ref: Ref<HTMLButtonElement>
+  ref: Ref<HTMLButtonElement>,
 ) {
-  let [state, dispatch] = useNetworkSwitcherContext("NetworkSwitcher.Button");
+  let [state, dispatch] = useNetworkSwitcherContext('NetworkSwitcher.Button');
   let buttonRef = useSyncRefs(state.buttonRef, ref);
 
   let id = `networkSwitcher-button-${useId()}`;
@@ -403,7 +404,7 @@ let Button = forwardRefWithAs(function Button<
           break;
       }
     },
-    [dispatch, state, d]
+    [dispatch, state, d],
   );
 
   let handleKeyUp = useCallback(
@@ -417,7 +418,7 @@ let Button = forwardRefWithAs(function Button<
           break;
       }
     },
-    []
+    [],
   );
 
   let handleClick = useCallback(
@@ -427,19 +428,19 @@ let Button = forwardRefWithAs(function Button<
       if (state.networkSwitcherState === NetworkSwitcherStates.Open) {
         dispatch({ type: ActionTypes.CloseNetworkSwitcher });
         d.nextFrame(() =>
-          state.buttonRef.current?.focus({ preventScroll: true })
+          state.buttonRef.current?.focus({ preventScroll: true }),
         );
       } else {
         event.preventDefault();
         dispatch({ type: ActionTypes.OpenNetworkSwitcher });
       }
     },
-    [dispatch, d, state]
+    [dispatch, d, state],
   );
 
   let labelledby = useComputed(() => {
     if (!state.labelRef.current) return undefined;
-    return [state.labelRef.current.id, id].join(" ");
+    return [state.labelRef.current.id, id].join(' ');
   }, [state.labelRef.current, id]);
 
   let slot = useMemo<ButtonRenderPropArg>(
@@ -447,19 +448,19 @@ let Button = forwardRefWithAs(function Button<
       open: state.networkSwitcherState === NetworkSwitcherStates.Open,
       disabled: state.disabled,
     }),
-    [state]
+    [state],
   );
   let passthroughProps = props;
   let propsWeControl = {
     ref: buttonRef,
     id,
     type: useResolveButtonType(props, state.buttonRef),
-    "aria-haspopup": true,
-    "aria-controls": state.optionsRef.current?.id,
-    "aria-expanded": state.disabled
+    'aria-haspopup': true,
+    'aria-controls': state.optionsRef.current?.id,
+    'aria-expanded': state.disabled
       ? undefined
       : state.networkSwitcherState === NetworkSwitcherStates.Open,
-    "aria-labelledby": labelledby,
+    'aria-labelledby': labelledby,
     disabled: state.disabled,
     onKeyDown: handleKeyDown,
     onKeyUp: handleKeyUp,
@@ -470,32 +471,32 @@ let Button = forwardRefWithAs(function Button<
     props: { ...passthroughProps, ...propsWeControl },
     slot,
     defaultTag: DEFAULT_BUTTON_TAG,
-    name: "NetworkSwitcher.Button",
+    name: 'NetworkSwitcher.Button',
   });
 });
 
 // ---
 
-let DEFAULT_LABEL_TAG = "label" as const;
+let DEFAULT_LABEL_TAG = 'label' as const;
 interface LabelRenderPropArg {
   open: boolean;
   disabled: boolean;
 }
-type LabelPropsWeControl = "id" | "ref" | "onClick" | "onChange";
+type LabelPropsWeControl = 'id' | 'ref' | 'onClick' | 'onChange';
 
 let Label = forwardRefWithAs(function Label<
-  TTag extends ElementType = typeof DEFAULT_LABEL_TAG
+  TTag extends ElementType = typeof DEFAULT_LABEL_TAG,
 >(
   props: Props<TTag, LabelRenderPropArg, LabelPropsWeControl>,
-  ref: Ref<HTMLElement>
+  ref: Ref<HTMLElement>,
 ) {
-  let [state] = useNetworkSwitcherContext("NetworkSwitcher.Label");
+  let [state] = useNetworkSwitcherContext('NetworkSwitcher.Label');
   let id = `networkSwitcher-label-${useId()}`;
   let labelRef = useSyncRefs(state.labelRef, ref);
 
   let handleClick = useCallback(
     () => state.buttonRef.current?.focus({ preventScroll: true }),
-    [state.buttonRef]
+    [state.buttonRef],
   );
 
   let slot = useMemo<LabelRenderPropArg>(
@@ -503,7 +504,7 @@ let Label = forwardRefWithAs(function Label<
       open: state.networkSwitcherState === NetworkSwitcherStates.Open,
       disabled: state.disabled,
     }),
-    [state]
+    [state],
   );
   let propsWeControl = {
     ref: labelRef,
@@ -515,34 +516,34 @@ let Label = forwardRefWithAs(function Label<
     props: { ...props, ...propsWeControl },
     slot,
     defaultTag: DEFAULT_LABEL_TAG,
-    name: "NetworkSwitcher.Label",
+    name: 'NetworkSwitcher.Label',
   });
 });
 
 // ---
 
-let DEFAULT_OPTIONS_TAG = "ul" as const;
+let DEFAULT_OPTIONS_TAG = 'ul' as const;
 interface OptionsRenderPropArg {
   open: boolean;
 }
 type OptionsPropsWeControl =
-  | "aria-activedescendant"
-  | "aria-labelledby"
-  | "id"
-  | "onKeyDown"
-  | "role"
-  | "tabIndex";
+  | 'aria-activedescendant'
+  | 'aria-labelledby'
+  | 'id'
+  | 'onKeyDown'
+  | 'role'
+  | 'tabIndex';
 
 let OptionsRenderFeatures = Features.RenderStrategy | Features.Static;
 
 let Options = forwardRefWithAs(function Options<
-  TTag extends ElementType = typeof DEFAULT_OPTIONS_TAG
+  TTag extends ElementType = typeof DEFAULT_OPTIONS_TAG,
 >(
   props: Props<TTag, OptionsRenderPropArg, OptionsPropsWeControl> &
     PropsForFeatures<typeof OptionsRenderFeatures>,
-  ref: Ref<HTMLElement>
+  ref: Ref<HTMLElement>,
 ) {
-  let [state, dispatch] = useNetworkSwitcherContext("NetworkSwitcher.Options");
+  let [state, dispatch] = useNetworkSwitcherContext('NetworkSwitcher.Options');
   let optionsRef = useSyncRefs(state.optionsRef, ref);
 
   let id = `networkSwitcher-options-${useId()}`;
@@ -600,7 +601,7 @@ let Options = forwardRefWithAs(function Options<
             }
           }
           disposables().nextFrame(() =>
-            state.buttonRef.current?.focus({ preventScroll: true })
+            state.buttonRef.current?.focus({ preventScroll: true }),
           );
           break;
 
@@ -634,7 +635,7 @@ let Options = forwardRefWithAs(function Options<
           event.stopPropagation();
           dispatch({ type: ActionTypes.CloseNetworkSwitcher });
           return d.nextFrame(() =>
-            state.buttonRef.current?.focus({ preventScroll: true })
+            state.buttonRef.current?.focus({ preventScroll: true }),
           );
 
         case Keys.Tab:
@@ -646,27 +647,27 @@ let Options = forwardRefWithAs(function Options<
           break;
       }
     },
-    [d, dispatch, searchDisposables, state]
+    [d, dispatch, searchDisposables, state],
   );
 
   let labelledby = useComputed(
     () => state.labelRef.current?.id ?? state.buttonRef.current?.id,
-    [state.labelRef.current, state.buttonRef.current]
+    [state.labelRef.current, state.buttonRef.current],
   );
 
   let slot = useMemo<OptionsRenderPropArg>(
     () => ({ open: state.networkSwitcherState === NetworkSwitcherStates.Open }),
-    [state]
+    [state],
   );
   let propsWeControl = {
-    "aria-activedescendant":
+    'aria-activedescendant':
       state.activeOptionIndex === null
         ? undefined
         : state.options[state.activeOptionIndex]?.id,
-    "aria-labelledby": labelledby,
+    'aria-labelledby': labelledby,
     id,
     onKeyDown: handleKeyDown,
-    role: "networkSwitcher",
+    role: 'networkSwitcher',
     tabIndex: 0,
     ref: optionsRef,
   };
@@ -678,46 +679,46 @@ let Options = forwardRefWithAs(function Options<
     defaultTag: DEFAULT_OPTIONS_TAG,
     features: OptionsRenderFeatures,
     visible,
-    name: "NetworkSwitcher.Options",
+    name: 'NetworkSwitcher.Options',
   });
 });
 
 // ---
 
-let DEFAULT_OPTION_TAG = "li" as const;
+let DEFAULT_OPTION_TAG = 'li' as const;
 interface OptionRenderPropArg {
   active: boolean;
   selected: boolean;
   disabled: boolean;
 }
 type NetworkSwitcherOptionPropsWeControl =
-  | "id"
-  | "role"
-  | "tabIndex"
-  | "aria-disabled"
-  | "aria-selected"
-  | "onPointerLeave"
-  | "onMouseLeave"
-  | "onPointerMove"
-  | "onMouseMove"
-  | "onFocus"
-  | "onChange";
+  | 'id'
+  | 'role'
+  | 'tabIndex'
+  | 'aria-disabled'
+  | 'aria-selected'
+  | 'onPointerLeave'
+  | 'onMouseLeave'
+  | 'onPointerMove'
+  | 'onMouseMove'
+  | 'onFocus'
+  | 'onChange';
 
 let Option = forwardRefWithAs(function Option<
-  TTag extends ElementType = typeof DEFAULT_OPTION_TAG
+  TTag extends ElementType = typeof DEFAULT_OPTION_TAG,
 >(
   props: Props<
     TTag,
     OptionRenderPropArg,
-    NetworkSwitcherOptionPropsWeControl | "value"
+    NetworkSwitcherOptionPropsWeControl | 'value'
   > & {
     disabled?: boolean;
     value: NetworkDetail;
   },
-  ref: Ref<HTMLElement>
+  ref: Ref<HTMLElement>,
 ) {
   let { disabled = false, value, ...passthroughProps } = props;
-  let [state, dispatch] = useNetworkSwitcherContext("NetworkSwitcher.Option");
+  let [state, dispatch] = useNetworkSwitcherContext('NetworkSwitcher.Option');
   let id = `networkSwitcher-option-${useId()}`;
   let active =
     state.activeOptionIndex !== null
@@ -733,7 +734,7 @@ let Option = forwardRefWithAs(function Option<
     if (state.activationTrigger === ActivationTrigger.Pointer) return;
     let d = disposables();
     d.requestAnimationFrame(() => {
-      internalOptionRef.current?.scrollIntoView?.({ block: "nearest" });
+      internalOptionRef.current?.scrollIntoView?.({ block: 'nearest' });
     });
     return d.dispose;
   }, [
@@ -744,7 +745,7 @@ let Option = forwardRefWithAs(function Option<
     /* We also want to trigger this when the position of the active item changes so that we can re-trigger the scrollIntoView */ state.activeOptionIndex,
   ]);
 
-  let bag = useRef<NetworkSwitcherOptionDataRef["current"]>({
+  let bag = useRef<NetworkSwitcherOptionDataRef['current']>({
     disabled,
     value,
     domRef: internalOptionRef,
@@ -799,10 +800,10 @@ let Option = forwardRefWithAs(function Option<
       select();
       dispatch({ type: ActionTypes.CloseNetworkSwitcher });
       disposables().nextFrame(() =>
-        state.buttonRef.current?.focus({ preventScroll: true })
+        state.buttonRef.current?.focus({ preventScroll: true }),
       );
     },
-    [dispatch, state.buttonRef, disabled, select]
+    [dispatch, state.buttonRef, disabled, select],
   );
 
   let handleFocus = useCallback(() => {
@@ -830,15 +831,15 @@ let Option = forwardRefWithAs(function Option<
 
   let slot = useMemo<OptionRenderPropArg>(
     () => ({ active, selected, disabled }),
-    [active, selected, disabled]
+    [active, selected, disabled],
   );
   let propsWeControl = {
     id,
     ref: optionRef,
-    role: "option",
+    role: 'option',
     tabIndex: disabled === true ? undefined : -1,
-    "aria-disabled": disabled === true ? true : undefined,
-    "aria-selected": selected === true ? true : undefined,
+    'aria-disabled': disabled === true ? true : undefined,
+    'aria-selected': selected === true ? true : undefined,
     disabled: undefined, // Never forward the `disabled` prop
     onClick: handleClick,
     onFocus: handleFocus,
@@ -853,7 +854,7 @@ let Option = forwardRefWithAs(function Option<
     props: { ...passthroughProps, ...propsWeControl },
     slot,
     defaultTag: DEFAULT_OPTION_TAG,
-    name: "NetworkSwitcher.Option",
+    name: 'NetworkSwitcher.Option',
   });
 });
 

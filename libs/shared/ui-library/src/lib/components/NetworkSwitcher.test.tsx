@@ -1,14 +1,14 @@
-import React, { createElement } from "react";
-import { setImmediate, clearImmediate } from "timers";
-import { render } from "@testing-library/react";
-import { generateTestingUtils } from "eth-testing";
-import { NetworkSwitcher } from "./NetworkSwitcher";
-import { chainMap } from "../utils/network";
-import { suppressConsoleLogs } from "../test-utils/suppress-console-logs";
+import React, { createElement } from 'react';
+import { setImmediate, clearImmediate } from 'timers';
+import { render } from '@testing-library/react';
+import { generateTestingUtils } from 'eth-testing';
+import { NetworkSwitcher } from './NetworkSwitcher';
+import { chainMap } from '../utils/network';
+import { suppressConsoleLogs } from '../test-utils/suppress-console-logs';
 
-jest.mock("../hooks/use-id");
+jest.mock('../hooks/use-id');
 
-const metaMaskTestingUtils = generateTestingUtils({ providerType: "MetaMask" });
+const metaMaskTestingUtils = generateTestingUtils({ providerType: 'MetaMask' });
 
 let originalEth: unknown;
 
@@ -18,33 +18,33 @@ beforeAll(() => {
   window.ethereum = metaMaskTestingUtils.getProvider();
 
   jest
-    .spyOn(window, "requestAnimationFrame")
+    .spyOn(window, 'requestAnimationFrame')
     .mockImplementation(setImmediate as any);
   jest
-    .spyOn(window, "cancelAnimationFrame")
+    .spyOn(window, 'cancelAnimationFrame')
     .mockImplementation(clearImmediate as any);
 });
 
 afterAll(() => jest.restoreAllMocks());
 
-describe("safeguards", () => {
+describe('safeguards', () => {
   it.each([
-    ["NetworkSwitcher.Button", NetworkSwitcher.Button],
-    ["NetworkSwitcher.Label", NetworkSwitcher.Label],
-    ["NetworkSwitcher.Options", NetworkSwitcher.Options],
-    ["NetworkSwitcher.Option", NetworkSwitcher.Option],
+    ['NetworkSwitcher.Button', NetworkSwitcher.Button],
+    ['NetworkSwitcher.Label', NetworkSwitcher.Label],
+    ['NetworkSwitcher.Options', NetworkSwitcher.Options],
+    ['NetworkSwitcher.Option', NetworkSwitcher.Option],
   ])(
-    "should error when we are using a <%s /> without a parent <NetworkSwitcher />",
+    'should error when we are using a <%s /> without a parent <NetworkSwitcher />',
     suppressConsoleLogs((name, Component) => {
       // @ts-expect-error This is fine
       expect(() => render(createElement(Component))).toThrowError(
-        `<${name} /> is missing a parent <NetworkSwitcher /> component.`
+        `<${name} /> is missing a parent <NetworkSwitcher /> component.`,
       );
-    })
+    }),
   );
 
   it(
-    "should be possible to render a Listbox without crashing",
+    'should be possible to render a Listbox without crashing',
     suppressConsoleLogs(async () => {
       render(
         <NetworkSwitcher value={undefined} onChange={console.log}>
@@ -60,16 +60,16 @@ describe("safeguards", () => {
               Option C
             </NetworkSwitcher.Option>
           </NetworkSwitcher.Options>
-        </NetworkSwitcher>
+        </NetworkSwitcher>,
       );
-    })
+    }),
   );
 });
 
-describe("Rendering", () => {
-  describe("NetworkSwitcher", () => {
+describe('Rendering', () => {
+  describe('NetworkSwitcher', () => {
     it(
-      "should be possible to render a Listbox using a render prop",
+      'should be possible to render a Listbox using a render prop',
       suppressConsoleLogs(async () => {
         render(
           <NetworkSwitcher value={undefined} onChange={console.log}>
@@ -91,9 +91,9 @@ describe("Rendering", () => {
                 )}
               </>
             )}
-          </NetworkSwitcher>
+          </NetworkSwitcher>,
         );
-      })
+      }),
     );
   });
 });

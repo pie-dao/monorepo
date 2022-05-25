@@ -1,6 +1,6 @@
-import Image from "next/image";
-import arrowIconGreen from "../public/arrow_icon_green.svg";
-import arrowIconRed from "../public/arrow_icon_red.svg";
+import Image from 'next/image';
+import arrowIconGreen from '../public/arrow_icon_green.svg';
+import arrowIconRed from '../public/arrow_icon_red.svg';
 
 const PriceChange = ({ priceChange }) => {
   const priceChangeUsd = priceChange.toFixed(2);

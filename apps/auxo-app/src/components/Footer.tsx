@@ -1,8 +1,8 @@
-import { useBlock } from "../hooks/useBlock";
-import { AUXO_HELP_URL } from "../utils";
-import ExternalUrl from "./UI/url";
+import { useBlock } from '../hooks/useBlock';
+import { AUXO_HELP_URL } from '../utils';
+import ExternalUrl from './UI/url';
 
-const logo = process.env.PUBLIC_URL + "/piedaologo.png";
+const logo = process.env.PUBLIC_URL + '/piedaologo.png';
 
 const Footer = () => {
   const {

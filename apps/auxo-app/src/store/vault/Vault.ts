@@ -1,4 +1,4 @@
-import { ChainMap, SUPPORTED_CHAINS } from "../../utils/networks";
+import { ChainMap, SUPPORTED_CHAINS } from '../../utils/networks';
 
 /**
  * Initialise a vault with basic information
@@ -91,6 +91,6 @@ export interface VaultState {
   isLoading: boolean;
 }
 
-export type VaultSpecifics = Omit<Vault, "network">;
-export type VaultOnChainData = Pick<Vault, "address" | "stats" | "token">;
-export type UserBalanceOnChainData = Pick<Vault, "address" | "userBalances">;
+export type VaultSpecifics = Omit<Vault, 'network'>;
+export type VaultOnChainData = Pick<Vault, 'address' | 'stats' | 'token'>;
+export type UserBalanceOnChainData = Pick<Vault, 'address' | 'userBalances'>;

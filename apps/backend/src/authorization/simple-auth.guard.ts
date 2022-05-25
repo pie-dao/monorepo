@@ -6,9 +6,7 @@ import { Observable } from 'rxjs';
 export class SimpleAuthGuard implements CanActivate {
   private BEARER: string;
 
-  constructor(
-    private configService: ConfigService
-  ) {
+  constructor(private configService: ConfigService) {
     this.BEARER = this.configService.get('BEARER');
   }
 
@@ -17,10 +15,10 @@ export class SimpleAuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const headerFieldValue = request.headerField;
-    let bearerIndex = request.rawHeaders.findIndex(x => x == 'Bearer');
+    let bearerIndex = request.rawHeaders.findIndex((x) => x == 'Bearer');
     let bearer = request.rawHeaders[bearerIndex + 1];
-    
-    if(bearer == this.BEARER) {
+
+    if (bearer == this.BEARER) {
       return true;
     } else {
       return false;

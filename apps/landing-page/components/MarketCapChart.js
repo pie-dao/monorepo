@@ -1,16 +1,16 @@
-import { useMemo, useRef, useState } from "react";
-import { Bar } from "@visx/shape";
-import { scaleBand, scaleLinear } from "@visx/scale";
-import { Group } from "@visx/group";
-import { timeFormat } from "d3-time-format";
-import { max } from "d3-array";
+import { useMemo, useRef, useState } from 'react';
+import { Bar } from '@visx/shape';
+import { scaleBand, scaleLinear } from '@visx/scale';
+import { Group } from '@visx/group';
+import { timeFormat } from 'd3-time-format';
+import { max } from 'd3-array';
 
-const barColor = "#412D87";
-const barColorHighlight = "#d7099c";
+const barColor = '#412D87';
+const barColorHighlight = '#d7099c';
 
 const getMcapValue = (d) => d[1];
 const getDate = (d) => new Date(d[0]);
-const formatDate = timeFormat("%d/%m/%Y");
+const formatDate = timeFormat('%d/%m/%Y');
 
 const MarketCapChart = ({
   width,
@@ -25,7 +25,7 @@ const MarketCapChart = ({
   const today = useMemo(() => new Date(), []);
   const weekAgo = useMemo(
     () => new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
-    [today]
+    [today],
   );
 
   const chartData = useMemo(() => {
@@ -39,7 +39,7 @@ const MarketCapChart = ({
         domain: chartData.map(getDate),
         padding: 0.2,
       }),
-    [width, chartData]
+    [width, chartData],
   );
   const yScale = useMemo(
     () =>
@@ -48,12 +48,12 @@ const MarketCapChart = ({
         domain: [0, max(chartData, getMcapValue)],
         nice: true,
       }),
-    [height, chartData]
+    [height, chartData],
   );
 
   const handleMouseMove = (e, d) => {
     if (!svgRef.current) return;
-    setActiveElement(Number(e.target.getAttribute("x")));
+    setActiveElement(Number(e.target.getAttribute('x')));
     setMcapPrice(getMcapValue(d));
     setMcapDate(formatDate(getDate(d)));
   };

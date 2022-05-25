@@ -4,17 +4,17 @@ import React, {
 
   // Types
   ReactNode,
-} from 'react'
+} from 'react';
 
-let ForcePortalRootContext = createContext(false)
+let ForcePortalRootContext = createContext(false);
 
 export function usePortalRoot() {
-  return useContext(ForcePortalRootContext)
+  return useContext(ForcePortalRootContext);
 }
 
 interface ForcePortalRootProps {
-  force: boolean
-  children: ReactNode
+  force: boolean;
+  children: ReactNode;
 }
 
 export function ForcePortalRoot(props: ForcePortalRootProps) {
@@ -22,5 +22,5 @@ export function ForcePortalRoot(props: ForcePortalRootProps) {
     <ForcePortalRootContext.Provider value={props.force}>
       {props.children}
     </ForcePortalRootContext.Provider>
-  )
+  );
 }

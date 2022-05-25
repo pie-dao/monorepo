@@ -1,11 +1,11 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react';
 
 export function useLatestValue<T>(value: T) {
-  let cache = useRef(value)
+  let cache = useRef(value);
 
   useEffect(() => {
-    cache.current = value
-  }, [value])
+    cache.current = value;
+  }, [value]);
 
-  return cache
+  return cache;
 }

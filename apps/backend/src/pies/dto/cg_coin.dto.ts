@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsObject } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsArray, IsObject } from 'class-validator';
 
 export class CgCoinDTO {
   @ApiProperty()
@@ -8,5 +8,5 @@ export class CgCoinDTO {
 
   @ApiProperty()
   @IsObject()
-  coin: object; 
+  coin: object;
 }

@@ -1,10 +1,10 @@
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-import TwitterCard from "../components/TwitterCard";
-import content from "../content/en_EN.json";
-import leftArrow from "../public/left_arrow.png";
-import rightArrow from "../public/right_arrow.png";
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
+import TwitterCard from '../components/TwitterCard';
+import content from '../content/en_EN.json';
+import leftArrow from '../public/left_arrow.png';
+import rightArrow from '../public/right_arrow.png';
 
 const AboutUsTwitter = ({ twitterPosts }) => {
   return (
@@ -26,11 +26,11 @@ const AboutUsTwitter = ({ twitterPosts }) => {
           spaceBetween={30}
           speed={1000}
           centeredSlides
-          slidesPerView={"auto"}
+          slidesPerView={'auto'}
           modules={[Navigation]}
           navigation={{
-            nextEl: ".swiper-arrow-right-custom",
-            prevEl: ".swiper-arrow-left-custom",
+            nextEl: '.swiper-arrow-right-custom',
+            prevEl: '.swiper-arrow-left-custom',
           }}
         >
           {twitterPosts.map((box) => {

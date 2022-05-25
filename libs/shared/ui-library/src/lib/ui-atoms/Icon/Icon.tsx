@@ -1,11 +1,11 @@
-import React, { FunctionComponent } from "react";
-import { classNames } from "../../utils/class-names";
-import { icons } from "../../shared/icons";
+import React, { FunctionComponent } from 'react';
+import { classNames } from '../../utils/class-names';
+import { icons } from '../../shared/icons';
 
 const Icon: FunctionComponent<Props> = ({
   icon,
-  width = "20px",
-  height = "20px",
+  width = '20px',
+  height = '20px',
   className,
   ...props
 }: Props) => {
@@ -16,8 +16,8 @@ const Icon: FunctionComponent<Props> = ({
       width={width}
       height={height}
       className={classNames(
-        "inline-block transform-gpu	align-middle fill-current",
-        className
+        'inline-block transform-gpu	align-middle fill-current',
+        className,
       )}
       {...props}
     >

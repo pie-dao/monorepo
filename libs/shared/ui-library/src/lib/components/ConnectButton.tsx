@@ -1,19 +1,19 @@
-import React, { FunctionComponent, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { useWeb3React } from "@web3-react/core";
-import { Connect } from "./Connect";
-import Icon from "../ui-atoms/Icon";
-import { useConnectedWallet } from "../hooks/use-connected-wallet";
-import { useENSName } from "../hooks/use-ens-name";
-import { MetamaskIcon, WalletConnectIcon } from "../shared/external-icons";
-import { classNames } from "../utils/class-names";
+import React, { FunctionComponent, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useWeb3React } from '@web3-react/core';
+import { Connect } from './Connect';
+import Icon from '../ui-atoms/Icon';
+import { useConnectedWallet } from '../hooks/use-connected-wallet';
+import { useENSName } from '../hooks/use-ens-name';
+import { MetamaskIcon, WalletConnectIcon } from '../shared/external-icons';
+import { classNames } from '../utils/class-names';
 
 interface Props {
   className?: string;
 }
 
 const trimAccount = (account: string): string => {
-  return account.slice(0, 6) + "..." + account.slice(38);
+  return account.slice(0, 6) + '...' + account.slice(38);
 };
 
 export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
@@ -36,13 +36,13 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
         type="button"
         onClick={openModal}
         className={classNames(
-          "px-4 py-2 text-md font-medium text-white bg-primary rounded-lg border-2 border-current hover:bg-transparent hover:text-primary",
-          className
+          'px-4 py-2 text-md font-medium text-white bg-primary rounded-lg border-2 border-current hover:bg-transparent hover:text-primary',
+          className,
         )}
         id="connect-button"
       >
         {active && account && ensName}
-        {!account && "Connect Wallet"}
+        {!account && 'Connect Wallet'}
         {active && account && !ensName && trimAccount(account)}
       </button>
 
@@ -70,10 +70,10 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    {!connected && !connecting && !waiting && "Connect Wallet"}
-                    {connected && !connecting && "Account"}
+                    {!connected && !connecting && !waiting && 'Connect Wallet'}
+                    {connected && !connecting && 'Account'}
                     {(waiting || connecting) &&
-                      "Awaiting confirmation from your wallet..."}
+                      'Awaiting confirmation from your wallet...'}
                   </Connect.Title>
                   <button
                     className="absolute top-5 right-5"
@@ -135,11 +135,11 @@ export const Rotate = () => (
     animate={{
       scale: [1, 2, 2, 1, 1],
       rotate: [0, 0, 270, 270, 0],
-      borderRadius: ["20%", "20%", "50%", "50%", "20%"],
+      borderRadius: ['20%', '20%', '50%', '50%', '20%'],
     }}
     transition={{
       duration: 2,
-      ease: "easeInOut",
+      ease: 'easeInOut',
       times: [0, 0.2, 0.5, 0.8, 1],
       repeat: Infinity,
       repeatDelay: 1,

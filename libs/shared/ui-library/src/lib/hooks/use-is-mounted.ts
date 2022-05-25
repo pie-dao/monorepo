@@ -1,15 +1,15 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect } from 'react';
 
 export function useIsMounted() {
-  let mounted = useRef(false)
+  let mounted = useRef(false);
 
   useEffect(() => {
-    mounted.current = true
+    mounted.current = true;
 
     return () => {
-      mounted.current = false
-    }
-  }, [])
+      mounted.current = false;
+    };
+  }, []);
 
-  return mounted
+  return mounted;
 }

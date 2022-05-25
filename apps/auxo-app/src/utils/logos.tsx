@@ -6,9 +6,9 @@ import {
   MIMLogo,
   PolygonIcon,
   USDCIcon,
-} from "../assets/icons/logos";
+} from '../assets/icons/logos';
 
-const logo = process.env.PUBLIC_URL + "/auxo-icon-green.png";
+const logo = process.env.PUBLIC_URL + '/auxo-icon-green.png';
 
 const AuxoLogo = () => (
   <div className="h-8 w-auto">
@@ -18,31 +18,31 @@ const AuxoLogo = () => (
 
 export const logoSwitcher = (
   identifier: string | undefined,
-  props?: any
+  props?: any,
 ): JSX.Element => {
   if (!identifier) return <AuxoLogo {...props} />;
   switch (identifier.toLowerCase()) {
-    case "usdc": {
+    case 'usdc': {
       return <USDCIcon {...props} />;
     }
-    case "frax": {
+    case 'frax': {
       return <FRAXIcon {...props} />;
     }
-    case "ftm":
-    case "wftm": {
+    case 'ftm':
+    case 'wftm': {
       return <FTMLogo {...props} />;
     }
-    case "dai": {
+    case 'dai': {
       return <DAIIcon {...props} />;
     }
-    case "mim": {
+    case 'mim': {
       return <MIMLogo />;
     }
-    case "matic":
-    case "polygon": {
+    case 'matic':
+    case 'polygon': {
       return <PolygonIcon {...props} />;
     }
-    case "eth": {
+    case 'eth': {
       return <EthereumIcon {...props} />;
     }
     default: {

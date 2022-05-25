@@ -1,13 +1,13 @@
-import { useState } from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-import { Dialog } from "@headlessui/react";
-import Button from "./Button";
-import Modal from "./Modal";
-import greenCheckmark from "../public/double-checkmark.png";
-import styles from "../styles/Methodology.module.scss";
-import content from "../content/en_EN.json";
+import { useState } from 'react';
+import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from 'swiper';
+import { Dialog } from '@headlessui/react';
+import Button from './Button';
+import Modal from './Modal';
+import greenCheckmark from '../public/double-checkmark.png';
+import styles from '../styles/Methodology.module.scss';
+import content from '../content/en_EN.json';
 
 const ModalContent = () => {
   return (
@@ -128,7 +128,7 @@ const Methodology = ({}) => {
       <div className="flex mb-4 container mx-auto px-6">
         <div className="w-full content-center text-center">
           <h2 className="text-highlight uppercase text-4xl md:text-5xl mb-4">
-            {content.methodology.title.first}{" "}
+            {content.methodology.title.first}{' '}
             <span className="font-bold">
               {content.methodology.title.highlighted}
             </span>
@@ -141,7 +141,7 @@ const Methodology = ({}) => {
       <div className="max-w-screen-sm mx-auto">
         <Swiper
           speed={1000}
-          slidesPerView={"auto"}
+          slidesPerView={'auto'}
           centeredSlides
           className={`${styles.swiperSlider} mb-10`}
           modules={[Navigation]}
@@ -175,7 +175,7 @@ const Methodology = ({}) => {
       </div>
       <div className="container mx-auto px-6">
         <p className="text-deep_blue">
-          {content.methodology.prospectus}{" "}
+          {content.methodology.prospectus}{' '}
           <button
             type="button"
             className="text-highlight cursor-pointer"

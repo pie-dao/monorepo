@@ -1,9 +1,9 @@
-import { useApproximatePendingAsUnderlying } from "../../../hooks/useMaxDeposit";
-import { Vault } from "../../../store/vault/Vault";
-import { prettyNumber } from "../../../utils";
-import CardItem from "../../UI/cardItem";
-import WithdrawButton from "../Actions/Withdraw/WithdrawButton";
-import { useLocked } from "./VaultCapSlider";
+import { useApproximatePendingAsUnderlying } from '../../../hooks/useMaxDeposit';
+import { Vault } from '../../../store/vault/Vault';
+import { prettyNumber } from '../../../utils';
+import CardItem from '../../UI/cardItem';
+import WithdrawButton from '../Actions/Withdraw/WithdrawButton';
+import { useLocked } from './VaultCapSlider';
 
 const VaultSummaryUser = ({
   loading,
@@ -47,7 +47,7 @@ const VaultSummaryUser = ({
       />
       <CardItem
         loading={loading}
-        left={"Total Locked Quantity"}
+        left={'Total Locked Quantity'}
         right={prettyNumber(locked)}
       />
       <CardItem

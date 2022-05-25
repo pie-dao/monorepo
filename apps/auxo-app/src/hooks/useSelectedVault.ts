@@ -1,9 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from ".";
-import { useProxySelector } from "../store";
-import { Balance, Vault } from "../store/vault/Vault";
-import { setSelectedVault } from "../store/vault/vault.slice";
-import { zeroBalance } from "../utils/balances";
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '.';
+import { useProxySelector } from '../store';
+import { Balance, Vault } from '../store/vault/Vault';
+import { setSelectedVault } from '../store/vault/vault.slice';
+import { zeroBalance } from '../utils/balances';
 
 export const useNavigateToVault = () => {
   /**
@@ -20,7 +20,7 @@ export const useNavigateToVault = () => {
 
 export const useSelectedVault = (): Vault | undefined =>
   useProxySelector((state) =>
-    state.vault.vaults.find((v) => v.address === state.vault.selected)
+    state.vault.vaults.find((v) => v.address === state.vault.selected),
   );
 
 export const useApprovalLimit = (): { limit: Balance } => {

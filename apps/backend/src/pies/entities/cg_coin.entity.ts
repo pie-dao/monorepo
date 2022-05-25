@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { IsObject } from "class-validator";
+import { IsObject } from 'class-validator';
 
 export type CgCoinDocument = CgCoinEntity & Document;
 
@@ -11,7 +11,7 @@ export class CgCoinEntity {
   @Prop()
   timestamp: string;
 
-  @Prop({type: Object})
+  @Prop({ type: Object })
   @ApiProperty()
   @IsObject()
   coin: object;

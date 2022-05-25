@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsHexadecimal, IsObject } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsHexadecimal, IsObject } from 'class-validator';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { PieHistoryEntity } from './pie-history.entity';
@@ -15,7 +15,7 @@ export class PieEntity {
 
   @Prop()
   @ApiProperty()
-  symbol: string;  
+  symbol: string;
 
   @Prop()
   @ApiProperty()

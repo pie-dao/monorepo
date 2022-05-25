@@ -1,13 +1,13 @@
-import { Menu, Transition } from "@headlessui/react";
-import pushShareData from "../utils/GTM/operations/share";
-import { Fragment } from "react";
-import Image from "next/image";
-import content from "../content/en_EN.json";
-import shareIcon from "../public/share.png";
-import styles from "../styles/ShareMenu.module.scss";
+import { Menu, Transition } from '@headlessui/react';
+import pushShareData from '../utils/GTM/operations/share';
+import { Fragment } from 'react';
+import Image from 'next/image';
+import content from '../content/en_EN.json';
+import shareIcon from '../public/share.png';
+import styles from '../styles/ShareMenu.module.scss';
 
 const ShareMenu = () => {
-  const url = typeof window !== "undefined" ? window.location.origin : "";
+  const url = typeof window !== 'undefined' ? window.location.origin : '';
   return (
     <Menu as="div" className="relative">
       <Menu.Button className="inline-flex justify-center w-full p-2 text-sm font-medium text-white bg-black rounded-lg bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
@@ -24,11 +24,11 @@ const ShareMenu = () => {
       >
         <Menu.Items className="absolute p-3 flex flex-col items-center w-10 justify-center mt-6 left-0 right-0 origin-top-right bg-white divide-y divide-gray-100 rounded-md ring-2 ring-highlight_secondary focus:outline-none">
           <Menu.Item
-            onClick={() => pushShareData("twitter", "share-social-twitter")}
+            onClick={() => pushShareData('twitter', 'share-social-twitter')}
           >
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                content.socials.twitter.share
+                content.socials.twitter.share,
               )}&url=${encodeURIComponent(url)}`}
               className={`mb-1 ${styles.shareButton}`}
               target="_blank"
@@ -50,11 +50,11 @@ const ShareMenu = () => {
           <Menu.Item>
             <button
               onClick={() => {
-                pushShareData("facebook", "share-social-facebook");
+                pushShareData('facebook', 'share-social-facebook');
                 window.open(
                   `${content.socials.facebook.url}${encodeURIComponent(url)}`,
-                  "_blank",
-                  "width=600,height=600"
+                  '_blank',
+                  'width=600,height=600',
                 );
               }}
               className={`mb-1 ${styles.shareButton}`}
@@ -76,11 +76,11 @@ const ShareMenu = () => {
             </button>
           </Menu.Item>
           <Menu.Item
-            onClick={() => pushShareData("telegram", "share-social-telegram")}
+            onClick={() => pushShareData('telegram', 'share-social-telegram')}
           >
             <a
               href={`https://t.me/share/url?url=${url}&text=${encodeURI(
-                content.socials.telegram.share
+                content.socials.telegram.share,
               )}`}
               target="_blank"
               rel="noreferrer noopener"

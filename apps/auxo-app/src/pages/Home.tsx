@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { BsFillGrid3X3GapFill } from "react-icons/bs";
-import { SUPPORTED_CHAINS } from "../utils/networks";
-import { SetStateType } from "../types/utilities";
-import { useEffect } from "react";
-import { useWindowWide } from "../hooks/useWindowWidth";
-import VaultCardView from "../components/Vault/Home/VaultCard";
-import VaultTable from "../components/Vault/Home/VaultTable";
+import { useState } from 'react';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { BsFillGrid3X3GapFill } from 'react-icons/bs';
+import { SUPPORTED_CHAINS } from '../utils/networks';
+import { SetStateType } from '../types/utilities';
+import { useEffect } from 'react';
+import { useWindowWide } from '../hooks/useWindowWidth';
+import VaultCardView from '../components/Vault/Home/VaultCard';
+import VaultTable from '../components/Vault/Home/VaultTable';
 import {
   initialTableState,
   useVaultTableData,
-} from "../hooks/useVaultTableRows";
-import { useGlobalFilter, useSortBy, useTable } from "react-table";
-import { MenuTransition } from "../components/UI/networkDropdown";
-import { Menu } from "@headlessui/react";
-import { FaCheck, FaChevronDown } from "react-icons/fa";
+} from '../hooks/useVaultTableRows';
+import { useGlobalFilter, useSortBy, useTable } from 'react-table';
+import { MenuTransition } from '../components/UI/networkDropdown';
+import { Menu } from '@headlessui/react';
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
 
-type ViewType = "TABLE" | "CARD";
+type ViewType = 'TABLE' | 'CARD';
 
 const FancyTitle = () => (
   <section className="flex flex-col">
@@ -50,15 +50,15 @@ const Callout = (): JSX.Element => {
 };
 
 export type GlobalFilterProps = {
-  filter: keyof typeof SUPPORTED_CHAINS | "";
-  setFilter: SetStateType<keyof typeof SUPPORTED_CHAINS | "">;
+  filter: keyof typeof SUPPORTED_CHAINS | '';
+  setFilter: SetStateType<keyof typeof SUPPORTED_CHAINS | ''>;
 };
 
 // Filter vaults according to the network
 const NetworkSorterDesktop = ({ filter, setFilter }: GlobalFilterProps) => {
   return (
     <section className="flex justify-start ml-0">
-      {["", ...Object.keys(SUPPORTED_CHAINS)].map((chain, idx) => {
+      {['', ...Object.keys(SUPPORTED_CHAINS)].map((chain, idx) => {
         const active = filter === chain || (!filter && !chain);
         return (
           <button
@@ -68,12 +68,12 @@ const NetworkSorterDesktop = ({ filter, setFilter }: GlobalFilterProps) => {
               text-gray-500 text-center
               ${
                 active &&
-                " border-b-2 pb-2 border-baby-blue-dark text-baby-blue-dark"
+                ' border-b-2 pb-2 border-baby-blue-dark text-baby-blue-dark'
               } `}
             key={idx}
             onClick={() => setFilter(chain as typeof filter)}
           >
-            {chain === "" ? "ALL" : chain}
+            {chain === '' ? 'ALL' : chain}
           </button>
         );
       })}
@@ -93,7 +93,7 @@ export const NetworkSorterMobile = ({
             className="inline-flex items-center justify-between w-full px-3 py-2 
                         text-sm font-medium text-baby-blue-dark "
           >
-            {filter ? filter : "All"}
+            {filter ? filter : 'All'}
             <FaChevronDown
               className="w-4 h-4 ml-2 flex  text-baby-blue-dark"
               aria-hidden="true"
@@ -108,7 +108,7 @@ export const NetworkSorterMobile = ({
             "
           >
             <div className="px-1 py-1">
-              {["", ...Object.keys(SUPPORTED_CHAINS)].map((chain, idx) => {
+              {['', ...Object.keys(SUPPORTED_CHAINS)].map((chain, idx) => {
                 const active = filter === chain || (!filter && !chain);
                 return (
                   <button
@@ -117,12 +117,12 @@ export const NetworkSorterMobile = ({
                       hover:bg-baby-blue-light
                       w-full py-1 px-2
                       text-gray-500 
-                      ${active && " text-baby-blue-dark font-bold"}
+                      ${active && ' text-baby-blue-dark font-bold'}
                       `}
                     key={idx}
                     onClick={() => setFilter(chain as typeof filter)}
                   >
-                    {chain === "" ? "ALL" : chain}
+                    {chain === '' ? 'ALL' : chain}
                     {active && (
                       <FaCheck className="fill-baby-blue-dark w-3 h-3" />
                     )}
@@ -161,24 +161,24 @@ const ViewSwitcher = ({
   <section className="flex">
     <div
       className={
-        (view === "CARD" ? "bg-baby-blue-dark " : " bg-white shadow-md") +
-        " p-2 rounded-lg mb-1"
+        (view === 'CARD' ? 'bg-baby-blue-dark ' : ' bg-white shadow-md') +
+        ' p-2 rounded-lg mb-1'
       }
-      onClick={() => setView("CARD")}
+      onClick={() => setView('CARD')}
     >
       <BsFillGrid3X3GapFill
-        className={view === "CARD" ? "fill-white" : "fill-baby-blue-dark"}
+        className={view === 'CARD' ? 'fill-white' : 'fill-baby-blue-dark'}
       />
     </div>
     <div
       className={
-        (view === "TABLE" ? "bg-baby-blue-dark " : " bg-white shadow-md") +
-        " p-2 rounded-lg mb-1 ml-1"
+        (view === 'TABLE' ? 'bg-baby-blue-dark ' : ' bg-white shadow-md') +
+        ' p-2 rounded-lg mb-1 ml-1'
       }
-      onClick={() => setView("TABLE")}
+      onClick={() => setView('TABLE')}
     >
       <GiHamburgerMenu
-        className={view === "TABLE" ? "fill-white" : "fill-baby-blue-dark"}
+        className={view === 'TABLE' ? 'fill-white' : 'fill-baby-blue-dark'}
       />
     </div>
   </section>
@@ -219,12 +219,12 @@ const VaultHomeMenu: React.FC<
 
 const Home = () => {
   const DEFAULT_TO_MOBILE_SIZE = 600;
-  const [view, setView] = useState<ViewType>("TABLE");
+  const [view, setView] = useState<ViewType>('TABLE');
   const biggerThanMobile = useWindowWide(DEFAULT_TO_MOBILE_SIZE);
   const { rows: data, headers: columns } = useVaultTableData();
 
   useEffect(() => {
-    biggerThanMobile ? setView("TABLE") : setView("CARD");
+    biggerThanMobile ? setView('TABLE') : setView('CARD');
   }, [biggerThanMobile, setView]);
 
   // global filter for table is shared with the cards, so we instantiate here
@@ -235,7 +235,7 @@ const Home = () => {
       initialState: initialTableState,
     },
     useGlobalFilter,
-    useSortBy
+    useSortBy,
   );
   return (
     <>
@@ -246,7 +246,7 @@ const Home = () => {
         setFilter={table.setGlobalFilter}
         filter={table.state.globalFilter}
       />
-      {view === "TABLE" ? (
+      {view === 'TABLE' ? (
         <VaultTable tableProps={table} />
       ) : (
         <VaultCardView filter={table.state.globalFilter} />

@@ -1,20 +1,20 @@
-import Image from "next/image";
-import { useMemo } from "react";
-import { Popover } from "@headlessui/react";
-import { LinearGradient } from "@visx/gradient";
-import { scaleTime, scaleLinear } from "@visx/scale";
-import { MarkerCircle } from "@visx/marker";
-import { curveMonotoneX } from "@visx/curve";
-import { LinePath, AreaClosed } from "@visx/shape";
-import { min, max, extent } from "d3-array";
-import piesImages from "../public/pies";
-import popover from "../public/popover_icon.svg";
-import Button from "./Button";
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { Popover } from '@headlessui/react';
+import { LinearGradient } from '@visx/gradient';
+import { scaleTime, scaleLinear } from '@visx/scale';
+import { MarkerCircle } from '@visx/marker';
+import { curveMonotoneX } from '@visx/curve';
+import { LinePath, AreaClosed } from '@visx/shape';
+import { min, max, extent } from 'd3-array';
+import piesImages from '../public/pies';
+import popover from '../public/popover_icon.svg';
+import Button from './Button';
 
-export const background = "#7A32FE";
-export const background2 = "#7A32FE";
-export const accentColor = "#D206A7";
-export const accentColorDark = "#D206A7";
+export const background = '#7A32FE';
+export const background2 = '#7A32FE';
+export const accentColor = '#D206A7';
+export const accentColorDark = '#D206A7';
 
 const getDate = (d) => new Date(d[0]);
 const getPieValue = (d) => d[1];
@@ -35,7 +35,7 @@ const PieCard = ({
         range: [margin.left, innerWidth + margin.left],
         domain: extent(pieData.ticks, getDate),
       }),
-    [pieData.ticks, innerWidth, margin.left]
+    [pieData.ticks, innerWidth, margin.left],
   );
   const pieValueScale = useMemo(
     () =>
@@ -48,12 +48,12 @@ const PieCard = ({
 
         nice: true,
       }),
-    [pieData.ticks, margin.top, innerHeight]
+    [pieData.ticks, margin.top, innerHeight],
   );
 
   const tokenImage = useMemo(
     () => piesImages.find((token) => token.name === pieData.symbol),
-    [pieData.symbol]
+    [pieData.symbol],
   );
 
   return (
@@ -128,7 +128,7 @@ const PieCard = ({
           </h3>
           <h4 className="text-sm text-white uppercase">{pieData.name}</h4>
           <div className="text-2xl text-white font-extrabold mt-auto mx-auto flex">
-            <span className="self-end">NAV</span>{" "}
+            <span className="self-end">NAV</span>{' '}
             <Popover className="relative">
               <Popover.Button className="self-start ml-1">
                 <Image

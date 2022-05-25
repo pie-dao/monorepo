@@ -1,17 +1,17 @@
-import { useMemo } from "react";
-import { useAppSelector } from "../../../hooks";
-import { useApy } from "../../../hooks/useApy";
-import { useNavigateToVault } from "../../../hooks/useSelectedVault";
-import { Vault } from "../../../store/vault/Vault";
-import { prettyNumber } from "../../../utils";
-import { logoSwitcher } from "../../../utils/logos";
+import { useMemo } from 'react';
+import { useAppSelector } from '../../../hooks';
+import { useApy } from '../../../hooks/useApy';
+import { useNavigateToVault } from '../../../hooks/useSelectedVault';
+import { Vault } from '../../../store/vault/Vault';
+import { prettyNumber } from '../../../utils';
+import { logoSwitcher } from '../../../utils/logos';
 import {
   chainMap,
   SUPPORTED_CHAINS,
   SUPPORTED_CHAIN_ID,
-} from "../../../utils/networks";
-import StyledButton from "../../UI/button";
-import { Divider } from "../../UI/divider";
+} from '../../../utils/networks';
+import StyledButton from '../../UI/button';
+import { Divider } from '../../UI/divider';
 
 const VaultCardActions: React.FC<{ addr: string }> = ({ addr }) => {
   const selectVault = useNavigateToVault();
@@ -35,7 +35,7 @@ export const NetworkBottomRightIcon = ({ vault }: { vault: Vault }) => {
       <div className="h-5 w-5">
         {logoSwitcher(
           chainMap[vault.network.chainId as SUPPORTED_CHAIN_ID].nativeCurrency
-            .symbol
+            .symbol,
         )}
       </div>
     </div>
@@ -54,7 +54,7 @@ const VaultCardHeader: React.FC<{ vault: Vault }> = ({ vault }) => {
         <p className="font-bold text-return-100">{vault.symbol}</p>
       </div>
       <div>
-        <p className="text-return-100 font-bold">{"APY: " + message}</p>
+        <p className="text-return-100 font-bold">{'APY: ' + message}</p>
       </div>
     </section>
   );
@@ -70,7 +70,7 @@ const VaultCardContent: React.FC<{ vault: Vault }> = ({ vault }) => {
         "
       >
         <p>Total Deposits</p>
-        <p>{prettyNumber(vault.stats?.deposits.label) ?? "--"}</p>
+        <p>{prettyNumber(vault.stats?.deposits.label) ?? '--'}</p>
       </div>
 
       <div
@@ -80,7 +80,7 @@ const VaultCardContent: React.FC<{ vault: Vault }> = ({ vault }) => {
         "
       >
         <p>My Deposits</p>
-        <p>{prettyNumber(vault.userBalances?.vaultUnderlying.label) ?? "--"}</p>
+        <p>{prettyNumber(vault.userBalances?.vaultUnderlying.label) ?? '--'}</p>
       </div>
     </section>
   );
@@ -108,7 +108,7 @@ const VaultCard: React.FC<{ vault: Vault }> = ({ vault }) => {
 const VaultCardView = ({
   filter,
 }: {
-  filter: keyof typeof SUPPORTED_CHAINS | "";
+  filter: keyof typeof SUPPORTED_CHAINS | '';
 }) => {
   const vaults = useAppSelector((state) => state.vault.vaults);
   const filteredVaults = useMemo(() => {

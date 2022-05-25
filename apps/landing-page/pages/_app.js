@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
-import { hotjar } from "react-hotjar";
-import "swiper/css/bundle";
-import "../styles/globals.css";
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import { hotjar } from 'react-hotjar';
+import 'swiper/css/bundle';
+import '../styles/globals.css';
 
-import Footer from "../components/Footer";
-import Layout from "../components/Layout";
-import CookieBar from "../components/CookieBar";
+import Footer from '../components/Footer';
+import Layout from '../components/Layout';
+import CookieBar from '../components/CookieBar';
 
 function MyApp({ Component, pageProps }) {
   const [isOpen, setIsOpen] = useState(!!pageProps.showCookiePolicy);
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <Layout>
         <Component {...pageProps} />
-        <Footer margin={isOpen ? "mb-16" : ""} />
+        <Footer margin={isOpen ? 'mb-16' : ''} />
         <CookieBar isOpen={isOpen} setIsOpen={setIsOpen} />
       </Layout>
     </>
