@@ -58,7 +58,7 @@ export default function Navigation({
           x: 0,
         },
         hidden: {
-          width: 58,
+          width: 60,
           x: 0,
           transition: { duration: 0.5 },
         },
@@ -153,9 +153,9 @@ export default function Navigation({
         dragMomentum={false}
         onDrag={handleDrag}
         onDragEnd={handleDragEnd}
-        className="h-full w-[180px]"
+        className="h-full w-[180px] lg:static inset"
       >
-        <div className="flex flex-col flex-grow pt-5 h-full">
+        <div className="flex flex-col flex-grow pt-2 h-full">
           <div className="flex-shrink-0 flex items-center px-4 overflow-hidden">
             <motion.h2
               className="text-2xl font-medium text-primary"
@@ -203,7 +203,7 @@ export default function Navigation({
                           className="flex-shrink-0 h-6 w-6 text-primary"
                           aria-hidden="true"
                         />
-                        <motion.span className="ml-4">{item.name}</motion.span>
+                        <motion.span className="ml-5">{item.name}</motion.span>
                       </span>
                     </Link>
                   </motion.li>

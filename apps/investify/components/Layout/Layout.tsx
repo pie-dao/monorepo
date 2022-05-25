@@ -1,24 +1,18 @@
 import { useState } from 'react';
-import { MenuAlt2Icon } from '@heroicons/react/solid';
 import Navigation from '../Navigation/Navigation';
+import Header from '../Header/Header';
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(true);
   return (
     <>
-      <div className="flex h-full bg-background">
+      <div className="flex h-screen bg-background overflow-y-hidden">
         <Navigation open={open} setOpen={setOpen} />
-        <div className="flex flex-col flex-1">
-          <div className="flex-shrink-0 flex h-16">
-            <button
-              type="button"
-              className="px-4 text-gray-500 focus:outline-none"
-              onClick={() => setOpen(!open)}
-            >
-              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
-            </button>
-          </div>
-          <main>{children}</main>
+        <div className="flex flex-col flex-1 h-full overflow-hidden">
+          <Header open={open} setOpen={setOpen} />
+          <main className="flex-1 max-h-full p-5 overflow-hidden overflow-y-scroll">
+            {children}
+          </main>
         </div>
       </div>
 
