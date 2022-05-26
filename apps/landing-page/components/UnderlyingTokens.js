@@ -1,14 +1,14 @@
-import { useMemo } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import Loader from "./Loader";
-import useUnderlyingData from "../hooks/useUnderlyingData";
-import priceFormatter from "../utils/priceFormatter";
-import Image from "next/image";
-import tokenImages from "../public/assets";
-import playLogo from "../public/play_icon.png";
-import gradientPicker from "../utils/gradientPicker";
-import styles from "../styles/UnderlyingTokens.module.scss";
-import content from "../content/en_EN.json";
+import { useMemo } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import Loader from './Loader';
+import useUnderlyingData from '../hooks/useUnderlyingData';
+import priceFormatter from '../utils/priceFormatter';
+import Image from 'next/image';
+import tokenImages from '../public/assets';
+import playLogo from '../public/play_icon.png';
+import gradientPicker from '../utils/gradientPicker';
+import styles from '../styles/UnderlyingTokens.module.scss';
+import content from '../content/en_EN.json';
 
 const UnderlyingTokens = () => {
   const { underlyingData, isLoading, isError } = useUnderlyingData();
@@ -35,7 +35,7 @@ const UnderlyingTokens = () => {
       <div className="bg-secondary py-8 w-full relative">
         <div className="container mx-auto px-6">
           <h2 className="uppercase text-4xl md:text-5xl mb-4">
-            {content.underlying_tokens.title.first}{" "}
+            {content.underlying_tokens.title.first}{' '}
             <span className="font-bold">
               {content.underlying_tokens.title.highlighted}
             </span>
@@ -55,7 +55,7 @@ const UnderlyingTokens = () => {
           <Loader />
         ) : (
           <Swiper
-            slidesPerView={"auto"}
+            slidesPerView={'auto'}
             spaceBetween={10}
             centeredSlides
             watchSlidesProgress
@@ -69,7 +69,7 @@ const UnderlyingTokens = () => {
             {sortedAssets.map(
               ({ address, symbol, usdPrice, marginalTVLPercentage }) => {
                 const imageObj = tokenImages.find(
-                  (token) => token.name === symbol
+                  (token) => token.name === symbol,
                 );
                 const percentage = (+marginalTVLPercentage).toFixed(2);
                 return (
@@ -77,7 +77,7 @@ const UnderlyingTokens = () => {
                     {({ isActive }) => (
                       <div
                         className={`w-full rounded-md bg-secondary flex flex-col items-center justify-center text-left  p-4 ${
-                          !isActive && "opacity-75 md:opacity-100"
+                          !isActive && 'opacity-75 md:opacity-100'
                         }`}
                       >
                         <div className="absolute -top-6 left-3">
@@ -101,7 +101,7 @@ const UnderlyingTokens = () => {
                             style={{
                               height: `${relativePercentage(percentage)}%`,
                               backgroundColor: `${barColor(
-                                relativePercentage(percentage)
+                                relativePercentage(percentage),
                               )}`,
                             }}
                           ></div>
@@ -110,7 +110,7 @@ const UnderlyingTokens = () => {
                     )}
                   </SwiperSlide>
                 );
-              }
+              },
             )}
           </Swiper>
         )}

@@ -1,4 +1,4 @@
-import styles from "../styles/Button.module.scss";
+import styles from '../styles/Button.module.scss';
 
 const Button = ({
   className,
@@ -10,9 +10,9 @@ const Button = ({
 }) => {
   return (
     <a
-      className={`${gradient ? styles.gradient : ""} ${
-        inverted ? styles.inverted : ""
-      } ${className ? className : ""} ${styles.button} px-8 cursor-pointer`}
+      className={`${gradient ? styles.gradient : ''} ${
+        inverted ? styles.inverted : ''
+      } ${className ? className : ''} ${styles.button} px-8 cursor-pointer`}
       {...rest}
     >
       {children}

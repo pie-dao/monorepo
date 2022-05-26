@@ -1,13 +1,13 @@
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
-import React, { ButtonHTMLAttributes } from "react";
-import { RiCloseCircleFill } from "react-icons/ri";
-import { MetamaskIcon, WalletConnectIcon } from "../../assets/icons/connectors";
-import { injected, walletconnect } from "../../connectors";
-import { useAppDispatch } from "../../hooks";
-import { setAlert } from "../../store/app/app.slice";
-import { setResetUserVaultDetails } from "../../store/vault/vault.slice";
-import { SetStateType } from "../../types/utilities";
-import StyledButton from "../UI/button";
+import { UnsupportedChainIdError, useWeb3React } from '@web3-react/core';
+import React, { ButtonHTMLAttributes } from 'react';
+import { RiCloseCircleFill } from 'react-icons/ri';
+import { MetamaskIcon, WalletConnectIcon } from '../../assets/icons/connectors';
+import { injected, walletconnect } from '../../connectors';
+import { useAppDispatch } from '../../hooks';
+import { setAlert } from '../../store/app/app.slice';
+import { setResetUserVaultDetails } from '../../store/vault/vault.slice';
+import { SetStateType } from '../../types/utilities';
+import StyledButton from '../UI/button';
 
 const MetamaskButton = ({
   setShow,
@@ -25,13 +25,13 @@ const MetamaskButton = ({
         if (err instanceof UnsupportedChainIdError) {
           dispatch(
             setAlert({
-              message: "You are currently connected to an unsupported chain",
-              type: "ERROR",
-              action: "SWITCH_NETWORK",
-            })
+              message: 'You are currently connected to an unsupported chain',
+              type: 'ERROR',
+              action: 'SWITCH_NETWORK',
+            }),
           );
         } else {
-          alert("Error in connecting");
+          alert('Error in connecting');
         }
       });
   };

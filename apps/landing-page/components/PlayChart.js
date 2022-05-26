@@ -1,33 +1,33 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useMemo, useCallback } from "react";
-import { LinePath, Line, Bar } from "@visx/shape";
-import { curveMonotoneX, curveStep } from "@visx/curve";
-import { GridRows, GridColumns } from "@visx/grid";
-import { scaleTime, scaleLinear } from "@visx/scale";
-import { AxisRight, AxisBottom } from "@visx/axis";
-import { withTooltip, defaultStyles, TooltipWithBounds } from "@visx/tooltip";
-import { localPoint } from "@visx/event";
-import { max, extent, bisector } from "d3-array";
-import { timeFormat } from "d3-time-format";
-import priceFormatter from "../utils/priceFormatter";
+import { useMemo, useCallback } from 'react';
+import { LinePath, Line, Bar } from '@visx/shape';
+import { curveMonotoneX, curveStep } from '@visx/curve';
+import { GridRows, GridColumns } from '@visx/grid';
+import { scaleTime, scaleLinear } from '@visx/scale';
+import { AxisRight, AxisBottom } from '@visx/axis';
+import { withTooltip, defaultStyles, TooltipWithBounds } from '@visx/tooltip';
+import { localPoint } from '@visx/event';
+import { max, extent, bisector } from 'd3-array';
+import { timeFormat } from 'd3-time-format';
+import priceFormatter from '../utils/priceFormatter';
 
-export const background = "#3b6978";
-export const background2 = "#204051";
-export const accentColor = "#d7099c";
-export const accentColorLight = "#28D2FF";
-export const axisColor = "#9388DB";
+export const background = '#3b6978';
+export const background2 = '#204051';
+export const accentColor = '#d7099c';
+export const accentColorLight = '#28D2FF';
+export const axisColor = '#9388DB';
 const tooltipStyles = {
   ...defaultStyles,
-  background: "#150110",
-  color: "#28D2FF",
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  border: "1px solid #412D87",
-  padding: "0.5rem",
+  background: '#150110',
+  color: '#28D2FF',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  border: '1px solid #412D87',
+  padding: '0.5rem',
 };
 
-const formatDate = timeFormat("%d %B %Y");
+const formatDate = timeFormat('%d %B %Y');
 
 const getDate = (d) => new Date(d[0]);
 const getPieValue = (d) => d[1];
@@ -52,31 +52,31 @@ const PlayChart = ({
   const today = useMemo(() => new Date(), []);
   const yesterday = useMemo(
     () => new Date(today.getTime() - 24 * 60 * 60 * 1000),
-    [today]
+    [today],
   );
   const weekAgo = useMemo(
     () => new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000),
-    [today]
+    [today],
   );
   const monthAgo = useMemo(
     () => new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000),
-    [today]
+    [today],
   );
 
   const slicePricesByTime = useMemo(() => {
     switch (chartTimeRange) {
-      case "1d":
+      case '1d':
         return prices.filter((d) => getDate(d) > yesterday);
-      case "1w":
+      case '1w':
         return prices.filter((d) => getDate(d) > weekAgo);
-      case "1m":
+      case '1m':
         return prices.filter((d) => getDate(d) > monthAgo);
     }
   }, [chartTimeRange, monthAgo, prices, weekAgo, yesterday]);
 
   const selectLineByTime = useMemo(() => {
     switch (chartTimeRange) {
-      case "1d":
+      case '1d':
         return curveStep;
       default:
         return curveMonotoneX;
@@ -90,7 +90,7 @@ const PlayChart = ({
         range: [margin.left, innerWidth + margin.left],
         domain: extent(slicePricesByTime, getDate),
       }),
-    [innerWidth, margin.left, slicePricesByTime]
+    [innerWidth, margin.left, slicePricesByTime],
   );
   const priceValueScale = useMemo(
     () =>
@@ -99,7 +99,7 @@ const PlayChart = ({
         domain: [0, max(slicePricesByTime, getPieValue) || 0],
         nice: true,
       }),
-    [innerHeight, margin.top, slicePricesByTime]
+    [innerHeight, margin.top, slicePricesByTime],
   );
 
   const handleTooltip = useCallback(
@@ -123,7 +123,7 @@ const PlayChart = ({
         tooltipTop: priceValueScale(getPieValue(d)),
       });
     },
-    [dateScale, slicePricesByTime, showTooltip, priceValueScale]
+    [dateScale, slicePricesByTime, showTooltip, priceValueScale],
   );
 
   const x = (d) => dateScale(getDate(d));
@@ -166,7 +166,7 @@ const PlayChart = ({
           tickLabelProps={() => ({
             fill: axisColor,
             fontSize: 12,
-            textAnchor: "middle",
+            textAnchor: 'middle',
           })}
         />
         <AxisRight
@@ -179,7 +179,7 @@ const PlayChart = ({
           tickLabelProps={() => ({
             fill: axisColor,
             fontSize: 12,
-            textAnchor: "middle",
+            textAnchor: 'middle',
           })}
         />
         <Bar

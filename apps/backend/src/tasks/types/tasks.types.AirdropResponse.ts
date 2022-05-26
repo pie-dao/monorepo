@@ -1,9 +1,9 @@
 export interface AirdropResponse {
-    amount: string;
-    airdropAmounts: AirdropAmount[];
+  amount: string;
+  airdropAmounts: AirdropAmount[];
 }
 
 export interface AirdropAmount {
-    id: string;
-    amount: string;
+  id: string;
+  amount: string;
 }

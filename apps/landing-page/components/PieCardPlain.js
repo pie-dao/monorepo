@@ -1,27 +1,27 @@
-import Image from "next/image";
-import { useMemo } from "react";
-import { Popover } from "@headlessui/react";
-import piesImages from "../public/pies";
-import backgroundImage from "../public/explore_products_bg.png";
-import popover from "../public/popover_icon.svg";
-import Button from "./Button";
-import content from "../content/en_EN.json";
-import priceFormatter from "../utils/priceFormatter";
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { Popover } from '@headlessui/react';
+import piesImages from '../public/pies';
+import backgroundImage from '../public/explore_products_bg.png';
+import popover from '../public/popover_icon.svg';
+import Button from './Button';
+import content from '../content/en_EN.json';
+import priceFormatter from '../utils/priceFormatter';
 
 const PieCardPlain = ({ pieInfo, pieHistory }) => {
   const tokenImage = useMemo(
     () => piesImages.find((token) => token.name === pieInfo.symbol),
-    [pieInfo.symbol]
+    [pieInfo.symbol],
   );
 
   const swapWebsite = (pieAddress) => {
-    if (pieAddress === "0x8d1ce361eb68e9e05573443c407d4a3bed23b033") {
-      return "https://www.piedao.org/#/oven";
+    if (pieAddress === '0x8d1ce361eb68e9e05573443c407d4a3bed23b033') {
+      return 'https://www.piedao.org/#/oven';
     }
-    if (pieAddress === "0xe4f726adc8e89c6a6017f01eada77865db22da14") {
-      return "https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0xe4f726adc8e89c6a6017f01eada77865db22da14";
+    if (pieAddress === '0xe4f726adc8e89c6a6017f01eada77865db22da14') {
+      return 'https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0xe4f726adc8e89c6a6017f01eada77865db22da14';
     }
-    return "https://www.piedao.org/#/swap";
+    return 'https://www.piedao.org/#/swap';
   };
 
   return (
@@ -43,7 +43,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
             <h4 className="text-sm text-white uppercase">{pieInfo.name}</h4>
           </div>
           <div className="text-2xl text-white font-extrabold mx-auto mt-auto flex items-end mb-2 z-10">
-            <span>{content.explore_products.nav.name}</span>{" "}
+            <span>{content.explore_products.nav.name}</span>{' '}
             <Popover className="relative flex self-start">
               <Popover.Button className="ml-1">
                 <Image lazyBoundary="325px" src={popover} alt="popover" />

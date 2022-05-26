@@ -1,11 +1,11 @@
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo } from 'react';
 import {
   EthereumWeb3Context,
   FTMWeb3Context,
   PolygonWeb3Context,
   Web3ContextData,
-} from "./MultipleProviderContext";
-import { SUPPORTED_CHAINS, SUPPORTED_CHAIN_ID } from "../../utils/networks";
+} from './MultipleProviderContext';
+import { SUPPORTED_CHAINS, SUPPORTED_CHAIN_ID } from '../../utils/networks';
 
 /**
  * @dev this is heavily borrowed again from ribbon, my comments are that instantiating a switch statment, just to unpack it into a separate
@@ -38,11 +38,11 @@ export const useWeb3Context = (chainId: number): Web3ContextData => {
 
 export const useMultipleProvider = () => {
   const ethereumContextProvider = useWeb3Context(
-    SUPPORTED_CHAINS.MAINNET
+    SUPPORTED_CHAINS.MAINNET,
   ).provider;
   const ftmContextProvider = useWeb3Context(SUPPORTED_CHAINS.FANTOM).provider;
   const polygonContextProvider = useWeb3Context(
-    SUPPORTED_CHAINS.POLYGON
+    SUPPORTED_CHAINS.POLYGON,
   ).provider;
 
   const providers = useMemo(
@@ -51,13 +51,13 @@ export const useMultipleProvider = () => {
       [SUPPORTED_CHAINS.FANTOM]: ftmContextProvider,
       [SUPPORTED_CHAINS.POLYGON]: polygonContextProvider,
     }),
-    [ftmContextProvider, polygonContextProvider, ethereumContextProvider]
+    [ftmContextProvider, polygonContextProvider, ethereumContextProvider],
   );
 
   // handling the notfound case?
   const getProviderForChain = useCallback(
     (chainId: number) => providers[chainId as SUPPORTED_CHAIN_ID],
-    [providers]
+    [providers],
   );
 
   return {

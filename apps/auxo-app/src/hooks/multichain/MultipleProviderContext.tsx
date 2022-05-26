@@ -1,8 +1,8 @@
-import React from "react";
-import { ethers } from "ethers";
-import { RPC_URLS } from "../../connectors";
-import { SUPPORTED_CHAINS } from "../../utils/networks";
-import { LibraryProvider } from "../../types/utilities";
+import React from 'react';
+import { ethers } from 'ethers';
+import { RPC_URLS } from '../../connectors';
+import { SUPPORTED_CHAINS } from '../../utils/networks';
+import { LibraryProvider } from '../../types/utilities';
 
 /**
  * We borrow pretty heavily from Ribbon.finance here, but essentially we need to instantiate
@@ -16,14 +16,14 @@ export type Web3ContextData = {
 };
 
 const ethereumProvider = new ethers.providers.JsonRpcProvider(
-  RPC_URLS[SUPPORTED_CHAINS.MAINNET]
+  RPC_URLS[SUPPORTED_CHAINS.MAINNET],
 );
 
 const ftmProvider = new ethers.providers.JsonRpcProvider(
-  RPC_URLS[SUPPORTED_CHAINS.FANTOM]
+  RPC_URLS[SUPPORTED_CHAINS.FANTOM],
 );
 const polygonProvider = new ethers.providers.JsonRpcProvider(
-  RPC_URLS[SUPPORTED_CHAINS.POLYGON]
+  RPC_URLS[SUPPORTED_CHAINS.POLYGON],
 );
 
 export const EthereumWeb3Context = React.createContext<Web3ContextData>({

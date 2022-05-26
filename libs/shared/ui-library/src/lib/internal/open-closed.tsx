@@ -5,10 +5,10 @@ import React, {
   // Types
   ReactNode,
   ReactElement,
-} from 'react'
+} from 'react';
 
-let Context = createContext<State | null>(null)
-Context.displayName = 'OpenClosedContext'
+let Context = createContext<State | null>(null);
+Context.displayName = 'OpenClosedContext';
 
 export enum State {
   Open,
@@ -16,14 +16,14 @@ export enum State {
 }
 
 export function useOpenClosed() {
-  return useContext(Context)
+  return useContext(Context);
 }
 
 interface Props {
-  value: State
-  children: ReactNode
+  value: State;
+  children: ReactNode;
 }
 
 export function OpenClosedProvider({ value, children }: Props): ReactElement {
-  return <Context.Provider value={value}>{children}</Context.Provider>
+  return <Context.Provider value={value}>{children}</Context.Provider>;
 }

@@ -1,15 +1,15 @@
-import { useWeb3React } from "@web3-react/core";
-import { injected, gnosisSafe } from "../connectors";
-import { useEffect, useState } from "react";
-import { UAParser } from "ua-parser-js";
-import { EthereumProvider } from "../types/types";
+import { useWeb3React } from '@web3-react/core';
+import { injected, gnosisSafe } from '../connectors';
+import { useEffect, useState } from 'react';
+import { UAParser } from 'ua-parser-js';
+import { EthereumProvider } from '../types/types';
 
 const parser = new UAParser(window.navigator.userAgent);
 const { type } = parser.getDevice();
 
 export const userAgent = parser.getResult();
 
-export const isMobile = type === "mobile" || type === "tablet";
+export const isMobile = type === 'mobile' || type === 'tablet';
 
 export const IS_IN_IFRAME = false;
 
@@ -80,7 +80,7 @@ export function useInactiveListener(suppress = false) {
     if (ethereum && ethereum.on && !active && !error && !suppress) {
       const handleChainChanged = () => {
         activate(injected, undefined, true).catch((error) => {
-          console.error("Failed to activate after chain changed", error);
+          console.error('Failed to activate after chain changed', error);
         });
       };
 
@@ -93,7 +93,7 @@ export function useInactiveListener(suppress = false) {
         if (accounts.length > 0) {
           // eat errors
           activate(injected, undefined, true).catch((error) => {
-            console.error("Failed to activate after accounts changed", error);
+            console.error('Failed to activate after accounts changed', error);
           });
         }
       };
@@ -103,17 +103,17 @@ export function useInactiveListener(suppress = false) {
         activate(injected);
       };
 
-      ethereum.on("connect", handleConnect);
-      ethereum.on("chainChanged", handleChainChanged);
-      ethereum.on("accountsChanged", handleAccountsChanged);
-      ethereum.on("networkChanged", handleNetworkChanged);
+      ethereum.on('connect', handleConnect);
+      ethereum.on('chainChanged', handleChainChanged);
+      ethereum.on('accountsChanged', handleAccountsChanged);
+      ethereum.on('networkChanged', handleNetworkChanged);
 
       return () => {
         if (ethereum.removeListener) {
-          ethereum.removeListener("connect", handleConnect);
-          ethereum.removeListener("chainChanged", handleChainChanged);
-          ethereum.removeListener("accountsChanged", handleAccountsChanged);
-          ethereum.removeListener("networkChanged", handleNetworkChanged);
+          ethereum.removeListener('connect', handleConnect);
+          ethereum.removeListener('chainChanged', handleChainChanged);
+          ethereum.removeListener('accountsChanged', handleAccountsChanged);
+          ethereum.removeListener('networkChanged', handleNetworkChanged);
         }
       };
     }

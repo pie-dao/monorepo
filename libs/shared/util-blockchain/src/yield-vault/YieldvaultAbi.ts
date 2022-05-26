@@ -12,1351 +12,1351 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
+} from 'ethers';
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-} from "../common";
+} from '../common';
 
 export interface YieldvaultAbiInterface extends utils.Interface {
-  contractName: "YieldvaultAbi";
+  contractName: 'YieldvaultAbi';
 
   functions: {
-    "VERSION()": FunctionFragment;
-    "allowance(address,address)": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "auth()": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "balanceOfUnderlying(address)": FunctionFragment;
-    "baseUnit()": FunctionFragment;
-    "batchBurnBalance()": FunctionFragment;
-    "batchBurnRound()": FunctionFragment;
-    "batchBurns(uint256)": FunctionFragment;
-    "blocksPerYear()": FunctionFragment;
-    "burningFeePercent()": FunctionFragment;
-    "burningFeeReceiver()": FunctionFragment;
-    "calculateShares(uint256)": FunctionFragment;
-    "calculateUnderlying(uint256)": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "decreaseAllowance(address,uint256)": FunctionFragment;
-    "deposit(address,uint256)": FunctionFragment;
-    "depositIntoStrategy(address,uint256)": FunctionFragment;
-    "distrustStrategy(address)": FunctionFragment;
-    "enterBatchBurn(uint256)": FunctionFragment;
-    "estimatedReturn()": FunctionFragment;
-    "exchangeRate()": FunctionFragment;
-    "execBatchBurn()": FunctionFragment;
-    "exitBatchBurn()": FunctionFragment;
-    "getStrategyData(address)": FunctionFragment;
-    "getWithdrawalQueue()": FunctionFragment;
-    "harvest(address[])": FunctionFragment;
-    "harvestDelay()": FunctionFragment;
-    "harvestFeePercent()": FunctionFragment;
-    "harvestFeeReceiver()": FunctionFragment;
-    "harvestWindow()": FunctionFragment;
-    "increaseAllowance(address,uint256)": FunctionFragment;
-    "initialize(address,address,address,address)": FunctionFragment;
-    "lastHarvest()": FunctionFragment;
-    "lastHarvestExchangeRate()": FunctionFragment;
-    "lastHarvestIntervalInBlocks()": FunctionFragment;
-    "lastHarvestWindowStart()": FunctionFragment;
-    "lastHarvestWindowStartBlock()": FunctionFragment;
-    "lockedProfit()": FunctionFragment;
-    "maxLockedProfit()": FunctionFragment;
-    "name()": FunctionFragment;
-    "nextHarvestDelay()": FunctionFragment;
-    "paused()": FunctionFragment;
-    "setAuth(address)": FunctionFragment;
-    "setBlocksPerYear(uint256)": FunctionFragment;
-    "setBurningFeePercent(uint256)": FunctionFragment;
-    "setBurningFeeReceiver(address)": FunctionFragment;
-    "setDepositLimits(uint256,uint256)": FunctionFragment;
-    "setHarvestDelay(uint64)": FunctionFragment;
-    "setHarvestFeePercent(uint256)": FunctionFragment;
-    "setHarvestFeeReceiver(address)": FunctionFragment;
-    "setHarvestWindow(uint128)": FunctionFragment;
-    "setWithdrawalQueue(address[])": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "totalFloat()": FunctionFragment;
-    "totalStrategyHoldings()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "totalUnderlying()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
-    "triggerPause()": FunctionFragment;
-    "trustStrategy(address)": FunctionFragment;
-    "underlying()": FunctionFragment;
-    "underlyingDecimals()": FunctionFragment;
-    "userBatchBurnReceipts(address)": FunctionFragment;
-    "userDepositLimit()": FunctionFragment;
-    "vaultDepositLimit()": FunctionFragment;
-    "withdrawFromStrategy(address,uint256)": FunctionFragment;
-    "withdrawalQueue(uint256)": FunctionFragment;
+    'VERSION()': FunctionFragment;
+    'allowance(address,address)': FunctionFragment;
+    'approve(address,uint256)': FunctionFragment;
+    'auth()': FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
+    'balanceOfUnderlying(address)': FunctionFragment;
+    'baseUnit()': FunctionFragment;
+    'batchBurnBalance()': FunctionFragment;
+    'batchBurnRound()': FunctionFragment;
+    'batchBurns(uint256)': FunctionFragment;
+    'blocksPerYear()': FunctionFragment;
+    'burningFeePercent()': FunctionFragment;
+    'burningFeeReceiver()': FunctionFragment;
+    'calculateShares(uint256)': FunctionFragment;
+    'calculateUnderlying(uint256)': FunctionFragment;
+    'decimals()': FunctionFragment;
+    'decreaseAllowance(address,uint256)': FunctionFragment;
+    'deposit(address,uint256)': FunctionFragment;
+    'depositIntoStrategy(address,uint256)': FunctionFragment;
+    'distrustStrategy(address)': FunctionFragment;
+    'enterBatchBurn(uint256)': FunctionFragment;
+    'estimatedReturn()': FunctionFragment;
+    'exchangeRate()': FunctionFragment;
+    'execBatchBurn()': FunctionFragment;
+    'exitBatchBurn()': FunctionFragment;
+    'getStrategyData(address)': FunctionFragment;
+    'getWithdrawalQueue()': FunctionFragment;
+    'harvest(address[])': FunctionFragment;
+    'harvestDelay()': FunctionFragment;
+    'harvestFeePercent()': FunctionFragment;
+    'harvestFeeReceiver()': FunctionFragment;
+    'harvestWindow()': FunctionFragment;
+    'increaseAllowance(address,uint256)': FunctionFragment;
+    'initialize(address,address,address,address)': FunctionFragment;
+    'lastHarvest()': FunctionFragment;
+    'lastHarvestExchangeRate()': FunctionFragment;
+    'lastHarvestIntervalInBlocks()': FunctionFragment;
+    'lastHarvestWindowStart()': FunctionFragment;
+    'lastHarvestWindowStartBlock()': FunctionFragment;
+    'lockedProfit()': FunctionFragment;
+    'maxLockedProfit()': FunctionFragment;
+    'name()': FunctionFragment;
+    'nextHarvestDelay()': FunctionFragment;
+    'paused()': FunctionFragment;
+    'setAuth(address)': FunctionFragment;
+    'setBlocksPerYear(uint256)': FunctionFragment;
+    'setBurningFeePercent(uint256)': FunctionFragment;
+    'setBurningFeeReceiver(address)': FunctionFragment;
+    'setDepositLimits(uint256,uint256)': FunctionFragment;
+    'setHarvestDelay(uint64)': FunctionFragment;
+    'setHarvestFeePercent(uint256)': FunctionFragment;
+    'setHarvestFeeReceiver(address)': FunctionFragment;
+    'setHarvestWindow(uint128)': FunctionFragment;
+    'setWithdrawalQueue(address[])': FunctionFragment;
+    'symbol()': FunctionFragment;
+    'totalFloat()': FunctionFragment;
+    'totalStrategyHoldings()': FunctionFragment;
+    'totalSupply()': FunctionFragment;
+    'totalUnderlying()': FunctionFragment;
+    'transfer(address,uint256)': FunctionFragment;
+    'transferFrom(address,address,uint256)': FunctionFragment;
+    'triggerPause()': FunctionFragment;
+    'trustStrategy(address)': FunctionFragment;
+    'underlying()': FunctionFragment;
+    'underlyingDecimals()': FunctionFragment;
+    'userBatchBurnReceipts(address)': FunctionFragment;
+    'userDepositLimit()': FunctionFragment;
+    'vaultDepositLimit()': FunctionFragment;
+    'withdrawFromStrategy(address,uint256)': FunctionFragment;
+    'withdrawalQueue(uint256)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "VERSION"
-      | "VERSION()"
-      | "allowance"
-      | "allowance(address,address)"
-      | "approve"
-      | "approve(address,uint256)"
-      | "auth"
-      | "auth()"
-      | "balanceOf"
-      | "balanceOf(address)"
-      | "balanceOfUnderlying"
-      | "balanceOfUnderlying(address)"
-      | "baseUnit"
-      | "baseUnit()"
-      | "batchBurnBalance"
-      | "batchBurnBalance()"
-      | "batchBurnRound"
-      | "batchBurnRound()"
-      | "batchBurns"
-      | "batchBurns(uint256)"
-      | "blocksPerYear"
-      | "blocksPerYear()"
-      | "burningFeePercent"
-      | "burningFeePercent()"
-      | "burningFeeReceiver"
-      | "burningFeeReceiver()"
-      | "calculateShares"
-      | "calculateShares(uint256)"
-      | "calculateUnderlying"
-      | "calculateUnderlying(uint256)"
-      | "decimals"
-      | "decimals()"
-      | "decreaseAllowance"
-      | "decreaseAllowance(address,uint256)"
-      | "deposit"
-      | "deposit(address,uint256)"
-      | "depositIntoStrategy"
-      | "depositIntoStrategy(address,uint256)"
-      | "distrustStrategy"
-      | "distrustStrategy(address)"
-      | "enterBatchBurn"
-      | "enterBatchBurn(uint256)"
-      | "estimatedReturn"
-      | "estimatedReturn()"
-      | "exchangeRate"
-      | "exchangeRate()"
-      | "execBatchBurn"
-      | "execBatchBurn()"
-      | "exitBatchBurn"
-      | "exitBatchBurn()"
-      | "getStrategyData"
-      | "getStrategyData(address)"
-      | "getWithdrawalQueue"
-      | "getWithdrawalQueue()"
-      | "harvest"
-      | "harvest(address[])"
-      | "harvestDelay"
-      | "harvestDelay()"
-      | "harvestFeePercent"
-      | "harvestFeePercent()"
-      | "harvestFeeReceiver"
-      | "harvestFeeReceiver()"
-      | "harvestWindow"
-      | "harvestWindow()"
-      | "increaseAllowance"
-      | "increaseAllowance(address,uint256)"
-      | "initialize"
-      | "initialize(address,address,address,address)"
-      | "lastHarvest"
-      | "lastHarvest()"
-      | "lastHarvestExchangeRate"
-      | "lastHarvestExchangeRate()"
-      | "lastHarvestIntervalInBlocks"
-      | "lastHarvestIntervalInBlocks()"
-      | "lastHarvestWindowStart"
-      | "lastHarvestWindowStart()"
-      | "lastHarvestWindowStartBlock"
-      | "lastHarvestWindowStartBlock()"
-      | "lockedProfit"
-      | "lockedProfit()"
-      | "maxLockedProfit"
-      | "maxLockedProfit()"
-      | "name"
-      | "name()"
-      | "nextHarvestDelay"
-      | "nextHarvestDelay()"
-      | "paused"
-      | "paused()"
-      | "setAuth"
-      | "setAuth(address)"
-      | "setBlocksPerYear"
-      | "setBlocksPerYear(uint256)"
-      | "setBurningFeePercent"
-      | "setBurningFeePercent(uint256)"
-      | "setBurningFeeReceiver"
-      | "setBurningFeeReceiver(address)"
-      | "setDepositLimits"
-      | "setDepositLimits(uint256,uint256)"
-      | "setHarvestDelay"
-      | "setHarvestDelay(uint64)"
-      | "setHarvestFeePercent"
-      | "setHarvestFeePercent(uint256)"
-      | "setHarvestFeeReceiver"
-      | "setHarvestFeeReceiver(address)"
-      | "setHarvestWindow"
-      | "setHarvestWindow(uint128)"
-      | "setWithdrawalQueue"
-      | "setWithdrawalQueue(address[])"
-      | "symbol"
-      | "symbol()"
-      | "totalFloat"
-      | "totalFloat()"
-      | "totalStrategyHoldings"
-      | "totalStrategyHoldings()"
-      | "totalSupply"
-      | "totalSupply()"
-      | "totalUnderlying"
-      | "totalUnderlying()"
-      | "transfer"
-      | "transfer(address,uint256)"
-      | "transferFrom"
-      | "transferFrom(address,address,uint256)"
-      | "triggerPause"
-      | "triggerPause()"
-      | "trustStrategy"
-      | "trustStrategy(address)"
-      | "underlying"
-      | "underlying()"
-      | "underlyingDecimals"
-      | "underlyingDecimals()"
-      | "userBatchBurnReceipts"
-      | "userBatchBurnReceipts(address)"
-      | "userDepositLimit"
-      | "userDepositLimit()"
-      | "vaultDepositLimit"
-      | "vaultDepositLimit()"
-      | "withdrawFromStrategy"
-      | "withdrawFromStrategy(address,uint256)"
-      | "withdrawalQueue"
-      | "withdrawalQueue(uint256)"
+      | 'VERSION'
+      | 'VERSION()'
+      | 'allowance'
+      | 'allowance(address,address)'
+      | 'approve'
+      | 'approve(address,uint256)'
+      | 'auth'
+      | 'auth()'
+      | 'balanceOf'
+      | 'balanceOf(address)'
+      | 'balanceOfUnderlying'
+      | 'balanceOfUnderlying(address)'
+      | 'baseUnit'
+      | 'baseUnit()'
+      | 'batchBurnBalance'
+      | 'batchBurnBalance()'
+      | 'batchBurnRound'
+      | 'batchBurnRound()'
+      | 'batchBurns'
+      | 'batchBurns(uint256)'
+      | 'blocksPerYear'
+      | 'blocksPerYear()'
+      | 'burningFeePercent'
+      | 'burningFeePercent()'
+      | 'burningFeeReceiver'
+      | 'burningFeeReceiver()'
+      | 'calculateShares'
+      | 'calculateShares(uint256)'
+      | 'calculateUnderlying'
+      | 'calculateUnderlying(uint256)'
+      | 'decimals'
+      | 'decimals()'
+      | 'decreaseAllowance'
+      | 'decreaseAllowance(address,uint256)'
+      | 'deposit'
+      | 'deposit(address,uint256)'
+      | 'depositIntoStrategy'
+      | 'depositIntoStrategy(address,uint256)'
+      | 'distrustStrategy'
+      | 'distrustStrategy(address)'
+      | 'enterBatchBurn'
+      | 'enterBatchBurn(uint256)'
+      | 'estimatedReturn'
+      | 'estimatedReturn()'
+      | 'exchangeRate'
+      | 'exchangeRate()'
+      | 'execBatchBurn'
+      | 'execBatchBurn()'
+      | 'exitBatchBurn'
+      | 'exitBatchBurn()'
+      | 'getStrategyData'
+      | 'getStrategyData(address)'
+      | 'getWithdrawalQueue'
+      | 'getWithdrawalQueue()'
+      | 'harvest'
+      | 'harvest(address[])'
+      | 'harvestDelay'
+      | 'harvestDelay()'
+      | 'harvestFeePercent'
+      | 'harvestFeePercent()'
+      | 'harvestFeeReceiver'
+      | 'harvestFeeReceiver()'
+      | 'harvestWindow'
+      | 'harvestWindow()'
+      | 'increaseAllowance'
+      | 'increaseAllowance(address,uint256)'
+      | 'initialize'
+      | 'initialize(address,address,address,address)'
+      | 'lastHarvest'
+      | 'lastHarvest()'
+      | 'lastHarvestExchangeRate'
+      | 'lastHarvestExchangeRate()'
+      | 'lastHarvestIntervalInBlocks'
+      | 'lastHarvestIntervalInBlocks()'
+      | 'lastHarvestWindowStart'
+      | 'lastHarvestWindowStart()'
+      | 'lastHarvestWindowStartBlock'
+      | 'lastHarvestWindowStartBlock()'
+      | 'lockedProfit'
+      | 'lockedProfit()'
+      | 'maxLockedProfit'
+      | 'maxLockedProfit()'
+      | 'name'
+      | 'name()'
+      | 'nextHarvestDelay'
+      | 'nextHarvestDelay()'
+      | 'paused'
+      | 'paused()'
+      | 'setAuth'
+      | 'setAuth(address)'
+      | 'setBlocksPerYear'
+      | 'setBlocksPerYear(uint256)'
+      | 'setBurningFeePercent'
+      | 'setBurningFeePercent(uint256)'
+      | 'setBurningFeeReceiver'
+      | 'setBurningFeeReceiver(address)'
+      | 'setDepositLimits'
+      | 'setDepositLimits(uint256,uint256)'
+      | 'setHarvestDelay'
+      | 'setHarvestDelay(uint64)'
+      | 'setHarvestFeePercent'
+      | 'setHarvestFeePercent(uint256)'
+      | 'setHarvestFeeReceiver'
+      | 'setHarvestFeeReceiver(address)'
+      | 'setHarvestWindow'
+      | 'setHarvestWindow(uint128)'
+      | 'setWithdrawalQueue'
+      | 'setWithdrawalQueue(address[])'
+      | 'symbol'
+      | 'symbol()'
+      | 'totalFloat'
+      | 'totalFloat()'
+      | 'totalStrategyHoldings'
+      | 'totalStrategyHoldings()'
+      | 'totalSupply'
+      | 'totalSupply()'
+      | 'totalUnderlying'
+      | 'totalUnderlying()'
+      | 'transfer'
+      | 'transfer(address,uint256)'
+      | 'transferFrom'
+      | 'transferFrom(address,address,uint256)'
+      | 'triggerPause'
+      | 'triggerPause()'
+      | 'trustStrategy'
+      | 'trustStrategy(address)'
+      | 'underlying'
+      | 'underlying()'
+      | 'underlyingDecimals'
+      | 'underlyingDecimals()'
+      | 'userBatchBurnReceipts'
+      | 'userBatchBurnReceipts(address)'
+      | 'userDepositLimit'
+      | 'userDepositLimit()'
+      | 'vaultDepositLimit'
+      | 'vaultDepositLimit()'
+      | 'withdrawFromStrategy'
+      | 'withdrawFromStrategy(address,uint256)'
+      | 'withdrawalQueue'
+      | 'withdrawalQueue(uint256)',
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "VERSION", values?: undefined): string;
-  encodeFunctionData(functionFragment: "VERSION()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'VERSION', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'VERSION()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
+    functionFragment: 'allowance',
+    values: [string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "allowance(address,address)",
-    values: [string, string]
+    functionFragment: 'allowance(address,address)',
+    values: [string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
+    functionFragment: 'approve',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "approve(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'approve(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "auth", values?: undefined): string;
-  encodeFunctionData(functionFragment: "auth()", values?: undefined): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: 'auth', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'auth()', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "balanceOf(address)",
-    values: [string]
+    functionFragment: 'balanceOf(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "balanceOfUnderlying",
-    values: [string]
+    functionFragment: 'balanceOfUnderlying',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "balanceOfUnderlying(address)",
-    values: [string]
+    functionFragment: 'balanceOfUnderlying(address)',
+    values: [string],
   ): string;
-  encodeFunctionData(functionFragment: "baseUnit", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'baseUnit', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "baseUnit()",
-    values?: undefined
+    functionFragment: 'baseUnit()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "batchBurnBalance",
-    values?: undefined
+    functionFragment: 'batchBurnBalance',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "batchBurnBalance()",
-    values?: undefined
+    functionFragment: 'batchBurnBalance()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "batchBurnRound",
-    values?: undefined
+    functionFragment: 'batchBurnRound',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "batchBurnRound()",
-    values?: undefined
+    functionFragment: 'batchBurnRound()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "batchBurns",
-    values: [BigNumberish]
+    functionFragment: 'batchBurns',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "batchBurns(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'batchBurns(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "blocksPerYear",
-    values?: undefined
+    functionFragment: 'blocksPerYear',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "blocksPerYear()",
-    values?: undefined
+    functionFragment: 'blocksPerYear()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "burningFeePercent",
-    values?: undefined
+    functionFragment: 'burningFeePercent',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "burningFeePercent()",
-    values?: undefined
+    functionFragment: 'burningFeePercent()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "burningFeeReceiver",
-    values?: undefined
+    functionFragment: 'burningFeeReceiver',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "burningFeeReceiver()",
-    values?: undefined
+    functionFragment: 'burningFeeReceiver()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "calculateShares",
-    values: [BigNumberish]
+    functionFragment: 'calculateShares',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calculateShares(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'calculateShares(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calculateUnderlying",
-    values: [BigNumberish]
+    functionFragment: 'calculateUnderlying',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calculateUnderlying(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'calculateUnderlying(uint256)',
+    values: [BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "decimals()",
-    values?: undefined
+    functionFragment: 'decimals()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "decreaseAllowance",
-    values: [string, BigNumberish]
+    functionFragment: 'decreaseAllowance',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "decreaseAllowance(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'decreaseAllowance(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit",
-    values: [string, BigNumberish]
+    functionFragment: 'deposit',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "deposit(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'deposit(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "depositIntoStrategy",
-    values: [string, BigNumberish]
+    functionFragment: 'depositIntoStrategy',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "depositIntoStrategy(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'depositIntoStrategy(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "distrustStrategy",
-    values: [string]
+    functionFragment: 'distrustStrategy',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "distrustStrategy(address)",
-    values: [string]
+    functionFragment: 'distrustStrategy(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "enterBatchBurn",
-    values: [BigNumberish]
+    functionFragment: 'enterBatchBurn',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "enterBatchBurn(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'enterBatchBurn(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "estimatedReturn",
-    values?: undefined
+    functionFragment: 'estimatedReturn',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "estimatedReturn()",
-    values?: undefined
+    functionFragment: 'estimatedReturn()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "exchangeRate",
-    values?: undefined
+    functionFragment: 'exchangeRate',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "exchangeRate()",
-    values?: undefined
+    functionFragment: 'exchangeRate()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "execBatchBurn",
-    values?: undefined
+    functionFragment: 'execBatchBurn',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "execBatchBurn()",
-    values?: undefined
+    functionFragment: 'execBatchBurn()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "exitBatchBurn",
-    values?: undefined
+    functionFragment: 'exitBatchBurn',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "exitBatchBurn()",
-    values?: undefined
+    functionFragment: 'exitBatchBurn()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getStrategyData",
-    values: [string]
+    functionFragment: 'getStrategyData',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "getStrategyData(address)",
-    values: [string]
+    functionFragment: 'getStrategyData(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "getWithdrawalQueue",
-    values?: undefined
+    functionFragment: 'getWithdrawalQueue',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getWithdrawalQueue()",
-    values?: undefined
+    functionFragment: 'getWithdrawalQueue()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "harvest", values: [string[]]): string;
+  encodeFunctionData(functionFragment: 'harvest', values: [string[]]): string;
   encodeFunctionData(
-    functionFragment: "harvest(address[])",
-    values: [string[]]
+    functionFragment: 'harvest(address[])',
+    values: [string[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestDelay",
-    values?: undefined
+    functionFragment: 'harvestDelay',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestDelay()",
-    values?: undefined
+    functionFragment: 'harvestDelay()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestFeePercent",
-    values?: undefined
+    functionFragment: 'harvestFeePercent',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestFeePercent()",
-    values?: undefined
+    functionFragment: 'harvestFeePercent()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestFeeReceiver",
-    values?: undefined
+    functionFragment: 'harvestFeeReceiver',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestFeeReceiver()",
-    values?: undefined
+    functionFragment: 'harvestFeeReceiver()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestWindow",
-    values?: undefined
+    functionFragment: 'harvestWindow',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "harvestWindow()",
-    values?: undefined
+    functionFragment: 'harvestWindow()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "increaseAllowance",
-    values: [string, BigNumberish]
+    functionFragment: 'increaseAllowance',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "increaseAllowance(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'increaseAllowance(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values: [string, string, string, string]
+    functionFragment: 'initialize',
+    values: [string, string, string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize(address,address,address,address)",
-    values: [string, string, string, string]
+    functionFragment: 'initialize(address,address,address,address)',
+    values: [string, string, string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvest",
-    values?: undefined
+    functionFragment: 'lastHarvest',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvest()",
-    values?: undefined
+    functionFragment: 'lastHarvest()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestExchangeRate",
-    values?: undefined
+    functionFragment: 'lastHarvestExchangeRate',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestExchangeRate()",
-    values?: undefined
+    functionFragment: 'lastHarvestExchangeRate()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestIntervalInBlocks",
-    values?: undefined
+    functionFragment: 'lastHarvestIntervalInBlocks',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestIntervalInBlocks()",
-    values?: undefined
+    functionFragment: 'lastHarvestIntervalInBlocks()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestWindowStart",
-    values?: undefined
+    functionFragment: 'lastHarvestWindowStart',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestWindowStart()",
-    values?: undefined
+    functionFragment: 'lastHarvestWindowStart()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestWindowStartBlock",
-    values?: undefined
+    functionFragment: 'lastHarvestWindowStartBlock',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lastHarvestWindowStartBlock()",
-    values?: undefined
+    functionFragment: 'lastHarvestWindowStartBlock()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lockedProfit",
-    values?: undefined
+    functionFragment: 'lockedProfit',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "lockedProfit()",
-    values?: undefined
+    functionFragment: 'lockedProfit()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "maxLockedProfit",
-    values?: undefined
+    functionFragment: 'maxLockedProfit',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "maxLockedProfit()",
-    values?: undefined
+    functionFragment: 'maxLockedProfit()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "name()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'name', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'name()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "nextHarvestDelay",
-    values?: undefined
+    functionFragment: 'nextHarvestDelay',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "nextHarvestDelay()",
-    values?: undefined
+    functionFragment: 'nextHarvestDelay()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
-  encodeFunctionData(functionFragment: "paused()", values?: undefined): string;
-  encodeFunctionData(functionFragment: "setAuth", values: [string]): string;
+  encodeFunctionData(functionFragment: 'paused', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'paused()', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'setAuth', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "setAuth(address)",
-    values: [string]
+    functionFragment: 'setAuth(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setBlocksPerYear",
-    values: [BigNumberish]
+    functionFragment: 'setBlocksPerYear',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setBlocksPerYear(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setBlocksPerYear(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setBurningFeePercent",
-    values: [BigNumberish]
+    functionFragment: 'setBurningFeePercent',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setBurningFeePercent(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setBurningFeePercent(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setBurningFeeReceiver",
-    values: [string]
+    functionFragment: 'setBurningFeeReceiver',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setBurningFeeReceiver(address)",
-    values: [string]
+    functionFragment: 'setBurningFeeReceiver(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setDepositLimits",
-    values: [BigNumberish, BigNumberish]
+    functionFragment: 'setDepositLimits',
+    values: [BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setDepositLimits(uint256,uint256)",
-    values: [BigNumberish, BigNumberish]
+    functionFragment: 'setDepositLimits(uint256,uint256)',
+    values: [BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestDelay",
-    values: [BigNumberish]
+    functionFragment: 'setHarvestDelay',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestDelay(uint64)",
-    values: [BigNumberish]
+    functionFragment: 'setHarvestDelay(uint64)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestFeePercent",
-    values: [BigNumberish]
+    functionFragment: 'setHarvestFeePercent',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestFeePercent(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setHarvestFeePercent(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestFeeReceiver",
-    values: [string]
+    functionFragment: 'setHarvestFeeReceiver',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestFeeReceiver(address)",
-    values: [string]
+    functionFragment: 'setHarvestFeeReceiver(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestWindow",
-    values: [BigNumberish]
+    functionFragment: 'setHarvestWindow',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setHarvestWindow(uint128)",
-    values: [BigNumberish]
+    functionFragment: 'setHarvestWindow(uint128)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setWithdrawalQueue",
-    values: [string[]]
+    functionFragment: 'setWithdrawalQueue',
+    values: [string[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "setWithdrawalQueue(address[])",
-    values: [string[]]
+    functionFragment: 'setWithdrawalQueue(address[])',
+    values: [string[]],
   ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'symbol', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'symbol()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "totalFloat",
-    values?: undefined
+    functionFragment: 'totalFloat',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalFloat()",
-    values?: undefined
+    functionFragment: 'totalFloat()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalStrategyHoldings",
-    values?: undefined
+    functionFragment: 'totalStrategyHoldings',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalStrategyHoldings()",
-    values?: undefined
+    functionFragment: 'totalStrategyHoldings()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
+    functionFragment: 'totalSupply',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply()",
-    values?: undefined
+    functionFragment: 'totalSupply()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalUnderlying",
-    values?: undefined
+    functionFragment: 'totalUnderlying',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalUnderlying()",
-    values?: undefined
+    functionFragment: 'totalUnderlying()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
+    functionFragment: 'transfer',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'transfer(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
+    functionFragment: 'transferFrom',
+    values: [string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom(address,address,uint256)",
-    values: [string, string, BigNumberish]
+    functionFragment: 'transferFrom(address,address,uint256)',
+    values: [string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "triggerPause",
-    values?: undefined
+    functionFragment: 'triggerPause',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "triggerPause()",
-    values?: undefined
+    functionFragment: 'triggerPause()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "trustStrategy",
-    values: [string]
+    functionFragment: 'trustStrategy',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "trustStrategy(address)",
-    values: [string]
+    functionFragment: 'trustStrategy(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "underlying",
-    values?: undefined
+    functionFragment: 'underlying',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "underlying()",
-    values?: undefined
+    functionFragment: 'underlying()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "underlyingDecimals",
-    values?: undefined
+    functionFragment: 'underlyingDecimals',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "underlyingDecimals()",
-    values?: undefined
+    functionFragment: 'underlyingDecimals()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "userBatchBurnReceipts",
-    values: [string]
+    functionFragment: 'userBatchBurnReceipts',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "userBatchBurnReceipts(address)",
-    values: [string]
+    functionFragment: 'userBatchBurnReceipts(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "userDepositLimit",
-    values?: undefined
+    functionFragment: 'userDepositLimit',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "userDepositLimit()",
-    values?: undefined
+    functionFragment: 'userDepositLimit()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "vaultDepositLimit",
-    values?: undefined
+    functionFragment: 'vaultDepositLimit',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "vaultDepositLimit()",
-    values?: undefined
+    functionFragment: 'vaultDepositLimit()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawFromStrategy",
-    values: [string, BigNumberish]
+    functionFragment: 'withdrawFromStrategy',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawFromStrategy(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'withdrawFromStrategy(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawalQueue",
-    values: [BigNumberish]
+    functionFragment: 'withdrawalQueue',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "withdrawalQueue(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'withdrawalQueue(uint256)',
+    values: [BigNumberish],
   ): string;
 
-  decodeFunctionResult(functionFragment: "VERSION", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "VERSION()", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'VERSION', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'VERSION()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "allowance(address,address)",
-    data: BytesLike
+    functionFragment: 'allowance(address,address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "approve(address,uint256)",
-    data: BytesLike
+    functionFragment: 'approve(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "auth", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "auth()", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'auth', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'auth()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "balanceOf(address)",
-    data: BytesLike
+    functionFragment: 'balanceOf(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "balanceOfUnderlying",
-    data: BytesLike
+    functionFragment: 'balanceOfUnderlying',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "balanceOfUnderlying(address)",
-    data: BytesLike
+    functionFragment: 'balanceOfUnderlying(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "baseUnit", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "baseUnit()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'baseUnit', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'baseUnit()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "batchBurnBalance",
-    data: BytesLike
+    functionFragment: 'batchBurnBalance',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "batchBurnBalance()",
-    data: BytesLike
+    functionFragment: 'batchBurnBalance()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "batchBurnRound",
-    data: BytesLike
+    functionFragment: 'batchBurnRound',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "batchBurnRound()",
-    data: BytesLike
+    functionFragment: 'batchBurnRound()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "batchBurns", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'batchBurns', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "batchBurns(uint256)",
-    data: BytesLike
+    functionFragment: 'batchBurns(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "blocksPerYear",
-    data: BytesLike
+    functionFragment: 'blocksPerYear',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "blocksPerYear()",
-    data: BytesLike
+    functionFragment: 'blocksPerYear()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "burningFeePercent",
-    data: BytesLike
+    functionFragment: 'burningFeePercent',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "burningFeePercent()",
-    data: BytesLike
+    functionFragment: 'burningFeePercent()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "burningFeeReceiver",
-    data: BytesLike
+    functionFragment: 'burningFeeReceiver',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "burningFeeReceiver()",
-    data: BytesLike
+    functionFragment: 'burningFeeReceiver()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calculateShares",
-    data: BytesLike
+    functionFragment: 'calculateShares',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calculateShares(uint256)",
-    data: BytesLike
+    functionFragment: 'calculateShares(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calculateUnderlying",
-    data: BytesLike
+    functionFragment: 'calculateUnderlying',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calculateUnderlying(uint256)",
-    data: BytesLike
+    functionFragment: 'calculateUnderlying(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "decreaseAllowance",
-    data: BytesLike
+    functionFragment: 'decreaseAllowance',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "decreaseAllowance(address,uint256)",
-    data: BytesLike
+    functionFragment: 'decreaseAllowance(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'deposit', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "deposit(address,uint256)",
-    data: BytesLike
+    functionFragment: 'deposit(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositIntoStrategy",
-    data: BytesLike
+    functionFragment: 'depositIntoStrategy',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "depositIntoStrategy(address,uint256)",
-    data: BytesLike
+    functionFragment: 'depositIntoStrategy(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "distrustStrategy",
-    data: BytesLike
+    functionFragment: 'distrustStrategy',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "distrustStrategy(address)",
-    data: BytesLike
+    functionFragment: 'distrustStrategy(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "enterBatchBurn",
-    data: BytesLike
+    functionFragment: 'enterBatchBurn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "enterBatchBurn(uint256)",
-    data: BytesLike
+    functionFragment: 'enterBatchBurn(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "estimatedReturn",
-    data: BytesLike
+    functionFragment: 'estimatedReturn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "estimatedReturn()",
-    data: BytesLike
+    functionFragment: 'estimatedReturn()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exchangeRate",
-    data: BytesLike
+    functionFragment: 'exchangeRate',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exchangeRate()",
-    data: BytesLike
+    functionFragment: 'exchangeRate()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "execBatchBurn",
-    data: BytesLike
+    functionFragment: 'execBatchBurn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "execBatchBurn()",
-    data: BytesLike
+    functionFragment: 'execBatchBurn()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitBatchBurn",
-    data: BytesLike
+    functionFragment: 'exitBatchBurn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitBatchBurn()",
-    data: BytesLike
+    functionFragment: 'exitBatchBurn()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getStrategyData",
-    data: BytesLike
+    functionFragment: 'getStrategyData',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getStrategyData(address)",
-    data: BytesLike
+    functionFragment: 'getStrategyData(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getWithdrawalQueue",
-    data: BytesLike
+    functionFragment: 'getWithdrawalQueue',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getWithdrawalQueue()",
-    data: BytesLike
+    functionFragment: 'getWithdrawalQueue()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "harvest", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'harvest', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "harvest(address[])",
-    data: BytesLike
+    functionFragment: 'harvest(address[])',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestDelay",
-    data: BytesLike
+    functionFragment: 'harvestDelay',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestDelay()",
-    data: BytesLike
+    functionFragment: 'harvestDelay()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestFeePercent",
-    data: BytesLike
+    functionFragment: 'harvestFeePercent',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestFeePercent()",
-    data: BytesLike
+    functionFragment: 'harvestFeePercent()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestFeeReceiver",
-    data: BytesLike
+    functionFragment: 'harvestFeeReceiver',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestFeeReceiver()",
-    data: BytesLike
+    functionFragment: 'harvestFeeReceiver()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestWindow",
-    data: BytesLike
+    functionFragment: 'harvestWindow',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "harvestWindow()",
-    data: BytesLike
+    functionFragment: 'harvestWindow()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "increaseAllowance",
-    data: BytesLike
+    functionFragment: 'increaseAllowance',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "increaseAllowance(address,uint256)",
-    data: BytesLike
+    functionFragment: 'increaseAllowance(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "initialize(address,address,address,address)",
-    data: BytesLike
+    functionFragment: 'initialize(address,address,address,address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvest",
-    data: BytesLike
+    functionFragment: 'lastHarvest',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvest()",
-    data: BytesLike
+    functionFragment: 'lastHarvest()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestExchangeRate",
-    data: BytesLike
+    functionFragment: 'lastHarvestExchangeRate',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestExchangeRate()",
-    data: BytesLike
+    functionFragment: 'lastHarvestExchangeRate()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestIntervalInBlocks",
-    data: BytesLike
+    functionFragment: 'lastHarvestIntervalInBlocks',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestIntervalInBlocks()",
-    data: BytesLike
+    functionFragment: 'lastHarvestIntervalInBlocks()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestWindowStart",
-    data: BytesLike
+    functionFragment: 'lastHarvestWindowStart',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestWindowStart()",
-    data: BytesLike
+    functionFragment: 'lastHarvestWindowStart()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestWindowStartBlock",
-    data: BytesLike
+    functionFragment: 'lastHarvestWindowStartBlock',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lastHarvestWindowStartBlock()",
-    data: BytesLike
+    functionFragment: 'lastHarvestWindowStartBlock()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lockedProfit",
-    data: BytesLike
+    functionFragment: 'lockedProfit',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "lockedProfit()",
-    data: BytesLike
+    functionFragment: 'lockedProfit()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "maxLockedProfit",
-    data: BytesLike
+    functionFragment: 'maxLockedProfit',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "maxLockedProfit()",
-    data: BytesLike
+    functionFragment: 'maxLockedProfit()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "name()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "nextHarvestDelay",
-    data: BytesLike
+    functionFragment: 'nextHarvestDelay',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "nextHarvestDelay()",
-    data: BytesLike
+    functionFragment: 'nextHarvestDelay()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "paused()", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "setAuth", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'paused', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'paused()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setAuth', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setAuth(address)",
-    data: BytesLike
+    functionFragment: 'setAuth(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBlocksPerYear",
-    data: BytesLike
+    functionFragment: 'setBlocksPerYear',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBlocksPerYear(uint256)",
-    data: BytesLike
+    functionFragment: 'setBlocksPerYear(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBurningFeePercent",
-    data: BytesLike
+    functionFragment: 'setBurningFeePercent',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBurningFeePercent(uint256)",
-    data: BytesLike
+    functionFragment: 'setBurningFeePercent(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBurningFeeReceiver",
-    data: BytesLike
+    functionFragment: 'setBurningFeeReceiver',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setBurningFeeReceiver(address)",
-    data: BytesLike
+    functionFragment: 'setBurningFeeReceiver(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setDepositLimits",
-    data: BytesLike
+    functionFragment: 'setDepositLimits',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setDepositLimits(uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'setDepositLimits(uint256,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestDelay",
-    data: BytesLike
+    functionFragment: 'setHarvestDelay',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestDelay(uint64)",
-    data: BytesLike
+    functionFragment: 'setHarvestDelay(uint64)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestFeePercent",
-    data: BytesLike
+    functionFragment: 'setHarvestFeePercent',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestFeePercent(uint256)",
-    data: BytesLike
+    functionFragment: 'setHarvestFeePercent(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestFeeReceiver",
-    data: BytesLike
+    functionFragment: 'setHarvestFeeReceiver',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestFeeReceiver(address)",
-    data: BytesLike
+    functionFragment: 'setHarvestFeeReceiver(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestWindow",
-    data: BytesLike
+    functionFragment: 'setHarvestWindow',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setHarvestWindow(uint128)",
-    data: BytesLike
+    functionFragment: 'setHarvestWindow(uint128)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setWithdrawalQueue",
-    data: BytesLike
+    functionFragment: 'setWithdrawalQueue',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setWithdrawalQueue(address[])",
-    data: BytesLike
+    functionFragment: 'setWithdrawalQueue(address[])',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "symbol()", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "totalFloat", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'totalFloat', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "totalFloat()",
-    data: BytesLike
+    functionFragment: 'totalFloat()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalStrategyHoldings",
-    data: BytesLike
+    functionFragment: 'totalStrategyHoldings',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalStrategyHoldings()",
-    data: BytesLike
+    functionFragment: 'totalStrategyHoldings()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
+    functionFragment: 'totalSupply',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply()",
-    data: BytesLike
+    functionFragment: 'totalSupply()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalUnderlying",
-    data: BytesLike
+    functionFragment: 'totalUnderlying',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalUnderlying()",
-    data: BytesLike
+    functionFragment: 'totalUnderlying()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transfer(address,uint256)",
-    data: BytesLike
+    functionFragment: 'transfer(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
+    functionFragment: 'transferFrom',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferFrom(address,address,uint256)",
-    data: BytesLike
+    functionFragment: 'transferFrom(address,address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "triggerPause",
-    data: BytesLike
+    functionFragment: 'triggerPause',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "triggerPause()",
-    data: BytesLike
+    functionFragment: 'triggerPause()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "trustStrategy",
-    data: BytesLike
+    functionFragment: 'trustStrategy',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "trustStrategy(address)",
-    data: BytesLike
+    functionFragment: 'trustStrategy(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "underlying", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'underlying', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "underlying()",
-    data: BytesLike
+    functionFragment: 'underlying()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "underlyingDecimals",
-    data: BytesLike
+    functionFragment: 'underlyingDecimals',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "underlyingDecimals()",
-    data: BytesLike
+    functionFragment: 'underlyingDecimals()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "userBatchBurnReceipts",
-    data: BytesLike
+    functionFragment: 'userBatchBurnReceipts',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "userBatchBurnReceipts(address)",
-    data: BytesLike
+    functionFragment: 'userBatchBurnReceipts(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "userDepositLimit",
-    data: BytesLike
+    functionFragment: 'userDepositLimit',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "userDepositLimit()",
-    data: BytesLike
+    functionFragment: 'userDepositLimit()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "vaultDepositLimit",
-    data: BytesLike
+    functionFragment: 'vaultDepositLimit',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "vaultDepositLimit()",
-    data: BytesLike
+    functionFragment: 'vaultDepositLimit()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawFromStrategy",
-    data: BytesLike
+    functionFragment: 'withdrawFromStrategy',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawFromStrategy(address,uint256)",
-    data: BytesLike
+    functionFragment: 'withdrawFromStrategy(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawalQueue",
-    data: BytesLike
+    functionFragment: 'withdrawalQueue',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "withdrawalQueue(uint256)",
-    data: BytesLike
+    functionFragment: 'withdrawalQueue(uint256)',
+    data: BytesLike,
   ): Result;
 
   events: {
-    "Approval(address,address,uint256)": EventFragment;
-    "AuthUpdated(address)": EventFragment;
-    "BurningFeePercentUpdated(uint256)": EventFragment;
-    "BurningFeeReceiverUpdated(address)": EventFragment;
-    "Deposit(address,address,uint256)": EventFragment;
-    "DepositLimitsUpdated(uint256,uint256)": EventFragment;
-    "EnterBatchBurn(uint256,address,uint256)": EventFragment;
-    "ExecuteBatchBurn(uint256,address,uint256,uint256)": EventFragment;
-    "ExitBatchBurn(uint256,address,uint256)": EventFragment;
-    "Harvest(address,address[])": EventFragment;
-    "HarvestDelayUpdateScheduled(uint64)": EventFragment;
-    "HarvestDelayUpdated(address,uint64)": EventFragment;
-    "HarvestFeePercentUpdated(uint256)": EventFragment;
-    "HarvestFeeReceiverUpdated(address)": EventFragment;
-    "HarvestWindowUpdated(uint128)": EventFragment;
-    "Paused(address)": EventFragment;
-    "StrategyDeposit(address,address,uint256)": EventFragment;
-    "StrategyDistrusted(address)": EventFragment;
-    "StrategyTrusted(address)": EventFragment;
-    "StrategyWithdrawal(address,address,uint256)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
-    "Unpaused(address)": EventFragment;
-    "WithdrawalQueueSet(address[])": EventFragment;
+    'Approval(address,address,uint256)': EventFragment;
+    'AuthUpdated(address)': EventFragment;
+    'BurningFeePercentUpdated(uint256)': EventFragment;
+    'BurningFeeReceiverUpdated(address)': EventFragment;
+    'Deposit(address,address,uint256)': EventFragment;
+    'DepositLimitsUpdated(uint256,uint256)': EventFragment;
+    'EnterBatchBurn(uint256,address,uint256)': EventFragment;
+    'ExecuteBatchBurn(uint256,address,uint256,uint256)': EventFragment;
+    'ExitBatchBurn(uint256,address,uint256)': EventFragment;
+    'Harvest(address,address[])': EventFragment;
+    'HarvestDelayUpdateScheduled(uint64)': EventFragment;
+    'HarvestDelayUpdated(address,uint64)': EventFragment;
+    'HarvestFeePercentUpdated(uint256)': EventFragment;
+    'HarvestFeeReceiverUpdated(address)': EventFragment;
+    'HarvestWindowUpdated(uint128)': EventFragment;
+    'Paused(address)': EventFragment;
+    'StrategyDeposit(address,address,uint256)': EventFragment;
+    'StrategyDistrusted(address)': EventFragment;
+    'StrategyTrusted(address)': EventFragment;
+    'StrategyWithdrawal(address,address,uint256)': EventFragment;
+    'Transfer(address,address,uint256)': EventFragment;
+    'Unpaused(address)': EventFragment;
+    'WithdrawalQueueSet(address[])': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Approval'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Approval(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Approval(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AuthUpdated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AuthUpdated(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BurningFeePercentUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AuthUpdated'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AuthUpdated(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BurningFeePercentUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "BurningFeePercentUpdated(uint256)"
+    nameOrSignatureOrTopic: 'BurningFeePercentUpdated(uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "BurningFeeReceiverUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'BurningFeeReceiverUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "BurningFeeReceiverUpdated(address)"
+    nameOrSignatureOrTopic: 'BurningFeeReceiverUpdated(address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Deposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Deposit'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Deposit(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Deposit(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "DepositLimitsUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'DepositLimitsUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "DepositLimitsUpdated(uint256,uint256)"
+    nameOrSignatureOrTopic: 'DepositLimitsUpdated(uint256,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "EnterBatchBurn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'EnterBatchBurn'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "EnterBatchBurn(uint256,address,uint256)"
+    nameOrSignatureOrTopic: 'EnterBatchBurn(uint256,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExecuteBatchBurn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ExecuteBatchBurn'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "ExecuteBatchBurn(uint256,address,uint256,uint256)"
+    nameOrSignatureOrTopic: 'ExecuteBatchBurn(uint256,address,uint256,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExitBatchBurn"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ExitBatchBurn'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "ExitBatchBurn(uint256,address,uint256)"
+    nameOrSignatureOrTopic: 'ExitBatchBurn(uint256,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Harvest"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Harvest(address,address[])"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Harvest'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Harvest(address,address[])'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "HarvestDelayUpdateScheduled"
+    nameOrSignatureOrTopic: 'HarvestDelayUpdateScheduled',
   ): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "HarvestDelayUpdateScheduled(uint64)"
+    nameOrSignatureOrTopic: 'HarvestDelayUpdateScheduled(uint64)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "HarvestDelayUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'HarvestDelayUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "HarvestDelayUpdated(address,uint64)"
+    nameOrSignatureOrTopic: 'HarvestDelayUpdated(address,uint64)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "HarvestFeePercentUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'HarvestFeePercentUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "HarvestFeePercentUpdated(uint256)"
+    nameOrSignatureOrTopic: 'HarvestFeePercentUpdated(uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "HarvestFeeReceiverUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'HarvestFeeReceiverUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "HarvestFeeReceiverUpdated(address)"
+    nameOrSignatureOrTopic: 'HarvestFeeReceiverUpdated(address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "HarvestWindowUpdated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'HarvestWindowUpdated'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "HarvestWindowUpdated(uint128)"
+    nameOrSignatureOrTopic: 'HarvestWindowUpdated(uint128)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Paused(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "StrategyDeposit"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Paused'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Paused(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'StrategyDeposit'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "StrategyDeposit(address,address,uint256)"
+    nameOrSignatureOrTopic: 'StrategyDeposit(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "StrategyDistrusted"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'StrategyDistrusted'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "StrategyDistrusted(address)"
+    nameOrSignatureOrTopic: 'StrategyDistrusted(address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "StrategyTrusted"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "StrategyTrusted(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "StrategyWithdrawal"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'StrategyTrusted'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'StrategyTrusted(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'StrategyWithdrawal'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "StrategyWithdrawal(address,address,uint256)"
+    nameOrSignatureOrTopic: 'StrategyWithdrawal(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Transfer(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Transfer(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Unpaused(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "WithdrawalQueueSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Unpaused'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Unpaused(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'WithdrawalQueueSet'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "WithdrawalQueueSet(address[])"
+    nameOrSignatureOrTopic: 'WithdrawalQueueSet(address[])',
   ): EventFragment;
 }
 
@@ -1611,7 +1611,7 @@ export type WithdrawalQueueSetEventFilter =
   TypedEventFilter<WithdrawalQueueSetEvent>;
 
 export interface YieldvaultAbi extends BaseContract {
-  contractName: "YieldvaultAbi";
+  contractName: 'YieldvaultAbi';
 
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -1622,15 +1622,15 @@ export interface YieldvaultAbi extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -1641,68 +1641,68 @@ export interface YieldvaultAbi extends BaseContract {
   functions: {
     VERSION(overrides?: CallOverrides): Promise<[string]>;
 
-    "VERSION()"(overrides?: CallOverrides): Promise<[string]>;
+    'VERSION()'(overrides?: CallOverrides): Promise<[string]>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     auth(overrides?: CallOverrides): Promise<[string]>;
 
-    "auth()"(overrides?: CallOverrides): Promise<[string]>;
+    'auth()'(overrides?: CallOverrides): Promise<[string]>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     balanceOfUnderlying(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "balanceOfUnderlying(address)"(
+    'balanceOfUnderlying(address)'(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     baseUnit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "baseUnit()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'baseUnit()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     batchBurnBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "batchBurnBalance()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'batchBurnBalance()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     batchBurnRound(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "batchBurnRound()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'batchBurnRound()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     batchBurns(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & {
         totalShares: BigNumber;
@@ -1710,9 +1710,9 @@ export interface YieldvaultAbi extends BaseContract {
       }
     >;
 
-    "batchBurns(uint256)"(
+    'batchBurns(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & {
         totalShares: BigNumber;
@@ -1722,170 +1722,170 @@ export interface YieldvaultAbi extends BaseContract {
 
     blocksPerYear(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "blocksPerYear()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'blocksPerYear()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     burningFeePercent(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "burningFeePercent()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'burningFeePercent()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     burningFeeReceiver(overrides?: CallOverrides): Promise<[string]>;
 
-    "burningFeeReceiver()"(overrides?: CallOverrides): Promise<[string]>;
+    'burningFeeReceiver()'(overrides?: CallOverrides): Promise<[string]>;
 
     calculateShares(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calculateShares(uint256)"(
+    'calculateShares(uint256)'(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     calculateUnderlying(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calculateUnderlying(uint256)"(
+    'calculateUnderlying(uint256)'(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<[number]>;
+    'decimals()'(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "decreaseAllowance(address,uint256)"(
+    'decreaseAllowance(address,uint256)'(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     deposit(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "deposit(address,uint256)"(
+    'deposit(address,uint256)'(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     depositIntoStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "depositIntoStrategy(address,uint256)"(
+    'depositIntoStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     distrustStrategy(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "distrustStrategy(address)"(
+    'distrustStrategy(address)'(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     enterBatchBurn(
       shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "enterBatchBurn(uint256)"(
+    'enterBatchBurn(uint256)'(
       shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     estimatedReturn(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "estimatedReturn()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'estimatedReturn()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     exchangeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "exchangeRate()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'exchangeRate()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     execBatchBurn(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "execBatchBurn()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'execBatchBurn()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     exitBatchBurn(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitBatchBurn()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'exitBatchBurn()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     getStrategyData(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean, BigNumber] & { trusted: boolean; balance: BigNumber }>;
 
-    "getStrategyData(address)"(
+    'getStrategyData(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean, BigNumber] & { trusted: boolean; balance: BigNumber }>;
 
     getWithdrawalQueue(overrides?: CallOverrides): Promise<[string[]]>;
 
-    "getWithdrawalQueue()"(overrides?: CallOverrides): Promise<[string[]]>;
+    'getWithdrawalQueue()'(overrides?: CallOverrides): Promise<[string[]]>;
 
     harvest(
       strategies: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "harvest(address[])"(
+    'harvest(address[])'(
       strategies: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     harvestDelay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "harvestDelay()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'harvestDelay()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     harvestFeePercent(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "harvestFeePercent()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'harvestFeePercent()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     harvestFeeReceiver(overrides?: CallOverrides): Promise<[string]>;
 
-    "harvestFeeReceiver()"(overrides?: CallOverrides): Promise<[string]>;
+    'harvestFeeReceiver()'(overrides?: CallOverrides): Promise<[string]>;
 
     harvestWindow(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "harvestWindow()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'harvestWindow()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "increaseAllowance(address,uint256)"(
+    'increaseAllowance(address,uint256)'(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     initialize(
@@ -1893,350 +1893,350 @@ export interface YieldvaultAbi extends BaseContract {
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "initialize(address,address,address,address)"(
+    'initialize(address,address,address,address)'(
       underlying_: string,
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     lastHarvest(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "lastHarvest()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'lastHarvest()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     lastHarvestExchangeRate(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "lastHarvestExchangeRate()"(
-      overrides?: CallOverrides
+    'lastHarvestExchangeRate()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     lastHarvestIntervalInBlocks(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "lastHarvestIntervalInBlocks()"(
-      overrides?: CallOverrides
+    'lastHarvestIntervalInBlocks()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     lastHarvestWindowStart(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "lastHarvestWindowStart()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'lastHarvestWindowStart()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     lastHarvestWindowStartBlock(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "lastHarvestWindowStartBlock()"(
-      overrides?: CallOverrides
+    'lastHarvestWindowStartBlock()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     lockedProfit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "lockedProfit()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'lockedProfit()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     maxLockedProfit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "maxLockedProfit()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'maxLockedProfit()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    "name()"(overrides?: CallOverrides): Promise<[string]>;
+    'name()'(overrides?: CallOverrides): Promise<[string]>;
 
     nextHarvestDelay(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "nextHarvestDelay()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'nextHarvestDelay()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
-    "paused()"(overrides?: CallOverrides): Promise<[boolean]>;
+    'paused()'(overrides?: CallOverrides): Promise<[boolean]>;
 
     setAuth(
       newAuth: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setAuth(address)"(
+    'setAuth(address)'(
       newAuth: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setBlocksPerYear(
       blocks: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setBlocksPerYear(uint256)"(
+    'setBlocksPerYear(uint256)'(
       blocks: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setBurningFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setBurningFeePercent(uint256)"(
+    'setBurningFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setBurningFeeReceiver(
       burningFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setBurningFeeReceiver(address)"(
+    'setBurningFeeReceiver(address)'(
       burningFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setDepositLimits(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setDepositLimits(uint256,uint256)"(
+    'setDepositLimits(uint256,uint256)'(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setHarvestDelay(
       newHarvestDelay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setHarvestDelay(uint64)"(
+    'setHarvestDelay(uint64)'(
       newHarvestDelay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setHarvestFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setHarvestFeePercent(uint256)"(
+    'setHarvestFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setHarvestFeeReceiver(
       harvestFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setHarvestFeeReceiver(address)"(
+    'setHarvestFeeReceiver(address)'(
       harvestFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setHarvestWindow(
       newHarvestWindow: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setHarvestWindow(uint128)"(
+    'setHarvestWindow(uint128)'(
       newHarvestWindow: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setWithdrawalQueue(
       newQueue: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setWithdrawalQueue(address[])"(
+    'setWithdrawalQueue(address[])'(
       newQueue: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<[string]>;
+    'symbol()'(overrides?: CallOverrides): Promise<[string]>;
 
     totalFloat(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "totalFloat()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'totalFloat()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalStrategyHoldings(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "totalStrategyHoldings()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'totalStrategyHoldings()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     totalUnderlying(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "totalUnderlying()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     triggerPause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "triggerPause()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'triggerPause()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     trustStrategy(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "trustStrategy(address)"(
+    'trustStrategy(address)'(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     underlying(overrides?: CallOverrides): Promise<[string]>;
 
-    "underlying()"(overrides?: CallOverrides): Promise<[string]>;
+    'underlying()'(overrides?: CallOverrides): Promise<[string]>;
 
     underlyingDecimals(overrides?: CallOverrides): Promise<[number]>;
 
-    "underlyingDecimals()"(overrides?: CallOverrides): Promise<[number]>;
+    'underlyingDecimals()'(overrides?: CallOverrides): Promise<[number]>;
 
     userBatchBurnReceipts(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & { round: BigNumber; shares: BigNumber }
     >;
 
-    "userBatchBurnReceipts(address)"(
+    'userBatchBurnReceipts(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & { round: BigNumber; shares: BigNumber }
     >;
 
     userDepositLimit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "userDepositLimit()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'userDepositLimit()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     vaultDepositLimit(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "vaultDepositLimit()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'vaultDepositLimit()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     withdrawFromStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "withdrawFromStrategy(address,uint256)"(
+    'withdrawFromStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     withdrawalQueue(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[string]>;
 
-    "withdrawalQueue(uint256)"(
+    'withdrawalQueue(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[string]>;
   };
 
   VERSION(overrides?: CallOverrides): Promise<string>;
 
-  "VERSION()"(overrides?: CallOverrides): Promise<string>;
+  'VERSION()'(overrides?: CallOverrides): Promise<string>;
 
   allowance(
     owner: string,
     spender: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "allowance(address,address)"(
+  'allowance(address,address)'(
     owner: string,
     spender: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   approve(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "approve(address,uint256)"(
+  'approve(address,uint256)'(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   auth(overrides?: CallOverrides): Promise<string>;
 
-  "auth()"(overrides?: CallOverrides): Promise<string>;
+  'auth()'(overrides?: CallOverrides): Promise<string>;
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  "balanceOf(address)"(
+  'balanceOf(address)'(
     account: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   balanceOfUnderlying(
     user: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "balanceOfUnderlying(address)"(
+  'balanceOfUnderlying(address)'(
     user: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   baseUnit(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "baseUnit()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'baseUnit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   batchBurnBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "batchBurnBalance()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'batchBurnBalance()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   batchBurnRound(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "batchBurnRound()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'batchBurnRound()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   batchBurns(
     arg0: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [BigNumber, BigNumber] & {
       totalShares: BigNumber;
@@ -2244,9 +2244,9 @@ export interface YieldvaultAbi extends BaseContract {
     }
   >;
 
-  "batchBurns(uint256)"(
+  'batchBurns(uint256)'(
     arg0: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [BigNumber, BigNumber] & {
       totalShares: BigNumber;
@@ -2256,170 +2256,170 @@ export interface YieldvaultAbi extends BaseContract {
 
   blocksPerYear(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "blocksPerYear()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'blocksPerYear()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   burningFeePercent(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "burningFeePercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'burningFeePercent()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   burningFeeReceiver(overrides?: CallOverrides): Promise<string>;
 
-  "burningFeeReceiver()"(overrides?: CallOverrides): Promise<string>;
+  'burningFeeReceiver()'(overrides?: CallOverrides): Promise<string>;
 
   calculateShares(
     underlyingAmount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "calculateShares(uint256)"(
+  'calculateShares(uint256)'(
     underlyingAmount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   calculateUnderlying(
     sharesAmount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "calculateUnderlying(uint256)"(
+  'calculateUnderlying(uint256)'(
     sharesAmount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
-  "decimals()"(overrides?: CallOverrides): Promise<number>;
+  'decimals()'(overrides?: CallOverrides): Promise<number>;
 
   decreaseAllowance(
     spender: string,
     subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "decreaseAllowance(address,uint256)"(
+  'decreaseAllowance(address,uint256)'(
     spender: string,
     subtractedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   deposit(
     to: string,
     underlyingAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "deposit(address,uint256)"(
+  'deposit(address,uint256)'(
     to: string,
     underlyingAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   depositIntoStrategy(
     strategy: string,
     underlyingAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "depositIntoStrategy(address,uint256)"(
+  'depositIntoStrategy(address,uint256)'(
     strategy: string,
     underlyingAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   distrustStrategy(
     strategy: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "distrustStrategy(address)"(
+  'distrustStrategy(address)'(
     strategy: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   enterBatchBurn(
     shares: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "enterBatchBurn(uint256)"(
+  'enterBatchBurn(uint256)'(
     shares: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   estimatedReturn(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "estimatedReturn()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'estimatedReturn()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "exchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'exchangeRate()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   execBatchBurn(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "execBatchBurn()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'execBatchBurn()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   exitBatchBurn(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitBatchBurn()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'exitBatchBurn()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   getStrategyData(
     arg0: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<[boolean, BigNumber] & { trusted: boolean; balance: BigNumber }>;
 
-  "getStrategyData(address)"(
+  'getStrategyData(address)'(
     arg0: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<[boolean, BigNumber] & { trusted: boolean; balance: BigNumber }>;
 
   getWithdrawalQueue(overrides?: CallOverrides): Promise<string[]>;
 
-  "getWithdrawalQueue()"(overrides?: CallOverrides): Promise<string[]>;
+  'getWithdrawalQueue()'(overrides?: CallOverrides): Promise<string[]>;
 
   harvest(
     strategies: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "harvest(address[])"(
+  'harvest(address[])'(
     strategies: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   harvestDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "harvestDelay()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'harvestDelay()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   harvestFeePercent(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "harvestFeePercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'harvestFeePercent()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   harvestFeeReceiver(overrides?: CallOverrides): Promise<string>;
 
-  "harvestFeeReceiver()"(overrides?: CallOverrides): Promise<string>;
+  'harvestFeeReceiver()'(overrides?: CallOverrides): Promise<string>;
 
   harvestWindow(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "harvestWindow()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'harvestWindow()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   increaseAllowance(
     spender: string,
     addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "increaseAllowance(address,uint256)"(
+  'increaseAllowance(address,uint256)'(
     spender: string,
     addedValue: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   initialize(
@@ -2427,340 +2427,340 @@ export interface YieldvaultAbi extends BaseContract {
     auth_: string,
     harvestFeeReceiver_: string,
     burnFeeReceiver_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "initialize(address,address,address,address)"(
+  'initialize(address,address,address,address)'(
     underlying_: string,
     auth_: string,
     harvestFeeReceiver_: string,
     burnFeeReceiver_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   lastHarvest(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "lastHarvest()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'lastHarvest()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   lastHarvestExchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "lastHarvestExchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'lastHarvestExchangeRate()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   lastHarvestIntervalInBlocks(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "lastHarvestIntervalInBlocks()"(
-    overrides?: CallOverrides
+  'lastHarvestIntervalInBlocks()'(
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   lastHarvestWindowStart(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "lastHarvestWindowStart()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'lastHarvestWindowStart()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   lastHarvestWindowStartBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "lastHarvestWindowStartBlock()"(
-    overrides?: CallOverrides
+  'lastHarvestWindowStartBlock()'(
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   lockedProfit(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "lockedProfit()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'lockedProfit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   maxLockedProfit(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "maxLockedProfit()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'maxLockedProfit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
-  "name()"(overrides?: CallOverrides): Promise<string>;
+  'name()'(overrides?: CallOverrides): Promise<string>;
 
   nextHarvestDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "nextHarvestDelay()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'nextHarvestDelay()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
-  "paused()"(overrides?: CallOverrides): Promise<boolean>;
+  'paused()'(overrides?: CallOverrides): Promise<boolean>;
 
   setAuth(
     newAuth: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setAuth(address)"(
+  'setAuth(address)'(
     newAuth: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setBlocksPerYear(
     blocks: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setBlocksPerYear(uint256)"(
+  'setBlocksPerYear(uint256)'(
     blocks: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setBurningFeePercent(
     newFeePercent: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setBurningFeePercent(uint256)"(
+  'setBurningFeePercent(uint256)'(
     newFeePercent: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setBurningFeeReceiver(
     burningFeeReceiver_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setBurningFeeReceiver(address)"(
+  'setBurningFeeReceiver(address)'(
     burningFeeReceiver_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setDepositLimits(
     user: BigNumberish,
     vault: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setDepositLimits(uint256,uint256)"(
+  'setDepositLimits(uint256,uint256)'(
     user: BigNumberish,
     vault: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setHarvestDelay(
     newHarvestDelay: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setHarvestDelay(uint64)"(
+  'setHarvestDelay(uint64)'(
     newHarvestDelay: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setHarvestFeePercent(
     newFeePercent: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setHarvestFeePercent(uint256)"(
+  'setHarvestFeePercent(uint256)'(
     newFeePercent: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setHarvestFeeReceiver(
     harvestFeeReceiver_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setHarvestFeeReceiver(address)"(
+  'setHarvestFeeReceiver(address)'(
     harvestFeeReceiver_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setHarvestWindow(
     newHarvestWindow: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setHarvestWindow(uint128)"(
+  'setHarvestWindow(uint128)'(
     newHarvestWindow: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setWithdrawalQueue(
     newQueue: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setWithdrawalQueue(address[])"(
+  'setWithdrawalQueue(address[])'(
     newQueue: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
-  "symbol()"(overrides?: CallOverrides): Promise<string>;
+  'symbol()'(overrides?: CallOverrides): Promise<string>;
 
   totalFloat(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "totalFloat()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'totalFloat()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalStrategyHoldings(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "totalStrategyHoldings()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'totalStrategyHoldings()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   totalUnderlying(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "totalUnderlying()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'totalUnderlying()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transfer(address,uint256)"(
+  'transfer(address,uint256)'(
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   transferFrom(
     sender: string,
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transferFrom(address,address,uint256)"(
+  'transferFrom(address,address,uint256)'(
     sender: string,
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   triggerPause(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "triggerPause()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'triggerPause()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   trustStrategy(
     strategy: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "trustStrategy(address)"(
+  'trustStrategy(address)'(
     strategy: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   underlying(overrides?: CallOverrides): Promise<string>;
 
-  "underlying()"(overrides?: CallOverrides): Promise<string>;
+  'underlying()'(overrides?: CallOverrides): Promise<string>;
 
   underlyingDecimals(overrides?: CallOverrides): Promise<number>;
 
-  "underlyingDecimals()"(overrides?: CallOverrides): Promise<number>;
+  'underlyingDecimals()'(overrides?: CallOverrides): Promise<number>;
 
   userBatchBurnReceipts(
     arg0: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<[BigNumber, BigNumber] & { round: BigNumber; shares: BigNumber }>;
 
-  "userBatchBurnReceipts(address)"(
+  'userBatchBurnReceipts(address)'(
     arg0: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<[BigNumber, BigNumber] & { round: BigNumber; shares: BigNumber }>;
 
   userDepositLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "userDepositLimit()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'userDepositLimit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   vaultDepositLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "vaultDepositLimit()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'vaultDepositLimit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   withdrawFromStrategy(
     strategy: string,
     underlyingAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "withdrawFromStrategy(address,uint256)"(
+  'withdrawFromStrategy(address,uint256)'(
     strategy: string,
     underlyingAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   withdrawalQueue(
     arg0: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<string>;
 
-  "withdrawalQueue(uint256)"(
+  'withdrawalQueue(uint256)'(
     arg0: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<string>;
 
   callStatic: {
     VERSION(overrides?: CallOverrides): Promise<string>;
 
-    "VERSION()"(overrides?: CallOverrides): Promise<string>;
+    'VERSION()'(overrides?: CallOverrides): Promise<string>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     auth(overrides?: CallOverrides): Promise<string>;
 
-    "auth()"(overrides?: CallOverrides): Promise<string>;
+    'auth()'(overrides?: CallOverrides): Promise<string>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     balanceOfUnderlying(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "balanceOfUnderlying(address)"(
+    'balanceOfUnderlying(address)'(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     baseUnit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "baseUnit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'baseUnit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchBurnBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "batchBurnBalance()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'batchBurnBalance()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchBurnRound(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "batchBurnRound()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'batchBurnRound()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchBurns(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & {
         totalShares: BigNumber;
@@ -2768,9 +2768,9 @@ export interface YieldvaultAbi extends BaseContract {
       }
     >;
 
-    "batchBurns(uint256)"(
+    'batchBurns(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & {
         totalShares: BigNumber;
@@ -2780,159 +2780,159 @@ export interface YieldvaultAbi extends BaseContract {
 
     blocksPerYear(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "blocksPerYear()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'blocksPerYear()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     burningFeePercent(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "burningFeePercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'burningFeePercent()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     burningFeeReceiver(overrides?: CallOverrides): Promise<string>;
 
-    "burningFeeReceiver()"(overrides?: CallOverrides): Promise<string>;
+    'burningFeeReceiver()'(overrides?: CallOverrides): Promise<string>;
 
     calculateShares(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calculateShares(uint256)"(
+    'calculateShares(uint256)'(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calculateUnderlying(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calculateUnderlying(uint256)"(
+    'calculateUnderlying(uint256)'(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<number>;
+    'decimals()'(overrides?: CallOverrides): Promise<number>;
 
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "decreaseAllowance(address,uint256)"(
+    'decreaseAllowance(address,uint256)'(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     deposit(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "deposit(address,uint256)"(
+    'deposit(address,uint256)'(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     depositIntoStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "depositIntoStrategy(address,uint256)"(
+    'depositIntoStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     distrustStrategy(
       strategy: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "distrustStrategy(address)"(
+    'distrustStrategy(address)'(
       strategy: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     enterBatchBurn(
       shares: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "enterBatchBurn(uint256)"(
+    'enterBatchBurn(uint256)'(
       shares: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     estimatedReturn(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "estimatedReturn()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'estimatedReturn()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "exchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'exchangeRate()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     execBatchBurn(overrides?: CallOverrides): Promise<void>;
 
-    "execBatchBurn()"(overrides?: CallOverrides): Promise<void>;
+    'execBatchBurn()'(overrides?: CallOverrides): Promise<void>;
 
     exitBatchBurn(overrides?: CallOverrides): Promise<void>;
 
-    "exitBatchBurn()"(overrides?: CallOverrides): Promise<void>;
+    'exitBatchBurn()'(overrides?: CallOverrides): Promise<void>;
 
     getStrategyData(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean, BigNumber] & { trusted: boolean; balance: BigNumber }>;
 
-    "getStrategyData(address)"(
+    'getStrategyData(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean, BigNumber] & { trusted: boolean; balance: BigNumber }>;
 
     getWithdrawalQueue(overrides?: CallOverrides): Promise<string[]>;
 
-    "getWithdrawalQueue()"(overrides?: CallOverrides): Promise<string[]>;
+    'getWithdrawalQueue()'(overrides?: CallOverrides): Promise<string[]>;
 
     harvest(strategies: string[], overrides?: CallOverrides): Promise<void>;
 
-    "harvest(address[])"(
+    'harvest(address[])'(
       strategies: string[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     harvestDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestDelay()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestDelay()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     harvestFeePercent(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestFeePercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestFeePercent()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     harvestFeeReceiver(overrides?: CallOverrides): Promise<string>;
 
-    "harvestFeeReceiver()"(overrides?: CallOverrides): Promise<string>;
+    'harvestFeeReceiver()'(overrides?: CallOverrides): Promise<string>;
 
     harvestWindow(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestWindow()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestWindow()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "increaseAllowance(address,uint256)"(
+    'increaseAllowance(address,uint256)'(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     initialize(
@@ -2940,692 +2940,692 @@ export interface YieldvaultAbi extends BaseContract {
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "initialize(address,address,address,address)"(
+    'initialize(address,address,address,address)'(
       underlying_: string,
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     lastHarvest(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvest()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lastHarvest()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastHarvestExchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestExchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lastHarvestExchangeRate()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastHarvestIntervalInBlocks(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestIntervalInBlocks()"(
-      overrides?: CallOverrides
+    'lastHarvestIntervalInBlocks()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     lastHarvestWindowStart(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestWindowStart()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lastHarvestWindowStart()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastHarvestWindowStartBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestWindowStartBlock()"(
-      overrides?: CallOverrides
+    'lastHarvestWindowStartBlock()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     lockedProfit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lockedProfit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lockedProfit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     maxLockedProfit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "maxLockedProfit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'maxLockedProfit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
-    "name()"(overrides?: CallOverrides): Promise<string>;
+    'name()'(overrides?: CallOverrides): Promise<string>;
 
     nextHarvestDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "nextHarvestDelay()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'nextHarvestDelay()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<boolean>;
 
-    "paused()"(overrides?: CallOverrides): Promise<boolean>;
+    'paused()'(overrides?: CallOverrides): Promise<boolean>;
 
     setAuth(newAuth: string, overrides?: CallOverrides): Promise<void>;
 
-    "setAuth(address)"(
+    'setAuth(address)'(
       newAuth: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setBlocksPerYear(
       blocks: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setBlocksPerYear(uint256)"(
+    'setBlocksPerYear(uint256)'(
       blocks: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setBurningFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setBurningFeePercent(uint256)"(
+    'setBurningFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setBurningFeeReceiver(
       burningFeeReceiver_: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setBurningFeeReceiver(address)"(
+    'setBurningFeeReceiver(address)'(
       burningFeeReceiver_: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setDepositLimits(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setDepositLimits(uint256,uint256)"(
+    'setDepositLimits(uint256,uint256)'(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setHarvestDelay(
       newHarvestDelay: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setHarvestDelay(uint64)"(
+    'setHarvestDelay(uint64)'(
       newHarvestDelay: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setHarvestFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setHarvestFeePercent(uint256)"(
+    'setHarvestFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setHarvestFeeReceiver(
       harvestFeeReceiver_: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setHarvestFeeReceiver(address)"(
+    'setHarvestFeeReceiver(address)'(
       harvestFeeReceiver_: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setHarvestWindow(
       newHarvestWindow: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setHarvestWindow(uint128)"(
+    'setHarvestWindow(uint128)'(
       newHarvestWindow: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setWithdrawalQueue(
       newQueue: string[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setWithdrawalQueue(address[])"(
+    'setWithdrawalQueue(address[])'(
       newQueue: string[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<string>;
+    'symbol()'(overrides?: CallOverrides): Promise<string>;
 
     totalFloat(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalFloat()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalFloat()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalStrategyHoldings(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalStrategyHoldings()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalStrategyHoldings()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalUnderlying(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalUnderlying()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     triggerPause(overrides?: CallOverrides): Promise<void>;
 
-    "triggerPause()"(overrides?: CallOverrides): Promise<void>;
+    'triggerPause()'(overrides?: CallOverrides): Promise<void>;
 
     trustStrategy(strategy: string, overrides?: CallOverrides): Promise<void>;
 
-    "trustStrategy(address)"(
+    'trustStrategy(address)'(
       strategy: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     underlying(overrides?: CallOverrides): Promise<string>;
 
-    "underlying()"(overrides?: CallOverrides): Promise<string>;
+    'underlying()'(overrides?: CallOverrides): Promise<string>;
 
     underlyingDecimals(overrides?: CallOverrides): Promise<number>;
 
-    "underlyingDecimals()"(overrides?: CallOverrides): Promise<number>;
+    'underlyingDecimals()'(overrides?: CallOverrides): Promise<number>;
 
     userBatchBurnReceipts(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & { round: BigNumber; shares: BigNumber }
     >;
 
-    "userBatchBurnReceipts(address)"(
+    'userBatchBurnReceipts(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [BigNumber, BigNumber] & { round: BigNumber; shares: BigNumber }
     >;
 
     userDepositLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "userDepositLimit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'userDepositLimit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     vaultDepositLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "vaultDepositLimit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'vaultDepositLimit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdrawFromStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "withdrawFromStrategy(address,uint256)"(
+    'withdrawFromStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     withdrawalQueue(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<string>;
 
-    "withdrawalQueue(uint256)"(
+    'withdrawalQueue(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<string>;
   };
 
   filters: {
-    "Approval(address,address,uint256)"(
+    'Approval(address,address,uint256)'(
       owner?: string | null,
       spender?: string | null,
-      value?: null
+      value?: null,
     ): ApprovalEventFilter;
     Approval(
       owner?: string | null,
       spender?: string | null,
-      value?: null
+      value?: null,
     ): ApprovalEventFilter;
 
-    "AuthUpdated(address)"(newAuth?: null): AuthUpdatedEventFilter;
+    'AuthUpdated(address)'(newAuth?: null): AuthUpdatedEventFilter;
     AuthUpdated(newAuth?: null): AuthUpdatedEventFilter;
 
-    "BurningFeePercentUpdated(uint256)"(
-      newFeePercent?: null
+    'BurningFeePercentUpdated(uint256)'(
+      newFeePercent?: null,
     ): BurningFeePercentUpdatedEventFilter;
     BurningFeePercentUpdated(
-      newFeePercent?: null
+      newFeePercent?: null,
     ): BurningFeePercentUpdatedEventFilter;
 
-    "BurningFeeReceiverUpdated(address)"(
-      receiver?: string | null
+    'BurningFeeReceiverUpdated(address)'(
+      receiver?: string | null,
     ): BurningFeeReceiverUpdatedEventFilter;
     BurningFeeReceiverUpdated(
-      receiver?: string | null
+      receiver?: string | null,
     ): BurningFeeReceiverUpdatedEventFilter;
 
-    "Deposit(address,address,uint256)"(
+    'Deposit(address,address,uint256)'(
       from?: string | null,
       to?: string | null,
-      value?: null
+      value?: null,
     ): DepositEventFilter;
     Deposit(
       from?: string | null,
       to?: string | null,
-      value?: null
+      value?: null,
     ): DepositEventFilter;
 
-    "DepositLimitsUpdated(uint256,uint256)"(
+    'DepositLimitsUpdated(uint256,uint256)'(
       perUser?: null,
-      perVault?: null
+      perVault?: null,
     ): DepositLimitsUpdatedEventFilter;
     DepositLimitsUpdated(
       perUser?: null,
-      perVault?: null
+      perVault?: null,
     ): DepositLimitsUpdatedEventFilter;
 
-    "EnterBatchBurn(uint256,address,uint256)"(
+    'EnterBatchBurn(uint256,address,uint256)'(
       round?: BigNumberish | null,
       account?: string | null,
-      amount?: null
+      amount?: null,
     ): EnterBatchBurnEventFilter;
     EnterBatchBurn(
       round?: BigNumberish | null,
       account?: string | null,
-      amount?: null
+      amount?: null,
     ): EnterBatchBurnEventFilter;
 
-    "ExecuteBatchBurn(uint256,address,uint256,uint256)"(
+    'ExecuteBatchBurn(uint256,address,uint256,uint256)'(
       round?: BigNumberish | null,
       executor?: string | null,
       shares?: null,
-      amount?: null
+      amount?: null,
     ): ExecuteBatchBurnEventFilter;
     ExecuteBatchBurn(
       round?: BigNumberish | null,
       executor?: string | null,
       shares?: null,
-      amount?: null
+      amount?: null,
     ): ExecuteBatchBurnEventFilter;
 
-    "ExitBatchBurn(uint256,address,uint256)"(
+    'ExitBatchBurn(uint256,address,uint256)'(
       round?: BigNumberish | null,
       account?: string | null,
-      amount?: null
+      amount?: null,
     ): ExitBatchBurnEventFilter;
     ExitBatchBurn(
       round?: BigNumberish | null,
       account?: string | null,
-      amount?: null
+      amount?: null,
     ): ExitBatchBurnEventFilter;
 
-    "Harvest(address,address[])"(
+    'Harvest(address,address[])'(
       account?: string | null,
-      strategies?: null
+      strategies?: null,
     ): HarvestEventFilter;
     Harvest(account?: string | null, strategies?: null): HarvestEventFilter;
 
-    "HarvestDelayUpdateScheduled(uint64)"(
-      newHarvestDelay?: null
+    'HarvestDelayUpdateScheduled(uint64)'(
+      newHarvestDelay?: null,
     ): HarvestDelayUpdateScheduledEventFilter;
     HarvestDelayUpdateScheduled(
-      newHarvestDelay?: null
+      newHarvestDelay?: null,
     ): HarvestDelayUpdateScheduledEventFilter;
 
-    "HarvestDelayUpdated(address,uint64)"(
+    'HarvestDelayUpdated(address,uint64)'(
       account?: string | null,
-      newHarvestDelay?: null
+      newHarvestDelay?: null,
     ): HarvestDelayUpdatedEventFilter;
     HarvestDelayUpdated(
       account?: string | null,
-      newHarvestDelay?: null
+      newHarvestDelay?: null,
     ): HarvestDelayUpdatedEventFilter;
 
-    "HarvestFeePercentUpdated(uint256)"(
-      newFeePercent?: null
+    'HarvestFeePercentUpdated(uint256)'(
+      newFeePercent?: null,
     ): HarvestFeePercentUpdatedEventFilter;
     HarvestFeePercentUpdated(
-      newFeePercent?: null
+      newFeePercent?: null,
     ): HarvestFeePercentUpdatedEventFilter;
 
-    "HarvestFeeReceiverUpdated(address)"(
-      receiver?: string | null
+    'HarvestFeeReceiverUpdated(address)'(
+      receiver?: string | null,
     ): HarvestFeeReceiverUpdatedEventFilter;
     HarvestFeeReceiverUpdated(
-      receiver?: string | null
+      receiver?: string | null,
     ): HarvestFeeReceiverUpdatedEventFilter;
 
-    "HarvestWindowUpdated(uint128)"(
-      newHarvestWindow?: null
+    'HarvestWindowUpdated(uint128)'(
+      newHarvestWindow?: null,
     ): HarvestWindowUpdatedEventFilter;
     HarvestWindowUpdated(
-      newHarvestWindow?: null
+      newHarvestWindow?: null,
     ): HarvestWindowUpdatedEventFilter;
 
-    "Paused(address)"(account?: null): PausedEventFilter;
+    'Paused(address)'(account?: null): PausedEventFilter;
     Paused(account?: null): PausedEventFilter;
 
-    "StrategyDeposit(address,address,uint256)"(
+    'StrategyDeposit(address,address,uint256)'(
       account?: string | null,
       strategy?: string | null,
-      underlyingAmount?: null
+      underlyingAmount?: null,
     ): StrategyDepositEventFilter;
     StrategyDeposit(
       account?: string | null,
       strategy?: string | null,
-      underlyingAmount?: null
+      underlyingAmount?: null,
     ): StrategyDepositEventFilter;
 
-    "StrategyDistrusted(address)"(
-      strategy?: string | null
+    'StrategyDistrusted(address)'(
+      strategy?: string | null,
     ): StrategyDistrustedEventFilter;
     StrategyDistrusted(strategy?: string | null): StrategyDistrustedEventFilter;
 
-    "StrategyTrusted(address)"(
-      strategy?: string | null
+    'StrategyTrusted(address)'(
+      strategy?: string | null,
     ): StrategyTrustedEventFilter;
     StrategyTrusted(strategy?: string | null): StrategyTrustedEventFilter;
 
-    "StrategyWithdrawal(address,address,uint256)"(
+    'StrategyWithdrawal(address,address,uint256)'(
       account?: string | null,
       strategy?: string | null,
-      underlyingAmount?: null
+      underlyingAmount?: null,
     ): StrategyWithdrawalEventFilter;
     StrategyWithdrawal(
       account?: string | null,
       strategy?: string | null,
-      underlyingAmount?: null
+      underlyingAmount?: null,
     ): StrategyWithdrawalEventFilter;
 
-    "Transfer(address,address,uint256)"(
+    'Transfer(address,address,uint256)'(
       from?: string | null,
       to?: string | null,
-      value?: null
+      value?: null,
     ): TransferEventFilter;
     Transfer(
       from?: string | null,
       to?: string | null,
-      value?: null
+      value?: null,
     ): TransferEventFilter;
 
-    "Unpaused(address)"(account?: null): UnpausedEventFilter;
+    'Unpaused(address)'(account?: null): UnpausedEventFilter;
     Unpaused(account?: null): UnpausedEventFilter;
 
-    "WithdrawalQueueSet(address[])"(
-      replacedWithdrawalQueue?: null
+    'WithdrawalQueueSet(address[])'(
+      replacedWithdrawalQueue?: null,
     ): WithdrawalQueueSetEventFilter;
     WithdrawalQueueSet(
-      replacedWithdrawalQueue?: null
+      replacedWithdrawalQueue?: null,
     ): WithdrawalQueueSetEventFilter;
   };
 
   estimateGas: {
     VERSION(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "VERSION()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'VERSION()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     auth(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "auth()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'auth()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     balanceOfUnderlying(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "balanceOfUnderlying(address)"(
+    'balanceOfUnderlying(address)'(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     baseUnit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "baseUnit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'baseUnit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchBurnBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "batchBurnBalance()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'batchBurnBalance()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchBurnRound(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "batchBurnRound()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'batchBurnRound()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     batchBurns(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "batchBurns(uint256)"(
+    'batchBurns(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     blocksPerYear(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "blocksPerYear()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'blocksPerYear()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     burningFeePercent(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "burningFeePercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'burningFeePercent()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     burningFeeReceiver(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "burningFeeReceiver()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'burningFeeReceiver()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     calculateShares(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calculateShares(uint256)"(
+    'calculateShares(uint256)'(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calculateUnderlying(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calculateUnderlying(uint256)"(
+    'calculateUnderlying(uint256)'(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'decimals()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "decreaseAllowance(address,uint256)"(
+    'decreaseAllowance(address,uint256)'(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     deposit(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "deposit(address,uint256)"(
+    'deposit(address,uint256)'(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     depositIntoStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "depositIntoStrategy(address,uint256)"(
+    'depositIntoStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     distrustStrategy(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "distrustStrategy(address)"(
+    'distrustStrategy(address)'(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     enterBatchBurn(
       shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "enterBatchBurn(uint256)"(
+    'enterBatchBurn(uint256)'(
       shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     estimatedReturn(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "estimatedReturn()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'estimatedReturn()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     exchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "exchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'exchangeRate()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     execBatchBurn(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "execBatchBurn()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'execBatchBurn()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     exitBatchBurn(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitBatchBurn()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'exitBatchBurn()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     getStrategyData(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "getStrategyData(address)"(
+    'getStrategyData(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getWithdrawalQueue(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getWithdrawalQueue()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getWithdrawalQueue()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     harvest(
       strategies: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "harvest(address[])"(
+    'harvest(address[])'(
       strategies: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     harvestDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestDelay()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestDelay()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     harvestFeePercent(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestFeePercent()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestFeePercent()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     harvestFeeReceiver(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestFeeReceiver()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestFeeReceiver()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     harvestWindow(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "harvestWindow()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'harvestWindow()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "increaseAllowance(address,uint256)"(
+    'increaseAllowance(address,uint256)'(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     initialize(
@@ -3633,539 +3633,539 @@ export interface YieldvaultAbi extends BaseContract {
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "initialize(address,address,address,address)"(
+    'initialize(address,address,address,address)'(
       underlying_: string,
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     lastHarvest(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvest()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lastHarvest()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastHarvestExchangeRate(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestExchangeRate()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lastHarvestExchangeRate()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastHarvestIntervalInBlocks(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestIntervalInBlocks()"(
-      overrides?: CallOverrides
+    'lastHarvestIntervalInBlocks()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     lastHarvestWindowStart(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestWindowStart()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lastHarvestWindowStart()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     lastHarvestWindowStartBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lastHarvestWindowStartBlock()"(
-      overrides?: CallOverrides
+    'lastHarvestWindowStartBlock()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     lockedProfit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "lockedProfit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'lockedProfit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     maxLockedProfit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "maxLockedProfit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'maxLockedProfit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "name()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'name()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     nextHarvestDelay(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "nextHarvestDelay()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'nextHarvestDelay()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "paused()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'paused()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     setAuth(
       newAuth: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setAuth(address)"(
+    'setAuth(address)'(
       newAuth: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setBlocksPerYear(
       blocks: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setBlocksPerYear(uint256)"(
+    'setBlocksPerYear(uint256)'(
       blocks: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setBurningFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setBurningFeePercent(uint256)"(
+    'setBurningFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setBurningFeeReceiver(
       burningFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setBurningFeeReceiver(address)"(
+    'setBurningFeeReceiver(address)'(
       burningFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setDepositLimits(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setDepositLimits(uint256,uint256)"(
+    'setDepositLimits(uint256,uint256)'(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setHarvestDelay(
       newHarvestDelay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setHarvestDelay(uint64)"(
+    'setHarvestDelay(uint64)'(
       newHarvestDelay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setHarvestFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setHarvestFeePercent(uint256)"(
+    'setHarvestFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setHarvestFeeReceiver(
       harvestFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setHarvestFeeReceiver(address)"(
+    'setHarvestFeeReceiver(address)'(
       harvestFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setHarvestWindow(
       newHarvestWindow: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setHarvestWindow(uint128)"(
+    'setHarvestWindow(uint128)'(
       newHarvestWindow: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setWithdrawalQueue(
       newQueue: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setWithdrawalQueue(address[])"(
+    'setWithdrawalQueue(address[])'(
       newQueue: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'symbol()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalFloat(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalFloat()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalFloat()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalStrategyHoldings(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalStrategyHoldings()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalStrategyHoldings()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalUnderlying(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalUnderlying()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalUnderlying()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     triggerPause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "triggerPause()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'triggerPause()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     trustStrategy(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "trustStrategy(address)"(
+    'trustStrategy(address)'(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     underlying(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "underlying()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'underlying()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     underlyingDecimals(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "underlyingDecimals()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'underlyingDecimals()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     userBatchBurnReceipts(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "userBatchBurnReceipts(address)"(
+    'userBatchBurnReceipts(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     userDepositLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "userDepositLimit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'userDepositLimit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     vaultDepositLimit(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "vaultDepositLimit()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'vaultDepositLimit()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     withdrawFromStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "withdrawFromStrategy(address,uint256)"(
+    'withdrawFromStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     withdrawalQueue(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "withdrawalQueue(uint256)"(
+    'withdrawalQueue(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     VERSION(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "VERSION()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'VERSION()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     auth(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "auth()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'auth()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     balanceOf(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     balanceOfUnderlying(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "balanceOfUnderlying(address)"(
+    'balanceOfUnderlying(address)'(
       user: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     baseUnit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "baseUnit()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'baseUnit()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     batchBurnBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "batchBurnBalance()"(
-      overrides?: CallOverrides
+    'batchBurnBalance()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     batchBurnRound(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "batchBurnRound()"(
-      overrides?: CallOverrides
+    'batchBurnRound()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     batchBurns(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "batchBurns(uint256)"(
+    'batchBurns(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     blocksPerYear(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "blocksPerYear()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'blocksPerYear()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     burningFeePercent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "burningFeePercent()"(
-      overrides?: CallOverrides
+    'burningFeePercent()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     burningFeeReceiver(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "burningFeeReceiver()"(
-      overrides?: CallOverrides
+    'burningFeeReceiver()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calculateShares(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calculateShares(uint256)"(
+    'calculateShares(uint256)'(
       underlyingAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calculateUnderlying(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calculateUnderlying(uint256)"(
+    'calculateUnderlying(uint256)'(
       sharesAmount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'decimals()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseAllowance(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "decreaseAllowance(address,uint256)"(
+    'decreaseAllowance(address,uint256)'(
       spender: string,
       subtractedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     deposit(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "deposit(address,uint256)"(
+    'deposit(address,uint256)'(
       to: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     depositIntoStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "depositIntoStrategy(address,uint256)"(
+    'depositIntoStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     distrustStrategy(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "distrustStrategy(address)"(
+    'distrustStrategy(address)'(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     enterBatchBurn(
       shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "enterBatchBurn(uint256)"(
+    'enterBatchBurn(uint256)'(
       shares: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     estimatedReturn(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "estimatedReturn()"(
-      overrides?: CallOverrides
+    'estimatedReturn()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     exchangeRate(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "exchangeRate()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'exchangeRate()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     execBatchBurn(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "execBatchBurn()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'execBatchBurn()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     exitBatchBurn(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitBatchBurn()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'exitBatchBurn()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     getStrategyData(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getStrategyData(address)"(
+    'getStrategyData(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getWithdrawalQueue(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getWithdrawalQueue()"(
-      overrides?: CallOverrides
+    'getWithdrawalQueue()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     harvest(
       strategies: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "harvest(address[])"(
+    'harvest(address[])'(
       strategies: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     harvestDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "harvestDelay()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'harvestDelay()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     harvestFeePercent(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "harvestFeePercent()"(
-      overrides?: CallOverrides
+    'harvestFeePercent()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     harvestFeeReceiver(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "harvestFeeReceiver()"(
-      overrides?: CallOverrides
+    'harvestFeeReceiver()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     harvestWindow(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "harvestWindow()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'harvestWindow()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "increaseAllowance(address,uint256)"(
+    'increaseAllowance(address,uint256)'(
       spender: string,
       addedValue: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     initialize(
@@ -4173,303 +4173,303 @@ export interface YieldvaultAbi extends BaseContract {
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "initialize(address,address,address,address)"(
+    'initialize(address,address,address,address)'(
       underlying_: string,
       auth_: string,
       harvestFeeReceiver_: string,
       burnFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     lastHarvest(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "lastHarvest()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'lastHarvest()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     lastHarvestExchangeRate(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "lastHarvestExchangeRate()"(
-      overrides?: CallOverrides
+    'lastHarvestExchangeRate()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     lastHarvestIntervalInBlocks(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "lastHarvestIntervalInBlocks()"(
-      overrides?: CallOverrides
+    'lastHarvestIntervalInBlocks()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     lastHarvestWindowStart(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "lastHarvestWindowStart()"(
-      overrides?: CallOverrides
+    'lastHarvestWindowStart()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     lastHarvestWindowStartBlock(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "lastHarvestWindowStartBlock()"(
-      overrides?: CallOverrides
+    'lastHarvestWindowStartBlock()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     lockedProfit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "lockedProfit()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'lockedProfit()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     maxLockedProfit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "maxLockedProfit()"(
-      overrides?: CallOverrides
+    'maxLockedProfit()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'name()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     nextHarvestDelay(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "nextHarvestDelay()"(
-      overrides?: CallOverrides
+    'nextHarvestDelay()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "paused()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'paused()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     setAuth(
       newAuth: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setAuth(address)"(
+    'setAuth(address)'(
       newAuth: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setBlocksPerYear(
       blocks: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setBlocksPerYear(uint256)"(
+    'setBlocksPerYear(uint256)'(
       blocks: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setBurningFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setBurningFeePercent(uint256)"(
+    'setBurningFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setBurningFeeReceiver(
       burningFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setBurningFeeReceiver(address)"(
+    'setBurningFeeReceiver(address)'(
       burningFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setDepositLimits(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setDepositLimits(uint256,uint256)"(
+    'setDepositLimits(uint256,uint256)'(
       user: BigNumberish,
       vault: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setHarvestDelay(
       newHarvestDelay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setHarvestDelay(uint64)"(
+    'setHarvestDelay(uint64)'(
       newHarvestDelay: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setHarvestFeePercent(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setHarvestFeePercent(uint256)"(
+    'setHarvestFeePercent(uint256)'(
       newFeePercent: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setHarvestFeeReceiver(
       harvestFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setHarvestFeeReceiver(address)"(
+    'setHarvestFeeReceiver(address)'(
       harvestFeeReceiver_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setHarvestWindow(
       newHarvestWindow: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setHarvestWindow(uint128)"(
+    'setHarvestWindow(uint128)'(
       newHarvestWindow: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setWithdrawalQueue(
       newQueue: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setWithdrawalQueue(address[])"(
+    'setWithdrawalQueue(address[])'(
       newQueue: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'symbol()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalFloat(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "totalFloat()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'totalFloat()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalStrategyHoldings(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "totalStrategyHoldings()"(
-      overrides?: CallOverrides
+    'totalStrategyHoldings()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalUnderlying(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "totalUnderlying()"(
-      overrides?: CallOverrides
+    'totalUnderlying()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     triggerPause(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "triggerPause()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'triggerPause()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     trustStrategy(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "trustStrategy(address)"(
+    'trustStrategy(address)'(
       strategy: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     underlying(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "underlying()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'underlying()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     underlyingDecimals(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "underlyingDecimals()"(
-      overrides?: CallOverrides
+    'underlyingDecimals()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     userBatchBurnReceipts(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "userBatchBurnReceipts(address)"(
+    'userBatchBurnReceipts(address)'(
       arg0: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     userDepositLimit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "userDepositLimit()"(
-      overrides?: CallOverrides
+    'userDepositLimit()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     vaultDepositLimit(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "vaultDepositLimit()"(
-      overrides?: CallOverrides
+    'vaultDepositLimit()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     withdrawFromStrategy(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "withdrawFromStrategy(address,uint256)"(
+    'withdrawFromStrategy(address,uint256)'(
       strategy: string,
       underlyingAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     withdrawalQueue(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "withdrawalQueue(uint256)"(
+    'withdrawalQueue(uint256)'(
       arg0: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
   };
 }

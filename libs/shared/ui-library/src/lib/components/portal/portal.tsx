@@ -10,19 +10,19 @@ import React, {
   MutableRefObject,
   Ref,
   useRef,
-} from "react";
-import { createPortal } from "react-dom";
+} from 'react';
+import { createPortal } from 'react-dom';
 
-import { Props } from "../../types/types";
-import { forwardRefWithAs, render } from "../../utils/render";
-import { useIsoMorphicEffect } from "../../hooks/use-iso-morphic-effect";
-import { usePortalRoot } from "../../internal/portal-force-root";
-import { useServerHandoffComplete } from "../../hooks/use-server-handoff-complete";
-import { optionalRef, useSyncRefs } from "../../hooks/use-sync-refs";
-import { useOwnerDocument } from "../../hooks/use-owner";
+import { Props } from '../../types/types';
+import { forwardRefWithAs, render } from '../../utils/render';
+import { useIsoMorphicEffect } from '../../hooks/use-iso-morphic-effect';
+import { usePortalRoot } from '../../internal/portal-force-root';
+import { useServerHandoffComplete } from '../../hooks/use-server-handoff-complete';
+import { optionalRef, useSyncRefs } from '../../hooks/use-sync-refs';
+import { useOwnerDocument } from '../../hooks/use-owner';
 
 function usePortalTarget(
-  ref: MutableRefObject<HTMLElement | null>
+  ref: MutableRefObject<HTMLElement | null>,
 ): HTMLElement | null {
   let forceInRoot = usePortalRoot();
   let groupTarget = useContext(PortalGroupContext);
@@ -34,17 +34,17 @@ function usePortalTarget(
     if (!forceInRoot && groupTarget !== null) return null;
 
     // No group context is used, let's create a default portal root
-    if (typeof window === "undefined") return null;
-    let existingRoot = ownerDocument?.getElementById("root");
+    if (typeof window === 'undefined') return null;
+    let existingRoot = ownerDocument?.getElementById('root');
     if (window.location !== window.parent.location) {
-      existingRoot = ownerDocument?.getElementById("storybook-portal");
+      existingRoot = ownerDocument?.getElementById('storybook-portal');
     }
     if (existingRoot) return existingRoot;
 
     if (ownerDocument === null) return null;
 
-    let root = ownerDocument.createElement("div");
-    root.setAttribute("id", "piedao-portal-root");
+    let root = ownerDocument.createElement('div');
+    root.setAttribute('id', 'piedao-portal-root');
     return ownerDocument.body.appendChild(root);
   });
 
@@ -72,22 +72,22 @@ let DEFAULT_PORTAL_TAG = Fragment;
 interface PortalRenderPropArg {}
 
 let PortalRoot = forwardRefWithAs(function Portal<
-  TTag extends ElementType = typeof DEFAULT_PORTAL_TAG
+  TTag extends ElementType = typeof DEFAULT_PORTAL_TAG,
 >(props: Props<TTag, PortalRenderPropArg>, ref: Ref<HTMLElement>) {
   let passthroughProps = props;
   let internalPortalRootRef = useRef<HTMLElement | null>(null);
   let portalRef = useSyncRefs(
-    optionalRef<typeof internalPortalRootRef["current"]>((ref) => {
+    optionalRef<typeof internalPortalRootRef['current']>((ref) => {
       internalPortalRootRef.current = ref;
     }),
-    ref
+    ref,
   );
   let ownerDocument = useOwnerDocument(internalPortalRootRef);
   let target = usePortalTarget(internalPortalRootRef);
   let [element] = useState<HTMLDivElement | null>(() =>
-    typeof window === "undefined"
+    typeof window === 'undefined'
       ? null
-      : ownerDocument?.createElement("div") ?? null
+      : ownerDocument?.createElement('div') ?? null,
   );
 
   let ready = useServerHandoffComplete();
@@ -118,9 +118,9 @@ let PortalRoot = forwardRefWithAs(function Portal<
         render({
           props: { ref: portalRef, ...passthroughProps },
           defaultTag: DEFAULT_PORTAL_TAG,
-          name: "Portal",
+          name: 'Portal',
         }),
-        element
+        element,
       );
 });
 
@@ -133,12 +133,12 @@ let PortalGroupContext =
   createContext<MutableRefObject<HTMLElement | null> | null>(null);
 
 let Group = forwardRefWithAs(function Group<
-  TTag extends ElementType = typeof DEFAULT_GROUP_TAG
+  TTag extends ElementType = typeof DEFAULT_GROUP_TAG,
 >(
   props: Props<TTag, GroupRenderPropArg> & {
     target: MutableRefObject<HTMLElement | null>;
   },
-  ref: Ref<HTMLElement>
+  ref: Ref<HTMLElement>,
 ) {
   let { target, ...passthroughProps } = props;
   let groupRef = useSyncRefs(ref);
@@ -148,7 +148,7 @@ let Group = forwardRefWithAs(function Group<
       {render({
         props: { ref: groupRef, ...passthroughProps },
         defaultTag: DEFAULT_GROUP_TAG,
-        name: "Popover.Group",
+        name: 'Popover.Group',
       })}
     </PortalGroupContext.Provider>
   );

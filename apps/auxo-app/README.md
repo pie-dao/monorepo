@@ -7,7 +7,7 @@ The mono vault application makes it super fast and easy to deposit, withdraw and
 ```sh
 
 # install
-npm i 
+npm i
 
 # run locally
 npm run start
@@ -15,6 +15,3 @@ npm run start
 # create a production build
 npm run build
 ```
-
-
-

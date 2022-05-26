@@ -1,30 +1,30 @@
-import { Tab } from "@headlessui/react";
-import { useMemo } from "react";
-import { Fragment } from "react";
-import { FaLock } from "react-icons/fa";
-import { useIsCorrectNetwork } from "../../../hooks/useIsCurrentNetwork";
-import { useIsDepositor } from "../../../hooks/useSelectedVault";
-import { Vault } from "../../../store/vault/Vault";
+import { Tab } from '@headlessui/react';
+import { useMemo } from 'react';
+import { Fragment } from 'react';
+import { FaLock } from 'react-icons/fa';
+import { useIsCorrectNetwork } from '../../../hooks/useIsCurrentNetwork';
+import { useIsDepositor } from '../../../hooks/useSelectedVault';
+import { Vault } from '../../../store/vault/Vault';
 import {
   chainMap,
   changeNetwork,
   SUPPORTED_CHAIN_ID,
-} from "../../../utils/networks";
-import DepositInput from "./Deposit/DepositInput";
-import MerkleVerify from "./MerkleAuthCheck";
-import WithdrawInput from "./Withdraw/WithdrawInput";
+} from '../../../utils/networks';
+import DepositInput from './Deposit/DepositInput';
+import MerkleVerify from './MerkleAuthCheck';
+import WithdrawInput from './Withdraw/WithdrawInput';
 
-import { VscDebugDisconnect } from "react-icons/vsc";
+import { VscDebugDisconnect } from 'react-icons/vsc';
 
 const WrongNetworkTab = ({ vault }: { vault: Vault | undefined }) => {
   return (
     <div className="flex flex-col items-center justify-center">
       <VscDebugDisconnect className="fill-white bg-baby-blue-dark rounded-full h-8 w-8 p-1 mb-5" />
       <p className="text-gray-600">
-        Please connect to{" "}
+        Please connect to{' '}
         {vault
           ? chainMap[vault?.network.chainId as SUPPORTED_CHAIN_ID]?.chainName
-          : ""}{" "}
+          : ''}{' '}
         to interact with this vault
       </p>
       <button
@@ -63,11 +63,11 @@ const DepositWithdrawSwitcher = ({
   }, [vault]);
 
   const tabHeaders = useMemo(() => {
-    if (!correctNetwork) return ["DISCONNECTED"];
-    if (!isDepositor) return ["OPT-IN"];
-    if (!isAcceptingDeposits) return ["CLOSED"];
+    if (!correctNetwork) return ['DISCONNECTED'];
+    if (!isDepositor) return ['OPT-IN'];
+    if (!isAcceptingDeposits) return ['CLOSED'];
 
-    return ["DEPOSIT", "WITHDRAW"];
+    return ['DEPOSIT', 'WITHDRAW'];
   }, [correctNetwork, isDepositor, isAcceptingDeposits]);
   return (
     <div className="w-full h-full">
@@ -80,8 +80,8 @@ const DepositWithdrawSwitcher = ({
                   className={`border-b-2 flex items-center justify-center w-full h-full py-2 font-semibold
                     ${
                       selected
-                        ? "text-gray-600 border-baby-blue-dark border-b-[3px]"
-                        : "text-gray-300 border-gray-300"
+                        ? 'text-gray-600 border-baby-blue-dark border-b-[3px]'
+                        : 'text-gray-300 border-gray-300'
                     } 
                     `}
                 >
@@ -111,13 +111,13 @@ const DepositWithdrawSwitcher = ({
                   {vault ? (
                     <ClosedForDepositsTab vault={vault} />
                   ) : (
-                    "Connect a vault"
+                    'Connect a vault'
                   )}
                 </Tab.Panel>
               )
             ) : (
               <Tab.Panel>
-                {vault ? <MerkleVerify vault={vault} /> : "Connect a vault"}
+                {vault ? <MerkleVerify vault={vault} /> : 'Connect a vault'}
               </Tab.Panel>
             )
           ) : (

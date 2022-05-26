@@ -1,8 +1,7 @@
-import type { NextPage } from 'next';
+import { ReactElement } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { useAppDispatch } from '../hooks';
+import { Layout } from '../components';
 import { wrapper } from '../store';
 import { setX } from '../store/example/example.slice';
 
@@ -15,18 +14,21 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
   };
 });
 
-const Index: NextPage<{ someKey?: string }> = (props) => {
+export default function Page() {
   const { t } = useTranslation();
   const title = t('title');
-  const dispatch = useAppDispatch();
-  const [input] = useState(props.someKey ?? '');
   return (
-    <div>
-      <h1>{title}</h1>
-      <button onClick={() => dispatch(setX(input))}>Change</button>
-      <Link href="/example">example page</Link>
+    <div className="flex-1 flex items-stretch overflow-hidden">
+      <main className="flex-1 overflow-y-auto">
+        <section className="min-w-0 flex-1 h-full flex flex-col">
+          <h1>{title}</h1>
+          <Link href="/example">example page</Link>
+        </section>
+      </main>
     </div>
   );
-};
+}
 
-export default Index;
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};

@@ -12,925 +12,925 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
+} from 'ethers';
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-} from "../common";
+} from '../common';
 
 export interface PievaultAbiInterface extends utils.Interface {
-  contractName: "PievaultAbi";
+  contractName: 'PievaultAbi';
 
   functions: {
-    "addCaller(address)": FunctionFragment;
-    "addToken(address)": FunctionFragment;
-    "allowance(address,address)": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "balance(address)": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "burn(address,uint256)": FunctionFragment;
-    "calcOutStandingAnnualizedFee()": FunctionFragment;
-    "calcTokensForAmount(uint256)": FunctionFragment;
-    "calcTokensForAmountExit(uint256)": FunctionFragment;
-    "call(address[],bytes[],uint256[])": FunctionFragment;
-    "callNoValue(address[],bytes[])": FunctionFragment;
-    "canCall(address)": FunctionFragment;
-    "chargeOutstandingAnnualizedFee()": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "decreaseApproval(address,uint256)": FunctionFragment;
-    "exitPool(uint256)": FunctionFragment;
-    "getAnnualizedFee()": FunctionFragment;
-    "getCallers()": FunctionFragment;
-    "getCap()": FunctionFragment;
-    "getEntryFee()": FunctionFragment;
-    "getEntryFeeBeneficiaryShare()": FunctionFragment;
-    "getExitFee()": FunctionFragment;
-    "getExitFeeBeneficiaryShare()": FunctionFragment;
-    "getFeeBeneficiary()": FunctionFragment;
-    "getLock()": FunctionFragment;
-    "getLockBlock()": FunctionFragment;
-    "getTokenInPool(address)": FunctionFragment;
-    "getTokens()": FunctionFragment;
-    "increaseApproval(address,uint256)": FunctionFragment;
-    "initialize(uint256,string,string)": FunctionFragment;
-    "joinPool(uint256)": FunctionFragment;
-    "mint(address,uint256)": FunctionFragment;
-    "name()": FunctionFragment;
-    "owner()": FunctionFragment;
-    "removeCaller(address)": FunctionFragment;
-    "removeToken(address)": FunctionFragment;
-    "setAnnualizedFee(uint256)": FunctionFragment;
-    "setCap(uint256)": FunctionFragment;
-    "setEntryFee(uint256)": FunctionFragment;
-    "setEntryFeeBeneficiaryShare(uint256)": FunctionFragment;
-    "setExitFee(uint256)": FunctionFragment;
-    "setExitFeeBeneficiaryShare(uint256)": FunctionFragment;
-    "setFeeBeneficiary(address)": FunctionFragment;
-    "setLock(uint256)": FunctionFragment;
-    "singleCall(address,bytes,uint256)": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
+    'addCaller(address)': FunctionFragment;
+    'addToken(address)': FunctionFragment;
+    'allowance(address,address)': FunctionFragment;
+    'approve(address,uint256)': FunctionFragment;
+    'balance(address)': FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
+    'burn(address,uint256)': FunctionFragment;
+    'calcOutStandingAnnualizedFee()': FunctionFragment;
+    'calcTokensForAmount(uint256)': FunctionFragment;
+    'calcTokensForAmountExit(uint256)': FunctionFragment;
+    'call(address[],bytes[],uint256[])': FunctionFragment;
+    'callNoValue(address[],bytes[])': FunctionFragment;
+    'canCall(address)': FunctionFragment;
+    'chargeOutstandingAnnualizedFee()': FunctionFragment;
+    'decimals()': FunctionFragment;
+    'decreaseApproval(address,uint256)': FunctionFragment;
+    'exitPool(uint256)': FunctionFragment;
+    'getAnnualizedFee()': FunctionFragment;
+    'getCallers()': FunctionFragment;
+    'getCap()': FunctionFragment;
+    'getEntryFee()': FunctionFragment;
+    'getEntryFeeBeneficiaryShare()': FunctionFragment;
+    'getExitFee()': FunctionFragment;
+    'getExitFeeBeneficiaryShare()': FunctionFragment;
+    'getFeeBeneficiary()': FunctionFragment;
+    'getLock()': FunctionFragment;
+    'getLockBlock()': FunctionFragment;
+    'getTokenInPool(address)': FunctionFragment;
+    'getTokens()': FunctionFragment;
+    'increaseApproval(address,uint256)': FunctionFragment;
+    'initialize(uint256,string,string)': FunctionFragment;
+    'joinPool(uint256)': FunctionFragment;
+    'mint(address,uint256)': FunctionFragment;
+    'name()': FunctionFragment;
+    'owner()': FunctionFragment;
+    'removeCaller(address)': FunctionFragment;
+    'removeToken(address)': FunctionFragment;
+    'setAnnualizedFee(uint256)': FunctionFragment;
+    'setCap(uint256)': FunctionFragment;
+    'setEntryFee(uint256)': FunctionFragment;
+    'setEntryFeeBeneficiaryShare(uint256)': FunctionFragment;
+    'setExitFee(uint256)': FunctionFragment;
+    'setExitFeeBeneficiaryShare(uint256)': FunctionFragment;
+    'setFeeBeneficiary(address)': FunctionFragment;
+    'setLock(uint256)': FunctionFragment;
+    'singleCall(address,bytes,uint256)': FunctionFragment;
+    'symbol()': FunctionFragment;
+    'totalSupply()': FunctionFragment;
+    'transfer(address,uint256)': FunctionFragment;
+    'transferFrom(address,address,uint256)': FunctionFragment;
+    'transferOwnership(address)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "addCaller"
-      | "addCaller(address)"
-      | "addToken"
-      | "addToken(address)"
-      | "allowance"
-      | "allowance(address,address)"
-      | "approve"
-      | "approve(address,uint256)"
-      | "balance"
-      | "balance(address)"
-      | "balanceOf"
-      | "balanceOf(address)"
-      | "burn"
-      | "burn(address,uint256)"
-      | "calcOutStandingAnnualizedFee"
-      | "calcOutStandingAnnualizedFee()"
-      | "calcTokensForAmount"
-      | "calcTokensForAmount(uint256)"
-      | "calcTokensForAmountExit"
-      | "calcTokensForAmountExit(uint256)"
-      | "call"
-      | "call(address[],bytes[],uint256[])"
-      | "callNoValue"
-      | "callNoValue(address[],bytes[])"
-      | "canCall"
-      | "canCall(address)"
-      | "chargeOutstandingAnnualizedFee"
-      | "chargeOutstandingAnnualizedFee()"
-      | "decimals"
-      | "decimals()"
-      | "decreaseApproval"
-      | "decreaseApproval(address,uint256)"
-      | "exitPool"
-      | "exitPool(uint256)"
-      | "getAnnualizedFee"
-      | "getAnnualizedFee()"
-      | "getCallers"
-      | "getCallers()"
-      | "getCap"
-      | "getCap()"
-      | "getEntryFee"
-      | "getEntryFee()"
-      | "getEntryFeeBeneficiaryShare"
-      | "getEntryFeeBeneficiaryShare()"
-      | "getExitFee"
-      | "getExitFee()"
-      | "getExitFeeBeneficiaryShare"
-      | "getExitFeeBeneficiaryShare()"
-      | "getFeeBeneficiary"
-      | "getFeeBeneficiary()"
-      | "getLock"
-      | "getLock()"
-      | "getLockBlock"
-      | "getLockBlock()"
-      | "getTokenInPool"
-      | "getTokenInPool(address)"
-      | "getTokens"
-      | "getTokens()"
-      | "increaseApproval"
-      | "increaseApproval(address,uint256)"
-      | "initialize"
-      | "initialize(uint256,string,string)"
-      | "joinPool"
-      | "joinPool(uint256)"
-      | "mint"
-      | "mint(address,uint256)"
-      | "name"
-      | "name()"
-      | "owner"
-      | "owner()"
-      | "removeCaller"
-      | "removeCaller(address)"
-      | "removeToken"
-      | "removeToken(address)"
-      | "setAnnualizedFee"
-      | "setAnnualizedFee(uint256)"
-      | "setCap"
-      | "setCap(uint256)"
-      | "setEntryFee"
-      | "setEntryFee(uint256)"
-      | "setEntryFeeBeneficiaryShare"
-      | "setEntryFeeBeneficiaryShare(uint256)"
-      | "setExitFee"
-      | "setExitFee(uint256)"
-      | "setExitFeeBeneficiaryShare"
-      | "setExitFeeBeneficiaryShare(uint256)"
-      | "setFeeBeneficiary"
-      | "setFeeBeneficiary(address)"
-      | "setLock"
-      | "setLock(uint256)"
-      | "singleCall"
-      | "singleCall(address,bytes,uint256)"
-      | "symbol"
-      | "symbol()"
-      | "totalSupply"
-      | "totalSupply()"
-      | "transfer"
-      | "transfer(address,uint256)"
-      | "transferFrom"
-      | "transferFrom(address,address,uint256)"
-      | "transferOwnership"
-      | "transferOwnership(address)"
+      | 'addCaller'
+      | 'addCaller(address)'
+      | 'addToken'
+      | 'addToken(address)'
+      | 'allowance'
+      | 'allowance(address,address)'
+      | 'approve'
+      | 'approve(address,uint256)'
+      | 'balance'
+      | 'balance(address)'
+      | 'balanceOf'
+      | 'balanceOf(address)'
+      | 'burn'
+      | 'burn(address,uint256)'
+      | 'calcOutStandingAnnualizedFee'
+      | 'calcOutStandingAnnualizedFee()'
+      | 'calcTokensForAmount'
+      | 'calcTokensForAmount(uint256)'
+      | 'calcTokensForAmountExit'
+      | 'calcTokensForAmountExit(uint256)'
+      | 'call'
+      | 'call(address[],bytes[],uint256[])'
+      | 'callNoValue'
+      | 'callNoValue(address[],bytes[])'
+      | 'canCall'
+      | 'canCall(address)'
+      | 'chargeOutstandingAnnualizedFee'
+      | 'chargeOutstandingAnnualizedFee()'
+      | 'decimals'
+      | 'decimals()'
+      | 'decreaseApproval'
+      | 'decreaseApproval(address,uint256)'
+      | 'exitPool'
+      | 'exitPool(uint256)'
+      | 'getAnnualizedFee'
+      | 'getAnnualizedFee()'
+      | 'getCallers'
+      | 'getCallers()'
+      | 'getCap'
+      | 'getCap()'
+      | 'getEntryFee'
+      | 'getEntryFee()'
+      | 'getEntryFeeBeneficiaryShare'
+      | 'getEntryFeeBeneficiaryShare()'
+      | 'getExitFee'
+      | 'getExitFee()'
+      | 'getExitFeeBeneficiaryShare'
+      | 'getExitFeeBeneficiaryShare()'
+      | 'getFeeBeneficiary'
+      | 'getFeeBeneficiary()'
+      | 'getLock'
+      | 'getLock()'
+      | 'getLockBlock'
+      | 'getLockBlock()'
+      | 'getTokenInPool'
+      | 'getTokenInPool(address)'
+      | 'getTokens'
+      | 'getTokens()'
+      | 'increaseApproval'
+      | 'increaseApproval(address,uint256)'
+      | 'initialize'
+      | 'initialize(uint256,string,string)'
+      | 'joinPool'
+      | 'joinPool(uint256)'
+      | 'mint'
+      | 'mint(address,uint256)'
+      | 'name'
+      | 'name()'
+      | 'owner'
+      | 'owner()'
+      | 'removeCaller'
+      | 'removeCaller(address)'
+      | 'removeToken'
+      | 'removeToken(address)'
+      | 'setAnnualizedFee'
+      | 'setAnnualizedFee(uint256)'
+      | 'setCap'
+      | 'setCap(uint256)'
+      | 'setEntryFee'
+      | 'setEntryFee(uint256)'
+      | 'setEntryFeeBeneficiaryShare'
+      | 'setEntryFeeBeneficiaryShare(uint256)'
+      | 'setExitFee'
+      | 'setExitFee(uint256)'
+      | 'setExitFeeBeneficiaryShare'
+      | 'setExitFeeBeneficiaryShare(uint256)'
+      | 'setFeeBeneficiary'
+      | 'setFeeBeneficiary(address)'
+      | 'setLock'
+      | 'setLock(uint256)'
+      | 'singleCall'
+      | 'singleCall(address,bytes,uint256)'
+      | 'symbol'
+      | 'symbol()'
+      | 'totalSupply'
+      | 'totalSupply()'
+      | 'transfer'
+      | 'transfer(address,uint256)'
+      | 'transferFrom'
+      | 'transferFrom(address,address,uint256)'
+      | 'transferOwnership'
+      | 'transferOwnership(address)',
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "addCaller", values: [string]): string;
+  encodeFunctionData(functionFragment: 'addCaller', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "addCaller(address)",
-    values: [string]
+    functionFragment: 'addCaller(address)',
+    values: [string],
   ): string;
-  encodeFunctionData(functionFragment: "addToken", values: [string]): string;
+  encodeFunctionData(functionFragment: 'addToken', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "addToken(address)",
-    values: [string]
+    functionFragment: 'addToken(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
+    functionFragment: 'allowance',
+    values: [string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "allowance(address,address)",
-    values: [string, string]
+    functionFragment: 'allowance(address,address)',
+    values: [string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
+    functionFragment: 'approve',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "approve(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'approve(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "balance", values: [string]): string;
+  encodeFunctionData(functionFragment: 'balance', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "balance(address)",
-    values: [string]
+    functionFragment: 'balance(address)',
+    values: [string],
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "balanceOf(address)",
-    values: [string]
+    functionFragment: 'balanceOf(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "burn",
-    values: [string, BigNumberish]
+    functionFragment: 'burn',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "burn(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'burn(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcOutStandingAnnualizedFee",
-    values?: undefined
+    functionFragment: 'calcOutStandingAnnualizedFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "calcOutStandingAnnualizedFee()",
-    values?: undefined
+    functionFragment: 'calcOutStandingAnnualizedFee()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "calcTokensForAmount",
-    values: [BigNumberish]
+    functionFragment: 'calcTokensForAmount',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcTokensForAmount(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'calcTokensForAmount(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcTokensForAmountExit",
-    values: [BigNumberish]
+    functionFragment: 'calcTokensForAmountExit',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcTokensForAmountExit(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'calcTokensForAmountExit(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "call",
-    values: [string[], BytesLike[], BigNumberish[]]
+    functionFragment: 'call',
+    values: [string[], BytesLike[], BigNumberish[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "call(address[],bytes[],uint256[])",
-    values: [string[], BytesLike[], BigNumberish[]]
+    functionFragment: 'call(address[],bytes[],uint256[])',
+    values: [string[], BytesLike[], BigNumberish[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "callNoValue",
-    values: [string[], BytesLike[]]
+    functionFragment: 'callNoValue',
+    values: [string[], BytesLike[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "callNoValue(address[],bytes[])",
-    values: [string[], BytesLike[]]
+    functionFragment: 'callNoValue(address[],bytes[])',
+    values: [string[], BytesLike[]],
   ): string;
-  encodeFunctionData(functionFragment: "canCall", values: [string]): string;
+  encodeFunctionData(functionFragment: 'canCall', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "canCall(address)",
-    values: [string]
+    functionFragment: 'canCall(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "chargeOutstandingAnnualizedFee",
-    values?: undefined
+    functionFragment: 'chargeOutstandingAnnualizedFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "chargeOutstandingAnnualizedFee()",
-    values?: undefined
+    functionFragment: 'chargeOutstandingAnnualizedFee()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "decimals()",
-    values?: undefined
+    functionFragment: 'decimals()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "decreaseApproval",
-    values: [string, BigNumberish]
+    functionFragment: 'decreaseApproval',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "decreaseApproval(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'decreaseApproval(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitPool",
-    values: [BigNumberish]
+    functionFragment: 'exitPool',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitPool(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'exitPool(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "getAnnualizedFee",
-    values?: undefined
+    functionFragment: 'getAnnualizedFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getAnnualizedFee()",
-    values?: undefined
+    functionFragment: 'getAnnualizedFee()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getCallers",
-    values?: undefined
+    functionFragment: 'getCallers',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getCallers()",
-    values?: undefined
+    functionFragment: 'getCallers()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getCap", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getCap()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getCap', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getCap()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getEntryFee",
-    values?: undefined
+    functionFragment: 'getEntryFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getEntryFee()",
-    values?: undefined
+    functionFragment: 'getEntryFee()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getEntryFeeBeneficiaryShare",
-    values?: undefined
+    functionFragment: 'getEntryFeeBeneficiaryShare',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getEntryFeeBeneficiaryShare()",
-    values?: undefined
+    functionFragment: 'getEntryFeeBeneficiaryShare()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getExitFee",
-    values?: undefined
+    functionFragment: 'getExitFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getExitFee()",
-    values?: undefined
+    functionFragment: 'getExitFee()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getExitFeeBeneficiaryShare",
-    values?: undefined
+    functionFragment: 'getExitFeeBeneficiaryShare',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getExitFeeBeneficiaryShare()",
-    values?: undefined
+    functionFragment: 'getExitFeeBeneficiaryShare()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getFeeBeneficiary",
-    values?: undefined
+    functionFragment: 'getFeeBeneficiary',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getFeeBeneficiary()",
-    values?: undefined
+    functionFragment: 'getFeeBeneficiary()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getLock", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getLock()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getLock', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getLock()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getLockBlock",
-    values?: undefined
+    functionFragment: 'getLockBlock',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getLockBlock()",
-    values?: undefined
+    functionFragment: 'getLockBlock()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getTokenInPool",
-    values: [string]
+    functionFragment: 'getTokenInPool',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "getTokenInPool(address)",
-    values: [string]
+    functionFragment: 'getTokenInPool(address)',
+    values: [string],
   ): string;
-  encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getTokens', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getTokens()",
-    values?: undefined
+    functionFragment: 'getTokens()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "increaseApproval",
-    values: [string, BigNumberish]
+    functionFragment: 'increaseApproval',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "increaseApproval(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'increaseApproval(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize",
-    values: [BigNumberish, string, string]
+    functionFragment: 'initialize',
+    values: [BigNumberish, string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "initialize(uint256,string,string)",
-    values: [BigNumberish, string, string]
+    functionFragment: 'initialize(uint256,string,string)',
+    values: [BigNumberish, string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinPool",
-    values: [BigNumberish]
+    functionFragment: 'joinPool',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinPool(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'joinPool(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "mint",
-    values: [string, BigNumberish]
+    functionFragment: 'mint',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "mint(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'mint(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "name()", values?: undefined): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(functionFragment: "owner()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'name', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'name()', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'owner', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'owner()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "removeCaller",
-    values: [string]
+    functionFragment: 'removeCaller',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "removeCaller(address)",
-    values: [string]
+    functionFragment: 'removeCaller(address)',
+    values: [string],
   ): string;
-  encodeFunctionData(functionFragment: "removeToken", values: [string]): string;
+  encodeFunctionData(functionFragment: 'removeToken', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "removeToken(address)",
-    values: [string]
+    functionFragment: 'removeToken(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setAnnualizedFee",
-    values: [BigNumberish]
+    functionFragment: 'setAnnualizedFee',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setAnnualizedFee(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setAnnualizedFee(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setCap",
-    values: [BigNumberish]
+    functionFragment: 'setCap',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setCap(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setCap(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setEntryFee",
-    values: [BigNumberish]
+    functionFragment: 'setEntryFee',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setEntryFee(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setEntryFee(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setEntryFeeBeneficiaryShare",
-    values: [BigNumberish]
+    functionFragment: 'setEntryFeeBeneficiaryShare',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setEntryFeeBeneficiaryShare(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setEntryFeeBeneficiaryShare(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setExitFee",
-    values: [BigNumberish]
+    functionFragment: 'setExitFee',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setExitFee(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setExitFee(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setExitFeeBeneficiaryShare",
-    values: [BigNumberish]
+    functionFragment: 'setExitFeeBeneficiaryShare',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setExitFeeBeneficiaryShare(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setExitFeeBeneficiaryShare(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setFeeBeneficiary",
-    values: [string]
+    functionFragment: 'setFeeBeneficiary',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setFeeBeneficiary(address)",
-    values: [string]
+    functionFragment: 'setFeeBeneficiary(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setLock",
-    values: [BigNumberish]
+    functionFragment: 'setLock',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setLock(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setLock(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "singleCall",
-    values: [string, BytesLike, BigNumberish]
+    functionFragment: 'singleCall',
+    values: [string, BytesLike, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "singleCall(address,bytes,uint256)",
-    values: [string, BytesLike, BigNumberish]
+    functionFragment: 'singleCall(address,bytes,uint256)',
+    values: [string, BytesLike, BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'symbol', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'symbol()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
+    functionFragment: 'totalSupply',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply()",
-    values?: undefined
+    functionFragment: 'totalSupply()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
+    functionFragment: 'transfer',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'transfer(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
+    functionFragment: 'transferFrom',
+    values: [string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom(address,address,uint256)",
-    values: [string, string, BigNumberish]
+    functionFragment: 'transferFrom(address,address,uint256)',
+    values: [string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
+    functionFragment: 'transferOwnership',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferOwnership(address)",
-    values: [string]
+    functionFragment: 'transferOwnership(address)',
+    values: [string],
   ): string;
 
-  decodeFunctionResult(functionFragment: "addCaller", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'addCaller', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "addCaller(address)",
-    data: BytesLike
+    functionFragment: 'addCaller(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "addToken", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'addToken', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "addToken(address)",
-    data: BytesLike
+    functionFragment: 'addToken(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "allowance(address,address)",
-    data: BytesLike
+    functionFragment: 'allowance(address,address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "approve(address,uint256)",
-    data: BytesLike
+    functionFragment: 'approve(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "balance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balance', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "balance(address)",
-    data: BytesLike
+    functionFragment: 'balance(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "balanceOf(address)",
-    data: BytesLike
+    functionFragment: 'balanceOf(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'burn', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "burn(address,uint256)",
-    data: BytesLike
+    functionFragment: 'burn(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcOutStandingAnnualizedFee",
-    data: BytesLike
+    functionFragment: 'calcOutStandingAnnualizedFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcOutStandingAnnualizedFee()",
-    data: BytesLike
+    functionFragment: 'calcOutStandingAnnualizedFee()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcTokensForAmount",
-    data: BytesLike
+    functionFragment: 'calcTokensForAmount',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcTokensForAmount(uint256)",
-    data: BytesLike
+    functionFragment: 'calcTokensForAmount(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcTokensForAmountExit",
-    data: BytesLike
+    functionFragment: 'calcTokensForAmountExit',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcTokensForAmountExit(uint256)",
-    data: BytesLike
+    functionFragment: 'calcTokensForAmountExit(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "call", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'call', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "call(address[],bytes[],uint256[])",
-    data: BytesLike
+    functionFragment: 'call(address[],bytes[],uint256[])',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "callNoValue",
-    data: BytesLike
+    functionFragment: 'callNoValue',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "callNoValue(address[],bytes[])",
-    data: BytesLike
+    functionFragment: 'callNoValue(address[],bytes[])',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "canCall", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'canCall', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "canCall(address)",
-    data: BytesLike
+    functionFragment: 'canCall(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "chargeOutstandingAnnualizedFee",
-    data: BytesLike
+    functionFragment: 'chargeOutstandingAnnualizedFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "chargeOutstandingAnnualizedFee()",
-    data: BytesLike
+    functionFragment: 'chargeOutstandingAnnualizedFee()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "decreaseApproval",
-    data: BytesLike
+    functionFragment: 'decreaseApproval',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "decreaseApproval(address,uint256)",
-    data: BytesLike
+    functionFragment: 'decreaseApproval(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "exitPool", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'exitPool', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "exitPool(uint256)",
-    data: BytesLike
+    functionFragment: 'exitPool(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAnnualizedFee",
-    data: BytesLike
+    functionFragment: 'getAnnualizedFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAnnualizedFee()",
-    data: BytesLike
+    functionFragment: 'getAnnualizedFee()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getCallers", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCallers', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getCallers()",
-    data: BytesLike
+    functionFragment: 'getCallers()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getCap", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getCap()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCap', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCap()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getEntryFee",
-    data: BytesLike
+    functionFragment: 'getEntryFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEntryFee()",
-    data: BytesLike
+    functionFragment: 'getEntryFee()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEntryFeeBeneficiaryShare",
-    data: BytesLike
+    functionFragment: 'getEntryFeeBeneficiaryShare',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEntryFeeBeneficiaryShare()",
-    data: BytesLike
+    functionFragment: 'getEntryFeeBeneficiaryShare()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getExitFee", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getExitFee', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getExitFee()",
-    data: BytesLike
+    functionFragment: 'getExitFee()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getExitFeeBeneficiaryShare",
-    data: BytesLike
+    functionFragment: 'getExitFeeBeneficiaryShare',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getExitFeeBeneficiaryShare()",
-    data: BytesLike
+    functionFragment: 'getExitFeeBeneficiaryShare()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getFeeBeneficiary",
-    data: BytesLike
+    functionFragment: 'getFeeBeneficiary',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getFeeBeneficiary()",
-    data: BytesLike
+    functionFragment: 'getFeeBeneficiary()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getLock", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getLock()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getLock', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getLock()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getLockBlock",
-    data: BytesLike
+    functionFragment: 'getLockBlock',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getLockBlock()",
-    data: BytesLike
+    functionFragment: 'getLockBlock()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getTokenInPool",
-    data: BytesLike
+    functionFragment: 'getTokenInPool',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getTokenInPool(address)",
-    data: BytesLike
+    functionFragment: 'getTokenInPool(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getTokens', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getTokens()",
-    data: BytesLike
+    functionFragment: 'getTokens()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "increaseApproval",
-    data: BytesLike
+    functionFragment: 'increaseApproval',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "increaseApproval(address,uint256)",
-    data: BytesLike
+    functionFragment: 'increaseApproval(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'initialize', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "initialize(uint256,string,string)",
-    data: BytesLike
+    functionFragment: 'initialize(uint256,string,string)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "joinPool", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'joinPool', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "joinPool(uint256)",
-    data: BytesLike
+    functionFragment: 'joinPool(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'mint', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "mint(address,uint256)",
-    data: BytesLike
+    functionFragment: 'mint(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "name()", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owner()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'owner()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "removeCaller",
-    data: BytesLike
+    functionFragment: 'removeCaller',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeCaller(address)",
-    data: BytesLike
+    functionFragment: 'removeCaller(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeToken",
-    data: BytesLike
+    functionFragment: 'removeToken',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeToken(address)",
-    data: BytesLike
+    functionFragment: 'removeToken(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setAnnualizedFee",
-    data: BytesLike
+    functionFragment: 'setAnnualizedFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setAnnualizedFee(uint256)",
-    data: BytesLike
+    functionFragment: 'setAnnualizedFee(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "setCap", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setCap', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setCap(uint256)",
-    data: BytesLike
+    functionFragment: 'setCap(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setEntryFee",
-    data: BytesLike
+    functionFragment: 'setEntryFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setEntryFee(uint256)",
-    data: BytesLike
+    functionFragment: 'setEntryFee(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setEntryFeeBeneficiaryShare",
-    data: BytesLike
+    functionFragment: 'setEntryFeeBeneficiaryShare',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setEntryFeeBeneficiaryShare(uint256)",
-    data: BytesLike
+    functionFragment: 'setEntryFeeBeneficiaryShare(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "setExitFee", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setExitFee', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setExitFee(uint256)",
-    data: BytesLike
+    functionFragment: 'setExitFee(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setExitFeeBeneficiaryShare",
-    data: BytesLike
+    functionFragment: 'setExitFeeBeneficiaryShare',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setExitFeeBeneficiaryShare(uint256)",
-    data: BytesLike
+    functionFragment: 'setExitFeeBeneficiaryShare(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setFeeBeneficiary",
-    data: BytesLike
+    functionFragment: 'setFeeBeneficiary',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setFeeBeneficiary(address)",
-    data: BytesLike
+    functionFragment: 'setFeeBeneficiary(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "setLock", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setLock', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setLock(uint256)",
-    data: BytesLike
+    functionFragment: 'setLock(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "singleCall", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'singleCall', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "singleCall(address,bytes,uint256)",
-    data: BytesLike
+    functionFragment: 'singleCall(address,bytes,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "symbol()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
+    functionFragment: 'totalSupply',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply()",
-    data: BytesLike
+    functionFragment: 'totalSupply()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transfer(address,uint256)",
-    data: BytesLike
+    functionFragment: 'transfer(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
+    functionFragment: 'transferFrom',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferFrom(address,address,uint256)",
-    data: BytesLike
+    functionFragment: 'transferFrom(address,address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
+    functionFragment: 'transferOwnership',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferOwnership(address)",
-    data: BytesLike
+    functionFragment: 'transferOwnership(address)',
+    data: BytesLike,
   ): Result;
 
   events: {
-    "AnnualizedFeeSet(uint256)": EventFragment;
-    "Approval(address,address,uint256)": EventFragment;
-    "Call(address,address,bytes,uint256)": EventFragment;
-    "CallerAdded(address)": EventFragment;
-    "CallerRemoved(address)": EventFragment;
-    "CapSet(uint256)": EventFragment;
-    "EntryFeeBeneficiaryShareSet(uint256)": EventFragment;
-    "EntryFeeSet(uint256)": EventFragment;
-    "ExitFeeBeneficiaryShareSet(uint256)": EventFragment;
-    "ExitFeeSet(uint256)": EventFragment;
-    "FeeBeneficiarySet(address)": EventFragment;
-    "FeeCharged(uint256)": EventFragment;
-    "LockSet(uint256)": EventFragment;
-    "OwnershipTransferred(address,address)": EventFragment;
-    "PoolExited(address,uint256)": EventFragment;
-    "PoolJoined(address,uint256)": EventFragment;
-    "TokenAdded(address)": EventFragment;
-    "TokenRemoved(address)": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
+    'AnnualizedFeeSet(uint256)': EventFragment;
+    'Approval(address,address,uint256)': EventFragment;
+    'Call(address,address,bytes,uint256)': EventFragment;
+    'CallerAdded(address)': EventFragment;
+    'CallerRemoved(address)': EventFragment;
+    'CapSet(uint256)': EventFragment;
+    'EntryFeeBeneficiaryShareSet(uint256)': EventFragment;
+    'EntryFeeSet(uint256)': EventFragment;
+    'ExitFeeBeneficiaryShareSet(uint256)': EventFragment;
+    'ExitFeeSet(uint256)': EventFragment;
+    'FeeBeneficiarySet(address)': EventFragment;
+    'FeeCharged(uint256)': EventFragment;
+    'LockSet(uint256)': EventFragment;
+    'OwnershipTransferred(address,address)': EventFragment;
+    'PoolExited(address,uint256)': EventFragment;
+    'PoolJoined(address,uint256)': EventFragment;
+    'TokenAdded(address)': EventFragment;
+    'TokenRemoved(address)': EventFragment;
+    'Transfer(address,address,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "AnnualizedFeeSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "AnnualizedFeeSet(uint256)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AnnualizedFeeSet'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'AnnualizedFeeSet(uint256)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Approval'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Approval(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Approval(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Call"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Call'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Call(address,address,bytes,uint256)"
+    nameOrSignatureOrTopic: 'Call(address,address,bytes,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CallerAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CallerAdded(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CallerRemoved"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CallerRemoved(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CapSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CapSet(uint256)"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CallerAdded'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CallerAdded(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CallerRemoved'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CallerRemoved(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CapSet'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CapSet(uint256)'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "EntryFeeBeneficiaryShareSet"
+    nameOrSignatureOrTopic: 'EntryFeeBeneficiaryShareSet',
   ): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "EntryFeeBeneficiaryShareSet(uint256)"
+    nameOrSignatureOrTopic: 'EntryFeeBeneficiaryShareSet(uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "EntryFeeSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "EntryFeeSet(uint256)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExitFeeBeneficiaryShareSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'EntryFeeSet'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'EntryFeeSet(uint256)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ExitFeeBeneficiaryShareSet'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "ExitFeeBeneficiaryShareSet(uint256)"
+    nameOrSignatureOrTopic: 'ExitFeeBeneficiaryShareSet(uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExitFeeSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ExitFeeSet(uint256)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "FeeBeneficiarySet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "FeeBeneficiarySet(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "FeeCharged"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "FeeCharged(uint256)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "LockSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "LockSet(uint256)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ExitFeeSet'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ExitFeeSet(uint256)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'FeeBeneficiarySet'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'FeeBeneficiarySet(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'FeeCharged'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'FeeCharged(uint256)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'LockSet'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'LockSet(uint256)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'OwnershipTransferred'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "OwnershipTransferred(address,address)"
+    nameOrSignatureOrTopic: 'OwnershipTransferred(address,address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PoolExited"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'PoolExited'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "PoolExited(address,uint256)"
+    nameOrSignatureOrTopic: 'PoolExited(address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PoolJoined"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'PoolJoined'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "PoolJoined(address,uint256)"
+    nameOrSignatureOrTopic: 'PoolJoined(address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokenAdded"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokenAdded(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokenRemoved"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokenRemoved(address)"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokenAdded'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokenAdded(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokenRemoved'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokenRemoved(address)'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Transfer(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Transfer(address,address,uint256)',
   ): EventFragment;
 }
 
@@ -1113,7 +1113,7 @@ export type TransferEvent = TypedEvent<
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
 export interface PievaultAbi extends BaseContract {
-  contractName: "PievaultAbi";
+  contractName: 'PievaultAbi';
 
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -1124,15 +1124,15 @@ export interface PievaultAbi extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -1143,106 +1143,106 @@ export interface PievaultAbi extends BaseContract {
   functions: {
     addCaller(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "addCaller(address)"(
+    'addCaller(address)'(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     addToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "addToken(address)"(
+    'addToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     balance(_token: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "balance(address)"(
+    'balance(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     burn(
       _from: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "burn(address,uint256)"(
+    'burn(address,uint256)'(
       _from: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     calcOutStandingAnnualizedFee(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calcOutStandingAnnualizedFee()"(
-      overrides?: CallOverrides
+    'calcOutStandingAnnualizedFee()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
     calcTokensForAmountExit(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
-    "calcTokensForAmountExit(uint256)"(
+    'calcTokensForAmountExit(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
@@ -1251,446 +1251,446 @@ export interface PievaultAbi extends BaseContract {
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "call(address[],bytes[],uint256[])"(
+    'call(address[],bytes[],uint256[])'(
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     callNoValue(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "callNoValue(address[],bytes[])"(
+    'callNoValue(address[],bytes[])'(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     canCall(_caller: string, overrides?: CallOverrides): Promise<[boolean]>;
 
-    "canCall(address)"(
+    'canCall(address)'(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean]>;
 
     chargeOutstandingAnnualizedFee(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "chargeOutstandingAnnualizedFee()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'chargeOutstandingAnnualizedFee()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<[number]>;
+    'decimals()'(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     exitPool(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     getAnnualizedFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getAnnualizedFee()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getAnnualizedFee()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getCallers(overrides?: CallOverrides): Promise<[string[]]>;
 
-    "getCallers()"(overrides?: CallOverrides): Promise<[string[]]>;
+    'getCallers()'(overrides?: CallOverrides): Promise<[string[]]>;
 
     getCap(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getCap()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getEntryFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getEntryFee()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getEntryFee()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getEntryFeeBeneficiaryShare(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "getEntryFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getEntryFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getExitFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getExitFee()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getExitFee()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getExitFeeBeneficiaryShare(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getExitFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getExitFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getFeeBeneficiary(overrides?: CallOverrides): Promise<[string]>;
 
-    "getFeeBeneficiary()"(overrides?: CallOverrides): Promise<[string]>;
+    'getFeeBeneficiary()'(overrides?: CallOverrides): Promise<[string]>;
 
     getLock(overrides?: CallOverrides): Promise<[boolean]>;
 
-    "getLock()"(overrides?: CallOverrides): Promise<[boolean]>;
+    'getLock()'(overrides?: CallOverrides): Promise<[boolean]>;
 
     getLockBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getLockBlock()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getLockBlock()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getTokenInPool(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean]>;
 
-    "getTokenInPool(address)"(
+    'getTokenInPool(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[boolean]>;
 
     getTokens(overrides?: CallOverrides): Promise<[string[]]>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<[string[]]>;
+    'getTokens()'(overrides?: CallOverrides): Promise<[string[]]>;
 
     increaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     initialize(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "initialize(uint256,string,string)"(
+    'initialize(uint256,string,string)'(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     joinPool(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     mint(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "mint(address,uint256)"(
+    'mint(address,uint256)'(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    "name()"(overrides?: CallOverrides): Promise<[string]>;
+    'name()'(overrides?: CallOverrides): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string] & { owner_: string }>;
 
-    "owner()"(
-      overrides?: CallOverrides
+    'owner()'(
+      overrides?: CallOverrides,
     ): Promise<[string] & { owner_: string }>;
 
     removeCaller(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "removeCaller(address)"(
+    'removeCaller(address)'(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     removeToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setAnnualizedFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setAnnualizedFee(uint256)"(
+    'setAnnualizedFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setCap(
       _maxCap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _maxCap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setEntryFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setEntryFee(uint256)"(
+    'setEntryFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setEntryFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setEntryFeeBeneficiaryShare(uint256)"(
+    'setEntryFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setExitFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setExitFee(uint256)"(
+    'setExitFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setExitFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setExitFeeBeneficiaryShare(uint256)"(
+    'setExitFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setFeeBeneficiary(
       _beneficiary: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setFeeBeneficiary(address)"(
+    'setFeeBeneficiary(address)'(
       _beneficiary: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setLock(
       _lock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setLock(uint256)"(
+    'setLock(uint256)'(
       _lock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     singleCall(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "singleCall(address,bytes,uint256)"(
+    'singleCall(address,bytes,uint256)'(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<[string]>;
+    'symbol()'(overrides?: CallOverrides): Promise<[string]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     transferOwnership(
       _newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transferOwnership(address)"(
+    'transferOwnership(address)'(
       _newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
   };
 
   addCaller(
     _caller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "addCaller(address)"(
+  'addCaller(address)'(
     _caller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   addToken(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "addToken(address)"(
+  'addToken(address)'(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   allowance(
     owner: string,
     spender: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "allowance(address,address)"(
+  'allowance(address,address)'(
     owner: string,
     spender: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   approve(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "approve(address,uint256)"(
+  'approve(address,uint256)'(
     spender: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   balance(_token: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  "balance(address)"(
+  'balance(address)'(
     _token: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  "balanceOf(address)"(
+  'balanceOf(address)'(
     account: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   burn(
     _from: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "burn(address,uint256)"(
+  'burn(address,uint256)'(
     _from: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   calcOutStandingAnnualizedFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "calcOutStandingAnnualizedFee()"(
-    overrides?: CallOverrides
+  'calcOutStandingAnnualizedFee()'(
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   calcTokensForAmount(
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
   >;
 
-  "calcTokensForAmount(uint256)"(
+  'calcTokensForAmount(uint256)'(
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
   >;
 
   calcTokensForAmountExit(
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
   >;
 
-  "calcTokensForAmountExit(uint256)"(
+  'calcTokensForAmountExit(uint256)'(
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
   >;
@@ -1699,431 +1699,431 @@ export interface PievaultAbi extends BaseContract {
     _targets: string[],
     _calldata: BytesLike[],
     _values: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "call(address[],bytes[],uint256[])"(
+  'call(address[],bytes[],uint256[])'(
     _targets: string[],
     _calldata: BytesLike[],
     _values: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   callNoValue(
     _targets: string[],
     _calldata: BytesLike[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "callNoValue(address[],bytes[])"(
+  'callNoValue(address[],bytes[])'(
     _targets: string[],
     _calldata: BytesLike[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   canCall(_caller: string, overrides?: CallOverrides): Promise<boolean>;
 
-  "canCall(address)"(
+  'canCall(address)'(
     _caller: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<boolean>;
 
   chargeOutstandingAnnualizedFee(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "chargeOutstandingAnnualizedFee()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'chargeOutstandingAnnualizedFee()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
-  "decimals()"(overrides?: CallOverrides): Promise<number>;
+  'decimals()'(overrides?: CallOverrides): Promise<number>;
 
   decreaseApproval(
     _spender: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "decreaseApproval(address,uint256)"(
+  'decreaseApproval(address,uint256)'(
     _spender: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   exitPool(
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitPool(uint256)"(
+  'exitPool(uint256)'(
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   getAnnualizedFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getAnnualizedFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getAnnualizedFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getCallers(overrides?: CallOverrides): Promise<string[]>;
 
-  "getCallers()"(overrides?: CallOverrides): Promise<string[]>;
+  'getCallers()'(overrides?: CallOverrides): Promise<string[]>;
 
   getCap(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getCap()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getCap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getEntryFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getEntryFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getEntryFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getEntryFeeBeneficiaryShare(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getEntryFeeBeneficiaryShare()"(
-    overrides?: CallOverrides
+  'getEntryFeeBeneficiaryShare()'(
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getExitFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getExitFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getExitFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getExitFeeBeneficiaryShare(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getExitFeeBeneficiaryShare()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getExitFeeBeneficiaryShare()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getFeeBeneficiary(overrides?: CallOverrides): Promise<string>;
 
-  "getFeeBeneficiary()"(overrides?: CallOverrides): Promise<string>;
+  'getFeeBeneficiary()'(overrides?: CallOverrides): Promise<string>;
 
   getLock(overrides?: CallOverrides): Promise<boolean>;
 
-  "getLock()"(overrides?: CallOverrides): Promise<boolean>;
+  'getLock()'(overrides?: CallOverrides): Promise<boolean>;
 
   getLockBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getLockBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getLockBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getTokenInPool(_token: string, overrides?: CallOverrides): Promise<boolean>;
 
-  "getTokenInPool(address)"(
+  'getTokenInPool(address)'(
     _token: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<boolean>;
 
   getTokens(overrides?: CallOverrides): Promise<string[]>;
 
-  "getTokens()"(overrides?: CallOverrides): Promise<string[]>;
+  'getTokens()'(overrides?: CallOverrides): Promise<string[]>;
 
   increaseApproval(
     _spender: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "increaseApproval(address,uint256)"(
+  'increaseApproval(address,uint256)'(
     _spender: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   initialize(
     _initialSupply: BigNumberish,
     _name: string,
     _symbol: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "initialize(uint256,string,string)"(
+  'initialize(uint256,string,string)'(
     _initialSupply: BigNumberish,
     _name: string,
     _symbol: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   joinPool(
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "joinPool(uint256)"(
+  'joinPool(uint256)'(
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   mint(
     _receiver: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "mint(address,uint256)"(
+  'mint(address,uint256)'(
     _receiver: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
-  "name()"(overrides?: CallOverrides): Promise<string>;
+  'name()'(overrides?: CallOverrides): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
-  "owner()"(overrides?: CallOverrides): Promise<string>;
+  'owner()'(overrides?: CallOverrides): Promise<string>;
 
   removeCaller(
     _caller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "removeCaller(address)"(
+  'removeCaller(address)'(
     _caller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   removeToken(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "removeToken(address)"(
+  'removeToken(address)'(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setAnnualizedFee(
     _fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setAnnualizedFee(uint256)"(
+  'setAnnualizedFee(uint256)'(
     _fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setCap(
     _maxCap: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setCap(uint256)"(
+  'setCap(uint256)'(
     _maxCap: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setEntryFee(
     _fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setEntryFee(uint256)"(
+  'setEntryFee(uint256)'(
     _fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setEntryFeeBeneficiaryShare(
     _share: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setEntryFeeBeneficiaryShare(uint256)"(
+  'setEntryFeeBeneficiaryShare(uint256)'(
     _share: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setExitFee(
     _fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setExitFee(uint256)"(
+  'setExitFee(uint256)'(
     _fee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setExitFeeBeneficiaryShare(
     _share: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setExitFeeBeneficiaryShare(uint256)"(
+  'setExitFeeBeneficiaryShare(uint256)'(
     _share: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setFeeBeneficiary(
     _beneficiary: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setFeeBeneficiary(address)"(
+  'setFeeBeneficiary(address)'(
     _beneficiary: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setLock(
     _lock: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setLock(uint256)"(
+  'setLock(uint256)'(
     _lock: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   singleCall(
     _target: string,
     _calldata: BytesLike,
     _value: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "singleCall(address,bytes,uint256)"(
+  'singleCall(address,bytes,uint256)'(
     _target: string,
     _calldata: BytesLike,
     _value: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
-  "symbol()"(overrides?: CallOverrides): Promise<string>;
+  'symbol()'(overrides?: CallOverrides): Promise<string>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transfer(address,uint256)"(
+  'transfer(address,uint256)'(
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   transferFrom(
     sender: string,
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transferFrom(address,address,uint256)"(
+  'transferFrom(address,address,uint256)'(
     sender: string,
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   transferOwnership(
     _newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transferOwnership(address)"(
+  'transferOwnership(address)'(
     _newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   callStatic: {
     addCaller(_caller: string, overrides?: CallOverrides): Promise<void>;
 
-    "addCaller(address)"(
+    'addCaller(address)'(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     addToken(_token: string, overrides?: CallOverrides): Promise<void>;
 
-    "addToken(address)"(
+    'addToken(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     balance(_token: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balance(address)"(
+    'balance(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     burn(
       _from: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "burn(address,uint256)"(
+    'burn(address,uint256)'(
       _from: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     calcOutStandingAnnualizedFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "calcOutStandingAnnualizedFee()"(
-      overrides?: CallOverrides
+    'calcOutStandingAnnualizedFee()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
     calcTokensForAmountExit(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
-    "calcTokensForAmountExit(uint256)"(
+    'calcTokensForAmountExit(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
@@ -2132,1312 +2132,1312 @@ export interface PievaultAbi extends BaseContract {
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "call(address[],bytes[],uint256[])"(
+    'call(address[],bytes[],uint256[])'(
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     callNoValue(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "callNoValue(address[],bytes[])"(
+    'callNoValue(address[],bytes[])'(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     canCall(_caller: string, overrides?: CallOverrides): Promise<boolean>;
 
-    "canCall(address)"(
+    'canCall(address)'(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     chargeOutstandingAnnualizedFee(overrides?: CallOverrides): Promise<void>;
 
-    "chargeOutstandingAnnualizedFee()"(
-      overrides?: CallOverrides
+    'chargeOutstandingAnnualizedFee()'(
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<number>;
+    'decimals()'(overrides?: CallOverrides): Promise<number>;
 
     decreaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     exitPool(_amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     getAnnualizedFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getAnnualizedFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getAnnualizedFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCallers(overrides?: CallOverrides): Promise<string[]>;
 
-    "getCallers()"(overrides?: CallOverrides): Promise<string[]>;
+    'getCallers()'(overrides?: CallOverrides): Promise<string[]>;
 
     getCap(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getCap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEntryFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getEntryFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getEntryFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEntryFeeBeneficiaryShare(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getEntryFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getEntryFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getExitFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getExitFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getExitFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getExitFeeBeneficiaryShare(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getExitFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getExitFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getFeeBeneficiary(overrides?: CallOverrides): Promise<string>;
 
-    "getFeeBeneficiary()"(overrides?: CallOverrides): Promise<string>;
+    'getFeeBeneficiary()'(overrides?: CallOverrides): Promise<string>;
 
     getLock(overrides?: CallOverrides): Promise<boolean>;
 
-    "getLock()"(overrides?: CallOverrides): Promise<boolean>;
+    'getLock()'(overrides?: CallOverrides): Promise<boolean>;
 
     getLockBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getLockBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getLockBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokenInPool(_token: string, overrides?: CallOverrides): Promise<boolean>;
 
-    "getTokenInPool(address)"(
+    'getTokenInPool(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     getTokens(overrides?: CallOverrides): Promise<string[]>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<string[]>;
+    'getTokens()'(overrides?: CallOverrides): Promise<string[]>;
 
     increaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     initialize(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "initialize(uint256,string,string)"(
+    'initialize(uint256,string,string)'(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     joinPool(_amount: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     mint(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "mint(address,uint256)"(
+    'mint(address,uint256)'(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
-    "name()"(overrides?: CallOverrides): Promise<string>;
+    'name()'(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
-    "owner()"(overrides?: CallOverrides): Promise<string>;
+    'owner()'(overrides?: CallOverrides): Promise<string>;
 
     removeCaller(_caller: string, overrides?: CallOverrides): Promise<void>;
 
-    "removeCaller(address)"(
+    'removeCaller(address)'(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     removeToken(_token: string, overrides?: CallOverrides): Promise<void>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setAnnualizedFee(
       _fee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setAnnualizedFee(uint256)"(
+    'setAnnualizedFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setCap(_maxCap: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _maxCap: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setEntryFee(_fee: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "setEntryFee(uint256)"(
+    'setEntryFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setEntryFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setEntryFeeBeneficiaryShare(uint256)"(
+    'setEntryFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setExitFee(_fee: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "setExitFee(uint256)"(
+    'setExitFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setExitFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setExitFeeBeneficiaryShare(uint256)"(
+    'setExitFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setFeeBeneficiary(
       _beneficiary: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setFeeBeneficiary(address)"(
+    'setFeeBeneficiary(address)'(
       _beneficiary: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setLock(_lock: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "setLock(uint256)"(
+    'setLock(uint256)'(
       _lock: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     singleCall(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "singleCall(address,bytes,uint256)"(
+    'singleCall(address,bytes,uint256)'(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<string>;
+    'symbol()'(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     transferOwnership(
       _newOwner: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "transferOwnership(address)"(
+    'transferOwnership(address)'(
       _newOwner: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
   filters: {
-    "AnnualizedFeeSet(uint256)"(fee?: null): AnnualizedFeeSetEventFilter;
+    'AnnualizedFeeSet(uint256)'(fee?: null): AnnualizedFeeSetEventFilter;
     AnnualizedFeeSet(fee?: null): AnnualizedFeeSetEventFilter;
 
-    "Approval(address,address,uint256)"(
+    'Approval(address,address,uint256)'(
       owner?: string | null,
       spender?: string | null,
-      value?: null
+      value?: null,
     ): ApprovalEventFilter;
     Approval(
       owner?: string | null,
       spender?: string | null,
-      value?: null
+      value?: null,
     ): ApprovalEventFilter;
 
-    "Call(address,address,bytes,uint256)"(
+    'Call(address,address,bytes,uint256)'(
       caller?: string | null,
       target?: string | null,
       data?: null,
-      value?: null
+      value?: null,
     ): CallEventFilter;
     Call(
       caller?: string | null,
       target?: string | null,
       data?: null,
-      value?: null
+      value?: null,
     ): CallEventFilter;
 
-    "CallerAdded(address)"(caller?: string | null): CallerAddedEventFilter;
+    'CallerAdded(address)'(caller?: string | null): CallerAddedEventFilter;
     CallerAdded(caller?: string | null): CallerAddedEventFilter;
 
-    "CallerRemoved(address)"(caller?: string | null): CallerRemovedEventFilter;
+    'CallerRemoved(address)'(caller?: string | null): CallerRemovedEventFilter;
     CallerRemoved(caller?: string | null): CallerRemovedEventFilter;
 
-    "CapSet(uint256)"(cap?: null): CapSetEventFilter;
+    'CapSet(uint256)'(cap?: null): CapSetEventFilter;
     CapSet(cap?: null): CapSetEventFilter;
 
-    "EntryFeeBeneficiaryShareSet(uint256)"(
-      share?: null
+    'EntryFeeBeneficiaryShareSet(uint256)'(
+      share?: null,
     ): EntryFeeBeneficiaryShareSetEventFilter;
     EntryFeeBeneficiaryShareSet(
-      share?: null
+      share?: null,
     ): EntryFeeBeneficiaryShareSetEventFilter;
 
-    "EntryFeeSet(uint256)"(fee?: null): EntryFeeSetEventFilter;
+    'EntryFeeSet(uint256)'(fee?: null): EntryFeeSetEventFilter;
     EntryFeeSet(fee?: null): EntryFeeSetEventFilter;
 
-    "ExitFeeBeneficiaryShareSet(uint256)"(
-      share?: null
+    'ExitFeeBeneficiaryShareSet(uint256)'(
+      share?: null,
     ): ExitFeeBeneficiaryShareSetEventFilter;
     ExitFeeBeneficiaryShareSet(
-      share?: null
+      share?: null,
     ): ExitFeeBeneficiaryShareSetEventFilter;
 
-    "ExitFeeSet(uint256)"(fee?: null): ExitFeeSetEventFilter;
+    'ExitFeeSet(uint256)'(fee?: null): ExitFeeSetEventFilter;
     ExitFeeSet(fee?: null): ExitFeeSetEventFilter;
 
-    "FeeBeneficiarySet(address)"(
-      beneficiary?: string | null
+    'FeeBeneficiarySet(address)'(
+      beneficiary?: string | null,
     ): FeeBeneficiarySetEventFilter;
     FeeBeneficiarySet(
-      beneficiary?: string | null
+      beneficiary?: string | null,
     ): FeeBeneficiarySetEventFilter;
 
-    "FeeCharged(uint256)"(amount?: null): FeeChargedEventFilter;
+    'FeeCharged(uint256)'(amount?: null): FeeChargedEventFilter;
     FeeCharged(amount?: null): FeeChargedEventFilter;
 
-    "LockSet(uint256)"(lockBlock?: null): LockSetEventFilter;
+    'LockSet(uint256)'(lockBlock?: null): LockSetEventFilter;
     LockSet(lockBlock?: null): LockSetEventFilter;
 
-    "OwnershipTransferred(address,address)"(
+    'OwnershipTransferred(address,address)'(
       previousOwner?: string | null,
-      newOwner?: string | null
+      newOwner?: string | null,
     ): OwnershipTransferredEventFilter;
     OwnershipTransferred(
       previousOwner?: string | null,
-      newOwner?: string | null
+      newOwner?: string | null,
     ): OwnershipTransferredEventFilter;
 
-    "PoolExited(address,uint256)"(
+    'PoolExited(address,uint256)'(
       who?: string | null,
-      amount?: null
+      amount?: null,
     ): PoolExitedEventFilter;
     PoolExited(who?: string | null, amount?: null): PoolExitedEventFilter;
 
-    "PoolJoined(address,uint256)"(
+    'PoolJoined(address,uint256)'(
       who?: string | null,
-      amount?: null
+      amount?: null,
     ): PoolJoinedEventFilter;
     PoolJoined(who?: string | null, amount?: null): PoolJoinedEventFilter;
 
-    "TokenAdded(address)"(_token?: string | null): TokenAddedEventFilter;
+    'TokenAdded(address)'(_token?: string | null): TokenAddedEventFilter;
     TokenAdded(_token?: string | null): TokenAddedEventFilter;
 
-    "TokenRemoved(address)"(_token?: string | null): TokenRemovedEventFilter;
+    'TokenRemoved(address)'(_token?: string | null): TokenRemovedEventFilter;
     TokenRemoved(_token?: string | null): TokenRemovedEventFilter;
 
-    "Transfer(address,address,uint256)"(
+    'Transfer(address,address,uint256)'(
       from?: string | null,
       to?: string | null,
-      value?: null
+      value?: null,
     ): TransferEventFilter;
     Transfer(
       from?: string | null,
       to?: string | null,
-      value?: null
+      value?: null,
     ): TransferEventFilter;
   };
 
   estimateGas: {
     addCaller(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "addCaller(address)"(
+    'addCaller(address)'(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     addToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "addToken(address)"(
+    'addToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     balance(_token: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balance(address)"(
+    'balance(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     balanceOf(account: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     burn(
       _from: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "burn(address,uint256)"(
+    'burn(address,uint256)'(
       _from: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     calcOutStandingAnnualizedFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "calcOutStandingAnnualizedFee()"(
-      overrides?: CallOverrides
+    'calcOutStandingAnnualizedFee()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcTokensForAmountExit(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcTokensForAmountExit(uint256)"(
+    'calcTokensForAmountExit(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     call(
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "call(address[],bytes[],uint256[])"(
+    'call(address[],bytes[],uint256[])'(
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     callNoValue(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "callNoValue(address[],bytes[])"(
+    'callNoValue(address[],bytes[])'(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     canCall(_caller: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "canCall(address)"(
+    'canCall(address)'(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     chargeOutstandingAnnualizedFee(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "chargeOutstandingAnnualizedFee()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'chargeOutstandingAnnualizedFee()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'decimals()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     exitPool(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     getAnnualizedFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getAnnualizedFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getAnnualizedFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCallers(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getCallers()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getCallers()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCap(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getCap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEntryFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getEntryFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getEntryFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEntryFeeBeneficiaryShare(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getEntryFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getEntryFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getExitFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getExitFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getExitFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getExitFeeBeneficiaryShare(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getExitFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getExitFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getFeeBeneficiary(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getFeeBeneficiary()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getFeeBeneficiary()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getLock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getLock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getLock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getLockBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getLockBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getLockBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokenInPool(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "getTokenInPool(address)"(
+    'getTokenInPool(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getTokens(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getTokens()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     initialize(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "initialize(uint256,string,string)"(
+    'initialize(uint256,string,string)'(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     joinPool(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     mint(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "mint(address,uint256)"(
+    'mint(address,uint256)'(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "name()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'name()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'owner()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     removeCaller(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "removeCaller(address)"(
+    'removeCaller(address)'(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     removeToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setAnnualizedFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setAnnualizedFee(uint256)"(
+    'setAnnualizedFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setCap(
       _maxCap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _maxCap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setEntryFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setEntryFee(uint256)"(
+    'setEntryFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setEntryFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setEntryFeeBeneficiaryShare(uint256)"(
+    'setEntryFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setExitFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setExitFee(uint256)"(
+    'setExitFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setExitFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setExitFeeBeneficiaryShare(uint256)"(
+    'setExitFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setFeeBeneficiary(
       _beneficiary: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setFeeBeneficiary(address)"(
+    'setFeeBeneficiary(address)'(
       _beneficiary: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setLock(
       _lock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setLock(uint256)"(
+    'setLock(uint256)'(
       _lock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     singleCall(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "singleCall(address,bytes,uint256)"(
+    'singleCall(address,bytes,uint256)'(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'symbol()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     transferOwnership(
       _newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transferOwnership(address)"(
+    'transferOwnership(address)'(
       _newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     addCaller(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "addCaller(address)"(
+    'addCaller(address)'(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     addToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "addToken(address)"(
+    'addToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     allowance(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       owner: string,
       spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     approve(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       spender: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     balance(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "balance(address)"(
+    'balance(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     burn(
       _from: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "burn(address,uint256)"(
+    'burn(address,uint256)'(
       _from: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     calcOutStandingAnnualizedFee(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcOutStandingAnnualizedFee()"(
-      overrides?: CallOverrides
+    'calcOutStandingAnnualizedFee()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calcTokensForAmountExit(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcTokensForAmountExit(uint256)"(
+    'calcTokensForAmountExit(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     call(
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "call(address[],bytes[],uint256[])"(
+    'call(address[],bytes[],uint256[])'(
       _targets: string[],
       _calldata: BytesLike[],
       _values: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     callNoValue(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "callNoValue(address[],bytes[])"(
+    'callNoValue(address[],bytes[])'(
       _targets: string[],
       _calldata: BytesLike[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     canCall(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "canCall(address)"(
+    'canCall(address)'(
       _caller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     chargeOutstandingAnnualizedFee(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "chargeOutstandingAnnualizedFee()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'chargeOutstandingAnnualizedFee()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'decimals()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     exitPool(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     getAnnualizedFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getAnnualizedFee()"(
-      overrides?: CallOverrides
+    'getAnnualizedFee()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getCallers(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getCallers()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getCallers()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getCap(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getCap()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getEntryFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getEntryFee()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getEntryFee()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getEntryFeeBeneficiaryShare(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getEntryFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getEntryFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getExitFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getExitFee()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getExitFee()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getExitFeeBeneficiaryShare(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getExitFeeBeneficiaryShare()"(
-      overrides?: CallOverrides
+    'getExitFeeBeneficiaryShare()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getFeeBeneficiary(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getFeeBeneficiary()"(
-      overrides?: CallOverrides
+    'getFeeBeneficiary()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getLock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getLock()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getLock()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getLockBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getLockBlock()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getLockBlock()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getTokenInPool(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getTokenInPool(address)"(
+    'getTokenInPool(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getTokens()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseApproval(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _spender: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     initialize(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "initialize(uint256,string,string)"(
+    'initialize(uint256,string,string)'(
       _initialSupply: BigNumberish,
       _name: string,
       _symbol: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     joinPool(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     mint(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "mint(address,uint256)"(
+    'mint(address,uint256)'(
       _receiver: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'name()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'owner()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     removeCaller(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "removeCaller(address)"(
+    'removeCaller(address)'(
       _caller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     removeToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setAnnualizedFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setAnnualizedFee(uint256)"(
+    'setAnnualizedFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setCap(
       _maxCap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _maxCap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setEntryFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setEntryFee(uint256)"(
+    'setEntryFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setEntryFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setEntryFeeBeneficiaryShare(uint256)"(
+    'setEntryFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setExitFee(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setExitFee(uint256)"(
+    'setExitFee(uint256)'(
       _fee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setExitFeeBeneficiaryShare(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setExitFeeBeneficiaryShare(uint256)"(
+    'setExitFeeBeneficiaryShare(uint256)'(
       _share: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setFeeBeneficiary(
       _beneficiary: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setFeeBeneficiary(address)"(
+    'setFeeBeneficiary(address)'(
       _beneficiary: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setLock(
       _lock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setLock(uint256)"(
+    'setLock(uint256)'(
       _lock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     singleCall(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "singleCall(address,bytes,uint256)"(
+    'singleCall(address,bytes,uint256)'(
       _target: string,
       _calldata: BytesLike,
       _value: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'symbol()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       sender: string,
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     transferOwnership(
       _newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transferOwnership(address)"(
+    'transferOwnership(address)'(
       _newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
   };
 }

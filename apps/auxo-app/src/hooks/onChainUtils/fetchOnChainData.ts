@@ -1,6 +1,6 @@
-import { Vault } from "../../store/vault/Vault";
-import { Erc20, MerkleAuth, Vault as Auxo } from "../../types/artifacts/abi";
-import { promiseObject } from "../../utils/promiseObject";
+import { Vault } from '../../store/vault/Vault';
+import { Erc20, MerkleAuth, Vault as Auxo } from '../../types/artifacts/abi';
+import { promiseObject } from '../../utils/promiseObject';
 
 // ** All network calls to smart contracts **
 
@@ -49,7 +49,7 @@ export const accountCalls = ({
  */
 export const batchBurnCalls = (
   auxo: Auxo,
-  batchBurnRound: number | undefined
+  batchBurnRound: number | undefined,
 ) => {
   if (batchBurnRound && batchBurnRound > 0)
     return {

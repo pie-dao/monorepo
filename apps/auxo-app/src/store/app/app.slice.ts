@@ -1,5 +1,16 @@
-import { ActionReducerMapBuilder, AsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { thunkApproveDeposit, thunkMakeDeposit, thunkConfirmWithdrawal, thunkIncreaseWithdrawal, thunkAuthorizeDepositor } from "../vault/vault.thunks";
+import {
+  ActionReducerMapBuilder,
+  AsyncThunk,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
+import {
+  thunkApproveDeposit,
+  thunkMakeDeposit,
+  thunkConfirmWithdrawal,
+  thunkIncreaseWithdrawal,
+  thunkAuthorizeDepositor,
+} from '../vault/vault.thunks';
 
 export type AlertTypes = 'SUCCESS' | 'PENDING' | 'ERROR' | undefined;
 export type ActionTypes = 'SWITCH_NETWORK' | undefined;
@@ -14,17 +25,17 @@ export type AppState = {
     show?: boolean;
     action?: ActionTypes;
     name?: string | undefined;
-  }
+  };
   chainId: number | undefined;
-}
+};
 
 const initialAlertState: AppState['alert'] = {
   message: undefined,
   show: false,
   type: undefined,
   action: undefined,
-  name: undefined
-}
+  name: undefined,
+};
 
 /**
  * DRY utility function to attach user-friendly notification on Success/Pending/Error
@@ -36,40 +47,40 @@ const addTxNotifications = (
   builder: ActionReducerMapBuilder<AppState>,
   // We could narrow the typedefs from any, but this adds substantial boilerplate
   // for a very simple set of functions that don't rely heavily on type inference
-  thunk: AsyncThunk<any, any, {}>
+  thunk: AsyncThunk<any, any, {}>,
 ) => {
-    builder.addCase(thunk.fulfilled, (state) => {
-      state.alert = {
-        message: 'Transaction Successful',
-        type: 'SUCCESS',
-        show: true,
-      }
-    })
-    builder.addCase(thunk.pending, (state) => {
-      state.alert = {
-        message: 'Transaction Pending',
-        type: 'PENDING',
-        show: true,
-      }
-    })
-    builder.addCase(thunk.rejected, (state, action) => {
-      // log the actual error here
-      console.error(action.error);
-      state.alert = {
-        message: 'Transaction Failed',
-        type: 'ERROR',
-        show: true,
-      }
-    })     
-}
+  builder.addCase(thunk.fulfilled, (state) => {
+    state.alert = {
+      message: 'Transaction Successful',
+      type: 'SUCCESS',
+      show: true,
+    };
+  });
+  builder.addCase(thunk.pending, (state) => {
+    state.alert = {
+      message: 'Transaction Pending',
+      type: 'PENDING',
+      show: true,
+    };
+  });
+  builder.addCase(thunk.rejected, (state, action) => {
+    // log the actual error here
+    console.error(action.error);
+    state.alert = {
+      message: 'Transaction Failed',
+      type: 'ERROR',
+      show: true,
+    };
+  });
+};
 
 const appSlice = createSlice({
   name: 'application',
   initialState: {
     alert: initialAlertState,
-    chainId: undefined
+    chainId: undefined,
   } as AppState,
-  extraReducers: (builder) => {  
+  extraReducers: (builder) => {
     addTxNotifications(builder, thunkMakeDeposit);
     addTxNotifications(builder, thunkApproveDeposit);
     addTxNotifications(builder, thunkConfirmWithdrawal);
@@ -90,15 +101,11 @@ const appSlice = createSlice({
     },
     clearAlert: (state) => {
       state.alert = initialAlertState;
-    }
-  }
-})
+    },
+  },
+});
 
-export const { 
-  setAlert,
-  clearAlert,
-  setAlertDisplay,
-  setChainId
-} = appSlice.actions;
+export const { setAlert, clearAlert, setAlertDisplay, setChainId } =
+  appSlice.actions;
 
 export default appSlice.reducer;

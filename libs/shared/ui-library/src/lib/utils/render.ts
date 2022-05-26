@@ -8,9 +8,9 @@ import {
   // Types
   ElementType,
   ReactElement,
-} from "react";
-import { Props, XOR, __, Expand } from "../types/types";
-import { match } from "./match";
+} from 'react';
+import { Props, XOR, __, Expand } from '../types/types';
+import { match } from './match';
 
 export enum Features {
   /** No features at all */
@@ -40,7 +40,7 @@ export enum RenderStrategy {
 type PropsForFeature<
   TPassedInFeatures extends Features,
   TForFeature extends Features,
-  TProps
+  TProps,
 > = {
   [P in TPassedInFeatures]: P extends TForFeature ? TProps : __;
 }[TPassedInFeatures];
@@ -53,7 +53,7 @@ export type PropsForFeatures<T extends Features> = XOR<
 export function render<
   TFeature extends Features,
   TTag extends ElementType,
-  TSlot
+  TSlot,
 >({
   props,
   slot,
@@ -93,10 +93,10 @@ export function render<
       },
       [RenderStrategy.Hidden]() {
         return _render(
-          { ...rest, ...{ hidden: true, style: { display: "none" } } },
+          { ...rest, ...{ hidden: true, style: { display: 'none' } } },
           slot,
           defaultTag,
-          name
+          name,
         );
       },
     });
@@ -110,26 +110,26 @@ function _render<TTag extends ElementType, TSlot>(
   props: Props<TTag, TSlot> & { ref?: unknown },
   slot: TSlot = {} as TSlot,
   tag: ElementType,
-  name: string
+  name: string,
 ) {
   let {
     as: Component = tag,
     children,
-    refName = "ref",
+    refName = 'ref',
     ...passThroughProps
-  } = omit(props, ["unmount", "static"]);
+  } = omit(props, ['unmount', 'static']);
 
   // This allows us to use `<PieDaoComponent as={MyComponent} refName="innerRef" />`
   let refRelatedProps = props.ref !== undefined ? { [refName]: props.ref } : {};
 
   let resolvedChildren = (
-    typeof children === "function" ? children(slot) : children
+    typeof children === 'function' ? children(slot) : children
   ) as ReactElement | ReactElement[];
 
   // Allow for className to be a function with the slot as the contents
   if (
     passThroughProps.className &&
-    typeof passThroughProps.className === "function"
+    typeof passThroughProps.className === 'function'
   ) {
     (passThroughProps as any).className = passThroughProps.className(slot);
   }
@@ -143,21 +143,21 @@ function _render<TTag extends ElementType, TSlot>(
         throw new Error(
           [
             'Passing props on "Fragment"!',
-            "",
+            '',
             `The current component <${name} /> is rendering a "Fragment".`,
             `However we need to passthrough the following props:`,
             Object.keys(passThroughProps)
               .map((line) => `  - ${line}`)
-              .join("\n"),
-            "",
-            "You can apply a few solutions:",
+              .join('\n'),
+            '',
+            'You can apply a few solutions:',
             [
               'Add an `as="..."` prop, to ensure that we render an actual element instead of a "Fragment".',
-              "Render a single element as the child so that we can forward the props onto that element.",
+              'Render a single element as the child so that we can forward the props onto that element.',
             ]
               .map((line) => `  - ${line}`)
-              .join("\n"),
-          ].join("\n")
+              .join('\n'),
+          ].join('\n'),
         );
       }
 
@@ -167,12 +167,12 @@ function _render<TTag extends ElementType, TSlot>(
           {},
           // Filter out undefined values so that they don't override the existing values
           mergeEventFunctions(
-            compact(omit(passThroughProps, ["ref"])),
+            compact(omit(passThroughProps, ['ref'])),
             resolvedChildren.props,
-            ["onClick"]
+            ['onClick'],
           ),
-          refRelatedProps
-        )
+          refRelatedProps,
+        ),
       );
     }
   }
@@ -181,10 +181,10 @@ function _render<TTag extends ElementType, TSlot>(
     Component,
     Object.assign(
       {},
-      omit(passThroughProps, ["ref"]),
-      Component !== Fragment && refRelatedProps
+      omit(passThroughProps, ['ref']),
+      Component !== Fragment && refRelatedProps,
     ),
-    resolvedChildren
+    resolvedChildren,
   );
 }
 
@@ -205,7 +205,7 @@ function _render<TTag extends ElementType, TSlot>(
 function mergeEventFunctions(
   passThroughProps: Record<string, any>,
   existingProps: Record<string, any>,
-  functionsToMerge: string[]
+  functionsToMerge: string[],
 ) {
   let clone = Object.assign({}, passThroughProps);
   for (let func of functionsToMerge) {
@@ -233,7 +233,7 @@ function mergeEventFunctions(
  * wrap it in a forwardRef so that we _can_ passthrough the ref
  */
 export function forwardRefWithAs<
-  T extends { name: string; displayName?: string }
+  T extends { name: string; displayName?: string },
 >(component: T): T & { displayName: string } {
   return Object.assign(forwardRef(component as unknown as any) as any, {
     displayName: component.displayName ?? component.name,
@@ -250,7 +250,7 @@ export function compact<T extends Record<any, any>>(object: T) {
 
 function omit<T extends Record<any, any>>(
   object: T,
-  keysToOmit: string[] = []
+  keysToOmit: string[] = [],
 ) {
   let clone = Object.assign({}, object);
   for (let key of keysToOmit) {

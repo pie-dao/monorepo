@@ -1,17 +1,17 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useWeb3React } from "@web3-react/core";
+import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useWeb3React } from '@web3-react/core';
 import {
   SUPPORTED_CHAIN_ID,
   SUPPORTED_CHAIN_NAMES,
   NetworkDetail,
-} from "../types/types";
-import { NetworkSwitcher } from "./NetworkSwitcher";
-import { logoSwitcher } from "./ChainIcons/ChainIcons";
-import { isChainSupported, filteredChainMap } from "../utils/network";
-import Icon from "../ui-atoms/Icon";
-import { classNames } from "../utils/class-names";
-import { useConnectedWallet } from "../hooks/use-connected-wallet";
+} from '../types/types';
+import { NetworkSwitcher } from './NetworkSwitcher';
+import { logoSwitcher } from './ChainIcons/ChainIcons';
+import { isChainSupported, filteredChainMap } from '../utils/network';
+import Icon from '../ui-atoms/Icon';
+import { classNames } from '../utils/class-names';
+import { useConnectedWallet } from '../hooks/use-connected-wallet';
 
 interface Props {
   allowedChains?: SUPPORTED_CHAIN_NAMES[];
@@ -38,7 +38,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   className,
   showNetworkIcon = true,
   showNetworkName = true,
-  allowedChains = ["MAINNET"],
+  allowedChains = ['MAINNET'],
 }: Props) => {
   useConnectedWallet();
   let { chainId } = useWeb3React();
@@ -71,7 +71,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={classNames(className, showNetworkName ? "w-60" : "w-20")}>
+    <div className={classNames(className, showNetworkName ? 'w-60' : 'w-20')}>
       <NetworkSwitcher value={chain} onChange={setChain}>
         {({ open }) => (
           <div className="relative">
@@ -79,7 +79,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
               {showNetworkIcon && <ChainAndLogo chain={chain} />}
               {showNetworkName && (
                 <span className="block truncate font-bold text-primary">
-                  {chain ? chain.chainName : "Unsupported Chain"}
+                  {chain ? chain.chainName : 'Unsupported Chain'}
                 </span>
               )}
               <motion.span
@@ -102,7 +102,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
               transition={{ duration: 0.1 }}
               static
               className={`flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${
-                open ? "" : "pointer-events-none"
+                open ? '' : 'pointer-events-none'
               }`}
             >
               {Object.entries(availableChains).map(([, chain]) => (
@@ -110,7 +110,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
                   key={chain.chainId}
                   className={({ active }) =>
                     `cursor-default flex justify-start space-x-2 relative w-full py-2 pl-3 text-left items-center ${
-                      active ? "text-white bg-secondary" : ""
+                      active ? 'text-white bg-secondary' : ''
                     }`
                   }
                   value={chain}
@@ -122,7 +122,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
                         {showNetworkName && (
                           <span
                             className={`block truncate ${
-                              selected ? "font-medium" : "font-normal"
+                              selected ? 'font-medium' : 'font-normal'
                             }`}
                           >
                             {chain.chainName}

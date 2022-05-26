@@ -1,6 +1,6 @@
 const EVT = {
   EVENT: {
-    SHARE: "share",
+    SHARE: 'share',
   },
 };
 

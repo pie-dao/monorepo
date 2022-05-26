@@ -1,25 +1,25 @@
-import { useWeb3React } from "@web3-react/core";
-import { useState } from "react";
-import { FaCheckCircle } from "react-icons/fa";
-import { useAppDispatch } from "../../../hooks";
-import { useWeb3Cache } from "../../../hooks/useCachedWeb3";
-import { useMerkleAuthContract } from "../../../hooks/multichain/useMultichainContract";
-import { Vault } from "../../../store/vault/Vault";
-import { thunkAuthorizeDepositor } from "../../../store/vault/vault.thunks";
-import { AUXO_HELP_URL } from "../../../utils";
-import { getProof } from "../../../utils/merkleProof";
-import StyledButton from "../../UI/button";
-import LoadingSpinner from "../../UI/loadingSpinner";
-import ExternalUrl from "../../UI/url";
+import { useWeb3React } from '@web3-react/core';
+import { useState } from 'react';
+import { FaCheckCircle } from 'react-icons/fa';
+import { useAppDispatch } from '../../../hooks';
+import { useWeb3Cache } from '../../../hooks/useCachedWeb3';
+import { useMerkleAuthContract } from '../../../hooks/multichain/useMultichainContract';
+import { Vault } from '../../../store/vault/Vault';
+import { thunkAuthorizeDepositor } from '../../../store/vault/vault.thunks';
+import { AUXO_HELP_URL } from '../../../utils';
+import { getProof } from '../../../utils/merkleProof';
+import StyledButton from '../../UI/button';
+import LoadingSpinner from '../../UI/loadingSpinner';
+import ExternalUrl from '../../UI/url';
 
-const veDoughLogo = process.env.PUBLIC_URL + "/veDough-only.png";
+const veDoughLogo = process.env.PUBLIC_URL + '/veDough-only.png';
 
 const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
   const needsToVerifyString =
-    "You need to verify before you can use this vault";
-  const verifiedString = "Account has been verfied";
+    'You need to verify before you can use this vault';
+  const verifiedString = 'Account has been verfied';
   const notAuthorizedString =
-    "This vault is restricted to veDOUGH holders only";
+    'This vault is restricted to veDOUGH holders only';
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
@@ -40,7 +40,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
       thunkAuthorizeDepositor({
         account,
         auth: authContract,
-      })
+      }),
     ).finally(() => setAuthorizing(false));
   };
 
@@ -71,7 +71,7 @@ const MerkleVerify = ({ vault }: { vault: Vault }): JSX.Element => {
               onClick={submitProof}
               disabled={isDisabled()}
             >
-              {authorizing ? <LoadingSpinner /> : "Opt In"}
+              {authorizing ? <LoadingSpinner /> : 'Opt In'}
             </StyledButton>
           )}
           {!isDepositor && (

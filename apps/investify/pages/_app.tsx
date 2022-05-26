@@ -1,8 +1,11 @@
 import { AppProps, NextWebVitalsMetric } from 'next/app';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
 import { Provider } from 'react-redux';
 import Head from 'next/head';
 import { GoogleAnalytics, usePagesViews, event } from 'nextjs-google-analytics';
 import { wrapper } from '../store';
+import './styles.css';
 
 export function reportWebVitals({
   id,
@@ -18,17 +21,26 @@ export function reportWebVitals({
   });
 }
 
-function CustomApp({ Component, ...rest }: AppProps) {
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
   const { props, store } = wrapper.useWrappedStore(rest);
   usePagesViews();
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <Provider store={store}>
       <Head>
         <title>Welcome to investify!</title>
       </Head>
       <GoogleAnalytics />
-      <main className="app">
-        <Component {...props.PageProps} />
+      <main data-theme="investify" className="h-full">
+        {getLayout(<Component {...props.PageProps} />)}
       </main>
     </Provider>
   );

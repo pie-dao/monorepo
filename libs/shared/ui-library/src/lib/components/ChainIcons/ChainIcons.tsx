@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 
 export const logoSwitcher = (
   identifier: string | undefined,
-  props?: any
+  props?: any,
 ): JSX.Element => {
   if (!identifier) return <></>;
   switch (identifier.toLowerCase()) {
-    case "ftm":
-    case "wftm": {
+    case 'ftm':
+    case 'wftm': {
       return <FantomIcon {...props} />;
     }
-    case "matic":
-    case "polygon": {
+    case 'matic':
+    case 'polygon': {
       return <PolygonIcon {...props} />;
     }
-    case "eth":
+    case 'eth':
     default: {
       return <EthereumIcon {...props} />;
     }
