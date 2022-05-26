@@ -15,14 +15,19 @@ describe('Testing the multichain', () => {
   const multichain = new MultiChainContractWrapper({
     1: {
       provider: ethers.providers.getDefaultProvider(),
-      address: '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
     },
     250: {
       provider: new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools'),
+    },
+  });
+  const wrapped = multichain.wrap(contract, {
+    1: {
+      address: '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
+    },
+    250: {
       address: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
     },
   });
-  const wrapped = multichain.wrap(contract);
 
   it('creates a multichain contract that can return a single value normally', async () => {
     const created = multichain.create<Erc20Abi>(
@@ -45,14 +50,17 @@ describe('Testing the multichain', () => {
   });
 
   it('Can return a multicall response', async () => {
+    // @ts-ignore
+    console.debug(wrapped.withMultiChain, wrapped['_multichainConfig']);
+
     const res = await wrapped.withMultiChain.balanceOf(
       ethers.constants.AddressZero,
     );
 
-    // @ts-ignore - need to type the return value
-    expect(res._isBigNumber).toBe(undefined);
+    expect(res.original).toEqual(
+      await wrapped.balanceOf(ethers.constants.AddressZero),
+    );
 
-    // @ts-ignore
     expect(res['250'].gt(0)).toEqual(true);
   });
 });
