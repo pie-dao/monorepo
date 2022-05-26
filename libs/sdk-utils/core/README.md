@@ -195,3 +195,44 @@ Therefore, when subclassing:
 ```
 
 - The result will be passed into `.decodeFunctionResult`, so it's probably best not to do anything crazy before the result has been decoded.
+
+## How to subclass
+
+We might assume that the best option is to subclass the `BaseProvider`, but that will not work.
+
+- BaseProvider does not implment the `detectNetwork` method
+- `call` invokes `detectNetwork`
+
+[Small but relevant thread here](https://github.com/ethers-io/ethers.js/issues/1143).
+
+You have a couple of options:
+
+- Subclass a "working" provider (JsonRpcProvider)
+
+  - Works out of the box
+  - Cannot wrap non-json rpc providers
+
+- Fully overwrite the call method
+  - Much more involved
+  - Fully integrates with all providers
+
+As of v0.1 of multichain, we wrap the RPC provider, and will add the additional call methods later.
+
+### Multiple provider wrapping
+
+This can get tricky. Imagine you have
+
+ExtendedProvider1 [
+ExtendedProvider0 [
+Provider
+]
+]
+
+We need to be really careful that our base assumptions hold when stacking providers, namely:
+
+- Where does the keyword `this` point to (1 level down)
+- What variables are private vs. public
+
+Cardinal sins:
+
+- Assuming wrapped APIs remain static

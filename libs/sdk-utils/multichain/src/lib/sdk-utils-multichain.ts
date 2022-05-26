@@ -1,172 +1,115 @@
+import { ContractWrapper, typesafeContract } from '@sdk-utils/core';
 import {
-  BlockTag,
-  getNetwork,
-  Provider,
-  TransactionRequest,
-} from '@ethersproject/providers';
-import { ContractWrapper, decorate, typesafeContract } from '@sdk-utils/core';
-import {
-  smartPool,
-  SmartpoolAbi,
-  SmartpoolAbi__factory,
-} from '@shared/util-blockchain';
-import { Contract, ContractFunction, ethers, Transaction } from 'ethers';
-import { Deferrable } from 'ethers/lib/utils';
+  Contract,
+  ContractFunction,
+  ContractInterface,
+  ethers,
+  Signer,
+} from 'ethers';
+import { promiseObject } from '@shared/helpers';
+import { Provider } from '@ethersproject/providers';
 
-interface MultichainResponse {
-  meta: MultichainMeta;
-  responses: MultichainResponseData[];
-}
-
-interface MultichainMeta {
-  chainIds: number;
-  ok: number;
-  err: number;
-}
-interface MultichainResponseData {
-  chainId: number;
-  response: any;
-}
-
-type MultichainContract = {
-  multichain: {
-    enabled: boolean;
-    chainIds: number[];
-  };
-  withMultichain(): MultichainResponse;
-};
-
-export class MultiChainWrapper extends ContractWrapper<MultichainContract> {
-  public chains: number[];
-  // constructor(chains: ChainsOrProviders) {
-  constructor(chains: number[]) {
-    super();
-    this.chains = chains;
-  }
-
-  public wrap<C extends Contract>(contract: C): C & MultichainContract {
-    const dummy = {} as MultichainResponse;
-    return decorate(contract, {
-      multichain: {
-        enabled: true,
-        chainIds: this.chains,
-      },
-      withMultichain: () => dummy,
-    });
-  }
-}
-
-type ChainsOrProviders = number[] | ChainProviderOption[];
-
-interface ChainProviderOption {
-  [x: number]: {
+type MultiChainConfig = {
+  [chainId: string | number]: {
     provider?: Provider;
-    options?: {
-      onErr?: 'silent' | 'warn' | 'throw';
-      timeout?: number;
-    };
-  };
-}
-
-class MultiChainInstantiator {
-  public providers: ChainProviderOption = {};
-  public crossChainContracts: Contract[] = [];
-
-  constructor(public chains: ChainsOrProviders) {}
-
-  private setProviders() {
-    if (typeof this.chains[0] === 'number') {
-      const providers: ChainProviderOption = (this.chains as number[]).reduce(
-        (obj, chain) => {
-          return {
-            ...obj,
-            [chain]: ethers.getDefaultProvider(getNetwork(chain)),
-          };
-        },
-        {},
-      );
-      this.providers = providers;
-    }
-  }
-
-  public stageMultichain(overrides?: MultichainCallOptions) {
-    return <T>(call: ContractFunction<T>, options?: MultichainCallOptions) => {
-      const contract = typesafeContract<SmartpoolAbi>('', '');
-      const balanceCall = () => contract.balanceOf('');
-
-      this.chains.forEach((chain) => {
-        if (typeof chain !== 'number') return;
-
-        // connect to the new provider
-        const connected = contract.connect(this.providers[chain].provider!);
-
-        const newContract = typesafeContract<typeof contract>(
-          contract.address,
-          contract.interface,
-          this.providers[chain].provider!,
-        );
-
-        this.crossChainContracts.push(newContract);
-      });
-    };
-  }
-
-  /**
-   * Ideally I'd intercept the call if primed with execute multichain
-   */
-  public executeMultichain() {
-    const tsc = typesafeContract<SmartpoolAbi>('', '');
-    const balanceCall = () => tsc.balanceOf('');
-
-    const results = this.crossChainContracts.map((contract) => {
-      const toBeCalled = tsc.balanceOf;
-    });
-
-    return this;
-  }
-}
-
-interface MultichainCallOptions {
-  overrides?: ChainProviderOption & {
     address?: string;
   };
-}
+};
 
-async function callMultiChain<T>(
-  call: ContractFunction<T>,
-  options?: MultichainCallOptions,
-): ReturnType<ContractFunction<T>> {
-  return await call();
-}
+type ContractFunctions<C extends Contract = Contract> = {
+  [K in keyof C]: C[K] extends ContractFunction ? C[K] : never;
+};
 
-export class MultichainProvider extends ethers.providers.JsonRpcProvider {
-  public chainData: MultichainResponse | {} = {};
+type MultiChainReturnValue<C extends Contract> = C & {
+  withMultiChain: ContractFunctions<C>;
+};
 
-  constructor(public provider: ethers.providers.Provider) {
+export class MultiChainContractWrapper extends ContractWrapper<{
+  withMultiChain: any;
+}> {
+  constructor(public config: MultiChainConfig) {
     super();
   }
 
-  async call(
-    t: Deferrable<TransactionRequest>,
-    blockTag?: BlockTag | Promise<BlockTag>,
-    address?: string,
-  ): Promise<string> {
-    const original = super.call(t, blockTag);
-    const chainId = (await this.getNetwork()).chainId;
+  // @ts-ignore
+  public create<C extends Contract>(
+    address: string,
+    abi: ContractInterface,
+    signerOrProvider?: Signer | Provider,
+  ): MultiChainReturnValue<C> {
+    const contract = typesafeContract<C>(address, abi, signerOrProvider);
+    return this.wrap(contract);
+  }
 
-    this.chainData = {
-      meta: {
-        chainIds: [chainId],
-        err: 0,
-        ok: 1,
-      },
-      responses: [{ chainId, response: original }],
-    };
+  public wrap<C extends Contract>(contract: C): MultiChainReturnValue<C> {
+    return new MultichainContract(
+      contract,
+      this.config,
+    ) as unknown as MultiChainReturnValue<C>;
+  }
+}
 
-    console.debug(this.chainData);
+class MultichainContract<T extends Contract> extends Contract {
+  public withMultiChain = {} as ContractFunctions<T>;
+  private _multichainConfig = {} as MultiChainConfig;
 
-    console.debug({ t, original: await original });
+  private getInterfaceFunctions() {
+    return Object.keys(this.interface.functions);
+  }
 
-    return original;
+  private stringNameInInterface(key: string) {
+    const iFaceFunctions = this.getInterfaceFunctions();
+    return (
+      iFaceFunctions.includes(key) ||
+      iFaceFunctions.map((i) => i.split('(')[0]).includes(key)
+    );
+  }
+
+  private isContractFunction(
+    key: string | number | symbol,
+    value: any,
+  ): boolean {
+    if (typeof key !== 'string') return false;
+    const isFunctionType = typeof value === 'function';
+    const nameInInterface = this.stringNameInInterface(key);
+    return isFunctionType && nameInInterface;
+  }
+
+  constructor(contract: T, config: MultiChainConfig) {
+    super(
+      contract.address,
+      contract.interface,
+      contract.signer ?? contract.provider,
+    );
+
+    this._multichainConfig = config;
+
+    Object.entries(this).forEach(([key, value]) => {
+      if (!this.isContractFunction(key, value)) return;
+
+      // Here we just replace each contract call with a set of ethers calls
+      // to each network
+      const self = this;
+
+      // @ts-ignore
+      this.withMultiChain[key] = async function (args: any[]): Promise<any> {
+        const calls = Object.entries(self._multichainConfig).reduce(
+          (obj, [chainId, config]) => {
+            const contract = new ethers.Contract(
+              config.address ?? self.address,
+              self.interface,
+              config.provider ?? self.provider,
+            );
+            return { ...obj, [chainId]: <T>contract[key](args) };
+          },
+          {},
+        );
+
+        return await promiseObject({
+          ...calls,
+          original: value(args),
+        });
+      };
+    });
   }
 }

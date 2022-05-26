@@ -1,41 +1,58 @@
 import { typesafeContract } from '@sdk-utils/core';
-import { Erc20Abi, SmartpoolAbi__factory } from '@shared/util-blockchain';
-import { erc20 as erc20Abi } from '@shared/util-blockchain/abis';
-import { ContractInterface, ethers } from 'ethers';
-import { MultichainProvider, MultiChainWrapper } from './sdk-utils-multichain';
+import { Erc20Abi } from '@shared/util-blockchain';
+import { erc20 } from '@shared/util-blockchain/abis';
+import { ethers } from 'ethers';
+import { MultiChainContractWrapper } from './sdk-utils-multichain';
 
-describe('Testing Multichain', () => {
-  describe('Connecting', () => {
-    it('Allows the connection of multiple providers through an array of chain ids', () => {});
+describe('Testing the multichain', () => {
+  jest.setTimeout(10_000);
+  const contract = typesafeContract<Erc20Abi>(
+    '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
+    erc20,
+    ethers.providers.getDefaultProvider(),
+  );
 
-    it('Allows passing more complex arguments as providers', () => {});
+  const multichain = new MultiChainContractWrapper({
+    1: {
+      provider: ethers.providers.getDefaultProvider(),
+      address: '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
+    },
+    250: {
+      provider: new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools'),
+      address: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
+    },
   });
+  const wrapped = multichain.wrap(contract);
 
-  describe('Data Fetching', () => {
-    it('Returns the chain calls if executed with the multichain call option', async () => {});
-
-    it('Saves the chain data against the multichain property', async () => {});
-  });
-
-  describe('Multicall integration', () => {
-    it('Works with the multicall plugin', () => {});
-  });
-});
-
-describe('Testing the dummy', () => {
-  it('works', async () => {
-    const provider = new ethers.providers.JsonRpcProvider();
-
-    const multichainProvider = new MultichainProvider(provider);
-
-    const address = '0xad32A8e6220741182940c5aBF610bDE99E737b2D'; // DOUGH
-    const contract = typesafeContract<Erc20Abi>(
-      address,
-      erc20Abi,
-      multichainProvider,
+  it('creates a multichain contract that can return a single value normally', async () => {
+    const created = multichain.create<Erc20Abi>(
+      '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
+      erc20,
+      ethers.providers.getDefaultProvider(),
     );
 
-    const decimals = await contract.decimals();
-    console.debug(decimals.toString());
+    const balanceWrapped = await wrapped.balanceOf(
+      ethers.constants.AddressZero,
+    );
+    const balanceCreated = await created.balanceOf(
+      ethers.constants.AddressZero,
+    );
+
+    expect(balanceWrapped).toEqual(balanceCreated);
+
+    // would not work if it were an object
+    expect(balanceWrapped._isBigNumber).toBe(true);
+  });
+
+  it('Can return a multicall response', async () => {
+    const res = await wrapped.withMultiChain.balanceOf(
+      ethers.constants.AddressZero,
+    );
+
+    // @ts-ignore - need to type the return value
+    expect(res._isBigNumber).toBe(undefined);
+
+    // @ts-ignore
+    expect(res['250'].gt(0)).toEqual(true);
   });
 });
