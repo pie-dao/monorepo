@@ -2,9 +2,8 @@ import { ReactElement } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import { setStep } from '../store/sidebar/sidebar.slice';
+import { setStep, setOpenModal } from '../store/sidebar/sidebar.slice';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { useCycle } from 'framer-motion';
 
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
   // this gets rendered on the server, then not on the client
@@ -26,9 +25,10 @@ export default function Page() {
         <section className="min-w-0 flex-1 h-full flex flex-col">
           <h1>{title}</h1>
           <button
-            onClick={() =>
-              dispatch(setStep(step === 'quote' ? 'swap' : 'quote'))
-            }
+            onClick={() => {
+              dispatch(setStep(step === 'quote' ? 'swap' : 'quote'));
+              dispatch(setOpenModal(true));
+            }}
           >
             Change
           </button>

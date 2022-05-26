@@ -7,7 +7,7 @@ export default function SidebarContent() {
   const { t } = useTranslation();
   const { step } = useAppSelector((state) => state.sidebar);
   return (
-    <div className="h-full bg-white drop-shadow rounded-md p-4">
+    <>
       <h3 className="font-bold text-xl text-text capitalize w-full border-b-2 border-primary pb-2">
         {t(step)}
       </h3>
@@ -25,6 +25,6 @@ export default function SidebarContent() {
           )}
         </div>
       </AnimatePresence>
-    </div>
+    </>
   );
 }
