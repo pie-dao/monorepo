@@ -12,6 +12,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "engines": {
+    "node": "16.15.0"
+  },
   "dependencies": {
     "@0xsequence/multicall": "^0.37.1",
     "@discord-nestjs/core": "^3.0.2",
@@ -215,5 +218,9 @@
     "url-loader": "^3.0.0",
     "util": "^0.12.4"
   },
-  "postinstall": "script/typechain"
+  "postinstall": "script/typechain",
+  "volta": {
+    "node": "16.15.0",
+    "yarn": "1.22.18"
+  }
 }
