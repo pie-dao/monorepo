@@ -1,8 +1,8 @@
 import { BigNumber, ethers } from 'ethers';
-import { Erc20Abi as ERC20 } from '@shared/util-blockchain';
 import { erc20 } from '@shared/util-blockchain/abis';
 import { MultiCallWrapper } from '../lib/sdk-utils-multicall';
 import { promiseObject } from '@shared/helpers';
+import { Erc20Abi as ERC20 } from '@shared/util-blockchain';
 
 // 🐋🐋🐋🐋🐋🐋🐋🐋🐋
 const USDCholders = [

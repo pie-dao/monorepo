@@ -64,4 +64,4 @@ typings/
 Thumbs.db
 package-lock.json
 yarn.lock
-libs/shared/util-blockchain/src
+libs/shared/util-blockchain/src/
