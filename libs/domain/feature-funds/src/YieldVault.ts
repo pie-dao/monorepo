@@ -60,6 +60,17 @@ export type YieldVault = Token & {
   totalStrategyHoldings: BigNumber;
 
   /**
+   * Exchange rate at the beginning of latest harvest window
+   */
+  lastHarvestExchangeRate: BigNumber;
+
+  lastHarvestIntervalInBlocks: BigNumber;
+
+  /**
+   * The block number when the first harvest in the most recent harvest window occurred.
+   */
+  lastHarvestWindowStartBlock: BigNumber;
+  /**
    * A timestamp representing when the first harvest in the most recent harvest window occurred.
    * May be equal to lastHarvest if there was/has only been one harvest in the most last/current window.
    */
@@ -86,6 +97,21 @@ export type YieldVault = Token & {
   batchBurnBalance: BigNumber;
 
   /**
+   * Amount of shares a single address can hold.
+   */
+  userDepositLimit: BigNumber;
+
+  /**
+   * Amount of underlying cap for this vault.
+   */
+  vaultDepositLimit: BigNumber;
+
+  /**
+   * Estimated return recorded during last harvest.
+   */
+  estimatedReturn: BigNumber;
+
+  /**
    * The amount of underlying tokens a share can be redeemed for.
    */
   exchangeRate: BigNumber;
@@ -106,16 +132,6 @@ export type YieldVault = Token & {
   totalUnderlying: BigNumber;
 
   /**
-   * Stores all the batch burn events.
-   */
-  batchBurns: BatchBurnEvent[];
-
-  /**
-   * The strategies that can be deployed by this vault.
-   */
-  strategies: Strategy[];
-
-  /**
    * An ordered array of strategies representing the withdrawal queue.
    * The queue is processed in descending order, meaning the last index will be withdrawn from first.
    * Strategies that are untrusted, duplicated, or have no balance are filtered out when encountered at
@@ -123,31 +139,6 @@ export type YieldVault = Token & {
    * for withdrawals.
    */
   withdrawalQueue: Strategy[];
-};
-
-export type BatchBurnReceipt = {
-  address: Address;
-  shares: BigNumber;
-};
-
-export type BatchBurnEvent = {
-  /**
-   * Batched burning event index.
-   */
-  round: BigNumber;
-  /**
-   * Shares to burn during the event.
-   */
-  totalShares: BigNumber;
-  /**
-   * Underlying amount per share (this differs from exchangeRate at the moment of batched burning).
-   */
-  amountPerShare: BigNumber;
-
-  /**
-   * Holds the amounts each address received in this round.
-   */
-  receipts: BatchBurnReceipt[];
 };
 
 export type Strategy = {
