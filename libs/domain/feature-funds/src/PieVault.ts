@@ -1,6 +1,6 @@
-import { BigNumber } from 'ethers';
 import * as E from 'fp-ts/Either';
-import { Address } from './Address';
+import { Fund } from './Fund';
+import { PieVaultSnapshot, TokenDetails } from './PieVaultSnapshot';
 import { Token } from './Token';
 
 /**
@@ -15,79 +15,21 @@ import { Token } from './Token';
  * Note that *Pie Vaults only work with tokens that have a tokenized representation
  * of the strategy* (for example `SUSHI` + `xSUSHI`).
  */
-export type PieVault = Token & {
+export type PieVault = Fund<PieVaultSnapshot> & {
   kind: 'PieVault';
   /**
-   * The entry fee paid when minting.
-   * This is a percentage value. 1e18 == 100%. Capped at 100%.
+   * Represents the temporal evolution of the Fund's state.
    */
-  entryFee: BigNumber;
-
-  /**
-   * The fee paid when exiting the fund.
-   * This is a percentage value. 1e18 == 100%. Capped at 100%.
-   */
-  exitFee: BigNumber;
-
-  /**
-   * Fee paid annually. Often referred to as streaming fee.
-   * This is a percentage value. 1e18 == 100%. Capped at 100%.
-   */
-  annualizedFee: BigNumber;
-
-  /**
-   * The address receiving the fees.
-   */
-  feeBeneficiary: Address;
-
-  /**
-   * The share of the entry fee that the fee beneficiary gets.
-   * This is a percentage value. 1e18 == 100%. Capped at 100%.
-   */
-  feeBeneficiaryEntryShare: BigNumber;
-
-  /**
-   * The share of the exit fee that the fee beneficiary gets.
-   * This is a percentage value. 1e18 == 100%. Capped at 100%.
-   */
-  feeBeneficiaryExitShare: BigNumber;
-
-  /**
-   * The outstanding annualized fee: the amount of pool tokens
-   * to be minted to charge the annualized fee.
-   */
-  outstandingAnnualizedFeet: BigNumber;
-
-  /**
-   * Tells whether the pool is locked or not. (not accepting exit and entry)
-   */
-  locked: boolean;
-
-  /**
-   * The block at which the pool is unlocked.
-   */
-  lockedUntil: BigNumber;
-
-  /**
-   * The maximum of pool tokens that can be minted.
-   */
-  cap: BigNumber;
-
-  tokens: TokenDetails[];
+  snapshots: PieVaultSnapshot[];
 
   /**
    * Tells whether this fund has an allocation for the given {@link Token}.
    */
-  hasToken: (symbol: string) => boolean;
+  hasToken: (token: Token) => boolean;
 
   /**
    * Returns the details for a given {@link Token} in this {@link Fund}.
    * @returns either the {@link TokenDetails} or an {@link Error} if it was missing.
    */
-  getUnderlyingToken: (symbol: string) => E.Either<Error, TokenDetails>;
-};
-
-export type TokenDetails = {
-  token: Token;
-  balance: BigNumber;
+  getUnderlyingToken: (token: Token) => E.Either<Error, TokenDetails>;
 };
