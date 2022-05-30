@@ -1,2 +1,1 @@
-export * from './lib/fractionalDivide';
-export * from './lib/promiseObject';
+export * from './lib';

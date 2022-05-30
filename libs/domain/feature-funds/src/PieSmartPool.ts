@@ -1,6 +1,5 @@
-import { BigNumber } from 'ethers';
-import { Address } from './Address';
-import { Token } from './Token';
+import { Fund } from './Fund';
+import { PieSmartPoolSnapshot } from './PieSmartPoolSnapshot';
 
 /**
  * Pie Smart Pools are non-custodial smart contracts, the first implementation of a DAO-governed AMM pool.
@@ -12,87 +11,10 @@ import { Token } from './Token';
  * The Pie Smart Pools are asset management agnostic. At the time of writing, Pie Smart Pools
  * are compatible with the Balancer interface.
  */
-export type PieSmartPool = Token & {
+export type PieSmartPool = Fund<PieSmartPoolSnapshot> & {
   kind: 'PieSmartPool';
-
   /**
-   * The current tokens in the smart pool.
+   * Represents the temporal evolution of the Fund's state.
    */
-  underlyingTokens: Token[];
-
-  /**
-   * The address of the controller.
-   */
-  controller: Address;
-
-  /**
-   * The address of the public swap setter.
-   */
-  publicSwapSetter: Address;
-
-  /**
-   * The address of the token binder.
-   */
-  tokenBinder: Address;
-
-  /**
-   * The address of the circuit breaker.
-   */
-  circuitBreaker: Address;
-
-  /**
-   * Tells if public swapping is enabled.
-   */
-  publicSwapEnabled: boolean;
-
-  /**
-   * The current cap in wei.
-   */
-  cap: BigNumber;
-
-  annualFee: BigNumber;
-
-  feeRecipient: Address;
-
-  /**
-   * The address of the underlying Balancer pool.
-   */
-  balancerPoolAddress: Address;
-
-  /**
-   * The current swap fee.
-   */
-  swapFee: BigNumber;
-
-  denormalizedWeights: TokenWeight[];
-
-  /**
-   * The target weights.
-   */
-  targetWeights: TokenWeight[];
-
-  /**
-   * The weights at start of weight adjustment.
-   */
-  startWeights: TokenWeight[];
-
-  /**
-   * The start block of weight adjustment.
-   */
-  startBlock: BigNumber;
-
-  /**
-   * The end block of weight adjustment.
-   */
-  endBlock: BigNumber;
-
-  /**
-   * Tells if joining and exiting is enabled.
-   */
-  joinExitEnabled: boolean;
-};
-
-type TokenWeight = {
-  token: Token;
-  weight: BigNumber;
+  snapshots: PieSmartPoolSnapshot[];
 };
