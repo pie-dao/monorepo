@@ -1,7 +1,7 @@
 import { Newtype } from 'newtype-ts';
 
 /**
- * Represents a wallet address.
+ * Represents a wallet or contract address.
  * The format is the following:
  * 0xAF2fE0d4fe879066B2BaA68d9e56cC375DF22815
  *

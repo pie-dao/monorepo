@@ -1,5 +1,5 @@
-import { YieldvaultAbi } from '@shared/util-blockchain';
 import { PieSmartPool } from './PieSmartPool';
 import { PieVault } from './PieVault';
+import { YieldVault } from './YieldVault';
 
-export type Fund = PieVault | PieSmartPool | YieldvaultAbi;
+export type Fund = PieVault | PieSmartPool | YieldVault;
