@@ -8,7 +8,7 @@ export default function SidebarContent() {
   const { step } = useAppSelector((state) => state.sidebar);
   return (
     <>
-      <h3 className="font-bold text-xl text-text capitalize w-full border-b-2 border-primary pb-2">
+      <h3 className="font-bold text-left text-xl text-text capitalize w-full border-b-2 border-primary pb-2">
         {t(step)}
       </h3>
       <AnimatePresence initial={false}>
