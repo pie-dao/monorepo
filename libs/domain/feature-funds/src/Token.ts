@@ -1,3 +1,5 @@
+import { Address } from './Address';
+
 /**
  * Represents a token on the Ethereum blockchain.
  */
@@ -10,6 +12,12 @@ export type Token = {
    * to create tagged unions.
    */
   kind: string;
+  /**
+   * The address where this token is deployed. This is important
+   * because `name` and `symbol` are not unique according to the
+   * ERC-20 specification.
+   */
+  address: Address;
 };
 
 /**
