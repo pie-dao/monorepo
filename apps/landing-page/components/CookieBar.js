@@ -1,10 +1,10 @@
-import cookieCutter from "cookie-cutter";
-import content from "../content/en_EN.json";
-import styles from "../styles/CookieModal.module.scss";
+import cookieCutter from 'cookie-cutter';
+import content from '../content/en_EN.json';
+import styles from '../styles/CookieModal.module.scss';
 
 const CookieModal = ({ isOpen, setIsOpen }) => {
   const closeModal = () => {
-    cookieCutter.set("cookiePolicy", "accepted");
+    cookieCutter.set('cookiePolicy', 'accepted');
     setIsOpen(false);
   };
 

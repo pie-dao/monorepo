@@ -12,19 +12,19 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
+} from 'ethers';
 import type {
   FunctionFragment,
   Result,
   EventFragment,
-} from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-} from "../common";
+} from '../common';
 
 export declare namespace PV2SmartPoolStorage {
   export type NewTokenStruct = {
@@ -40,7 +40,7 @@ export declare namespace PV2SmartPoolStorage {
     boolean,
     BigNumber,
     BigNumber,
-    BigNumber
+    BigNumber,
   ] & {
     addr: string;
     isCommitted: boolean;
@@ -51,1245 +51,1245 @@ export declare namespace PV2SmartPoolStorage {
 }
 
 export interface SmartpoolAbiInterface extends utils.Interface {
-  contractName: "SmartpoolAbi";
+  contractName: 'SmartpoolAbi';
 
   functions: {
-    "allowance(address,address)": FunctionFragment;
-    "applyAddToken()": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "approveTokens()": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
-    "bind(address,uint256,uint256)": FunctionFragment;
-    "calcPoolInGivenSingleOut(address,uint256)": FunctionFragment;
-    "calcPoolOutGivenSingleIn(address,uint256)": FunctionFragment;
-    "calcSingleInGivenPoolOut(address,uint256)": FunctionFragment;
-    "calcSingleOutGivenPoolIn(address,uint256)": FunctionFragment;
-    "calcTokensForAmount(uint256)": FunctionFragment;
-    "chargeOutstandingAnnualFee()": FunctionFragment;
-    "commitAddToken(address,uint256,uint256)": FunctionFragment;
-    "createPool(uint256)": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "decreaseApproval(address,uint256)": FunctionFragment;
-    "exitPool(uint256,uint256[])": FunctionFragment;
-    "exitPool(uint256)": FunctionFragment;
-    "exitPoolTakingloss(uint256,address[])": FunctionFragment;
-    "exitswapExternAmountOut(address,uint256,uint256)": FunctionFragment;
-    "exitswapPoolAmountIn(address,uint256,uint256)": FunctionFragment;
-    "finalizeSmartPool()": FunctionFragment;
-    "getAnnualFee()": FunctionFragment;
-    "getBPool()": FunctionFragment;
-    "getCap()": FunctionFragment;
-    "getCircuitBreaker()": FunctionFragment;
-    "getController()": FunctionFragment;
-    "getDenormalizedWeight(address)": FunctionFragment;
-    "getDenormalizedWeights()": FunctionFragment;
-    "getEndBlock()": FunctionFragment;
-    "getFeeRecipient()": FunctionFragment;
-    "getJoinExitEnabled()": FunctionFragment;
-    "getNewToken()": FunctionFragment;
-    "getNewWeights()": FunctionFragment;
-    "getPublicSwapSetter()": FunctionFragment;
-    "getStartBlock()": FunctionFragment;
-    "getStartWeights()": FunctionFragment;
-    "getSwapFee()": FunctionFragment;
-    "getTokenBinder()": FunctionFragment;
-    "getTokens()": FunctionFragment;
-    "increaseApproval(address,uint256)": FunctionFragment;
-    "init(address,string,string,uint256)": FunctionFragment;
-    "isPublicSwap()": FunctionFragment;
-    "joinPool(uint256)": FunctionFragment;
-    "joinPool(uint256,uint256[])": FunctionFragment;
-    "joinswapExternAmountIn(address,uint256,uint256)": FunctionFragment;
-    "joinswapPoolAmountOut(address,uint256,uint256)": FunctionFragment;
-    "name()": FunctionFragment;
-    "pokeWeights()": FunctionFragment;
-    "rebind(address,uint256,uint256)": FunctionFragment;
-    "removeToken(address)": FunctionFragment;
-    "setAnnualFee(uint256)": FunctionFragment;
-    "setCap(uint256)": FunctionFragment;
-    "setCircuitBreaker(address)": FunctionFragment;
-    "setController(address)": FunctionFragment;
-    "setFeeRecipient(address)": FunctionFragment;
-    "setJoinExitEnabled(bool)": FunctionFragment;
-    "setPublicSwap(bool)": FunctionFragment;
-    "setPublicSwapSetter(address)": FunctionFragment;
-    "setSwapFee(uint256)": FunctionFragment;
-    "setTokenBinder(address)": FunctionFragment;
-    "symbol()": FunctionFragment;
-    "totalSupply()": FunctionFragment;
-    "transfer(address,uint256)": FunctionFragment;
-    "transferFrom(address,address,uint256)": FunctionFragment;
-    "tripCircuitBreaker()": FunctionFragment;
-    "unbind(address)": FunctionFragment;
-    "updateWeight(address,uint256)": FunctionFragment;
-    "updateWeightsGradually(uint256[],uint256,uint256)": FunctionFragment;
+    'allowance(address,address)': FunctionFragment;
+    'applyAddToken()': FunctionFragment;
+    'approve(address,uint256)': FunctionFragment;
+    'approveTokens()': FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
+    'bind(address,uint256,uint256)': FunctionFragment;
+    'calcPoolInGivenSingleOut(address,uint256)': FunctionFragment;
+    'calcPoolOutGivenSingleIn(address,uint256)': FunctionFragment;
+    'calcSingleInGivenPoolOut(address,uint256)': FunctionFragment;
+    'calcSingleOutGivenPoolIn(address,uint256)': FunctionFragment;
+    'calcTokensForAmount(uint256)': FunctionFragment;
+    'chargeOutstandingAnnualFee()': FunctionFragment;
+    'commitAddToken(address,uint256,uint256)': FunctionFragment;
+    'createPool(uint256)': FunctionFragment;
+    'decimals()': FunctionFragment;
+    'decreaseApproval(address,uint256)': FunctionFragment;
+    'exitPool(uint256,uint256[])': FunctionFragment;
+    'exitPool(uint256)': FunctionFragment;
+    'exitPoolTakingloss(uint256,address[])': FunctionFragment;
+    'exitswapExternAmountOut(address,uint256,uint256)': FunctionFragment;
+    'exitswapPoolAmountIn(address,uint256,uint256)': FunctionFragment;
+    'finalizeSmartPool()': FunctionFragment;
+    'getAnnualFee()': FunctionFragment;
+    'getBPool()': FunctionFragment;
+    'getCap()': FunctionFragment;
+    'getCircuitBreaker()': FunctionFragment;
+    'getController()': FunctionFragment;
+    'getDenormalizedWeight(address)': FunctionFragment;
+    'getDenormalizedWeights()': FunctionFragment;
+    'getEndBlock()': FunctionFragment;
+    'getFeeRecipient()': FunctionFragment;
+    'getJoinExitEnabled()': FunctionFragment;
+    'getNewToken()': FunctionFragment;
+    'getNewWeights()': FunctionFragment;
+    'getPublicSwapSetter()': FunctionFragment;
+    'getStartBlock()': FunctionFragment;
+    'getStartWeights()': FunctionFragment;
+    'getSwapFee()': FunctionFragment;
+    'getTokenBinder()': FunctionFragment;
+    'getTokens()': FunctionFragment;
+    'increaseApproval(address,uint256)': FunctionFragment;
+    'init(address,string,string,uint256)': FunctionFragment;
+    'isPublicSwap()': FunctionFragment;
+    'joinPool(uint256)': FunctionFragment;
+    'joinPool(uint256,uint256[])': FunctionFragment;
+    'joinswapExternAmountIn(address,uint256,uint256)': FunctionFragment;
+    'joinswapPoolAmountOut(address,uint256,uint256)': FunctionFragment;
+    'name()': FunctionFragment;
+    'pokeWeights()': FunctionFragment;
+    'rebind(address,uint256,uint256)': FunctionFragment;
+    'removeToken(address)': FunctionFragment;
+    'setAnnualFee(uint256)': FunctionFragment;
+    'setCap(uint256)': FunctionFragment;
+    'setCircuitBreaker(address)': FunctionFragment;
+    'setController(address)': FunctionFragment;
+    'setFeeRecipient(address)': FunctionFragment;
+    'setJoinExitEnabled(bool)': FunctionFragment;
+    'setPublicSwap(bool)': FunctionFragment;
+    'setPublicSwapSetter(address)': FunctionFragment;
+    'setSwapFee(uint256)': FunctionFragment;
+    'setTokenBinder(address)': FunctionFragment;
+    'symbol()': FunctionFragment;
+    'totalSupply()': FunctionFragment;
+    'transfer(address,uint256)': FunctionFragment;
+    'transferFrom(address,address,uint256)': FunctionFragment;
+    'tripCircuitBreaker()': FunctionFragment;
+    'unbind(address)': FunctionFragment;
+    'updateWeight(address,uint256)': FunctionFragment;
+    'updateWeightsGradually(uint256[],uint256,uint256)': FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
-      | "allowance"
-      | "allowance(address,address)"
-      | "applyAddToken"
-      | "applyAddToken()"
-      | "approve"
-      | "approve(address,uint256)"
-      | "approveTokens"
-      | "approveTokens()"
-      | "balanceOf"
-      | "balanceOf(address)"
-      | "bind"
-      | "bind(address,uint256,uint256)"
-      | "calcPoolInGivenSingleOut"
-      | "calcPoolInGivenSingleOut(address,uint256)"
-      | "calcPoolOutGivenSingleIn"
-      | "calcPoolOutGivenSingleIn(address,uint256)"
-      | "calcSingleInGivenPoolOut"
-      | "calcSingleInGivenPoolOut(address,uint256)"
-      | "calcSingleOutGivenPoolIn"
-      | "calcSingleOutGivenPoolIn(address,uint256)"
-      | "calcTokensForAmount"
-      | "calcTokensForAmount(uint256)"
-      | "chargeOutstandingAnnualFee"
-      | "chargeOutstandingAnnualFee()"
-      | "commitAddToken"
-      | "commitAddToken(address,uint256,uint256)"
-      | "createPool"
-      | "createPool(uint256)"
-      | "decimals"
-      | "decimals()"
-      | "decreaseApproval"
-      | "decreaseApproval(address,uint256)"
-      | "exitPool(uint256,uint256[])"
-      | "exitPool(uint256)"
-      | "exitPoolTakingloss"
-      | "exitPoolTakingloss(uint256,address[])"
-      | "exitswapExternAmountOut"
-      | "exitswapExternAmountOut(address,uint256,uint256)"
-      | "exitswapPoolAmountIn"
-      | "exitswapPoolAmountIn(address,uint256,uint256)"
-      | "finalizeSmartPool"
-      | "finalizeSmartPool()"
-      | "getAnnualFee"
-      | "getAnnualFee()"
-      | "getBPool"
-      | "getBPool()"
-      | "getCap"
-      | "getCap()"
-      | "getCircuitBreaker"
-      | "getCircuitBreaker()"
-      | "getController"
-      | "getController()"
-      | "getDenormalizedWeight"
-      | "getDenormalizedWeight(address)"
-      | "getDenormalizedWeights"
-      | "getDenormalizedWeights()"
-      | "getEndBlock"
-      | "getEndBlock()"
-      | "getFeeRecipient"
-      | "getFeeRecipient()"
-      | "getJoinExitEnabled"
-      | "getJoinExitEnabled()"
-      | "getNewToken"
-      | "getNewToken()"
-      | "getNewWeights"
-      | "getNewWeights()"
-      | "getPublicSwapSetter"
-      | "getPublicSwapSetter()"
-      | "getStartBlock"
-      | "getStartBlock()"
-      | "getStartWeights"
-      | "getStartWeights()"
-      | "getSwapFee"
-      | "getSwapFee()"
-      | "getTokenBinder"
-      | "getTokenBinder()"
-      | "getTokens"
-      | "getTokens()"
-      | "increaseApproval"
-      | "increaseApproval(address,uint256)"
-      | "init"
-      | "init(address,string,string,uint256)"
-      | "isPublicSwap"
-      | "isPublicSwap()"
-      | "joinPool(uint256)"
-      | "joinPool(uint256,uint256[])"
-      | "joinswapExternAmountIn"
-      | "joinswapExternAmountIn(address,uint256,uint256)"
-      | "joinswapPoolAmountOut"
-      | "joinswapPoolAmountOut(address,uint256,uint256)"
-      | "name"
-      | "name()"
-      | "pokeWeights"
-      | "pokeWeights()"
-      | "rebind"
-      | "rebind(address,uint256,uint256)"
-      | "removeToken"
-      | "removeToken(address)"
-      | "setAnnualFee"
-      | "setAnnualFee(uint256)"
-      | "setCap"
-      | "setCap(uint256)"
-      | "setCircuitBreaker"
-      | "setCircuitBreaker(address)"
-      | "setController"
-      | "setController(address)"
-      | "setFeeRecipient"
-      | "setFeeRecipient(address)"
-      | "setJoinExitEnabled"
-      | "setJoinExitEnabled(bool)"
-      | "setPublicSwap"
-      | "setPublicSwap(bool)"
-      | "setPublicSwapSetter"
-      | "setPublicSwapSetter(address)"
-      | "setSwapFee"
-      | "setSwapFee(uint256)"
-      | "setTokenBinder"
-      | "setTokenBinder(address)"
-      | "symbol"
-      | "symbol()"
-      | "totalSupply"
-      | "totalSupply()"
-      | "transfer"
-      | "transfer(address,uint256)"
-      | "transferFrom"
-      | "transferFrom(address,address,uint256)"
-      | "tripCircuitBreaker"
-      | "tripCircuitBreaker()"
-      | "unbind"
-      | "unbind(address)"
-      | "updateWeight"
-      | "updateWeight(address,uint256)"
-      | "updateWeightsGradually"
-      | "updateWeightsGradually(uint256[],uint256,uint256)"
+      | 'allowance'
+      | 'allowance(address,address)'
+      | 'applyAddToken'
+      | 'applyAddToken()'
+      | 'approve'
+      | 'approve(address,uint256)'
+      | 'approveTokens'
+      | 'approveTokens()'
+      | 'balanceOf'
+      | 'balanceOf(address)'
+      | 'bind'
+      | 'bind(address,uint256,uint256)'
+      | 'calcPoolInGivenSingleOut'
+      | 'calcPoolInGivenSingleOut(address,uint256)'
+      | 'calcPoolOutGivenSingleIn'
+      | 'calcPoolOutGivenSingleIn(address,uint256)'
+      | 'calcSingleInGivenPoolOut'
+      | 'calcSingleInGivenPoolOut(address,uint256)'
+      | 'calcSingleOutGivenPoolIn'
+      | 'calcSingleOutGivenPoolIn(address,uint256)'
+      | 'calcTokensForAmount'
+      | 'calcTokensForAmount(uint256)'
+      | 'chargeOutstandingAnnualFee'
+      | 'chargeOutstandingAnnualFee()'
+      | 'commitAddToken'
+      | 'commitAddToken(address,uint256,uint256)'
+      | 'createPool'
+      | 'createPool(uint256)'
+      | 'decimals'
+      | 'decimals()'
+      | 'decreaseApproval'
+      | 'decreaseApproval(address,uint256)'
+      | 'exitPool(uint256,uint256[])'
+      | 'exitPool(uint256)'
+      | 'exitPoolTakingloss'
+      | 'exitPoolTakingloss(uint256,address[])'
+      | 'exitswapExternAmountOut'
+      | 'exitswapExternAmountOut(address,uint256,uint256)'
+      | 'exitswapPoolAmountIn'
+      | 'exitswapPoolAmountIn(address,uint256,uint256)'
+      | 'finalizeSmartPool'
+      | 'finalizeSmartPool()'
+      | 'getAnnualFee'
+      | 'getAnnualFee()'
+      | 'getBPool'
+      | 'getBPool()'
+      | 'getCap'
+      | 'getCap()'
+      | 'getCircuitBreaker'
+      | 'getCircuitBreaker()'
+      | 'getController'
+      | 'getController()'
+      | 'getDenormalizedWeight'
+      | 'getDenormalizedWeight(address)'
+      | 'getDenormalizedWeights'
+      | 'getDenormalizedWeights()'
+      | 'getEndBlock'
+      | 'getEndBlock()'
+      | 'getFeeRecipient'
+      | 'getFeeRecipient()'
+      | 'getJoinExitEnabled'
+      | 'getJoinExitEnabled()'
+      | 'getNewToken'
+      | 'getNewToken()'
+      | 'getNewWeights'
+      | 'getNewWeights()'
+      | 'getPublicSwapSetter'
+      | 'getPublicSwapSetter()'
+      | 'getStartBlock'
+      | 'getStartBlock()'
+      | 'getStartWeights'
+      | 'getStartWeights()'
+      | 'getSwapFee'
+      | 'getSwapFee()'
+      | 'getTokenBinder'
+      | 'getTokenBinder()'
+      | 'getTokens'
+      | 'getTokens()'
+      | 'increaseApproval'
+      | 'increaseApproval(address,uint256)'
+      | 'init'
+      | 'init(address,string,string,uint256)'
+      | 'isPublicSwap'
+      | 'isPublicSwap()'
+      | 'joinPool(uint256)'
+      | 'joinPool(uint256,uint256[])'
+      | 'joinswapExternAmountIn'
+      | 'joinswapExternAmountIn(address,uint256,uint256)'
+      | 'joinswapPoolAmountOut'
+      | 'joinswapPoolAmountOut(address,uint256,uint256)'
+      | 'name'
+      | 'name()'
+      | 'pokeWeights'
+      | 'pokeWeights()'
+      | 'rebind'
+      | 'rebind(address,uint256,uint256)'
+      | 'removeToken'
+      | 'removeToken(address)'
+      | 'setAnnualFee'
+      | 'setAnnualFee(uint256)'
+      | 'setCap'
+      | 'setCap(uint256)'
+      | 'setCircuitBreaker'
+      | 'setCircuitBreaker(address)'
+      | 'setController'
+      | 'setController(address)'
+      | 'setFeeRecipient'
+      | 'setFeeRecipient(address)'
+      | 'setJoinExitEnabled'
+      | 'setJoinExitEnabled(bool)'
+      | 'setPublicSwap'
+      | 'setPublicSwap(bool)'
+      | 'setPublicSwapSetter'
+      | 'setPublicSwapSetter(address)'
+      | 'setSwapFee'
+      | 'setSwapFee(uint256)'
+      | 'setTokenBinder'
+      | 'setTokenBinder(address)'
+      | 'symbol'
+      | 'symbol()'
+      | 'totalSupply'
+      | 'totalSupply()'
+      | 'transfer'
+      | 'transfer(address,uint256)'
+      | 'transferFrom'
+      | 'transferFrom(address,address,uint256)'
+      | 'tripCircuitBreaker'
+      | 'tripCircuitBreaker()'
+      | 'unbind'
+      | 'unbind(address)'
+      | 'updateWeight'
+      | 'updateWeight(address,uint256)'
+      | 'updateWeightsGradually'
+      | 'updateWeightsGradually(uint256[],uint256,uint256)',
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
+    functionFragment: 'allowance',
+    values: [string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "allowance(address,address)",
-    values: [string, string]
+    functionFragment: 'allowance(address,address)',
+    values: [string, string],
   ): string;
   encodeFunctionData(
-    functionFragment: "applyAddToken",
-    values?: undefined
+    functionFragment: 'applyAddToken',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "applyAddToken()",
-    values?: undefined
+    functionFragment: 'applyAddToken()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
+    functionFragment: 'approve',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "approve(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'approve(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "approveTokens",
-    values?: undefined
+    functionFragment: 'approveTokens',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "approveTokens()",
-    values?: undefined
+    functionFragment: 'approveTokens()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "balanceOf(address)",
-    values: [string]
+    functionFragment: 'balanceOf(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "bind",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'bind',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "bind(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'bind(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcPoolInGivenSingleOut",
-    values: [string, BigNumberish]
+    functionFragment: 'calcPoolInGivenSingleOut',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcPoolInGivenSingleOut(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'calcPoolInGivenSingleOut(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcPoolOutGivenSingleIn",
-    values: [string, BigNumberish]
+    functionFragment: 'calcPoolOutGivenSingleIn',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcPoolOutGivenSingleIn(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'calcPoolOutGivenSingleIn(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcSingleInGivenPoolOut",
-    values: [string, BigNumberish]
+    functionFragment: 'calcSingleInGivenPoolOut',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcSingleInGivenPoolOut(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'calcSingleInGivenPoolOut(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcSingleOutGivenPoolIn",
-    values: [string, BigNumberish]
+    functionFragment: 'calcSingleOutGivenPoolIn',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcSingleOutGivenPoolIn(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'calcSingleOutGivenPoolIn(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcTokensForAmount",
-    values: [BigNumberish]
+    functionFragment: 'calcTokensForAmount',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "calcTokensForAmount(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'calcTokensForAmount(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "chargeOutstandingAnnualFee",
-    values?: undefined
+    functionFragment: 'chargeOutstandingAnnualFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "chargeOutstandingAnnualFee()",
-    values?: undefined
+    functionFragment: 'chargeOutstandingAnnualFee()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "commitAddToken",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'commitAddToken',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "commitAddToken(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'commitAddToken(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "createPool",
-    values: [BigNumberish]
+    functionFragment: 'createPool',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "createPool(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'createPool(uint256)',
+    values: [BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "decimals()",
-    values?: undefined
+    functionFragment: 'decimals()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "decreaseApproval",
-    values: [string, BigNumberish]
+    functionFragment: 'decreaseApproval',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "decreaseApproval(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'decreaseApproval(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitPool(uint256,uint256[])",
-    values: [BigNumberish, BigNumberish[]]
+    functionFragment: 'exitPool(uint256,uint256[])',
+    values: [BigNumberish, BigNumberish[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitPool(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'exitPool(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitPoolTakingloss",
-    values: [BigNumberish, string[]]
+    functionFragment: 'exitPoolTakingloss',
+    values: [BigNumberish, string[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitPoolTakingloss(uint256,address[])",
-    values: [BigNumberish, string[]]
+    functionFragment: 'exitPoolTakingloss(uint256,address[])',
+    values: [BigNumberish, string[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitswapExternAmountOut",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'exitswapExternAmountOut',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitswapExternAmountOut(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'exitswapExternAmountOut(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitswapPoolAmountIn",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'exitswapPoolAmountIn',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "exitswapPoolAmountIn(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'exitswapPoolAmountIn(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "finalizeSmartPool",
-    values?: undefined
+    functionFragment: 'finalizeSmartPool',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "finalizeSmartPool()",
-    values?: undefined
+    functionFragment: 'finalizeSmartPool()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getAnnualFee",
-    values?: undefined
+    functionFragment: 'getAnnualFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getAnnualFee()",
-    values?: undefined
+    functionFragment: 'getAnnualFee()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getBPool", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getBPool', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getBPool()",
-    values?: undefined
+    functionFragment: 'getBPool()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getCap", values?: undefined): string;
-  encodeFunctionData(functionFragment: "getCap()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getCap', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getCap()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getCircuitBreaker",
-    values?: undefined
+    functionFragment: 'getCircuitBreaker',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getCircuitBreaker()",
-    values?: undefined
+    functionFragment: 'getCircuitBreaker()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getController",
-    values?: undefined
+    functionFragment: 'getController',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getController()",
-    values?: undefined
+    functionFragment: 'getController()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getDenormalizedWeight",
-    values: [string]
+    functionFragment: 'getDenormalizedWeight',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "getDenormalizedWeight(address)",
-    values: [string]
+    functionFragment: 'getDenormalizedWeight(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "getDenormalizedWeights",
-    values?: undefined
+    functionFragment: 'getDenormalizedWeights',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getDenormalizedWeights()",
-    values?: undefined
+    functionFragment: 'getDenormalizedWeights()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getEndBlock",
-    values?: undefined
+    functionFragment: 'getEndBlock',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getEndBlock()",
-    values?: undefined
+    functionFragment: 'getEndBlock()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getFeeRecipient",
-    values?: undefined
+    functionFragment: 'getFeeRecipient',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getFeeRecipient()",
-    values?: undefined
+    functionFragment: 'getFeeRecipient()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getJoinExitEnabled",
-    values?: undefined
+    functionFragment: 'getJoinExitEnabled',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getJoinExitEnabled()",
-    values?: undefined
+    functionFragment: 'getJoinExitEnabled()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getNewToken",
-    values?: undefined
+    functionFragment: 'getNewToken',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getNewToken()",
-    values?: undefined
+    functionFragment: 'getNewToken()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getNewWeights",
-    values?: undefined
+    functionFragment: 'getNewWeights',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getNewWeights()",
-    values?: undefined
+    functionFragment: 'getNewWeights()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getPublicSwapSetter",
-    values?: undefined
+    functionFragment: 'getPublicSwapSetter',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getPublicSwapSetter()",
-    values?: undefined
+    functionFragment: 'getPublicSwapSetter()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getStartBlock",
-    values?: undefined
+    functionFragment: 'getStartBlock',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getStartBlock()",
-    values?: undefined
+    functionFragment: 'getStartBlock()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getStartWeights",
-    values?: undefined
+    functionFragment: 'getStartWeights',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getStartWeights()",
-    values?: undefined
+    functionFragment: 'getStartWeights()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getSwapFee",
-    values?: undefined
+    functionFragment: 'getSwapFee',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getSwapFee()",
-    values?: undefined
+    functionFragment: 'getSwapFee()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getTokenBinder",
-    values?: undefined
+    functionFragment: 'getTokenBinder',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "getTokenBinder()",
-    values?: undefined
+    functionFragment: 'getTokenBinder()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "getTokens", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'getTokens', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "getTokens()",
-    values?: undefined
+    functionFragment: 'getTokens()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "increaseApproval",
-    values: [string, BigNumberish]
+    functionFragment: 'increaseApproval',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "increaseApproval(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'increaseApproval(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "init",
-    values: [string, string, string, BigNumberish]
+    functionFragment: 'init',
+    values: [string, string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "init(address,string,string,uint256)",
-    values: [string, string, string, BigNumberish]
+    functionFragment: 'init(address,string,string,uint256)',
+    values: [string, string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "isPublicSwap",
-    values?: undefined
+    functionFragment: 'isPublicSwap',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "isPublicSwap()",
-    values?: undefined
+    functionFragment: 'isPublicSwap()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "joinPool(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'joinPool(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinPool(uint256,uint256[])",
-    values: [BigNumberish, BigNumberish[]]
+    functionFragment: 'joinPool(uint256,uint256[])',
+    values: [BigNumberish, BigNumberish[]],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinswapExternAmountIn",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'joinswapExternAmountIn',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinswapExternAmountIn(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'joinswapExternAmountIn(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinswapPoolAmountOut",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'joinswapPoolAmountOut',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "joinswapPoolAmountOut(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'joinswapPoolAmountOut(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
-  encodeFunctionData(functionFragment: "name()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'name', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'name()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "pokeWeights",
-    values?: undefined
+    functionFragment: 'pokeWeights',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "pokeWeights()",
-    values?: undefined
+    functionFragment: 'pokeWeights()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "rebind",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'rebind',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "rebind(address,uint256,uint256)",
-    values: [string, BigNumberish, BigNumberish]
+    functionFragment: 'rebind(address,uint256,uint256)',
+    values: [string, BigNumberish, BigNumberish],
   ): string;
-  encodeFunctionData(functionFragment: "removeToken", values: [string]): string;
+  encodeFunctionData(functionFragment: 'removeToken', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "removeToken(address)",
-    values: [string]
+    functionFragment: 'removeToken(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setAnnualFee",
-    values: [BigNumberish]
+    functionFragment: 'setAnnualFee',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setAnnualFee(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setAnnualFee(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setCap",
-    values: [BigNumberish]
+    functionFragment: 'setCap',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setCap(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setCap(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setCircuitBreaker",
-    values: [string]
+    functionFragment: 'setCircuitBreaker',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setCircuitBreaker(address)",
-    values: [string]
+    functionFragment: 'setCircuitBreaker(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setController",
-    values: [string]
+    functionFragment: 'setController',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setController(address)",
-    values: [string]
+    functionFragment: 'setController(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setFeeRecipient",
-    values: [string]
+    functionFragment: 'setFeeRecipient',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setFeeRecipient(address)",
-    values: [string]
+    functionFragment: 'setFeeRecipient(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setJoinExitEnabled",
-    values: [boolean]
+    functionFragment: 'setJoinExitEnabled',
+    values: [boolean],
   ): string;
   encodeFunctionData(
-    functionFragment: "setJoinExitEnabled(bool)",
-    values: [boolean]
+    functionFragment: 'setJoinExitEnabled(bool)',
+    values: [boolean],
   ): string;
   encodeFunctionData(
-    functionFragment: "setPublicSwap",
-    values: [boolean]
+    functionFragment: 'setPublicSwap',
+    values: [boolean],
   ): string;
   encodeFunctionData(
-    functionFragment: "setPublicSwap(bool)",
-    values: [boolean]
+    functionFragment: 'setPublicSwap(bool)',
+    values: [boolean],
   ): string;
   encodeFunctionData(
-    functionFragment: "setPublicSwapSetter",
-    values: [string]
+    functionFragment: 'setPublicSwapSetter',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setPublicSwapSetter(address)",
-    values: [string]
+    functionFragment: 'setPublicSwapSetter(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setSwapFee",
-    values: [BigNumberish]
+    functionFragment: 'setSwapFee',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setSwapFee(uint256)",
-    values: [BigNumberish]
+    functionFragment: 'setSwapFee(uint256)',
+    values: [BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "setTokenBinder",
-    values: [string]
+    functionFragment: 'setTokenBinder',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "setTokenBinder(address)",
-    values: [string]
+    functionFragment: 'setTokenBinder(address)',
+    values: [string],
   ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
-  encodeFunctionData(functionFragment: "symbol()", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'symbol', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'symbol()', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "totalSupply",
-    values?: undefined
+    functionFragment: 'totalSupply',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "totalSupply()",
-    values?: undefined
+    functionFragment: 'totalSupply()',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer",
-    values: [string, BigNumberish]
+    functionFragment: 'transfer',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transfer(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'transfer(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom",
-    values: [string, string, BigNumberish]
+    functionFragment: 'transferFrom',
+    values: [string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "transferFrom(address,address,uint256)",
-    values: [string, string, BigNumberish]
+    functionFragment: 'transferFrom(address,address,uint256)',
+    values: [string, string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "tripCircuitBreaker",
-    values?: undefined
+    functionFragment: 'tripCircuitBreaker',
+    values?: undefined,
   ): string;
   encodeFunctionData(
-    functionFragment: "tripCircuitBreaker()",
-    values?: undefined
+    functionFragment: 'tripCircuitBreaker()',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "unbind", values: [string]): string;
+  encodeFunctionData(functionFragment: 'unbind', values: [string]): string;
   encodeFunctionData(
-    functionFragment: "unbind(address)",
-    values: [string]
+    functionFragment: 'unbind(address)',
+    values: [string],
   ): string;
   encodeFunctionData(
-    functionFragment: "updateWeight",
-    values: [string, BigNumberish]
+    functionFragment: 'updateWeight',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "updateWeight(address,uint256)",
-    values: [string, BigNumberish]
+    functionFragment: 'updateWeight(address,uint256)',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "updateWeightsGradually",
-    values: [BigNumberish[], BigNumberish, BigNumberish]
+    functionFragment: 'updateWeightsGradually',
+    values: [BigNumberish[], BigNumberish, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "updateWeightsGradually(uint256[],uint256,uint256)",
-    values: [BigNumberish[], BigNumberish, BigNumberish]
+    functionFragment: 'updateWeightsGradually(uint256[],uint256,uint256)',
+    values: [BigNumberish[], BigNumberish, BigNumberish],
   ): string;
 
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "allowance(address,address)",
-    data: BytesLike
+    functionFragment: 'allowance(address,address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "applyAddToken",
-    data: BytesLike
+    functionFragment: 'applyAddToken',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "applyAddToken()",
-    data: BytesLike
+    functionFragment: 'applyAddToken()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "approve(address,uint256)",
-    data: BytesLike
+    functionFragment: 'approve(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "approveTokens",
-    data: BytesLike
+    functionFragment: 'approveTokens',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "approveTokens()",
-    data: BytesLike
+    functionFragment: 'approveTokens()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "balanceOf(address)",
-    data: BytesLike
+    functionFragment: 'balanceOf(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "bind", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'bind', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "bind(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'bind(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcPoolInGivenSingleOut",
-    data: BytesLike
+    functionFragment: 'calcPoolInGivenSingleOut',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcPoolInGivenSingleOut(address,uint256)",
-    data: BytesLike
+    functionFragment: 'calcPoolInGivenSingleOut(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcPoolOutGivenSingleIn",
-    data: BytesLike
+    functionFragment: 'calcPoolOutGivenSingleIn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcPoolOutGivenSingleIn(address,uint256)",
-    data: BytesLike
+    functionFragment: 'calcPoolOutGivenSingleIn(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcSingleInGivenPoolOut",
-    data: BytesLike
+    functionFragment: 'calcSingleInGivenPoolOut',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcSingleInGivenPoolOut(address,uint256)",
-    data: BytesLike
+    functionFragment: 'calcSingleInGivenPoolOut(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcSingleOutGivenPoolIn",
-    data: BytesLike
+    functionFragment: 'calcSingleOutGivenPoolIn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcSingleOutGivenPoolIn(address,uint256)",
-    data: BytesLike
+    functionFragment: 'calcSingleOutGivenPoolIn(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcTokensForAmount",
-    data: BytesLike
+    functionFragment: 'calcTokensForAmount',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calcTokensForAmount(uint256)",
-    data: BytesLike
+    functionFragment: 'calcTokensForAmount(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "chargeOutstandingAnnualFee",
-    data: BytesLike
+    functionFragment: 'chargeOutstandingAnnualFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "chargeOutstandingAnnualFee()",
-    data: BytesLike
+    functionFragment: 'chargeOutstandingAnnualFee()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "commitAddToken",
-    data: BytesLike
+    functionFragment: 'commitAddToken',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "commitAddToken(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'commitAddToken(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "createPool", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'createPool', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "createPool(uint256)",
-    data: BytesLike
+    functionFragment: 'createPool(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "decreaseApproval",
-    data: BytesLike
+    functionFragment: 'decreaseApproval',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "decreaseApproval(address,uint256)",
-    data: BytesLike
+    functionFragment: 'decreaseApproval(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitPool(uint256,uint256[])",
-    data: BytesLike
+    functionFragment: 'exitPool(uint256,uint256[])',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitPool(uint256)",
-    data: BytesLike
+    functionFragment: 'exitPool(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitPoolTakingloss",
-    data: BytesLike
+    functionFragment: 'exitPoolTakingloss',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitPoolTakingloss(uint256,address[])",
-    data: BytesLike
+    functionFragment: 'exitPoolTakingloss(uint256,address[])',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitswapExternAmountOut",
-    data: BytesLike
+    functionFragment: 'exitswapExternAmountOut',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitswapExternAmountOut(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'exitswapExternAmountOut(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitswapPoolAmountIn",
-    data: BytesLike
+    functionFragment: 'exitswapPoolAmountIn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "exitswapPoolAmountIn(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'exitswapPoolAmountIn(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "finalizeSmartPool",
-    data: BytesLike
+    functionFragment: 'finalizeSmartPool',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "finalizeSmartPool()",
-    data: BytesLike
+    functionFragment: 'finalizeSmartPool()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAnnualFee",
-    data: BytesLike
+    functionFragment: 'getAnnualFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getAnnualFee()",
-    data: BytesLike
+    functionFragment: 'getAnnualFee()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getBPool", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getBPool()", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getCap", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getCap()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getBPool', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getBPool()', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCap', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getCap()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getCircuitBreaker",
-    data: BytesLike
+    functionFragment: 'getCircuitBreaker',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getCircuitBreaker()",
-    data: BytesLike
+    functionFragment: 'getCircuitBreaker()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getController",
-    data: BytesLike
+    functionFragment: 'getController',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getController()",
-    data: BytesLike
+    functionFragment: 'getController()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getDenormalizedWeight",
-    data: BytesLike
+    functionFragment: 'getDenormalizedWeight',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getDenormalizedWeight(address)",
-    data: BytesLike
+    functionFragment: 'getDenormalizedWeight(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getDenormalizedWeights",
-    data: BytesLike
+    functionFragment: 'getDenormalizedWeights',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getDenormalizedWeights()",
-    data: BytesLike
+    functionFragment: 'getDenormalizedWeights()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEndBlock",
-    data: BytesLike
+    functionFragment: 'getEndBlock',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getEndBlock()",
-    data: BytesLike
+    functionFragment: 'getEndBlock()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getFeeRecipient",
-    data: BytesLike
+    functionFragment: 'getFeeRecipient',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getFeeRecipient()",
-    data: BytesLike
+    functionFragment: 'getFeeRecipient()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getJoinExitEnabled",
-    data: BytesLike
+    functionFragment: 'getJoinExitEnabled',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getJoinExitEnabled()",
-    data: BytesLike
+    functionFragment: 'getJoinExitEnabled()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNewToken",
-    data: BytesLike
+    functionFragment: 'getNewToken',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNewToken()",
-    data: BytesLike
+    functionFragment: 'getNewToken()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNewWeights",
-    data: BytesLike
+    functionFragment: 'getNewWeights',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getNewWeights()",
-    data: BytesLike
+    functionFragment: 'getNewWeights()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPublicSwapSetter",
-    data: BytesLike
+    functionFragment: 'getPublicSwapSetter',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getPublicSwapSetter()",
-    data: BytesLike
+    functionFragment: 'getPublicSwapSetter()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getStartBlock",
-    data: BytesLike
+    functionFragment: 'getStartBlock',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getStartBlock()",
-    data: BytesLike
+    functionFragment: 'getStartBlock()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getStartWeights",
-    data: BytesLike
+    functionFragment: 'getStartWeights',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getStartWeights()",
-    data: BytesLike
+    functionFragment: 'getStartWeights()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getSwapFee", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getSwapFee', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getSwapFee()",
-    data: BytesLike
+    functionFragment: 'getSwapFee()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getTokenBinder",
-    data: BytesLike
+    functionFragment: 'getTokenBinder',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "getTokenBinder()",
-    data: BytesLike
+    functionFragment: 'getTokenBinder()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "getTokens", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'getTokens', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getTokens()",
-    data: BytesLike
+    functionFragment: 'getTokens()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "increaseApproval",
-    data: BytesLike
+    functionFragment: 'increaseApproval',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "increaseApproval(address,uint256)",
-    data: BytesLike
+    functionFragment: 'increaseApproval(address,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'init', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "init(address,string,string,uint256)",
-    data: BytesLike
+    functionFragment: 'init(address,string,string,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "isPublicSwap",
-    data: BytesLike
+    functionFragment: 'isPublicSwap',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "isPublicSwap()",
-    data: BytesLike
+    functionFragment: 'isPublicSwap()',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "joinPool(uint256)",
-    data: BytesLike
+    functionFragment: 'joinPool(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "joinPool(uint256,uint256[])",
-    data: BytesLike
+    functionFragment: 'joinPool(uint256,uint256[])',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "joinswapExternAmountIn",
-    data: BytesLike
+    functionFragment: 'joinswapExternAmountIn',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "joinswapExternAmountIn(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'joinswapExternAmountIn(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "joinswapPoolAmountOut",
-    data: BytesLike
+    functionFragment: 'joinswapPoolAmountOut',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "joinswapPoolAmountOut(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'joinswapPoolAmountOut(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "name()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'name()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "pokeWeights",
-    data: BytesLike
+    functionFragment: 'pokeWeights',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "pokeWeights()",
-    data: BytesLike
+    functionFragment: 'pokeWeights()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "rebind", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'rebind', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "rebind(address,uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'rebind(address,uint256,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeToken",
-    data: BytesLike
+    functionFragment: 'removeToken',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "removeToken(address)",
-    data: BytesLike
+    functionFragment: 'removeToken(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setAnnualFee",
-    data: BytesLike
+    functionFragment: 'setAnnualFee',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setAnnualFee(uint256)",
-    data: BytesLike
+    functionFragment: 'setAnnualFee(uint256)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "setCap", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setCap', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setCap(uint256)",
-    data: BytesLike
+    functionFragment: 'setCap(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setCircuitBreaker",
-    data: BytesLike
+    functionFragment: 'setCircuitBreaker',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setCircuitBreaker(address)",
-    data: BytesLike
+    functionFragment: 'setCircuitBreaker(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setController",
-    data: BytesLike
+    functionFragment: 'setController',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setController(address)",
-    data: BytesLike
+    functionFragment: 'setController(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setFeeRecipient",
-    data: BytesLike
+    functionFragment: 'setFeeRecipient',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setFeeRecipient(address)",
-    data: BytesLike
+    functionFragment: 'setFeeRecipient(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setJoinExitEnabled",
-    data: BytesLike
+    functionFragment: 'setJoinExitEnabled',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setJoinExitEnabled(bool)",
-    data: BytesLike
+    functionFragment: 'setJoinExitEnabled(bool)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setPublicSwap",
-    data: BytesLike
+    functionFragment: 'setPublicSwap',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setPublicSwap(bool)",
-    data: BytesLike
+    functionFragment: 'setPublicSwap(bool)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setPublicSwapSetter",
-    data: BytesLike
+    functionFragment: 'setPublicSwapSetter',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setPublicSwapSetter(address)",
-    data: BytesLike
+    functionFragment: 'setPublicSwapSetter(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "setSwapFee", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'setSwapFee', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setSwapFee(uint256)",
-    data: BytesLike
+    functionFragment: 'setSwapFee(uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setTokenBinder",
-    data: BytesLike
+    functionFragment: 'setTokenBinder',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setTokenBinder(address)",
-    data: BytesLike
+    functionFragment: 'setTokenBinder(address)',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "symbol()", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'symbol()', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply",
-    data: BytesLike
+    functionFragment: 'totalSupply',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "totalSupply()",
-    data: BytesLike
+    functionFragment: 'totalSupply()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'transfer', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "transfer(address,uint256)",
-    data: BytesLike
+    functionFragment: 'transfer(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferFrom",
-    data: BytesLike
+    functionFragment: 'transferFrom',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "transferFrom(address,address,uint256)",
-    data: BytesLike
+    functionFragment: 'transferFrom(address,address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "tripCircuitBreaker",
-    data: BytesLike
+    functionFragment: 'tripCircuitBreaker',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "tripCircuitBreaker()",
-    data: BytesLike
+    functionFragment: 'tripCircuitBreaker()',
+    data: BytesLike,
   ): Result;
-  decodeFunctionResult(functionFragment: "unbind", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'unbind', data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "unbind(address)",
-    data: BytesLike
+    functionFragment: 'unbind(address)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateWeight",
-    data: BytesLike
+    functionFragment: 'updateWeight',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateWeight(address,uint256)",
-    data: BytesLike
+    functionFragment: 'updateWeight(address,uint256)',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateWeightsGradually",
-    data: BytesLike
+    functionFragment: 'updateWeightsGradually',
+    data: BytesLike,
   ): Result;
   decodeFunctionResult(
-    functionFragment: "updateWeightsGradually(uint256[],uint256,uint256)",
-    data: BytesLike
+    functionFragment: 'updateWeightsGradually(uint256[],uint256,uint256)',
+    data: BytesLike,
   ): Result;
 
   events: {
-    "Approval(address,address,uint256)": EventFragment;
-    "CapChanged(address,uint256,uint256)": EventFragment;
-    "CircuitBreakerChanged(address,address)": EventFragment;
-    "CircuitBreakerTripped()": EventFragment;
-    "ControllerChanged(address,address)": EventFragment;
-    "JoinExitEnabledChanged(address,bool,bool)": EventFragment;
-    "PublicSwapSet(address,bool)": EventFragment;
-    "PublicSwapSetterChanged(address,address)": EventFragment;
-    "SwapFeeSet(address,uint256)": EventFragment;
-    "TokenBinderChanged(address,address)": EventFragment;
-    "TokensApproved()": EventFragment;
-    "Transfer(address,address,uint256)": EventFragment;
+    'Approval(address,address,uint256)': EventFragment;
+    'CapChanged(address,uint256,uint256)': EventFragment;
+    'CircuitBreakerChanged(address,address)': EventFragment;
+    'CircuitBreakerTripped()': EventFragment;
+    'ControllerChanged(address,address)': EventFragment;
+    'JoinExitEnabledChanged(address,bool,bool)': EventFragment;
+    'PublicSwapSet(address,bool)': EventFragment;
+    'PublicSwapSetterChanged(address,address)': EventFragment;
+    'SwapFeeSet(address,uint256)': EventFragment;
+    'TokenBinderChanged(address,address)': EventFragment;
+    'TokensApproved()': EventFragment;
+    'Transfer(address,address,uint256)': EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Approval'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Approval(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Approval(address,address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CapChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CapChanged'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "CapChanged(address,uint256,uint256)"
+    nameOrSignatureOrTopic: 'CapChanged(address,uint256,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CircuitBreakerChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CircuitBreakerChanged'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "CircuitBreakerChanged(address,address)"
+    nameOrSignatureOrTopic: 'CircuitBreakerChanged(address,address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CircuitBreakerTripped"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "CircuitBreakerTripped()"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ControllerChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CircuitBreakerTripped'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'CircuitBreakerTripped()'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'ControllerChanged'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "ControllerChanged(address,address)"
+    nameOrSignatureOrTopic: 'ControllerChanged(address,address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "JoinExitEnabledChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'JoinExitEnabledChanged'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "JoinExitEnabledChanged(address,bool,bool)"
+    nameOrSignatureOrTopic: 'JoinExitEnabledChanged(address,bool,bool)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PublicSwapSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'PublicSwapSet'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "PublicSwapSet(address,bool)"
+    nameOrSignatureOrTopic: 'PublicSwapSet(address,bool)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "PublicSwapSetterChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'PublicSwapSetterChanged'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "PublicSwapSetterChanged(address,address)"
+    nameOrSignatureOrTopic: 'PublicSwapSetterChanged(address,address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "SwapFeeSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'SwapFeeSet'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "SwapFeeSet(address,uint256)"
+    nameOrSignatureOrTopic: 'SwapFeeSet(address,uint256)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokenBinderChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokenBinderChanged'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "TokenBinderChanged(address,address)"
+    nameOrSignatureOrTopic: 'TokenBinderChanged(address,address)',
   ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokensApproved"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TokensApproved()"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokensApproved'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'TokensApproved()'): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Transfer'): EventFragment;
   getEvent(
-    nameOrSignatureOrTopic: "Transfer(address,address,uint256)"
+    nameOrSignatureOrTopic: 'Transfer(address,address,uint256)',
   ): EventFragment;
 }
 
@@ -1427,7 +1427,7 @@ export type TransferEvent = TypedEvent<
 export type TransferEventFilter = TypedEventFilter<TransferEvent>;
 
 export interface SmartpoolAbi extends BaseContract {
-  contractName: "SmartpoolAbi";
+  contractName: 'SmartpoolAbi';
 
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
@@ -1438,15 +1438,15 @@ export interface SmartpoolAbi extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -1458,333 +1458,333 @@ export interface SmartpoolAbi extends BaseContract {
     allowance(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     applyAddToken(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "applyAddToken()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'applyAddToken()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     approve(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     approveTokens(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "approveTokens()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'approveTokens()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     balanceOf(_whom: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       _whom: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     bind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "bind(address,uint256,uint256)"(
+    'bind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     calcPoolInGivenSingleOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calcPoolInGivenSingleOut(address,uint256)"(
+    'calcPoolInGivenSingleOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     calcPoolOutGivenSingleIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calcPoolOutGivenSingleIn(address,uint256)"(
+    'calcPoolOutGivenSingleIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     calcSingleInGivenPoolOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calcSingleInGivenPoolOut(address,uint256)"(
+    'calcSingleInGivenPoolOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     calcSingleOutGivenPoolIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "calcSingleOutGivenPoolIn(address,uint256)"(
+    'calcSingleOutGivenPoolIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
     chargeOutstandingAnnualFee(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "chargeOutstandingAnnualFee()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'chargeOutstandingAnnualFee()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     commitAddToken(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "commitAddToken(address,uint256,uint256)"(
+    'commitAddToken(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     createPool(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[void]>;
 
-    "createPool(uint256)"(
+    'createPool(uint256)'(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[void]>;
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<[number]>;
+    'decimals()'(overrides?: CallOverrides): Promise<[number]>;
 
     decreaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitPool(uint256,uint256[])"(
+    'exitPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _minAmountsOut: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     exitPoolTakingloss(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitPoolTakingloss(uint256,address[])"(
+    'exitPoolTakingloss(uint256,address[])'(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     exitswapExternAmountOut(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitswapExternAmountOut(address,uint256,uint256)"(
+    'exitswapExternAmountOut(address,uint256,uint256)'(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     exitswapPoolAmountIn(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "exitswapPoolAmountIn(address,uint256,uint256)"(
+    'exitswapPoolAmountIn(address,uint256,uint256)'(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     finalizeSmartPool(overrides?: CallOverrides): Promise<[void]>;
 
-    "finalizeSmartPool()"(overrides?: CallOverrides): Promise<[void]>;
+    'finalizeSmartPool()'(overrides?: CallOverrides): Promise<[void]>;
 
     getAnnualFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getAnnualFee()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getAnnualFee()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getBPool(overrides?: CallOverrides): Promise<[string]>;
 
-    "getBPool()"(overrides?: CallOverrides): Promise<[string]>;
+    'getBPool()'(overrides?: CallOverrides): Promise<[string]>;
 
     getCap(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getCap()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getCircuitBreaker(overrides?: CallOverrides): Promise<[string]>;
 
-    "getCircuitBreaker()"(overrides?: CallOverrides): Promise<[string]>;
+    'getCircuitBreaker()'(overrides?: CallOverrides): Promise<[string]>;
 
     getController(overrides?: CallOverrides): Promise<[string]>;
 
-    "getController()"(overrides?: CallOverrides): Promise<[string]>;
+    'getController()'(overrides?: CallOverrides): Promise<[string]>;
 
     getDenormalizedWeight(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
-    "getDenormalizedWeight(address)"(
+    'getDenormalizedWeight(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
 
     getDenormalizedWeights(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { weights: BigNumber[] }>;
 
-    "getDenormalizedWeights()"(
-      overrides?: CallOverrides
+    'getDenormalizedWeights()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { weights: BigNumber[] }>;
 
     getEndBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getEndBlock()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getEndBlock()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getFeeRecipient(overrides?: CallOverrides): Promise<[string]>;
 
-    "getFeeRecipient()"(overrides?: CallOverrides): Promise<[string]>;
+    'getFeeRecipient()'(overrides?: CallOverrides): Promise<[string]>;
 
     getJoinExitEnabled(overrides?: CallOverrides): Promise<[boolean]>;
 
-    "getJoinExitEnabled()"(overrides?: CallOverrides): Promise<[boolean]>;
+    'getJoinExitEnabled()'(overrides?: CallOverrides): Promise<[boolean]>;
 
     getNewToken(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[PV2SmartPoolStorage.NewTokenStructOutput]>;
 
-    "getNewToken()"(
-      overrides?: CallOverrides
+    'getNewToken()'(
+      overrides?: CallOverrides,
     ): Promise<[PV2SmartPoolStorage.NewTokenStructOutput]>;
 
     getNewWeights(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { weights: BigNumber[] }>;
 
-    "getNewWeights()"(
-      overrides?: CallOverrides
+    'getNewWeights()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { weights: BigNumber[] }>;
 
     getPublicSwapSetter(overrides?: CallOverrides): Promise<[string]>;
 
-    "getPublicSwapSetter()"(overrides?: CallOverrides): Promise<[string]>;
+    'getPublicSwapSetter()'(overrides?: CallOverrides): Promise<[string]>;
 
     getStartBlock(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getStartBlock()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getStartBlock()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getStartWeights(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { weights: BigNumber[] }>;
 
-    "getStartWeights()"(
-      overrides?: CallOverrides
+    'getStartWeights()'(
+      overrides?: CallOverrides,
     ): Promise<[BigNumber[]] & { weights: BigNumber[] }>;
 
     getSwapFee(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "getSwapFee()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'getSwapFee()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getTokenBinder(overrides?: CallOverrides): Promise<[string]>;
 
-    "getTokenBinder()"(overrides?: CallOverrides): Promise<[string]>;
+    'getTokenBinder()'(overrides?: CallOverrides): Promise<[string]>;
 
     getTokens(overrides?: CallOverrides): Promise<[string[]]>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<[string[]]>;
+    'getTokens()'(overrides?: CallOverrides): Promise<[string[]]>;
 
     increaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     init(
@@ -1792,593 +1792,593 @@ export interface SmartpoolAbi extends BaseContract {
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "init(address,string,string,uint256)"(
+    'init(address,string,string,uint256)'(
       _bPool: string,
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     isPublicSwap(overrides?: CallOverrides): Promise<[boolean]>;
 
-    "isPublicSwap()"(overrides?: CallOverrides): Promise<[boolean]>;
+    'isPublicSwap()'(overrides?: CallOverrides): Promise<[boolean]>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "joinPool(uint256,uint256[])"(
+    'joinPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _maxAmountsIn: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     joinswapExternAmountIn(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "joinswapExternAmountIn(address,uint256,uint256)"(
+    'joinswapExternAmountIn(address,uint256,uint256)'(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     joinswapPoolAmountOut(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "joinswapPoolAmountOut(address,uint256,uint256)"(
+    'joinswapPoolAmountOut(address,uint256,uint256)'(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
-    "name()"(overrides?: CallOverrides): Promise<[string]>;
+    'name()'(overrides?: CallOverrides): Promise<[string]>;
 
     pokeWeights(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "pokeWeights()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'pokeWeights()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     rebind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "rebind(address,uint256,uint256)"(
+    'rebind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     removeToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setAnnualFee(
       _newFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setAnnualFee(uint256)"(
+    'setAnnualFee(uint256)'(
       _newFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setCap(
       _cap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _cap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setCircuitBreaker(
       _newCircuitBreaker: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setCircuitBreaker(address)"(
+    'setCircuitBreaker(address)'(
       _newCircuitBreaker: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setController(
       _controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setController(address)"(
+    'setController(address)'(
       _controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setFeeRecipient(
       _newRecipient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setFeeRecipient(address)"(
+    'setFeeRecipient(address)'(
       _newRecipient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setJoinExitEnabled(
       _newValue: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setJoinExitEnabled(bool)"(
+    'setJoinExitEnabled(bool)'(
       _newValue: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setPublicSwap(
       _public: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setPublicSwap(bool)"(
+    'setPublicSwap(bool)'(
       _public: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setPublicSwapSetter(
       _newPublicSwapSetter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setPublicSwapSetter(address)"(
+    'setPublicSwapSetter(address)'(
       _newPublicSwapSetter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setSwapFee(
       _swapFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setSwapFee(uint256)"(
+    'setSwapFee(uint256)'(
       _swapFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     setTokenBinder(
       _newTokenBinder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "setTokenBinder(address)"(
+    'setTokenBinder(address)'(
       _newTokenBinder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<[string]>;
+    'symbol()'(overrides?: CallOverrides): Promise<[string]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     transfer(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     transferFrom(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     tripCircuitBreaker(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "tripCircuitBreaker()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'tripCircuitBreaker()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     unbind(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "unbind(address)"(
+    'unbind(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     updateWeight(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "updateWeight(address,uint256)"(
+    'updateWeight(address,uint256)'(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
     updateWeightsGradually(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
 
-    "updateWeightsGradually(uint256[],uint256,uint256)"(
+    'updateWeightsGradually(uint256[],uint256,uint256)'(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<ContractTransaction>;
   };
 
   allowance(
     _src: string,
     _dst: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "allowance(address,address)"(
+  'allowance(address,address)'(
     _src: string,
     _dst: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   applyAddToken(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "applyAddToken()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'applyAddToken()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   approve(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "approve(address,uint256)"(
+  'approve(address,uint256)'(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   approveTokens(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "approveTokens()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'approveTokens()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   balanceOf(_whom: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  "balanceOf(address)"(
+  'balanceOf(address)'(
     _whom: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   bind(
     _token: string,
     _balance: BigNumberish,
     _denorm: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "bind(address,uint256,uint256)"(
+  'bind(address,uint256,uint256)'(
     _token: string,
     _balance: BigNumberish,
     _denorm: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   calcPoolInGivenSingleOut(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "calcPoolInGivenSingleOut(address,uint256)"(
+  'calcPoolInGivenSingleOut(address,uint256)'(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   calcPoolOutGivenSingleIn(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "calcPoolOutGivenSingleIn(address,uint256)"(
+  'calcPoolOutGivenSingleIn(address,uint256)'(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   calcSingleInGivenPoolOut(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "calcSingleInGivenPoolOut(address,uint256)"(
+  'calcSingleInGivenPoolOut(address,uint256)'(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   calcSingleOutGivenPoolIn(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "calcSingleOutGivenPoolIn(address,uint256)"(
+  'calcSingleOutGivenPoolIn(address,uint256)'(
     _token: string,
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   calcTokensForAmount(
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
   >;
 
-  "calcTokensForAmount(uint256)"(
+  'calcTokensForAmount(uint256)'(
     _amount: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
   >;
 
   chargeOutstandingAnnualFee(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "chargeOutstandingAnnualFee()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'chargeOutstandingAnnualFee()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   commitAddToken(
     _token: string,
     _balance: BigNumberish,
     _denormalizedWeight: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "commitAddToken(address,uint256,uint256)"(
+  'commitAddToken(address,uint256,uint256)'(
     _token: string,
     _balance: BigNumberish,
     _denormalizedWeight: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   createPool(
     initialSupply: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<void>;
 
-  "createPool(uint256)"(
+  'createPool(uint256)'(
     initialSupply: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<void>;
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
-  "decimals()"(overrides?: CallOverrides): Promise<number>;
+  'decimals()'(overrides?: CallOverrides): Promise<number>;
 
   decreaseApproval(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "decreaseApproval(address,uint256)"(
+  'decreaseApproval(address,uint256)'(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitPool(uint256,uint256[])"(
+  'exitPool(uint256,uint256[])'(
     _amount: BigNumberish,
     _minAmountsOut: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitPool(uint256)"(
+  'exitPool(uint256)'(
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   exitPoolTakingloss(
     _amount: BigNumberish,
     _lossTokens: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitPoolTakingloss(uint256,address[])"(
+  'exitPoolTakingloss(uint256,address[])'(
     _amount: BigNumberish,
     _lossTokens: string[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   exitswapExternAmountOut(
     _token: string,
     _tokenAmountOut: BigNumberish,
     _maxPoolAmountIn: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitswapExternAmountOut(address,uint256,uint256)"(
+  'exitswapExternAmountOut(address,uint256,uint256)'(
     _token: string,
     _tokenAmountOut: BigNumberish,
     _maxPoolAmountIn: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   exitswapPoolAmountIn(
     _token: string,
     _poolAmountIn: BigNumberish,
     _minAmountOut: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "exitswapPoolAmountIn(address,uint256,uint256)"(
+  'exitswapPoolAmountIn(address,uint256,uint256)'(
     _token: string,
     _poolAmountIn: BigNumberish,
     _minAmountOut: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   finalizeSmartPool(overrides?: CallOverrides): Promise<void>;
 
-  "finalizeSmartPool()"(overrides?: CallOverrides): Promise<void>;
+  'finalizeSmartPool()'(overrides?: CallOverrides): Promise<void>;
 
   getAnnualFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getAnnualFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getAnnualFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getBPool(overrides?: CallOverrides): Promise<string>;
 
-  "getBPool()"(overrides?: CallOverrides): Promise<string>;
+  'getBPool()'(overrides?: CallOverrides): Promise<string>;
 
   getCap(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getCap()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getCap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getCircuitBreaker(overrides?: CallOverrides): Promise<string>;
 
-  "getCircuitBreaker()"(overrides?: CallOverrides): Promise<string>;
+  'getCircuitBreaker()'(overrides?: CallOverrides): Promise<string>;
 
   getController(overrides?: CallOverrides): Promise<string>;
 
-  "getController()"(overrides?: CallOverrides): Promise<string>;
+  'getController()'(overrides?: CallOverrides): Promise<string>;
 
   getDenormalizedWeight(
     _token: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
-  "getDenormalizedWeight(address)"(
+  'getDenormalizedWeight(address)'(
     _token: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   getDenormalizedWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-  "getDenormalizedWeights()"(overrides?: CallOverrides): Promise<BigNumber[]>;
+  'getDenormalizedWeights()'(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getEndBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getEndBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getEndBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getFeeRecipient(overrides?: CallOverrides): Promise<string>;
 
-  "getFeeRecipient()"(overrides?: CallOverrides): Promise<string>;
+  'getFeeRecipient()'(overrides?: CallOverrides): Promise<string>;
 
   getJoinExitEnabled(overrides?: CallOverrides): Promise<boolean>;
 
-  "getJoinExitEnabled()"(overrides?: CallOverrides): Promise<boolean>;
+  'getJoinExitEnabled()'(overrides?: CallOverrides): Promise<boolean>;
 
   getNewToken(
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<PV2SmartPoolStorage.NewTokenStructOutput>;
 
-  "getNewToken()"(
-    overrides?: CallOverrides
+  'getNewToken()'(
+    overrides?: CallOverrides,
   ): Promise<PV2SmartPoolStorage.NewTokenStructOutput>;
 
   getNewWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-  "getNewWeights()"(overrides?: CallOverrides): Promise<BigNumber[]>;
+  'getNewWeights()'(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getPublicSwapSetter(overrides?: CallOverrides): Promise<string>;
 
-  "getPublicSwapSetter()"(overrides?: CallOverrides): Promise<string>;
+  'getPublicSwapSetter()'(overrides?: CallOverrides): Promise<string>;
 
   getStartBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getStartBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getStartBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getStartWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-  "getStartWeights()"(overrides?: CallOverrides): Promise<BigNumber[]>;
+  'getStartWeights()'(overrides?: CallOverrides): Promise<BigNumber[]>;
 
   getSwapFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "getSwapFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'getSwapFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   getTokenBinder(overrides?: CallOverrides): Promise<string>;
 
-  "getTokenBinder()"(overrides?: CallOverrides): Promise<string>;
+  'getTokenBinder()'(overrides?: CallOverrides): Promise<string>;
 
   getTokens(overrides?: CallOverrides): Promise<string[]>;
 
-  "getTokens()"(overrides?: CallOverrides): Promise<string[]>;
+  'getTokens()'(overrides?: CallOverrides): Promise<string[]>;
 
   increaseApproval(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "increaseApproval(address,uint256)"(
+  'increaseApproval(address,uint256)'(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   init(
@@ -2386,581 +2386,581 @@ export interface SmartpoolAbi extends BaseContract {
     _name: string,
     _symbol: string,
     _initialSupply: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "init(address,string,string,uint256)"(
+  'init(address,string,string,uint256)'(
     _bPool: string,
     _name: string,
     _symbol: string,
     _initialSupply: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   isPublicSwap(overrides?: CallOverrides): Promise<boolean>;
 
-  "isPublicSwap()"(overrides?: CallOverrides): Promise<boolean>;
+  'isPublicSwap()'(overrides?: CallOverrides): Promise<boolean>;
 
-  "joinPool(uint256)"(
+  'joinPool(uint256)'(
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "joinPool(uint256,uint256[])"(
+  'joinPool(uint256,uint256[])'(
     _amount: BigNumberish,
     _maxAmountsIn: BigNumberish[],
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   joinswapExternAmountIn(
     _token: string,
     _amountIn: BigNumberish,
     _minPoolAmountOut: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "joinswapExternAmountIn(address,uint256,uint256)"(
+  'joinswapExternAmountIn(address,uint256,uint256)'(
     _token: string,
     _amountIn: BigNumberish,
     _minPoolAmountOut: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   joinswapPoolAmountOut(
     _token: string,
     _amountOut: BigNumberish,
     _maxAmountIn: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "joinswapPoolAmountOut(address,uint256,uint256)"(
+  'joinswapPoolAmountOut(address,uint256,uint256)'(
     _token: string,
     _amountOut: BigNumberish,
     _maxAmountIn: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
-  "name()"(overrides?: CallOverrides): Promise<string>;
+  'name()'(overrides?: CallOverrides): Promise<string>;
 
   pokeWeights(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "pokeWeights()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'pokeWeights()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   rebind(
     _token: string,
     _balance: BigNumberish,
     _denorm: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "rebind(address,uint256,uint256)"(
+  'rebind(address,uint256,uint256)'(
     _token: string,
     _balance: BigNumberish,
     _denorm: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   removeToken(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "removeToken(address)"(
+  'removeToken(address)'(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setAnnualFee(
     _newFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setAnnualFee(uint256)"(
+  'setAnnualFee(uint256)'(
     _newFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setCap(
     _cap: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setCap(uint256)"(
+  'setCap(uint256)'(
     _cap: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setCircuitBreaker(
     _newCircuitBreaker: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setCircuitBreaker(address)"(
+  'setCircuitBreaker(address)'(
     _newCircuitBreaker: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setController(
     _controller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setController(address)"(
+  'setController(address)'(
     _controller: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setFeeRecipient(
     _newRecipient: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setFeeRecipient(address)"(
+  'setFeeRecipient(address)'(
     _newRecipient: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setJoinExitEnabled(
     _newValue: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setJoinExitEnabled(bool)"(
+  'setJoinExitEnabled(bool)'(
     _newValue: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setPublicSwap(
     _public: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setPublicSwap(bool)"(
+  'setPublicSwap(bool)'(
     _public: boolean,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setPublicSwapSetter(
     _newPublicSwapSetter: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setPublicSwapSetter(address)"(
+  'setPublicSwapSetter(address)'(
     _newPublicSwapSetter: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setSwapFee(
     _swapFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setSwapFee(uint256)"(
+  'setSwapFee(uint256)'(
     _swapFee: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   setTokenBinder(
     _newTokenBinder: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "setTokenBinder(address)"(
+  'setTokenBinder(address)'(
     _newTokenBinder: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
-  "symbol()"(overrides?: CallOverrides): Promise<string>;
+  'symbol()'(overrides?: CallOverrides): Promise<string>;
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-  "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+  'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
   transfer(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transfer(address,uint256)"(
+  'transfer(address,uint256)'(
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   transferFrom(
     _src: string,
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "transferFrom(address,address,uint256)"(
+  'transferFrom(address,address,uint256)'(
     _src: string,
     _dst: string,
     _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   tripCircuitBreaker(
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "tripCircuitBreaker()"(
-    overrides?: Overrides & { from?: string | Promise<string> }
+  'tripCircuitBreaker()'(
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   unbind(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "unbind(address)"(
+  'unbind(address)'(
     _token: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   updateWeight(
     _token: string,
     _newWeight: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "updateWeight(address,uint256)"(
+  'updateWeight(address,uint256)'(
     _token: string,
     _newWeight: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   updateWeightsGradually(
     _newWeights: BigNumberish[],
     _startBlock: BigNumberish,
     _endBlock: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
-  "updateWeightsGradually(uint256[],uint256,uint256)"(
+  'updateWeightsGradually(uint256[],uint256,uint256)'(
     _newWeights: BigNumberish[],
     _startBlock: BigNumberish,
     _endBlock: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
+    overrides?: Overrides & { from?: string | Promise<string> },
   ): Promise<ContractTransaction>;
 
   callStatic: {
     allowance(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     applyAddToken(overrides?: CallOverrides): Promise<void>;
 
-    "applyAddToken()"(overrides?: CallOverrides): Promise<void>;
+    'applyAddToken()'(overrides?: CallOverrides): Promise<void>;
 
     approve(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     approveTokens(overrides?: CallOverrides): Promise<void>;
 
-    "approveTokens()"(overrides?: CallOverrides): Promise<void>;
+    'approveTokens()'(overrides?: CallOverrides): Promise<void>;
 
     balanceOf(_whom: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       _whom: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     bind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "bind(address,uint256,uint256)"(
+    'bind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     calcPoolInGivenSingleOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcPoolInGivenSingleOut(address,uint256)"(
+    'calcPoolInGivenSingleOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcPoolOutGivenSingleIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcPoolOutGivenSingleIn(address,uint256)"(
+    'calcPoolOutGivenSingleIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcSingleInGivenPoolOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcSingleInGivenPoolOut(address,uint256)"(
+    'calcSingleInGivenPoolOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcSingleOutGivenPoolIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcSingleOutGivenPoolIn(address,uint256)"(
+    'calcSingleOutGivenPoolIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [string[], BigNumber[]] & { tokens: string[]; amounts: BigNumber[] }
     >;
 
     chargeOutstandingAnnualFee(overrides?: CallOverrides): Promise<void>;
 
-    "chargeOutstandingAnnualFee()"(overrides?: CallOverrides): Promise<void>;
+    'chargeOutstandingAnnualFee()'(overrides?: CallOverrides): Promise<void>;
 
     commitAddToken(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "commitAddToken(address,uint256,uint256)"(
+    'commitAddToken(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     createPool(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "createPool(uint256)"(
+    'createPool(uint256)'(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<number>;
+    'decimals()'(overrides?: CallOverrides): Promise<number>;
 
     decreaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "exitPool(uint256,uint256[])"(
+    'exitPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _minAmountsOut: BigNumberish[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     exitPoolTakingloss(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "exitPoolTakingloss(uint256,address[])"(
+    'exitPoolTakingloss(uint256,address[])'(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     exitswapExternAmountOut(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "exitswapExternAmountOut(address,uint256,uint256)"(
+    'exitswapExternAmountOut(address,uint256,uint256)'(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     exitswapPoolAmountIn(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "exitswapPoolAmountIn(address,uint256,uint256)"(
+    'exitswapPoolAmountIn(address,uint256,uint256)'(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     finalizeSmartPool(overrides?: CallOverrides): Promise<void>;
 
-    "finalizeSmartPool()"(overrides?: CallOverrides): Promise<void>;
+    'finalizeSmartPool()'(overrides?: CallOverrides): Promise<void>;
 
     getAnnualFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getAnnualFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getAnnualFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getBPool(overrides?: CallOverrides): Promise<string>;
 
-    "getBPool()"(overrides?: CallOverrides): Promise<string>;
+    'getBPool()'(overrides?: CallOverrides): Promise<string>;
 
     getCap(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getCap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCircuitBreaker(overrides?: CallOverrides): Promise<string>;
 
-    "getCircuitBreaker()"(overrides?: CallOverrides): Promise<string>;
+    'getCircuitBreaker()'(overrides?: CallOverrides): Promise<string>;
 
     getController(overrides?: CallOverrides): Promise<string>;
 
-    "getController()"(overrides?: CallOverrides): Promise<string>;
+    'getController()'(overrides?: CallOverrides): Promise<string>;
 
     getDenormalizedWeight(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "getDenormalizedWeight(address)"(
+    'getDenormalizedWeight(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getDenormalizedWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-    "getDenormalizedWeights()"(overrides?: CallOverrides): Promise<BigNumber[]>;
+    'getDenormalizedWeights()'(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getEndBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getEndBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getEndBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getFeeRecipient(overrides?: CallOverrides): Promise<string>;
 
-    "getFeeRecipient()"(overrides?: CallOverrides): Promise<string>;
+    'getFeeRecipient()'(overrides?: CallOverrides): Promise<string>;
 
     getJoinExitEnabled(overrides?: CallOverrides): Promise<boolean>;
 
-    "getJoinExitEnabled()"(overrides?: CallOverrides): Promise<boolean>;
+    'getJoinExitEnabled()'(overrides?: CallOverrides): Promise<boolean>;
 
     getNewToken(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PV2SmartPoolStorage.NewTokenStructOutput>;
 
-    "getNewToken()"(
-      overrides?: CallOverrides
+    'getNewToken()'(
+      overrides?: CallOverrides,
     ): Promise<PV2SmartPoolStorage.NewTokenStructOutput>;
 
     getNewWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-    "getNewWeights()"(overrides?: CallOverrides): Promise<BigNumber[]>;
+    'getNewWeights()'(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getPublicSwapSetter(overrides?: CallOverrides): Promise<string>;
 
-    "getPublicSwapSetter()"(overrides?: CallOverrides): Promise<string>;
+    'getPublicSwapSetter()'(overrides?: CallOverrides): Promise<string>;
 
     getStartBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getStartBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getStartBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getStartWeights(overrides?: CallOverrides): Promise<BigNumber[]>;
 
-    "getStartWeights()"(overrides?: CallOverrides): Promise<BigNumber[]>;
+    'getStartWeights()'(overrides?: CallOverrides): Promise<BigNumber[]>;
 
     getSwapFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getSwapFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getSwapFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokenBinder(overrides?: CallOverrides): Promise<string>;
 
-    "getTokenBinder()"(overrides?: CallOverrides): Promise<string>;
+    'getTokenBinder()'(overrides?: CallOverrides): Promise<string>;
 
     getTokens(overrides?: CallOverrides): Promise<string[]>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<string[]>;
+    'getTokens()'(overrides?: CallOverrides): Promise<string[]>;
 
     increaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     init(
@@ -2968,352 +2968,352 @@ export interface SmartpoolAbi extends BaseContract {
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "init(address,string,string,uint256)"(
+    'init(address,string,string,uint256)'(
       _bPool: string,
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     isPublicSwap(overrides?: CallOverrides): Promise<boolean>;
 
-    "isPublicSwap()"(overrides?: CallOverrides): Promise<boolean>;
+    'isPublicSwap()'(overrides?: CallOverrides): Promise<boolean>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "joinPool(uint256,uint256[])"(
+    'joinPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _maxAmountsIn: BigNumberish[],
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     joinswapExternAmountIn(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "joinswapExternAmountIn(address,uint256,uint256)"(
+    'joinswapExternAmountIn(address,uint256,uint256)'(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     joinswapPoolAmountOut(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "joinswapPoolAmountOut(address,uint256,uint256)"(
+    'joinswapPoolAmountOut(address,uint256,uint256)'(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
-    "name()"(overrides?: CallOverrides): Promise<string>;
+    'name()'(overrides?: CallOverrides): Promise<string>;
 
     pokeWeights(overrides?: CallOverrides): Promise<void>;
 
-    "pokeWeights()"(overrides?: CallOverrides): Promise<void>;
+    'pokeWeights()'(overrides?: CallOverrides): Promise<void>;
 
     rebind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "rebind(address,uint256,uint256)"(
+    'rebind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     removeToken(_token: string, overrides?: CallOverrides): Promise<void>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setAnnualFee(
       _newFee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setAnnualFee(uint256)"(
+    'setAnnualFee(uint256)'(
       _newFee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setCap(_cap: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _cap: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setCircuitBreaker(
       _newCircuitBreaker: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setCircuitBreaker(address)"(
+    'setCircuitBreaker(address)'(
       _newCircuitBreaker: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setController(
       _controller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setController(address)"(
+    'setController(address)'(
       _controller: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setFeeRecipient(
       _newRecipient: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setFeeRecipient(address)"(
+    'setFeeRecipient(address)'(
       _newRecipient: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setJoinExitEnabled(
       _newValue: boolean,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setJoinExitEnabled(bool)"(
+    'setJoinExitEnabled(bool)'(
       _newValue: boolean,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setPublicSwap(_public: boolean, overrides?: CallOverrides): Promise<void>;
 
-    "setPublicSwap(bool)"(
+    'setPublicSwap(bool)'(
       _public: boolean,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setPublicSwapSetter(
       _newPublicSwapSetter: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setPublicSwapSetter(address)"(
+    'setPublicSwapSetter(address)'(
       _newPublicSwapSetter: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setSwapFee(
       _swapFee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setSwapFee(uint256)"(
+    'setSwapFee(uint256)'(
       _swapFee: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     setTokenBinder(
       _newTokenBinder: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "setTokenBinder(address)"(
+    'setTokenBinder(address)'(
       _newTokenBinder: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<string>;
+    'symbol()'(overrides?: CallOverrides): Promise<string>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     transferFrom(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     tripCircuitBreaker(overrides?: CallOverrides): Promise<void>;
 
-    "tripCircuitBreaker()"(overrides?: CallOverrides): Promise<void>;
+    'tripCircuitBreaker()'(overrides?: CallOverrides): Promise<void>;
 
     unbind(_token: string, overrides?: CallOverrides): Promise<void>;
 
-    "unbind(address)"(_token: string, overrides?: CallOverrides): Promise<void>;
+    'unbind(address)'(_token: string, overrides?: CallOverrides): Promise<void>;
 
     updateWeight(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "updateWeight(address,uint256)"(
+    'updateWeight(address,uint256)'(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
     updateWeightsGradually(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
 
-    "updateWeightsGradually(uint256[],uint256,uint256)"(
+    'updateWeightsGradually(uint256[],uint256,uint256)'(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<void>;
   };
 
   filters: {
-    "Approval(address,address,uint256)"(
+    'Approval(address,address,uint256)'(
       _src?: string | null,
       _dst?: string | null,
-      _amount?: null
+      _amount?: null,
     ): ApprovalEventFilter;
     Approval(
       _src?: string | null,
       _dst?: string | null,
-      _amount?: null
+      _amount?: null,
     ): ApprovalEventFilter;
 
-    "CapChanged(address,uint256,uint256)"(
+    'CapChanged(address,uint256,uint256)'(
       setter?: string | null,
       oldCap?: null,
-      newCap?: null
+      newCap?: null,
     ): CapChangedEventFilter;
     CapChanged(
       setter?: string | null,
       oldCap?: null,
-      newCap?: null
+      newCap?: null,
     ): CapChangedEventFilter;
 
-    "CircuitBreakerChanged(address,address)"(
+    'CircuitBreakerChanged(address,address)'(
       _oldCircuitBreaker?: string | null,
-      _newCircuitBreaker?: string | null
+      _newCircuitBreaker?: string | null,
     ): CircuitBreakerChangedEventFilter;
     CircuitBreakerChanged(
       _oldCircuitBreaker?: string | null,
-      _newCircuitBreaker?: string | null
+      _newCircuitBreaker?: string | null,
     ): CircuitBreakerChangedEventFilter;
 
-    "CircuitBreakerTripped()"(): CircuitBreakerTrippedEventFilter;
+    'CircuitBreakerTripped()'(): CircuitBreakerTrippedEventFilter;
     CircuitBreakerTripped(): CircuitBreakerTrippedEventFilter;
 
-    "ControllerChanged(address,address)"(
+    'ControllerChanged(address,address)'(
       previousController?: string | null,
-      newController?: string | null
+      newController?: string | null,
     ): ControllerChangedEventFilter;
     ControllerChanged(
       previousController?: string | null,
-      newController?: string | null
+      newController?: string | null,
     ): ControllerChangedEventFilter;
 
-    "JoinExitEnabledChanged(address,bool,bool)"(
+    'JoinExitEnabledChanged(address,bool,bool)'(
       setter?: string | null,
       oldValue?: null,
-      newValue?: null
+      newValue?: null,
     ): JoinExitEnabledChangedEventFilter;
     JoinExitEnabledChanged(
       setter?: string | null,
       oldValue?: null,
-      newValue?: null
+      newValue?: null,
     ): JoinExitEnabledChangedEventFilter;
 
-    "PublicSwapSet(address,bool)"(
+    'PublicSwapSet(address,bool)'(
       setter?: string | null,
-      value?: boolean | null
+      value?: boolean | null,
     ): PublicSwapSetEventFilter;
     PublicSwapSet(
       setter?: string | null,
-      value?: boolean | null
+      value?: boolean | null,
     ): PublicSwapSetEventFilter;
 
-    "PublicSwapSetterChanged(address,address)"(
+    'PublicSwapSetterChanged(address,address)'(
       previousSetter?: string | null,
-      newSetter?: string | null
+      newSetter?: string | null,
     ): PublicSwapSetterChangedEventFilter;
     PublicSwapSetterChanged(
       previousSetter?: string | null,
-      newSetter?: string | null
+      newSetter?: string | null,
     ): PublicSwapSetterChangedEventFilter;
 
-    "SwapFeeSet(address,uint256)"(
+    'SwapFeeSet(address,uint256)'(
       setter?: string | null,
-      newFee?: null
+      newFee?: null,
     ): SwapFeeSetEventFilter;
     SwapFeeSet(setter?: string | null, newFee?: null): SwapFeeSetEventFilter;
 
-    "TokenBinderChanged(address,address)"(
+    'TokenBinderChanged(address,address)'(
       previousTokenBinder?: string | null,
-      newTokenBinder?: string | null
+      newTokenBinder?: string | null,
     ): TokenBinderChangedEventFilter;
     TokenBinderChanged(
       previousTokenBinder?: string | null,
-      newTokenBinder?: string | null
+      newTokenBinder?: string | null,
     ): TokenBinderChangedEventFilter;
 
-    "TokensApproved()"(): TokensApprovedEventFilter;
+    'TokensApproved()'(): TokensApprovedEventFilter;
     TokensApproved(): TokensApprovedEventFilter;
 
-    "Transfer(address,address,uint256)"(
+    'Transfer(address,address,uint256)'(
       _src?: string | null,
       _dst?: string | null,
-      _amount?: null
+      _amount?: null,
     ): TransferEventFilter;
     Transfer(
       _src?: string | null,
       _dst?: string | null,
-      _amount?: null
+      _amount?: null,
     ): TransferEventFilter;
   };
 
@@ -3321,313 +3321,313 @@ export interface SmartpoolAbi extends BaseContract {
     allowance(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     applyAddToken(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "applyAddToken()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'applyAddToken()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     approve(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     approveTokens(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "approveTokens()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'approveTokens()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     balanceOf(_whom: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       _whom: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     bind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "bind(address,uint256,uint256)"(
+    'bind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     calcPoolInGivenSingleOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcPoolInGivenSingleOut(address,uint256)"(
+    'calcPoolInGivenSingleOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcPoolOutGivenSingleIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcPoolOutGivenSingleIn(address,uint256)"(
+    'calcPoolOutGivenSingleIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcSingleInGivenPoolOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcSingleInGivenPoolOut(address,uint256)"(
+    'calcSingleInGivenPoolOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcSingleOutGivenPoolIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcSingleOutGivenPoolIn(address,uint256)"(
+    'calcSingleOutGivenPoolIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     chargeOutstandingAnnualFee(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "chargeOutstandingAnnualFee()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'chargeOutstandingAnnualFee()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     commitAddToken(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "commitAddToken(address,uint256,uint256)"(
+    'commitAddToken(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     createPool(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "createPool(uint256)"(
+    'createPool(uint256)'(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'decimals()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     decreaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitPool(uint256,uint256[])"(
+    'exitPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _minAmountsOut: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     exitPoolTakingloss(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitPoolTakingloss(uint256,address[])"(
+    'exitPoolTakingloss(uint256,address[])'(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     exitswapExternAmountOut(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitswapExternAmountOut(address,uint256,uint256)"(
+    'exitswapExternAmountOut(address,uint256,uint256)'(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     exitswapPoolAmountIn(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "exitswapPoolAmountIn(address,uint256,uint256)"(
+    'exitswapPoolAmountIn(address,uint256,uint256)'(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     finalizeSmartPool(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "finalizeSmartPool()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'finalizeSmartPool()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getAnnualFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getAnnualFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getAnnualFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getBPool(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getBPool()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getBPool()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCap(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getCap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getCircuitBreaker(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getCircuitBreaker()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getCircuitBreaker()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getController(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getController()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getController()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getDenormalizedWeight(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
-    "getDenormalizedWeight(address)"(
+    'getDenormalizedWeight(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
 
     getDenormalizedWeights(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getDenormalizedWeights()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getDenormalizedWeights()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getEndBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getEndBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getEndBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getFeeRecipient(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getFeeRecipient()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getFeeRecipient()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getJoinExitEnabled(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getJoinExitEnabled()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getJoinExitEnabled()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getNewToken(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getNewToken()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getNewToken()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getNewWeights(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getNewWeights()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getNewWeights()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getPublicSwapSetter(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getPublicSwapSetter()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getPublicSwapSetter()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getStartBlock(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getStartBlock()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getStartBlock()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getStartWeights(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getStartWeights()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getStartWeights()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getSwapFee(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getSwapFee()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getSwapFee()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokenBinder(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getTokenBinder()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getTokenBinder()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     getTokens(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'getTokens()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     init(
@@ -3635,272 +3635,272 @@ export interface SmartpoolAbi extends BaseContract {
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "init(address,string,string,uint256)"(
+    'init(address,string,string,uint256)'(
       _bPool: string,
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     isPublicSwap(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "isPublicSwap()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'isPublicSwap()'(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "joinPool(uint256,uint256[])"(
+    'joinPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _maxAmountsIn: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     joinswapExternAmountIn(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "joinswapExternAmountIn(address,uint256,uint256)"(
+    'joinswapExternAmountIn(address,uint256,uint256)'(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     joinswapPoolAmountOut(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "joinswapPoolAmountOut(address,uint256,uint256)"(
+    'joinswapPoolAmountOut(address,uint256,uint256)'(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "name()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'name()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     pokeWeights(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "pokeWeights()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'pokeWeights()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     rebind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "rebind(address,uint256,uint256)"(
+    'rebind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     removeToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setAnnualFee(
       _newFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setAnnualFee(uint256)"(
+    'setAnnualFee(uint256)'(
       _newFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setCap(
       _cap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _cap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setCircuitBreaker(
       _newCircuitBreaker: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setCircuitBreaker(address)"(
+    'setCircuitBreaker(address)'(
       _newCircuitBreaker: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setController(
       _controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setController(address)"(
+    'setController(address)'(
       _controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setFeeRecipient(
       _newRecipient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setFeeRecipient(address)"(
+    'setFeeRecipient(address)'(
       _newRecipient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setJoinExitEnabled(
       _newValue: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setJoinExitEnabled(bool)"(
+    'setJoinExitEnabled(bool)'(
       _newValue: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setPublicSwap(
       _public: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setPublicSwap(bool)"(
+    'setPublicSwap(bool)'(
       _public: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setPublicSwapSetter(
       _newPublicSwapSetter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setPublicSwapSetter(address)"(
+    'setPublicSwapSetter(address)'(
       _newPublicSwapSetter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setSwapFee(
       _swapFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setSwapFee(uint256)"(
+    'setSwapFee(uint256)'(
       _swapFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     setTokenBinder(
       _newTokenBinder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "setTokenBinder(address)"(
+    'setTokenBinder(address)'(
       _newTokenBinder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'symbol()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<BigNumber>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<BigNumber>;
 
     transfer(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     transferFrom(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     tripCircuitBreaker(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "tripCircuitBreaker()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'tripCircuitBreaker()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     unbind(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "unbind(address)"(
+    'unbind(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     updateWeight(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "updateWeight(address,uint256)"(
+    'updateWeight(address,uint256)'(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
     updateWeightsGradually(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
 
-    "updateWeightsGradually(uint256[],uint256,uint256)"(
+    'updateWeightsGradually(uint256[],uint256,uint256)'(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<BigNumber>;
   };
 
@@ -3908,338 +3908,338 @@ export interface SmartpoolAbi extends BaseContract {
     allowance(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "allowance(address,address)"(
+    'allowance(address,address)'(
       _src: string,
       _dst: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     applyAddToken(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "applyAddToken()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'applyAddToken()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     approve(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "approve(address,uint256)"(
+    'approve(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     approveTokens(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "approveTokens()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'approveTokens()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     balanceOf(
       _whom: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "balanceOf(address)"(
+    'balanceOf(address)'(
       _whom: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     bind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "bind(address,uint256,uint256)"(
+    'bind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     calcPoolInGivenSingleOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcPoolInGivenSingleOut(address,uint256)"(
+    'calcPoolInGivenSingleOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calcPoolOutGivenSingleIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcPoolOutGivenSingleIn(address,uint256)"(
+    'calcPoolOutGivenSingleIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calcSingleInGivenPoolOut(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcSingleInGivenPoolOut(address,uint256)"(
+    'calcSingleInGivenPoolOut(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calcSingleOutGivenPoolIn(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcSingleOutGivenPoolIn(address,uint256)"(
+    'calcSingleOutGivenPoolIn(address,uint256)'(
       _token: string,
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     calcTokensForAmount(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "calcTokensForAmount(uint256)"(
+    'calcTokensForAmount(uint256)'(
       _amount: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     chargeOutstandingAnnualFee(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "chargeOutstandingAnnualFee()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'chargeOutstandingAnnualFee()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     commitAddToken(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "commitAddToken(address,uint256,uint256)"(
+    'commitAddToken(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denormalizedWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     createPool(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "createPool(uint256)"(
+    'createPool(uint256)'(
       initialSupply: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "decimals()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'decimals()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     decreaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "decreaseApproval(address,uint256)"(
+    'decreaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitPool(uint256,uint256[])"(
+    'exitPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _minAmountsOut: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitPool(uint256)"(
+    'exitPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     exitPoolTakingloss(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitPoolTakingloss(uint256,address[])"(
+    'exitPoolTakingloss(uint256,address[])'(
       _amount: BigNumberish,
       _lossTokens: string[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     exitswapExternAmountOut(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitswapExternAmountOut(address,uint256,uint256)"(
+    'exitswapExternAmountOut(address,uint256,uint256)'(
       _token: string,
       _tokenAmountOut: BigNumberish,
       _maxPoolAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     exitswapPoolAmountIn(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "exitswapPoolAmountIn(address,uint256,uint256)"(
+    'exitswapPoolAmountIn(address,uint256,uint256)'(
       _token: string,
       _poolAmountIn: BigNumberish,
       _minAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     finalizeSmartPool(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "finalizeSmartPool()"(
-      overrides?: CallOverrides
+    'finalizeSmartPool()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getAnnualFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getAnnualFee()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getAnnualFee()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getBPool(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getBPool()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getBPool()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getCap(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getCap()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getCap()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getCircuitBreaker(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getCircuitBreaker()"(
-      overrides?: CallOverrides
+    'getCircuitBreaker()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getController(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getController()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getController()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getDenormalizedWeight(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getDenormalizedWeight(address)"(
+    'getDenormalizedWeight(address)'(
       _token: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getDenormalizedWeights(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getDenormalizedWeights()"(
-      overrides?: CallOverrides
+    'getDenormalizedWeights()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getEndBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getEndBlock()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getEndBlock()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getFeeRecipient(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getFeeRecipient()"(
-      overrides?: CallOverrides
+    'getFeeRecipient()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getJoinExitEnabled(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getJoinExitEnabled()"(
-      overrides?: CallOverrides
+    'getJoinExitEnabled()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getNewToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getNewToken()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getNewToken()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getNewWeights(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getNewWeights()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getNewWeights()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getPublicSwapSetter(
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
-    "getPublicSwapSetter()"(
-      overrides?: CallOverrides
+    'getPublicSwapSetter()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getStartBlock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getStartBlock()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getStartBlock()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getStartWeights(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getStartWeights()"(
-      overrides?: CallOverrides
+    'getStartWeights()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getSwapFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getSwapFee()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getSwapFee()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getTokenBinder(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getTokenBinder()"(
-      overrides?: CallOverrides
+    'getTokenBinder()'(
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     getTokens(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "getTokens()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'getTokens()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseApproval(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "increaseApproval(address,uint256)"(
+    'increaseApproval(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     init(
@@ -4247,272 +4247,272 @@ export interface SmartpoolAbi extends BaseContract {
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "init(address,string,string,uint256)"(
+    'init(address,string,string,uint256)'(
       _bPool: string,
       _name: string,
       _symbol: string,
       _initialSupply: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     isPublicSwap(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "isPublicSwap()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'isPublicSwap()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "joinPool(uint256)"(
+    'joinPool(uint256)'(
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "joinPool(uint256,uint256[])"(
+    'joinPool(uint256,uint256[])'(
       _amount: BigNumberish,
       _maxAmountsIn: BigNumberish[],
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     joinswapExternAmountIn(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "joinswapExternAmountIn(address,uint256,uint256)"(
+    'joinswapExternAmountIn(address,uint256,uint256)'(
       _token: string,
       _amountIn: BigNumberish,
       _minPoolAmountOut: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     joinswapPoolAmountOut(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "joinswapPoolAmountOut(address,uint256,uint256)"(
+    'joinswapPoolAmountOut(address,uint256,uint256)'(
       _token: string,
       _amountOut: BigNumberish,
       _maxAmountIn: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'name()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     pokeWeights(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "pokeWeights()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'pokeWeights()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     rebind(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "rebind(address,uint256,uint256)"(
+    'rebind(address,uint256,uint256)'(
       _token: string,
       _balance: BigNumberish,
       _denorm: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     removeToken(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "removeToken(address)"(
+    'removeToken(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setAnnualFee(
       _newFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setAnnualFee(uint256)"(
+    'setAnnualFee(uint256)'(
       _newFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setCap(
       _cap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setCap(uint256)"(
+    'setCap(uint256)'(
       _cap: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setCircuitBreaker(
       _newCircuitBreaker: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setCircuitBreaker(address)"(
+    'setCircuitBreaker(address)'(
       _newCircuitBreaker: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setController(
       _controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setController(address)"(
+    'setController(address)'(
       _controller: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setFeeRecipient(
       _newRecipient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setFeeRecipient(address)"(
+    'setFeeRecipient(address)'(
       _newRecipient: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setJoinExitEnabled(
       _newValue: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setJoinExitEnabled(bool)"(
+    'setJoinExitEnabled(bool)'(
       _newValue: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setPublicSwap(
       _public: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setPublicSwap(bool)"(
+    'setPublicSwap(bool)'(
       _public: boolean,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setPublicSwapSetter(
       _newPublicSwapSetter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setPublicSwapSetter(address)"(
+    'setPublicSwapSetter(address)'(
       _newPublicSwapSetter: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setSwapFee(
       _swapFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setSwapFee(uint256)"(
+    'setSwapFee(uint256)'(
       _swapFee: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     setTokenBinder(
       _newTokenBinder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "setTokenBinder(address)"(
+    'setTokenBinder(address)'(
       _newTokenBinder: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "symbol()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'symbol()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    "totalSupply()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    'totalSupply()'(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transfer(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transfer(address,uint256)"(
+    'transfer(address,uint256)'(
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     transferFrom(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "transferFrom(address,address,uint256)"(
+    'transferFrom(address,address,uint256)'(
       _src: string,
       _dst: string,
       _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     tripCircuitBreaker(
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "tripCircuitBreaker()"(
-      overrides?: Overrides & { from?: string | Promise<string> }
+    'tripCircuitBreaker()'(
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     unbind(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "unbind(address)"(
+    'unbind(address)'(
       _token: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     updateWeight(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "updateWeight(address,uint256)"(
+    'updateWeight(address,uint256)'(
       _token: string,
       _newWeight: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
     updateWeightsGradually(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
 
-    "updateWeightsGradually(uint256[],uint256,uint256)"(
+    'updateWeightsGradually(uint256[],uint256,uint256)'(
       _newWeights: BigNumberish[],
       _startBlock: BigNumberish,
       _endBlock: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
+      overrides?: Overrides & { from?: string | Promise<string> },
     ): Promise<PopulatedTransaction>;
   };
 }

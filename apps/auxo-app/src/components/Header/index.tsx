@@ -1,17 +1,17 @@
-import { useWeb3React } from "@web3-react/core";
-import WalletModal from "./WalletModal";
-import { useEffect, useState } from "react";
-import { useWeb3Cache } from "../../hooks/useCachedWeb3";
-import { useEagerConnect, useInactiveListener } from "../../hooks/useWeb3";
-import { network } from "../../connectors";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { AccountConnector, AlertButton } from "./MenuButtons";
-import { Divider } from "../UI/divider";
-import { RiCloseCircleFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
-import NetworkSwitcher from "../UI/networkDropdown";
+import { useWeb3React } from '@web3-react/core';
+import WalletModal from './WalletModal';
+import { useEffect, useState } from 'react';
+import { useWeb3Cache } from '../../hooks/useCachedWeb3';
+import { useEagerConnect, useInactiveListener } from '../../hooks/useWeb3';
+import { network } from '../../connectors';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { AccountConnector, AlertButton } from './MenuButtons';
+import { Divider } from '../UI/divider';
+import { RiCloseCircleFill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
+import NetworkSwitcher from '../UI/networkDropdown';
 
-const auxoLogo = process.env.PUBLIC_URL + "/auxo-logo.png";
+const auxoLogo = process.env.PUBLIC_URL + '/auxo-logo.png';
 
 const useFallBack = () => {
   const { active, activate } = useWeb3React();
@@ -140,7 +140,7 @@ const Header = () => {
       >
         <div
           className="w-24 sm:w-32 md:w-36 my-5 lg:my-0 ml-1 sm:ml-0 cursor-pointer"
-          onClick={() => navigate("/")}
+          onClick={() => navigate('/')}
         >
           <img src={auxoLogo} alt="auxo-logo" className="object-contain" />
         </div>

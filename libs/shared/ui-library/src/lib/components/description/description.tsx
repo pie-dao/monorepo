@@ -9,13 +9,13 @@ import React, {
   ElementType,
   ReactNode,
   Ref,
-} from "react";
+} from 'react';
 
-import { Props } from "../../types/types";
-import { useId } from "../../hooks/use-id";
-import { forwardRefWithAs, render } from "../../utils/render";
-import { useIsoMorphicEffect } from "../../hooks/use-iso-morphic-effect";
-import { useSyncRefs } from "../../hooks/use-sync-refs";
+import { Props } from '../../types/types';
+import { useId } from '../../hooks/use-id';
+import { forwardRefWithAs, render } from '../../utils/render';
+import { useIsoMorphicEffect } from '../../hooks/use-iso-morphic-effect';
+import { useSyncRefs } from '../../hooks/use-sync-refs';
 
 // ---
 
@@ -25,16 +25,15 @@ interface SharedData {
   props?: {};
 }
 
-let DescriptionContext =
-  createContext<({ register(value: string): () => void } & SharedData) | null>(
-    null
-  );
+let DescriptionContext = createContext<
+  ({ register(value: string): () => void } & SharedData) | null
+>(null);
 
 function useDescriptionContext() {
   let context = useContext(DescriptionContext);
   if (context === null) {
     let err = new Error(
-      "You used a <Description /> component, but it is not inside a relevant parent."
+      'You used a <Description /> component, but it is not inside a relevant parent.',
     );
     if (Error.captureStackTrace)
       Error.captureStackTrace(err, useDescriptionContext);
@@ -49,13 +48,13 @@ interface DescriptionProviderProps extends SharedData {
 
 export function useDescriptions(): [
   string | undefined,
-  (props: DescriptionProviderProps) => JSX.Element
+  (props: DescriptionProviderProps) => JSX.Element,
 ] {
   let [descriptionIds, setDescriptionIds] = useState<string[]>([]);
 
   return [
     // The actual id's as string or undefined
-    descriptionIds.length > 0 ? descriptionIds.join(" ") : undefined,
+    descriptionIds.length > 0 ? descriptionIds.join(' ') : undefined,
 
     // The provider component
     useMemo(() => {
@@ -79,7 +78,7 @@ export function useDescriptions(): [
             name: props.name,
             props: props.props,
           }),
-          [register, props.slot, props.name, props.props]
+          [register, props.slot, props.name, props.props],
         );
 
         return (
@@ -94,11 +93,11 @@ export function useDescriptions(): [
 
 // ---
 
-let DEFAULT_DESCRIPTION_TAG = "p" as const;
+let DEFAULT_DESCRIPTION_TAG = 'p' as const;
 
 export let Description = forwardRefWithAs(function Description<
-  TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG
->(props: Props<TTag, {}, "id">, ref: Ref<HTMLParagraphElement>) {
+  TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG,
+>(props: Props<TTag, {}, 'id'>, ref: Ref<HTMLParagraphElement>) {
   let context = useDescriptionContext();
   let id = `piedao-description-${useId()}`;
   let descriptionRef = useSyncRefs(ref);
@@ -112,6 +111,6 @@ export let Description = forwardRefWithAs(function Description<
     props: { ...passThroughProps, ...propsWeControl },
     slot: context.slot || {},
     defaultTag: DEFAULT_DESCRIPTION_TAG,
-    name: context.name || "Description",
+    name: context.name || 'Description',
   });
 });

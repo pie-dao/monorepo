@@ -143,71 +143,64 @@ $ npm run test
 
 > 📘 The coverage will be recorded in `coverage/apps/backend` if you add the `--collect-coverage` flag
 
-
 ## API Playground
 
 Once running it locally, you can go to
 http://localhost:3000/playground/
 and test it out.
 
-
 ## PieDAO Investify Token Aggregator (PITA)
 
-The *backend* serves as the backend for the Investify application. These features are implemented as Nest modules and the architecture looks like this:
+The _backend_ serves as the backend for the Investify application. These features are implemented as Nest modules and the architecture looks like this:
 
 ![PITA Architecture](pie_backend_architecture.png)
 
 The goal of this project is to
 
 - load the blockchain data from the PieDAO vaults to store the latest state
-- load token data from the blockchain (using *The Graph*)
+- load token data from the blockchain (using _The Graph_)
 - load price data from CoinGecko
 
 The app uses all this data to present an aggregated state of the world and also to allow for creating simulations based on this data.
 
 ### Architecture
 
-
 #### SDK
 
-The project contains an SDK that can be used to load information from the blockchain in an effective manner (using *multicall* and also allowing for multichain calls).
+The project contains an SDK that can be used to load information from the blockchain in an effective manner (using _multicall_ and also allowing for multichain calls).
 
 The SDK allows for the usage of `Contract` classes that are generated from ABIs.
-
 
 #### Data Loading
 
 *Data loader*s come in multiple kinds
 
-- An *SDK loader* uses the *`SDK`* to load the state of the blockchain
-- A *Graph loader* uses *GraphQL* to load token data
-- A *HTTP* loader can load data from external *HTTP* endpoints
+- An _SDK loader_ uses the _`SDK`_ to load the state of the blockchain
+- A _Graph loader_ uses _GraphQL_ to load token data
+- A _HTTP_ loader can load data from external _HTTP_ endpoints
 
 *Data loader*s are run periodically using a `Scheduler`. The information is persisted into the database (MongoDB at the time of writing).
 
-
 #### Domain model
 
-This multi-faceted data structure is represented by a domain model *(blue boxes with in a dotted box on the diagram)*
+This multi-faceted data structure is represented by a domain model _(blue boxes with in a dotted box on the diagram)_
 
 The data in the domain model can be queried through a GraphQL API.
 
-Apart from the blockchain state, the *(read)* operations are also available as part of the *Fund Operations* code.
+Apart from the blockchain state, the _(read)_ operations are also available as part of the _Fund Operations_ code.
 
-The `User` of the application is represented by the `User` type. Each *user* can own multiple `Fund`s and `Token`s, and we also store user events *(things they did on the UI)* in the database.
-
+The `User` of the application is represented by the `User` type. Each _user_ can own multiple `Fund`s and `Token`s, and we also store user events _(things they did on the UI)_ in the database.
 
 #### Event Bus
 
-The `backend` contains an *Event bus* that can be used as indirect communication with other parts of the application *(publish / subscribe pattern)* This can be used to trigger events from loaders and to receive user events as well.
-
+The `backend` contains an _Event bus_ that can be used as indirect communication with other parts of the application _(publish / subscribe pattern)_ This can be used to trigger events from loaders and to receive user events as well.
 
 #### Simulator
 
 The `Simulator` can be used to create new `Fund` objects to test out theories. Simulation works as follows:
 
-- A new `Fund` is created with abitrary data *(underlying tokens, ratios, etc)*
-- Triggers are added to the `Simulation` that will evaluate the token time series data. This can be used to change the state of the `Fund` *(for example if the weight of a token goes above 50% trigger a rebalancing)*
+- A new `Fund` is created with abitrary data _(underlying tokens, ratios, etc)_
+- Triggers are added to the `Simulation` that will evaluate the token time series data. This can be used to change the state of the `Fund` _(for example if the weight of a token goes above 50% trigger a rebalancing)_
 - Then the `Simulator` uses a repository to supply the token data to the `Simulation` which will keep chaning the state of the underlying `Fund` as the simulation goes. All these changes are recoderd as a list of snapshots with the corresponding trigger event:
 
 ![The Simulator](the_simulator.png)

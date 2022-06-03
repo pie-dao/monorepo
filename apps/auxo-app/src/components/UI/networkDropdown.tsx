@@ -1,16 +1,16 @@
-import { Menu, Transition } from "@headlessui/react";
-import { useWeb3React } from "@web3-react/core";
-import { useMemo } from "react";
-import { Fragment, ReactNode } from "react";
-import { FaCheck, FaChevronDown } from "react-icons/fa";
-import { logoSwitcher } from "../../utils/logos";
-import { changeNetwork, NetworkDetail } from "../../utils/networks";
+import { Menu, Transition } from '@headlessui/react';
+import { useWeb3React } from '@web3-react/core';
+import { useMemo } from 'react';
+import { Fragment, ReactNode } from 'react';
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
+import { logoSwitcher } from '../../utils/logos';
+import { changeNetwork, NetworkDetail } from '../../utils/networks';
 
 import {
   chainMap,
   isChainSupported,
   SUPPORTED_CHAIN_ID,
-} from "../../utils/networks";
+} from '../../utils/networks';
 
 export const ChainAndLogo = ({ chain }: { chain: NetworkDetail | null }) => {
   return (
@@ -18,7 +18,7 @@ export const ChainAndLogo = ({ chain }: { chain: NetworkDetail | null }) => {
       <div className="w-6 h-6 mr-2">
         {logoSwitcher(chain?.nativeCurrency?.symbol)}
       </div>
-      <p className="pt-1">{chain ? chain.chainName : "Unsupported Chain"}</p>
+      <p className="pt-1">{chain ? chain.chainName : 'Unsupported Chain'}</p>
     </div>
   );
 };
@@ -51,7 +51,7 @@ export const ChainMenuItem = ({
       <button
         onClick={() => changeNetwork({ chainId: Number(id) })}
         className={`${
-          active ? "bg-baby-blue-light text-baby-blue-dark" : "text-gray-900"
+          active ? 'bg-baby-blue-light text-baby-blue-dark' : 'text-gray-900'
         } group flex justify-between rounded-md items-center w-full px-2 py-2 text-sm`}
       >
         <ChainAndLogo chain={chain} />

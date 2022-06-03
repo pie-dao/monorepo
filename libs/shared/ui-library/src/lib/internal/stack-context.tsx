@@ -6,17 +6,17 @@ import React, {
   // Types
   MutableRefObject,
   ReactNode,
-} from 'react'
-import { useIsoMorphicEffect } from '../hooks/use-iso-morphic-effect'
+} from 'react';
+import { useIsoMorphicEffect } from '../hooks/use-iso-morphic-effect';
 
 type OnUpdate = (
   message: StackMessage,
   type: string,
-  element: MutableRefObject<HTMLElement | null>
-) => void
+  element: MutableRefObject<HTMLElement | null>,
+) => void;
 
-let StackContext = createContext<OnUpdate>(() => {})
-StackContext.displayName = 'StackContext'
+let StackContext = createContext<OnUpdate>(() => {});
+StackContext.displayName = 'StackContext';
 
 export enum StackMessage {
   Add,
@@ -24,7 +24,7 @@ export enum StackMessage {
 }
 
 export function useStackContext() {
-  return useContext(StackContext)
+  return useContext(StackContext);
 }
 
 export function StackProvider({
@@ -33,28 +33,30 @@ export function StackProvider({
   type,
   element,
 }: {
-  children: ReactNode
-  onUpdate?: OnUpdate
-  type: string
-  element: MutableRefObject<HTMLElement | null>
+  children: ReactNode;
+  onUpdate?: OnUpdate;
+  type: string;
+  element: MutableRefObject<HTMLElement | null>;
 }) {
-  let parentUpdate = useStackContext()
+  let parentUpdate = useStackContext();
 
   let notify = useCallback(
     (...args: Parameters<OnUpdate>) => {
       // Notify our layer
-      onUpdate?.(...args)
+      onUpdate?.(...args);
 
       // Notify the parent
-      parentUpdate(...args)
+      parentUpdate(...args);
     },
-    [parentUpdate, onUpdate]
-  )
+    [parentUpdate, onUpdate],
+  );
 
   useIsoMorphicEffect(() => {
-    notify(StackMessage.Add, type, element)
-    return () => notify(StackMessage.Remove, type, element)
-  }, [notify, type, element])
+    notify(StackMessage.Add, type, element);
+    return () => notify(StackMessage.Remove, type, element);
+  }, [notify, type, element]);
 
-  return <StackContext.Provider value={notify}>{children}</StackContext.Provider>
+  return (
+    <StackContext.Provider value={notify}>{children}</StackContext.Provider>
+  );
 }

@@ -2,12 +2,10 @@
 
 Monorepo implementing the PieDAO application layer.
 
-
 ## Contributing
 
 Feel free to dive in! [Open](https://github.com/pie-dao/monorepo/issues/new) an issue.
 For any concerns or feedback, join us on [Discord](https://discord.piedao.org).
-
 
 ## Prerequisites
 
@@ -17,7 +15,6 @@ You will need the following software on your machine:
 - [Node.Js](https://nodejs.org/en/download/)
 
 In addition, familiarity with [TypeScript](https://typescriptlang.org/) and [React](https://reactjs.org/) is a prerequisite.
-
 
 ## Set Up
 
@@ -37,7 +34,6 @@ script/setup
 
 Now you can start making changes.
 
-
 ## Packages
 
 This project contains multiple individual packages that can be deployed separately:
@@ -46,6 +42,3 @@ This project contains multiple individual packages that can be deployed separate
 - [Landing Page](/apps/landing-page/) the landing page
 
 You can follow the links above to refer to the documentation of those projects.
-
-
-

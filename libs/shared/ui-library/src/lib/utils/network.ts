@@ -3,11 +3,11 @@ import {
   ChainMap,
   SUPPORTED_CHAINS,
   SUPPORTED_CHAIN_NAMES,
-} from "../types/types";
+} from '../types/types';
 
 function filter<T extends object>(
   obj: T,
-  predicate: <K extends keyof T>(value: T[K], key: K) => boolean
+  predicate: <K extends keyof T>(value: T[K], key: K) => boolean,
 ) {
   const result: { [K in keyof T]?: T[K] } = {};
   (Object.keys(obj) as Array<keyof T>).forEach((name) => {
@@ -21,41 +21,41 @@ function filter<T extends object>(
 export const chainMap: ChainMap = {
   [SUPPORTED_CHAINS.MAINNET]: {
     chainId: `0x${Number(SUPPORTED_CHAINS.MAINNET).toString(16)}`,
-    chainName: "Ethereum Mainnet",
+    chainName: 'Ethereum Mainnet',
     nativeCurrency: {
-      name: "Ether",
-      symbol: "ETH",
+      name: 'Ether',
+      symbol: 'ETH',
       decimals: 18,
     },
-    rpcUrls: ["https://cloudflare-eth.com"],
-    blockExplorerUrls: ["https://etherscan.io"],
+    rpcUrls: ['https://cloudflare-eth.com'],
+    blockExplorerUrls: ['https://etherscan.io'],
   },
   [SUPPORTED_CHAINS.FANTOM]: {
     chainId: `0x${Number(SUPPORTED_CHAINS.FANTOM).toString(16)}`,
-    chainName: "Fantom Opera",
+    chainName: 'Fantom Opera',
     nativeCurrency: {
-      name: "FTM",
-      symbol: "FTM",
+      name: 'FTM',
+      symbol: 'FTM',
       decimals: 18,
     },
-    rpcUrls: ["https://rpc.ftm.tools/"],
-    blockExplorerUrls: ["https://ftmscan.com"],
+    rpcUrls: ['https://rpc.ftm.tools/'],
+    blockExplorerUrls: ['https://ftmscan.com'],
   },
   [SUPPORTED_CHAINS.POLYGON]: {
     chainId: `0x${Number(SUPPORTED_CHAINS.POLYGON).toString(16)}`,
-    chainName: "Polygon Mainnet",
+    chainName: 'Polygon Mainnet',
     nativeCurrency: {
-      name: "Matic",
-      symbol: "MATIC",
+      name: 'Matic',
+      symbol: 'MATIC',
       decimals: 18,
     },
-    rpcUrls: ["https://polygon-rpc.com/"],
-    blockExplorerUrls: ["https://polygonscan.com"],
+    rpcUrls: ['https://polygon-rpc.com/'],
+    blockExplorerUrls: ['https://polygonscan.com'],
   },
 };
 
 export const supportedChains = Object.values(chainMap).map(
-  ({ chainName }) => chainName
+  ({ chainName }) => chainName,
 );
 export const supportedChainIds = Object.keys(chainMap).map((s) => Number(s));
 
@@ -64,7 +64,7 @@ export const isChainSupported = (chainId: number | undefined): boolean =>
 
 export const filteredChainMap = (allowedChains: SUPPORTED_CHAIN_NAMES[]) => {
   const supportedChainsById = allowedChains.map((s) =>
-    String(SUPPORTED_CHAINS[s])
+    String(SUPPORTED_CHAINS[s]),
   );
   return filter(chainMap, (_value, key) => {
     return supportedChainsById.includes(String(key));
@@ -83,14 +83,14 @@ export const addNetwork = async ({
 }) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!window.ethereum) throw new Error("No crypto wallet found");
+      if (!window.ethereum) throw new Error('No crypto wallet found');
       await window.ethereum.request({
-        method: "wallet_addEthereumChain",
+        method: 'wallet_addEthereumChain',
         params: [chainMap[chainId as SUPPORTED_CHAIN_ID]],
       });
       resolve(null);
     } catch (err) {
-      console.warn("Could not add the network", err);
+      console.warn('Could not add the network', err);
       reject(err);
     }
   });
@@ -102,14 +102,14 @@ export const switchNetwork = async ({
   chainId: number | null | undefined;
 }) => {
   return new Promise(async (resolve, reject) => {
-    if (!window.ethereum) throw new Error("No crypto wallet found");
-    if (!chainId) throw new Error("No Chain Id defined");
-    if (!isChainSupported) throw new Error("Unsupported chain");
+    if (!window.ethereum) throw new Error('No crypto wallet found');
+    if (!chainId) throw new Error('No Chain Id defined');
+    if (!isChainSupported) throw new Error('Unsupported chain');
     // block time is not allowed
     const { ...params } = chainMap[chainId as SUPPORTED_CHAIN_ID];
     try {
       await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
+        method: 'wallet_switchEthereumChain',
         params: [{ chainId: params.chainId }],
       });
       resolve(null);
@@ -130,11 +130,11 @@ export const changeNetwork = async ({
       await switchNetwork({ chainId });
       resolve(null);
     } catch (err: any) {
-      console.warn("Could not switch networks");
+      console.warn('Could not switch networks');
       if (err?.code === 4902) {
-        console.warn("Network missing, attempting to add network...");
+        console.warn('Network missing, attempting to add network...');
       } else {
-        console.warn("Unexpected error switching networks", err);
+        console.warn('Unexpected error switching networks', err);
       }
       reject(err);
     }

@@ -3,18 +3,18 @@ import {
   // Types
   MutableRefObject,
   useEffect,
-} from "react";
+} from 'react';
 
-import { Keys } from "../utils/keyboard";
+import { Keys } from '../utils/keyboard';
 import {
   focusElement,
   focusIn,
   Focus,
   FocusResult,
-} from "../utils/focus-management";
-import { useEventListener } from "./use-event-listener";
-import { useIsMounted } from "./use-is-mounted";
-import { useOwnerDocument } from "./use-owner";
+} from '../utils/focus-management';
+import { useEventListener } from './use-event-listener';
+import { useIsMounted } from './use-is-mounted';
+import { useOwnerDocument } from './use-owner';
 
 export enum Features {
   /** No features enabled for the `useFocusTrap` hook. */
@@ -45,7 +45,7 @@ export function useFocusTrap(
   }: {
     initialFocus?: MutableRefObject<HTMLElement | null>;
     containers?: MutableRefObject<Set<MutableRefObject<HTMLElement | null>>>;
-  } = {}
+  } = {},
 ) {
   let restoreElement = useRef<HTMLElement | null>(null);
   let previousActiveElement = useRef<HTMLElement | null>(null);
@@ -99,7 +99,7 @@ export function useFocusTrap(
     } else {
       if (focusIn(containerElement, Focus.First) === FocusResult.Error) {
         console.warn(
-          "There are no focusable elements inside the <FocusTrap />"
+          'There are no focusable elements inside the <FocusTrap />',
         );
       }
     }
@@ -108,7 +108,7 @@ export function useFocusTrap(
   }, [container, initialFocus, featuresInitialFocus, ownerDocument]);
 
   // Handle `Tab` & `Shift+Tab` keyboard events
-  useEventListener(ownerDocument?.defaultView, "keydown", (event) => {
+  useEventListener(ownerDocument?.defaultView, 'keydown', (event) => {
     if (!(features & Features.TabLock)) return;
 
     if (!container.current) return;
@@ -119,7 +119,7 @@ export function useFocusTrap(
     if (
       focusIn(
         container.current,
-        (event.shiftKey ? Focus.Previous : Focus.Next) | Focus.WrapAround
+        (event.shiftKey ? Focus.Previous : Focus.Next) | Focus.WrapAround,
       ) === FocusResult.Success
     ) {
       previousActiveElement.current =
@@ -130,7 +130,7 @@ export function useFocusTrap(
   // Prevent programmatically escaping the container
   useEventListener(
     ownerDocument?.defaultView,
-    "focus",
+    'focus',
     (event) => {
       if (!(features & Features.FocusLock)) return;
 
@@ -158,13 +158,13 @@ export function useFocusTrap(
         focusElement(previousActiveElement.current);
       }
     },
-    true
+    true,
   );
 }
 
 function contains(
   containers: Set<MutableRefObject<HTMLElement | null>>,
-  element: HTMLElement
+  element: HTMLElement,
 ) {
   for (let container of containers) {
     if (container.current?.contains(element)) return true;

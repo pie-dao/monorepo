@@ -1,6 +1,6 @@
-import { BigNumber } from "@ethersproject/bignumber";
-import { ethers } from "ethers";
-import { Balance } from "../store/vault/Vault";
+import { BigNumber } from '@ethersproject/bignumber';
+import { ethers } from 'ethers';
+import { Balance } from '../store/vault/Vault';
 
 // Only needed for TS < 4.5
 export type Awaited<T> = T extends PromiseLike<infer U> ? U : T;
@@ -14,7 +14,7 @@ export const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber =>
 export const convertFromUnderlying = (
   original: Balance,
   exchangeRate: Balance,
-  decimals: number
+  decimals: number,
 ): Balance => {
   const valueBN = BigNumber.from(original.value)
     .mul(BigNumber.from(10).pow(decimals))
@@ -33,7 +33,7 @@ export const convertFromUnderlying = (
 export const convertToUnderlying = (
   original: Balance,
   exchangeRate: Balance,
-  decimals: number
+  decimals: number,
 ): Balance => {
   const valueBN = BigNumber.from(original.value)
     .mul(exchangeRate?.value ?? 0)
@@ -51,7 +51,7 @@ export const convertToUnderlying = (
 
 // format 1000000000 -> '1,000,000,000'
 export const prettyNumber = (n?: number): string =>
-  n ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0";
+  n ? n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '0';
 
 export const toScale = (amount: number, decimals: number) =>
   BigNumber.from(amount).mul(BigNumber.from(10).pow(decimals));
@@ -59,10 +59,10 @@ export const toScale = (amount: number, decimals: number) =>
 export const fromScale = (
   n: number | BigNumber | undefined,
   decimals: number,
-  precision = 0
+  precision = 0,
 ): number => {
   if (!n) return 0;
-  if (typeof n === "number") return n;
+  if (typeof n === 'number') return n;
 
   const stringLabel = ethers.utils.formatUnits(n, decimals);
   return Number(parseFloat(stringLabel).toFixed(precision));
@@ -79,7 +79,7 @@ export const smallToBalance = (n: number, decimals: number): Balance => ({
 export const toBalance = (
   n: number | BigNumber,
   decimals: number,
-  precision = 0
+  precision = 0,
 ): Balance => ({
   /**
    * Convert a big number or number to a balance object
@@ -89,9 +89,9 @@ export const toBalance = (
 });
 
 export const AUXO_HELP_URL =
-  "https://www.notion.so/piedao/Auxo-Vaults-12adac7ebc1e43eeb0c5db4c7cd828e2";
+  'https://www.notion.so/piedao/Auxo-Vaults-12adac7ebc1e43eeb0c5db4c7cd828e2';
 
 export const zeroApyMessage = (apy: number | undefined): string => {
-  if (apy !== 0 && !apy) return "--";
-  else return apy === 0 ? "New Vault" : apy.toFixed(2) + " %";
+  if (apy !== 0 && !apy) return '--';
+  else return apy === 0 ? 'New Vault' : apy.toFixed(2) + ' %';
 };

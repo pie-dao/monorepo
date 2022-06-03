@@ -1,10 +1,10 @@
-import { useSelectedVault } from "./useSelectedVault";
+import { useSelectedVault } from './useSelectedVault';
 
 export enum WITHDRAWAL {
-  "NOTSTARTED",
-  "REQUESTED",
-  "READY",
-  "COMPLETE",
+  'NOTSTARTED',
+  'REQUESTED',
+  'READY',
+  'COMPLETE',
 }
 
 export const useStatus = (): WITHDRAWAL => {

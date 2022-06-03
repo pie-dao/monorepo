@@ -1,6 +1,6 @@
-import Image from "next/image";
-import metaverseMan from "../public/metaverse_man.png";
-import content from "../content/en_EN.json";
+import Image from 'next/image';
+import metaverseMan from '../public/metaverse_man.png';
+import content from '../content/en_EN.json';
 
 const Metaverse = ({}) => {
   return (
@@ -9,7 +9,7 @@ const Metaverse = ({}) => {
         <div className="flex flex-col md:flex-row mb-4">
           <div className="w-full justify-center flex flex-col">
             <h2 className="w-full text-highlight uppercase font-light text-4xl md:text-5xl mb-4">
-              {content.metaverse.title.first}{" "}
+              {content.metaverse.title.first}{' '}
               <span className="font-bold">
                 {content.metaverse.title.highlighted}
               </span>
@@ -47,7 +47,7 @@ const Metaverse = ({}) => {
           <div className="flex flex-col md:text-center">
             <h4 className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">
-                {content.metaverse.info_boxes.first.title_highlight}{" "}
+                {content.metaverse.info_boxes.first.title_highlight}{' '}
               </span>
               {content.metaverse.info_boxes.first.title}
             </h4>
@@ -58,7 +58,7 @@ const Metaverse = ({}) => {
           <div className="flex flex-col md:mt-36 md:text-center">
             <h4 className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">
-                {content.metaverse.info_boxes.second.title_highlight}{" "}
+                {content.metaverse.info_boxes.second.title_highlight}{' '}
               </span>
               {content.metaverse.info_boxes.second.title}
             </h4>
@@ -77,7 +77,7 @@ const Metaverse = ({}) => {
           <div className="flex flex-col md:mt-36 md:text-center">
             <h4 className="text-highlight_secondary text-2xl md:text-3xl lg:text-4xl">
               <span className="font-bold">
-                {content.metaverse.info_boxes.fourth.title_highlight}{" "}
+                {content.metaverse.info_boxes.fourth.title_highlight}{' '}
               </span>
               {content.metaverse.info_boxes.fourth.title}
             </h4>

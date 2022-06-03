@@ -1,7 +1,7 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import SingleBox from "./SingleBox";
-import content from "../content/en_EN.json";
-import styles from "../styles/ScrollingBoxes.module.scss";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SingleBox from './SingleBox';
+import content from '../content/en_EN.json';
+import styles from '../styles/ScrollingBoxes.module.scss';
 
 const ScrollingBoxes = () => {
   return (
@@ -34,7 +34,7 @@ const ScrollingBoxes = () => {
             <Swiper
               observer
               speed={1000}
-              slidesPerView={"auto"}
+              slidesPerView={'auto'}
               centeredSlides
               className={`w-full overflow-visible mt-64 ${styles.swiperSlider}`}
             >

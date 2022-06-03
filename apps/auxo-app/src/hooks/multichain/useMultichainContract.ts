@@ -1,23 +1,23 @@
-import { Contract } from "@ethersproject/contracts";
-import { useWeb3React } from "@web3-react/core";
-import { JsonRpcSigner } from "@ethersproject/providers";
-import { useMemo } from "react";
-import { MulticallProvider } from "@0xsequence/multicall/dist/declarations/src/providers";
-import { providers } from "@0xsequence/multicall";
-import { Erc20 } from "../../types/artifacts/abi/Erc20";
-import ERC20ABI from "../../abi/erc20.json";
-import MerkleAuthABI from "../../abi/MerkleAuth.json";
-import AuxoABI from "../../abi/Vault.json";
-import { MerkleAuth, Vault as Auxo } from "../../types/artifacts/abi";
-import { useWeb3Cache } from "../useCachedWeb3";
-import { LibraryProvider } from "../../types/utilities";
-import { useMultipleProvider } from "./useMultipleWeb3Provider";
-import { useProxySelector } from "../../store";
-import { ProviderNotActivatedError } from "../../errors";
+import { Contract } from '@ethersproject/contracts';
+import { useWeb3React } from '@web3-react/core';
+import { JsonRpcSigner } from '@ethersproject/providers';
+import { useMemo } from 'react';
+import { MulticallProvider } from '@0xsequence/multicall/dist/declarations/src/providers';
+import { providers } from '@0xsequence/multicall';
+import { Erc20 } from '../../types/artifacts/abi/Erc20';
+import ERC20ABI from '../../abi/erc20.json';
+import MerkleAuthABI from '../../abi/MerkleAuth.json';
+import AuxoABI from '../../abi/Vault.json';
+import { MerkleAuth, Vault as Auxo } from '../../types/artifacts/abi';
+import { useWeb3Cache } from '../useCachedWeb3';
+import { LibraryProvider } from '../../types/utilities';
+import { useMultipleProvider } from './useMultipleWeb3Provider';
+import { useProxySelector } from '../../store';
+import { ProviderNotActivatedError } from '../../errors';
 
 function getMulticallProvider(
   provider: LibraryProvider,
-  multicallContract?: string | null
+  multicallContract?: string | null,
 ): MulticallProvider {
   /**
    * Route multicalls through the deployed multicall contract, if provided
@@ -37,7 +37,7 @@ function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
 function getProviderOrSigner(
   provider: LibraryProvider,
   account?: string | null,
-  multicallAddress?: string | null
+  multicallAddress?: string | null,
 ): MulticallProvider | JsonRpcSigner {
   /**
    * If passing the account details, we will return the signer
@@ -64,11 +64,11 @@ const getContract = <T extends Contract>({
     const providerSigner = getProviderOrSigner(
       provider,
       account,
-      multicallAddress
+      multicallAddress,
     );
     return new Contract(address, ABI, providerSigner) as T;
   } catch (error) {
-    console.error("Failed to get contract", error, address, ABI);
+    console.error('Failed to get contract', error, address, ABI);
   }
 };
 
@@ -86,7 +86,7 @@ export function useContract<T extends Contract>(address?: string, ABI?: any) {
       const providerSigner = getProviderOrSigner(library, account);
       return new Contract(address, ABI, providerSigner);
     } catch (error) {
-      console.error("Failed to get contract", error);
+      console.error('Failed to get contract', error);
       return undefined;
     }
   }, [address, ABI, library, account, active]) as T;
@@ -116,7 +116,7 @@ type MultipleMulticallContractArgs = {
   ABI: any;
 };
 export const useMultipleContracts = <T extends Contract>(
-  contractArgs: MultipleMulticallContractArgs[]
+  contractArgs: MultipleMulticallContractArgs[],
 ) => {
   const { account, library } = useWeb3React();
   const { chainId: currentChainId } = useWeb3Cache();
@@ -152,7 +152,7 @@ export const useMultipleContracts = <T extends Contract>(
  */
 
 export function useMultipleMerkleAuthContract(
-  args: Array<Omit<MultipleMulticallContractArgs, "ABI">>
+  args: Array<Omit<MultipleMulticallContractArgs, 'ABI'>>,
 ): MerkleAuth[] {
   const merkleAuthArgs: MultipleMulticallContractArgs[] = args.map((a) => ({
     ...a,
@@ -162,7 +162,7 @@ export function useMultipleMerkleAuthContract(
 }
 
 export function useMultipleAuxoContract(
-  args: Array<Omit<MultipleMulticallContractArgs, "ABI">>
+  args: Array<Omit<MultipleMulticallContractArgs, 'ABI'>>,
 ): Auxo[] {
   const auxoArgs: MultipleMulticallContractArgs[] = args.map((a) => ({
     ...a,
@@ -172,7 +172,7 @@ export function useMultipleAuxoContract(
 }
 
 export function useMultipleErc20Contract(
-  args: Array<Omit<MultipleMulticallContractArgs, "ABI">>
+  args: Array<Omit<MultipleMulticallContractArgs, 'ABI'>>,
 ): Erc20[] {
   const erc20Args: MultipleMulticallContractArgs[] = args.map((a) => ({
     ...a,
@@ -185,36 +185,36 @@ export function useMultipleErc20Contract(
  * proxy selector is used to control re-renders when the vaults array changes, but the relevant data does not.
  */
 
-const useAuxoParams = (): Array<Omit<MultipleMulticallContractArgs, "ABI">> => {
+const useAuxoParams = (): Array<Omit<MultipleMulticallContractArgs, 'ABI'>> => {
   return useProxySelector((state) =>
     state.vault.vaults.map((v) => ({
       address: v.address,
       chainId: v.network.chainId,
       multicallAddress: v.network.multicall,
-    }))
+    })),
   );
 };
 
 const useTokenParams = (): Array<
-  Omit<MultipleMulticallContractArgs, "ABI">
+  Omit<MultipleMulticallContractArgs, 'ABI'>
 > => {
   const args = useProxySelector((state) =>
     state.vault.vaults.map((v) => ({
       address: v.token.address,
       chainId: v.network.chainId,
       multicallAddress: v.network.multicall,
-    }))
+    })),
   );
   return args;
 };
 
-const useAuthParams = (): Array<Omit<MultipleMulticallContractArgs, "ABI">> => {
+const useAuthParams = (): Array<Omit<MultipleMulticallContractArgs, 'ABI'>> => {
   return useProxySelector((state) =>
     state.vault.vaults.map((v) => ({
       address: v.auth.address,
       chainId: v.network.chainId,
       multicallAddress: v.network.multicall,
-    }))
+    })),
   );
 };
 

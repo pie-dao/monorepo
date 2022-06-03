@@ -1,9 +1,9 @@
-import { useWeb3React } from "@web3-react/core";
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from ".";
-import { setChainId } from "../store/app/app.slice";
-import { LibraryProvider } from "../types/utilities";
-import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from '@web3-react/core';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '.';
+import { setChainId } from '../store/app/app.slice';
+import { LibraryProvider } from '../types/utilities';
+import { Web3Provider } from '@ethersproject/providers';
 
 /**
  * useWeb3React makes a network call to fetch the chain id every time it is called
@@ -12,7 +12,7 @@ import { Web3Provider } from "@ethersproject/providers";
  */
 
 export const getChainFromLibrary = (
-  library: LibraryProvider | undefined
+  library: LibraryProvider | undefined,
 ): number | undefined => {
   return library?._network.chainId;
 };
