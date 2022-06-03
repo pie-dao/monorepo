@@ -9,7 +9,11 @@ export default function Layout({ children }) {
         <Navigation open={open} setOpen={setOpen} />
         <div className="flex-1 flex flex-row">
           <div className="flex flex-col flex-1 h-full overflow-y-auto">
-            <Header open={open} setOpen={setOpen} />
+            <Header
+              open={open}
+              setOpen={setOpen}
+              title={children.props.title}
+            />
             <main className="flex-1 max-h-full px-7">{children}</main>
           </div>
           <Sidebar />

@@ -40,7 +40,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
       </Head>
       <GoogleAnalytics />
       <main className="h-full">
-        {getLayout(<Component {...props.PageProps} />)}
+        {getLayout(<Component {...props.pageProps} />)}
       </main>
     </Provider>
   );
