@@ -64,4 +64,5 @@ typings/
 Thumbs.db
 package-lock.json
 
-libs/shared/util-blockchain/src
+# generated typechain code
+libs/shared/util-blockchain/src/
