@@ -1,12 +1,11 @@
-import { BigNumber } from 'ethers';
-import { Address } from './Address';
-import { FundSnapshot } from './FundSnapshot';
+import { BigNumber } from 'bignumber.js';
+import { FundHistory } from './FundHistory';
 import { Token } from './Token';
 
 /**
  * Represents the state of a {@link PieSmartPool} at the given {@link timestamp}.
  */
-export type PieSmartPoolSnapshot = FundSnapshot & {
+export type PieSmartPoolHistory = FundHistory & {
   timestamp: Date;
 
   /**
@@ -15,24 +14,24 @@ export type PieSmartPoolSnapshot = FundSnapshot & {
   underlyingTokens: Token[];
 
   /**
-   * The address of the controller.
+   * The string of the controller.
    */
-  controller: Address;
+  controller: string;
 
   /**
-   * The address of the public swap setter.
+   * The string of the public swap setter.
    */
-  publicSwapSetter: Address;
+  publicSwapSetter: string;
 
   /**
-   * The address of the token binder.
+   * The string of the token binder.
    */
-  tokenBinder: Address;
+  tokenBinder: string;
 
   /**
-   * The address of the circuit breaker.
+   * The string of the circuit breaker.
    */
-  circuitBreaker: Address;
+  circuitBreaker: string;
 
   /**
    * Tells if public swapping is enabled.
@@ -46,12 +45,12 @@ export type PieSmartPoolSnapshot = FundSnapshot & {
 
   annualFee: BigNumber;
 
-  feeRecipient: Address;
+  feeRecipient: string;
 
   /**
-   * The address of the underlying Balancer pool.
+   * The string of the underlying Balancer pool.
    */
-  balancerPoolAddress: Address;
+  balancerPoolAddress: string;
 
   /**
    * The current swap fee.
@@ -73,12 +72,12 @@ export type PieSmartPoolSnapshot = FundSnapshot & {
   /**
    * The start block of weight adjustment.
    */
-  startBlock: BigNumber;
+  startBlock?: BigNumber;
 
   /**
    * The end block of weight adjustment.
    */
-  endBlock: BigNumber;
+  endBlock?: BigNumber;
 
   /**
    * Tells if joining and exiting is enabled.
@@ -86,7 +85,7 @@ export type PieSmartPoolSnapshot = FundSnapshot & {
   joinExitEnabled: boolean;
 };
 
-type TokenWeight = {
+export type TokenWeight = {
   token: Token;
   weight: BigNumber;
 };

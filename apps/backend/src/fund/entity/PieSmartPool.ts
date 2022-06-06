@@ -1,50 +1,74 @@
+import { TokenWeight } from '@domain/feature-funds';
 import {
   getDiscriminatorModelForClass,
   getModelForClass,
   modelOptions,
   prop,
-  Ref,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
+import { Types } from 'mongoose';
 import { BigNumberType } from 'mongoose-bignumber';
 import { HistoryEntityBase } from './base';
 import { TokenEntity, TokenModel } from './Token';
 
-class PieSmartPoolHistoryEntity extends HistoryEntityBase {
+export class TokenWeightEntity implements TokenWeight {
   @prop({ required: true })
-  underlyingTokenAddresses: string[];
+  token: TokenEntity;
+  @prop({ type: BigNumberType, required: true })
+  weight: BigNumber;
+}
+
+export class PieSmartPoolHistoryEntity extends HistoryEntityBase {
+  @prop({ type: TokenEntity, required: true, _id: false })
+  underlyingTokens: Types.Array<TokenEntity>;
+
   @prop({ required: true })
-  controllerAddress: string;
+  controller: string;
+
   @prop({ required: true })
-  publicSwapSetterAddress: string;
+  publicSwapSetter: string;
+
   @prop({ required: true })
-  tokenBinderAddress: string;
+  tokenBinder: string;
+
   @prop({ required: true })
-  circuitBreakerAddress: string;
+  circuitBreaker: string;
+
   @prop({ required: true })
   publicSwapEnabled: boolean;
+
   @prop({ type: BigNumberType, required: true })
   cap: BigNumber;
+
   @prop({ type: BigNumberType, required: true })
   annualFee: BigNumber;
+
   @prop({ required: true })
-  feeRecipientAddress: string;
+  feeRecipient: string;
+
   @prop({ required: true })
-  balancerPoolAddressAddress: string;
+  balancerPoolAddress: string;
+
   @prop({ type: BigNumberType, required: true })
   swapFee: BigNumber;
+
+  @prop({ type: TokenWeightEntity, _id: false, default: [] })
+  denormalizedWeights: Types.Array<TokenWeightEntity>;
+
+  @prop({ type: TokenWeightEntity, _id: false, default: [] })
+  targetWeights: Types.Array<TokenWeightEntity>;
+
+  @prop({ type: TokenWeightEntity, _id: false, default: [] })
+  startWeights: Types.Array<TokenWeightEntity>;
+
   @prop({ type: BigNumberType })
   startBlock?: BigNumber;
+
   @prop({ type: BigNumberType })
   endBlock?: BigNumber;
+
   @prop({ required: true })
   joinExitEnabled: boolean;
-  @prop({ type: BigNumberType })
-  denormalizedWeights?: Map<string, BigNumber>;
-  @prop({ type: BigNumberType })
-  targetWeights?: Map<string, BigNumber>;
-  @prop({ type: BigNumberType })
-  startWeights?: Map<string, BigNumber>;
 }
 
 @modelOptions({
@@ -53,13 +77,13 @@ class PieSmartPoolHistoryEntity extends HistoryEntityBase {
     toObject: { virtuals: true },
   },
 })
-class PieSmartPoolEntity extends TokenEntity {
+export class PieSmartPoolEntity extends TokenEntity {
   @prop({
     ref: () => PieSmartPoolHistoryEntity,
     foreignField: 'fundId',
     localField: '_id',
   })
-  history?: Ref<PieSmartPoolHistoryEntity>[];
+  history?: PieSmartPoolHistoryEntity[];
 }
 
 export const PieSmartPoolModel = getDiscriminatorModelForClass(

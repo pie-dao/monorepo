@@ -1,12 +1,11 @@
-import { BigNumber } from 'ethers';
-import { Address } from './Address';
-import { FundSnapshot } from './FundSnapshot';
+import { BigNumber } from 'bignumber.js';
+import { FundHistory } from './FundHistory';
 import { Token } from './Token';
 
 /**
  * Represents the state of a {@link PieVault} at the given {@link timestamp}.
  */
-export type PieVaultSnapshot = FundSnapshot & {
+export type PieVaultHistory = FundHistory & {
   timestamp: Date;
   /**
    * The entry fee paid when minting.
@@ -29,7 +28,7 @@ export type PieVaultSnapshot = FundSnapshot & {
   /**
    * The address receiving the fees.
    */
-  feeBeneficiary: Address;
+  feeBeneficiary: string;
 
   /**
    * The share of the entry fee that the fee beneficiary gets.
@@ -47,7 +46,7 @@ export type PieVaultSnapshot = FundSnapshot & {
    * The outstanding annualized fee: the amount of pool tokens
    * to be minted to charge the annualized fee.
    */
-  outstandingAnnualizedFeet: BigNumber;
+  outstandingAnnualizedFee: BigNumber;
 
   /**
    * Tells whether the pool is locked or not. (not accepting exit and entry)
@@ -57,7 +56,7 @@ export type PieVaultSnapshot = FundSnapshot & {
   /**
    * The block at which the pool is unlocked.
    */
-  lockedUntil: BigNumber;
+  lockedUntil?: BigNumber;
 
   /**
    * The maximum of pool tokens that can be minted.

@@ -1,5 +1,3 @@
-import { Address } from './Address';
-
 /**
  * Represents a token on the Ethereum blockchain.
  */
@@ -9,7 +7,7 @@ export type Token = {
    * because `name` and `symbol` are not unique according to the
    * ERC-20 specification.
    */
-  address: Address;
+  address: string;
   name: string;
   symbol: string;
   decimals: number;

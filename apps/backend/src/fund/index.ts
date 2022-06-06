@@ -1,3 +1,4 @@
 export * from './entity';
-export * from './FundsController';
-export * from './FundsModule';
+export * from './funds.controller';
+export * from './funds.module';
+export * from './repository';

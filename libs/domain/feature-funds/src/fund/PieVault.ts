@@ -1,6 +1,6 @@
 import * as E from 'fp-ts/Either';
 import { Fund } from './Fund';
-import { PieVaultSnapshot, TokenDetails } from './PieVaultSnapshot';
+import { PieVaultHistory, TokenDetails } from './PieVaultHistory';
 import { Token } from './Token';
 
 /**
@@ -15,21 +15,53 @@ import { Token } from './Token';
  * Note that *Pie Vaults only work with tokens that have a tokenized representation
  * of the strategy* (for example `SUSHI` + `xSUSHI`).
  */
-export type PieVault = Fund<PieVaultSnapshot> & {
-  kind: 'PieVault';
-  /**
-   * Represents the temporal evolution of the Fund's state.
-   */
-  snapshots: PieVaultSnapshot[];
+export class PieVault implements Fund<PieVaultHistory> {
+  public kind: 'PieVault' = 'PieVault';
+
+  private latest?: PieVaultHistory;
+
+  constructor(
+    public address: string,
+    public name: string,
+    public symbol: string,
+    public decimals: number,
+    public history: PieVaultHistory[] = [],
+  ) {
+    this.latest = history.length > 0 ? history[history.length - 1] : undefined;
+  }
 
   /**
    * Tells whether this fund has an allocation for the given {@link Token}.
    */
-  hasToken: (token: Token) => boolean;
+  public hasToken(token: Token): boolean {
+    return (
+      this.latest?.underlyingTokens.some(
+        (underlying) => underlying.token.address === token.address,
+      ) ?? false
+    );
+  }
 
   /**
    * Returns the details for a given {@link Token} in this {@link Fund}.
    * @returns either the {@link TokenDetails} or an {@link Error} if it was missing.
    */
-  getUnderlyingToken: (token: Token) => E.Either<Error, TokenDetails>;
-};
+  public getUnderlyingToken(token: Token): E.Either<Error, TokenDetails> {
+    if (this.hasToken(token)) {
+      return E.right(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.latest!.underlyingTokens.find(
+          (t) => t.token.address === token.address,
+        )!,
+      );
+    } else {
+      return E.left(new TokenNotFoundError(token.address));
+    }
+  }
+}
+
+export class TokenNotFoundError extends Error {
+  public kind: 'TokenNotFoundError' = 'TokenNotFoundError';
+  constructor(public address: string) {
+    super(`Token with address ${address} was not found`);
+  }
+}

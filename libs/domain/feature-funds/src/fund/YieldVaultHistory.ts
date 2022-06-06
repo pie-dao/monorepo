@@ -1,12 +1,11 @@
-import { BigNumber } from 'ethers';
-import { Address } from './Address';
-import { FundSnapshot } from './FundSnapshot';
+import { BigNumber } from 'bignumber.js';
+import { FundHistory } from './FundHistory';
 import { Token } from './Token';
 
 /**
  * Represents the state of a {@link YieldVault} at the given {@link timestamp}.
  */
-export type YieldVaultSnapshot = FundSnapshot & {
+export type YieldVaultHistory = FundHistory & {
   timestamp: Date;
   /**
    * The underlying token the vault accepts.
@@ -17,42 +16,42 @@ export type YieldVaultSnapshot = FundSnapshot & {
    * The percentage of profit recognized each harvest to reserve as fees.
    * A fixed point number where 1e18 represents 100% and 0 represents 0%.
    */
-  harvestFeePercent: BigNumber;
+  harvestFeePercent?: BigNumber;
 
   /**
    * The address receiving harvest fees (denominated in Vault's shares).
    */
-  harvestFeeReceiver: Address;
+  harvestFeeReceiver?: string;
 
   /**
    * The percentage of shares recognized each burning to reserve as fees.
    * A fixed point number where 1e18 represents 100% and 0 represents 0%.
    */
-  burningFeePercent: BigNumber;
+  burningFeePercent?: BigNumber;
 
   /**
    * The address receiving burning fees (denominated in Vault's shares).
    */
-  burningFeeReceiver: Address;
+  burningFeeReceiver?: string;
 
   /**
    * The period in seconds during which multiple harvests can occur
    * regardless if they are taking place before the harvest delay has elapsed.
    * Long harvest delays open up the Vault to profit distribution DOS attacks.
    */
-  harvestWindow: BigNumber;
+  harvestWindow?: BigNumber;
 
   /**
    * The period in seconds over which locked profit is unlocked.
    * Cannot be 0 as it opens harvests up to sandwich attacks.
    */
-  harvestDelay: BigNumber;
+  harvestDelay?: BigNumber;
 
   /**
    * The value that will replace harvestDelay next harvest.
    * In the case that the next delay is 0, no update will be applied.
    */
-  nextHarvestDelay: BigNumber;
+  nextHarvestDelay?: BigNumber;
 
   /**
    * The total amount of underlying tokens held in strategies at the time of the last harvest.
@@ -63,39 +62,39 @@ export type YieldVaultSnapshot = FundSnapshot & {
   /**
    * Exchange rate at the beginning of latest harvest window
    */
-  lastHarvestExchangeRate: BigNumber;
+  lastHarvestExchangeRate?: BigNumber;
 
-  lastHarvestIntervalInBlocks: BigNumber;
+  lastHarvestIntervalInBlocks?: BigNumber;
 
   /**
    * The block number when the first harvest in the most recent harvest window occurred.
    */
-  lastHarvestWindowStartBlock: BigNumber;
+  lastHarvestWindowStartBlock?: BigNumber;
   /**
    * A timestamp representing when the first harvest in the most recent harvest window occurred.
    * May be equal to lastHarvest if there was/has only been one harvest in the most last/current window.
    */
-  lastHarvestWindowStart: Date;
+  lastHarvestWindowStart?: Date;
 
   /**
    * A timestamp representing when the most recent harvest occurred.
    */
-  lastHarvest: Date;
+  lastHarvest?: Date;
 
   /**
    * The amount of locked profit at the end of the last harvest.
    */
-  maxLockedProfit: BigNumber;
+  maxLockedProfit?: BigNumber;
 
   /**
    * Current batched burning round.
    */
-  batchBurnRound: BigNumber;
+  batchBurnRound?: BigNumber;
 
   /**
    * Balance reserved to batched burning withdrawals.
    */
-  batchBurnBalance: BigNumber;
+  batchBurnBalance?: BigNumber;
 
   /**
    * Amount of shares a single address can hold.
@@ -139,7 +138,7 @@ export type YieldVaultSnapshot = FundSnapshot & {
    * withdrawal time, not validated upfront, meaning the queue may not reflect the "true" set used
    * for withdrawals.
    */
-  withdrawalQueue: Strategy[];
+  withdrawalQueue?: Strategy[];
 };
 
 export type Strategy = {
@@ -162,12 +161,12 @@ export type Strategy = {
   /**
    * The strategy manager.
    */
-  manager: Address;
+  manager: string;
 
   /**
    * The strategist (TODO: who is this?)
    */
-  strategist: Address;
+  strategist: string;
 
   /**
    * Tells whether Vault will operate on a strategy.

@@ -1,5 +1,4 @@
-import { Fund } from './Fund';
-import { PieSmartPoolSnapshot } from './PieSmartPoolSnapshot';
+import { Fund, PieSmartPoolHistory } from '.';
 
 /**
  * Pie Smart Pools are non-custodial smart contracts, the first implementation of a DAO-governed AMM pool.
@@ -11,10 +10,13 @@ import { PieSmartPoolSnapshot } from './PieSmartPoolSnapshot';
  * The Pie Smart Pools are asset management agnostic. At the time of writing, Pie Smart Pools
  * are compatible with the Balancer interface.
  */
-export type PieSmartPool = Fund<PieSmartPoolSnapshot> & {
-  kind: 'PieSmartPool';
-  /**
-   * Represents the temporal evolution of the Fund's state.
-   */
-  snapshots: PieSmartPoolSnapshot[];
-};
+export class PieSmartPool implements Fund<PieSmartPoolHistory> {
+  public kind: 'PieSmartPool' = 'PieSmartPool';
+  constructor(
+    public address: string,
+    public name: string,
+    public symbol: string,
+    public decimals: number,
+    public history: PieSmartPoolHistory[] = [],
+  ) {}
+}

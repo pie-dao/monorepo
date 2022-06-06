@@ -1,85 +1,119 @@
+import { Strategy, YieldVaultHistory } from '@domain/feature-funds';
 import {
   getDiscriminatorModelForClass,
   getModelForClass,
   modelOptions,
   prop,
-  Ref,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
-import { BigNumberType } from 'mongoose-bignumber';
-import { HistoryEntityBase } from './base';
-import { TokenEntity, TokenModel } from './Token';
+import { Types } from 'mongoose';
+import { HistoryEntityBase, TokenEntity, TokenModel } from '.';
+import { BigNumberType } from '..';
 
-class YieldVaultHistoryEntity extends HistoryEntityBase {
-  @prop({ required: true })
-  underlyingTokenAddress: string;
-  @prop({ type: BigNumberType })
-  harvestFeePercent?: BigNumber;
-  @prop()
-  harvestFeeReceiverAddress?: string;
-  @prop({ type: BigNumberType })
-  burningFeePercent?: BigNumber;
-  @prop()
-  burningFeeReceiverAddress?: string;
-  @prop({ type: BigNumberType })
-  harvestWindow?: BigNumber;
-  @prop({ type: BigNumberType })
-  harvestDelay?: BigNumber;
-  @prop({ type: BigNumberType })
-  nextHarvestDelay?: BigNumber;
-  @prop({ type: BigNumberType, required: true })
-  totalStrategyHoldings: BigNumber;
-  @prop({ type: BigNumberType })
-  lastHarvestExchangeRate?: BigNumber;
-  @prop({ type: BigNumberType })
-  lastHarvestIntervalInBlocks?: BigNumber;
-  @prop({ type: BigNumberType })
-  lastHarvestWindowStartBlock?: BigNumber;
-  @prop()
-  lastHarvestWindowStart?: Date;
-  @prop()
-  lastHarvest?: Date;
-  @prop({ type: BigNumberType })
-  maxLockedProfit?: BigNumber;
-  @prop({ type: BigNumberType })
-  batchBurnRound?: BigNumber;
-  @prop({ type: BigNumberType })
-  batchBurnBalance?: BigNumber;
-  @prop({ type: BigNumberType })
-  userDepositLimit?: BigNumber;
-  @prop({ type: BigNumberType })
-  vaultDepositLimit?: BigNumber;
-  @prop({ type: BigNumberType })
-  estimatedReturn?: BigNumber;
-  @prop({ type: BigNumberType })
-  exchangeRate?: BigNumber;
-  @prop({ type: BigNumberType, required: true })
-  totalFloat: BigNumber;
-  @prop({ type: BigNumberType, required: true })
-  lockedProfit: BigNumber;
-  @prop({ type: BigNumberType, required: true })
-  totalUnderlying: BigNumber;
-  @prop()
-  withdrawalQueue?: Strategy[];
-}
-
-export class Strategy {
+export class StrategyEntity implements Strategy {
   @prop({ required: true })
   name: string;
-  @prop({ required: true })
-  underlyingTokenAddress: string;
+
+  @prop({ _id: false })
+  underlyingToken: TokenEntity;
+
   @prop({ type: BigNumberType, required: true })
   depositedAmount: BigNumber;
+
   @prop({ type: BigNumberType, required: true })
   estimatedAmount: BigNumber;
+
   @prop({ required: true })
-  managerAddress: string;
+  manager: string;
+
   @prop({ required: true })
-  strategistAddress: string;
+  strategist: string;
+
   @prop({ required: true })
   trusted: boolean;
+
   @prop({ type: BigNumberType, required: true })
   balance: BigNumber;
+}
+
+export class YieldVaultHistoryEntity
+  extends HistoryEntityBase
+  implements YieldVaultHistory
+{
+  @prop({ required: true })
+  underlyingToken: TokenEntity;
+
+  @prop({ type: BigNumberType })
+  harvestFeePercent?: BigNumber;
+
+  @prop()
+  harvestFeeReceiver?: string;
+
+  @prop({ type: BigNumberType })
+  burningFeePercent?: BigNumber;
+
+  @prop()
+  burningFeeReceiver?: string;
+
+  @prop({ type: BigNumberType })
+  harvestWindow?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  harvestDelay?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  nextHarvestDelay?: BigNumber;
+
+  @prop({ type: BigNumberType, required: true })
+  totalStrategyHoldings: BigNumber;
+
+  @prop({ type: BigNumberType })
+  lastHarvestExchangeRate?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  lastHarvestIntervalInBlocks?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  lastHarvestWindowStartBlock?: BigNumber;
+
+  @prop()
+  lastHarvestWindowStart?: Date;
+
+  @prop()
+  lastHarvest?: Date;
+
+  @prop({ type: BigNumberType })
+  maxLockedProfit?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  batchBurnRound?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  batchBurnBalance?: BigNumber;
+
+  @prop({ type: BigNumberType })
+  userDepositLimit: BigNumber;
+
+  @prop({ type: BigNumberType })
+  vaultDepositLimit: BigNumber;
+
+  @prop({ type: BigNumberType })
+  estimatedReturn: BigNumber;
+
+  @prop({ type: BigNumberType })
+  exchangeRate: BigNumber;
+
+  @prop({ type: BigNumberType, required: true })
+  totalFloat: BigNumber;
+
+  @prop({ type: BigNumberType, required: true })
+  lockedProfit: BigNumber;
+
+  @prop({ type: BigNumberType, required: true })
+  totalUnderlying: BigNumber;
+
+  @prop({ type: StrategyEntity, default: [], _id: false })
+  withdrawalQueue?: Types.Array<StrategyEntity>;
 }
 
 @modelOptions({
@@ -88,13 +122,13 @@ export class Strategy {
     toObject: { virtuals: true },
   },
 })
-class YieldVaultEntity extends TokenEntity {
+export class YieldVaultEntity extends TokenEntity {
   @prop({
     ref: () => YieldVaultHistoryEntity,
     foreignField: 'fundId',
     localField: '_id',
   })
-  snapshots?: Ref<YieldVaultHistoryEntity>[];
+  history?: YieldVaultHistoryEntity[];
 }
 
 export const YieldVaultModel = getDiscriminatorModelForClass(
