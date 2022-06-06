@@ -1,8 +1,8 @@
 import { typesafeContract } from '@sdk-utils/core';
 import { Erc20Abi } from '@shared/util-blockchain';
 import { erc20 } from '@shared/util-blockchain/abis';
-import { ethers } from 'ethers';
-import { MultiChainContractWrapper } from './sdk-utils-multichain';
+import { BigNumber, ethers } from 'ethers';
+import { MultiChainContractWrapper } from '../sdk-utils-multichain';
 
 describe('Testing the multichain', () => {
   jest.setTimeout(10_000);
@@ -20,6 +20,10 @@ describe('Testing the multichain', () => {
       provider: new ethers.providers.JsonRpcProvider('https://rpc.ftm.tools'),
     },
   });
+
+  /**
+   * Bit of a bad example. as we're using different erc20s
+   */
   const wrapped = multichain.wrap(contract, {
     1: {
       address: '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
@@ -50,10 +54,7 @@ describe('Testing the multichain', () => {
   });
 
   it('Can return a multicall response', async () => {
-    // @ts-ignore
-    console.debug(wrapped.withMultiChain, wrapped['_multichainConfig']);
-
-    const res = await wrapped.withMultiChain.balanceOf(
+    const res = await wrapped.multichain.balanceOf(
       ethers.constants.AddressZero,
     );
 
@@ -61,6 +62,18 @@ describe('Testing the multichain', () => {
       await wrapped.balanceOf(ethers.constants.AddressZero),
     );
 
-    expect(res['250'].gt(0)).toEqual(true);
+    expect(typeof res['250']).not.toEqual('string');
+    expect((res['250'] as BigNumber).gt(0)).toEqual(true);
+  });
+
+  it('Can return a multicall response using the alias', async () => {
+    const res = await wrapped.mc.balanceOf(ethers.constants.AddressZero);
+
+    expect(res.original).toEqual(
+      await wrapped.balanceOf(ethers.constants.AddressZero),
+    );
+
+    expect(typeof res['250']).not.toEqual('string');
+    expect((res['250'] as BigNumber).gt(0)).toEqual(true);
   });
 });

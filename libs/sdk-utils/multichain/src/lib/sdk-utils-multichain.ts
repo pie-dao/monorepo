@@ -5,7 +5,7 @@ import { Provider } from '@ethersproject/providers';
 import {
   ContractFunctions,
   MultiChainConfigOverrides,
-  MultiChainReturnValue,
+  WrapMultichainContract,
   MultiChainWrapperConfig,
 } from './sdk-utils-multichain.types';
 
@@ -21,7 +21,7 @@ import {
  * return a multichain response
  */
 export class MultiChainContractWrapper extends ContractWrapper<{
-  withMultiChain: any;
+  multichain: any;
 }> {
   constructor(public config: MultiChainWrapperConfig) {
     super();
@@ -33,7 +33,7 @@ export class MultiChainContractWrapper extends ContractWrapper<{
     abi: ContractInterface,
     signerOrProvider?: Signer | Provider,
     overrides?: MultiChainConfigOverrides,
-  ): MultiChainReturnValue<C> {
+  ): WrapMultichainContract<C> {
     const contract = typesafeContract<C>(address, abi, signerOrProvider);
     return this.wrap(contract, overrides);
   }
@@ -48,19 +48,16 @@ export class MultiChainContractWrapper extends ContractWrapper<{
   public wrap<C extends Contract>(
     contract: C,
     overrides?: MultiChainConfigOverrides,
-  ): MultiChainReturnValue<C> {
+  ): WrapMultichainContract<C> {
     const configAndOverrides = Object.entries(this.config).reduce(
       (obj, [chainId, config]) => {
         if (!chainId || !config) return;
+
         const curr = overrides && overrides[chainId];
+
         if (!curr) return;
 
-        let newVal = {
-          [chainId]: {
-            ...config,
-            ...curr,
-          },
-        };
+        let newVal = { [chainId]: { ...config, ...curr } };
 
         return { ...obj, ...newVal };
       },
@@ -70,7 +67,7 @@ export class MultiChainContractWrapper extends ContractWrapper<{
     return new MultichainContract(
       contract,
       configAndOverrides,
-    ) as unknown as MultiChainReturnValue<C>;
+    ) as unknown as WrapMultichainContract<C>;
   }
 }
 
@@ -83,7 +80,8 @@ export class MultiChainContractWrapper extends ContractWrapper<{
  * calls can be made to all chains simultaneously when prefixing with `withMultiChain`.
  */
 class MultichainContract<T extends Contract> extends Contract {
-  public withMultiChain = {} as ContractFunctions<T>;
+  public multichain = {} as ContractFunctions<T>;
+  public mc = {} as typeof this.multichain; // alias
   private _multichainConfig = {} as MultiChainConfigOverrides;
 
   private getInterfaceFunctions() {
@@ -128,7 +126,7 @@ class MultichainContract<T extends Contract> extends Contract {
        * type.
        */
       // @ts-ignore
-      this.withMultiChain[key] = async function (args: any[]): Promise<any> {
+      this.multichain[key] = async function (args: any[]): Promise<any> {
         const configEnries = Object.entries(self._multichainConfig ?? []);
         const calls = configEnries.reduce((obj, [chainId, config]) => {
           const contract = new ethers.Contract(
@@ -144,6 +142,9 @@ class MultichainContract<T extends Contract> extends Contract {
           original: value(args),
         });
       };
+
+      // set the alias
+      this.mc = this.multichain;
     });
   }
 }
