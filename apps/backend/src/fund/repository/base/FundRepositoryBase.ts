@@ -13,8 +13,8 @@ import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { Model } from 'mongoose';
-import { FundEntity } from '../entity/base/FundEntity';
-import { toMongooseOptions } from './Utils';
+import { FundEntity } from '../../';
+import { toMongooseOptions } from '../Utils';
 
 export abstract class FundRepositoryBase<
   H extends FundHistory,
@@ -23,8 +23,6 @@ export abstract class FundRepositoryBase<
 > implements FundRepository<H, Fund<H>>
 {
   constructor(private model: Model<E>, private historyModel: Model<H>) {}
-
-  // TODO: create indexes?
 
   findAll(
     fundFilter: Filter = DEFAULT_FUND_FILTER,
