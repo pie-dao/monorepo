@@ -39,7 +39,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
         <title>Welcome to investify!</title>
       </Head>
       <GoogleAnalytics />
-      <main data-theme="investify" className="h-full">
+      <main className="h-full">
         {getLayout(<Component {...props.PageProps} />)}
       </main>
     </Provider>
