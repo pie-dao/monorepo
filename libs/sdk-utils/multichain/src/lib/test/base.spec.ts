@@ -48,8 +48,6 @@ describe('Testing the multichain', () => {
     );
 
     expect(balanceWrapped).toEqual(balanceCreated);
-
-    // would not work if it were an object
     expect(balanceWrapped._isBigNumber).toBe(true);
   });
 
@@ -58,22 +56,24 @@ describe('Testing the multichain', () => {
       ethers.constants.AddressZero,
     );
 
-    expect(res.original).toEqual(
-      await wrapped.balanceOf(ethers.constants.AddressZero),
-    );
-
-    expect(typeof res['250']).not.toEqual('string');
-    expect((res['250'] as BigNumber).gt(0)).toEqual(true);
+    if (res[1].status === 'fulfilled' && res[250].status === 'fulfilled') {
+      expect(res[1].value).toEqual(
+        await wrapped.balanceOf(ethers.constants.AddressZero),
+      );
+      expect(res['250'].status).toEqual('fulfilled');
+      expect(res['250'].value.gt(0)).toEqual(true);
+    }
   });
 
   it('Can return a multicall response using the alias', async () => {
     const res = await wrapped.mc.balanceOf(ethers.constants.AddressZero);
 
-    expect(res.original).toEqual(
-      await wrapped.balanceOf(ethers.constants.AddressZero),
-    );
-
-    expect(typeof res['250']).not.toEqual('string');
-    expect((res['250'] as BigNumber).gt(0)).toEqual(true);
+    if (res[1].status === 'fulfilled' && res[250].status === 'fulfilled') {
+      expect(res[1].value).toEqual(
+        await wrapped.balanceOf(ethers.constants.AddressZero),
+      );
+      expect(res['250'].status).toEqual('fulfilled');
+      expect(res['250'].value.gt(0)).toEqual(true);
+    }
   });
 });

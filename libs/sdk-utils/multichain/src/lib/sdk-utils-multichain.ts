@@ -1,12 +1,16 @@
 import { ContractWrapper, typesafeContract } from '@sdk-utils/core';
 import { Contract, ContractInterface, ethers, Signer } from 'ethers';
-import { promiseObject } from '@shared/helpers';
+import { promiseObjectAllSettled } from '@shared/helpers';
 import { Provider } from '@ethersproject/providers';
 import {
   ContractFunctions,
   MultiChainConfigOverrides,
   WrapMultichainContract,
   MultiChainWrapperConfig,
+  MultiChainConfig,
+  MultiChainResponse,
+  MultichainMeta,
+  BaseMultiChainResponse,
 } from './sdk-utils-multichain.types';
 
 /**
@@ -22,6 +26,8 @@ import {
  */
 export class MultiChainContractWrapper extends ContractWrapper<{
   multichain: any;
+  mc: any;
+  _multichainConfig: MultiChainConfigOverrides | MultiChainWrapperConfig;
 }> {
   constructor(public config: MultiChainWrapperConfig) {
     super();
@@ -39,35 +45,65 @@ export class MultiChainContractWrapper extends ContractWrapper<{
   }
 
   /**
-   * When using multiple chains, we often need to point our contract
-   * addresses to different locations, depending on the chain. Pass an override
-   * when wrapping the contract to specific a different contract address for a particular chain.
-   * @param contract the wrapped contract
-   * @param overrides a list of providers and addresses, mapped to a chainId
+   * When using multiple chains, we often need to add different settings, such as addresses.
+   * Pass an override when wrapping the contract to specific a different contract address for a particular chain.
+   *
+   * @param contract the wrapped contract.
+   * @param overrides a list of providers and addresses, mapped to a chainId.
    */
   public wrap<C extends Contract>(
     contract: C,
     overrides?: MultiChainConfigOverrides,
   ): WrapMultichainContract<C> {
-    const configAndOverrides = Object.entries(this.config).reduce(
-      (obj, [chainId, config]) => {
-        if (!chainId || !config) return;
-
-        const curr = overrides && overrides[chainId];
-
-        if (!curr) return;
-
-        let newVal = { [chainId]: { ...config, ...curr } };
-
-        return { ...obj, ...newVal };
-      },
-      {} as MultiChainConfigOverrides,
-    );
+    const configAndOverrides = this.combineConfigAndOverrides(overrides);
 
     return new MultichainContract(
       contract,
       configAndOverrides,
     ) as unknown as WrapMultichainContract<C>;
+  }
+
+  private static isEmptyObject(record: object | undefined): boolean {
+    return Boolean(record) && Object.entries(record as object).length > 0;
+  }
+
+  private applyOverride(
+    chainId: string | number,
+    override: MultiChainConfig,
+  ): MultiChainConfigOverrides | undefined {
+    // find the any existing config
+
+    console.debug('Entering for chain', chainId, override);
+
+    const existingConfig = this.config[chainId];
+    const overrideConfig = !MultiChainContractWrapper.isEmptyObject(override);
+
+    console.debug({ chainId, existingConfig, overrideConfig });
+
+    if (!existingConfig && !overrideConfig) return;
+
+    if (existingConfig && !overrideConfig) return { [chainId]: existingConfig };
+
+    if (!existingConfig && overrideConfig) return { [chainId]: override };
+
+    console.debug({ existingConfig, override });
+    return {
+      [chainId]: {
+        ...existingConfig,
+        ...override,
+      },
+    };
+  }
+
+  public combineConfigAndOverrides(
+    overrides?: MultiChainConfigOverrides,
+  ): MultiChainConfigOverrides {
+    if (!overrides) return this.config;
+    return Object.entries(overrides).reduce((combined, [chainId, override]) => {
+      console.debug({ overrides });
+      const newConfig = this.applyOverride(chainId, override);
+      return { ...combined, ...newConfig };
+    }, {} as MultiChainConfigOverrides);
   }
 }
 
@@ -82,7 +118,7 @@ export class MultiChainContractWrapper extends ContractWrapper<{
 class MultichainContract<T extends Contract> extends Contract {
   public multichain = {} as ContractFunctions<T>;
   public mc = {} as typeof this.multichain; // alias
-  private _multichainConfig = {} as MultiChainConfigOverrides;
+  public _multichainConfig = {} as MultiChainConfigOverrides;
 
   private getInterfaceFunctions() {
     return Object.keys(this.interface.functions);
@@ -119,32 +155,64 @@ class MultichainContract<T extends Contract> extends Contract {
       if (!this.isContractFunction(key, value)) return;
 
       const self = this;
-
       /**
        * Here we are iterating through the ABI and attaching the functions to the
        * `withMultiChain` property. This allows for typesafety and for a cross-chain return
        * type.
        */
-      // @ts-ignore
-      this.multichain[key] = async function (args: any[]): Promise<any> {
-        const configEnries = Object.entries(self._multichainConfig ?? []);
-        const calls = configEnries.reduce((obj, [chainId, config]) => {
-          const contract = new ethers.Contract(
-            config.address ?? self.address,
-            self.interface,
-            config.provider ?? self.provider,
-          );
-          return { ...obj, [chainId]: <T>contract[key](args) };
-        }, {});
 
-        return await promiseObject({
-          ...calls,
-          original: value(args),
-        });
+      // @ts-ignore
+      this.multichain[key as keyof ContractFunctions<T>] = async function (
+        args: any,
+      ): Promise<MultiChainResponse<T>> {
+        const calls = self.setupContractCalls(key, args);
+        const results = await promiseObjectAllSettled(calls);
+
+        const meta = { meta: self.getMeta(results) };
+        return {
+          ...results,
+          ...meta,
+        };
       };
 
       // set the alias
       this.mc = this.multichain;
     });
+  }
+
+  // public static unwrap(): {};
+  private setupContractCalls(
+    key: string,
+    args: any,
+  ): Promise<BaseMultiChainResponse<T>> {
+    const configEntries = Object.entries(this._multichainConfig ?? []);
+    return configEntries.reduce((obj, [chainId, config]) => {
+      // early return if the call should be excluded
+      if (config && config.exclude) return obj;
+
+      const contract = new ethers.Contract(
+        config.address ?? this.address,
+        this.interface,
+        config.provider ?? this.provider,
+      );
+      return { ...obj, [chainId]: contract[key](args) };
+    }, {} as Promise<BaseMultiChainResponse<T>>);
+  }
+
+  private getMeta<T extends Contract>(
+    results: BaseMultiChainResponse<T>,
+  ): MultichainMeta {
+    return Object.values(results).reduce(
+      (meta, result) => {
+        meta.total++;
+        result.status === 'fulfilled' ? meta.ok++ : meta.errors++;
+        return meta;
+      },
+      {
+        errors: 0,
+        ok: 0,
+        total: 0,
+      } as MultichainMeta,
+    );
   }
 }
