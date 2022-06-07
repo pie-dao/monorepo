@@ -5,7 +5,7 @@ import {
   YieldVaultHistoryModel,
   YieldVaultModel,
 } from '../entity';
-import { FundRepositoryBase } from './FundRepositoryBase';
+import { FundRepositoryBase } from '.';
 
 @Injectable()
 export class MongoYieldVaultRepository extends FundRepositoryBase<
