@@ -1,8 +1,5 @@
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { Web3Provider } from '@ethersproject/providers';
-import { NetworkConnector } from '@web3-react/network-connector';
-import { SUPPORTED_CHAINS } from '../types/types';
+import { SUPPORTED_CHAINS } from '../utils/networks';
 
 export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.MAINNET]:
@@ -12,19 +9,6 @@ export const RPC_URLS: Record<number, string> = {
     'https://polygon-mainnet.infura.io/v3/' +
     process.env.REACT_APP_INFURA_API_KEY,
 };
-
-export const network = new NetworkConnector({
-  urls: RPC_URLS,
-  defaultChainId: SUPPORTED_CHAINS.FANTOM,
-});
-
-export const injected = new InjectedConnector({
-  supportedChainIds: [
-    SUPPORTED_CHAINS.MAINNET,
-    SUPPORTED_CHAINS.FANTOM,
-    SUPPORTED_CHAINS.POLYGON,
-  ],
-});
 
 export default function getLibrary(provider): Web3Provider {
   /**
@@ -41,12 +25,3 @@ export default function getLibrary(provider): Web3Provider {
   );
   return library;
 }
-
-export const walletconnect = new WalletConnectConnector({
-  rpc: {
-    [SUPPORTED_CHAINS.FANTOM]: RPC_URLS[SUPPORTED_CHAINS.FANTOM],
-  },
-  chainId: SUPPORTED_CHAINS.FANTOM,
-  bridge: 'https://bridge.walletconnect.org',
-  qrcode: true,
-});

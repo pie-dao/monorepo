@@ -1,7 +1,9 @@
-import { ConnectButton } from '@shared/ui-library';
+import { ChainSwitcher, ConnectButton } from '@shared/ui-library';
 import useTranslation from 'next-translate/useTranslation';
 import { Dispatch, SetStateAction } from 'react';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
+import useMediaQuery from '../../hooks/useMediaQuery';
+import GasPrice from '../GasPrice/GasPrice';
 import MenuIcon from './MenuIcon';
 
 export default function Header({
@@ -15,20 +17,33 @@ export default function Header({
 }) {
   const { t } = useTranslation();
   const ready = useServerHandoffComplete();
+  const mq = useMediaQuery('(min-width: 1024px)');
 
   return (
-    <header className="flex-shrink-0">
-      <div className="flex items-center justify-between p-2">
-        <div className="flex items-center space-x-3">
+    <header className="flex-shrink-0 sticky">
+      <div className="flex items-center justify-between pr-4 py-5">
+        <div className="w-full flex items-center gap-x-3 flex-wrap">
           <button
             type="button"
-            className="focus:outline-none p-2"
+            className="focus:outline-none p-2 relative z-10"
             onClick={() => setOpen(!open)}
           >
             <MenuIcon open={open} />
           </button>
-          <h1 className="text-2xl font-bold text-text">{t(title)}</h1>
-          {ready && <ConnectButton />}
+          {mq && ready && (
+            <h1 className="text-2xl font-bold main-title w-auto">{t(title)}</h1>
+          )}
+          <div className="ml-auto flex gap-x-3 items-center">
+            {ready && (
+              <>
+                <GasPrice />
+                <ChainSwitcher
+                  allowedChains={['MAINNET', 'FANTOM', 'POLYGON']}
+                />
+                <ConnectButton />
+              </>
+            )}
+          </div>
         </div>
       </div>
     </header>

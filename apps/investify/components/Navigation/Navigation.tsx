@@ -36,7 +36,7 @@ export default function Navigation({
     setMounted(true);
   }, []);
 
-  const isDesktop = useMediaQuery('(min-width: 640px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
 
   const sidebarVariants = !isDesktop
     ? {
@@ -135,85 +135,99 @@ export default function Navigation({
   const { pathname } = useRouter();
   if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
   return (
-    <AnimatePresence initial={false}>
-      <motion.aside
-        animate={open ? 'visible' : 'hidden'}
-        initial="hidden"
-        exit="hidden"
-        drag="x"
-        variants={sidebarVariants}
-        dragConstraints={{
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-        }}
-        style={{ x }}
-        dragElastic={0.8}
-        dragMomentum={false}
-        onDrag={handleDrag}
-        onDragEnd={handleDragEnd}
-        className="h-full w-[180px] lg:static inset"
-      >
-        <div className="flex flex-col flex-grow pt-8 h-full">
-          <div className="flex-shrink-0 flex items-center px-4 overflow-hidden">
-            <motion.h2
-              className="text-2xl font-medium text-primary"
-              animate={open ? 'visible' : 'hidden'}
-              initial="visible"
-              exit="hidden"
-              variants={titleVariants}
-            >
-              {open ? t('Investify') : 'In'}
-            </motion.h2>
+    <>
+      <AnimatePresence initial={false}>
+        <motion.aside
+          animate={open ? 'visible' : 'hidden'}
+          initial="hidden"
+          exit="hidden"
+          drag="x"
+          variants={sidebarVariants}
+          dragConstraints={{
+            top: 0,
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}
+          style={{ x }}
+          dragElastic={0.8}
+          dragMomentum={false}
+          onDrag={handleDrag}
+          onDragEnd={handleDragEnd}
+          className={classNames(
+            'h-full w-[180px] fixed z-50 lg:z-0 lg:static bg-background',
+          )}
+        >
+          <div className="flex flex-col flex-grow pt-5 h-full">
+            <div className="flex-shrink-0 flex items-center px-4 overflow-hidden">
+              <motion.h2
+                className="text-2xl font-medium text-primary"
+                animate={open ? 'visible' : 'hidden'}
+                initial="visible"
+                exit="hidden"
+                variants={titleVariants}
+              >
+                {open ? t('Investify') : 'In'}
+              </motion.h2>
+            </div>
+            <nav className="mt-6 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">
+              <motion.ul
+                variants={listVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {navigation.map((item) => {
+                  const active = pathname === item.href;
+                  return (
+                    <motion.li
+                      key={item.name}
+                      variants={itemVariants}
+                      whileHover={
+                        !active && {
+                          scale: 1.03,
+                        }
+                      }
+                      whileTap={
+                        !active && {
+                          scale: 0.95,
+                        }
+                      }
+                    >
+                      <Link href={item.href} passHref>
+                        <span
+                          className={classNames(
+                            active
+                              ? 'text-primary cursor-default bg-white'
+                              : 'text-gray-400 cursor-pointer hover:text-primary',
+                            'group flex items-center px-2 py-1 text-sm font-medium rounded-full border border-customBorder mb-2 hover:bg-white hover:drop-shadow-sm',
+                          )}
+                        >
+                          <item.icon
+                            className="flex-shrink-0 h-6 w-6 text-primary"
+                            aria-hidden="true"
+                          />
+                          <motion.span className="ml-5">
+                            {item.name}
+                          </motion.span>
+                        </span>
+                      </Link>
+                    </motion.li>
+                  );
+                })}
+              </motion.ul>
+            </nav>
+            <Socials open={open} />
           </div>
-          <nav className="mt-6 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">
-            <motion.ul
-              variants={listVariants}
-              initial="hidden"
-              animate="visible"
-            >
-              {navigation.map((item) => {
-                const active = pathname === item.href;
-                return (
-                  <motion.li
-                    key={item.name}
-                    variants={itemVariants}
-                    whileHover={
-                      !active && {
-                        scale: 1.03,
-                      }
-                    }
-                    whileTap={
-                      !active && {
-                        scale: 0.95,
-                      }
-                    }
-                  >
-                    <Link href={item.href} passHref>
-                      <span
-                        className={classNames(
-                          active
-                            ? 'text-primary cursor-default bg-white'
-                            : 'text-gray-400 cursor-pointer hover:text-primary',
-                          'group flex items-center px-2 py-1 text-sm font-medium rounded-full border border-customBorder mb-2 hover:bg-white hover:drop-shadow-sm',
-                        )}
-                      >
-                        <item.icon
-                          className="flex-shrink-0 h-6 w-6 text-primary"
-                          aria-hidden="true"
-                        />
-                        <motion.span className="ml-5">{item.name}</motion.span>
-                      </span>
-                    </Link>
-                  </motion.li>
-                );
-              })}
-            </motion.ul>
-          </nav>
-          <Socials open={open} />
-        </div>
-      </motion.aside>
-    </AnimatePresence>
+        </motion.aside>
+      </AnimatePresence>
+      {!isDesktop && open && (
+        <>
+          <div
+            className="absolute inset z-40 fixed inset-0 backdrop-blur-sm"
+            onClick={() => setOpen(false)}
+          />
+        </>
+      )}
+    </>
   );
 }

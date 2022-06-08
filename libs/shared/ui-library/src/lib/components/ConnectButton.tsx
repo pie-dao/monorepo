@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useWeb3React } from '@web3-react/core';
+import useTranslation from 'next-translate/useTranslation';
 import { Connect } from './Connect';
-import Icon from '../ui-atoms/Icon';
 import { useConnectedWallet } from '../hooks/use-connected-wallet';
 import { useENSName } from '../hooks/use-ens-name';
 import { MetamaskIcon, WalletConnectIcon } from '../shared/external-icons';
@@ -12,15 +12,45 @@ interface Props {
   className?: string;
 }
 
-const trimAccount = (account: string): string => {
-  return account.slice(0, 6) + '...' + account.slice(38);
+const trimAccount = (account: string, long = false): string => {
+  if (long) return account.slice(0, 5) + '...' + account.slice(36);
+  return account.slice(0, 2) + '...' + account.slice(39);
+};
+
+const loadingContainerVariants = {
+  start: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+  end: {
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const loadingCircleVariants = {
+  start: {
+    y: 0,
+  },
+  end: {
+    y: -15,
+  },
+};
+
+const bounceTransition = {
+  duration: 0.5,
+  yoyo: Infinity,
+  ease: 'easeInOut',
 };
 
 export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
   useConnectedWallet();
   const { account, active, library } = useWeb3React();
   const ensName = useENSName(library, account);
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
 
   function closeModal() {
     setIsOpen(false);
@@ -36,13 +66,13 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
         type="button"
         onClick={openModal}
         className={classNames(
-          'px-4 py-2 text-md font-medium text-white bg-primary rounded-lg border-2 border-current hover:bg-transparent hover:text-primary',
+          'px-4 py-1 text-md font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white',
           className,
         )}
         id="connect-button"
       >
         {active && account && ensName}
-        {!account && 'Connect Wallet'}
+        {!account && t('connect')}
         {active && account && !ensName && trimAccount(account)}
       </button>
 
@@ -52,69 +82,64 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
             static
             as="div"
             open={isOpen}
-            className="fixed inset-0 z-10 overflow-y-auto"
+            className="fixed inset-0 z-10 overflow-y-hidden"
             onClose={closeModal}
           >
             {({ connected, connecting, waiting }) => (
-              <div className="min-h-screen px-4 text-center">
-                <Connect.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-                {/* This element is to trick the browser into centering the modal contents. */}
+              <div className="flex items-end justify-center min-h-screen text-center sm:block sm:p-0 text-text">
+                <Connect.Overlay className="fixed inset-0 bg-gradient-overlay" />
                 <span
-                  className="inline-block h-screen align-middle"
+                  className="hidden sm:inline-block sm:align-middle sm:h-screen"
                   aria-hidden="true"
                 >
                   &#8203;
                 </span>
-                <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+                <div className="lg:inline-block w-screen lg:w-full lg:max-w-md p-4 lg:my-8 overflow-hidden text-left lg:align-middle bg-gradient-primary drop-shadow-sm rounded-t-md lg:rounded-md">
                   <Connect.Title
                     as="h3"
-                    className="text-lg font-medium leading-6 text-gray-900"
+                    className="text-lg font-medium text-text border-b-2 border-primary mb-1 pb-2"
                   >
-                    {!connected && !connecting && !waiting && 'Connect Wallet'}
-                    {connected && !connecting && 'Account'}
-                    {(waiting || connecting) &&
-                      'Awaiting confirmation from your wallet...'}
+                    {!connected &&
+                      !connecting &&
+                      !waiting &&
+                      t('connectWallet')}
+                    {connected && !connecting && t('Account')}
+                    {(waiting || connecting) && t('connectingWallet')}
                   </Connect.Title>
-                  <button
-                    className="absolute top-5 right-5"
-                    onClick={closeModal}
-                  >
-                    <Icon className="fill-primary" icon="close" />
-                  </button>
                   <div className="mt-4 flex flex-col gap-y-3">
                     {!connected && !connecting && !waiting && (
                       <>
-                        <Connect.MetamaskButton className="flex items-center px-4 py-2 text-sm font-medium border text-left border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
+                        <Connect.MetamaskButton className="flex items-center px-4 py-2 text-sm font-medium text-left border-transparent rounded-full hover:bg-white">
                           <>
-                            <MetamaskIcon className="h-10 w-10 mr-4" />
-                            {!connected && <span>Connect With Metamask</span>}
-                            {connecting && <span>Connecting...</span>}
+                            {!connected && <span>Metamask</span>}
+                            {connecting && <span>{t('connectingWallet')}</span>}
+                            <MetamaskIcon className="h-6 w-6 ml-auto" />
                           </>
                         </Connect.MetamaskButton>
-                        <Connect.WalletConnectButton className="flex items-center px-4 py-2 text-sm font-medium text-left border border-transparent rounded-md hover:border-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary">
+                        <Connect.WalletConnectButton className="flex items-center px-4 py-2 text-sm font-medium text-left border border-transparent rounded-full hover:bg-white">
                           <>
-                            <WalletConnectIcon className="h-10 w-10 mr-4" />
-                            {!connected && (
-                              <span>Connect With Wallet Connect</span>
-                            )}
+                            {!connected && <span>WalletConnect</span>}
+                            {connecting && <span>{t('connectingWallet')}</span>}
+                            <WalletConnectIcon className="h-6 w-6 ml-auto" />
                           </>
                         </Connect.WalletConnectButton>
                       </>
                     )}
                     {(waiting || connecting) && (
-                      <div className="flex items-center justify-center h-20">
+                      <div className="flex flex-col items-center justify-center h-20 space-y-6">
                         <Rotate />
+                        <p className="text-text">{t('waitingWallet')}</p>
                       </div>
                     )}
                     {connected && account && (
-                      <div className="flex px-2 py-4 border rounded-md border-primary justify-between">
+                      <div className="flex px-2 py-4 border-primary justify-between items-center">
                         <div>
                           <p className="text-md font-medium">
-                            {trimAccount(account)}
+                            {trimAccount(account, true)}
                           </p>
                         </div>
-                        <Connect.DisconnectButton className="px-2 py-1 text-xs font-medium text-white bg-primary rounded-md bg-opacity-80 hover:bg-opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">
-                          Disconnect
+                        <Connect.DisconnectButton className="px-4 py-1 text-md font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
+                          {t('Disconnect')}
                         </Connect.DisconnectButton>
                       </div>
                     )}
@@ -131,18 +156,25 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
 
 export const Rotate = () => (
   <motion.div
-    className="w-8 h-8 bg-primary"
-    animate={{
-      scale: [1, 2, 2, 1, 1],
-      rotate: [0, 0, 270, 270, 0],
-      borderRadius: ['20%', '20%', '50%', '50%', '20%'],
-    }}
-    transition={{
-      duration: 2,
-      ease: 'easeInOut',
-      times: [0, 0.2, 0.5, 0.8, 1],
-      repeat: Infinity,
-      repeatDelay: 1,
-    }}
-  />
+    className="flex items-center justify-center gap-x-2"
+    variants={loadingContainerVariants}
+    animate="end"
+    initial="start"
+  >
+    <motion.span
+      className="bg-primary rounded-full h-6 w-6"
+      transition={bounceTransition}
+      variants={loadingCircleVariants}
+    />
+    <motion.span
+      className="bg-secondary rounded-full h-6 w-6"
+      transition={bounceTransition}
+      variants={loadingCircleVariants}
+    />
+    <motion.span
+      className="bg-text rounded-full h-6 w-6"
+      transition={bounceTransition}
+      variants={loadingCircleVariants}
+    />
+  </motion.div>
 );

@@ -4,7 +4,7 @@ export const getChain = (chainId: number) =>
   chains.find((c) => c.chainId === chainId);
 
 // Not all chains are relevant for PieDAO products, you can define the priority ones here
-const SUPPORTED_CHAINS = {
+export const SUPPORTED_CHAINS = {
   ETHEREUM: 1,
   POLYGON: 137,
   FANTOM: 250,

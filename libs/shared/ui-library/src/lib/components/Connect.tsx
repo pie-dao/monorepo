@@ -76,7 +76,7 @@ enum ActionTypes {
 type Actions =
   | { type: ActionTypes.SetTitleId; id: string | null }
   | { type: ActionTypes.SetWalletState; walletState: WalletStates };
-let reducers: {
+const reducers: {
   [P in ActionTypes]: (
     state: StateDefinition,
     action: Extract<Actions, { type: P }>,
@@ -92,7 +92,7 @@ let reducers: {
   },
 };
 
-let ConnectContext = createContext<
+const ConnectContext = createContext<
   | [
       {
         connectState: ConnectStates;
@@ -107,9 +107,9 @@ let ConnectContext = createContext<
 ConnectContext.displayName = 'ConnectContext';
 
 function useConnectContext(component: string) {
-  let context = useContext(ConnectContext);
+  const context = useContext(ConnectContext);
   if (context === null) {
-    let err = new Error(
+    const err = new Error(
       `<${component} /> is missing a parent <Connect /> component.`,
     );
     if (Error.captureStackTrace)
@@ -125,7 +125,7 @@ function stateReducer(state: StateDefinition, action: Actions) {
 
 // ---
 
-let DEFAULT_CONNECT_TAG = 'div' as const;
+const DEFAULT_CONNECT_TAG = 'div' as const;
 interface ConnectRenderPropArg {
   open: boolean;
   connected: boolean;
@@ -140,9 +140,9 @@ type ConnectPropsWeControl =
   | 'aria-labelledby'
   | 'onClick';
 
-let ConnectRenderFeatures = Features.RenderStrategy | Features.Static;
+const ConnectRenderFeatures = Features.RenderStrategy | Features.Static;
 
-let ConnectRoot = forwardRefWithAs(function Connect<
+const ConnectRoot = forwardRefWithAs(function Connect<
   TTag extends ElementType = typeof DEFAULT_CONNECT_TAG,
 >(
   props: Props<TTag, ConnectRenderPropArg, ConnectPropsWeControl> &
@@ -154,10 +154,11 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     },
   ref: Ref<HTMLDivElement>,
 ) {
-  let { open, onClose, initialFocus, __demoMode = false, ...rest } = props;
-  let [nestedConnectCount, setNestedConnectCount] = useState(0);
+  const { onClose, initialFocus, __demoMode = false, ...rest } = props;
+  let { open } = props;
+  const [nestedConnectCount, setNestedConnectCount] = useState(0);
 
-  let usesOpenClosedState = useOpenClosed();
+  const usesOpenClosedState = useOpenClosed();
   if (open === undefined && usesOpenClosedState !== null) {
     // Update the `open` prop based on the open closed state
     open = match(usesOpenClosedState, {
@@ -166,16 +167,20 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     });
   }
 
-  let containers = useRef<Set<MutableRefObject<HTMLElement | null>>>(new Set());
-  let internalConnectRef = useRef<HTMLDivElement | null>(null);
-  let connectRef = useSyncRefs(internalConnectRef, ref);
-  let buttonRef = useRef<StateDefinition['buttonRef']['current']>(null);
+  const containers = useRef<Set<MutableRefObject<HTMLElement | null>>>(
+    new Set(),
+  );
+  const internalConnectRef = useRef<HTMLDivElement | null>(null);
+  const connectRef = useSyncRefs(internalConnectRef, ref);
+  const buttonRef = useRef<StateDefinition['buttonRef']['current']>(null);
 
-  let ownerDocument = useOwnerDocument(internalConnectRef);
+  const ownerDocument = useOwnerDocument(internalConnectRef);
 
   // Validations
-  let hasOpen = props.hasOwnProperty('open') || usesOpenClosedState !== null;
-  let hasOnClose = props.hasOwnProperty('onClose');
+  const hasOpen =
+    Object.prototype.hasOwnProperty.call(props, 'open') ||
+    usesOpenClosedState !== null;
+  const hasOnClose = Object.prototype.hasOwnProperty.call(props, 'onClose');
   if (!hasOpen && !hasOnClose) {
     throw new Error(
       `You have to provide an \`open\` and an \`onClose\` prop to the \`Connect\` component.`,
@@ -206,8 +211,8 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     );
   }
 
-  let connectState = open ? ConnectStates.Open : ConnectStates.Closed;
-  let visible = (() => {
+  const connectState = open ? ConnectStates.Open : ConnectStates.Closed;
+  const visible = (() => {
     if (usesOpenClosedState !== null) {
       return usesOpenClosedState === State.Open;
     }
@@ -215,7 +220,7 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     return connectState === ConnectStates.Open;
   })();
 
-  let [state, dispatch] = useReducer(stateReducer, {
+  const [state, dispatch] = useReducer(stateReducer, {
     titleId: null,
     descriptionId: null,
     buttonRef,
@@ -224,25 +229,25 @@ let ConnectRoot = forwardRefWithAs(function Connect<
 
   const { active, account } = useWeb3React();
 
-  let close = useCallback(() => onClose(false), [onClose]);
+  const close = useCallback(() => onClose(false), [onClose]);
 
-  let setTitleId = useCallback(
+  const setTitleId = useCallback(
     (id: string | null) => dispatch({ type: ActionTypes.SetTitleId, id }),
     [dispatch],
   );
 
-  let ready = useServerHandoffComplete();
-  let enabled = ready
+  const ready = useServerHandoffComplete();
+  const enabled = ready
     ? __demoMode
       ? false
       : connectState === ConnectStates.Open
     : false;
-  let hasNestedConnects = nestedConnectCount > 1; // 1 is the current Connect
-  let hasParentConnect = useContext(ConnectContext) !== null;
+  const hasNestedConnects = nestedConnectCount > 1; // 1 is the current Connect
+  const hasParentConnect = useContext(ConnectContext) !== null;
 
   // If there are multiple connects, then you can be the root, the leaf or one
   // in between. We only care abou whether you are the top most one or not.
-  let position = !hasNestedConnects ? 'leaf' : 'parent';
+  const position = !hasNestedConnects ? 'leaf' : 'parent';
 
   useFocusTrap(
     internalConnectRef,
@@ -279,16 +284,16 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     if (connectState !== ConnectStates.Open) return;
     if (hasParentConnect) return;
 
-    let ownerDocument = getOwnerDocument(internalConnectRef);
+    const ownerDocument = getOwnerDocument(internalConnectRef);
     if (!ownerDocument) return;
 
-    let documentElement = ownerDocument.documentElement;
-    let ownerWindow = ownerDocument.defaultView ?? window;
+    const documentElement = ownerDocument.documentElement;
+    const ownerWindow = ownerDocument.defaultView ?? window;
 
-    let overflow = documentElement.style.overflow;
-    let paddingRight = documentElement.style.paddingRight;
+    const overflow = documentElement.style.overflow;
+    const paddingRight = documentElement.style.paddingRight;
 
-    let scrollbarWidth = ownerWindow.innerWidth - documentElement.clientWidth;
+    const scrollbarWidth = ownerWindow.innerWidth - documentElement.clientWidth;
 
     documentElement.style.overflow = 'hidden';
     documentElement.style.paddingRight = `${scrollbarWidth}px`;
@@ -304,8 +309,8 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     if (connectState !== ConnectStates.Open) return;
     if (!internalConnectRef.current) return;
 
-    let observer = new IntersectionObserver((entries) => {
-      for (let entry of entries) {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
         if (
           entry.boundingClientRect.x === 0 &&
           entry.boundingClientRect.y === 0 &&
@@ -322,16 +327,16 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     return () => observer.disconnect();
   }, [connectState, internalConnectRef, close]);
 
-  let [describedby, DescriptionProvider] = useDescriptions();
+  const [describedby, DescriptionProvider] = useDescriptions();
 
-  let id = `piedao-Connect-${useId()}`;
+  const id = `piedao-Connect-${useId()}`;
 
-  let contextBag = useMemo<ContextType<typeof ConnectContext>>(
+  const contextBag = useMemo<ContextType<typeof ConnectContext>>(
     () => [{ connectState, close, setTitleId }, state, dispatch],
     [connectState, state, close, setTitleId],
   );
 
-  let slot = useMemo<ConnectRenderPropArg>(
+  const slot = useMemo<ConnectRenderPropArg>(
     () => ({
       open: connectState === ConnectStates.Open,
       connected: active && !!account,
@@ -341,7 +346,7 @@ let ConnectRoot = forwardRefWithAs(function Connect<
     [connectState, state, active, account],
   );
 
-  let propsWeControl = {
+  const propsWeControl = {
     ref: connectRef,
     id,
     role: 'Connect',
@@ -352,7 +357,7 @@ let ConnectRoot = forwardRefWithAs(function Connect<
       event.stopPropagation();
     },
   };
-  let passthroughProps = rest;
+  const passthroughProps = rest;
 
   return (
     <StackProvider
@@ -399,24 +404,24 @@ let ConnectRoot = forwardRefWithAs(function Connect<
 
 // ---
 
-let DEFAULT_OVERLAY_TAG = 'div' as const;
+const DEFAULT_OVERLAY_TAG = 'div' as const;
 interface OverlayRenderPropArg {
   open: boolean;
 }
 type OverlayPropsWeControl = 'id' | 'aria-hidden' | 'onClick';
 
-let Overlay = forwardRefWithAs(function Overlay<
+const Overlay = forwardRefWithAs(function Overlay<
   TTag extends ElementType = typeof DEFAULT_OVERLAY_TAG,
 >(
   props: Props<TTag, OverlayRenderPropArg, OverlayPropsWeControl>,
   ref: Ref<HTMLDivElement>,
 ) {
-  let [{ connectState, close }] = useConnectContext('Connect.Overlay');
-  let overlayRef = useSyncRefs(ref);
+  const [{ connectState, close }] = useConnectContext('Connect.Overlay');
+  const overlayRef = useSyncRefs(ref);
 
-  let id = `piedao-Connect-overlay-${useId()}`;
+  const id = `piedao-Connect-overlay-${useId()}`;
 
-  let handleClick = useCallback(
+  const handleClick = useCallback(
     (event: ReactMouseEvent) => {
       if (event.target !== event.currentTarget) return;
       if (isDisabledReactIssue7711(event.currentTarget))
@@ -428,17 +433,17 @@ let Overlay = forwardRefWithAs(function Overlay<
     [close],
   );
 
-  let slot = useMemo<OverlayRenderPropArg>(
+  const slot = useMemo<OverlayRenderPropArg>(
     () => ({ open: connectState === ConnectStates.Open }),
     [connectState],
   );
-  let propsWeControl = {
+  const propsWeControl = {
     ref: overlayRef,
     id,
     'aria-hidden': true,
     onClick: handleClick,
   };
-  let passthroughProps = props;
+  const passthroughProps = props;
 
   return render({
     props: { ...passthroughProps, ...propsWeControl },
@@ -450,34 +455,34 @@ let Overlay = forwardRefWithAs(function Overlay<
 
 // ---
 
-let DEFAULT_TITLE_TAG = 'h2' as const;
+const DEFAULT_TITLE_TAG = 'h2' as const;
 interface TitleRenderPropArg {
   open: boolean;
 }
 type TitlePropsWeControl = 'id';
 
-let Title = forwardRefWithAs(function Title<
+const Title = forwardRefWithAs(function Title<
   TTag extends ElementType = typeof DEFAULT_TITLE_TAG,
 >(
   props: Props<TTag, TitleRenderPropArg, TitlePropsWeControl>,
   ref: Ref<HTMLHeadingElement>,
 ) {
-  let [{ connectState, setTitleId }] = useConnectContext('Connect.Title');
+  const [{ connectState, setTitleId }] = useConnectContext('Connect.Title');
 
-  let id = `piedao-Connect-title-${useId()}`;
-  let titleRef = useSyncRefs(ref);
+  const id = `piedao-Connect-title-${useId()}`;
+  const titleRef = useSyncRefs(ref);
 
   useEffect(() => {
     setTitleId(id);
     return () => setTitleId(null);
   }, [id, setTitleId]);
 
-  let slot = useMemo<TitleRenderPropArg>(
+  const slot = useMemo<TitleRenderPropArg>(
     () => ({ open: connectState === ConnectStates.Open }),
     [connectState],
   );
-  let propsWeControl = { id };
-  let passthroughProps = props;
+  const propsWeControl = { id };
+  const passthroughProps = props;
 
   return render({
     props: { ref: titleRef, ...passthroughProps, ...propsWeControl },
@@ -491,7 +496,7 @@ let Title = forwardRefWithAs(function Title<
 
 // ---
 
-let DEFAULT_METAMASKBUTTON_TAG = 'button' as const;
+const DEFAULT_METAMASKBUTTON_TAG = 'button' as const;
 
 interface MetamaskButtonRenderPropArg {
   connected: boolean;
@@ -504,24 +509,23 @@ type MetamaskButtonPropsWeControl =
   | 'onKeyDown'
   | 'onClick';
 
-let MetamaskButton = forwardRefWithAs(function Button<
+const MetamaskButton = forwardRefWithAs(function Button<
   TTag extends ElementType = typeof DEFAULT_METAMASKBUTTON_TAG,
 >(
   props: Props<TTag, MetamaskButtonRenderPropArg, MetamaskButtonPropsWeControl>,
   ref: Ref<HTMLButtonElement>,
 ) {
-  let [{ connectState, close }, stateDefinition, dispatch] = useConnectContext(
-    'Connect.MetamaskButton',
-  );
+  const [{ connectState, close }, stateDefinition, dispatch] =
+    useConnectContext('Connect.MetamaskButton');
   const { active, activate, account } = useWeb3React();
-  let internalButtonRef = useRef<HTMLButtonElement | null>(null);
-  let buttonRef = useSyncRefs(
+  const internalButtonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonRef = useSyncRefs(
     internalButtonRef,
     ref,
     stateDefinition.buttonRef,
   );
 
-  let handleKeyDown = useCallback(
+  const handleKeyDown = useCallback(
     async (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       switch (event.key) {
         case Keys.Space:
@@ -557,10 +561,10 @@ let MetamaskButton = forwardRefWithAs(function Button<
           break;
       }
     },
-    [dispatch],
+    [activate, close, dispatch],
   );
 
-  let handleKeyUp = useCallback(
+  const handleKeyUp = useCallback(
     (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       switch (event.key) {
         case Keys.Space:
@@ -574,17 +578,17 @@ let MetamaskButton = forwardRefWithAs(function Button<
     [],
   );
 
-  let slot = useMemo<MetamaskButtonRenderPropArg>(
+  const slot = useMemo<MetamaskButtonRenderPropArg>(
     () => ({
       connected: active && !!account,
     }),
     [active, account],
   );
 
-  let handleClick = useCallback(
+  const handleClick = useCallback(
     async (event: ReactMouseEvent) => {
       if (isDisabledReactIssue7711(event.currentTarget)) return;
-      if (props.disabled) return;
+      if (props['disabled']) return;
       try {
         dispatch({
           type: ActionTypes.SetWalletState,
@@ -612,16 +616,16 @@ let MetamaskButton = forwardRefWithAs(function Button<
         }
       }
     },
-    [dispatch, props.disabled, stateDefinition.buttonRef],
+    [activate, close, dispatch, props],
   );
 
-  let type = useResolveButtonType(props, internalButtonRef);
-  let passthroughProps = props;
-  let propsWeControl = {
+  const type = useResolveButtonType(props, internalButtonRef);
+  const passthroughProps = props;
+  const propsWeControl = {
     ref: buttonRef,
     id: 'piedao-metamask-connect-button',
     type,
-    'aria-expanded': props.disabled
+    'aria-expanded': props['disabled']
       ? undefined
       : connectState === ConnectStates.Open,
     onKeyDown: handleKeyDown,
@@ -641,7 +645,7 @@ let MetamaskButton = forwardRefWithAs(function Button<
 
 // ---
 
-let DEFAULT_WALLETCONNECTBUTTON_TAG = 'button' as const;
+const DEFAULT_WALLETCONNECTBUTTON_TAG = 'button' as const;
 
 interface WalletConnectButtonRenderPropArg {
   connected: boolean;
@@ -654,7 +658,7 @@ type WalletConnectButtonPropsWeControl =
   | 'onKeyDown'
   | 'onClick';
 
-let WalletConnectButton = forwardRefWithAs(function Button<
+const WalletConnectButton = forwardRefWithAs(function Button<
   TTag extends ElementType = typeof DEFAULT_WALLETCONNECTBUTTON_TAG,
 >(
   props: Props<
@@ -664,18 +668,17 @@ let WalletConnectButton = forwardRefWithAs(function Button<
   >,
   ref: Ref<HTMLButtonElement>,
 ) {
-  let [{ connectState, close }, stateDefinition, dispatch] = useConnectContext(
-    'Connect.WalletConnectButton',
-  );
+  const [{ connectState, close }, stateDefinition, dispatch] =
+    useConnectContext('Connect.WalletConnectButton');
   const { active, activate, account } = useWeb3React();
-  let internalButtonRef = useRef<HTMLButtonElement | null>(null);
-  let buttonRef = useSyncRefs(
+  const internalButtonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonRef = useSyncRefs(
     internalButtonRef,
     ref,
     stateDefinition.buttonRef,
   );
 
-  let handleKeyDown = useCallback(
+  const handleKeyDown = useCallback(
     async (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       switch (event.key) {
         case Keys.Space:
@@ -711,10 +714,10 @@ let WalletConnectButton = forwardRefWithAs(function Button<
           break;
       }
     },
-    [dispatch],
+    [activate, close, dispatch],
   );
 
-  let handleKeyUp = useCallback(
+  const handleKeyUp = useCallback(
     (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       switch (event.key) {
         case Keys.Space:
@@ -728,17 +731,17 @@ let WalletConnectButton = forwardRefWithAs(function Button<
     [],
   );
 
-  let slot = useMemo<WalletConnectButtonRenderPropArg>(
+  const slot = useMemo<WalletConnectButtonRenderPropArg>(
     () => ({
       connected: active && !!account,
     }),
-    [stateDefinition.walletState],
+    [account, active],
   );
 
-  let handleClick = useCallback(
+  const handleClick = useCallback(
     async (event: ReactMouseEvent) => {
       if (isDisabledReactIssue7711(event.currentTarget)) return;
-      if (props.disabled) return;
+      if (props['disabled']) return;
       try {
         dispatch({
           type: ActionTypes.SetWalletState,
@@ -766,16 +769,16 @@ let WalletConnectButton = forwardRefWithAs(function Button<
         }
       }
     },
-    [dispatch, props.disabled, stateDefinition.buttonRef],
+    [activate, close, dispatch, props],
   );
 
-  let type = useResolveButtonType(props, internalButtonRef);
-  let passthroughProps = props;
-  let propsWeControl = {
+  const type = useResolveButtonType(props, internalButtonRef);
+  const passthroughProps = props;
+  const propsWeControl = {
     ref: buttonRef,
     id: 'piedao-walletconnect-connect-button',
     type,
-    'aria-expanded': props.disabled
+    'aria-expanded': props['disabled']
       ? undefined
       : connectState === ConnectStates.Open,
     onKeyDown: handleKeyDown,
@@ -793,7 +796,7 @@ let WalletConnectButton = forwardRefWithAs(function Button<
 
 // ---
 
-let DEFAULT_DISCONNECTBUTTON_TAG = 'button' as const;
+const DEFAULT_DISCONNECTBUTTON_TAG = 'button' as const;
 
 interface DisconnectButtonRenderPropArg {
   connected: boolean;
@@ -806,7 +809,7 @@ type DisconnectButtonPropsWeControl =
   | 'onKeyDown'
   | 'onClick';
 
-let DisconnectButton = forwardRefWithAs(function Button<
+const DisconnectButton = forwardRefWithAs(function Button<
   TTag extends ElementType = typeof DEFAULT_DISCONNECTBUTTON_TAG,
 >(
   props: Props<
@@ -816,18 +819,17 @@ let DisconnectButton = forwardRefWithAs(function Button<
   >,
   ref: Ref<HTMLButtonElement>,
 ) {
-  let [{ connectState, close }, stateDefinition, dispatch] = useConnectContext(
-    'Connect.DisconnectButton',
-  );
+  const [{ connectState, close }, stateDefinition, dispatch] =
+    useConnectContext('Connect.DisconnectButton');
   const { active, account, deactivate } = useWeb3React();
-  let internalButtonRef = useRef<HTMLButtonElement | null>(null);
-  let buttonRef = useSyncRefs(
+  const internalButtonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonRef = useSyncRefs(
     internalButtonRef,
     ref,
     stateDefinition.buttonRef,
   );
 
-  let handleKeyDown = useCallback(
+  const handleKeyDown = useCallback(
     (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       switch (event.key) {
         case Keys.Space:
@@ -847,10 +849,10 @@ let DisconnectButton = forwardRefWithAs(function Button<
           break;
       }
     },
-    [dispatch],
+    [close, deactivate, dispatch],
   );
 
-  let handleKeyUp = useCallback(
+  const handleKeyUp = useCallback(
     (event: ReactKeyboardEvent<HTMLButtonElement>) => {
       switch (event.key) {
         case Keys.Space:
@@ -864,17 +866,17 @@ let DisconnectButton = forwardRefWithAs(function Button<
     [],
   );
 
-  let slot = useMemo<MetamaskButtonRenderPropArg>(
+  const slot = useMemo<MetamaskButtonRenderPropArg>(
     () => ({
       connected: active && !!account,
     }),
     [active, account],
   );
 
-  let handleClick = useCallback(
+  const handleClick = useCallback(
     (event: ReactMouseEvent) => {
       if (isDisabledReactIssue7711(event.currentTarget)) return;
-      if (props.disabled) return;
+      if (props['disabled']) return;
       try {
         deactivate();
         dispatch({
@@ -886,16 +888,16 @@ let DisconnectButton = forwardRefWithAs(function Button<
         console.error(e);
       }
     },
-    [dispatch, props.disabled, stateDefinition.buttonRef],
+    [close, deactivate, dispatch, props],
   );
 
-  let type = useResolveButtonType(props, internalButtonRef);
-  let passthroughProps = props;
-  let propsWeControl = {
+  const type = useResolveButtonType(props, internalButtonRef);
+  const passthroughProps = props;
+  const propsWeControl = {
     ref: buttonRef,
     id: 'piedao-disconnect-button',
     type,
-    'aria-expanded': props.disabled
+    'aria-expanded': props['disabled']
       ? undefined
       : connectState === ConnectStates.Open,
     onKeyDown: handleKeyDown,
@@ -913,7 +915,7 @@ let DisconnectButton = forwardRefWithAs(function Button<
 
 // ---
 
-export let Connect = Object.assign(ConnectRoot, {
+export const Connect = Object.assign(ConnectRoot, {
   Overlay,
   Title,
   Description,

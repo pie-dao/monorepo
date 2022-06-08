@@ -24,18 +24,18 @@ import { useOwnerDocument } from '../../hooks/use-owner';
 function usePortalTarget(
   ref: MutableRefObject<HTMLElement | null>,
 ): HTMLElement | null {
-  let forceInRoot = usePortalRoot();
-  let groupTarget = useContext(PortalGroupContext);
+  const forceInRoot = usePortalRoot();
+  const groupTarget = useContext(PortalGroupContext);
 
-  let ownerDocument = useOwnerDocument(ref);
+  const ownerDocument = useOwnerDocument(ref);
 
-  let [target, setTarget] = useState(() => {
+  const [target, setTarget] = useState(() => {
     // Group context is used, but still null
     if (!forceInRoot && groupTarget !== null) return null;
 
     // No group context is used, let's create a default portal root
     if (typeof window === 'undefined') return null;
-    let existingRoot = ownerDocument?.getElementById('root');
+    let existingRoot = ownerDocument?.getElementById('piedao-portal-root');
     if (window.location !== window.parent.location) {
       existingRoot = ownerDocument?.getElementById('storybook-portal');
     }
@@ -43,7 +43,7 @@ function usePortalTarget(
 
     if (ownerDocument === null) return null;
 
-    let root = ownerDocument.createElement('div');
+    const root = ownerDocument.createElement('div');
     root.setAttribute('id', 'piedao-portal-root');
     return ownerDocument.body.appendChild(root);
   });
@@ -68,29 +68,28 @@ function usePortalTarget(
 
 // ---
 
-let DEFAULT_PORTAL_TAG = Fragment;
-interface PortalRenderPropArg {}
+const DEFAULT_PORTAL_TAG = Fragment;
 
-let PortalRoot = forwardRefWithAs(function Portal<
+const PortalRoot = forwardRefWithAs(function Portal<
   TTag extends ElementType = typeof DEFAULT_PORTAL_TAG,
->(props: Props<TTag, PortalRenderPropArg>, ref: Ref<HTMLElement>) {
-  let passthroughProps = props;
-  let internalPortalRootRef = useRef<HTMLElement | null>(null);
-  let portalRef = useSyncRefs(
+>(props: Props<TTag>, ref: Ref<HTMLElement>) {
+  const passthroughProps = props;
+  const internalPortalRootRef = useRef<HTMLElement | null>(null);
+  const portalRef = useSyncRefs(
     optionalRef<typeof internalPortalRootRef['current']>((ref) => {
       internalPortalRootRef.current = ref;
     }),
     ref,
   );
-  let ownerDocument = useOwnerDocument(internalPortalRootRef);
-  let target = usePortalTarget(internalPortalRootRef);
-  let [element] = useState<HTMLDivElement | null>(() =>
+  const ownerDocument = useOwnerDocument(internalPortalRootRef);
+  const target = usePortalTarget(internalPortalRootRef);
+  const [element] = useState<HTMLDivElement | null>(() =>
     typeof window === 'undefined'
       ? null
       : ownerDocument?.createElement('div') ?? null,
   );
 
-  let ready = useServerHandoffComplete();
+  const ready = useServerHandoffComplete();
 
   useIsoMorphicEffect(() => {
     if (!target) return;
@@ -126,22 +125,21 @@ let PortalRoot = forwardRefWithAs(function Portal<
 
 // ---
 
-let DEFAULT_GROUP_TAG = Fragment;
-interface GroupRenderPropArg {}
+const DEFAULT_GROUP_TAG = Fragment;
 
-let PortalGroupContext =
+const PortalGroupContext =
   createContext<MutableRefObject<HTMLElement | null> | null>(null);
 
-let Group = forwardRefWithAs(function Group<
+const Group = forwardRefWithAs(function Group<
   TTag extends ElementType = typeof DEFAULT_GROUP_TAG,
 >(
-  props: Props<TTag, GroupRenderPropArg> & {
+  props: Props<TTag> & {
     target: MutableRefObject<HTMLElement | null>;
   },
   ref: Ref<HTMLElement>,
 ) {
-  let { target, ...passthroughProps } = props;
-  let groupRef = useSyncRefs(ref);
+  const { target, ...passthroughProps } = props;
+  const groupRef = useSyncRefs(ref);
 
   return (
     <PortalGroupContext.Provider value={target}>
@@ -155,4 +153,4 @@ let Group = forwardRefWithAs(function Group<
 });
 
 // ---
-export let Portal = Object.assign(PortalRoot, { Group });
+export const Portal = Object.assign(PortalRoot, { Group });

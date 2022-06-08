@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import useMediaQuery from '../../hooks/useMediaQuery';
+import { useEffect, useState } from 'react';
 import { Navigation, Sidebar, Header } from '../../components';
 
 export default function Layout({ children }) {
+  const mq = useMediaQuery('(max-width: 1023px)');
   const [open, setOpen] = useState(true);
+
+  useEffect(() => {
+    setOpen(!mq);
+  }, [mq]);
+
   return (
     <>
       <div className="flex h-screen bg-background overflow-y-hidden">

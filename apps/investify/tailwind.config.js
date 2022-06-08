@@ -37,6 +37,15 @@ module.exports = {
         info: withOpacityValue('--color-info'),
         red: withOpacityValue('--color-red'),
       },
+      backgroundImage: {
+        'gradient-primary': `linear-gradient(90deg, #FFFFFF 0.33%, #FAF9FF 95.86%)`,
+        'gradient-overlay': `linear-gradient(
+          0deg,
+          rgba(11, 120, 221, 0.6) 0%,
+          rgba(11, 120, 221, 0.6) 80%,
+          rgba(11, 221, 145, 0.6) 100%
+        );`,
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],

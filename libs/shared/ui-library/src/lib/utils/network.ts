@@ -21,7 +21,7 @@ function filter<T extends object>(
 export const chainMap: ChainMap = {
   [SUPPORTED_CHAINS.MAINNET]: {
     chainId: `0x${Number(SUPPORTED_CHAINS.MAINNET).toString(16)}`,
-    chainName: 'Ethereum Mainnet',
+    chainName: 'Ethereum',
     nativeCurrency: {
       name: 'Ether',
       symbol: 'ETH',
@@ -32,7 +32,7 @@ export const chainMap: ChainMap = {
   },
   [SUPPORTED_CHAINS.FANTOM]: {
     chainId: `0x${Number(SUPPORTED_CHAINS.FANTOM).toString(16)}`,
-    chainName: 'Fantom Opera',
+    chainName: 'Fantom',
     nativeCurrency: {
       name: 'FTM',
       symbol: 'FTM',
@@ -43,7 +43,7 @@ export const chainMap: ChainMap = {
   },
   [SUPPORTED_CHAINS.POLYGON]: {
     chainId: `0x${Number(SUPPORTED_CHAINS.POLYGON).toString(16)}`,
-    chainName: 'Polygon Mainnet',
+    chainName: 'Polygon',
     nativeCurrency: {
       name: 'Matic',
       symbol: 'MATIC',
@@ -81,10 +81,10 @@ export const addNetwork = async ({
 }: {
   chainId: number | null | undefined;
 }) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       if (!window.ethereum) throw new Error('No crypto wallet found');
-      await window.ethereum.request({
+      window.ethereum.request({
         method: 'wallet_addEthereumChain',
         params: [chainMap[chainId as SUPPORTED_CHAIN_ID]],
       });
@@ -101,14 +101,14 @@ export const switchNetwork = async ({
 }: {
   chainId: number | null | undefined;
 }) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     if (!window.ethereum) throw new Error('No crypto wallet found');
     if (!chainId) throw new Error('No Chain Id defined');
     if (!isChainSupported) throw new Error('Unsupported chain');
     // block time is not allowed
     const { ...params } = chainMap[chainId as SUPPORTED_CHAIN_ID];
     try {
-      await window.ethereum.request({
+      window.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: params.chainId }],
       });
@@ -125,9 +125,9 @@ export const changeNetwork = async ({
 }: {
   chainId: number | null | undefined;
 }) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
-      await switchNetwork({ chainId });
+      switchNetwork({ chainId });
       resolve(null);
     } catch (err: any) {
       console.warn('Could not switch networks');
