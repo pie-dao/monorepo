@@ -1,23 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { network } from '../connectors';
 import { useEagerConnect, useInactiveListener } from './useWeb3';
-import { EthereumProvider, SUPPORTED_CHAIN_ID } from '../types/types';
+import { EthereumProvider } from '../types/types';
 
 const useFallBack = () => {
   const { active, activate, chainId } = useWeb3React();
+  const listenForChain = useCallback(
+    (chainId: string | undefined) => {
+      if (chainId) activate(network(Number(chainId)));
+    },
+    [activate],
+  );
+
   useEffect(() => {
     const ethereum = window.ethereum as EthereumProvider | undefined;
     if (ethereum && ethereum.on && !active) {
-      activate(network());
-      ethereum.on(
-        'networkChanged',
-        (chainId: SUPPORTED_CHAIN_ID | undefined) => {
-          if (chainId) activate(network(chainId));
-        },
-      );
+      activate(network(Number(ethereum.networkVersion)));
+      ethereum.on('chainChanged', listenForChain);
     }
-  }, [active, chainId, activate]);
+  }, [active, chainId, activate, listenForChain]);
 };
 
 export const useConnectedWallet = () => {

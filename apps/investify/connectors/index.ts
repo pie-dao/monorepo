@@ -3,11 +3,10 @@ import { SUPPORTED_CHAINS } from '../utils/networks';
 
 export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.MAINNET]:
-    'https://mainnet.infura.io/v3/' + process.env.REACT_APP_INFURA_API_KEY,
+    'https://mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
   [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ftm.tools/',
   [SUPPORTED_CHAINS.POLYGON]:
-    'https://polygon-mainnet.infura.io/v3/' +
-    process.env.REACT_APP_INFURA_API_KEY,
+    'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
 };
 
 export default function getLibrary(provider): Web3Provider {

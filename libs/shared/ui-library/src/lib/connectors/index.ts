@@ -3,7 +3,7 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { Web3Provider } from '@ethersproject/providers';
 import { NetworkConnector } from '@web3-react/network-connector';
 import { SUPPORTED_CHAINS, SUPPORTED_CHAIN_ID } from '../types/types';
-import { chainMap } from '../utils/network';
+import { chainMap, isChainSupported } from '../utils/network';
 
 export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.MAINNET]:
@@ -13,10 +13,12 @@ export const RPC_URLS: Record<number, string> = {
     'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
 };
 
-export const network = (chainId: SUPPORTED_CHAIN_ID = 1) => {
+export const network = (chainId = 1) => {
   return new NetworkConnector({
     urls: RPC_URLS,
-    defaultChainId: Number(chainMap[chainId as SUPPORTED_CHAIN_ID].chainId),
+    defaultChainId: isChainSupported(chainId)
+      ? Number(chainMap[chainId as SUPPORTED_CHAIN_ID].chainId)
+      : 1,
   });
 };
 
