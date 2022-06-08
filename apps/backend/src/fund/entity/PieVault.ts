@@ -7,14 +7,12 @@ import {
   getModelForClass,
   modelOptions,
   prop,
-  Ref,
   Severity,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { BigNumberType } from 'mongoose-bignumber';
-import { HistoryEntityBase } from './base';
-import { TokenEntity, TokenModel } from './Token';
+import { HistoryEntityBase, TokenEntity, TokenModel } from '.';
+import { BigNumberType } from '..';
 
 export class TokenDetails implements TokenDetailsType {
   @prop()
