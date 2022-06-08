@@ -405,12 +405,7 @@ export class PiesService {
     }
 
     try {
-      const responses = await Promise.allSettled(pieHistoryPromises);
-      responses.forEach((response: any) => {
-        this.logger.debug(
-          `pie: ${response.value.symbol}, status: ${response.status}`,
-        );
-      });
+      await Promise.all(pieHistoryPromises);
     } catch (error) {
       console.error(error);
     }
