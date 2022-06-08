@@ -66,3 +66,5 @@ package-lock.json
 
 # generated typechain code
 libs/shared/util-blockchain/src/
+
+NOTES.md
