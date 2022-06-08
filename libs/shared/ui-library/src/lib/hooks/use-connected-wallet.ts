@@ -18,6 +18,8 @@ const useFallBack = () => {
     if (ethereum && ethereum.on && !active) {
       activate(network(Number(ethereum.networkVersion)));
       ethereum.on('chainChanged', listenForChain);
+    } else if (!ethereum) {
+      activate(network(1));
     }
   }, [active, chainId, activate, listenForChain]);
 };
