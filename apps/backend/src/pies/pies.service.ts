@@ -405,7 +405,7 @@ export class PiesService {
     }
 
     try {
-      await Promise.allSettled(pieHistoryPromises);
+      await Promise.all(pieHistoryPromises);
     } catch (error) {
       console.error(error);
     }
