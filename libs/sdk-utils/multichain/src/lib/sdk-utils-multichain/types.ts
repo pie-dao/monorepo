@@ -65,12 +65,17 @@ export type BaseMultiChainResponse<R> = {
  * @R is the original response from the original chain.
  * Multichain calls may return errors in which case they will be indicated against the chainId
  */
-export type MultiChainResponse<R> = BaseMultiChainResponse<R> & {
+export type MultiChainResponse<R> = {
+  data: BaseMultiChainResponse<R>;
   meta: MultichainMeta;
 };
 
 /**
- * Override the ethers (...args: any[]) => Promise<any> for multichain
+ * Override the ethers (...args: any[]) => Promise<any> for multichain.
+ * Nested generic look scary but boils down to:
+ * - Promise: returns a promise
+ * - MultichainResponse: will be the response from several chains
+ * - Awaited<ReturnType<T[K]>>: The multichain response will resolve to the original function return value
  */
 type TypedMultichainFunction<T extends Contract, K extends keyof T> = (
   ...args: Parameters<T[K]>

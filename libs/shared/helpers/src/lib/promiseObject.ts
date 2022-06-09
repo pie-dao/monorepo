@@ -46,7 +46,7 @@ const setupPromises = <T>(
  *      totalUnderlying: auxo.totalUnderlying(),
  *      lastHarvest: auxo.lastHarvest(),
  *  })
- * .then(({ lastHarvest }) => console.debug({ lastHarvest }))
+ * .then(({ lastHarvest }) => console.log({ lastHarvest }))
  * ```
  */
 export const promiseObject = async <T>(obj: PromiseObject<T>): Promise<T> => {

@@ -52,28 +52,30 @@ describe('Testing the multichain', () => {
   });
 
   it('Can return a multicall response', async () => {
-    const res = await wrapped.multichain.balanceOf(
+    const { data } = await wrapped.multichain.balanceOf(
       ethers.constants.AddressZero,
     );
 
-    if (res[1].status === 'fulfilled' && res[250].status === 'fulfilled') {
-      expect(res[1].value).toEqual(
+    if (data[1].status === 'fulfilled' && data[250].status === 'fulfilled') {
+      expect(data[1].value).toEqual(
         await wrapped.balanceOf(ethers.constants.AddressZero),
       );
-      expect(res['250'].status).toEqual('fulfilled');
-      expect(res['250'].value.gt(0)).toEqual(true);
+      expect(data['250'].status).toEqual('fulfilled');
+      expect(data['250'].value.gt(0)).toEqual(true);
+      expect(data[250].value).not.toEqual(data[1].value);
     }
   });
 
   it('Can return a multicall response using the alias', async () => {
     const res = await wrapped.mc.balanceOf(ethers.constants.AddressZero);
+    const { data } = res;
 
-    if (res[1].status === 'fulfilled' && res[250].status === 'fulfilled') {
-      expect(res[1].value).toEqual(
+    if (data[1].status === 'fulfilled' && data[250].status === 'fulfilled') {
+      expect(data[1].value).toEqual(
         await wrapped.balanceOf(ethers.constants.AddressZero),
       );
-      expect(res['250'].status).toEqual('fulfilled');
-      expect(res['250'].value.gt(0)).toEqual(true);
+      expect(data['250'].status).toEqual('fulfilled');
+      expect(data['250'].value.gt(0)).toEqual(true);
     }
   });
 });

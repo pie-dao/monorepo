@@ -33,19 +33,28 @@ describe('Testing configuration options for multichain', () => {
       const override = {
         [250]: {
           exclude: false,
+          address: '',
         },
       };
 
       const newConfig = mc.combineConfigAndOverrides(override);
-
-      console.debug({ newConfig, baseConfig });
 
       expect(newConfig![250].exclude).toEqual(false);
       expect(newConfig![250].provider).toEqual(baseConfig[250].provider);
       expect(newConfig![1].provider).toEqual(baseConfig[1].provider);
     });
 
-    it('Applies no overrides if passed a blank overrides object', () => {});
+    it('Applies no overrides if passed a blank overrides object', () => {
+      const override = {};
+      const newConfig = mc.combineConfigAndOverrides(override);
+      expect(newConfig).toEqual(baseConfig);
+
+      const override2 = {
+        [250]: {},
+      };
+      const newConfig2 = mc.combineConfigAndOverrides(override2);
+      expect(newConfig2).toEqual(baseConfig);
+    });
   });
 
   describe('Testing error handling options', () => {
