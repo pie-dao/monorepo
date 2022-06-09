@@ -12,25 +12,52 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@domain/feature-funds": ["libs/domain/feature-funds/src/index.ts"],
-      "@sdk-utils/core": ["libs/sdk-utils/core/src/index.ts"],
-      "@sdk-utils/docs": ["libs/sdk-utils/docs/src/index.ts"],
-      "@sdk-utils/multicall": ["libs/sdk-utils/multicall/src/index.ts"],
-      "@sdk-utils/multichain": ["libs/sdk-utils/multichain/src/index.ts"],
+      "@domain/feature-funds": [
+        "libs/domain/feature-funds/src/index.ts"
+      ],
+      "@sdk-utils/core": [
+        "libs/sdk-utils/core/src/index.ts"
+      ],
+      "@sdk-utils/docs": [
+        "libs/sdk-utils/docs/src/index.ts"
+      ],
+      "@sdk-utils/multicall": [
+        "libs/sdk-utils/multicall/src/index.ts"
+      ],
+      "@sdk-utils/multichain": [
+        "libs/sdk-utils/multichain/src/index.ts"
+      ],
       "@sdk-utils/state-listener": [
         "libs/sdk-utils/state-listener/src/index.ts"
       ],
-      "@shared/helpers": ["libs/shared/helpers/src/index.ts"],
-      "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"],
-      "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"],
-      "@shared/util-blockchain/abis": ["libs/shared/util-blockchain/abis"]
+      "@shared/helpers": [
+        "libs/shared/helpers/src/index.ts"
+      ],
+      "@shared/ui-library": [
+        "libs/shared/ui-library/src/index.ts"
+      ],
+      "@shared/util-blockchain": [
+        "libs/shared/util-blockchain/src/index.ts"
+      ],
+      "@shared/util-blockchain/abis": [
+        "libs/shared/util-blockchain/abis"
+      ]
     },
-    "types": ["jest", "node"]
+    "types": [
+      "jest",
+      "node"
+    ]
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
