@@ -204,3 +204,72 @@ The `Simulator` can be used to create new `Fund` objects to test out theories. S
 - Then the `Simulator` uses a repository to supply the token data to the `Simulation` which will keep chaning the state of the underlying `Fund` as the simulation goes. All these changes are recoderd as a list of snapshots with the corresponding trigger event:
 
 ![The Simulator](the_simulator.png)
+
+
+## Generating Epochs for SLICE Distribution
+
+Once each month we generate a new epoch for the SLICE distribution. There is a test in the codebase that can be used to do so. It is located at [src/staking/test/monthly.distribution.spec.ts](src/staking/test/monthly.distribution.spec.ts).
+
+> 📘 It was invoked from the CLI back in the day but since the nx migration the CLI commands don't work, so that's
+> why we have the test.
+
+The inputs of the following:
+
+```ts
+const month = 5;
+const year = 2022;
+const blockNumber = 14881677;
+const distributedRewards = '149744.16892452948';
+const windowIndex = 8;
+const proposalsIdsToExclude = [
+  '0x07cdffdae0321c8f939a54648ca7671b880f024af0f4bb6a190d468ffa0d93b7',
+];
+```
+
+Whenever it is time to do the SLICE distribution there will be a thread on Discord where the info will be shared.
+It looks like this:
+
+![SLICE Distribution](https://cdn.discordapp.com/attachments/583323797969436672/984027011334950922/unknown.png)
+
+The list of **non-eligible** vote ids needs to be put in `proposalsIdsToExclude`.
+
+At some point the pie report will be generated and there will be an epoch configuration in it. It looks
+like [this](https://github.com/pie-dao/pie-reporter/pull/12/files#diff-e9df6e8815e6a81ebe181ff2e40b4c8f12611fbfbddfe134c8a54e3905c0c78c):
+
+```json
+{
+    "date": "2022-5",
+    "start_timestamp": 1651356000,
+    "end_timestamp": 1654034399,
+    "block_snapshot": 14881677,
+    "distribution_window": 8,
+    "slice_to_distribute": "149744.16892452948"
+}
+```
+
+The mapping is the following:
+
+```ini
+blockNumber        = distribution_window
+distributedRewards = slice_to_distribute
+windowIndes        = distribution_window
+```
+
+Year is the current year, and month is the last month. So in June distribution you'll use May (`5`).
+
+When you have the numbers start the test with the `MONGO_DB_TEST` env var set to the production MongoDB url:
+
+> 📙 This is suboptimal, but right now this is how we do it
+
+```
+MONGO_DB_TEST='<the_url_to_prod_db> 'cd '/path/to/monorepo'
+node 'node_modules/.bin/jest' '/path/to/monorepo/apps/backend/src/staking/test/monthly.distribution.spec.ts' -c '/path/to/monorepo/apps/backend/jest.config.ts' -t 'StakingService Use this test to generate a new epoch'
+```
+
+This will create a new entry in the `epochentities` collection and it will also print out the resulting epoch.
+
+> 📙 Check the type of `merkleTree.windowIndex` in the database. Unfortunately this code is untyped and sometimes you get strings and sometimes numbers. 🤷‍♂️ If it blows try to modify the type.
+
+You need to put this in a file, and share it in the thread.
+
+You're done.
