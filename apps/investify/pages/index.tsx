@@ -27,7 +27,9 @@ export default function Page({ title }) {
       <main className="flex-1 overflow-y-auto">
         <section className="min-w-0 flex-1 h-full flex flex-col">
           {!mq && ready && (
-            <h1 className="text-2xl font-bold main-title w-fit">{t(title)}</h1>
+            <h1 className="text-2xl font-medium main-title w-fit">
+              {t(title)}
+            </h1>
           )}
           <button
             onClick={() => {

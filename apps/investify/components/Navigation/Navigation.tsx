@@ -79,19 +79,16 @@ export default function Navigation({
         visible: {},
       };
 
-  const itemVariants: Variants = !isDesktop
-    ? {
-        hidden: {
-          opacity: 0,
-        },
-        visible: {
-          opacity: 1,
-        },
-      }
-    : {
-        hidden: {},
-        visible: {},
-      };
+  const itemVariants: Variants = {
+    hidden: {
+      opacity: 0,
+      marginLeft: 0,
+      transition: { duration: 0.2 },
+    },
+    visible: {
+      opacity: 1,
+    },
+  };
 
   const titleVariants: Variants = !isDesktop
     ? {
@@ -170,11 +167,12 @@ export default function Navigation({
                 {open ? t('Investify') : 'In'}
               </motion.h2>
             </div>
-            <nav className="mt-6 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">
+            <nav className="mt-10 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">
               <motion.ul
                 variants={listVariants}
                 initial="hidden"
                 animate="visible"
+                className="space-y-5"
               >
                 {navigation.map((item) => {
                   const active = pathname === item.href;
@@ -199,14 +197,19 @@ export default function Navigation({
                             active
                               ? 'text-primary cursor-default bg-white'
                               : 'text-gray-400 cursor-pointer hover:text-primary',
-                            'group flex items-center px-2 py-1 text-sm font-medium rounded-full border border-customBorder mb-2 hover:bg-white hover:drop-shadow-sm',
+                            'group flex items-center p-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm',
                           )}
                         >
                           <item.icon
                             className="flex-shrink-0 h-6 w-6 text-primary"
                             aria-hidden="true"
                           />
-                          <motion.span className="ml-5">
+                          <motion.span
+                            variants={itemVariants}
+                            className="text-base ml-5"
+                            initial="hidden"
+                            animate={open ? 'visible' : 'hidden'}
+                          >
                             {item.name}
                           </motion.span>
                         </span>

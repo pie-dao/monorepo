@@ -66,7 +66,7 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
         type="button"
         onClick={openModal}
         className={classNames(
-          'px-4 py-1 text-md font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white',
+          'px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white',
           className,
         )}
         id="connect-button"
@@ -126,7 +126,7 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                       </>
                     )}
                     {(waiting || connecting) && (
-                      <div className="flex flex-col items-center justify-center h-20 space-y-6">
+                      <div className="flex flex-col items-center justify-center space-y-6">
                         <Rotate />
                         <p className="text-text">{t('waitingWallet')}</p>
                       </div>
@@ -134,11 +134,11 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                     {connected && account && (
                       <div className="flex px-2 py-4 border-primary justify-between items-center">
                         <div>
-                          <p className="text-md font-medium">
+                          <p className="text-base font-medium">
                             {trimAccount(account, true)}
                           </p>
                         </div>
-                        <Connect.DisconnectButton className="px-4 py-1 text-md font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
+                        <Connect.DisconnectButton className="px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
                           {t('Disconnect')}
                         </Connect.DisconnectButton>
                       </div>
@@ -156,7 +156,7 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
 
 export const Rotate = () => (
   <motion.div
-    className="flex items-center justify-center gap-x-2"
+    className="flex items-center justify-center gap-x-2 my-8"
     variants={loadingContainerVariants}
     animate="end"
     initial="start"

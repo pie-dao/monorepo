@@ -17,11 +17,12 @@ export default function Header({
 }) {
   const { t } = useTranslation();
   const ready = useServerHandoffComplete();
-  const mq = useMediaQuery('(min-width: 1024px)');
+  const mqLg = useMediaQuery('(min-width: 1024px)');
+  const mqXl = useMediaQuery('(min-width: 1280px)');
 
   return (
     <header className="flex-shrink-0 sticky">
-      <div className="flex items-center justify-between pr-4 py-5">
+      <div className="flex items-center justify-between pr-7 py-5">
         <div className="w-full flex items-center gap-x-3 flex-wrap">
           <button
             type="button"
@@ -30,7 +31,7 @@ export default function Header({
           >
             <MenuIcon open={open} />
           </button>
-          {mq && ready && (
+          {mqLg && ready && (
             <h1 className="text-2xl font-bold main-title w-auto">{t(title)}</h1>
           )}
           <div className="ml-auto flex gap-x-3 items-center">
@@ -39,6 +40,7 @@ export default function Header({
                 <GasPrice />
                 <ChainSwitcher
                   allowedChains={['MAINNET', 'FANTOM', 'POLYGON']}
+                  showNetworkName={mqXl}
                 />
                 <ConnectButton />
               </>

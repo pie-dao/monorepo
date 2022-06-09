@@ -35,7 +35,6 @@ export const ChainAndLogo: FunctionComponent<ChainProps> = ({
 };
 
 export const ChainSwitcher: FunctionComponent<Props> = ({
-  className,
   showNetworkIcon = true,
   showNetworkName = true,
   allowedChains = ['MAINNET'],
@@ -72,73 +71,69 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={classNames(className)}>
-      <NetworkSwitcher value={chain} onChange={setChain}>
-        {({ open }) => (
-          <div className="relative">
-            <NetworkSwitcher.Button
-              className={classNames(
-                'flex justify-start items-center relative w-full text-sm text-text bg-transparent border border-text hover:bg-text hover:text-white',
-                showNetworkName
-                  ? 'pl-2 pr-3 py-1 rounded-2xl'
-                  : 'p-1 rounded-full',
-              )}
-            >
-              {showNetworkIcon && <ChainAndLogo chain={chain} />}
-              {showNetworkName && (
-                <span className="block truncate font-medium">
-                  {chain ? chain.chainName : 'Unsupported Chain'}
-                </span>
-              )}
-            </NetworkSwitcher.Button>
-            {open && (
-              <NetworkSwitcher.Options
-                as={motion.ul}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: open ? 1 : 0 }}
-                transition={{ duration: 0.1 }}
-                static
-                className="absolute overflow-hidden right-0 mt-2 p-1 w-48 origin-top-right text-text font-medium rounded-md bg-gradient-primary drop-shadow-sm"
-              >
-                <h3 className="border-b-2 pt-2 mx-2 border-primary mb-1">
-                  {t('switchNetwork')}
-                </h3>
-                {Object.entries(availableChains).map(([, chain]) => (
-                  <NetworkSwitcher.Option
-                    as={motion.li}
-                    key={chain.chainId}
-                    className={({ active, selected }) =>
-                      classNames(
-                        'cursor-pointer flex justify-start relative py-1 px-2 my-1 text-left items-center overflow-hidden',
-                        active && 'rounded-full bg-white',
-                        selected && 'rounded-full bg-white',
-                      )
-                    }
-                    value={chain}
-                  >
-                    {({ selected }) => {
-                      return (
-                        <>
-                          {showNetworkIcon && <ChainAndLogo chain={chain} />}
-                          {showNetworkName && (
-                            <span className="block truncate">
-                              {chain.chainName}
-                            </span>
-                          )}
-                          {selected && (
-                            <span className="rounded-full h-2 w-2 bg-secondary ml-auto"></span>
-                          )}
-                        </>
-                      );
-                    }}
-                  </NetworkSwitcher.Option>
-                ))}
-              </NetworkSwitcher.Options>
+    <NetworkSwitcher value={chain} onChange={setChain}>
+      {({ open }) => (
+        <div className="relative">
+          <NetworkSwitcher.Button
+            className={classNames(
+              'flex justify-start items-center relative w-full text-sm text-text bg-transparent border border-text hover:bg-text hover:text-white',
+              showNetworkName
+                ? 'pl-2 pr-3 py-1 rounded-2xl'
+                : 'p-1 rounded-full',
             )}
-          </div>
-        )}
-      </NetworkSwitcher>
-    </div>
+          >
+            {showNetworkIcon && <ChainAndLogo chain={chain} />}
+            {showNetworkName && (
+              <span className="block truncate text-base font-medium">
+                {chain ? chain.chainName : 'Unsupported Chain'}
+              </span>
+            )}
+          </NetworkSwitcher.Button>
+          {open && (
+            <NetworkSwitcher.Options
+              as={motion.div}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: open ? 1 : 0 }}
+              transition={{ duration: 0.1 }}
+              static
+              className="absolute overflow-hidden right-0 mt-2 p-1 w-48 origin-top-right text-text font-medium rounded-md bg-gradient-primary drop-shadow-sm space-y-2"
+            >
+              <h3 className="border-b-2 pt-2 mx-2 border-primary mb-3">
+                {t('switchNetwork')}
+              </h3>
+              {Object.entries(availableChains).map(([, chain]) => (
+                <NetworkSwitcher.Option
+                  as={motion.div}
+                  key={chain.chainId}
+                  className={({ active, selected }) =>
+                    classNames(
+                      'cursor-pointer flex justify-start relative py-1 px-2 text-left items-center overflow-hidden',
+                      active && 'rounded-full bg-white',
+                      selected && 'rounded-full bg-white',
+                    )
+                  }
+                  value={chain}
+                >
+                  {({ selected }) => {
+                    return (
+                      <>
+                        {showNetworkIcon && <ChainAndLogo chain={chain} />}
+                        <span className="block truncate">
+                          {chain.chainName}
+                        </span>
+                        {selected && (
+                          <span className="rounded-full h-2 w-2 bg-secondary ml-auto"></span>
+                        )}
+                      </>
+                    );
+                  }}
+                </NetworkSwitcher.Option>
+              ))}
+            </NetworkSwitcher.Options>
+          )}
+        </div>
+      )}
+    </NetworkSwitcher>
   );
 };
 
