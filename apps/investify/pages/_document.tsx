@@ -34,7 +34,7 @@ export default class _Document extends Document {
             crossOrigin=""
           />
         </Head>
-        <body className="h-full">
+        <body data-theme="investify" className="h-full">
           <Main />
           <NextScript />
         </body>

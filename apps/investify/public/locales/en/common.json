@@ -3,5 +3,7 @@
   "Dashboard": "Dashboard",
   "Discover": "Discover",
   "Investify": "Investify",
-  "copyright": "By PieDAO"
+  "copyright": "By PieDAO",
+  "quote": "quote",
+  "swap": "swap"
 }

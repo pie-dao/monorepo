@@ -40,5 +40,6 @@ This project contains multiple individual packages that can be deployed separate
 
 - [Backend](/apps/backend/README.md) contains the server component of the project.
 - [Landing Page](/apps/landing-page/) the landing page
+- [Funds](/libs/domain/feature-funds/) domain model and business functions for [Funds](GLOSSARY.md#fund)
 
 You can follow the links above to refer to the documentation of those projects.

@@ -155,7 +155,7 @@ export default function Navigation({
         onDragEnd={handleDragEnd}
         className="h-full w-[180px] lg:static inset"
       >
-        <div className="flex flex-col flex-grow pt-2 h-full">
+        <div className="flex flex-col flex-grow pt-8 h-full">
           <div className="flex-shrink-0 flex items-center px-4 overflow-hidden">
             <motion.h2
               className="text-2xl font-medium text-primary"
@@ -194,9 +194,9 @@ export default function Navigation({
                       <span
                         className={classNames(
                           active
-                            ? 'text-primary cursor-default'
+                            ? 'text-primary cursor-default bg-white'
                             : 'text-gray-400 cursor-pointer hover:text-primary',
-                          'group flex items-center px-2 py-1 text-sm font-medium rounded-full border border-customBorder mb-2',
+                          'group flex items-center px-2 py-1 text-sm font-medium rounded-full border border-customBorder mb-2 hover:bg-white hover:drop-shadow-sm',
                         )}
                       >
                         <item.icon

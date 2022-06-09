@@ -6,10 +6,10 @@ import {
   AnyAction,
 } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-import vaultReducer from './example/example.slice';
+import sidebarReducer from './sidebar/sidebar.slice';
 
 export const rootReducer = combineReducers({
-  vault: vaultReducer,
+  sidebar: sidebarReducer,
 });
 
 const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
