@@ -104,7 +104,7 @@ export class MultichainContract<T extends Contract> extends Contract {
       let res: Promise<BaseMultiChainResponse<T>>;
 
       if (!this.provider || !config.provider) throw ERRORS.NO_PROVIDER;
-      if (!this.address || !config.address) throw ERRORS.MISSING_ADDRESS;
+      // if (!this.address || !config.address) throw ERRORS.MISSING_ADDRESS;
 
       // early return if the call should be excluded
       if (config && config.exclude) return obj;
