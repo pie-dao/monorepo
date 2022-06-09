@@ -1,7 +1,7 @@
 import { typesafeContract } from '@sdk-utils/core';
 import { Erc20Abi } from '@shared/util-blockchain';
 import { erc20 } from '@shared/util-blockchain/abis';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { MultiChainContractWrapper } from '../sdk-utils-multichain';
 
 describe('Testing the multichain', () => {
@@ -21,15 +21,21 @@ describe('Testing the multichain', () => {
     },
   });
 
-  /**
-   * Bit of a bad example. as we're using different erc20s
-   */
+  // Works when using different erc20s, so long as ABI is the same
   const wrapped = multichain.wrap(contract, {
     1: {
       address: '0xad32A8e6220741182940c5aBF610bDE99E737b2D',
     },
     250: {
       address: '0x04068da6c83afcfa0e13ba15a6696662335d5b75',
+    },
+    [11]: {
+      provider: new ethers.providers.JsonRpcProvider(
+        'https://mainnet.optimism.io',
+      ),
+    },
+    [137]: {
+      provider: new ethers.providers.JsonRpcProvider('https://polygon-rpc.com'),
     },
   });
 

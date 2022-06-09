@@ -31,7 +31,7 @@ export const MULTICALLCONTRACTS = {
 
 export class MultiCallWrapper extends ContractWrapper<Multicall> {
   // Set in the constructor through the set function
-  private multicallProvider!: _0xS.MulticallProvider;
+  public multicallProvider!: _0xS.MulticallProvider;
   public contracts: Contract[] = [];
 
   constructor(provider?: Provider) {

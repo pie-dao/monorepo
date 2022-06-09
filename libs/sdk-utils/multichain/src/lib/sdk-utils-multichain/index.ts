@@ -1,3 +1,3 @@
-export { MultiChainContractWrapper } from './wrapper';
-export { MultichainContract } from './contract';
+export * from './wrapper';
+export * from './contract';
 export * from './types';

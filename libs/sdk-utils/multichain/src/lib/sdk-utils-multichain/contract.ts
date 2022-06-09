@@ -7,6 +7,7 @@ import {
   MultichainMeta,
   BaseMultiChainResponse,
 } from './types';
+import { ERRORS } from './errors';
 
 /**
  * Multichain contracts grab the list of functions from the contract
@@ -78,6 +79,8 @@ export class MultichainContract<T extends Contract> extends Contract {
         const calls = self.setupContractCalls(key, args);
         const data = await promiseObjectAllSettled(calls);
         const meta = self.getMeta(data);
+        if (meta.errors === meta.total)
+          console.error('All contract calls failed');
         return { data, meta };
       };
 
@@ -99,6 +102,9 @@ export class MultichainContract<T extends Contract> extends Contract {
     const configEntries = Object.entries(this._multichainConfig ?? []);
     return configEntries.reduce((obj, [chainId, config]) => {
       let res: Promise<BaseMultiChainResponse<T>>;
+
+      if (!this.provider || !config.provider) throw ERRORS.NO_PROVIDER;
+      if (!this.address || !config.address) throw ERRORS.MISSING_ADDRESS;
 
       // early return if the call should be excluded
       if (config && config.exclude) return obj;

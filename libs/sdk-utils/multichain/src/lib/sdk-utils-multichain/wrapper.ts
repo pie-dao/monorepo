@@ -5,7 +5,6 @@ import {
   MultiChainConfigOverrides,
   WrapMultichainContract,
   MultiChainWrapperConfig,
-  MultiChainConfig,
 } from './types';
 import { MultichainContract } from './contract';
 
@@ -20,11 +19,12 @@ import { MultichainContract } from './contract';
  * All contracts wrapped will then have the `withMultiChain` field enabled and will
  * return a multichain response
  */
-export class MultiChainContractWrapper extends ContractWrapper<{
+interface MultiChainContractBaseProps {
   multichain: any;
   mc: any;
   _multichainConfig: MultiChainConfigOverrides | MultiChainWrapperConfig;
-}> {
+}
+export class MultiChainContractWrapper extends ContractWrapper<MultiChainContractBaseProps> {
   constructor(public config: MultiChainWrapperConfig) {
     super();
   }
@@ -51,14 +51,12 @@ export class MultiChainContractWrapper extends ContractWrapper<{
     contract: C | MultichainContract<C>,
     overrides?: MultiChainConfigOverrides,
   ): WrapMultichainContract<C> {
+    // existing config will supersede the base config
     const existing = contract._multichainConfig ?? this.config;
     const configAndOverrides = this.combineConfigAndOverrides(
       overrides,
       existing,
     );
-
-    // the contract should have the overrides set already
-    // so what we should be doing is loading that instead of the base config
     return new MultichainContract(
       contract,
       configAndOverrides,
@@ -70,7 +68,6 @@ export class MultiChainContractWrapper extends ContractWrapper<{
     overrides: MultiChainConfigOverrides,
     existing: MultiChainConfigOverrides | MultiChainWrapperConfig,
   ): MultiChainConfigOverrides | undefined {
-    // find the any existing config
     const override = overrides && overrides[chainId];
     const current = existing && existing[chainId];
 
@@ -78,15 +75,7 @@ export class MultiChainContractWrapper extends ContractWrapper<{
     if (current && !override) return { [chainId]: current };
     if (!current && override) return { [chainId]: override };
 
-    // if we are wrapping, we may want to save the override
-    const result = {
-      [chainId]: {
-        ...current,
-        ...override,
-      },
-    };
-
-    return result;
+    return { [chainId]: { ...current, ...override } };
   }
 
   public combineConfigAndOverrides(
@@ -113,7 +102,6 @@ export class MultiChainContractWrapper extends ContractWrapper<{
     return (
       [a, b]
         .map(Object.keys)
-        // merge to single array
         .reduce((b, a) => [...b, ...a])
         // remove duplicates
         .filter((value, index, array) => array.indexOf(String(value)) === index)

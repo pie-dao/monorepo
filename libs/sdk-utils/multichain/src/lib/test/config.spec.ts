@@ -1,15 +1,53 @@
+import { typesafeContract } from '@sdk-utils/core';
+import { MultiCallWrapper } from '@sdk-utils/multicall';
+import { SmartpoolAbi } from '@shared/util-blockchain';
+import { smartPool } from '@shared/util-blockchain/abis';
 import { ethers } from 'ethers';
 import { MultiChainContractWrapper } from '../sdk-utils-multichain';
 
 describe('Testing configuration options for multichain', () => {
   describe('Testing passing different provider options', () => {
-    it('Allows passing of chain ids with fallback providers', () => {});
+    it('Allows passing of chain ids with fallback providers', () => {
+      // Not implemented
+    });
 
-    it('Allows passing of providers', () => {});
+    it('Allows passing of providers', () => {
+      const { multicallProvider } = new MultiCallWrapper();
 
-    it('Allows passing of RPC URLs', () => {});
+      const baseConfig = {
+        [1]: {
+          provider: ethers.getDefaultProvider(),
+        },
+      };
+      const multichain = new MultiChainContractWrapper(baseConfig);
+      const contract = typesafeContract<SmartpoolAbi>(
+        '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
+        smartPool.abi,
+      );
+      const wrapped = multichain.wrap(contract);
 
-    it('Throws an error if a chain id is passed, but no provider exists', () => {});
+      expect(wrapped._multichainConfig![1].provider).toEqual(
+        baseConfig[1].provider,
+      );
+
+      const newContract = multichain.wrap(contract, {
+        [1]: {
+          provider: multicallProvider,
+        },
+      });
+
+      expect(newContract._multichainConfig![1].provider).toEqual(
+        multicallProvider,
+      );
+    });
+
+    it('Allows passing of RPC URLs', () => {
+      // Not implemented
+    });
+
+    it('Throws an error if a chain id is passed, but no provider exists', () => {
+      // Not implemented
+    });
   });
 
   describe('Adding overrides', () => {
@@ -55,15 +93,5 @@ describe('Testing configuration options for multichain', () => {
       const newConfig2 = mc.combineConfigAndOverrides(override2);
       expect(newConfig2).toEqual(baseConfig);
     });
-  });
-
-  describe('Testing error handling options', () => {
-    it('Allows us to set global error handling as silent', () => {});
-
-    it('Allows us to set global error handling to crash the runtime', () => {});
-
-    it('Allows us to set per chain error handling as silent', () => {});
-
-    it('Allows us to set per chain error handling to crash the runtime', () => {});
   });
 });
