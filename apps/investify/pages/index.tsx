@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../hooks';
 import useMediaQuery from '../hooks/useMediaQuery';
 import useTranslation from 'next-translate/useTranslation';
 import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
+import UserCard from '../components/UserCard/UserCard';
 
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
   // this gets rendered on the server, then not on the client
@@ -39,6 +40,7 @@ export default function Page({ title }) {
           >
             Change
           </button>
+          <UserCard />
         </section>
       </main>
     </div>

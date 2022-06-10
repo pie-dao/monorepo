@@ -1,0 +1,17 @@
+query findUser($userId: ID!) {
+  user(id: $userId) {
+    ...UserFields
+  }
+}
+
+query allUsers {
+  allUsers {
+    address
+  }
+}
+
+fragment UserFields on User {
+  id
+  address
+  ensName
+}

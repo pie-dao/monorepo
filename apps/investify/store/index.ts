@@ -7,9 +7,11 @@ import {
 } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import sidebarReducer from './sidebar/sidebar.slice';
+import { api } from '../api/generated/graphql';
 
 export const rootReducer = combineReducers({
   sidebar: sidebarReducer,
+  [api.reducerPath]: api.reducer,
 });
 
 const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
@@ -27,6 +29,12 @@ const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
 export const makeStore = () =>
   configureStore({
     reducer: reducer as never,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredActions: [HYDRATE],
+        },
+      }).concat(api.middleware),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;
