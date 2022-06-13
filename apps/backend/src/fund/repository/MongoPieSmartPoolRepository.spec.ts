@@ -131,7 +131,7 @@ const PIE_SMART_POOL_WITH_HISTORY: PieSmartPool = {
   history: [HISTORY_0],
 };
 
-describe('Given a Mongo Yield Vault Repository', () => {
+describe('Given a Mongo Pie Smart Pool Repository', () => {
   let connection: Mongoose;
   let target: MongoPieSmartPoolRepository;
 
@@ -141,7 +141,9 @@ describe('Given a Mongo Yield Vault Repository', () => {
   });
 
   beforeEach(async () => {
-    await TokenModel.deleteMany({}).exec();
+    await TokenModel.deleteMany({
+      kind: 'PieSmartPoolEntity',
+    }).exec();
     await PieSmartPoolHistoryModel.deleteMany({}).exec();
   });
 
@@ -149,7 +151,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     await connection.disconnect();
   });
 
-  it('When creating a new Yield Vault Entity then it is created', async () => {
+  it('When creating a new Pie Smart Pool Entity then it is created', async () => {
     await target.save(PIE_SMART_POOL_WITH_HISTORY)();
 
     const result = await target.findOneByAddress(
@@ -182,7 +184,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     );
   });
 
-  it('When adding a new history entry, Then it is added properly', async () => {
+  it('When adding a new Pie Smart Pool history entry, Then it is added properly', async () => {
     const saveResult = await target.save(PIE_SMART_POOL_WITH_HISTORY)();
     const pieSmartPool = (saveResult as Right<PieSmartPool>).right;
 
@@ -203,7 +205,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     ).toEqual(['QTT', 'FLT']);
   });
 
-  it('When saving multiple entities Then they are all found by find', async () => {
+  it('When saving multiple Pie Smart Pool entities Then they are all found by find', async () => {
     await target.save(PIE_SMART_POOL_0)();
     await target.save(PIE_SMART_POOL_1)();
     await target.save(PIE_SMART_POOL_2)();

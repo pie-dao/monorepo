@@ -7,7 +7,7 @@ import { AxiosResponse } from 'axios';
 import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 import * as lodash from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Model } from 'mongoose';
 import { Command, Console, createSpinner } from 'nestjs-console';
 import { StakingService } from '../staking';

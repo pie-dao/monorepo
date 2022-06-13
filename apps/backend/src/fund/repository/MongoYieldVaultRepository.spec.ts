@@ -4,6 +4,8 @@ import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
 import { MongoYieldVaultRepository } from '.';
 import { TokenModel, YieldVaultHistoryModel } from '../entity';
+import { MongoPieVaultRepository } from './MongoPieVaultRepository';
+import { PIE_VAULT_0 } from './MongoPieVaultRepository.spec';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
@@ -76,7 +78,7 @@ const HISTORY_1: YieldVaultHistory = {
 
 const YIELD_VAULT_0: YieldVault = {
   chain: CHAIN,
-  address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
+  address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077107',
   name: 'Yield Fund Token',
   decimals: 18,
   kind: 'YieldVault',
@@ -98,7 +100,7 @@ const YIELD_VAULT_1: YieldVault = {
 
 const YIELD_VAULT_2: YieldVault = {
   chain: CHAIN,
-  address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077207',
+  address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077307',
   name: 'Very Fun Token',
   decimals: 18,
   kind: 'YieldVault',
@@ -119,7 +121,12 @@ describe('Given a Mongo Yield Vault Repository', () => {
   beforeAll(async () => {
     connection = await connect(process.env.MONGO_DB_TEST);
     target = new MongoYieldVaultRepository();
-    await TokenModel.deleteMany({}).exec();
+  });
+
+  beforeEach(async () => {
+    await TokenModel.deleteMany({
+      kind: 'YieldVaultEntity',
+    }).exec();
     await YieldVaultHistoryModel.deleteMany({}).exec();
   });
 
@@ -162,7 +169,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     );
   });
 
-  it('When adding a new history entry, Then it is added properly', async () => {
+  it('When adding a new Yield Vault history entry, Then it is added properly', async () => {
     const saveResult = await target.save(YIELD_VAULT_WITH_HISTORY)();
     const yieldVault = (saveResult as Right<YieldVault>).right;
 
@@ -181,7 +188,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     ).toEqual(['FUN', 'HST']);
   });
 
-  it('When saving multiple entities Then they are all found by find', async () => {
+  it('When saving multiple Yield Vault entities Then they are all found by find', async () => {
     await target.save(YIELD_VAULT_0)();
     await target.save(YIELD_VAULT_1)();
     await target.save(YIELD_VAULT_2)();
@@ -192,5 +199,17 @@ describe('Given a Mongo Yield Vault Repository', () => {
     })();
 
     expect(result.map((e) => e.symbol)).toEqual(['YFT', 'VFT']);
+  });
+
+  it('When saving many types of entities Then they can be queried by type', async () => {
+    const pieRepo = new MongoPieVaultRepository();
+
+    await target.save(YIELD_VAULT_0)();
+    await target.save(YIELD_VAULT_1)();
+    await pieRepo.save(PIE_VAULT_0)();
+
+    const result = await target.findAll()();
+
+    expect(result.map((e) => e.symbol)).toEqual(['YFT', 'OFT']);
   });
 });

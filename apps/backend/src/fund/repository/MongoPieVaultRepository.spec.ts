@@ -66,7 +66,7 @@ const HISTORY_1: PieVaultHistory = {
   ],
 };
 
-const PIE_VAULT_0 = new PieVault(
+export const PIE_VAULT_0 = new PieVault(
   CHAIN,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Delicious Pie',
@@ -106,7 +106,12 @@ describe('Given a Mongo Pie Vault Repository', () => {
   beforeAll(async () => {
     connection = await connect(process.env.MONGO_DB_TEST);
     target = new MongoPieVaultRepository();
-    await TokenModel.deleteMany({}).exec();
+  });
+
+  beforeEach(async () => {
+    await TokenModel.deleteMany({
+      kind: 'PieVaultEntity',
+    }).exec();
     await PieVaultHistoryModel.deleteMany({}).exec();
   });
 
@@ -146,7 +151,7 @@ describe('Given a Mongo Pie Vault Repository', () => {
     );
   });
 
-  it('When adding a new history entry, Then it is added properly', async () => {
+  it('When adding a new Pie Vault history entry, Then it is added properly', async () => {
     const saveResult = await target.save(PIE_VAULT_WITH_HISTORY)();
     const pieVault = (saveResult as Right<PieVault>).right;
 
@@ -167,7 +172,7 @@ describe('Given a Mongo Pie Vault Repository', () => {
     ).toEqual(['IHT', 'WDT']);
   });
 
-  it('When saving multiple entities Then they are all found by find', async () => {
+  it('When saving multiple Pie Vault entities Then they are all found by find', async () => {
     await target.save(PIE_VAULT_0)();
     await target.save(PIE_VAULT_1)();
     await target.save(PIE_VAULT_2)();
