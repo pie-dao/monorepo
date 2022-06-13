@@ -1,4 +1,4 @@
-import { PieVault } from '@domain/feature-funds';
+import { Chain, PieVault, PieVaultHistory } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -6,10 +6,13 @@ import { PieVaultHistoryModel, TokenModel } from '../entity';
 import { MongoPieVaultRepository } from './';
 
 const OLD = 1644509027;
-
 const NEW = 1654509027;
+const CHAIN: Chain = {
+  chainId: 1,
+  name: 'Ethereum',
+};
 
-const HISTORY_0 = {
+const HISTORY_0: PieVaultHistory = {
   timestamp: new Date(OLD),
   entryFee: new BigNumber('1'),
   exitFee: new BigNumber('1'),
@@ -23,18 +26,20 @@ const HISTORY_0 = {
   underlyingTokens: [
     {
       token: {
+        chain: CHAIN,
         address: '0x2eCa39776894a97Cb3203B88BF0404eeBA077307',
         name: 'I Am Hungry Token',
         decimals: 18,
         kind: 'Token',
         symbol: 'IHT',
+        tokenMarketData: [],
       },
       balance: new BigNumber('1'),
     },
   ],
 };
 
-const HISTORY_1 = {
+const HISTORY_1: PieVaultHistory = {
   timestamp: new Date(NEW),
   entryFee: new BigNumber('2'),
   exitFee: new BigNumber('2'),
@@ -48,11 +53,13 @@ const HISTORY_1 = {
   underlyingTokens: [
     {
       token: {
+        chain: CHAIN,
         address: '0x2eCa39776894a97Cb3203B88BF0404eeBA077307',
         name: 'I Ran Out of WD-40 Token',
         decimals: 18,
         kind: 'Token',
         symbol: 'WDT',
+        tokenMarketData: [],
       },
       balance: new BigNumber('2'),
     },
@@ -60,30 +67,31 @@ const HISTORY_1 = {
 };
 
 const PIE_VAULT_0 = new PieVault(
+  CHAIN,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Delicious Pie',
   'DPT',
   18,
-  [],
 );
 
 const PIE_VAULT_1 = new PieVault(
+  CHAIN,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Fragrant Pie',
   'FPT',
   18,
-  [],
 );
 
 const PIE_VAULT_2 = new PieVault(
+  CHAIN,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Weird Pie',
   'WPT',
   18,
-  [],
 );
 
 const PIE_VAULT_WITH_HISTORY = new PieVault(
+  CHAIN,
   PIE_VAULT_0.address,
   PIE_VAULT_0.name,
   PIE_VAULT_0.symbol,

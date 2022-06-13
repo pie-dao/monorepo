@@ -7,12 +7,12 @@ import {
   getModelForClass,
   modelOptions,
   prop,
-  Severity,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { HistoryEntityBase, TokenEntity, TokenModel } from '.';
-import { BigNumberType } from '..';
+import { BigNumberType } from '../repository';
+import { HistoryEntityBase } from './base';
+import { TokenEntity, TokenModel } from './Token';
 
 export class TokenDetails implements TokenDetailsType {
   @prop()
@@ -22,7 +22,7 @@ export class TokenDetails implements TokenDetailsType {
 }
 
 @modelOptions({
-  options: { allowMixed: Severity.ALLOW },
+  schemaOptions: { collection: 'pievaulthistory' },
 })
 export class PieVaultHistoryEntity
   extends HistoryEntityBase
@@ -63,8 +63,9 @@ export class PieVaultEntity extends TokenEntity {
     ref: () => PieVaultHistoryEntity,
     foreignField: 'fundId',
     localField: '_id',
+    default: [],
   })
-  history?: PieVaultHistoryEntity[];
+  history: PieVaultHistoryEntity[];
 }
 
 export const PieVaultModel = getDiscriminatorModelForClass(

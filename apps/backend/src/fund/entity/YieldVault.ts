@@ -7,8 +7,9 @@ import {
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { HistoryEntityBase, TokenEntity, TokenModel } from '.';
-import { BigNumberType } from '..';
+import { BigNumberType } from '../repository';
+import { HistoryEntityBase } from './base';
+import { TokenEntity, TokenModel } from './Token';
 
 export class StrategyEntity implements Strategy {
   @prop({ required: true })
@@ -36,6 +37,9 @@ export class StrategyEntity implements Strategy {
   balance: BigNumber;
 }
 
+@modelOptions({
+  schemaOptions: { collection: 'yieldvaulthistory' },
+})
 export class YieldVaultHistoryEntity
   extends HistoryEntityBase
   implements YieldVaultHistory
@@ -127,8 +131,9 @@ export class YieldVaultEntity extends TokenEntity {
     ref: () => YieldVaultHistoryEntity,
     foreignField: 'fundId',
     localField: '_id',
+    default: [],
   })
-  history?: YieldVaultHistoryEntity[];
+  history: YieldVaultHistoryEntity[];
 }
 
 export const YieldVaultModel = getDiscriminatorModelForClass(

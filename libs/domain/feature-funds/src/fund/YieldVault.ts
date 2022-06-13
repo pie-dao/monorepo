@@ -1,4 +1,6 @@
+import { Chain } from './Chain';
 import { Fund } from './Fund';
+import { TokenMarketData } from './TokenMarketData';
 import { YieldVaultHistory } from './YieldVaultHistory';
 
 /**
@@ -9,10 +11,12 @@ import { YieldVaultHistory } from './YieldVaultHistory';
 export class YieldVault implements Fund<YieldVaultHistory> {
   public kind: 'YieldVault' = 'YieldVault';
   constructor(
+    public chain: Chain,
     public address: string,
     public name: string,
     public symbol: string,
     public decimals: number,
     public history: YieldVaultHistory[] = [],
+    public tokenMarketData: TokenMarketData[] = [],
   ) {}
 }

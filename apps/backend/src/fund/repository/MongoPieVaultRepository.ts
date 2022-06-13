@@ -15,6 +15,7 @@ export class MongoPieVaultRepository extends FundRepositoryBase<
 
   protected toDomainObject(entity: PieVaultEntity): PieVault {
     return new PieVault(
+      entity.chain,
       entity.address,
       entity.name,
       entity.symbol,

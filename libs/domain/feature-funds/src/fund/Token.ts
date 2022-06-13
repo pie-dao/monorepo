@@ -1,7 +1,14 @@
+import { Chain, TokenMarketData } from '.';
+
 /**
- * Represents a token on the Ethereum blockchain.
+ * Represents a token on a blockchain. Note that a token can be uniquely identified
+ * by its address on a blockchain (`chain` + `address`).
  */
 export type Token = {
+  /**
+   * The chain on which token resides.
+   */
+  chain: Chain;
   /**
    * The address where this token is deployed. This is important
    * because `name` and `symbol` are not unique according to the
@@ -16,6 +23,10 @@ export type Token = {
    * to create tagged unions.
    */
   kind: string;
+  /**
+   * (Temporal) market data for this token.
+   */
+  tokenMarketData: TokenMarketData[];
 };
 
 /**

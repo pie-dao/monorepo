@@ -19,6 +19,7 @@ export class MongoYieldVaultRepository extends FundRepositoryBase<
 
   protected toDomainObject(entity: YieldVaultEntity): YieldVault {
     return new YieldVault(
+      entity.chain,
       entity.address,
       entity.name,
       entity.symbol,

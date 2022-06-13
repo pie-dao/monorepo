@@ -19,6 +19,7 @@ export class MongoPieSmartPoolRepository extends FundRepositoryBase<
 
   protected toDomainObject(entity: PieSmartPoolEntity): PieSmartPool {
     return new PieSmartPool(
+      entity.chain,
       entity.address,
       entity.name,
       entity.symbol,

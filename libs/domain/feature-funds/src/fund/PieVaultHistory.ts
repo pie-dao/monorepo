@@ -3,10 +3,9 @@ import { FundHistory } from './FundHistory';
 import { Token } from './Token';
 
 /**
- * Represents the state of a {@link PieVault} at the given {@link timestamp}.
+ * Represents the state of a `PieVault` at the given `timestamp`.
  */
 export type PieVaultHistory = FundHistory & {
-  timestamp: Date;
   /**
    * The entry fee paid when minting.
    * This is a percentage value. 1e18 == 100%. Capped at 100%.

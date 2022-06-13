@@ -1,4 +1,4 @@
-import { YieldVault, YieldVaultHistory } from '@domain/feature-funds';
+import { Chain, YieldVault, YieldVaultHistory } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -6,17 +6,22 @@ import { MongoYieldVaultRepository } from '.';
 import { TokenModel, YieldVaultHistoryModel } from '../entity';
 
 const OLD = 1644509027;
-
 const NEW = 1654509027;
+const CHAIN: Chain = {
+  chainId: 1,
+  name: 'Ethereum',
+};
 
-const HISTORY_0 = {
+const HISTORY_0: YieldVaultHistory = {
   timestamp: new Date(OLD),
   underlyingToken: {
+    chain: CHAIN,
     address: '0xA4b18b66CF0136D7F0805d70Daa922A53707bCbb',
     name: 'Fun Token',
     symbol: 'FUN',
     decimals: 18,
     kind: 'Token',
+    tokenMarketData: [],
   },
   totalStrategyHoldings: new BigNumber('1'),
   userDepositLimit: new BigNumber('1'),
@@ -30,11 +35,13 @@ const HISTORY_0 = {
     {
       name: 'Strategy Token',
       underlyingToken: {
+        chain: CHAIN,
         address: '0x7B7D39cD201067EF189276Af04fE40fb50C73D99',
         name: 'Strategy Token',
         symbol: 'ST',
         decimals: 18,
         kind: 'Token',
+        tokenMarketData: [],
       },
       depositedAmount: new BigNumber('1'),
       estimatedAmount: new BigNumber('1'),
@@ -49,11 +56,13 @@ const HISTORY_0 = {
 const HISTORY_1: YieldVaultHistory = {
   timestamp: new Date(NEW),
   underlyingToken: {
+    chain: CHAIN,
     address: '0xA4b18b66CF013637F0805d70Daa922A53707bCbb',
     name: 'History Token',
     symbol: 'HST',
     decimals: 18,
     kind: 'Token',
+    tokenMarketData: [],
   },
   totalStrategyHoldings: new BigNumber('2'),
   userDepositLimit: new BigNumber('2'),
@@ -66,30 +75,36 @@ const HISTORY_1: YieldVaultHistory = {
 };
 
 const YIELD_VAULT_0: YieldVault = {
+  chain: CHAIN,
   address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   name: 'Yield Fund Token',
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'YFT',
   history: [],
+  tokenMarketData: [],
 };
 
 const YIELD_VAULT_1: YieldVault = {
+  chain: CHAIN,
   address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077207',
   name: 'Other Fund Token',
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'OFT',
   history: [],
+  tokenMarketData: [],
 };
 
 const YIELD_VAULT_2: YieldVault = {
+  chain: CHAIN,
   address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077207',
   name: 'Very Fun Token',
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'VFT',
   history: [],
+  tokenMarketData: [],
 };
 
 const YIELD_VAULT_WITH_HISTORY: YieldVault = {

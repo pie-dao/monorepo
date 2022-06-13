@@ -1,3 +1,4 @@
+export * from './Chain';
 export * from './Fund';
 export * from './FundHistory';
 export * from './PieSmartPool';
@@ -5,5 +6,6 @@ export * from './PieSmartPoolHistory';
 export * from './PieVault';
 export * from './PieVaultHistory';
 export * from './Token';
+export * from './TokenMarketData';
 export * from './YieldVault';
 export * from './YieldVaultHistory';

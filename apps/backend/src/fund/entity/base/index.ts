@@ -1,2 +1,3 @@
-export * from './HistoryEntityBase';
+export * from './HistoryEntity';
 export * from './FundEntity';
+export * from './TemporalEntity';

@@ -1,7 +1,12 @@
 import * as E from 'fp-ts/Either';
-import { Fund } from './Fund';
-import { PieVaultHistory, TokenDetails } from './PieVaultHistory';
-import { Token } from './Token';
+import {
+  Chain,
+  Fund,
+  PieVaultHistory,
+  Token,
+  TokenDetails,
+  TokenMarketData,
+} from '.';
 
 /**
  * Pie Vaults are an evolution of Pie Smart Pools, but without the swapping functionality.
@@ -21,11 +26,13 @@ export class PieVault implements Fund<PieVaultHistory> {
   private latest?: PieVaultHistory;
 
   constructor(
+    public chain: Chain,
     public address: string,
     public name: string,
     public symbol: string,
     public decimals: number,
     public history: PieVaultHistory[] = [],
+    public tokenMarketData: TokenMarketData[] = [],
   ) {
     this.latest = history.length > 0 ? history[history.length - 1] : undefined;
   }

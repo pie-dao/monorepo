@@ -6,13 +6,20 @@ import { MongoPieSmartPoolRepository } from '.';
 import { PieSmartPoolHistoryModel, TokenModel } from '../entity';
 
 const OLD = 1644509027;
-
 const NEW = 1654509027;
+const RELATIONS = {
+  chain: {
+    chainId: 1,
+    name: 'Ethereum',
+  },
+  tokenMarketData: [],
+};
 
 const HISTORY_0: PieSmartPoolHistory = {
   timestamp: new Date(OLD),
   underlyingTokens: [
     {
+      ...RELATIONS,
       address: '0x2eCa39776894a91Cb3203B88aF2404eeBA077307',
       name: 'Quantum Tunneling Token',
       decimals: 18,
@@ -33,6 +40,7 @@ const HISTORY_0: PieSmartPoolHistory = {
   denormalizedWeights: [
     {
       token: {
+        ...RELATIONS,
         address: '0x2eCa39776894a91Cb3203B88aF2404eeBA077307',
         name: 'Quantum Tunneling Token',
         decimals: 18,
@@ -51,6 +59,7 @@ const HISTORY_1: PieSmartPoolHistory = {
   timestamp: new Date(NEW),
   underlyingTokens: [
     {
+      ...RELATIONS,
       address: '0x2eCa39776894a11Cb3203B88aF2404eeBA077307',
       name: 'Fuzzy Logic Token',
       decimals: 18,
@@ -71,6 +80,7 @@ const HISTORY_1: PieSmartPoolHistory = {
   denormalizedWeights: [
     {
       token: {
+        ...RELATIONS,
         address: '0x2eCa39776894a11Cb3203B88aF2404eeBA077307',
         name: 'Fuzzy Logic Token',
         decimals: 18,
@@ -86,6 +96,7 @@ const HISTORY_1: PieSmartPoolHistory = {
 };
 
 const PIE_SMART_POOL_0: PieSmartPool = {
+  ...RELATIONS,
   address: '0x2eCa39776894a91Cb3203B88aF0404eeBA077307',
   name: 'Smart Cookie Pool',
   decimals: 18,
@@ -95,6 +106,7 @@ const PIE_SMART_POOL_0: PieSmartPool = {
 };
 
 const PIE_SMART_POOL_1: PieSmartPool = {
+  ...RELATIONS,
   address: '0x2eCa39776894a91Cb3203B88B10404eeBA077307',
   name: 'Smart Wookie Pool',
   decimals: 18,
@@ -104,6 +116,7 @@ const PIE_SMART_POOL_1: PieSmartPool = {
 };
 
 const PIE_SMART_POOL_2: PieSmartPool = {
+  ...RELATIONS,
   address: '0x2eCa39776894a91db3203B88BF0404eeBA077307',
   name: 'Smart Nookie Pool',
   decimals: 18,
@@ -113,6 +126,7 @@ const PIE_SMART_POOL_2: PieSmartPool = {
 };
 
 const PIE_SMART_POOL_WITH_HISTORY: PieSmartPool = {
+  ...RELATIONS,
   ...PIE_SMART_POOL_0,
   history: [HISTORY_0],
 };
