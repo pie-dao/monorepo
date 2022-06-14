@@ -46,6 +46,7 @@ export type User = Node & {
   address: Scalars['String'];
   balances: Array<Balance>;
   id: Scalars['ID'];
+  twentyFourHourChange: Scalars['Float'];
 };
 
 export type FindUserQueryVariables = Exact<{
@@ -58,6 +59,7 @@ export type FindUserQuery = {
     __typename?: 'User';
     id: string;
     address: string;
+    twentyFourHourChange: number;
     balances: Array<{
       __typename?: 'Balance';
       currency: string;
@@ -77,6 +79,7 @@ export type UserFieldsFragment = {
   __typename?: 'User';
   id: string;
   address: string;
+  twentyFourHourChange: number;
   balances: Array<{ __typename?: 'Balance'; currency: string; amount: number }>;
 };
 
@@ -88,6 +91,7 @@ export const UserFieldsFragmentDoc = `
     currency
     amount
   }
+  twentyFourHourChange
 }
     `;
 export const FindUserDocument = `

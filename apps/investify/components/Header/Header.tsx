@@ -21,7 +21,7 @@ export default function Header({
   const mqXl = useMediaQuery('(min-width: 1280px)');
 
   return (
-    <header className="flex-shrink-0 sticky">
+    <header className="flex-shrink-0 sticky z-10 w-full">
       <div className="flex items-center justify-between pr-7 py-5">
         <div className="w-full flex items-center gap-x-3 flex-wrap">
           <button

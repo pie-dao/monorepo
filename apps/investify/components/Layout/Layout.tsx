@@ -14,14 +14,16 @@ export default function Layout({ children }) {
     <>
       <div className="flex h-screen bg-background overflow-y-hidden">
         <Navigation open={open} setOpen={setOpen} />
-        <div className="flex-1 flex flex-row">
-          <div className="flex flex-col flex-1 h-full overflow-y-auto">
+        <div className="flex-1 flex flex-row w-full">
+          <div className="flex flex-col flex-1 h-full">
             <Header
               open={open}
               setOpen={setOpen}
               title={children.props.title}
             />
-            <main className="flex-1 max-h-full px-7">{children}</main>
+            <main className="flex-1 max-h-full px-7 overflow-y-auto w-full">
+              {children}
+            </main>
           </div>
           <Sidebar />
         </div>

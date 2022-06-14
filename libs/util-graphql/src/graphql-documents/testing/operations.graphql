@@ -17,4 +17,5 @@ fragment UserFields on User {
     currency
     amount
   }
+  twentyFourHourChange
 }
