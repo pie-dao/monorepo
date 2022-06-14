@@ -106,18 +106,20 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
     }
   }, [lastWeekMCap, lastWeekMeanNav, underlyingData]);
 
-  const isSomeMcapNaN = useCallback((mcap) => {
-    return mcap.some((d) => isNaN(getPieValue(d)));
-  }, []);
-  const isSomeNavNaN = useCallback((nav) => {
-    return nav.some((d) => isNaN(getPieValue(d)));
-  }, []);
+  const isSomeMcapNaN = useCallback(() => {
+    if (lastWeekMCap) {
+      return lastWeekMCap.some((d) => isNaN(getPieValue(d)));
+    }
+    return true;
+  }, [lastWeekMCap]);
+  const isSomeNavNaN = useCallback(() => {
+    if (lastWeekMeanNav) {
+      return lastWeekMeanNav.some((d) => isNaN(getPieValue(d)));
+    }
+    return true;
+  }, [lastWeekMeanNav]);
 
-  if (
-    (lastWeekMCap && isSomeMcapNaN(lastWeekMCap)) ||
-    (lastWeekMeanNav && isSomeNavNaN(lastWeekMeanNav))
-  )
-    return null;
+  if (isSomeMcapNaN() || isSomeNavNaN()) return null;
 
   return (
     <section className="mb-10 gap-y-4 md:gap-4 grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
