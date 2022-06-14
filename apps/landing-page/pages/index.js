@@ -12,6 +12,7 @@ import Roi from '../components/Roi';
 import AboutUsTwitter from '../components/AboutUsTwitter';
 import ExploreProducts from '../components/ExploreProducts';
 import PlayBar from '../components/PlayBar';
+import Chart from '../components/Chart';
 import posts from '../content/twitterPosts.json';
 
 export async function getServerSideProps({ req, res }) {
@@ -53,6 +54,9 @@ export default function Home({ play, morePies, sentiment }) {
       />
       <Metaverse />
       <ScrollingBoxes />
+      {play && play.coin && sentiment && (
+        <Chart play={play.coin} sentiment={sentiment} />
+      )}
       <UnderlyingTokens />
       <Methodology />
       <Roi />
