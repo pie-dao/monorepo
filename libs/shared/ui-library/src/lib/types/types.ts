@@ -3,7 +3,7 @@ import { ReactNode, ReactElement } from 'react';
 // A unique placeholder we can use as a default. This is nice because we can use this instead of
 // defaulting to null / never / ... and possibly collide with actual data.
 // Ideally we use a unique symbol here.
-let __ = '1D45E01E-AF44-47C4-988A-19A94EBAF55C' as const;
+const __ = '1D45E01E-AF44-47C4-988A-19A94EBAF55C' as const;
 export type __ = typeof __;
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
@@ -36,7 +36,8 @@ type ClassNameOverride<TTag, TSlot = any> = PropsOf<TTag> extends {
   className?: any;
 }
   ? { className?: string | ((bag: TSlot) => string) }
-  : {};
+  : // eslint-disable-next-line @typescript-eslint/ban-types
+    {};
 
 // Provide clean TypeScript props, which exposes some of our custom API's.
 export type Props<
@@ -87,6 +88,7 @@ export interface EthereumProvider {
   removeListener?: (...args: any[]) => void;
   autoRefreshOnNetworkChange?: boolean;
   request: ({ method, params }: { method: string; params?: any[] }) => any;
+  networkVersion?: string;
 }
 
 export interface ProviderRpcError extends Error {

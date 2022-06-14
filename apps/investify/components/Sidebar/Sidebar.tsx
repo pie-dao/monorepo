@@ -6,7 +6,7 @@ import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import SidebarContent from './SidebarContent';
 
 export default function Sidebar() {
-  const isDesktop = useMediaQuery('(min-width: 640px)');
+  const isDesktop = useMediaQuery('(min-width: 768px)');
   const { modalOpen } = useAppSelector((state) => state.sidebar);
   const dispatch = useAppDispatch();
   const ready = useServerHandoffComplete();
@@ -23,8 +23,6 @@ export default function Sidebar() {
     >
       <div className="flex items-end justify-center min-h-screen text-center sm:block sm:p-0">
         <Dialog.Overlay className="fixed inset-0 backdrop-blur-sm" />
-
-        {/* This element is to trick the browser into centering the modal contents. */}
         <span
           className="hidden sm:inline-block sm:align-middle sm:h-screen"
           aria-hidden="true"
@@ -37,8 +35,8 @@ export default function Sidebar() {
       </div>
     </Dialog>
   ) : (
-    <aside className="h-screen hidden sm:block sm:w-64 md:w-2/5 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
-      <div className="h-full bg-white drop-shadow rounded-md p-4 w-full">
+    <aside className="h-screen hidden md:block sm:w-64 md:w-1/3 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
+      <div className="h-full bg-white drop-shadow rounded-lg py-2 px-4 w-full">
         <SidebarContent />
       </div>
     </aside>

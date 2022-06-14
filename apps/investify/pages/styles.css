@@ -52,3 +52,15 @@
     --color-red: 246 112 112;
   }
 }
+
+.main-title {
+  background-clip: text;
+  text-fill-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    rgba(11, 120, 221, 1) 0%,
+    rgba(11, 120, 221, 1) 80%,
+    rgba(11, 221, 145, 1) 100%
+  );
+  color: transparent;
+}

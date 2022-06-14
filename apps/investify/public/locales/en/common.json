@@ -5,5 +5,10 @@
   "Investify": "Investify",
   "copyright": "By PieDAO",
   "quote": "quote",
-  "swap": "swap"
+  "swap": "swap",
+  "switchNetwork": "Switch Network",
+  "connect": "Connect",
+  "connectWallet": "Connect Wallet",
+  "connectingWallet": "Awaiting confirmation",
+  "waitingWallet": "Please confirm the connection from your wallet"
 }

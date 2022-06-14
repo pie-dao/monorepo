@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useWeb3React } from '@web3-react/core';
 import {
@@ -9,7 +10,6 @@ import {
 import { NetworkSwitcher } from './NetworkSwitcher';
 import { logoSwitcher } from './ChainIcons/ChainIcons';
 import { isChainSupported, filteredChainMap } from '../utils/network';
-import Icon from '../ui-atoms/Icon';
 import { classNames } from '../utils/class-names';
 import { useConnectedWallet } from '../hooks/use-connected-wallet';
 
@@ -28,20 +28,20 @@ export const ChainAndLogo: FunctionComponent<ChainProps> = ({
   chain,
 }: ChainProps) => {
   return (
-    <span className="h-6 w-6 block mr-2">
+    <span className="h-6 w-6 block">
       {logoSwitcher(chain?.nativeCurrency?.symbol)}
     </span>
   );
 };
 
 export const ChainSwitcher: FunctionComponent<Props> = ({
-  className,
   showNetworkIcon = true,
   showNetworkName = true,
   allowedChains = ['MAINNET'],
 }: Props) => {
   useConnectedWallet();
-  let { chainId } = useWeb3React();
+  const { chainId } = useWeb3React();
+  const { t } = useTranslation();
 
   const availableChains = useMemo(() => {
     return filteredChainMap(allowedChains);
@@ -51,7 +51,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
     return isChainSupported(chainId)
       ? availableChains[chainId as SUPPORTED_CHAIN_ID]
       : null;
-  }, [chainId]);
+  }, [availableChains, chainId]);
 
   const [chain, setChain] = useState(supportedChain);
   const [loading, setLoading] = useState(false);
@@ -71,47 +71,46 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   }
 
   return (
-    <div className={classNames(className, showNetworkName ? 'w-60' : 'w-20')}>
-      <NetworkSwitcher value={chain} onChange={setChain}>
-        {({ open }) => (
-          <div className="relative">
-            <NetworkSwitcher.Button className="flex justify-start items-center relative w-full py-2 px-4 text-left bg-white rounded-lg shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-opacity-75 focus-visible:ring-white focus-visible:ring-offset-primary focus-visible:ring-offset-2 focus-visible:border-primary sm:text-sm">
-              {showNetworkIcon && <ChainAndLogo chain={chain} />}
-              {showNetworkName && (
-                <span className="block truncate font-bold text-primary">
-                  {chain ? chain.chainName : 'Unsupported Chain'}
-                </span>
-              )}
-              <motion.span
-                className="ml-auto flex pointer-events-none"
-                animate={{ rotate: open ? 180 : 0 }}
-              >
-                <Icon
-                  width="20px"
-                  height="20px"
-                  icon="arrow_dropdown"
-                  aria-hidden="true"
-                  className="fill-primary"
-                />
-              </motion.span>
-            </NetworkSwitcher.Button>
+    <NetworkSwitcher value={chain} onChange={setChain}>
+      {({ open }) => (
+        <div className="relative">
+          <NetworkSwitcher.Button
+            className={classNames(
+              'flex justify-start items-center relative w-full text-sm text-text bg-transparent border border-text hover:bg-text hover:text-white',
+              showNetworkName
+                ? 'pl-2 pr-3 py-1 rounded-2xl'
+                : 'p-1 rounded-full',
+            )}
+          >
+            {showNetworkIcon && <ChainAndLogo chain={chain} />}
+            {showNetworkName && (
+              <span className="block truncate text-base font-medium">
+                {chain ? chain.chainName : 'Unsupported Chain'}
+              </span>
+            )}
+          </NetworkSwitcher.Button>
+          {open && (
             <NetworkSwitcher.Options
-              as={motion.ul}
+              as={motion.div}
               initial={{ opacity: 0 }}
               animate={{ opacity: open ? 1 : 0 }}
               transition={{ duration: 0.1 }}
               static
-              className={`flex flex-col absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${
-                open ? '' : 'pointer-events-none'
-              }`}
+              className="absolute overflow-hidden right-0 mt-2 p-1 w-48 origin-top-right text-text font-medium rounded-md bg-gradient-primary drop-shadow-sm space-y-2"
             >
+              <h3 className="border-b-2 pt-2 mx-2 border-primary mb-3">
+                {t('switchNetwork')}
+              </h3>
               {Object.entries(availableChains).map(([, chain]) => (
                 <NetworkSwitcher.Option
+                  as={motion.div}
                   key={chain.chainId}
-                  className={({ active }) =>
-                    `cursor-default flex justify-start space-x-2 relative w-full py-2 pl-3 text-left items-center ${
-                      active ? 'text-white bg-secondary' : ''
-                    }`
+                  className={({ active, selected }) =>
+                    classNames(
+                      'cursor-pointer flex justify-start relative py-1 px-2 text-left items-center overflow-hidden',
+                      active && 'rounded-full bg-white',
+                      selected && 'rounded-full bg-white',
+                    )
                   }
                   value={chain}
                 >
@@ -119,28 +118,22 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
                     return (
                       <>
                         {showNetworkIcon && <ChainAndLogo chain={chain} />}
-                        {showNetworkName && (
-                          <span
-                            className={`block truncate ${
-                              selected ? 'font-medium' : 'font-normal'
-                            }`}
-                          >
-                            {chain.chainName}
-                          </span>
+                        <span className="block truncate">
+                          {chain.chainName}
+                        </span>
+                        {selected && (
+                          <span className="rounded-full h-2 w-2 bg-secondary ml-auto"></span>
                         )}
-                        {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"></span>
-                        ) : null}
                       </>
                     );
                   }}
                 </NetworkSwitcher.Option>
               ))}
             </NetworkSwitcher.Options>
-          </div>
-        )}
-      </NetworkSwitcher>
-    </div>
+          )}
+        </div>
+      )}
+    </NetworkSwitcher>
   );
 };
 
@@ -153,7 +146,7 @@ const SkeletonUI = () => {
           animate={{ opacity: 1 }}
           className="relative overflow-hidden"
         >
-          <div className="w-60 h-10 bg-gray-200 rounded-lg shadow-md"></div>
+          <div className="w-40 h-8 bg-gray-200 rounded-lg shadow-md"></div>
           <motion.div
             initial={{ x: -200 }}
             animate={{ x: 400 }}

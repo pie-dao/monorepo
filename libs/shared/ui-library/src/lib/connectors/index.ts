@@ -1,23 +1,26 @@
 import { InjectedConnector } from '@web3-react/injected-connector';
-import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { Web3Provider } from '@ethersproject/providers';
 import { NetworkConnector } from '@web3-react/network-connector';
-import { SUPPORTED_CHAINS } from '../types/types';
+import { SUPPORTED_CHAINS, SUPPORTED_CHAIN_ID } from '../types/types';
+import { chainMap, isChainSupported } from '../utils/network';
 
 export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.MAINNET]:
-    'https://mainnet.infura.io/v3/' + process.env.REACT_APP_INFURA_API_KEY,
+    'https://mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
   [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ftm.tools/',
   [SUPPORTED_CHAINS.POLYGON]:
-    'https://polygon-mainnet.infura.io/v3/' +
-    process.env.REACT_APP_INFURA_API_KEY,
+    'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
 };
 
-export const network = new NetworkConnector({
-  urls: RPC_URLS,
-  defaultChainId: SUPPORTED_CHAINS.FANTOM,
-});
+export const network = (chainId = 1) => {
+  return new NetworkConnector({
+    urls: RPC_URLS,
+    defaultChainId: isChainSupported(chainId)
+      ? Number(chainMap[chainId as SUPPORTED_CHAIN_ID].chainId)
+      : 1,
+  });
+};
 
 export const injected = new InjectedConnector({
   supportedChainIds: [
@@ -27,7 +30,7 @@ export const injected = new InjectedConnector({
   ],
 });
 
-export default function getLibrary(provider: any): Web3Provider {
+export default function getLibrary(provider): Web3Provider {
   /**
    * Pass in the root of the application to make the Web3-react
    * hook available to the application
@@ -43,13 +46,17 @@ export default function getLibrary(provider: any): Web3Provider {
   return library;
 }
 
-export const gnosisSafe = new SafeAppConnector();
-
 export const walletconnect = new WalletConnectConnector({
   rpc: {
     [SUPPORTED_CHAINS.FANTOM]: RPC_URLS[SUPPORTED_CHAINS.FANTOM],
+    [SUPPORTED_CHAINS.POLYGON]: RPC_URLS[SUPPORTED_CHAINS.POLYGON],
+    [SUPPORTED_CHAINS.MAINNET]: RPC_URLS[SUPPORTED_CHAINS.MAINNET],
   },
-  chainId: SUPPORTED_CHAINS.FANTOM,
+  supportedChainIds: [
+    SUPPORTED_CHAINS.FANTOM,
+    SUPPORTED_CHAINS.POLYGON,
+    SUPPORTED_CHAINS.MAINNET,
+  ],
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
 });

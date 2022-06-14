@@ -1,19 +1,12 @@
 import { useWeb3React } from '@web3-react/core';
-import { injected, gnosisSafe } from '../connectors';
+import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
+import { injected } from '../connectors';
 import { useEffect, useState } from 'react';
 import { UAParser } from 'ua-parser-js';
 import { EthereumProvider } from '../types/types';
 
-const parser = new UAParser(window.navigator.userAgent);
-const { type } = parser.getDevice();
-
-export const userAgent = parser.getResult();
-
-export const isMobile = type === 'mobile' || type === 'tablet';
-
-export const IS_IN_IFRAME = false;
-
 export function useEagerConnect() {
+  const IS_IN_IFRAME = window.parent !== window;
   const { activate, active } = useWeb3React();
   const [tried, setTried] = useState(false);
 
@@ -23,6 +16,7 @@ export function useEagerConnect() {
 
   // first, try connecting to a gnosis safe
   useEffect(() => {
+    const gnosisSafe = new SafeAppConnector();
     if (!triedSafe) {
       gnosisSafe.isSafeApp().then((loadedInSafe) => {
         if (loadedInSafe) {
@@ -38,6 +32,9 @@ export function useEagerConnect() {
 
   // then, if that fails, try connecting to an injected connector
   useEffect(() => {
+    const parser = new UAParser(window.navigator.userAgent);
+    const { type } = parser.getDevice();
+    const isMobile = type === 'mobile' || type === 'tablet';
     if (!active && triedSafe && !tried) {
       injected.isAuthorized().then((isAuthorized) => {
         if (isAuthorized) {
