@@ -13,5 +13,8 @@ query allUsers {
 fragment UserFields on User {
   id
   address
-  ensName
+  balances {
+    currency
+    amount
+  }
 }

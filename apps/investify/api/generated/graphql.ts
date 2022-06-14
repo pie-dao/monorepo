@@ -18,7 +18,12 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Date: any;
+};
+
+export type Balance = {
+  __typename?: 'Balance';
+  amount: Scalars['Float'];
+  currency: Scalars['String'];
 };
 
 export type Node = {
@@ -36,15 +41,10 @@ export type QueryUserArgs = {
   id: Scalars['ID'];
 };
 
-export enum Role {
-  Admin = 'ADMIN',
-  User = 'USER',
-}
-
 export type User = Node & {
   __typename?: 'User';
   address: Scalars['String'];
-  ensName: Scalars['String'];
+  balances: Array<Balance>;
   id: Scalars['ID'];
 };
 
@@ -58,7 +58,11 @@ export type FindUserQuery = {
     __typename?: 'User';
     id: string;
     address: string;
-    ensName: string;
+    balances: Array<{
+      __typename?: 'Balance';
+      currency: string;
+      amount: number;
+    }>;
   } | null;
 };
 
@@ -73,14 +77,17 @@ export type UserFieldsFragment = {
   __typename?: 'User';
   id: string;
   address: string;
-  ensName: string;
+  balances: Array<{ __typename?: 'Balance'; currency: string; amount: number }>;
 };
 
 export const UserFieldsFragmentDoc = `
     fragment UserFields on User {
   id
   address
-  ensName
+  balances {
+    currency
+    amount
+  }
 }
     `;
 export const FindUserDocument = `

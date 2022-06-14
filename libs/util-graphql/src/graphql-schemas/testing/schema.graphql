@@ -15,5 +15,10 @@ interface Node {
 type User implements Node {
   id: ID!
   address: String!
-  ensName: String!
+  balances: [Balance!]!
+}
+
+type Balance {
+  amount: Float!
+  currency: String!
 }
