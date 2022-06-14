@@ -62,7 +62,8 @@ export class MongoPieRepository extends PieRepository {
   }
 
   async findAll(): Promise<Pie[]> {
-    return this.pieModel.find().populate('history').map(entityToPie);
+    const result = await this.pieModel.find().populate('history').exec();
+    return entityToPie(result);
   }
 }
 
