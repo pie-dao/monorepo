@@ -45,6 +45,7 @@ module.exports = {
           rgba(11, 120, 221, 0.6) 80%,
           rgba(11, 221, 145, 0.6) 100%
         );`,
+        'gradient-dashboard-card': `linear-gradient(250.99deg, #443F7C 23.04%, #211D4E 73.93%), url('/noise.png')`,
       },
     },
   },

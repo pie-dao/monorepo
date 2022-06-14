@@ -1,7 +1,6 @@
 import { ReactElement } from 'react';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import { setStep, setOpenModal } from '../store/sidebar/sidebar.slice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import useMediaQuery from '../hooks/useMediaQuery';
 import useTranslation from 'next-translate/useTranslation';
@@ -24,22 +23,14 @@ export default function Page({ title }) {
   const ready = useServerHandoffComplete();
 
   return (
-    <div className="flex-1 flex items-stretch overflow-hidden">
-      <main className="flex-1 overflow-y-auto">
+    <div className="flex-1 flex items-stretch">
+      <main className="flex-1">
         <section className="min-w-0 flex-1 h-full flex flex-col">
           {!mq && ready && (
             <h1 className="text-2xl font-medium main-title w-fit">
               {t(title)}
             </h1>
           )}
-          <button
-            onClick={() => {
-              dispatch(setStep(step === 'quote' ? 'swap' : 'quote'));
-              dispatch(setOpenModal(true));
-            }}
-          >
-            Change
-          </button>
           <UserCard />
         </section>
       </main>
