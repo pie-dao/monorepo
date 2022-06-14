@@ -6,6 +6,7 @@ import useMediaQuery from '../hooks/useMediaQuery';
 import useTranslation from 'next-translate/useTranslation';
 import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
 import UserCard from '../components/UserCard/UserCard';
+import { useWeb3React } from '@web3-react/core';
 
 export const getStaticProps = wrapper.getStaticProps((store) => () => {
   // this gets rendered on the server, then not on the client
@@ -16,8 +17,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => () => {
 });
 
 export default function Page({ title }) {
-  const dispatch = useAppDispatch();
-  const { step } = useAppSelector((state) => state.sidebar);
+  const { account } = useWeb3React();
   const { t } = useTranslation();
   const mq = useMediaQuery('(min-width: 1024px)');
   const ready = useServerHandoffComplete();
@@ -31,7 +31,7 @@ export default function Page({ title }) {
               {t(title)}
             </h1>
           )}
-          <UserCard />
+          {account && <UserCard />}
         </section>
       </main>
     </div>
