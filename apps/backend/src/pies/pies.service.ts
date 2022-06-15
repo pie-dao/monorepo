@@ -230,7 +230,9 @@ export class PiesService {
       );
       const coinsDbPromises = [];
       coingeckoCoinsResponses.forEach((response: any) => {
-        coinsDbPromises.push(this.saveCgCoins(response.value, timestamp));
+        if(response.value.data) {
+            coinsDbPromises.push(this.saveCgCoins(response.value.data, timestamp));
+        }
       });
 
       const coinsDbResponses = await Promise.allSettled(coinsDbPromises);
