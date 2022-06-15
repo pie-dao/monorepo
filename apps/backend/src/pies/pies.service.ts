@@ -236,11 +236,18 @@ export class PiesService {
             coinsDbPromises.push(
               this.saveCgCoins(response.value.data, timestamp),
             );
+          } else {
+            this.logger.error(response.reason);
           }
         },
       );
 
-      await Promise.allSettled(coinsDbPromises);
+      const dbResults = await Promise.allSettled(coinsDbPromises);
+      dbResults.forEach((response: PromiseSettledResult<any>) => {
+        if (response.status === 'rejected') {
+          this.logger.error(response.reason);
+        }
+      });
     } catch (error) {
       this.logger.error(error.message);
     }
