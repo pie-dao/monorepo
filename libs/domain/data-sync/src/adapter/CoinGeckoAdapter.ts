@@ -12,41 +12,93 @@ import {
   ohlcCodec,
   OhlcDto,
 } from '.';
-import { CoinSummary, SupportedCurrency, SupportedDays } from '..';
+import { SupportedCurrency, SupportedDays } from '..';
+import { SupportedChain } from '@shared/util-chain';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
-export const DEFAULT_PIES: CoinSummary[] = [
+export const DEFAULT_PIES = [
   {
-    id: 'piedao-balanced-crypto-pie',
-    symbol: 'bcp',
-    name: 'PieDAO Balanced Crypto Pie',
-  },
-  { id: 'piedao-btc', symbol: 'btc++', name: 'PieDAO BTC++' },
-  { id: 'piedao-defi', symbol: 'defi++', name: 'PieDAO DEFI++' },
-  {
-    id: 'piedao-defi-large-cap',
-    symbol: 'defi+l',
-    name: 'PieDAO DEFI Large Cap',
+    symbol: 'BTC++',
+    name: 'PieDAO BTC++',
+    address: '0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd',
+    coingeckoId: 'piedao-btc',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
   },
   {
-    id: 'piedao-defi-small-cap',
-    symbol: 'defi+s',
+    symbol: 'DEFI+S',
     name: 'PieDAO DEFI Small Cap',
+    address: '0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c',
+    coingeckoId: 'piedao-defi-small-cap',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
   },
-  { id: 'piedao-dough-v2', symbol: 'dough', name: 'PieDAO DOUGH v2' },
   {
-    id: 'piedao-yearn-ecosystem-pie',
-    symbol: 'ypie',
+    symbol: 'DEFI++',
+    name: 'PieDAO DEFI++',
+    address: '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
+    coingeckoId: 'piedao-defi',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+  },
+  {
+    symbol: 'BCP',
+    name: 'PieDAO Balanced Crypto Pie',
+    address: '0xe4f726adc8e89c6a6017f01eada77865db22da14',
+    coingeckoId: 'piedao-balanced-crypto-pie',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieSmartPool',
+  },
+  {
+    symbol: 'YPIE',
     name: 'PieDAO Yearn Ecosystem Pie',
+    address: '0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31',
+    coingeckoId: 'piedao-yearn-ecosystem-pie',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+  },
+  {
+    symbol: 'PLAY',
+    name: 'Metaverse NFT Index',
+    address: '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
+    coingeckoId: 'metaverse-nft-index',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+  },
+  {
+    symbol: 'DEFI+L',
+    name: 'PieDAO DEFI Large Cap',
+    address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
+    coingeckoId: 'piedao-defi-large-cap',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+  },
+  {
+    symbol: 'DEFI+L',
+    name: 'PieDAO DEFI Large Cap',
+    address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
+    coingeckoId: 'piedao-defi-large-cap',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+  },
+  {
+    symbol: 'USD++',
+    name: 'USD Index Pie',
+    address: '0x9a48bd0ec040ea4f1d3147c025cd4076a2e71e3e',
+    coingeckoId: '',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
   },
 ];
+
+export type CoinSummary = typeof DEFAULT_PIES[0];
 
 export class CoinGeckoAdapter {
   private pieIds: string;
 
   constructor(coins: CoinSummary[] = DEFAULT_PIES) {
-    this.pieIds = coins.map((it) => it.id).join(',');
+    this.pieIds = coins.map((it) => it.coingeckoId).join(',');
   }
 
   public getMarkets(

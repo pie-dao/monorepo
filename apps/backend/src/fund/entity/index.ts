@@ -1,5 +1,4 @@
 export * from './base';
-export * from './Chain';
 export * from './PieSmartPool';
 export * from './PieVault';
 export * from './Token';

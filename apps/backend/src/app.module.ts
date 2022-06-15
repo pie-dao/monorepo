@@ -14,6 +14,7 @@ import { join } from 'path';
 import { SentimentModule } from './sentiment/sentiment.module';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import { FundsModule } from './fund';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { SentryModule } from '@ntegral/nestjs-sentry';
       environment: process.env.NODE_ENV,
       release: '0.0.1',
     }),
+    FundsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

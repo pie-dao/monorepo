@@ -1,4 +1,5 @@
 import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-chain';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -8,10 +9,7 @@ import { PieSmartPoolHistoryModel, TokenModel } from '../entity';
 const OLD = 1644509027;
 const NEW = 1654509027;
 const RELATIONS = {
-  chain: {
-    chainId: 1,
-    name: 'Ethereum',
-  },
+  chain: SupportedChain.ETHEREUM,
   tokenMarketData: [],
 };
 

@@ -1,4 +1,5 @@
-import { Chain, PieVault, PieVaultHistory } from '@domain/feature-funds';
+import { PieVault, PieVaultHistory } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-chain';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -7,10 +8,6 @@ import { MongoPieVaultRepository } from './';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
-const CHAIN: Chain = {
-  chainId: 1,
-  name: 'Ethereum',
-};
 
 const HISTORY_0: PieVaultHistory = {
   timestamp: new Date(OLD),
@@ -26,7 +23,7 @@ const HISTORY_0: PieVaultHistory = {
   underlyingTokens: [
     {
       token: {
-        chain: CHAIN,
+        chain: SupportedChain.ETHEREUM,
         address: '0x2eCa39776894a97Cb3203B88BF0404eeBA077307',
         name: 'I Am Hungry Token',
         decimals: 18,
@@ -53,7 +50,7 @@ const HISTORY_1: PieVaultHistory = {
   underlyingTokens: [
     {
       token: {
-        chain: CHAIN,
+        chain: SupportedChain.ETHEREUM,
         address: '0x2eCa39776894a97Cb3203B88BF0404eeBA077307',
         name: 'I Ran Out of WD-40 Token',
         decimals: 18,
@@ -67,7 +64,7 @@ const HISTORY_1: PieVaultHistory = {
 };
 
 export const PIE_VAULT_0 = new PieVault(
-  CHAIN,
+  SupportedChain.ETHEREUM,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Delicious Pie',
   'DPT',
@@ -75,7 +72,7 @@ export const PIE_VAULT_0 = new PieVault(
 );
 
 const PIE_VAULT_1 = new PieVault(
-  CHAIN,
+  SupportedChain.ETHEREUM,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Fragrant Pie',
   'FPT',
@@ -83,7 +80,7 @@ const PIE_VAULT_1 = new PieVault(
 );
 
 const PIE_VAULT_2 = new PieVault(
-  CHAIN,
+  SupportedChain.ETHEREUM,
   '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Weird Pie',
   'WPT',
@@ -91,7 +88,7 @@ const PIE_VAULT_2 = new PieVault(
 );
 
 const PIE_VAULT_WITH_HISTORY = new PieVault(
-  CHAIN,
+  SupportedChain.ETHEREUM,
   PIE_VAULT_0.address,
   PIE_VAULT_0.name,
   PIE_VAULT_0.symbol,

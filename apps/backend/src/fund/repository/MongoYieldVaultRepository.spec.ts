@@ -1,4 +1,5 @@
-import { Chain, YieldVault, YieldVaultHistory } from '@domain/feature-funds';
+import { YieldVault, YieldVaultHistory } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-chain';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -9,15 +10,11 @@ import { PIE_VAULT_0 } from './MongoPieVaultRepository.spec';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
-const CHAIN: Chain = {
-  chainId: 1,
-  name: 'Ethereum',
-};
 
 const HISTORY_0: YieldVaultHistory = {
   timestamp: new Date(OLD),
   underlyingToken: {
-    chain: CHAIN,
+    chain: SupportedChain.ETHEREUM,
     address: '0xA4b18b66CF0136D7F0805d70Daa922A53707bCbb',
     name: 'Fun Token',
     symbol: 'FUN',
@@ -37,7 +34,7 @@ const HISTORY_0: YieldVaultHistory = {
     {
       name: 'Strategy Token',
       underlyingToken: {
-        chain: CHAIN,
+        chain: SupportedChain.ETHEREUM,
         address: '0x7B7D39cD201067EF189276Af04fE40fb50C73D99',
         name: 'Strategy Token',
         symbol: 'ST',
@@ -58,7 +55,7 @@ const HISTORY_0: YieldVaultHistory = {
 const HISTORY_1: YieldVaultHistory = {
   timestamp: new Date(NEW),
   underlyingToken: {
-    chain: CHAIN,
+    chain: SupportedChain.ETHEREUM,
     address: '0xA4b18b66CF013637F0805d70Daa922A53707bCbb',
     name: 'History Token',
     symbol: 'HST',
@@ -77,7 +74,7 @@ const HISTORY_1: YieldVaultHistory = {
 };
 
 const YIELD_VAULT_0: YieldVault = {
-  chain: CHAIN,
+  chain: SupportedChain.ETHEREUM,
   address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077107',
   name: 'Yield Fund Token',
   decimals: 18,
@@ -88,7 +85,7 @@ const YIELD_VAULT_0: YieldVault = {
 };
 
 const YIELD_VAULT_1: YieldVault = {
-  chain: CHAIN,
+  chain: SupportedChain.ETHEREUM,
   address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077207',
   name: 'Other Fund Token',
   decimals: 18,
@@ -99,7 +96,7 @@ const YIELD_VAULT_1: YieldVault = {
 };
 
 const YIELD_VAULT_2: YieldVault = {
-  chain: CHAIN,
+  chain: SupportedChain.ETHEREUM,
   address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077307',
   name: 'Very Fun Token',
   decimals: 18,

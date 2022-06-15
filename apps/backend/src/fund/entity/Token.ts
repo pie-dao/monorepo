@@ -1,18 +1,14 @@
 import { Token } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-chain';
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
-import { ChainEntity } from './Chain';
 import { TokenMarketDataEntity } from './TokenMarketData';
 
 @modelOptions({
   schemaOptions: { discriminatorKey: 'kind', collection: 'tokens' },
 })
 export class TokenEntity implements Token {
-  @prop({
-    ref: () => ChainEntity,
-    foreignField: 'chainId',
-    localField: 'chainId',
-  })
-  chain: ChainEntity;
+  @prop({ type: String, required: true, index: true })
+  chain: SupportedChain;
   @prop({ required: true, index: true })
   address: string;
   @prop({ required: true, index: true })

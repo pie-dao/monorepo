@@ -1,4 +1,3 @@
-export * from './Chain';
 export * from './Fund';
 export * from './FundHistory';
 export * from './PieSmartPool';

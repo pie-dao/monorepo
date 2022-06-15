@@ -1,12 +1,6 @@
+import { SupportedChain } from '@shared/util-chain';
 import * as E from 'fp-ts/Either';
-import {
-  Chain,
-  Fund,
-  PieVaultHistory,
-  Token,
-  TokenDetails,
-  TokenMarketData,
-} from '.';
+import { Fund, PieVaultHistory, Token, TokenDetails, TokenMarketData } from '.';
 
 /**
  * Pie Vaults are an evolution of Pie Smart Pools, but without the swapping functionality.
@@ -26,7 +20,7 @@ export class PieVault implements Fund<PieVaultHistory> {
   private latest?: PieVaultHistory;
 
   constructor(
-    public chain: Chain,
+    public chain: SupportedChain,
     public address: string,
     public name: string,
     public symbol: string,

@@ -1,4 +1,5 @@
-import { Chain, TokenMarketData } from '.';
+import { SupportedChain } from '@shared/util-chain';
+import { TokenMarketData } from '.';
 
 /**
  * Represents a token on a blockchain. Note that a token can be uniquely identified
@@ -8,7 +9,7 @@ export type Token = {
   /**
    * The chain on which token resides.
    */
-  chain: Chain;
+  chain: SupportedChain;
   /**
    * The address where this token is deployed. This is important
    * because `name` and `symbol` are not unique according to the

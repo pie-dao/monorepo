@@ -1,11 +1,11 @@
 import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
+import { FundRepositoryBase } from '.';
 import {
   PieSmartPoolEntity,
   PieSmartPoolHistoryModel,
   PieSmartPoolModel,
 } from '../entity';
-import { FundRepositoryBase } from '.';
 
 @Injectable()
 export class MongoPieSmartPoolRepository extends FundRepositoryBase<
