@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Interval } from '@nestjs/schedule';
+import { AxiosResponse } from 'axios';
 import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 import * as lodash from 'lodash';
@@ -217,7 +218,7 @@ export class PiesService {
 
       // retrieving all pies from database...
       const pies = await this.getPies(undefined, undefined, test);
-      const coingeckoCoinsPromises = [];
+      const coingeckoCoinsPromises: Promise<AxiosResponse<unknown>>[] = [];
 
       pies.forEach((pie) => {
         if (pie.coingecko_id) {
@@ -229,16 +230,17 @@ export class PiesService {
         coingeckoCoinsPromises,
       );
       const coinsDbPromises = [];
-      coingeckoCoinsResponses.forEach((response: any) => {
-        coinsDbPromises.push(this.saveCgCoins(response.value, timestamp));
-      });
+      coingeckoCoinsResponses.forEach(
+        (response: PromiseSettledResult<AxiosResponse<unknown>>) => {
+          if (response.status === 'fulfilled') {
+            coinsDbPromises.push(
+              this.saveCgCoins(response.value.data, timestamp),
+            );
+          }
+        },
+      );
 
-      const coinsDbResponses = await Promise.allSettled(coinsDbPromises);
-      coinsDbResponses.forEach((response: any) => {
-        this.logger.debug(
-          `${response.value.coin.symbol} has been fetched and saved into db correctly.`,
-        );
-      });
+      await Promise.allSettled(coinsDbPromises);
     } catch (error) {
       this.logger.error(error.message);
     }
@@ -257,7 +259,7 @@ export class PiesService {
     return coin.save();
   }
 
-  private async fetchCgCoins(coingeckoId: string): Promise<any> {
+  private async fetchCgCoins(coingeckoId: string): Promise<AxiosResponse<any>> {
     const url = `https://api.coingecko.com/api/v3/coins/${coingeckoId}?localization=false&developer_data=false`;
     return this.httpService.get(url).toPromise();
   }
