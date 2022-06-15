@@ -239,10 +239,11 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
           </div>
           <div className="flex-1 md:flex-none lg:flex-1 md:h-[102px] lg:h-auto flex border border-deeper_purple rounded-lg p-4 justify-center items-center lg:mb-4">
             <p className="text-gradient text-4xl mr-3">
-              + {inceptionPerc().toFixed()}%
+              {inceptionPerc().toFixed()}%
             </p>
             <Image
               lazyBoundary="325px"
+              className={inceptionPerc() > 0 ? '' : 'rotate-180'}
               src={inceptionPerc() >= 0 ? arrowGreen : arrowRed}
               alt="Arrow"
             />
