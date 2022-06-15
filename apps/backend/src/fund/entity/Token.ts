@@ -1,5 +1,4 @@
-import { Token } from '@domain/feature-funds';
-import { SupportedChain } from '@shared/util-chain';
+import { SupportedChain, Token } from '@domain/feature-funds';
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 import { TokenMarketDataEntity } from './TokenMarketData';
 

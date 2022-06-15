@@ -139,6 +139,7 @@ export class YieldVaultEntity extends TokenEntity {
 export const YieldVaultModel = getDiscriminatorModelForClass(
   TokenModel,
   YieldVaultEntity,
+  'YieldVault',
 );
 
 export const YieldVaultHistoryModel = getModelForClass(YieldVaultHistoryEntity);

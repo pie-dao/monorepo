@@ -1,5 +1,8 @@
-import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
-import { SupportedChain } from '@shared/util-chain';
+import {
+  PieSmartPool,
+  PieSmartPoolHistory,
+  SupportedChain,
+} from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -140,7 +143,7 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
 
   beforeEach(async () => {
     await TokenModel.deleteMany({
-      kind: 'PieSmartPoolEntity',
+      kind: 'PieSmartPool',
     }).exec();
     await PieSmartPoolHistoryModel.deleteMany({}).exec();
   });

@@ -96,6 +96,7 @@ export class PieSmartPoolEntity extends TokenEntity {
 export const PieSmartPoolModel = getDiscriminatorModelForClass(
   TokenModel,
   PieSmartPoolEntity,
+  'PieSmartPool',
 );
 
 export const PieSmartPoolHistoryModel = getModelForClass(

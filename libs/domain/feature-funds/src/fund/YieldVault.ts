@@ -1,7 +1,4 @@
-import { SupportedChain } from '@shared/util-chain';
-import { Fund } from './Fund';
-import { TokenMarketData } from './TokenMarketData';
-import { YieldVaultHistory } from './YieldVaultHistory';
+import { Fund, SupportedChain, TokenMarketData, YieldVaultHistory } from '.';
 
 /**
  * Yield Vaults can be used to tokenize a yield-generating strategy for those tokens that don't have one.

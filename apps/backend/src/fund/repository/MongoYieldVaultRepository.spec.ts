@@ -1,5 +1,8 @@
-import { YieldVault, YieldVaultHistory } from '@domain/feature-funds';
-import { SupportedChain } from '@shared/util-chain';
+import {
+  YieldVault,
+  YieldVaultHistory,
+  SupportedChain,
+} from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -122,7 +125,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
 
   beforeEach(async () => {
     await TokenModel.deleteMany({
-      kind: 'YieldVaultEntity',
+      kind: 'YieldVault',
     }).exec();
     await YieldVaultHistoryModel.deleteMany({}).exec();
   });

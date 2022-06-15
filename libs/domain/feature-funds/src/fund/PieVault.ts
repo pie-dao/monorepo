@@ -1,6 +1,12 @@
-import { SupportedChain } from '@shared/util-chain';
 import * as E from 'fp-ts/Either';
-import { Fund, PieVaultHistory, Token, TokenDetails, TokenMarketData } from '.';
+import {
+  Fund,
+  PieVaultHistory,
+  Token,
+  TokenDetails,
+  TokenMarketData,
+  SupportedChain,
+} from '.';
 
 /**
  * Pie Vaults are an evolution of Pie Smart Pools, but without the swapping functionality.

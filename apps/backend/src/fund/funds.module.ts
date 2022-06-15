@@ -2,6 +2,7 @@ import { CoinGeckoAdapter } from '@domain/data-sync';
 import { Module } from '@nestjs/common';
 import { FundLoader } from './loaders/FundLoader';
 import {
+  MongooseConnectionProvider,
   MongoPieSmartPoolRepository,
   MongoPieVaultRepository,
   MongoYieldVaultRepository,
@@ -21,12 +22,14 @@ const CoinGeckoAdapterProvider = {
     MongoYieldVaultRepository,
     FundLoader,
     CoinGeckoAdapterProvider,
+    MongooseConnectionProvider,
   ],
   exports: [
     MongoPieSmartPoolRepository,
     MongoPieVaultRepository,
     MongoYieldVaultRepository,
     FundLoader,
+    MongooseConnectionProvider,
   ],
 })
 export class FundsModule {}

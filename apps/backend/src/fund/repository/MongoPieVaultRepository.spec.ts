@@ -1,5 +1,8 @@
-import { PieVault, PieVaultHistory } from '@domain/feature-funds';
-import { SupportedChain } from '@shared/util-chain';
+import {
+  PieVault,
+  PieVaultHistory,
+  SupportedChain,
+} from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
@@ -107,7 +110,7 @@ describe('Given a Mongo Pie Vault Repository', () => {
 
   beforeEach(async () => {
     await TokenModel.deleteMany({
-      kind: 'PieVaultEntity',
+      kind: 'PieVault',
     }).exec();
     await PieVaultHistoryModel.deleteMany({}).exec();
   });

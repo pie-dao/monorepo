@@ -8,3 +8,4 @@ export * from './Token';
 export * from './TokenMarketData';
 export * from './YieldVault';
 export * from './YieldVaultHistory';
+export * from './SupportedChain';

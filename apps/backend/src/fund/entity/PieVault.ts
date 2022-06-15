@@ -71,6 +71,7 @@ export class PieVaultEntity extends TokenEntity {
 export const PieVaultModel = getDiscriminatorModelForClass(
   TokenModel,
   PieVaultEntity,
+  'PieVault',
 );
 
 export const PieVaultHistoryModel = getModelForClass(PieVaultHistoryEntity);

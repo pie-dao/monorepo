@@ -1,3 +1,4 @@
+import { SupportedChain } from '@domain/feature-funds';
 import { DataTransferError, get } from '@hexworks/cobalt-http';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
@@ -13,11 +14,10 @@ import {
   OhlcDto,
 } from '.';
 import { SupportedCurrency, SupportedDays } from '..';
-import { SupportedChain } from '@shared/util-chain';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
-export const DEFAULT_PIES = [
+export const DEFAULT_FUNDS = [
   {
     symbol: 'BTC++',
     name: 'PieDAO BTC++',
@@ -25,6 +25,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-btc',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'DEFI+S',
@@ -33,6 +34,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-defi-small-cap',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'DEFI++',
@@ -41,6 +43,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-defi',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'BCP',
@@ -49,6 +52,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-balanced-crypto-pie',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieSmartPool',
+    decimals: 18,
   },
   {
     symbol: 'YPIE',
@@ -57,6 +61,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-yearn-ecosystem-pie',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'PLAY',
@@ -65,6 +70,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'metaverse-nft-index',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'DEFI+L',
@@ -73,6 +79,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-defi-large-cap',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'DEFI+L',
@@ -81,6 +88,7 @@ export const DEFAULT_PIES = [
     coingeckoId: 'piedao-defi-large-cap',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
   {
     symbol: 'USD++',
@@ -89,15 +97,16 @@ export const DEFAULT_PIES = [
     coingeckoId: '',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
+    decimals: 18,
   },
 ];
 
-export type CoinSummary = typeof DEFAULT_PIES[0];
+export type CoinSummary = typeof DEFAULT_FUNDS[0];
 
 export class CoinGeckoAdapter {
   private pieIds: string;
 
-  constructor(coins: CoinSummary[] = DEFAULT_PIES) {
+  constructor(coins: CoinSummary[] = DEFAULT_FUNDS) {
     this.pieIds = coins.map((it) => it.coingeckoId).join(',');
   }
 
