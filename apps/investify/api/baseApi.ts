@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
-import { graphqlRequestBaseQuery } from '@rtk-query/graphql-request-base-query';
+import { graphqlRequestBaseQuery } from './baseQuery';
 
 export const api = createApi({
   reducerPath: 'user',
