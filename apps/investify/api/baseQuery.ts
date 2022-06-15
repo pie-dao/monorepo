@@ -2,6 +2,9 @@ import { BaseQueryFn } from '@reduxjs/toolkit/query/react';
 import { DocumentNode } from 'graphql';
 import { GraphQLClient, ClientError } from 'graphql-request';
 
+type P = Parameters<GraphQLClient['request']>[0];
+export type RequestHeaders = P['requestHeaders'];
+
 export const graphqlRequestBaseQuery = (
   options:
     | { url: string; requestHeaders?: RequestHeaders }
