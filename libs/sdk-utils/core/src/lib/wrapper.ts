@@ -33,5 +33,5 @@ export abstract class ContractWrapper<A> {
    *
    * @param contract the original contract with the new functionality added.
    */
-  public abstract wrap<C extends Contract>(contract: C): C & A;
+  public abstract wrap<C extends Contract>(contract: C, overrides?: any): C & A;
 }
