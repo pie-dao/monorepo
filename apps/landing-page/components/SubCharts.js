@@ -106,6 +106,21 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
     }
   }, [lastWeekMCap, lastWeekMeanNav, underlyingData]);
 
+  const isSomeMcapNaN = useCallback(() => {
+    if (lastWeekMCap) {
+      return lastWeekMCap.some((d) => isNaN(getPieValue(d)));
+    }
+    return true;
+  }, [lastWeekMCap]);
+  const isSomeNavNaN = useCallback(() => {
+    if (lastWeekMeanNav) {
+      return lastWeekMeanNav.some((d) => isNaN(getPieValue(d)));
+    }
+    return true;
+  }, [lastWeekMeanNav]);
+
+  if (isSomeMcapNaN() || isSomeNavNaN()) return null;
+
   return (
     <section className="mb-10 gap-y-4 md:gap-4 grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       <div className="flex flex-col">
@@ -224,10 +239,11 @@ const SubCharts = ({ marketCap, play, sentiment }) => {
           </div>
           <div className="flex-1 md:flex-none lg:flex-1 md:h-[102px] lg:h-auto flex border border-deeper_purple rounded-lg p-4 justify-center items-center lg:mb-4">
             <p className="text-gradient text-4xl mr-3">
-              + {inceptionPerc().toFixed()}%
+              {inceptionPerc().toFixed()}%
             </p>
             <Image
               lazyBoundary="325px"
+              className={inceptionPerc() > 0 ? '' : 'rotate-180'}
               src={inceptionPerc() >= 0 ? arrowGreen : arrowRed}
               alt="Arrow"
             />
