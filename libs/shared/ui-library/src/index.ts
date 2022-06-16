@@ -4,3 +4,4 @@ import { ConnectButton } from './lib/components/ConnectButton';
 export { Icon, ChainSwitcher, ConnectButton };
 export * from './lib/test-utils/network';
 export * from './lib/hooks/use-outside-click';
+export * from './lib/hooks/use-ens-name';

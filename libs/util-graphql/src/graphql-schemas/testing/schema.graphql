@@ -1,0 +1,24 @@
+schema {
+  query: Query
+}
+
+type Query {
+  me: User!
+  user(id: ID!): User
+  allUsers: [User]
+}
+
+interface Node {
+  id: ID!
+}
+
+type User implements Node {
+  id: ID!
+  address: String!
+  balances: [Balance!]!
+}
+
+type Balance {
+  amount: Float!
+  currency: String!
+}

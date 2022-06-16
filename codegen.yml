@@ -1,0 +1,12 @@
+overwrite: true
+schema: 'libs/util-graphql/src/graphql-schemas/**/*.graphql'
+documents: 'libs/util-graphql/src/graphql-documents/**/*.graphql'
+generates:
+  apps/investify/api/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-rtk-query':
+          importBaseApiFrom: '../baseApi'
+          exportHooks: true
+      - 'typescript-msw'
