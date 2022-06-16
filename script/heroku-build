@@ -1,9 +1,5 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
-
-source includes/projects
-
 print_usage() {
     echo "💀 $1"
     echo "Help below 👇"
