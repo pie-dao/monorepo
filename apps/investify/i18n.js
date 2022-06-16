@@ -3,7 +3,7 @@ module.exports = {
   defaultLocale: 'en',
   localeDetection: false,
   pages: {
-    '*': ['common'],
+    '*': ['common', 'dashboard'],
   },
   interpolation: {
     prefix: '${',
