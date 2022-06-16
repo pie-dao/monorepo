@@ -7,7 +7,7 @@ const getPieHistory = async (req, res) => {
   };
   try {
     const fetchPieHistory = await fetch(
-      `${BACKEND_URL}/pies/history?address=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4&limit=168`,
+      `${BACKEND_URL}/pies/history_7_days?address=0x33e18a092a93ff21ad04746c7da12e35d34dc7c4`,
       { headers },
     );
     const pieHistory = await fetchPieHistory.json();
