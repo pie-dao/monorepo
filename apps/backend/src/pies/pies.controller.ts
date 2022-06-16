@@ -1,21 +1,23 @@
-import { Body, Get, NotFoundException, Param } from '@nestjs/common';
-import { Query } from '@nestjs/common';
-import { Post } from '@nestjs/common';
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
-  ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { PieDto } from './dto/pies.dto';
+import { SliceDoughRatioDto } from './dto/SliceDoughRatioDto';
+import { CgCoinEntity } from './entities/cg_coin.entity';
 import { PieHistoryEntity } from './entities/pie-history.entity';
 import { PieEntity } from './entities/pie.entity';
 import { PiesService } from './pies.service';
-import { CgCoinEntity } from './entities/cg_coin.entity';
-import { SliceDoughRatioDto } from './dto/SliceDoughRatioDto';
+import moment = require('moment');
 
 @ApiTags('Pies')
 @Controller('pies')
@@ -138,6 +140,53 @@ export class PiesController {
         order,
         limit,
       );
+    } catch (error) {
+      throw new NotFoundException(error);
+    }
+  }
+
+  @ApiOkResponse({ type: PieHistoryEntity, isArray: true })
+  @ApiNotFoundResponse()
+  @ApiBadRequestResponse()
+  @ApiQuery({ name: 'address', required: true })
+  @Get('history_7_days')
+  async getPieHistory7Days(@Query('address') address: string): Promise<any> {
+    try {
+      const from = moment(new Date()).subtract(7, 'days').toDate().getTime();
+
+      const data = await this.piesService.getPieHistory(
+        undefined,
+        address,
+        from.toString(),
+        undefined,
+        'descending',
+        0,
+      );
+
+      const history: PieHistoryEntity[] = [];
+      const days: Date[] = [];
+
+      for (let i = 0; i < 7; i++) {
+        days.push(moment(new Date()).subtract(i, 'days').toDate());
+      }
+      let idx = 0;
+
+      let next = days[idx].getTime();
+      for (const record of data.history) {
+        if (Number(record.timestamp) < next) {
+          idx++;
+          next = days[idx]?.getTime() ?? 0;
+          history.push(record);
+        }
+        if (idx >= days.length) {
+          break;
+        }
+      }
+
+      return {
+        pie: data.pie,
+        history: history,
+      };
     } catch (error) {
       throw new NotFoundException(error);
     }

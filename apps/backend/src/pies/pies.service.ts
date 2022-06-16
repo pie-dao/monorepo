@@ -570,8 +570,8 @@ export class PiesService {
     to?: string,
     order?: 'descending' | 'ascending',
     limit?: number,
-  ): Promise<any> {
-    let pie = null;
+  ): Promise<{ history: Array<PieHistoryEntity>; pie: PieEntity }> {
+    let pie: PieEntity | null = null;
     let error = null;
 
     switch (true) {
