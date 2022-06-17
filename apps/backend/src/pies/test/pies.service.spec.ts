@@ -1,10 +1,9 @@
 import { HttpModule } from '@nestjs/axios';
-import { NotFoundException } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TestMessage } from 'rxjs/internal/testing/TestMessage';
+import { SentryModule } from '@ntegral/nestjs-sentry';
 import { StakingModule } from '../../staking';
 import { PieDto } from '../dto/pies.dto';
 import { CgCoinEntity, CgCoinSchema } from '../entities';
@@ -37,6 +36,12 @@ describe('PiesService', () => {
         MongooseModule.forFeature([
           { name: CgCoinEntity.name, schema: CgCoinSchema },
         ]),
+        SentryModule.forRoot({
+          dsn: process.env.SENTRY_DSN,
+          debug: true,
+          environment: process.env.NODE_ENV,
+          release: '0.0.1',
+        }),
       ],
       providers: [PiesService],
     }).compile();
@@ -60,7 +65,7 @@ describe('PiesService', () => {
       beforeAll(async () => {
         jest.spyOn(service, 'getPies');
 
-        let pies = PiesStub();
+        const pies = PiesStub();
 
         for (let i = 0; i < pies.length; i++) {
           await service.deletePie(pies[i]);
@@ -101,7 +106,7 @@ describe('PiesService', () => {
       });
 
       test('then it should return an Array of PieEntity', () => {
-        let piesMock = PiesStub();
+        const piesMock = PiesStub();
 
         expect(pies).toEqual(
           expect.arrayContaining([
@@ -259,7 +264,10 @@ describe('PiesService', () => {
   describe('getPieHistory', () => {
     describe('When getPieHistory is called with an address param', () => {
       jest.setTimeout(50000);
-      let pieHistory: PieHistoryEntity[];
+      let pieHistory: {
+        history: PieHistoryEntity[];
+        pie: PieEntity;
+      };
 
       beforeEach(async () => {
         jest.spyOn(service, 'getPieHistory');
@@ -290,7 +298,10 @@ describe('PiesService', () => {
     });
 
     describe('When getPieHistory is called with a name param', () => {
-      let pieHistory: PieHistoryEntity[];
+      let pieHistory: {
+        history: PieHistoryEntity[];
+        pie: PieEntity;
+      };
 
       beforeEach(async () => {
         jest.setTimeout(50000);
@@ -319,7 +330,10 @@ describe('PiesService', () => {
     });
 
     describe('When getPieHistory is called with NO param', () => {
-      let pieHistory: PieHistoryEntity[];
+      let pieHistory: {
+        history: PieHistoryEntity[];
+        pie: PieEntity;
+      };
 
       beforeEach(async () => {
         jest.setTimeout(50000);
@@ -358,7 +372,7 @@ describe('PiesService', () => {
   describe('createPie', () => {
     describe('When createPie is called', () => {
       jest.setTimeout(50000);
-      let pie: PieDto = {
+      const pie: PieDto = {
         symbol: 'foobar',
         name: 'foobar',
         address: 'foobar',
