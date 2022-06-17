@@ -7,3 +7,6 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 // return type needed for redux wrapper
 export const useAppSelector: TypedUseSelectorHook<ReturnType<RootState>> =
   useSelector;
+
+export * from './useFormattedBalance';
+export * from './useTwentyfourHourVolume';

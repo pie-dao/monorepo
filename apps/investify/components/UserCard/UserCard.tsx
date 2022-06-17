@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { useWeb3React } from '@web3-react/core';
 import { motion } from 'framer-motion';
@@ -10,7 +10,12 @@ import {
   EyeOffIcon,
 } from '@heroicons/react/solid';
 import { useENSName } from '@shared/ui-library';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useFormattedBalance,
+  useTwentyfourHourVolume,
+} from '../../hooks';
 import { useFindUserQuery } from '../../api/generated/graphql';
 import { setHideBalance } from '../../store/preferences/preferences.slice';
 import trimAccount from '../../utils/trimAccount';
@@ -28,29 +33,19 @@ export default function UserCard() {
   );
   const dispatch = useAppDispatch();
 
-  const balance = useMemo(() => {
-    const balanceAmount = data?.user?.balances.find(
-      (b) => b.currency === defaultCurrency,
-    ).amount;
-    if (typeof balanceAmount !== 'undefined') {
-      const number = new Intl.NumberFormat(defaultLocale, {
-        style: 'currency',
-        currency: defaultCurrency,
-      }).format(balanceAmount);
-      return number;
-    }
-    return null;
-  }, [data?.user?.balances, defaultCurrency, defaultLocale]);
+  const balanceAmount = data?.user?.balances?.find(
+    (b) => b.currency === defaultCurrency,
+  ).amount;
 
-  const twentyFourHourVolume = useMemo(() => {
-    const volume = data?.user?.twentyFourHourChange;
-    if (data?.user?.twentyFourHourChange > 0) {
-      return `+${volume}%`;
-    } else if (data?.user?.twentyFourHourChange < 0) {
-      return `${volume}%`;
-    }
-    return null;
-  }, [data?.user?.twentyFourHourChange]);
+  const volume = data?.user?.twentyFourHourChange;
+
+  const balance = useFormattedBalance(
+    balanceAmount,
+    defaultLocale,
+    defaultCurrency,
+  );
+
+  const twentyFourHourVolume = useTwentyfourHourVolume(volume);
 
   return (
     <div
