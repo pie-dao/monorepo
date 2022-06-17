@@ -4,6 +4,7 @@ import { Erc20Abi__factory } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SupportedChains } from '../../utils/networks';
 import { promiseObject } from '../../utils/promiseObject';
+import { ChainValue } from './products.types';
 
 const mcw = new MultiChainContractWrapper(config);
 
@@ -26,9 +27,6 @@ const contractWrapper = mcw.wrap(contract, USDC_ADDRESSES);
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
 };
-
-type BigNumberString = string;
-type ChainValue = [SupportedChains, BigNumberString];
 
 type ThunkGetProductsDataProps = {
   account?: string;

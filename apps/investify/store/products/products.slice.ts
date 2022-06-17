@@ -1,20 +1,6 @@
-// @ts-ignore
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { thunkGetProductsData } from './thunks';
-import { SupportedChains } from '../../utils/networks';
-
-// alias to make it more obvious that this is a number in string repr
-type BigNumberString = string;
-type Product = {
-  balance: [SupportedChains, BigNumberString][];
-  decimals: number;
-};
-
-export type RootState = {
-  products: Record<string, Product>;
-  loading: boolean;
-};
+import { Products, RootState } from './products.types';
 
 const initialState: RootState = {
   products: {},
@@ -48,10 +34,7 @@ const appSlice = createSlice({
   },
 
   reducers: {
-    setState: (
-      state,
-      action: PayloadAction<{ newState: Omit<RootState, 'loading'> }>,
-    ) => {
+    setState: (state, action: PayloadAction<{ newState: Products }>) => {
       state.products = action.payload.newState;
     },
   },
