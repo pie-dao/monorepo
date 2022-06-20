@@ -5,7 +5,7 @@ export * from './PieSmartPoolHistory';
 export * from './PieVault';
 export * from './PieVaultHistory';
 export * from './Token';
-export * from './TokenMarketData';
+export * from './MarketData';
 export * from './YieldVault';
 export * from './YieldVaultHistory';
 export * from './SupportedChain';

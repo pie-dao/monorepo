@@ -23,7 +23,7 @@ const HISTORY_0: YieldVaultHistory = {
     symbol: 'FUN',
     decimals: 18,
     kind: 'Token',
-    tokenMarketData: [],
+    marketData: [],
   },
   totalStrategyHoldings: new BigNumber('1'),
   userDepositLimit: new BigNumber('1'),
@@ -43,7 +43,7 @@ const HISTORY_0: YieldVaultHistory = {
         symbol: 'ST',
         decimals: 18,
         kind: 'Token',
-        tokenMarketData: [],
+        marketData: [],
       },
       depositedAmount: new BigNumber('1'),
       estimatedAmount: new BigNumber('1'),
@@ -64,7 +64,7 @@ const HISTORY_1: YieldVaultHistory = {
     symbol: 'HST',
     decimals: 18,
     kind: 'Token',
-    tokenMarketData: [],
+    marketData: [],
   },
   totalStrategyHoldings: new BigNumber('2'),
   userDepositLimit: new BigNumber('2'),
@@ -84,7 +84,7 @@ const YIELD_VAULT_0: YieldVault = {
   kind: 'YieldVault',
   symbol: 'YFT',
   history: [],
-  tokenMarketData: [],
+  marketData: [],
 };
 
 const YIELD_VAULT_1: YieldVault = {
@@ -95,7 +95,7 @@ const YIELD_VAULT_1: YieldVault = {
   kind: 'YieldVault',
   symbol: 'OFT',
   history: [],
-  tokenMarketData: [],
+  marketData: [],
 };
 
 const YIELD_VAULT_2: YieldVault = {
@@ -106,7 +106,7 @@ const YIELD_VAULT_2: YieldVault = {
   kind: 'YieldVault',
   symbol: 'VFT',
   history: [],
-  tokenMarketData: [],
+  marketData: [],
 };
 
 const YIELD_VAULT_WITH_HISTORY: YieldVault = {

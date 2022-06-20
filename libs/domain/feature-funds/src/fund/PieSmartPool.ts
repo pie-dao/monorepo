@@ -1,4 +1,4 @@
-import { Fund, PieSmartPoolHistory, TokenMarketData, SupportedChain } from '.';
+import { Fund, PieSmartPoolHistory, MarketData, SupportedChain } from '.';
 
 /**
  * Pie Smart Pools are non-custodial smart contracts, the first implementation of a DAO-governed AMM pool.
@@ -19,6 +19,6 @@ export class PieSmartPool implements Fund<PieSmartPoolHistory> {
     public symbol: string,
     public decimals: number,
     public history: PieSmartPoolHistory[] = [],
-    public tokenMarketData: TokenMarketData[] = [],
+    public marketData: MarketData[] = [],
   ) {}
 }

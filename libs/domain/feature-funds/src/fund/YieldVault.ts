@@ -1,4 +1,4 @@
-import { Fund, SupportedChain, TokenMarketData, YieldVaultHistory } from '.';
+import { Fund, SupportedChain, MarketData, YieldVaultHistory } from '.';
 
 /**
  * Yield Vaults can be used to tokenize a yield-generating strategy for those tokens that don't have one.
@@ -14,6 +14,6 @@ export class YieldVault implements Fund<YieldVaultHistory> {
     public symbol: string,
     public decimals: number,
     public history: YieldVaultHistory[] = [],
-    public tokenMarketData: TokenMarketData[] = [],
+    public marketData: MarketData[] = [],
   ) {}
 }

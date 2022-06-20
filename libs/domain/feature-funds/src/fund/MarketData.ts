@@ -8,12 +8,14 @@ export type OHLC = {
   high: BigNumber;
   low: BigNumber;
   close: BigNumber;
+  from: Date;
+  to: Date;
 };
 
 /**
  * Represents the market state for a token at the given `timestamp`.
  */
-export type TokenMarketData = {
+export type MarketData = {
   currentPrice: BigNumber;
   marketCap: BigNumber;
   marketCapRank: number;

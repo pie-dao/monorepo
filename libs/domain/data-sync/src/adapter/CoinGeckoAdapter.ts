@@ -136,18 +136,6 @@ export class CoinGeckoAdapter {
     });
   }
 
-  public getCoinHistory(
-    coinId: string,
-    date: Date,
-  ): TE.TaskEither<DataTransferError, CoinHistoryDto> {
-    return get(`${BASE_URL}/coins/${coinId}/history`, coinHistoryCodec, {
-      params: {
-        date: moment(date).format('DD-MM-YYYY'),
-        localization: false,
-      },
-    });
-  }
-
   public getOhlc({
     coinId,
     vsCurrency,
@@ -161,6 +149,18 @@ export class CoinGeckoAdapter {
       params: {
         vs_currency: vsCurrency,
         days,
+      },
+    });
+  }
+
+  public getCoinHistory(
+    coinId: string,
+    date: Date,
+  ): TE.TaskEither<DataTransferError, CoinHistoryDto> {
+    return get(`${BASE_URL}/coins/${coinId}/history`, coinHistoryCodec, {
+      params: {
+        date: moment(date).format('DD-MM-YYYY'),
+        localization: false,
       },
     });
   }

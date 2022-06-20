@@ -7,6 +7,7 @@ import {
   MongoPieVaultRepository,
   MongoYieldVaultRepository,
 } from './repository';
+import { MongoTokenRepository } from './repository/MongoTokenRepository';
 
 const CoinGeckoAdapterProvider = {
   provide: CoinGeckoAdapter,
@@ -17,6 +18,7 @@ const CoinGeckoAdapterProvider = {
   imports: [],
   controllers: [],
   providers: [
+    MongoTokenRepository,
     MongoPieSmartPoolRepository,
     MongoPieVaultRepository,
     MongoYieldVaultRepository,
@@ -25,6 +27,7 @@ const CoinGeckoAdapterProvider = {
     MongooseConnectionProvider,
   ],
   exports: [
+    MongoTokenRepository,
     MongoPieSmartPoolRepository,
     MongoPieVaultRepository,
     MongoYieldVaultRepository,

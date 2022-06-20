@@ -1,4 +1,4 @@
-import { TokenMarketData, SupportedChain } from '.';
+import { MarketData, SupportedChain } from '.';
 
 /**
  * Represents a token on a blockchain. Note that a token can be uniquely identified
@@ -24,9 +24,13 @@ export type Token = {
    */
   kind: string;
   /**
+   * The identifier for this token on Coin Gecko.
+   */
+  coinGeckoId: string;
+  /**
    * (Temporal) market data for this token.
    */
-  tokenMarketData: TokenMarketData[];
+  marketData: MarketData[];
 };
 
 /**

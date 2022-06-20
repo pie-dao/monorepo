@@ -1,5 +1,5 @@
-import { OHLC, TokenMarketData } from '@domain/feature-funds';
-import { modelOptions, prop } from '@typegoose/typegoose';
+import { OHLC, MarketData } from '@domain/feature-funds';
+import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
 import { BigNumberType } from '..';
@@ -14,15 +14,16 @@ export class OHLCEntity implements OHLC {
   low: BigNumber;
   @prop({ required: true, type: BigNumberType })
   close: BigNumber;
+  @prop({ required: true })
+  from: Date;
+  @prop({ required: true })
+  to: Date;
 }
 
 @modelOptions({
   schemaOptions: { collection: 'tokenmarketdata' },
 })
-export class TokenMarketDataEntity
-  extends TemporalEntity
-  implements TokenMarketData
-{
+export class MarketDataEntity extends TemporalEntity implements MarketData {
   @prop({ required: true, index: true })
   public tokenId: Types.ObjectId;
   @prop({ required: true, type: BigNumberType })
@@ -40,3 +41,5 @@ export class TokenMarketDataEntity
   @prop({ type: OHLCEntity, default: [], _id: false })
   ohlc: Types.Array<OHLCEntity>;
 }
+
+export const MarketDataModel = getModelForClass(MarketDataEntity);

@@ -1,6 +1,6 @@
 import { SupportedChain, Token } from '@domain/feature-funds';
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
-import { TokenMarketDataEntity } from './TokenMarketData';
+import { MarketDataEntity } from './MarketData';
 
 @modelOptions({
   schemaOptions: { discriminatorKey: 'kind', collection: 'tokens' },
@@ -21,12 +21,12 @@ export class TokenEntity implements Token {
   @prop({ required: false, index: true })
   public coinGeckoId: string;
   @prop({
-    ref: () => TokenMarketDataEntity,
+    ref: () => MarketDataEntity,
     foreignField: 'tokenId',
     localField: '_id',
     default: [],
   })
-  tokenMarketData: TokenMarketDataEntity[];
+  marketData: MarketDataEntity[];
 }
 
 export const TokenModel = getModelForClass(TokenEntity);
