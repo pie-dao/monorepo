@@ -12,11 +12,11 @@ import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
 import { BigNumberType } from '../repository';
 import { HistoryEntityBase } from './base';
-import { TokenEntity, TokenModel } from './Token';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 
 export class TokenDetails implements TokenDetailsType {
   @prop()
-  token: TokenEntity;
+  token: DiscriminatedTokenEntity;
   @prop({ type: BigNumberType, required: true })
   balance: BigNumber;
 }
@@ -58,7 +58,7 @@ export class PieVaultHistoryEntity
     toObject: { virtuals: true },
   },
 })
-export class PieVaultEntity extends TokenEntity {
+export class PieVaultEntity extends DiscriminatedTokenEntity {
   @prop({
     ref: () => PieVaultHistoryEntity,
     foreignField: 'fundId',
@@ -69,7 +69,7 @@ export class PieVaultEntity extends TokenEntity {
 }
 
 export const PieVaultModel = getDiscriminatorModelForClass(
-  TokenModel,
+  DiscriminatedTokenModel,
   PieVaultEntity,
   'PieVault',
 );

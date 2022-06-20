@@ -9,14 +9,14 @@ import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
 import { BigNumberType } from '../repository';
 import { HistoryEntityBase } from './base';
-import { TokenEntity, TokenModel } from './Token';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 
 export class StrategyEntity implements Strategy {
   @prop({ required: true })
   name: string;
 
   @prop({ _id: false })
-  underlyingToken: TokenEntity;
+  underlyingToken: DiscriminatedTokenEntity;
 
   @prop({ type: BigNumberType, required: true })
   depositedAmount: BigNumber;
@@ -45,7 +45,7 @@ export class YieldVaultHistoryEntity
   implements YieldVaultHistory
 {
   @prop({ required: true })
-  underlyingToken: TokenEntity;
+  underlyingToken: DiscriminatedTokenEntity;
 
   @prop({ type: BigNumberType })
   harvestFeePercent?: BigNumber;
@@ -126,7 +126,7 @@ export class YieldVaultHistoryEntity
     toObject: { virtuals: true },
   },
 })
-export class YieldVaultEntity extends TokenEntity {
+export class YieldVaultEntity extends DiscriminatedTokenEntity {
   @prop({
     ref: () => YieldVaultHistoryEntity,
     foreignField: 'fundId',
@@ -137,7 +137,7 @@ export class YieldVaultEntity extends TokenEntity {
 }
 
 export const YieldVaultModel = getDiscriminatorModelForClass(
-  TokenModel,
+  DiscriminatedTokenModel,
   YieldVaultEntity,
   'YieldVault',
 );

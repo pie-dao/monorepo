@@ -13,6 +13,7 @@ export class YieldVault implements Fund<YieldVaultHistory> {
     public name: string,
     public symbol: string,
     public decimals: number,
+    public coinGeckoId: string,
     public history: YieldVaultHistory[] = [],
     public marketData: MarketData[] = [],
   ) {}

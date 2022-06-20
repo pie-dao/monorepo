@@ -1,7 +1,7 @@
 import {
+  SupportedChain,
   YieldVault,
   YieldVaultHistory,
-  SupportedChain,
 } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
@@ -24,6 +24,7 @@ const HISTORY_0: YieldVaultHistory = {
     decimals: 18,
     kind: 'Token',
     marketData: [],
+    coinGeckoId: '',
   },
   totalStrategyHoldings: new BigNumber('1'),
   userDepositLimit: new BigNumber('1'),
@@ -44,6 +45,7 @@ const HISTORY_0: YieldVaultHistory = {
         decimals: 18,
         kind: 'Token',
         marketData: [],
+        coinGeckoId: '',
       },
       depositedAmount: new BigNumber('1'),
       estimatedAmount: new BigNumber('1'),
@@ -65,6 +67,7 @@ const HISTORY_1: YieldVaultHistory = {
     decimals: 18,
     kind: 'Token',
     marketData: [],
+    coinGeckoId: '',
   },
   totalStrategyHoldings: new BigNumber('2'),
   userDepositLimit: new BigNumber('2'),
@@ -83,6 +86,7 @@ const YIELD_VAULT_0: YieldVault = {
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'YFT',
+  coinGeckoId: '',
   history: [],
   marketData: [],
 };
@@ -94,6 +98,7 @@ const YIELD_VAULT_1: YieldVault = {
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'OFT',
+  coinGeckoId: '',
   history: [],
   marketData: [],
 };
@@ -105,6 +110,7 @@ const YIELD_VAULT_2: YieldVault = {
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'VFT',
+  coinGeckoId: '',
   history: [],
   marketData: [],
 };
@@ -137,7 +143,8 @@ describe('Given a Mongo Yield Vault Repository', () => {
   it('When creating a new Yield Vault Entity then it is created', async () => {
     await target.save(YIELD_VAULT_WITH_HISTORY)();
 
-    const result = await target.findOneByAddress(
+    const result = await target.findOne(
+      YIELD_VAULT_WITH_HISTORY.chain,
       YIELD_VAULT_WITH_HISTORY.address,
     )();
 
@@ -173,12 +180,18 @@ describe('Given a Mongo Yield Vault Repository', () => {
     const saveResult = await target.save(YIELD_VAULT_WITH_HISTORY)();
     const yieldVault = (saveResult as Right<YieldVault>).right;
 
-    await target.addHistoryEntry(yieldVault, HISTORY_1)();
+    await target.addHistoryEntry(
+      yieldVault.chain,
+      yieldVault.address,
+      HISTORY_1,
+    )();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
-    const result = await target.findOneByAddress(yieldVault.address, {
-      limit: 2,
-      orderBy: { timestamp: 'asc' },
+    const result = await target.findOne(yieldVault.chain, yieldVault.address, {
+      history: {
+        limit: 2,
+        orderBy: { timestamp: 'asc' },
+      },
     })();
 
     const updatedYieldVault = (result as Right<YieldVault>).right;
@@ -194,8 +207,10 @@ describe('Given a Mongo Yield Vault Repository', () => {
     await target.save(YIELD_VAULT_2)();
 
     const result = await target.findAll({
-      orderBy: { symbol: 'desc' },
-      limit: 2,
+      token: {
+        orderBy: { symbol: 'desc' },
+        limit: 2,
+      },
     })();
 
     expect(result.map((e) => e.symbol)).toEqual(['YFT', 'VFT']);

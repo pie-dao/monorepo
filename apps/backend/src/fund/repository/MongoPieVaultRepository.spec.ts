@@ -6,7 +6,11 @@ import {
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
-import { PieVaultHistoryModel, TokenModel } from '../entity';
+import {
+  PieVaultHistoryModel,
+  DiscriminatedTokenModel,
+  TokenModel,
+} from '../entity';
 import { MongoPieVaultRepository } from './';
 
 const OLD = 1644509027;
@@ -32,6 +36,7 @@ const HISTORY_0: PieVaultHistory = {
         decimals: 18,
         kind: 'Token',
         symbol: 'IHT',
+        coinGeckoId: '',
         marketData: [],
       },
       balance: new BigNumber('1'),
@@ -59,6 +64,7 @@ const HISTORY_1: PieVaultHistory = {
         decimals: 18,
         kind: 'Token',
         symbol: 'WDT',
+        coinGeckoId: '',
         marketData: [],
       },
       balance: new BigNumber('2'),
@@ -72,6 +78,7 @@ export const PIE_VAULT_0 = new PieVault(
   'Delicious Pie',
   'DPT',
   18,
+  '',
 );
 
 const PIE_VAULT_1 = new PieVault(
@@ -80,6 +87,7 @@ const PIE_VAULT_1 = new PieVault(
   'Fragrant Pie',
   'FPT',
   18,
+  '',
 );
 
 const PIE_VAULT_2 = new PieVault(
@@ -88,6 +96,7 @@ const PIE_VAULT_2 = new PieVault(
   'Weird Pie',
   'WPT',
   18,
+  '',
 );
 
 const PIE_VAULT_WITH_HISTORY = new PieVault(
@@ -96,7 +105,9 @@ const PIE_VAULT_WITH_HISTORY = new PieVault(
   PIE_VAULT_0.name,
   PIE_VAULT_0.symbol,
   PIE_VAULT_0.decimals,
+  '',
   [HISTORY_0],
+  [],
 );
 
 describe('Given a Mongo Pie Vault Repository', () => {
@@ -122,7 +133,8 @@ describe('Given a Mongo Pie Vault Repository', () => {
   it('When creating a new Pie Vault Entity then it is created', async () => {
     await target.save(PIE_VAULT_WITH_HISTORY)();
 
-    const result = await target.findOneByAddress(
+    const result = await target.findOne(
+      PIE_VAULT_WITH_HISTORY.chain,
       PIE_VAULT_WITH_HISTORY.address,
     )();
 
@@ -155,12 +167,14 @@ describe('Given a Mongo Pie Vault Repository', () => {
     const saveResult = await target.save(PIE_VAULT_WITH_HISTORY)();
     const pieVault = (saveResult as Right<PieVault>).right;
 
-    await target.addHistoryEntry(pieVault, HISTORY_1)();
+    await target.addHistoryEntry(pieVault.chain, pieVault.address, HISTORY_1)();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
-    const result = await target.findOneByAddress(pieVault.address, {
-      limit: 2,
-      orderBy: { timestamp: 'asc' },
+    const result = await target.findOne(pieVault.chain, pieVault.address, {
+      history: {
+        limit: 2,
+        orderBy: { timestamp: 'asc' },
+      },
     })();
 
     const updatedPieVault = (result as Right<PieVault>).right;
@@ -178,8 +192,10 @@ describe('Given a Mongo Pie Vault Repository', () => {
     await target.save(PIE_VAULT_2)();
 
     const result = await target.findAll({
-      orderBy: { symbol: 'desc' },
-      limit: 2,
+      token: {
+        orderBy: { symbol: 'desc' },
+        limit: 2,
+      },
     })();
 
     expect(result.map((e) => e.symbol)).toEqual(['WPT', 'FPT']);

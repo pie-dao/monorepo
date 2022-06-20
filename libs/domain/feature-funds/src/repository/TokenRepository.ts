@@ -57,7 +57,7 @@ export interface TokenRepository<T extends Token, F extends Filters> {
   /**
    * Returns all funds.
    */
-  findAll(filters: F): T.Task<Array<T>>;
+  findAll(filters: Partial<F>): T.Task<Array<T>>;
 
   /**
    * Tries to find a token by its address on a specific chain.
@@ -66,7 +66,7 @@ export interface TokenRepository<T extends Token, F extends Filters> {
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Omit<F, 'token'>,
+    childFilters: Partial<Omit<F, 'token'>>,
   ): TE.TaskEither<TokenNotFoundError | DatabaseError, T>;
 
   /**

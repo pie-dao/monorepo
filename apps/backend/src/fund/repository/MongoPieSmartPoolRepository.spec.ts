@@ -7,13 +7,17 @@ import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
 import { MongoPieSmartPoolRepository } from '.';
-import { PieSmartPoolHistoryModel, TokenModel } from '../entity';
+import {
+  PieSmartPoolHistoryModel,
+  DiscriminatedTokenModel,
+  TokenModel,
+} from '../entity';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
 const RELATIONS = {
   chain: SupportedChain.ETHEREUM,
-  tokenMarketData: [],
+  marketData: [],
 };
 
 const HISTORY_0: PieSmartPoolHistory = {
@@ -25,6 +29,7 @@ const HISTORY_0: PieSmartPoolHistory = {
       name: 'Quantum Tunneling Token',
       decimals: 18,
       kind: 'Token',
+      coinGeckoId: '',
       symbol: 'QTT',
     },
   ],
@@ -46,6 +51,7 @@ const HISTORY_0: PieSmartPoolHistory = {
         name: 'Quantum Tunneling Token',
         decimals: 18,
         kind: 'Token',
+        coinGeckoId: '',
         symbol: 'QTT',
       },
       weight: new BigNumber('1'),
@@ -65,6 +71,7 @@ const HISTORY_1: PieSmartPoolHistory = {
       name: 'Fuzzy Logic Token',
       decimals: 18,
       kind: 'Token',
+      coinGeckoId: '',
       symbol: 'FLT',
     },
   ],
@@ -86,6 +93,7 @@ const HISTORY_1: PieSmartPoolHistory = {
         name: 'Fuzzy Logic Token',
         decimals: 18,
         kind: 'Token',
+        coinGeckoId: '',
         symbol: 'FLT',
       },
       weight: new BigNumber('2'),
@@ -103,6 +111,8 @@ const PIE_SMART_POOL_0: PieSmartPool = {
   decimals: 18,
   kind: 'PieSmartPool',
   symbol: 'SCP',
+  coinGeckoId: '',
+  marketData: [],
   history: [],
 };
 
@@ -113,6 +123,8 @@ const PIE_SMART_POOL_1: PieSmartPool = {
   decimals: 18,
   kind: 'PieSmartPool',
   symbol: 'SWP',
+  coinGeckoId: '',
+  marketData: [],
   history: [],
 };
 
@@ -123,6 +135,8 @@ const PIE_SMART_POOL_2: PieSmartPool = {
   decimals: 18,
   kind: 'PieSmartPool',
   symbol: 'SNP',
+  coinGeckoId: '',
+  marketData: [],
   history: [],
 };
 
@@ -155,7 +169,8 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
   it('When creating a new Pie Smart Pool Entity then it is created', async () => {
     await target.save(PIE_SMART_POOL_WITH_HISTORY)();
 
-    const result = await target.findOneByAddress(
+    const result = await target.findOne(
+      PIE_SMART_POOL_WITH_HISTORY.chain,
       PIE_SMART_POOL_WITH_HISTORY.address,
     )();
 
@@ -189,13 +204,23 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
     const saveResult = await target.save(PIE_SMART_POOL_WITH_HISTORY)();
     const pieSmartPool = (saveResult as Right<PieSmartPool>).right;
 
-    await target.addHistoryEntry(pieSmartPool, HISTORY_1)();
+    await target.addHistoryEntry(
+      pieSmartPool.chain,
+      pieSmartPool.address,
+      HISTORY_1,
+    )();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
-    const result = await target.findOneByAddress(pieSmartPool.address, {
-      limit: 2,
-      orderBy: { timestamp: 'asc' },
-    })();
+    const result = await target.findOne(
+      pieSmartPool.chain,
+      pieSmartPool.address,
+      {
+        history: {
+          limit: 2,
+          orderBy: { timestamp: 'asc' },
+        },
+      },
+    )();
 
     const updatedPool = (result as Right<PieSmartPool>).right;
 
@@ -212,8 +237,10 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
     await target.save(PIE_SMART_POOL_2)();
 
     const result = await target.findAll({
-      orderBy: { symbol: 'desc' },
-      limit: 2,
+      token: {
+        orderBy: { symbol: 'desc' },
+        limit: 2,
+      },
     })();
 
     expect(result.map((e) => e.symbol)).toEqual(['SWP', 'SNP']);

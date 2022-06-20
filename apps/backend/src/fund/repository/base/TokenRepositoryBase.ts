@@ -1,6 +1,7 @@
 import {
   CreateMarketDataError,
   DatabaseError,
+  DEFAULT_TOKEN_FILTER,
   Filters,
   MarketData,
   SupportedChain,
@@ -26,18 +27,18 @@ export abstract class TokenRepositoryBase<
     protected marketModel: Model<MarketData>,
   ) {}
 
-  findAll(filters: F): T.Task<T[]> {
-    const { token, ...rest } = filters;
-
+  findAll(filters: Partial<F>): T.Task<T[]> {
+    const { token = DEFAULT_TOKEN_FILTER, ...rest } = filters;
     let find = this.model.find({});
     const filter = toMongooseOptions(token);
     find = find.sort(filter.sort);
     find = find.limit(filter.limit);
 
-    Object.entries(rest).forEach(([path, value]) => {
+    this.getPaths().forEach((path: string) => {
+      const pathFilter = rest[path];
       find = find.populate({
         path,
-        options: toMongooseOptions(value),
+        options: pathFilter ? toMongooseOptions(pathFilter) : {},
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }) as any;
       // 👆 This is because of a weird Mongoose typing.
@@ -52,18 +53,19 @@ export abstract class TokenRepositoryBase<
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Omit<F, 'token'>,
+    childFilters: Partial<Omit<F, 'token'>>,
   ): TE.TaskEither<TokenNotFoundError | DatabaseError, T> {
     return pipe(
       TE.tryCatch(
         () => {
-          let find = this.model.findOne({ address, chain });
+          let find = this.model.findOne({ chain, address });
 
           // 👇 this is the same as above, but extracting it into a function results in complex and unreadable code.
-          Object.entries(childFilters).forEach(([path, value]) => {
+          this.getPaths().forEach((path: string) => {
+            const pathFilter = childFilters[path];
             find = find.populate({
               path,
-              options: toMongooseOptions(value),
+              options: pathFilter ? toMongooseOptions(pathFilter) : {},
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
             }) as any;
           });
@@ -114,7 +116,7 @@ export abstract class TokenRepositoryBase<
     return pipe(
       TE.tryCatch(
         () => {
-          return this.model.findOne({ address, chain }).exec();
+          return this.model.findOne({ filter: { address, chain } }).exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),
@@ -130,8 +132,20 @@ export abstract class TokenRepositoryBase<
 
   // 👇 These are template methods to be overridden with default implementations.
 
+  /**
+   * Transforms the entity into a domain object.
+   */
   protected abstract toDomainObject(record: E): T;
 
+  /**
+   * Returns all the paths that are either filtered or populated
+   * eg: `['marketData', 'history']
+   */
+  protected abstract getPaths(): Array<Omit<keyof F, 'token'>>;
+
+  /**
+   * Saves all the child records of a token entity.
+   */
   protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
     return Promise.all(
       token.marketData.map((entry) =>

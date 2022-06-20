@@ -25,7 +25,9 @@ export class MongoPieSmartPoolRepository extends FundRepositoryBase<
       entity.name,
       entity.symbol,
       entity.decimals,
+      entity.coinGeckoId,
       entity.history.map((entry) => entry),
+      entity.marketData.map((entry) => entry),
     );
   }
 }

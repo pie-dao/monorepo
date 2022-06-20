@@ -3,7 +3,7 @@ import {
   modelOptions,
   prop,
 } from '@typegoose/typegoose';
-import { TokenEntity, TokenModel } from './Token';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 
 @modelOptions({
   schemaOptions: {
@@ -11,12 +11,12 @@ import { TokenEntity, TokenModel } from './Token';
     toObject: { virtuals: true },
   },
 })
-export class YieldBearingTokenEntity extends TokenEntity {
+export class YieldBearingTokenEntity extends DiscriminatedTokenEntity {
   @prop({ required: true })
-  wrappedToken: TokenEntity;
+  wrappedToken: DiscriminatedTokenEntity;
 }
 
 export const YieldBearingTokenModel = getDiscriminatorModelForClass(
-  TokenModel,
+  DiscriminatedTokenModel,
   YieldBearingTokenEntity,
 );

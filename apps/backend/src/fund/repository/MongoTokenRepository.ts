@@ -10,7 +10,11 @@ import {
 import { Injectable } from '@nestjs/common';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { MarketDataModel, TokenEntity, YieldVaultModel } from '../entity';
+import {
+  MarketDataModel,
+  DiscriminatedTokenEntity,
+  DiscriminatedTokenModel,
+} from '../entity';
 import { TokenRepositoryBase } from './base/TokenRepositoryBase';
 
 const DEFAULT_FILTERS = {
@@ -24,12 +28,12 @@ const DEFAULT_CHILD_FILTERS = {
 
 @Injectable()
 export class MongoTokenRepository extends TokenRepositoryBase<
-  TokenEntity,
+  DiscriminatedTokenEntity,
   Token,
   Filters
 > {
   constructor() {
-    super(YieldVaultModel, MarketDataModel);
+    super(DiscriminatedTokenModel, MarketDataModel);
   }
 
   findAll(filters: Filters = DEFAULT_FILTERS): T.Task<Token[]> {
@@ -44,7 +48,11 @@ export class MongoTokenRepository extends TokenRepositoryBase<
     return super.findOne(chain, address, childFilters);
   }
 
-  protected toDomainObject(entity: TokenEntity): Token {
+  protected getPaths(): Array<keyof Filters> {
+    return ['marketData'];
+  }
+
+  protected toDomainObject(entity: DiscriminatedTokenEntity): Token {
     return {
       kind: entity.kind,
       chain: entity.chain,
@@ -52,6 +60,7 @@ export class MongoTokenRepository extends TokenRepositoryBase<
       name: entity.name,
       symbol: entity.symbol,
       decimals: entity.decimals,
+      coinGeckoId: entity.coinGeckoId,
       marketData: entity.marketData.map((entry) => entry),
     };
   }

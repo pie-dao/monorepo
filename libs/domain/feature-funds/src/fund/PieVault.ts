@@ -32,6 +32,7 @@ export class PieVault implements Fund<PieVaultHistory> {
     public name: string,
     public symbol: string,
     public decimals: number,
+    public coinGeckoId: string,
     public history: PieVaultHistory[] = [],
     public marketData: MarketData[] = [],
   ) {

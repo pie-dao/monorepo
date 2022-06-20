@@ -18,6 +18,7 @@ export class PieSmartPool implements Fund<PieSmartPoolHistory> {
     public name: string,
     public symbol: string,
     public decimals: number,
+    public coinGeckoId: string,
     public history: PieSmartPoolHistory[] = [],
     public marketData: MarketData[] = [],
   ) {}

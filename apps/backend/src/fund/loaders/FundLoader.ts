@@ -30,7 +30,7 @@ export class FundLoader {
   ) {}
 
   @Interval(EVERY_10_SECONDS)
-  loadCurrentCGData() {
+  public loadCurrentCGData() {
     return pipe(
       this.ensureFundsExist(),
       TE.chainW(

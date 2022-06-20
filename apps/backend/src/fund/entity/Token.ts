@@ -3,7 +3,7 @@ import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 import { MarketDataEntity } from './MarketData';
 
 @modelOptions({
-  schemaOptions: { discriminatorKey: 'kind', collection: 'tokens' },
+  schemaOptions: { collection: 'tokens' },
 })
 export class TokenEntity implements Token {
   @prop({ type: String, required: true, index: true })
@@ -29,4 +29,13 @@ export class TokenEntity implements Token {
   marketData: MarketDataEntity[];
 }
 
+@modelOptions({
+  schemaOptions: { discriminatorKey: 'kind', collection: 'tokens' },
+})
+export class DiscriminatedTokenEntity extends TokenEntity {}
+
 export const TokenModel = getModelForClass(TokenEntity);
+
+export const DiscriminatedTokenModel = getModelForClass(
+  DiscriminatedTokenEntity,
+);

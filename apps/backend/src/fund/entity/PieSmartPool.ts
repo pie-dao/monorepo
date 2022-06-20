@@ -9,11 +9,11 @@ import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
 import { BigNumberType } from '../repository';
 import { HistoryEntityBase } from './base';
-import { TokenEntity, TokenModel } from './Token';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 
 export class TokenWeightEntity implements TokenWeight {
   @prop({ required: true })
-  token: TokenEntity;
+  token: DiscriminatedTokenEntity;
   @prop({ type: BigNumberType, required: true })
   weight: BigNumber;
 }
@@ -25,8 +25,8 @@ export class PieSmartPoolHistoryEntity
   extends HistoryEntityBase
   implements PieSmartPoolHistory
 {
-  @prop({ type: TokenEntity, required: true, _id: false })
-  underlyingTokens: Types.Array<TokenEntity>;
+  @prop({ type: DiscriminatedTokenEntity, required: true, _id: false })
+  underlyingTokens: Types.Array<DiscriminatedTokenEntity>;
 
   @prop({ required: true })
   controller: string;
@@ -83,7 +83,7 @@ export class PieSmartPoolHistoryEntity
     toObject: { virtuals: true },
   },
 })
-export class PieSmartPoolEntity extends TokenEntity {
+export class PieSmartPoolEntity extends DiscriminatedTokenEntity {
   @prop({
     ref: () => PieSmartPoolHistoryEntity,
     foreignField: 'fundId',
@@ -94,7 +94,7 @@ export class PieSmartPoolEntity extends TokenEntity {
 }
 
 export const PieSmartPoolModel = getDiscriminatorModelForClass(
-  TokenModel,
+  DiscriminatedTokenModel,
   PieSmartPoolEntity,
   'PieSmartPool',
 );

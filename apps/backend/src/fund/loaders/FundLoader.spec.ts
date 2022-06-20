@@ -2,6 +2,7 @@ import { CoinGeckoAdapter } from '@domain/data-sync';
 import { isRight, Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
 import { TokenEntity, TokenModel } from '../entity';
+import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { FundLoader } from './FundLoader';
 
 describe('Given a Fund Loader', () => {
@@ -18,7 +19,7 @@ describe('Given a Fund Loader', () => {
 
   beforeEach(async () => {
     await TokenModel.deleteMany({}).exec();
-    target = new FundLoader(new CoinGeckoAdapter());
+    target = new FundLoader(new MongoTokenRepository(), new CoinGeckoAdapter());
   });
 
   it('When ensuring funds exist with an empty database Then we get the newly created funds back', async () => {
