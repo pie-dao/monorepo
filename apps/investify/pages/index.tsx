@@ -6,14 +6,18 @@ import useTranslation from 'next-translate/useTranslation';
 import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
 import UserCard from '../components/UserCard/UserCard';
 import { useWeb3React } from '@web3-react/core';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { thunkGetProductsData } from '../store/products/thunks';
+import { stat } from 'fs';
 export default function Page({ title }) {
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const mq = useMediaQuery('(min-width: 1024px)');
   const ready = useServerHandoffComplete();
+  const { uniqueNetworks, totalAssets } = useAppSelector(
+    (state) => state.dashboard.products,
+  );
 
   useEffect(() => {
     if (!account) return;
@@ -32,7 +36,12 @@ export default function Page({ title }) {
           {account && <UserCard />}
           <section>
             <h2 className="text-2xl font-medium">
-              {t('dashboard:funds', { assets: 3, networks: 4 })}
+              {uniqueNetworks &&
+                totalAssets &&
+                t('dashboard:funds', {
+                  assets: totalAssets,
+                  networks: uniqueNetworks,
+                })}
             </h2>
           </section>
         </section>
