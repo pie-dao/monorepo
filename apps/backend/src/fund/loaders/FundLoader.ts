@@ -14,7 +14,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 
-const EVERY_10_SECONDS = 1000 * 10;
 const THIRTY_MINUTES = 1000 * 60 * 30;
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
@@ -30,7 +29,7 @@ export class FundLoader {
     private coinGeckoAdapter: CoinGeckoAdapter,
   ) {}
 
-  @Interval(EVERY_10_SECONDS)
+  @Interval(THIRTY_MINUTES)
   public loadCgMarketData() {
     return pipe(
       this.ensureFundsExist(),
