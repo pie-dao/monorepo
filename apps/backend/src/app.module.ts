@@ -13,6 +13,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SentimentModule } from './sentiment/sentiment.module';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { SentryModule } from '@ntegral/nestjs-sentry';
 
 @Module({
   imports: [
@@ -31,6 +32,12 @@ import { AuthorizationModule } from './authorization/authorization.module';
     ConsoleModule,
     SentimentModule,
     AuthorizationModule,
+    SentryModule.forRoot({
+      dsn: process.env.SENTRY_DSN,
+      debug: true,
+      environment: process.env.NODE_ENV,
+      release: '0.0.1',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
