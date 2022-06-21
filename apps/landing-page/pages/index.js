@@ -22,6 +22,7 @@ export async function getServerSideProps({ req, res }) {
   ];
   const playAddress = '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4';
   const play = await getCoinData(playAddress);
+  // eslint-disable-next-line no-undef
   const morePies = await Promise.all(
     expoloreMore.map(async (pie) => {
       const pieData = await getLatestHistory(pie);
