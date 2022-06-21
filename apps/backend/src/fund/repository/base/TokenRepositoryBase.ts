@@ -12,7 +12,7 @@ import {
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
-import { HydratedDocument, Model } from 'mongoose';
+import { HydratedDocument, Model, Types } from 'mongoose';
 import { TokenEntity } from '../../entity';
 import { toMongooseOptions } from '../Utils';
 
@@ -97,7 +97,7 @@ export abstract class TokenRepositoryBase<
         (err: unknown) => new DatabaseError(err),
       ),
       TE.chainFirstIOK((savedToken) => {
-        return T.of(this.saveChildren(savedToken));
+        return T.of(this.saveMarketData(savedToken));
       }),
       TE.map((record) => {
         return this.toDomainObject(record);
@@ -120,13 +120,9 @@ export abstract class TokenRepositoryBase<
         },
         (err: unknown) => new DatabaseError(err),
       ),
-      TE.map((tokenEntity) => {
-        return new this.marketModel({
-          ...entry,
-          tokenId: tokenEntity._id,
-        }).save();
+      TE.chain((tokenEntity) => {
+        return this.saveMarketDataEntity(tokenEntity._id, entry);
       }),
-      TE.map((result) => result as unknown as MarketData),
     );
   }
 
@@ -146,14 +142,35 @@ export abstract class TokenRepositoryBase<
   /**
    * Saves all the child records of a token entity.
    */
-  protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
+  protected saveMarketData(token: HydratedDocument<E>): Promise<unknown> {
     return Promise.all(
       token.marketData.map((entry) =>
-        new this.marketModel({
-          ...entry,
-          tokenId: token._id,
-        }).save(),
+        this.saveMarketDataEntity(token._id, entry)(),
       ),
+    );
+  }
+
+  private saveMarketDataEntity(
+    parentId: Types.ObjectId,
+    entry: MarketData,
+  ): TE.TaskEither<DatabaseError, MarketData> {
+    return TE.tryCatch(
+      () => {
+        return this.marketModel
+          .findOneAndUpdate(
+            {
+              tokenId: parentId,
+              timestamp: entry.timestamp,
+            },
+            entry,
+            {
+              upsert: true,
+              new: true,
+            },
+          )
+          .exec();
+      },
+      (err: unknown) => new DatabaseError(err),
     );
   }
 }

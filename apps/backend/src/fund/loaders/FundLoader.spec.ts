@@ -38,4 +38,12 @@ describe('Given a Fund Loader', () => {
 
     expect(isRight(result)).toBeTruthy();
   });
+
+  it('When loading current Coin Gecko Data Then it runs without an error', async () => {
+    const result = await target.loadCgMarketData();
+
+    console.log(result);
+
+    expect(isRight(result)).toBeTruthy();
+  });
 });

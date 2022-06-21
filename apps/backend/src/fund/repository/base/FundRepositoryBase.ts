@@ -83,9 +83,9 @@ export abstract class FundRepositoryBase<
     return ['marketData', 'history'];
   }
 
-  protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
+  protected saveMarketData(token: HydratedDocument<E>): Promise<unknown> {
     return Promise.all([
-      super.saveChildren(token),
+      super.saveMarketData(token),
       Promise.all(
         token.history.map((entry) =>
           new this.historyModel({

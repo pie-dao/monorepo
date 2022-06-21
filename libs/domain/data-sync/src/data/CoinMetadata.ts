@@ -1,4 +1,4 @@
-import { SupportedCurrency } from './SupportedCurrency';
+import { SupportedCurrency } from '@domain/feature-funds';
 
 export type MarketData = {
   currentPrice?: Record<SupportedCurrency, number>;

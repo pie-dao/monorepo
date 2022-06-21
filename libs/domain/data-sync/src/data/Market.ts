@@ -1,4 +1,4 @@
-import { SupportedCurrency } from '..';
+import { SupportedCurrency } from '@domain/feature-funds';
 
 export type Market = {
   id: string;

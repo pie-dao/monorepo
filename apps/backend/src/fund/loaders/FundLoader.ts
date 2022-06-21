@@ -1,12 +1,13 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import {
   DatabaseError,
+  SupportedCurrency,
   Token,
   TokenNotFoundError,
 } from '@domain/feature-funds';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
-import BigNumber from 'bignumber.js';
+import { check } from '@shared/helpers';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
@@ -30,7 +31,7 @@ export class FundLoader {
   ) {}
 
   @Interval(EVERY_10_SECONDS)
-  public loadCurrentCGData() {
+  public loadCgMarketData() {
     return pipe(
       this.ensureFundsExist(),
       TE.chainW(
@@ -41,74 +42,60 @@ export class FundLoader {
             TE.bind('metadata', () =>
               this.coinGeckoAdapter.getCoinMetadata(fund.coinGeckoId),
             ),
-            TE.bind('ohlc', () =>
-              this.coinGeckoAdapter.getOhlc({
-                coinId: fund.coinGeckoId,
-                vsCurrency: 'usd',
-                days: '1',
-              }),
-            ),
           );
         }),
       ),
       TE.chainW(
-        TE.traverseArray(({ fund, ohlc, metadata }) => {
-          const currentPrice =
-            metadata.market_data?.current_price?.usd ??
-            this.throwError('Missing current price');
-          const marketCap =
-            metadata.market_data?.market_cap?.usd ??
-            this.throwError('Missing market cap');
-          const marketCapRank =
-            metadata.market_data?.market_cap_rank ??
-            this.throwError('Missing market cap rank');
-          const totalVolume =
-            metadata.market_data?.total_volume?.usd ??
-            this.throwError('Missing total volume');
-          const circulatingSupply =
-            metadata?.market_data?.circulating_supply ??
-            this.throwError('Missing circulating supply');
-          const tvl =
-            metadata?.market_data?.total_value_locked ??
-            this.throwError('Missing total value locked');
-          const timestamp =
-            new Date(Date.parse(metadata.last_updated)) ??
-            this.throwError('Missing timestamp');
+        TE.traverseArray(({ fund, metadata }) => {
+          const currentPrice = Object.entries(
+            metadata.market_data.current_price,
+          ).map(([currency, amount]) => {
+            return {
+              currency: currency as SupportedCurrency,
+              amount,
+            };
+          });
+          const marketCap = Object.entries(metadata.market_data.market_cap).map(
+            ([currency, amount]) => {
+              return {
+                currency: currency as SupportedCurrency,
+                amount,
+              };
+            },
+          );
+          const totalVolume = Object.entries(
+            metadata.market_data.total_volume,
+          ).map(([currency, amount]) => {
+            return {
+              currency: currency as SupportedCurrency,
+              amount,
+            };
+          });
+          const marketCapRank = metadata.market_data.market_cap_rank;
+          const circulatingSupply = metadata.market_data.circulating_supply;
+          const timestamp = new Date(Date.parse(metadata.last_updated));
 
           return this.tokenRepository.addMarketData(fund.chain, fund.address, {
-            currentPrice: new BigNumber(currentPrice),
-            marketCap: new BigNumber(marketCap),
+            currentPrice,
+            marketCap,
+            totalVolume,
             marketCapRank,
-            totalVolume: new BigNumber(totalVolume),
-            circulatingSupply: new BigNumber(circulatingSupply),
-            tvl: new BigNumber(tvl),
+            circulatingSupply,
             timestamp,
-            ohlc: ohlc.map(([ts, open, high, low, close]) => ({
-              open: new BigNumber(open),
-              high: new BigNumber(high),
-              low: new BigNumber(low),
-              close: new BigNumber(close),
-              from: new Date(ts - THIRTY_MINUTES),
-              to: new Date(ts),
-            })),
           });
         }),
       ),
-      TE.match(
-        (err) => {
-          Logger.error(err);
-        },
-        () => {
-          return;
-        },
-      ),
+      TE.mapLeft((error) => {
+        Logger.error(error);
+        return error;
+      }),
     )();
   }
 
-  private throwError(message: string): never {
-    throw new MissingDataError(message);
-  }
-
+  /**
+   * This method makes sure that all the `DEFAULT_FUNDS` are in the database
+   * using an upsert operation.
+   */
   public ensureFundsExist(): TE.TaskEither<
     DatabaseError | TokenNotFoundError,
     readonly Token[]
@@ -117,8 +104,9 @@ export class FundLoader {
       DEFAULT_FUNDS,
       A.map((fund) => {
         return TE.tryCatch(
-          () =>
-            TokenModel.findOneAndUpdate(
+          () => {
+            check(fund.coingeckoId.length > 0, `coingeckoId can't be empty`);
+            return TokenModel.findOneAndUpdate(
               {
                 address: fund.address,
                 chain: fund.chain,
@@ -136,7 +124,8 @@ export class FundLoader {
                 upsert: true,
                 new: true,
               },
-            ).exec(),
+            ).exec();
+          },
           (err: unknown) => new DatabaseError(err),
         );
       }),

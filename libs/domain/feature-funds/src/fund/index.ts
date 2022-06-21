@@ -9,3 +9,5 @@ export * from './MarketData';
 export * from './YieldVault';
 export * from './YieldVaultHistory';
 export * from './SupportedChain';
+export * from './OHLC';
+export * from './SupportedCurrency';

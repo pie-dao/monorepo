@@ -1,27 +1,18 @@
-import BigNumber from 'bignumber.js';
+import { SupportedCurrency } from './SupportedCurrency';
 
-/**
- * Open, high, low, close data type.
- */
-export type OHLC = {
-  open: BigNumber;
-  high: BigNumber;
-  low: BigNumber;
-  close: BigNumber;
-  from: Date;
-  to: Date;
+export type CurrencyAmount = {
+  currency: SupportedCurrency;
+  amount: number;
 };
 
 /**
  * Represents the market state for a token at the given `timestamp`.
  */
 export type MarketData = {
-  currentPrice: BigNumber;
-  marketCap: BigNumber;
+  currentPrice: Array<CurrencyAmount>;
+  marketCap: Array<CurrencyAmount>;
+  totalVolume: Array<CurrencyAmount>;
   marketCapRank: number;
-  totalVolume: BigNumber;
-  circulatingSupply: BigNumber;
-  tvl: BigNumber;
+  circulatingSupply: number;
   timestamp: Date;
-  ohlc: OHLC[];
 };

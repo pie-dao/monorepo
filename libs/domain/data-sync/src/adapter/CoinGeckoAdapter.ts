@@ -1,4 +1,4 @@
-import { SupportedChain } from '@domain/feature-funds';
+import { SupportedChain, SupportedCurrency } from '@domain/feature-funds';
 import { DataTransferError, get } from '@hexworks/cobalt-http';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
@@ -13,7 +13,7 @@ import {
   ohlcCodec,
   OhlcDto,
 } from '.';
-import { SupportedCurrency, SupportedDays } from '..';
+import { SupportedDays } from '..';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
@@ -77,24 +77,6 @@ export const DEFAULT_FUNDS = [
     name: 'PieDAO DEFI Large Cap',
     address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
     coingeckoId: 'piedao-defi-large-cap',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
-  {
-    symbol: 'DEFI+L',
-    name: 'PieDAO DEFI Large Cap',
-    address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
-    coingeckoId: 'piedao-defi-large-cap',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
-  {
-    symbol: 'USD++',
-    name: 'USD Index Pie',
-    address: '0x9a48bd0ec040ea4f1d3147c025cd4076a2e71e3e',
-    coingeckoId: '',
     chain: SupportedChain.ETHEREUM,
     kind: 'PieVault',
     decimals: 18,
