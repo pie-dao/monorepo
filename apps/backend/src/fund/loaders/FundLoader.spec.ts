@@ -1,4 +1,5 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
+import { SentryService } from '@ntegral/nestjs-sentry';
 import { isRight, Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
 import { MarketDataModel, TokenEntity, TokenModel } from '../entity';
@@ -19,7 +20,11 @@ describe('Given a Fund Loader', () => {
 
   beforeEach(async () => {
     await TokenModel.deleteMany({}).exec();
-    target = new FundLoader(new MongoTokenRepository(), new CoinGeckoAdapter());
+    target = new FundLoader(
+      new MongoTokenRepository(),
+      new CoinGeckoAdapter(),
+      new SentryService(),
+    );
   });
 
   it('When ensuring funds exist with an empty database Then we get the newly created funds back', async () => {

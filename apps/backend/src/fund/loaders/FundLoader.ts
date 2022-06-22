@@ -7,6 +7,7 @@ import {
 } from '@domain/feature-funds';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { check } from '@shared/helpers';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
@@ -14,7 +15,8 @@ import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 
-const THIRTY_MINUTES = 1000 * 10;
+const THIRTY_MINUTES = 1000 * 60 * 30;
+
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
   constructor(message: string) {
@@ -24,10 +26,16 @@ export class MissingDataError extends Error {
 
 @Injectable()
 export class FundLoader {
+  private sentry: ReturnType<SentryService['instance']>;
+
   constructor(
     private tokenRepository: MongoTokenRepository,
     private coinGeckoAdapter: CoinGeckoAdapter,
-  ) {}
+    @InjectSentry()
+    private sentryService: SentryService,
+  ) {
+    this.sentry = this.sentryService.instance();
+  }
 
   @Interval(THIRTY_MINUTES)
   public loadCgMarketData() {
@@ -87,6 +95,7 @@ export class FundLoader {
       ),
       TE.bimap(
         (error) => {
+          this.sentry.captureException(error);
           Logger.error(error);
           return error;
         },
