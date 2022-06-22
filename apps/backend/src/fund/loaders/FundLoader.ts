@@ -14,7 +14,7 @@ import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 
-const THIRTY_MINUTES = 1000 * 60 * 30;
+const THIRTY_MINUTES = 1000 * 10;
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
   constructor(message: string) {
@@ -31,6 +31,7 @@ export class FundLoader {
 
   @Interval(THIRTY_MINUTES)
   public loadCgMarketData() {
+    Logger.log('Loading CG market data...');
     return pipe(
       this.ensureFundsExist(),
       TE.chainW(
@@ -84,10 +85,16 @@ export class FundLoader {
           });
         }),
       ),
-      TE.mapLeft((error) => {
-        Logger.error(error);
-        return error;
-      }),
+      TE.bimap(
+        (error) => {
+          Logger.error(error);
+          return error;
+        },
+        (result) => {
+          Logger.log('CG market data loaded successfully.');
+          return result;
+        },
+      ),
     )();
   }
 

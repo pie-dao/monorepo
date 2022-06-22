@@ -1,7 +1,7 @@
-import { CoinGeckoAdapter } from '@domain/data-sync';
+import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import { isRight, Right } from 'fp-ts/lib/Either';
 import { connect, Mongoose } from 'mongoose';
-import { TokenEntity, TokenModel } from '../entity';
+import { MarketDataModel, TokenEntity, TokenModel } from '../entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { FundLoader } from './FundLoader';
 
@@ -32,6 +32,14 @@ describe('Given a Fund Loader', () => {
     }
   });
 
+  it('When ensuring funds exist with an empty database Then the funds are created', async () => {
+    await target.ensureFundsExist()();
+
+    const result = await TokenModel.count().exec();
+
+    expect(result).toEqual(DEFAULT_FUNDS.length);
+  });
+
   it('When ensuring funds exist with existing funds Then it runs without an error', async () => {
     await target.ensureFundsExist()();
     const result = await target.ensureFundsExist()();
@@ -42,5 +50,25 @@ describe('Given a Fund Loader', () => {
   it('When loading current Coin Gecko Data Then it runs without an error', async () => {
     const result = await target.loadCgMarketData();
     expect(isRight(result)).toBeTruthy();
+  });
+
+  it('When loading current Coin Gecko Data Then new market data entries are created', async () => {
+    await target.loadCgMarketData();
+
+    const result = await MarketDataModel.count().exec();
+
+    expect(result).toBeGreaterThan(0);
+  });
+
+  it('When loading current Coin Gecko Data Twice Then no duplicates are created', async () => {
+    await target.loadCgMarketData();
+
+    const firstCount = await MarketDataModel.count().exec();
+
+    await target.loadCgMarketData();
+
+    const secondCount = await MarketDataModel.count().exec();
+
+    expect(firstCount).toEqual(secondCount);
   });
 });
