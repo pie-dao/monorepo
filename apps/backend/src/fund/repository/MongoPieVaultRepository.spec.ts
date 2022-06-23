@@ -5,12 +5,8 @@ import {
 } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
-import {
-  PieVaultHistoryModel,
-  DiscriminatedTokenModel,
-  TokenModel,
-} from '../entity';
 import { MongoPieVaultRepository } from './';
 
 const OLD = 1644509027;
@@ -113,21 +109,17 @@ const PIE_VAULT_WITH_HISTORY = new PieVault(
 describe('Given a Mongo Pie Vault Repository', () => {
   let connection: Mongoose;
   let target: MongoPieVaultRepository;
+  let mongod: MongoMemoryServer;
 
-  beforeAll(async () => {
-    connection = await connect(process.env.MONGO_DB_TEST);
+  beforeEach(async () => {
+    mongod = await MongoMemoryServer.create();
+    connection = await connect(mongod.getUri());
     target = new MongoPieVaultRepository();
   });
 
-  beforeEach(async () => {
-    await TokenModel.deleteMany({
-      kind: 'PieVault',
-    }).exec();
-    await PieVaultHistoryModel.deleteMany({}).exec();
-  });
-
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.disconnect();
+    await mongod.stop();
   });
 
   it('When creating a new Pie Vault Entity then it is created', async () => {

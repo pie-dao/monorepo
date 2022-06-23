@@ -14,7 +14,7 @@ import {
   MarketDataModel,
   DiscriminatedTokenEntity,
   DiscriminatedTokenModel,
-} from '../entity';
+} from './entity';
 import { TokenRepositoryBase } from './base/TokenRepositoryBase';
 
 const DEFAULT_FILTERS = {

@@ -13,7 +13,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { HydratedDocument, Model, Types } from 'mongoose';
-import { TokenEntity } from '../../entity';
+import { TokenEntity } from '../entity';
 import { toMongooseOptions } from '../Utils';
 
 export abstract class TokenRepositoryBase<

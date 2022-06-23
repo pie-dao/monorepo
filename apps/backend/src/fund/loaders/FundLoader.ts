@@ -1,5 +1,6 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import {
+  CurrencyData,
   DatabaseError,
   SupportedCurrency,
   Token,
@@ -12,7 +13,7 @@ import { check } from '@shared/helpers';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
-import { TokenModel } from '../entity';
+import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 
 const THIRTY_MINUTES = 1000 * 60 * 30;
@@ -55,38 +56,37 @@ export class FundLoader {
       ),
       TE.chainW(
         TE.traverseArray(({ fund, metadata }) => {
-          const currentPrice = Object.entries(
-            metadata.market_data.current_price,
-          ).map(([currency, amount]) => {
-            return {
-              currency: currency as SupportedCurrency,
-              amount,
-            };
-          });
-          const marketCap = Object.entries(metadata.market_data.market_cap).map(
+          const currencyDataLookup = new Map<SupportedCurrency, CurrencyData>();
+
+          Object.entries(metadata.market_data.current_price).forEach(
             ([currency, amount]) => {
-              return {
+              currencyDataLookup.set(currency as SupportedCurrency, {
                 currency: currency as SupportedCurrency,
-                amount,
-              };
+                price: amount,
+                marketCap: 0,
+                volume: 0,
+              });
             },
           );
-          const totalVolume = Object.entries(
-            metadata.market_data.total_volume,
-          ).map(([currency, amount]) => {
-            return {
-              currency: currency as SupportedCurrency,
-              amount,
-            };
-          });
+          Object.entries(metadata.market_data.market_cap).forEach(
+            ([currency, amount]) => {
+              currencyDataLookup.get(currency as SupportedCurrency).marketCap =
+                amount;
+            },
+          );
+          Object.entries(metadata.market_data.total_volume).forEach(
+            ([currency, amount]) => {
+              currencyDataLookup.get(currency as SupportedCurrency).volume =
+                amount;
+            },
+          );
+          const currencyData = Array.from(currencyDataLookup.values());
           const marketCapRank = metadata.market_data.market_cap_rank;
           const circulatingSupply = metadata.market_data.circulating_supply;
           const timestamp = new Date(Date.parse(metadata.last_updated));
 
           return this.tokenRepository.addMarketData(fund.chain, fund.address, {
-            currentPrice,
-            marketCap,
-            totalVolume,
+            currencyData,
             marketCapRank,
             circulatingSupply,
             timestamp,

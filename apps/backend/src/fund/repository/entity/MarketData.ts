@@ -1,5 +1,5 @@
 import {
-  CurrencyAmount,
+  CurrencyData,
   MarketData,
   SupportedCurrency,
 } from '@domain/feature-funds';
@@ -11,11 +11,15 @@ import {
 } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
 
-export class CurrencyAmountEntity implements CurrencyAmount {
+export class CurrencyDataEntity implements CurrencyData {
   @prop({ required: true, type: String })
   currency: SupportedCurrency;
   @prop({ required: true })
-  amount: number;
+  price: number;
+  @prop({ required: true })
+  marketCap: number;
+  @prop({ required: true })
+  volume: number;
 }
 
 @modelOptions({
@@ -25,12 +29,8 @@ export class CurrencyAmountEntity implements CurrencyAmount {
 export class MarketDataEntity implements MarketData {
   @prop({ required: true, index: true })
   public tokenId: Types.ObjectId;
-  @prop({ required: true, type: CurrencyAmountEntity, _id: false })
-  currentPrice: Array<CurrencyAmountEntity>;
-  @prop({ required: true, type: CurrencyAmountEntity, _id: false })
-  marketCap: Array<CurrencyAmountEntity>;
-  @prop({ required: true, type: CurrencyAmountEntity, _id: false })
-  totalVolume: Array<CurrencyAmountEntity>;
+  @prop({ required: true, type: CurrencyDataEntity, _id: false })
+  currencyData: Array<CurrencyDataEntity>;
   @prop({ required: true })
   marketCapRank: number;
   @prop({ required: true })

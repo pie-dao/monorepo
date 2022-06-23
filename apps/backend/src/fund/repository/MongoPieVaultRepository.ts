@@ -5,7 +5,7 @@ import {
   PieVaultEntity,
   PieVaultHistoryModel,
   PieVaultModel,
-} from '../entity';
+} from './entity';
 import { FundRepositoryBase } from '.';
 
 @Injectable()
