@@ -29,10 +29,8 @@ export abstract class TokenRepositoryBase<
 
   findAll(filters: Partial<F>): T.Task<T[]> {
     const { token = DEFAULT_TOKEN_FILTER, ...rest } = filters;
-    let find = this.model.find({});
     const filter = toMongooseOptions(token);
-    find = find.sort(filter.sort);
-    find = find.limit(filter.limit);
+    let find = this.model.find({}).sort(filter.sort).limit(filter.limit);
 
     this.getPaths().forEach((path: string) => {
       const pathFilter = rest[path];
@@ -41,7 +39,11 @@ export abstract class TokenRepositoryBase<
         options: pathFilter ? toMongooseOptions(pathFilter) : {},
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }) as any;
-      // 👆 This is because of a weird Mongoose typing.
+      // 👆 This is because of a weird Mongoose typing 👇
+      // the typing of this includes an `UnpackedIntersection` type that
+      // handles the E | E[] case (findOne or findAll). We already typed
+      // `find` here (or rather Typescript inferred it), so it is safe to use `any`
+      // instead of dealing with the `UnpackedIntersection` type's monstrous complexity.
     });
 
     return pipe(
