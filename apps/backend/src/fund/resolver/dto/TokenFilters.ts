@@ -1,10 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { MarketDataFilter } from './Filter';
+import { MarketDataFilter, TokenFilter } from './Filter';
 
 @InputType()
 export class TokenFiltersInput {
-  @Field(() => MarketDataFilter, { nullable: true })
-  token?: MarketDataFilter;
-  @Field(() => MarketDataFilter, { nullable: true })
+  @Field(() => TokenFilter, { nullable: true, defaultValue: {} })
+  token?: TokenFilter;
+  @Field(() => MarketDataFilter, { nullable: true, defaultValue: {} })
   marketData?: MarketDataFilter;
 }

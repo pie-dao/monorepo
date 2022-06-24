@@ -116,7 +116,7 @@ export abstract class TokenRepositoryBase<
     return pipe(
       TE.tryCatch(
         () => {
-          return this.model.findOne({ filter: { address, chain } }).exec();
+          return this.model.findOne({ address, chain }).exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),

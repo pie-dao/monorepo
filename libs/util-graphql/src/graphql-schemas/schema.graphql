@@ -14,7 +14,7 @@ type CurrencyDataEntity {
 """Contains market information for a given token at a specific timestamp."""
 type MarketDataEntity {
   """The currently circulating supply of the token at the given timestamp."""
-  circulatingSupply: Int!
+  circulatingSupply: Float!
 
   """Price metadata at the given timestamp in all the supported currencies."""
   currencyData: [CurrencyDataEntity!]!
@@ -27,17 +27,17 @@ type MarketDataEntity {
 }
 
 input MarketDataFilter {
-  limit: Int = 1
+  limit: Int
   orderBy: [MarketDataOrderBy!]
 }
 
-enum MarketDataFilterField {
-  timestamp
+input MarketDataOrderBy {
+  field: MarketDataOrderByField!
+  value: Order!
 }
 
-input MarketDataOrderBy {
-  field: MarketDataFilterField!
-  value: Order!
+enum MarketDataOrderByField {
+  timestamp
 }
 
 enum Order {
@@ -46,8 +46,8 @@ enum Order {
 }
 
 type Query {
-  """Returns all tokens"""
-  tokens(filters: TokenFiltersInput!): [TokenEntity!]!
+  """Returns all tokens regardless of their kind."""
+  tokens(filters: TokenFiltersInput): [TokenEntity!]!
 }
 
 """
@@ -72,7 +72,22 @@ type TokenEntity {
   symbol: String!
 }
 
+input TokenFilter {
+  limit: Int
+  orderBy: [TokenOrderBy!]
+}
+
 input TokenFiltersInput {
-  marketData: MarketDataFilter
-  token: MarketDataFilter
+  marketData: MarketDataFilter = {}
+  token: TokenFilter = {}
+}
+
+input TokenOrderBy {
+  field: TokenOrderByField!
+  value: Order!
+}
+
+enum TokenOrderByField {
+  name
+  symbol
 }

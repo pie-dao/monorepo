@@ -32,9 +32,9 @@ const DEFAULT_CHILD_FILTERS = {
 export abstract class FundRepositoryBase<
     H extends FundHistory,
     E extends FundEntity<H>,
-    T extends Fund<H>,
+    F extends Fund<H>,
   >
-  extends TokenRepositoryBase<E, T, FundFilters>
+  extends TokenRepositoryBase<E, F, FundFilters>
   implements FundRepository<H, Fund<H>>
 {
   constructor(
@@ -45,7 +45,7 @@ export abstract class FundRepositoryBase<
     super(model, marketModel);
   }
 
-  findAll(filters: Partial<FundFilters> = DEFAULT_FILTERS): T.Task<T[]> {
+  findAll(filters: Partial<FundFilters> = DEFAULT_FILTERS): T.Task<F[]> {
     return super.findAll(filters);
   }
 
@@ -53,7 +53,7 @@ export abstract class FundRepositoryBase<
     chain: SupportedChain,
     address: string,
     childFilters: Partial<Omit<FundFilters, 'token'>> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, T> {
+  ): TE.TaskEither<TokenNotFoundError | DatabaseError, F> {
     return super.findOne(chain, address, childFilters);
   }
 
@@ -65,7 +65,7 @@ export abstract class FundRepositoryBase<
     return pipe(
       TE.tryCatch(
         () => {
-          return this.model.findOne({ filter: { address, chain } }).exec();
+          return this.model.findOne({ address, chain }).exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),

@@ -1,5 +1,5 @@
 import { MarketData } from '@domain/feature-funds';
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Float, Int, ObjectType } from '@nestjs/graphql';
 import { CurrencyDataEntity } from './CurrencyData';
 
 @ObjectType({
@@ -16,7 +16,7 @@ export class MarketDataEntity implements MarketData {
     description: 'The rank of the token at the given timestamp.',
   })
   marketCapRank: number;
-  @Field(() => Int, {
+  @Field(() => Float, {
     description:
       'The currently circulating supply of the token at the given timestamp.',
   })

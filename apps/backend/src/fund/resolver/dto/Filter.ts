@@ -9,58 +9,53 @@ registerEnumType(Order, {
   name: 'Order',
 });
 
-enum MarketDataFilterField {
+enum MarketDataOrderByField {
   timestamp = 'timestamp',
 }
 
-registerEnumType(MarketDataFilterField, {
-  name: 'MarketDataFilterField',
+registerEnumType(MarketDataOrderByField, {
+  name: 'MarketDataOrderByField',
 });
 
 @InputType()
 export class MarketDataOrderBy {
-  @Field(() => MarketDataFilterField)
-  field: MarketDataFilterField;
+  @Field(() => MarketDataOrderByField)
+  field: MarketDataOrderByField;
   @Field(() => Order)
   value: Order;
 }
 
-enum TokenFilterField {
-  timestamp = 'timestamp',
+enum TokenOrderByField {
+  name = 'name',
+  symbol = 'symbol',
 }
 
-registerEnumType(TokenFilterField, {
-  name: 'TokenFilterField',
+registerEnumType(TokenOrderByField, {
+  name: 'TokenOrderByField',
 });
 
 @InputType()
 export class TokenOrderBy {
-  @Field(() => MarketDataFilterField)
-  field: MarketDataFilterField;
+  @Field(() => TokenOrderByField)
+  field: TokenOrderByField;
   @Field(() => Order)
   value: Order;
 }
 
 @InputType()
 export class MarketDataFilter {
-  @Field(() => Int, { nullable: true, defaultValue: 1 })
+  @Field(() => Int, { nullable: true })
   limit?: number;
   @Field(() => [MarketDataOrderBy], {
     nullable: true,
-    defaultValue: () => [
-      {
-        field: MarketDataFilterField.timestamp,
-        value: Order.desc,
-      },
-    ],
   })
   orderBy?: Array<MarketDataOrderBy>;
 }
 
 @InputType()
 export class TokenFilter {
-  @Field(() => Int, { nullable: true, defaultValue: 100 })
+  @Field(() => Int, { nullable: true })
   limit?: number;
-  @Field(() => [TokenFilterField], { nullable: true, defaultValue: () => [] })
-  orderBy?: Array<TokenFilterField>;
+  @Field(() => [TokenOrderBy], { nullable: true })
+  orderBy?: Array<TokenOrderBy>;
 }

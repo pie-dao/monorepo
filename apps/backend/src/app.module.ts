@@ -1,24 +1,24 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { GraphQLModule } from '@nestjs/graphql';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { SentryModule } from '@ntegral/nestjs-sentry';
+import { ConsoleModule } from 'nestjs-console';
+import * as path from 'path';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PiesModule } from './pies/pies.module';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
-import { ScheduleModule } from '@nestjs/schedule';
-import { StakingModule } from './staking/staking.module';
-import { TreasuryModule } from './treasury/treasury.module';
-import { TasksModule } from './tasks/tasks.module';
-import { ConsoleModule } from 'nestjs-console';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { SentimentModule } from './sentiment/sentiment.module';
 import { AuthorizationModule } from './authorization/authorization.module';
-import { SentryModule } from '@ntegral/nestjs-sentry';
 import { FundsModule } from './fund';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import * as path from 'path';
-import { DirectiveLocation, GraphQLDirective } from 'graphql';
+import { PiesModule } from './pies/pies.module';
+import { SentimentModule } from './sentiment/sentiment.module';
+import { StakingModule } from './staking/staking.module';
+import { TasksModule } from './tasks/tasks.module';
+import { TreasuryModule } from './treasury/treasury.module';
+
 @Module({
   imports: [
     PiesModule,
@@ -44,7 +44,10 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: path.join(process.cwd(), 'schema.gql'),
+      autoSchemaFile: path.join(
+        process.cwd(),
+        'libs/util-graphql/src/graphql-schemas/schema.graphql',
+      ),
       sortSchema: true,
       installSubscriptionHandlers: true,
       playground: true,
