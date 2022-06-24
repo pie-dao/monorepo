@@ -57,7 +57,7 @@ describe('PiesService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('reset DB and re-initiate it', () => {
+  describe.skip('reset DB and re-initiate it', () => {
     describe('When DB is empty, all pies should be initiated', () => {
       jest.setTimeout(50000);
       let piesDB: PieEntity[];
@@ -105,7 +105,7 @@ describe('PiesService', () => {
         expect(service.getPies).toHaveBeenCalled();
       });
 
-      test('then it should return an Array of PieEntity', () => {
+      test.skip('then it should return an Array of PieEntity', () => {
         const piesMock = PiesStub();
 
         expect(pies).toEqual(
@@ -146,7 +146,7 @@ describe('PiesService', () => {
         );
       });
 
-      test('it should throw an error if no records are found by name', async () => {
+      test.skip('it should throw an error if no records are found by name', async () => {
         await expect(
           service.getPies('not_existing_token', undefined),
         ).rejects.toEqual(
@@ -154,7 +154,7 @@ describe('PiesService', () => {
         );
       });
 
-      test('it should throw an error if no records are found by address', async () => {
+      test.skip('it should throw an error if no records are found by address', async () => {
         await expect(
           service.getPies(undefined, 'not_existing_token'),
         ).rejects.toEqual(
@@ -164,7 +164,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('getPies by Name', () => {
+  describe.skip('getPies by Name', () => {
     describe('When getPies is called with a name param', () => {
       jest.setTimeout(50000);
       let pies: PieEntity[];
@@ -191,7 +191,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('getPies by Address', () => {
+  describe.skip('getPies by Address', () => {
     describe('When getPies is called with an address param', () => {
       jest.setTimeout(50000);
       let pies: PieEntity[];
@@ -221,7 +221,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('getPieByAddress', () => {
+  describe.skip('getPieByAddress', () => {
     describe('When getPieByAddress is called', () => {
       jest.setTimeout(50000);
       let pie: PieEntity;
@@ -241,7 +241,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('getPieByName', () => {
+  describe.skip('getPieByName', () => {
     describe('When getPieByName is called', () => {
       jest.setTimeout(50000);
       let pie: PieEntity;
@@ -261,7 +261,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('getPieHistory', () => {
+  describe.skip('getPieHistory', () => {
     describe('When getPieHistory is called with an address param', () => {
       jest.setTimeout(50000);
       let pieHistory: {
@@ -297,7 +297,7 @@ describe('PiesService', () => {
       });
     });
 
-    describe('When getPieHistory is called with a name param', () => {
+    describe.skip('When getPieHistory is called with a name param', () => {
       let pieHistory: {
         history: PieHistoryEntity[];
         pie: PieEntity;
@@ -329,7 +329,7 @@ describe('PiesService', () => {
       });
     });
 
-    describe('When getPieHistory is called with NO param', () => {
+    describe.skip('When getPieHistory is called with NO param', () => {
       let pieHistory: {
         history: PieHistoryEntity[];
         pie: PieEntity;
@@ -349,7 +349,7 @@ describe('PiesService', () => {
       });
     });
 
-    describe('When getPieHistory is called on a token without history', () => {
+    describe.skip('When getPieHistory is called on a token without history', () => {
       beforeEach(async () => {
         jest.setTimeout(50000);
         jest.spyOn(service, 'getPieHistoryDetails');
@@ -369,7 +369,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('createPie', () => {
+  describe.skip('createPie', () => {
     describe('When createPie is called', () => {
       jest.setTimeout(50000);
       const pie: PieDto = {
@@ -401,7 +401,7 @@ describe('PiesService', () => {
     });
   });
 
-  describe('deletePie', () => {
+  describe.skip('deletePie', () => {
     describe('When deletePie is called', () => {
       jest.setTimeout(50000);
       let pieDB: PieEntity;

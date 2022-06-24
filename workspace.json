@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
+    "domain-data-sync": "libs/domain/data-sync",
     "domain-feature-funds": "libs/domain/feature-funds",
     "investify": "apps/investify",
     "investify-e2e": "apps/investify-e2e",

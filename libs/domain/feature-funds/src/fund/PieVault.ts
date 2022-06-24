@@ -1,7 +1,13 @@
 import * as E from 'fp-ts/Either';
-import { Fund } from './Fund';
-import { PieVaultHistory, TokenDetails } from './PieVaultHistory';
-import { Token } from './Token';
+import {
+  Fund,
+  MarketData,
+  PieVaultHistory,
+  SupportedChain,
+  Token,
+  TokenDetails,
+} from '.';
+import { TokenNotFoundError } from '../repository';
 
 /**
  * Pie Vaults are an evolution of Pie Smart Pools, but without the swapping functionality.
@@ -21,11 +27,14 @@ export class PieVault implements Fund<PieVaultHistory> {
   private latest?: PieVaultHistory;
 
   constructor(
+    public chain: SupportedChain,
     public address: string,
     public name: string,
     public symbol: string,
     public decimals: number,
+    public coinGeckoId: string,
     public history: PieVaultHistory[] = [],
+    public marketData: MarketData[] = [],
   ) {
     this.latest = history.length > 0 ? history[history.length - 1] : undefined;
   }
@@ -54,14 +63,7 @@ export class PieVault implements Fund<PieVaultHistory> {
         )!,
       );
     } else {
-      return E.left(new TokenNotFoundError(token.address));
+      return E.left(new TokenNotFoundError(token.address, token.chain));
     }
-  }
-}
-
-export class TokenNotFoundError extends Error {
-  public kind: 'TokenNotFoundError' = 'TokenNotFoundError';
-  constructor(public address: string) {
-    super(`Token with address ${address} was not found`);
   }
 }

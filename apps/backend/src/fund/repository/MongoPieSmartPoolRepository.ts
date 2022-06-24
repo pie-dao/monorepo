@@ -1,11 +1,12 @@
 import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
+import { FundRepositoryBase } from '.';
 import {
+  MarketDataModel,
   PieSmartPoolEntity,
   PieSmartPoolHistoryModel,
   PieSmartPoolModel,
 } from '../entity';
-import { FundRepositoryBase } from '.';
 
 @Injectable()
 export class MongoPieSmartPoolRepository extends FundRepositoryBase<
@@ -14,16 +15,19 @@ export class MongoPieSmartPoolRepository extends FundRepositoryBase<
   PieSmartPool
 > {
   constructor() {
-    super(PieSmartPoolModel, PieSmartPoolHistoryModel);
+    super(PieSmartPoolModel, MarketDataModel, PieSmartPoolHistoryModel);
   }
 
   protected toDomainObject(entity: PieSmartPoolEntity): PieSmartPool {
     return new PieSmartPool(
+      entity.chain,
       entity.address,
       entity.name,
       entity.symbol,
       entity.decimals,
+      entity.coinGeckoId,
       entity.history.map((entry) => entry),
+      entity.marketData.map((entry) => entry),
     );
   }
 }

@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EpochEntity, EpochSchema } from '../entities/epoch.entity';
 import { StakingService } from '../staking.service';
 
-describe('StakingService', () => {
+describe.skip('StakingService', () => {
   let service: StakingService;
 
   beforeEach(async () => {

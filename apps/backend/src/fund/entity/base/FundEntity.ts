@@ -1,5 +1,8 @@
-import { FundHistory, Token } from '@domain/feature-funds';
+import { FundHistory } from '@domain/feature-funds';
+import { DiscriminatedTokenEntity } from '../Token';
 
-export type FundEntity<H extends FundHistory> = Token & {
+export abstract class FundEntity<
+  H extends FundHistory,
+> extends DiscriminatedTokenEntity {
   history?: H[];
-};
+}
