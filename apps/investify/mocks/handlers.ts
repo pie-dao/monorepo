@@ -23,6 +23,7 @@ export const handlers = [
               amount: userId ? 30000.2 : 0,
             },
           ],
+          twentyFourHourChange: userId ? -30.22 : null,
         },
       }),
     );

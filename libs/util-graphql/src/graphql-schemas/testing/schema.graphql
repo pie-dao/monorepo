@@ -16,6 +16,7 @@ type User implements Node {
   id: ID!
   address: String!
   balances: [Balance!]!
+  twentyFourHourChange: Float!
 }
 
 type Balance {

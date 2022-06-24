@@ -45,6 +45,7 @@ module.exports = {
           rgba(11, 120, 221, 0.6) 80%,
           rgba(11, 221, 145, 0.6) 100%
         );`,
+        'dashboard-card': `url('/credit_card.png')`,
       },
     },
   },

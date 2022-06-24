@@ -7,10 +7,12 @@ import {
 } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import sidebarReducer from './sidebar/sidebar.slice';
+import preferencesReducer from './preferences/preferences.slice';
 import { api } from '../api/generated/graphql';
 
 export const rootReducer = combineReducers({
   sidebar: sidebarReducer,
+  preferences: preferencesReducer,
   [api.reducerPath]: api.reducer,
 });
 

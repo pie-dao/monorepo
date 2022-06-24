@@ -64,3 +64,8 @@
   );
   color: transparent;
 }
+
+.hidden-balance {
+  color: transparent;
+  text-shadow: rgb(255 255 255) 0px 0px 14px;
+}
