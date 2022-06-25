@@ -1,8 +1,5 @@
-import {
-  CurrencyData,
-  MarketData,
-  SupportedCurrency,
-} from '@domain/feature-funds';
+import { CurrencyData, MarketData } from '@domain/feature-funds';
+import { SupportedCurrency } from '@shared/util-types';
 import {
   getModelForClass,
   index,

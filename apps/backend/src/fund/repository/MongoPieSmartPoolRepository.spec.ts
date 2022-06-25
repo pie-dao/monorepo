@@ -1,13 +1,10 @@
-import {
-  PieSmartPool,
-  PieSmartPoolHistory,
-  SupportedChain,
-} from '@domain/feature-funds';
+import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoPieSmartPoolRepository } from '.';
+import { SupportedChain } from '@shared/util-types';
 
 const OLD = 1644509027;
 const NEW = 1654509027;

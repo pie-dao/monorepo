@@ -1,6 +1,7 @@
+import { SupportedChain } from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { MarketData, SupportedChain, Token } from '../fund';
+import { MarketData, Token } from '../fund';
 
 export class DatabaseError extends Error {
   public kind: 'DatabaseError' = 'DatabaseError';

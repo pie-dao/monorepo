@@ -2,7 +2,6 @@ import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import {
   CurrencyData,
   DatabaseError,
-  SupportedCurrency,
   Token,
   TokenNotFoundError,
 } from '@domain/feature-funds';
@@ -15,7 +14,7 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
-
+import { SupportedCurrency } from '@shared/util-types';
 const THIRTY_MINUTES = 1000 * 60 * 30;
 
 export class MissingDataError extends Error {

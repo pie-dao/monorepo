@@ -1,5 +1,6 @@
-import { CurrencyData, SupportedCurrency } from '@domain/feature-funds';
+import { CurrencyData } from '@domain/feature-funds';
 import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { SupportedCurrency } from '@shared/util-types';
 
 @ObjectType({
   description: 'Represents market data denominated in a specific currency.',

@@ -1,5 +1,6 @@
-import { SupportedChain, Token } from '@domain/feature-funds';
+import { Token } from '@domain/feature-funds';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { SupportedChain } from '@shared/util-types';
 import { MarketDataEntity } from './MarketData';
 
 @ObjectType()

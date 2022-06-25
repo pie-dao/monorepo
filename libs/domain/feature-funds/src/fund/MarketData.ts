@@ -1,4 +1,4 @@
-import { SupportedCurrency } from './SupportedCurrency';
+import { SupportedCurrency } from '@shared/util-types';
 
 export type CurrencyData = {
   currency: SupportedCurrency;

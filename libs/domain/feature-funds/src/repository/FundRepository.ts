@@ -1,8 +1,8 @@
 import * as TE from 'fp-ts/TaskEither';
 import { Filter, Filters, TokenRepository } from '.';
-import { Fund, FundHistory, SupportedChain } from '../fund';
+import { Fund, FundHistory } from '../fund';
 import { DatabaseError, TokenNotFoundError } from './TokenRepository';
-
+import { SupportedChain } from '@shared/util-types';
 export class CreateHistoryError extends Error {
   public kind: 'CreateHistoryError' = 'CreateHistoryError';
   constructor(public message: string) {

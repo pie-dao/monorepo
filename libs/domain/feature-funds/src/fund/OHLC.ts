@@ -1,4 +1,4 @@
-import { SupportedCurrency } from './SupportedCurrency';
+import { SupportedCurrency } from '@shared/util-types';
 
 /**
  * Open, high, low, close data type.
