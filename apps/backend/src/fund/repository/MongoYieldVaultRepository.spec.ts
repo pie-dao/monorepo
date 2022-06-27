@@ -1,22 +1,30 @@
-import { YieldVault, YieldVaultHistory } from '@domain/feature-funds';
+import {
+  SupportedChain,
+  YieldVault,
+  YieldVaultHistory,
+} from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoYieldVaultRepository } from '.';
-import { TokenModel, YieldVaultHistoryModel } from '../entity';
+import { MongoPieVaultRepository } from './MongoPieVaultRepository';
+import { PIE_VAULT_0 } from './MongoPieVaultRepository.spec';
 
 const OLD = 1644509027;
-
 const NEW = 1654509027;
 
-const HISTORY_0 = {
+const HISTORY_0: YieldVaultHistory = {
   timestamp: new Date(OLD),
   underlyingToken: {
+    chain: SupportedChain.ETHEREUM,
     address: '0xA4b18b66CF0136D7F0805d70Daa922A53707bCbb',
     name: 'Fun Token',
     symbol: 'FUN',
     decimals: 18,
     kind: 'Token',
+    marketData: [],
+    coinGeckoId: '',
   },
   totalStrategyHoldings: new BigNumber('1'),
   userDepositLimit: new BigNumber('1'),
@@ -30,11 +38,14 @@ const HISTORY_0 = {
     {
       name: 'Strategy Token',
       underlyingToken: {
+        chain: SupportedChain.ETHEREUM,
         address: '0x7B7D39cD201067EF189276Af04fE40fb50C73D99',
         name: 'Strategy Token',
         symbol: 'ST',
         decimals: 18,
         kind: 'Token',
+        marketData: [],
+        coinGeckoId: '',
       },
       depositedAmount: new BigNumber('1'),
       estimatedAmount: new BigNumber('1'),
@@ -49,11 +60,14 @@ const HISTORY_0 = {
 const HISTORY_1: YieldVaultHistory = {
   timestamp: new Date(NEW),
   underlyingToken: {
+    chain: SupportedChain.ETHEREUM,
     address: '0xA4b18b66CF013637F0805d70Daa922A53707bCbb',
     name: 'History Token',
     symbol: 'HST',
     decimals: 18,
     kind: 'Token',
+    marketData: [],
+    coinGeckoId: '',
   },
   totalStrategyHoldings: new BigNumber('2'),
   userDepositLimit: new BigNumber('2'),
@@ -66,30 +80,39 @@ const HISTORY_1: YieldVaultHistory = {
 };
 
 const YIELD_VAULT_0: YieldVault = {
-  address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
+  chain: SupportedChain.ETHEREUM,
+  address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077107',
   name: 'Yield Fund Token',
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'YFT',
+  coinGeckoId: '',
   history: [],
+  marketData: [],
 };
 
 const YIELD_VAULT_1: YieldVault = {
+  chain: SupportedChain.ETHEREUM,
   address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077207',
   name: 'Other Fund Token',
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'OFT',
+  coinGeckoId: '',
   history: [],
+  marketData: [],
 };
 
 const YIELD_VAULT_2: YieldVault = {
-  address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077207',
+  chain: SupportedChain.ETHEREUM,
+  address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077307',
   name: 'Very Fun Token',
   decimals: 18,
   kind: 'YieldVault',
   symbol: 'VFT',
+  coinGeckoId: '',
   history: [],
+  marketData: [],
 };
 
 const YIELD_VAULT_WITH_HISTORY: YieldVault = {
@@ -99,23 +122,25 @@ const YIELD_VAULT_WITH_HISTORY: YieldVault = {
 
 describe('Given a Mongo Yield Vault Repository', () => {
   let connection: Mongoose;
+  let mongod: MongoMemoryServer;
   let target: MongoYieldVaultRepository;
 
-  beforeAll(async () => {
-    connection = await connect(process.env.MONGO_DB_TEST);
+  beforeEach(async () => {
+    mongod = await MongoMemoryServer.create();
+    connection = await connect(mongod.getUri());
     target = new MongoYieldVaultRepository();
-    await TokenModel.deleteMany({}).exec();
-    await YieldVaultHistoryModel.deleteMany({}).exec();
   });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.disconnect();
+    await mongod.stop();
   });
 
   it('When creating a new Yield Vault Entity then it is created', async () => {
     await target.save(YIELD_VAULT_WITH_HISTORY)();
 
-    const result = await target.findOneByAddress(
+    const result = await target.findOne(
+      YIELD_VAULT_WITH_HISTORY.chain,
       YIELD_VAULT_WITH_HISTORY.address,
     )();
 
@@ -147,16 +172,22 @@ describe('Given a Mongo Yield Vault Repository', () => {
     );
   });
 
-  it('When adding a new history entry, Then it is added properly', async () => {
+  it('When adding a new Yield Vault history entry, Then it is added properly', async () => {
     const saveResult = await target.save(YIELD_VAULT_WITH_HISTORY)();
     const yieldVault = (saveResult as Right<YieldVault>).right;
 
-    await target.addHistoryEntry(yieldVault, HISTORY_1)();
+    await target.addHistoryEntry(
+      yieldVault.chain,
+      yieldVault.address,
+      HISTORY_1,
+    )();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
-    const result = await target.findOneByAddress(yieldVault.address, {
-      limit: 2,
-      orderBy: { timestamp: 'asc' },
+    const result = await target.findOne(yieldVault.chain, yieldVault.address, {
+      history: {
+        limit: 2,
+        orderBy: { timestamp: 'asc' },
+      },
     })();
 
     const updatedYieldVault = (result as Right<YieldVault>).right;
@@ -166,16 +197,30 @@ describe('Given a Mongo Yield Vault Repository', () => {
     ).toEqual(['FUN', 'HST']);
   });
 
-  it('When saving multiple entities Then they are all found by find', async () => {
+  it('When saving multiple Yield Vault entities Then they are all found by find', async () => {
     await target.save(YIELD_VAULT_0)();
     await target.save(YIELD_VAULT_1)();
     await target.save(YIELD_VAULT_2)();
 
     const result = await target.findAll({
-      orderBy: { symbol: 'desc' },
-      limit: 2,
+      token: {
+        orderBy: { symbol: 'desc' },
+        limit: 2,
+      },
     })();
 
     expect(result.map((e) => e.symbol)).toEqual(['YFT', 'VFT']);
+  });
+
+  it('When saving many types of entities Then they can be queried by type', async () => {
+    const pieRepo = new MongoPieVaultRepository();
+
+    await target.save(YIELD_VAULT_0)();
+    await target.save(YIELD_VAULT_1)();
+    await pieRepo.save(PIE_VAULT_0)();
+
+    const result = await target.findAll()();
+
+    expect(result.map((e) => e.symbol)).toEqual(['YFT', 'OFT']);
   });
 });

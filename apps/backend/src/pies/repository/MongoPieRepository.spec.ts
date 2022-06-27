@@ -41,7 +41,7 @@ describe('Given a PieRepository', () => {
 
       const pie = {
         name: name,
-        address: '0x0',
+        address: '0x273B845B24680B21394E5A07840d981Fd50601E5',
         coingeckoId: '0',
         history: [],
         symbol: 'TST',
@@ -78,7 +78,7 @@ describe('Given a PieRepository', () => {
                 amount: '20151719756',
                 usdPrice: '0.998853',
                 marginalTVL: new BigNumber('20128.605733439868'),
-                marginalTVLPercentage: 47.05553804429024902233,
+                marginalTVLPercentage: 47.055538044,
               },
             ],
           },

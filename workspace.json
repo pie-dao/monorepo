@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "backend": "apps/backend",
+    "domain-data-sync": "libs/domain/data-sync",
     "domain-feature-funds": "libs/domain/feature-funds",
     "investify": "apps/investify",
     "investify-e2e": "apps/investify-e2e",
@@ -13,6 +14,7 @@
     "shared-helpers": "libs/shared/helpers",
     "shared-ui-library": "libs/shared/ui-library",
     "shared-util-blockchain": "libs/shared/util-blockchain",
+    "shared-util-types": "libs/shared/util-types",
     "util-graphql": "libs/util-graphql"
   }
 }

@@ -7,15 +7,16 @@ import {
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { HistoryEntityBase, TokenEntity, TokenModel } from '.';
 import { BigNumberType } from '..';
+import { HistoryEntityBase } from './base';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 
 export class StrategyEntity implements Strategy {
   @prop({ required: true })
   name: string;
 
   @prop({ _id: false })
-  underlyingToken: TokenEntity;
+  underlyingToken: DiscriminatedTokenEntity;
 
   @prop({ type: BigNumberType, required: true })
   depositedAmount: BigNumber;
@@ -36,12 +37,15 @@ export class StrategyEntity implements Strategy {
   balance: BigNumber;
 }
 
+@modelOptions({
+  schemaOptions: { collection: 'yieldvaulthistory' },
+})
 export class YieldVaultHistoryEntity
   extends HistoryEntityBase
   implements YieldVaultHistory
 {
   @prop({ required: true })
-  underlyingToken: TokenEntity;
+  underlyingToken: DiscriminatedTokenEntity;
 
   @prop({ type: BigNumberType })
   harvestFeePercent?: BigNumber;
@@ -122,18 +126,20 @@ export class YieldVaultHistoryEntity
     toObject: { virtuals: true },
   },
 })
-export class YieldVaultEntity extends TokenEntity {
+export class YieldVaultEntity extends DiscriminatedTokenEntity {
   @prop({
     ref: () => YieldVaultHistoryEntity,
     foreignField: 'fundId',
     localField: '_id',
+    default: [],
   })
-  history?: YieldVaultHistoryEntity[];
+  history: YieldVaultHistoryEntity[];
 }
 
 export const YieldVaultModel = getDiscriminatorModelForClass(
-  TokenModel,
+  DiscriminatedTokenModel,
   YieldVaultEntity,
+  'YieldVault',
 );
 
 export const YieldVaultHistoryModel = getModelForClass(YieldVaultHistoryEntity);

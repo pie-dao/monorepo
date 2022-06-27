@@ -17,7 +17,7 @@ import { CgCoinEntity } from './entities/cg_coin.entity';
 import { PieHistoryEntity } from './entities/pie-history.entity';
 import { PieEntity } from './entities/pie.entity';
 import { PiesService } from './pies.service';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @ApiTags('Pies')
 @Controller('pies')

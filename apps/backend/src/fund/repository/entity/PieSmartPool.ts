@@ -1,4 +1,4 @@
-import { TokenWeight } from '@domain/feature-funds';
+import { PieSmartPoolHistory, TokenWeight } from '@domain/feature-funds';
 import {
   getDiscriminatorModelForClass,
   getModelForClass,
@@ -7,19 +7,26 @@ import {
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { HistoryEntityBase, TokenEntity, TokenModel } from '.';
 import { BigNumberType } from '..';
+import { HistoryEntityBase } from './base';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 
 export class TokenWeightEntity implements TokenWeight {
   @prop({ required: true })
-  token: TokenEntity;
+  token: DiscriminatedTokenEntity;
   @prop({ type: BigNumberType, required: true })
   weight: BigNumber;
 }
 
-export class PieSmartPoolHistoryEntity extends HistoryEntityBase {
-  @prop({ type: TokenEntity, required: true, _id: false })
-  underlyingTokens: Types.Array<TokenEntity>;
+@modelOptions({
+  schemaOptions: { collection: 'piesmartpoolhistory' },
+})
+export class PieSmartPoolHistoryEntity
+  extends HistoryEntityBase
+  implements PieSmartPoolHistory
+{
+  @prop({ type: DiscriminatedTokenEntity, required: true, _id: false })
+  underlyingTokens: Types.Array<DiscriminatedTokenEntity>;
 
   @prop({ required: true })
   controller: string;
@@ -76,18 +83,20 @@ export class PieSmartPoolHistoryEntity extends HistoryEntityBase {
     toObject: { virtuals: true },
   },
 })
-export class PieSmartPoolEntity extends TokenEntity {
+export class PieSmartPoolEntity extends DiscriminatedTokenEntity {
   @prop({
     ref: () => PieSmartPoolHistoryEntity,
     foreignField: 'fundId',
     localField: '_id',
+    default: [],
   })
-  history?: PieSmartPoolHistoryEntity[];
+  history: PieSmartPoolHistoryEntity[];
 }
 
 export const PieSmartPoolModel = getDiscriminatorModelForClass(
-  TokenModel,
+  DiscriminatedTokenModel,
   PieSmartPoolEntity,
+  'PieSmartPool',
 );
 
 export const PieSmartPoolHistoryModel = getModelForClass(

@@ -2,11 +2,12 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Interval } from '@nestjs/schedule';
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { AxiosResponse } from 'axios';
 import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 import * as lodash from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Model } from 'mongoose';
 import { Command, Console, createSpinner } from 'nestjs-console';
 import { StakingService } from '../staking';
@@ -22,6 +23,10 @@ import {
   PieHistoryDocument,
   PieHistoryEntity,
 } from './';
+
+// workaround for sentry error: https://github.com/getsentry/sentry-javascript/issues/4731
+import * as Tracing from '@sentry/tracing';
+Tracing && true;
 
 const EVERY_HOUR = 1000 * 60 * 60;
 const EVERY_MINUTE = 1000 * 60;
@@ -113,6 +118,7 @@ export class PiesService {
     private pieHistoryModel: Model<PieHistoryDocument>,
     @InjectModel(CgCoinEntity.name)
     private cgCoinModel: Model<CgCoinDocument>,
+    @InjectSentry() private readonly sentry: SentryService,
   ) {}
 
   @Command({
@@ -212,6 +218,10 @@ export class PiesService {
 
   @Interval(EVERY_HOUR)
   async updateCgCoins(test?: boolean): Promise<boolean> {
+    const tx = this.sentry.instance().startTransaction({
+      op: 'updateCgCoins',
+      name: 'updateCgCoins',
+    });
     try {
       const timestamp = moment().unix() * 1000;
       this.logger.debug(`updateCgCoins is running...`);
@@ -237,6 +247,7 @@ export class PiesService {
               this.saveCgCoins(response.value.data, timestamp),
             );
           } else {
+            this.sentry.instance().captureException(response.reason);
             this.logger.error(response.reason);
           }
         },
@@ -245,13 +256,16 @@ export class PiesService {
       const dbResults = await Promise.allSettled(coinsDbPromises);
       dbResults.forEach((response: PromiseSettledResult<any>) => {
         if (response.status === 'rejected') {
+          this.sentry.instance().captureException(response.reason);
           this.logger.error(response.reason);
         }
       });
     } catch (error) {
+      this.sentry.instance().captureException(error);
       this.logger.error(error.message);
+    } finally {
+      tx.finish();
     }
-
     return true;
   }
 
@@ -369,56 +383,65 @@ export class PiesService {
 
   @Interval(EVERY_MINUTE)
   async updateNAVs(test?: boolean): Promise<boolean> {
-    // instance of the pie-getter contract...
-    const timestamp = Date.now();
-    const provider = new ethers.providers.JsonRpcProvider(
-      process.env.INFURA_RPC,
-    );
-    this.logger.debug(
-      `updateNAVs is running for block ${await provider.getBlockNumber()}`,
-    );
-
-    // retrieving all pies from database...
-    const pies = await this.getPies(undefined, undefined, test);
-    let coingeckoPiesInfos = {};
-
-    // fetching all the basic price/24h-change/marketCap infos for all pies...
+    const tx = this.sentry.instance().startTransaction({
+      op: 'UpdateNAVs',
+      name: 'UpdateNAVs',
+    });
     try {
-      const ids = pies.map((pie) => pie.coingecko_id);
-      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(
-        ',',
-      )}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
-
-      const response = await this.httpService.get(url).toPromise();
-      coingeckoPiesInfos = response.data;
-    } catch (error) {
-      this.logger.error(
-        'Error while fetching prices for all pies',
-        error.message,
+      // instance of the pie-getter contract...
+      const timestamp = Date.now();
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.INFURA_RPC,
       );
-    }
-
-    // for each pie, we iterate to fetch the underlying assets...
-    const pieHistoryPromises = [];
-
-    for (const pie of pies) {
-      const pieModel = new this.pieModel(pie);
-      pieHistoryPromises.push(
-        this.calculatePieHistory(
-          provider,
-          pieModel,
-          coingeckoPiesInfos,
-          timestamp,
-        ),
+      this.logger.debug(
+        `updateNAVs is running for block ${await provider.getBlockNumber()}`,
       );
-    }
 
-    try {
-      await Promise.all(pieHistoryPromises);
-    } catch (error) {
-      console.error(error);
-    }
+      // retrieving all pies from database...
+      const pies = await this.getPies(undefined, undefined, test);
+      let coingeckoPiesInfos = {};
 
+      // fetching all the basic price/24h-change/marketCap infos for all pies...
+      try {
+        const ids = pies.map((pie) => pie.coingecko_id);
+        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(
+          ',',
+        )}&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true`;
+
+        const response = await this.httpService.get(url).toPromise();
+        coingeckoPiesInfos = response.data;
+      } catch (error) {
+        this.sentry.instance().captureException(error);
+        this.logger.error(
+          'Error while fetching prices for all pies',
+          error.message,
+        );
+      }
+
+      // for each pie, we iterate to fetch the underlying assets...
+      const pieHistoryPromises = [];
+
+      for (const pie of pies) {
+        const pieModel = new this.pieModel(pie);
+        pieHistoryPromises.push(
+          this.calculatePieHistory(
+            provider,
+            pieModel,
+            coingeckoPiesInfos,
+            timestamp,
+          ),
+        );
+      }
+
+      try {
+        await Promise.all(pieHistoryPromises);
+      } catch (error) {
+        this.sentry.instance().captureException(error);
+        console.error(error);
+      }
+    } finally {
+      tx.finish();
+    }
     return true;
   }
 

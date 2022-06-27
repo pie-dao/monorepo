@@ -6,8 +6,6 @@ import { Token } from './Token';
  * Represents the state of a {@link PieSmartPool} at the given {@link timestamp}.
  */
 export type PieSmartPoolHistory = FundHistory & {
-  timestamp: Date;
-
   /**
    * The current tokens in the smart pool.
    */

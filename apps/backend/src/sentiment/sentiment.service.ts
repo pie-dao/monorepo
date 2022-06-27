@@ -5,7 +5,7 @@ import {
   SentimentEntity,
   SentimentDocument,
 } from './entities/sentiment.entity';
-import * as moment from 'moment';
+import moment from 'moment';
 import { CreateSentimentDto } from './dto/create-sentiment.dto';
 
 @Injectable()

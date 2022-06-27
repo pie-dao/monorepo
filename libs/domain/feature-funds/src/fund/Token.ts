@@ -1,7 +1,15 @@
+import { SupportedChain } from '@shared/util-types';
+import { MarketData } from '.';
+
 /**
- * Represents a token on the Ethereum blockchain.
+ * Represents a token on a blockchain. Note that a token can be uniquely identified
+ * by its address on a blockchain (`chain` + `address`).
  */
 export type Token = {
+  /**
+   * The chain on which token resides.
+   */
+  chain: SupportedChain;
   /**
    * The address where this token is deployed. This is important
    * because `name` and `symbol` are not unique according to the
@@ -16,6 +24,14 @@ export type Token = {
    * to create tagged unions.
    */
   kind: string;
+  /**
+   * The identifier for this token on Coin Gecko.
+   */
+  coinGeckoId: string;
+  /**
+   * (Temporal) market data for this token.
+   */
+  marketData: MarketData[];
 };
 
 /**

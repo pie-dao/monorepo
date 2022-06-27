@@ -1,0 +1,108 @@
+import { SupportedCurrency } from '@shared/util-types';
+
+export type MarketData = {
+  currentPrice?: Record<SupportedCurrency, number>;
+  tvl?: number;
+  capTvlRatio?: number;
+  fdvTvlRatio?: number;
+  roi?: {
+    times: number;
+    currency: SupportedCurrency;
+    percentage: number;
+  };
+  ath: Record<SupportedCurrency, number>;
+  athChangePercentage: Record<SupportedCurrency, number>;
+  athDate: Record<SupportedCurrency, Date>;
+  atl: Record<SupportedCurrency, number>;
+  atlChangePercentage: Record<SupportedCurrency, number>;
+  atlDate: Record<SupportedCurrency, Date>;
+  marketCap: Record<SupportedCurrency, number>;
+  marketCapRank: number;
+  fullyDilutedValuation: Record<SupportedCurrency, number>;
+  totalVolume: Record<SupportedCurrency, number>;
+  high24h: Record<SupportedCurrency, number>;
+  low24h: Record<SupportedCurrency, number>;
+  priceChange24h?: number;
+  priceChangePercentage24h?: number;
+  priceChangePercentage7d?: number;
+  priceChangePercentage14d?: number;
+  priceChangePercentage30d?: number;
+  priceChangePercentage60d?: number;
+  priceChangePercentage200d?: number;
+  priceChangePercentage1y?: number;
+  marketCapChange24h?: number;
+  marketCapChangePercentage24h?: number;
+  priceChange24hInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage1hInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage24hInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage7dInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage14dInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage30dInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage60dInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage200dInCurrency?: Record<SupportedCurrency, number>;
+  priceChangePercentage1yInCurrency?: Record<SupportedCurrency, number>;
+  marketCapChange24hInCurrency?: Record<SupportedCurrency, number>;
+  marketCapChangePercentage24hInCurrency?: Record<SupportedCurrency, number>;
+  totalSupply?: number;
+  maxSupply?: number;
+  circulatingSupply: number;
+  lastUpdated: Date;
+};
+
+export type TickerData = {
+  base: string;
+  target: string;
+  market: {
+    name: string;
+    identifier: string;
+    hasTradingIncentive: boolean;
+  };
+  last: number;
+  volume: number;
+  convertedLast: Record<SupportedCurrency, number>;
+  convertedVolume: Record<SupportedCurrency, number>;
+  trustScore: string;
+  bidAskSpreadPercentage: number;
+  timestamp: Date;
+  lastTradedAt: Date;
+  lastFetchAt: Date;
+  isAnomaly: boolean;
+  isStale: boolean;
+  tradeUrl?: string;
+  tokenInfoUrl?: string;
+  coinId: string;
+  targetCoinId?: string;
+};
+
+export type CoinMetadata = {
+  id: string;
+  symbol: string;
+  name: string;
+  assetPlatformId?: string;
+  blockTimeInMinutes: number;
+  hashingAlgorithm: string;
+  categories: Array<string>;
+  publicNotice?: string;
+  additionalNotices: string[];
+  localization: Record<string, string>;
+  description: Record<string, string>;
+  image: {
+    thumb: string;
+    small: string;
+    large: string;
+  };
+  countryOfOrigin: string;
+  genesisDate: Date;
+  sentimentVotesUpPercentage: number;
+  sentimentVotesDownPercentage: number;
+  marketCapRank: number;
+  coingeckoRank: number;
+  coingeckoScore: number;
+  developerScore: number;
+  communityScore: number;
+  liquidityScore: number;
+  publicInerestScore: number;
+  marketData?: MarketData;
+  updatedAt: Date;
+  tickers?: Array<TickerData>;
+};

@@ -6,7 +6,6 @@ import { Token } from './Token';
  * Represents the state of a {@link YieldVault} at the given {@link timestamp}.
  */
 export type YieldVaultHistory = FundHistory & {
-  timestamp: Date;
   /**
    * The underlying token the vault accepts.
    */
