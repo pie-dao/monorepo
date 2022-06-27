@@ -32,7 +32,7 @@ const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
 
 export const makeStore = () =>
   configureStore({
-    reducer: reducer as never,
+    reducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
@@ -43,7 +43,7 @@ export const makeStore = () =>
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppDispatch = ReturnType<typeof makeStore>['dispatch'];
-export type RootState = ReturnType<typeof makeStore>['getState'];
+export type RootState = typeof rootReducer;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,

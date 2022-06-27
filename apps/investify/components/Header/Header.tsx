@@ -32,7 +32,9 @@ export default function Header({
             <MenuIcon open={open} />
           </button>
           {mqLg && ready && (
-            <h1 className="text-2xl font-bold main-title w-auto">{t(title)}</h1>
+            <h1 className="text-2xl font-bold text-primary w-auto">
+              {t(title)}
+            </h1>
           )}
           <div className="ml-auto flex gap-x-3 items-center">
             {ready && (

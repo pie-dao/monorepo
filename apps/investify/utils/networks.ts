@@ -23,6 +23,7 @@ export const config = Object.entries(RPC_URLS).reduce((obj, [chain, url]) => {
     },
   };
 }, {});
+
 export type SUPPORTED_CHAIN_ID =
   typeof SUPPORTED_CHAINS[keyof typeof SUPPORTED_CHAINS];
 
@@ -38,4 +39,44 @@ export type NetworkDetail = {
   rpcUrls: string[];
   blockExplorerUrls: string[];
 };
+
 export type ChainMap = Record<SUPPORTED_CHAIN_ID, NetworkDetail>;
+
+export const chainMap: ChainMap = {
+  [SUPPORTED_CHAINS.MAINNET]: {
+    blockTime: 12,
+    chainId: `0x${Number(SUPPORTED_CHAINS.MAINNET).toString(16)}`,
+    chainName: 'Ethereum',
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://cloudflare-eth.com'],
+    blockExplorerUrls: ['https://etherscan.io'],
+  },
+  [SUPPORTED_CHAINS.FANTOM]: {
+    blockTime: 1,
+    chainId: `0x${Number(SUPPORTED_CHAINS.FANTOM).toString(16)}`,
+    chainName: 'Fantom',
+    nativeCurrency: {
+      name: 'FTM',
+      symbol: 'FTM',
+      decimals: 18,
+    },
+    rpcUrls: ['https://rpc.ftm.tools/'],
+    blockExplorerUrls: ['https://ftmscan.com'],
+  },
+  [SUPPORTED_CHAINS.POLYGON]: {
+    blockTime: 1.5,
+    chainId: `0x${Number(SUPPORTED_CHAINS.POLYGON).toString(16)}`,
+    chainName: 'Polygon',
+    nativeCurrency: {
+      name: 'Matic',
+      symbol: 'MATIC',
+      decimals: 18,
+    },
+    rpcUrls: ['https://polygon-rpc.com/'],
+    blockExplorerUrls: ['https://polygonscan.com'],
+  },
+};

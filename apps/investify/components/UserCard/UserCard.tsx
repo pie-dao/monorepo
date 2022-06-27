@@ -26,16 +26,14 @@ export default function UserCard() {
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
   const ensName = useENSName(library, account);
-  const { data } = useFindUserQuery({ userId: account });
+  const { data } = useFindUserQuery({ address: account });
   const [copied, copy] = useCopyToClipboard();
   const { hideBalance, defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
   const dispatch = useAppDispatch();
 
-  const balanceAmount = data?.user?.balances?.find(
-    (b) => b.currency === defaultCurrency,
-  ).amount;
+  const balanceAmount = data?.user?.totalBalance;
 
   const volume = data?.user?.twentyFourHourChange;
 
