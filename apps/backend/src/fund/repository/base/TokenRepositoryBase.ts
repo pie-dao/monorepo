@@ -4,16 +4,16 @@ import {
   DEFAULT_TOKEN_FILTER,
   Filters,
   MarketData,
-  SupportedChain,
   Token,
   TokenNotFoundError,
   TokenRepository,
 } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { HydratedDocument, Model, Types } from 'mongoose';
-import { TokenEntity } from '../../entity';
+import { TokenEntity } from '../entity';
 import { toMongooseOptions } from '../Utils';
 
 export abstract class TokenRepositoryBase<
@@ -29,10 +29,8 @@ export abstract class TokenRepositoryBase<
 
   findAll(filters: Partial<F>): T.Task<T[]> {
     const { token = DEFAULT_TOKEN_FILTER, ...rest } = filters;
-    let find = this.model.find({});
     const filter = toMongooseOptions(token);
-    find = find.sort(filter.sort);
-    find = find.limit(filter.limit);
+    let find = this.model.find({}).sort(filter.sort).limit(filter.limit);
 
     this.getPaths().forEach((path: string) => {
       const pathFilter = rest[path];
@@ -41,7 +39,11 @@ export abstract class TokenRepositoryBase<
         options: pathFilter ? toMongooseOptions(pathFilter) : {},
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }) as any;
-      // 👆 This is because of a weird Mongoose typing.
+      // 👆 This is because of a weird Mongoose typing 👇
+      // the typing of this includes an `UnpackedIntersection` type that
+      // handles the E | E[] case (findOne or findAll). We already typed
+      // `find` here (or rather Typescript inferred it), so it is safe to use `any`
+      // instead of dealing with the `UnpackedIntersection` type's monstrous complexity.
     });
 
     return pipe(
@@ -116,7 +118,7 @@ export abstract class TokenRepositoryBase<
     return pipe(
       TE.tryCatch(
         () => {
-          return this.model.findOne({ filter: { address, chain } }).exec();
+          return this.model.findOne({ address, chain }).exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),

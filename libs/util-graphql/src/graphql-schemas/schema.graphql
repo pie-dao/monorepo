@@ -1,0 +1,93 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Represents market data denominated in a specific currency."""
+type CurrencyDataEntity {
+  """The name of the currency (eg: ETH)"""
+  currency: String!
+  marketCap: Float!
+  price: Float!
+  volume: Float!
+}
+
+"""Contains market information for a given token at a specific timestamp."""
+type MarketDataEntity {
+  """The currently circulating supply of the token at the given timestamp."""
+  circulatingSupply: Float!
+
+  """Price metadata at the given timestamp in all the supported currencies."""
+  currencyData: [CurrencyDataEntity!]!
+
+  """The rank of the token at the given timestamp."""
+  marketCapRank: Int!
+
+  """The timestamp at which this data was taken."""
+  timestamp: Timestamp!
+}
+
+input MarketDataFilter {
+  limit: Int
+  orderBy: [MarketDataOrderBy!]
+}
+
+input MarketDataOrderBy {
+  field: MarketDataOrderByField!
+  value: Order!
+}
+
+enum MarketDataOrderByField {
+  timestamp
+}
+
+enum Order {
+  asc
+  desc
+}
+
+type Query {
+  """Returns all tokens regardless of their kind."""
+  tokens(filters: TokenFiltersInput): [TokenEntity!]!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+type TokenEntity {
+  address: String!
+
+  """The chain on which this token lives."""
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+
+  """The kind of this token (eg: 'PieVault', 'YieldVault', etc)."""
+  kind: String!
+
+  """Market data for this token."""
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+}
+
+input TokenFilter {
+  limit: Int
+  orderBy: [TokenOrderBy!]
+}
+
+input TokenFiltersInput {
+  marketData: MarketDataFilter = {}
+  token: TokenFilter = {}
+}
+
+input TokenOrderBy {
+  field: TokenOrderByField!
+  value: Order!
+}
+
+enum TokenOrderByField {
+  name
+  symbol
+}

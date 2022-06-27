@@ -1,7 +1,7 @@
-import { OHLC, SupportedCurrency } from '@domain/feature-funds';
+import { OHLC } from '@domain/feature-funds';
 import { index, modelOptions, prop } from '@typegoose/typegoose';
 import { Types } from 'mongoose';
-
+import { SupportedCurrency } from '@shared/util-types';
 @modelOptions({
   schemaOptions: { collection: 'ohlc' },
 })

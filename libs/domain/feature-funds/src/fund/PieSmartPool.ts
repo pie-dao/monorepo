@@ -1,5 +1,5 @@
-import { Fund, PieSmartPoolHistory, MarketData, SupportedChain } from '.';
-
+import { Fund, PieSmartPoolHistory, MarketData } from '.';
+import { SupportedChain } from '@shared/util-types';
 /**
  * Pie Smart Pools are non-custodial smart contracts, the first implementation of a DAO-governed AMM pool.
  * They add extra functionality on top of vanilla AMMs pools.

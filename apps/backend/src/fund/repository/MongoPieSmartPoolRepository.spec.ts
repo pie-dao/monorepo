@@ -1,17 +1,10 @@
-import {
-  PieSmartPool,
-  PieSmartPoolHistory,
-  SupportedChain,
-} from '@domain/feature-funds';
+import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoPieSmartPoolRepository } from '.';
-import {
-  PieSmartPoolHistoryModel,
-  DiscriminatedTokenModel,
-  TokenModel,
-} from '../entity';
+import { SupportedChain } from '@shared/util-types';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
@@ -148,22 +141,18 @@ const PIE_SMART_POOL_WITH_HISTORY: PieSmartPool = {
 
 describe('Given a Mongo Pie Smart Pool Repository', () => {
   let connection: Mongoose;
+  let mongod: MongoMemoryServer;
   let target: MongoPieSmartPoolRepository;
 
-  beforeAll(async () => {
-    connection = await connect(process.env.MONGO_DB_TEST);
+  beforeEach(async () => {
+    mongod = await MongoMemoryServer.create();
+    connection = await connect(mongod.getUri());
     target = new MongoPieSmartPoolRepository();
   });
 
-  beforeEach(async () => {
-    await TokenModel.deleteMany({
-      kind: 'PieSmartPool',
-    }).exec();
-    await PieSmartPoolHistoryModel.deleteMany({}).exec();
-  });
-
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.disconnect();
+    await mongod.stop();
   });
 
   it('When creating a new Pie Smart Pool Entity then it is created', async () => {

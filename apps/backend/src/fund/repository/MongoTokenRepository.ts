@@ -3,19 +3,19 @@ import {
   DEFAULT_CHILD_FILTER,
   DEFAULT_TOKEN_FILTER,
   Filters,
-  SupportedChain,
   Token,
   TokenNotFoundError,
 } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
+import { SupportedChain } from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
+import { TokenRepositoryBase } from './base/TokenRepositoryBase';
 import {
-  MarketDataModel,
   DiscriminatedTokenEntity,
   DiscriminatedTokenModel,
-} from '../entity';
-import { TokenRepositoryBase } from './base/TokenRepositoryBase';
+  MarketDataModel,
+} from './entity';
 
 const DEFAULT_FILTERS = {
   token: DEFAULT_TOKEN_FILTER,

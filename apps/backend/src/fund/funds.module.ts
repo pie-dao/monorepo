@@ -8,6 +8,7 @@ import {
   MongoYieldVaultRepository,
 } from './repository';
 import { MongoTokenRepository } from './repository/MongoTokenRepository';
+import { TokenResolver } from './resolver';
 
 const CoinGeckoAdapterProvider = {
   provide: CoinGeckoAdapter,
@@ -25,6 +26,7 @@ const CoinGeckoAdapterProvider = {
     FundLoader,
     CoinGeckoAdapterProvider,
     MongooseConnectionProvider,
+    TokenResolver,
   ],
   exports: [
     MongoTokenRepository,
@@ -33,6 +35,7 @@ const CoinGeckoAdapterProvider = {
     MongoYieldVaultRepository,
     FundLoader,
     MongooseConnectionProvider,
+    TokenResolver,
   ],
 })
 export class FundsModule {}

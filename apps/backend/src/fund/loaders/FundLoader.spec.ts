@@ -1,30 +1,30 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import { SentryService } from '@ntegral/nestjs-sentry';
 import { isRight, Right } from 'fp-ts/lib/Either';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
-import { MarketDataModel, TokenEntity, TokenModel } from '../entity';
+import { MarketDataModel, TokenEntity, TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { FundLoader } from './FundLoader';
 
 describe('Given a Fund Loader', () => {
   let connection: Mongoose;
+  let mongod: MongoMemoryServer;
   let target: FundLoader;
 
-  beforeAll(async () => {
-    connection = await connect(process.env.MONGO_DB_TEST);
-  });
-
-  afterAll(async () => {
-    await connection.disconnect();
-  });
-
   beforeEach(async () => {
-    await TokenModel.deleteMany({}).exec();
+    mongod = await MongoMemoryServer.create();
+    connection = await connect(mongod.getUri());
     target = new FundLoader(
       new MongoTokenRepository(),
       new CoinGeckoAdapter(),
       new SentryService(),
     );
+  });
+
+  afterEach(async () => {
+    await connection.disconnect();
+    await mongod.stop();
   });
 
   it('When ensuring funds exist with an empty database Then we get the newly created funds back', async () => {

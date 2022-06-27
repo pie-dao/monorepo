@@ -1,4 +1,5 @@
-import { MarketData, SupportedChain } from '.';
+import { SupportedChain } from '@shared/util-types';
+import { MarketData } from '.';
 
 /**
  * Represents a token on a blockchain. Note that a token can be uniquely identified

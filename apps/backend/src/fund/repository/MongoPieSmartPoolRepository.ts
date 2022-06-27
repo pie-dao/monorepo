@@ -6,7 +6,7 @@ import {
   PieSmartPoolEntity,
   PieSmartPoolHistoryModel,
   PieSmartPoolModel,
-} from '../entity';
+} from './entity';
 
 @Injectable()
 export class MongoPieSmartPoolRepository extends FundRepositoryBase<

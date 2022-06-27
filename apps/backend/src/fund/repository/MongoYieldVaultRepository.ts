@@ -5,7 +5,7 @@ import {
   YieldVaultEntity,
   YieldVaultHistoryModel,
   YieldVaultModel,
-} from '../entity';
+} from './entity';
 import { FundRepositoryBase } from '.';
 
 @Injectable()

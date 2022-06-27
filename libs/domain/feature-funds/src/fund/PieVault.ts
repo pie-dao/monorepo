@@ -1,12 +1,6 @@
+import { SupportedChain } from '@shared/util-types';
 import * as E from 'fp-ts/Either';
-import {
-  Fund,
-  MarketData,
-  PieVaultHistory,
-  SupportedChain,
-  Token,
-  TokenDetails,
-} from '.';
+import { Fund, MarketData, PieVaultHistory, Token, TokenDetails } from '.';
 import { TokenNotFoundError } from '../repository';
 
 /**

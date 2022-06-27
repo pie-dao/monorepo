@@ -7,7 +7,7 @@ import {
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { BigNumberType } from '../repository';
+import { BigNumberType } from '..';
 import { HistoryEntityBase } from './base';
 import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
 

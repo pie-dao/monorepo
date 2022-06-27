@@ -1,4 +1,3 @@
-import { SupportedChain, SupportedCurrency } from '@domain/feature-funds';
 import { DataTransferError, get } from '@hexworks/cobalt-http';
 import * as TE from 'fp-ts/TaskEither';
 import * as t from 'io-ts';
@@ -14,6 +13,7 @@ import {
   OhlcDto,
 } from '.';
 import { SupportedDays } from '..';
+import { SupportedChain, SupportedCurrency } from '@shared/util-types';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 

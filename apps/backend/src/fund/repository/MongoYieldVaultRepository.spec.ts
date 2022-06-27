@@ -5,9 +5,9 @@ import {
 } from '@domain/feature-funds';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoYieldVaultRepository } from '.';
-import { TokenModel, YieldVaultHistoryModel } from '../entity';
 import { MongoPieVaultRepository } from './MongoPieVaultRepository';
 import { PIE_VAULT_0 } from './MongoPieVaultRepository.spec';
 
@@ -122,22 +122,18 @@ const YIELD_VAULT_WITH_HISTORY: YieldVault = {
 
 describe('Given a Mongo Yield Vault Repository', () => {
   let connection: Mongoose;
+  let mongod: MongoMemoryServer;
   let target: MongoYieldVaultRepository;
 
-  beforeAll(async () => {
-    connection = await connect(process.env.MONGO_DB_TEST);
+  beforeEach(async () => {
+    mongod = await MongoMemoryServer.create();
+    connection = await connect(mongod.getUri());
     target = new MongoYieldVaultRepository();
   });
 
-  beforeEach(async () => {
-    await TokenModel.deleteMany({
-      kind: 'YieldVault',
-    }).exec();
-    await YieldVaultHistoryModel.deleteMany({}).exec();
-  });
-
-  afterAll(async () => {
+  afterEach(async () => {
     await connection.disconnect();
+    await mongod.stop();
   });
 
   it('When creating a new Yield Vault Entity then it is created', async () => {
