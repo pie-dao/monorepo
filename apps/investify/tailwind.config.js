@@ -1,3 +1,4 @@
+/** @type {import('tailwindcss').Config} */
 const { join } = require('path');
 const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind');
 
@@ -18,6 +19,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        xs: '.75rem',
+      },
       fontFamily: {
         sans: ['Silka'],
       },
