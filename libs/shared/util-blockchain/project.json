@@ -7,7 +7,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/shared/util-blockchain",
-        "main": "libs/shared/util-blockchain/src/config.ts",
+        "main": "libs/shared/util-blockchain/src/index.ts",
         "tsConfig": "libs/shared/util-blockchain/tsconfig.lib.json",
         "assets": ["libs/shared/util-blockchain/*.md"]
       }
