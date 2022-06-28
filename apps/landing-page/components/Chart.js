@@ -181,13 +181,13 @@ const Chart = ({ play, sentiment }) => {
         <p className="gap-x-1 flex items-center justify-center">
           {content.chart.day}{' '}
           <PriceChange
-            priceChange={play.market_data.price_change_percentage_24h}
+            priceChange={play?.market_data?.price_change_percentage_24h}
           />
         </p>
         <p className="gap-x-1 flex items-center justify-center">
           {content.chart.month}{' '}
           <PriceChange
-            priceChange={play.market_data.price_change_percentage_30d}
+            priceChange={play?.market_data?.price_change_percentage_30d}
           />
         </p>
         <p className="gap-x-1 flex items-center justify-center">
