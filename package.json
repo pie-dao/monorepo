@@ -45,6 +45,7 @@
     "@sentry/tracing": "^6.16.1",
     "@sentry/types": "^6.16.1",
     "@storybook/addon-postcss": "^2.0.0",
+    "@synthetixio/synpress": "^1.2.0",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/typography": "^0.5.2",
     "@tanstack/react-table": "8.0.0-beta.9",
