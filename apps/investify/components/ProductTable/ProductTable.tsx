@@ -4,6 +4,9 @@ import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
+import { setSwap } from '../../store/sidebar/sidebar.slice';
+import { useDispatch } from 'react-redux';
 
 export default function ProductTable({
   product,
@@ -11,6 +14,7 @@ export default function ProductTable({
   product: ProductTableData;
 }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   return (
     <Disclosure
       key={product.name.main}
@@ -164,10 +168,28 @@ export default function ProductTable({
                   transition={{ duration: 0.2 }}
                   className="gap-x-2 flex"
                 >
-                  <button className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
-                    {t('Discover')}
-                  </button>
-                  <button className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
+                  <Link
+                    href={`/products/${encodeURIComponent(product.symbol)}`}
+                    passHref
+                  >
+                    <button className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
+                      {t('Discover')}
+                    </button>
+                  </Link>
+                  <button
+                    className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white"
+                    onClick={() =>
+                      dispatch(
+                        setSwap({
+                          step: 'swap',
+                          swap: {
+                            from: 'default',
+                            to: product.name.main,
+                          },
+                        }),
+                      )
+                    }
+                  >
                     {t('Trade')}
                   </button>
                 </motion.div>

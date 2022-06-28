@@ -14,6 +14,7 @@ export type ProductTableData = {
     main: string;
     sub: string;
   };
+  symbol: string;
   price: {
     value: string;
     change: string;
@@ -79,6 +80,7 @@ export function useFormatDataForAssetsTable(
             main: dataFromConfig.name,
             sub: dataFromConfig.description,
           },
+          symbol,
           price: {
             value: formatBalanceCurrency(
               marketData[0].currentPrice,

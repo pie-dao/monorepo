@@ -1,9 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-type Step = 'quote' | 'swap' | 'approve' | 'confirm' | 'complete';
-type SliceState = { step: Step; modalOpen: boolean };
+type Step = 'quote' | 'swap' | 'approve' | 'confirm' | 'complete' | 'vault';
+type SliceState = {
+  step: Step;
+  modalOpen: boolean;
+  swap: {
+    from: string;
+    to: string;
+  };
+  vault: string;
+};
 
-const initialState: SliceState = { step: 'quote', modalOpen: false };
+const initialState: SliceState = {
+  step: 'quote',
+  modalOpen: false,
+  swap: {
+    from: '',
+    to: '',
+  },
+  vault: '',
+};
 
 export const sidebarSlice = createSlice({
   name: 'sidebar',
@@ -15,8 +31,20 @@ export const sidebarSlice = createSlice({
     setOpenModal: (state, action: PayloadAction<boolean>) => {
       state.modalOpen = action.payload;
     },
+    setSwap: (
+      state,
+      action: PayloadAction<{ step: Step; swap: SliceState['swap'] }>,
+    ) => {
+      state.swap = action.payload.swap;
+      state.step = action.payload.step;
+    },
+    setVault: (state, action: PayloadAction<string>) => {
+      state.vault = action.payload;
+      state.step = 'vault';
+    },
   },
 });
 
-export const { setStep, setOpenModal } = sidebarSlice.actions;
+export const { setStep, setOpenModal, setSwap, setVault } =
+  sidebarSlice.actions;
 export default sidebarSlice.reducer;
