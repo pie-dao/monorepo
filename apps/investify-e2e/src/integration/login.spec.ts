@@ -16,6 +16,6 @@ describe('Test User Login', () => {
       expect(cypressWindowActive).to.be.true;
     });
 
-    getAccountButton().contains('0x....023');
+    getAccountButton().should('have.text', '0x...023');
   });
 });
