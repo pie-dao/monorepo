@@ -41,10 +41,9 @@ export const thunkGetProductsData = createAsyncThunk(
           const filterFulfilled = Object.values(data).filter(
             (value) => value.status === 'fulfilled',
           ) as PromiseFulfilledResult<BigNumber>[];
-
           const totalBalanceBN = filterFulfilled
             .map((balance) => balance.value)
-            .reduce(sum);
+            .reduce(sum, ethers.constants.Zero);
           const totalBalance = ethers.utils.formatUnits(
             totalBalanceBN,
             result.value.productDecimals,
@@ -73,7 +72,7 @@ export const thunkGetProductsData = createAsyncThunk(
       .map((result) => {
         return Number(Object.values(result)[0].totalBalance);
       })
-      .reduce(sumBalance);
+      .reduce(sumBalance, 0);
 
     const tokens = Object.assign({}, ...enrichWithTotalBalance);
 
@@ -228,7 +227,7 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           ethers.utils.formatUnits(result.balance, result.decimals),
         );
       })
-      .reduce(sumBalance);
+      .reduce(sumBalance, 0);
 
     const chainUsed = totalAssets.map((result) => {
       return result.chainId;

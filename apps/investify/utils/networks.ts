@@ -9,11 +9,17 @@ export const SUPPORTED_CHAINS = {
 type ValueOf<T> = T[keyof T];
 export type SupportedChains = ValueOf<typeof SUPPORTED_CHAINS>;
 
-const RPC_URLS = {
-  1: 'https://rpc.ankr.com/eth',
-  137: 'https://polygon-rpc.com',
-  250: 'https://rpc.ankr.com/fantom',
-};
+const RPC_URLS = process.env.NEXT_PUBLIC_TESTNET
+  ? {
+      1: 'http://127.0.0.1:8545/',
+      137: 'https://polygon-rpc.com',
+      250: 'https://rpc.ankr.com/fantom',
+    }
+  : {
+      1: 'https://rpc.ankr.com/eth',
+      137: 'https://polygon-rpc.com',
+      250: 'https://rpc.ankr.com/fantom',
+    };
 
 export const config = Object.entries(RPC_URLS).reduce((obj, [chain, url]) => {
   return {

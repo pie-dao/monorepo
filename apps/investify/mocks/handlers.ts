@@ -28,6 +28,10 @@ export const handlers = [
               symbol: 'PLAY',
               name: 'Play Metaverse Token',
             },
+            {
+              symbol: 'DEFI++',
+              name: 'Play Metaverse Token',
+            },
           ],
           yieldVaults: [
             {

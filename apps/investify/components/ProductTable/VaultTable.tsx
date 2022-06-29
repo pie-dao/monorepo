@@ -16,6 +16,7 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
       key={vault.name.main}
       as="div"
       className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
+      data-cy={`product-table-${vault.name.main}`}
     >
       {({ open }) => (
         <>
@@ -43,7 +44,10 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                     </p>
                   </div>
                   <div className="flex-row items-center gap-x-2 hidden sm:flex flex-wrap">
-                    <p className="text-xs xl:text-base border rounded-full border-secondary text-center px-2 py-1 font-medium">
+                    <p
+                      className="text-xs xl:text-base border rounded-full border-secondary text-center px-2 py-1 font-medium"
+                      data-cy="APY"
+                    >
                       APY {vault.APY}
                     </p>
                   </div>
