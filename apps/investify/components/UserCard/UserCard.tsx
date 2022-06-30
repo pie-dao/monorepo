@@ -26,16 +26,14 @@ export default function UserCard() {
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
   const ensName = useENSName(library, account);
-  const { data } = useFindUserQuery({ userId: account });
+  const { data } = useFindUserQuery({ address: account });
   const [copied, copy] = useCopyToClipboard();
   const { hideBalance, defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
   const dispatch = useAppDispatch();
 
-  const balanceAmount = data?.user?.balances?.find(
-    (b) => b.currency === defaultCurrency,
-  ).amount;
+  const balanceAmount = data?.user?.totalBalance;
 
   const volume = data?.user?.twentyFourHourChange;
 
@@ -49,7 +47,7 @@ export default function UserCard() {
 
   return (
     <div
-      className={`flex flex-col w-96 h-56 sm:w-96 space-y-12 bg-dashboard-card dashboard-card bg-cover rounded-xl relative text-white shadow-md p-6 ${styles.dashboardCard}`}
+      className={`flex flex-col w-full h-56 sm:w-96 space-y-12 bg-dashboard-card dashboard-card bg-cover rounded-xl relative text-white shadow-md p-6 ${styles.dashboardCard}`}
     >
       <div className="w-full flex justify-between items-center">
         <div className={`font-medium text-base ${styles.dashboardAddress}`}>

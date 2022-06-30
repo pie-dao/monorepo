@@ -1,3 +1,9 @@
 {
-  "funds": "Your funds in ${assets} assets across ${networks} networks."
+  "funds": "Your funds in <assets>${assets}</assets> assets across <network>${networks}</network> networks.",
+  "Name": "Name",
+  "Price": "Price",
+  "Balance": "Balance",
+  "Value": "Value",
+  "Discover": "Discover",
+  "Trade": "Trade"
 }

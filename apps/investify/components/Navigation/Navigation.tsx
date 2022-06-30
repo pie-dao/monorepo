@@ -28,7 +28,8 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    { name: t('Dashboard'), href: '/', icon: TemplateIcon },
+    { name: t('Homepage'), href: '/', icon: TemplateIcon },
+    { name: t('Dashboard'), href: '/dashboard', icon: TemplateIcon },
     { name: t('Discover'), href: '/discover', icon: UsersIcon },
   ];
 

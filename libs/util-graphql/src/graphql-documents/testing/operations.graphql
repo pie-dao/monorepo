@@ -1,5 +1,5 @@
-query findUser($userId: ID!) {
-  user(id: $userId) {
+query findUser($address: String!) {
+  user(address: $address) {
     ...UserFields
   }
 }
@@ -11,11 +11,39 @@ query allUsers {
 }
 
 fragment UserFields on User {
-  id
   address
-  balances {
-    currency
-    amount
+  totalBalance
+  pieVaults {
+    symbol
+    name
   }
   twentyFourHourChange
+  yieldVaults {
+    name
+    symbol
+    twentyFourHourEarnings
+    totalEarnings
+  }
+}
+
+query getProductsBySymbol($symbols: [String!]!, $currency: String!) {
+  tokensBySymbol(symbols: $symbols) {
+    marketData {
+      currentPrice(currency: $currency)
+      twentyFourHourChange
+    }
+    symbol
+  }
+}
+
+query getVaults($currency: String!) {
+  vaults(currency: $currency) {
+    underlyingToken {
+      marketData {
+        currentPrice(currency: $currency)
+      }
+    }
+    symbol
+    name
+  }
 }

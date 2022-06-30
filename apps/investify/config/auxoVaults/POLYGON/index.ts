@@ -5,6 +5,7 @@ const USDC = {
         Auxo USDC Vault seeks yield by allocating deposited USDC on strategies involving lending, liquidity provision, yield farming and more.
       `,
   symbol: 'USDC',
+  image: '/tokens/play.svg',
   address: '0xe2c30A7A0f9Ac17393203F1B4c0979Ab552fFe69',
   token: {
     decimals: 6,

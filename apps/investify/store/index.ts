@@ -8,11 +8,13 @@ import {
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import sidebarReducer from './sidebar/sidebar.slice';
 import preferencesReducer from './preferences/preferences.slice';
+import productsReducer from './products/products.slice';
 import { api } from '../api/generated/graphql';
 
 export const rootReducer = combineReducers({
   sidebar: sidebarReducer,
   preferences: preferencesReducer,
+  dashboard: productsReducer,
   [api.reducerPath]: api.reducer,
 });
 
@@ -30,7 +32,7 @@ const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
 
 export const makeStore = () =>
   configureStore({
-    reducer: reducer as never,
+    reducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: {
@@ -41,7 +43,7 @@ export const makeStore = () =>
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppDispatch = ReturnType<typeof makeStore>['dispatch'];
-export type RootState = ReturnType<typeof makeStore>['getState'];
+export type RootState = typeof rootReducer;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,

@@ -5,6 +5,7 @@ const MIM = {
       This makes it a hugely flexible and attractive choice for yield seeking vaults like Auxo.
     `,
   symbol: 'MIM',
+  image: '/tokens/play.svg',
   address: '0xa9dD5345ed912b359102DdD03f72738291f9f389',
   token: {
     decimals: 18,

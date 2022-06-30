@@ -46,9 +46,9 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
             <title>Welcome to investify!</title>
           </Head>
           <GoogleAnalytics />
-          <main className="h-full">
+          <div className="h-full">
             {getLayout(<Component {...props.pageProps} />)}
-          </main>
+          </div>
         </Provider>
       </Web3ReactProvider>
     </Web3ContextProvider>

@@ -23,6 +23,11 @@ export default function SidebarContent() {
               <p className="text-text text-2xl">Very Tasty test</p>
             </SidebarBox>
           )}
+          {step === 'vault' && (
+            <SidebarBox key="vault" className="py-4">
+              <p className="text-text text-2xl">Very Tasty test</p>
+            </SidebarBox>
+          )}
         </div>
       </AnimatePresence>
     </>

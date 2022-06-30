@@ -36,8 +36,8 @@
 
 @layer base {
   [data-theme='investify'] {
-    --color-primary: 11 120 221;
-    --color-secondary: 35 216 129;
+    --color-primary: 31 8 96;
+    --color-secondary: 11 120 221;
     --color-tertiary: 68 62 80;
     --color-text: 31 8 96;
     --color-sub-dark: 115 120 165;
@@ -67,5 +67,5 @@
 
 .hidden-balance {
   color: transparent;
-  text-shadow: rgb(255 255 255) 0px 0px 14px;
+  text-shadow: rgb(255, 255, 255) 0px 0px 14px;
 }

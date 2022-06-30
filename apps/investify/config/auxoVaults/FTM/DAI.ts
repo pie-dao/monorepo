@@ -6,6 +6,7 @@ const DAI = {
     Instead, it is backed by collateral on the Maker platform. 
     `,
   symbol: 'DAI',
+  image: '/tokens/play.svg',
   address: '0xF939A5C11E6F9884D6052828981e5D95611D8b2e',
   token: {
     decimals: 18,

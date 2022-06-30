@@ -1,25 +1,84 @@
+scalar Timestamp
+
 schema {
   query: Query
 }
 
 type Query {
   me: User!
-  user(id: ID!): User
+  user(address: String!, currency: String! = "USD"): User
   allUsers: [User]
+  token(symbol: String!): TokenEntity
+  tokens: [TokenEntity]
+  tokensBySymbol(symbols: [String!]!): [TokenEntity]
+  vaults(currency: String! = "USD"): [YieldVaultEntity]
 }
 
-interface Node {
-  id: ID!
-}
-
-type User implements Node {
-  id: ID!
+type User {
   address: String!
-  balances: [Balance!]!
+  pieVaults: [UserTokenEntity!]!
   twentyFourHourChange: Float!
+  yieldVaults: [UserYieldVaultEntity!]!
+  totalBalance: Float!
 }
 
-type Balance {
-  amount: Float!
-  currency: String!
+type MarketDataEntity {
+  circulatingSupply: Float!
+  currentPrice(currency: String! = "USD"): Float!
+  marketCap: String!
+  marketCapRank: Float!
+  timestamp: Timestamp!
+  totalVolume: String!
+  twentyFourHourChange: String!
+}
+
+interface TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+}
+
+type TokenEntity implements TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+}
+
+type UserTokenEntity implements TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+}
+
+interface YieldVaultInterface {
+  symbol: String!
+  name: String!
+}
+
+type YieldVaultEntity implements YieldVaultInterface {
+  underlyingToken: TokenEntity!
+  symbol: String!
+  name: String!
+}
+
+type UserYieldVaultEntity implements YieldVaultInterface {
+  symbol: String!
+  name: String!
+  twentyFourHourEarnings: Float!
+  totalEarnings: Float!
 }

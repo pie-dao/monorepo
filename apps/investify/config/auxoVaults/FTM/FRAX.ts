@@ -7,6 +7,7 @@ const FRAX = {
   The contract address of the correct FRAX token is listed below.
   `,
   symbol: 'FRAX',
+  image: '/tokens/play.svg',
   address: '0xBC4639e6056c299b5A957C213bcE3ea47210e2BD',
   token: {
     decimals: 18,
