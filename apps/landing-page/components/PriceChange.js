@@ -3,7 +3,7 @@ import arrowIconGreen from '../public/arrow_icon_green.svg';
 import arrowIconRed from '../public/arrow_icon_red.svg';
 
 const PriceChange = ({ priceChange }) => {
-  const priceChangeUsd = priceChange.toFixed(2);
+  const priceChangeUsd = priceChange?.toFixed(2);
   return priceChange > 0 ? (
     <>
       <span className="text-light_green mr-1">+{priceChangeUsd}%</span>
