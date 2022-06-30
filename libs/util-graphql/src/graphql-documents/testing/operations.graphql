@@ -23,7 +23,10 @@ fragment UserFields on User {
     symbol
     twentyFourHourEarnings
     totalEarnings
+    address
   }
+  profit
+  performance
 }
 
 query getProductsBySymbol($symbols: [String!]!, $currency: String!) {
@@ -45,5 +48,6 @@ query getVaults($currency: String!) {
     }
     symbol
     name
+    address
   }
 }

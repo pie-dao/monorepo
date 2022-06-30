@@ -120,6 +120,7 @@ export const thunkGetVaultsData = createAsyncThunk(
           decimals: auxo.decimals(),
           symbol: auxo.symbol(),
           chainId: 250,
+          address: auxo.address,
         });
         return results;
       }),
@@ -136,6 +137,7 @@ export const thunkGetVaultsData = createAsyncThunk(
           decimals: ftm.decimals(),
           symbol: ftm.symbol(),
           chainId: 137,
+          address: ftm.address,
         });
         return results;
       }),
@@ -166,6 +168,7 @@ export const thunkGetVaultsData = createAsyncThunk(
             symbol: result.value.symbol,
             name: result.value.name,
             chainId: result.value.chainId,
+            address: result.value.address,
           },
         };
         return filterFulfilled;
