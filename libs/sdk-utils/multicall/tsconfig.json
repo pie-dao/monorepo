@@ -11,10 +11,12 @@
     }
   ],
   "compilerOptions": {
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitReturns": false,
-    "noFallthroughCasesInSwitch": true
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true
   }
 }
