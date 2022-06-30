@@ -5,7 +5,9 @@ export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.MAINNET]: process.env.NEXT_PUBLIC_TESTNET
     ? 'http://127.0.0.1:8545/'
     : 'https://mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
-  [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ftm.tools/',
+  [SUPPORTED_CHAINS.FANTOM]: process.env.NEXT_PUBLIC_TESTNET
+    ? 'http://127.0.0.1:8546'
+    : 'https://rpc.ftm.tools/',
   [SUPPORTED_CHAINS.POLYGON]:
     'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
 };

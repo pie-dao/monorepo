@@ -13,7 +13,7 @@ const RPC_URLS = process.env.NEXT_PUBLIC_TESTNET
   ? {
       1: 'http://127.0.0.1:8545/',
       137: 'https://polygon-rpc.com',
-      250: 'https://rpc.ankr.com/fantom',
+      250: 'http://127.0.0.1:8546',
     }
   : {
       1: 'https://rpc.ankr.com/eth',

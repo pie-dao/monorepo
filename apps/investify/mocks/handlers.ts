@@ -39,8 +39,18 @@ export const handlers = [
               name: 'Auxo Wrapped Fantom Vault',
               twentyFourHourEarnings: 400,
               totalEarnings: 900,
+              address: '0x16AD251B49E62995eC6f1b6A8F48A7004666397C',
+            },
+            {
+              symbol: 'USDC',
+              name: 'USDC FTM',
+              twentyFourHourEarnings: 400,
+              totalEarnings: 900,
+              address: '0x662556422AD3493fCAAc47767E8212f8C4E24513',
             },
           ],
+          performance: 30.22,
+          profit: 20030.43,
         },
       }),
     );
@@ -59,10 +69,13 @@ export const handlers = [
     );
   }),
   mockGetVaultsQuery((req, res, ctx) => {
-    const vaults = ['Auxo Wrapped Fantom Vault'];
+    const vaults = [
+      '0x16AD251B49E62995eC6f1b6A8F48A7004666397C',
+      '0x662556422AD3493fCAAc47767E8212f8C4E24513',
+    ];
     return res(
       ctx.data({
-        vaults: [vaults].flat().map((symbol) => ({
+        vaults: [vaults].flat().map((address) => ({
           underlyingToken: {
             marketData: [{ currentPrice: 230 }],
             symbol: 'FTM',
@@ -75,6 +88,7 @@ export const handlers = [
           },
           symbol: 'auxoWFTM',
           name: 'Auxo Wrapped Fantom Vault',
+          address,
         })),
       }),
     );
