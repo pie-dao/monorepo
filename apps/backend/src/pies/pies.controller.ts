@@ -100,7 +100,13 @@ export class PiesController {
         limit = 0;
       }
 
-      return await this.piesService.getCgCoin(address, from, to, order, limit);
+      return await this.piesService.getCgCoin(address, from, to, order, limit, {
+        'coin.symbol': 1,
+        'coin.contract_address': 1,
+        'coin.market_data.current_price.usd': 1,
+        'coin.market_data.price_change_percentage_24h': 1,
+        'coin.market_data.price_change_percentage_30d': 1,
+      });
     } catch (error) {
       throw new NotFoundException(error);
     }
