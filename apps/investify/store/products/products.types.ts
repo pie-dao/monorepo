@@ -30,6 +30,7 @@ export type Vault = {
   name: string;
   totalDeposited: number;
   chainId: number;
+  address: string;
 };
 
 export type Stats = {

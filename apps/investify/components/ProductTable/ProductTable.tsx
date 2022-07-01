@@ -20,6 +20,7 @@ export default function ProductTable({
       key={product.name.main}
       as="div"
       className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
+      data-cy={`product-table-${product.name.main}`}
     >
       {({ open }) => (
         <>
@@ -36,7 +37,9 @@ export default function ProductTable({
                 </div>
                 <div className="min-w-0 flex-1 px-4 grid grid-cols-2 sm:grid-cols-4 sm:gap-4 items-center">
                   <div className="flex flex-col justify-between">
-                    <p className="text-base font-bold">{product.name.main}</p>
+                    <p className="text-base font-bold" data-cy="name">
+                      {product.name.main}
+                    </p>
                     <p className="text-xs text-sub-dark hidden sm:block">
                       {product.name.sub}
                     </p>
@@ -45,16 +48,23 @@ export default function ProductTable({
                     </p>
                   </div>
                   <div className="flex flex-col justify-between hidden sm:block">
-                    <p className="text-base">{product.price.value}</p>
+                    <p className="text-base" data-cy="price">
+                      {product.price.value}
+                    </p>
                     <p className="text-xs text-secondary">
                       {product.price.change}
                     </p>
                   </div>
                   <div className="flex flex-col justify-center text-right hidden sm:block">
-                    <p className="text-base text-primary">{product.balance}</p>
+                    <p className="text-base text-primary" data-cy="balance">
+                      {product.balance}
+                    </p>
                   </div>
                   <div className="flex flex-col justify-center text-right">
-                    <p className="text-base text-primary font-medium ">
+                    <p
+                      className="text-base text-primary font-medium"
+                      data-cy="value"
+                    >
                       {product.value}
                     </p>
                     <p className="text-base text-secondary block sm:hidden">
@@ -153,7 +163,9 @@ export default function ProductTable({
                   style={{ width: product.portfolioPercentage }}
                 ></div>
               </div>
-              <div className="text-sm">{product.portfolioPercentage}</div>
+              <div className="text-sm" data-cy="percentage">
+                {product.portfolioPercentage}
+              </div>
             </div>
             <AnimatePresence initial={false}>
               {open && (

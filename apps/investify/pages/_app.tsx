@@ -32,7 +32,9 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-require('../mocks');
+if (process.env.NEXT_PUBLIC_MOCKS_ENABLED) {
+  require('../mocks');
+}
 
 function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
   const { props, store } = wrapper.useWrappedStore(rest);

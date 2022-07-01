@@ -1,10 +1,16 @@
 import { api } from '../baseApi';
-import { graphql, ResponseResolver, GraphQLRequest, GraphQLContext } from 'msw'
+import { graphql, ResponseResolver, GraphQLRequest, GraphQLContext } from 'msw';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -26,7 +32,6 @@ export type MarketDataEntity = {
   twentyFourHourChange: Scalars['String'];
 };
 
-
 export type MarketDataEntityCurrentPriceArgs = {
   currency?: Scalars['String'];
 };
@@ -42,22 +47,18 @@ export type Query = {
   vaults?: Maybe<Array<Maybe<YieldVaultEntity>>>;
 };
 
-
 export type QueryTokenArgs = {
   symbol: Scalars['String'];
 };
-
 
 export type QueryTokensBySymbolArgs = {
   symbols: Array<Scalars['String']>;
 };
 
-
 export type QueryUserArgs = {
   address: Scalars['String'];
   currency?: Scalars['String'];
 };
-
 
 export type QueryVaultsArgs = {
   currency?: Scalars['String'];
@@ -89,7 +90,9 @@ export type TokenInterface = {
 export type User = {
   __typename?: 'User';
   address: Scalars['String'];
+  performance: Scalars['Float'];
   pieVaults: Array<UserTokenEntity>;
+  profit: Scalars['Float'];
   totalBalance: Scalars['Float'];
   twentyFourHourChange: Scalars['Float'];
   yieldVaults: Array<UserYieldVaultEntity>;
@@ -109,6 +112,7 @@ export type UserTokenEntity = TokenInterface & {
 
 export type UserYieldVaultEntity = YieldVaultInterface & {
   __typename?: 'UserYieldVaultEntity';
+  address: Scalars['String'];
   name: Scalars['String'];
   symbol: Scalars['String'];
   totalEarnings: Scalars['Float'];
@@ -117,6 +121,7 @@ export type UserYieldVaultEntity = YieldVaultInterface & {
 
 export type YieldVaultEntity = YieldVaultInterface & {
   __typename?: 'YieldVaultEntity';
+  address: Scalars['String'];
   name: Scalars['String'];
   symbol: Scalars['String'];
   underlyingToken: TokenEntity;
@@ -131,30 +136,98 @@ export type FindUserQueryVariables = Exact<{
   address: Scalars['String'];
 }>;
 
+export type FindUserQuery = {
+  __typename?: 'Query';
+  user?: {
+    __typename?: 'User';
+    address: string;
+    totalBalance: number;
+    twentyFourHourChange: number;
+    profit: number;
+    performance: number;
+    pieVaults: Array<{
+      __typename?: 'UserTokenEntity';
+      symbol: string;
+      name: string;
+    }>;
+    yieldVaults: Array<{
+      __typename?: 'UserYieldVaultEntity';
+      name: string;
+      symbol: string;
+      twentyFourHourEarnings: number;
+      totalEarnings: number;
+      address: string;
+    }>;
+  } | null;
+};
 
-export type FindUserQuery = { __typename?: 'Query', user?: { __typename?: 'User', address: string, totalBalance: number, twentyFourHourChange: number, pieVaults: Array<{ __typename?: 'UserTokenEntity', symbol: string, name: string }>, yieldVaults: Array<{ __typename?: 'UserYieldVaultEntity', name: string, symbol: string, twentyFourHourEarnings: number, totalEarnings: number }> } | null };
+export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
 
-export type AllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+export type AllUsersQuery = {
+  __typename?: 'Query';
+  allUsers?: Array<{ __typename?: 'User'; address: string } | null> | null;
+};
 
-
-export type AllUsersQuery = { __typename?: 'Query', allUsers?: Array<{ __typename?: 'User', address: string } | null> | null };
-
-export type UserFieldsFragment = { __typename?: 'User', address: string, totalBalance: number, twentyFourHourChange: number, pieVaults: Array<{ __typename?: 'UserTokenEntity', symbol: string, name: string }>, yieldVaults: Array<{ __typename?: 'UserYieldVaultEntity', name: string, symbol: string, twentyFourHourEarnings: number, totalEarnings: number }> };
+export type UserFieldsFragment = {
+  __typename?: 'User';
+  address: string;
+  totalBalance: number;
+  twentyFourHourChange: number;
+  profit: number;
+  performance: number;
+  pieVaults: Array<{
+    __typename?: 'UserTokenEntity';
+    symbol: string;
+    name: string;
+  }>;
+  yieldVaults: Array<{
+    __typename?: 'UserYieldVaultEntity';
+    name: string;
+    symbol: string;
+    twentyFourHourEarnings: number;
+    totalEarnings: number;
+    address: string;
+  }>;
+};
 
 export type GetProductsBySymbolQueryVariables = Exact<{
   symbols: Array<Scalars['String']> | Scalars['String'];
   currency: Scalars['String'];
 }>;
 
-
-export type GetProductsBySymbolQuery = { __typename?: 'Query', tokensBySymbol?: Array<{ __typename?: 'TokenEntity', symbol: string, marketData: Array<{ __typename?: 'MarketDataEntity', currentPrice: number, twentyFourHourChange: string }> } | null> | null };
+export type GetProductsBySymbolQuery = {
+  __typename?: 'Query';
+  tokensBySymbol?: Array<{
+    __typename?: 'TokenEntity';
+    symbol: string;
+    marketData: Array<{
+      __typename?: 'MarketDataEntity';
+      currentPrice: number;
+      twentyFourHourChange: string;
+    }>;
+  } | null> | null;
+};
 
 export type GetVaultsQueryVariables = Exact<{
   currency: Scalars['String'];
 }>;
 
-
-export type GetVaultsQuery = { __typename?: 'Query', vaults?: Array<{ __typename?: 'YieldVaultEntity', symbol: string, name: string, underlyingToken: { __typename?: 'TokenEntity', marketData: Array<{ __typename?: 'MarketDataEntity', currentPrice: number }> } } | null> | null };
+export type GetVaultsQuery = {
+  __typename?: 'Query';
+  vaults?: Array<{
+    __typename?: 'YieldVaultEntity';
+    symbol: string;
+    name: string;
+    address: string;
+    underlyingToken: {
+      __typename?: 'TokenEntity';
+      marketData: Array<{
+        __typename?: 'MarketDataEntity';
+        currentPrice: number;
+      }>;
+    };
+  } | null> | null;
+};
 
 export const UserFieldsFragmentDoc = `
     fragment UserFields on User {
@@ -170,7 +243,10 @@ export const UserFieldsFragmentDoc = `
     symbol
     twentyFourHourEarnings
     totalEarnings
+    address
   }
+  profit
+  performance
 }
     `;
 export const FindUserDocument = `
@@ -208,6 +284,7 @@ export const GetVaultsDocument = `
     }
     symbol
     name
+    address
   }
 }
     `;
@@ -215,24 +292,37 @@ export const GetVaultsDocument = `
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     findUser: build.query<FindUserQuery, FindUserQueryVariables>({
-      query: (variables) => ({ document: FindUserDocument, variables })
+      query: (variables) => ({ document: FindUserDocument, variables }),
     }),
     allUsers: build.query<AllUsersQuery, AllUsersQueryVariables | void>({
-      query: (variables) => ({ document: AllUsersDocument, variables })
+      query: (variables) => ({ document: AllUsersDocument, variables }),
     }),
-    getProductsBySymbol: build.query<GetProductsBySymbolQuery, GetProductsBySymbolQueryVariables>({
-      query: (variables) => ({ document: GetProductsBySymbolDocument, variables })
+    getProductsBySymbol: build.query<
+      GetProductsBySymbolQuery,
+      GetProductsBySymbolQueryVariables
+    >({
+      query: (variables) => ({
+        document: GetProductsBySymbolDocument,
+        variables,
+      }),
     }),
     getVaults: build.query<GetVaultsQuery, GetVaultsQueryVariables>({
-      query: (variables) => ({ document: GetVaultsDocument, variables })
+      query: (variables) => ({ document: GetVaultsDocument, variables }),
     }),
   }),
 });
 
 export { injectedRtkApi as api };
-export const { useFindUserQuery, useLazyFindUserQuery, useAllUsersQuery, useLazyAllUsersQuery, useGetProductsBySymbolQuery, useLazyGetProductsBySymbolQuery, useGetVaultsQuery, useLazyGetVaultsQuery } = injectedRtkApi;
-
-
+export const {
+  useFindUserQuery,
+  useLazyFindUserQuery,
+  useAllUsersQuery,
+  useLazyAllUsersQuery,
+  useGetProductsBySymbolQuery,
+  useLazyGetProductsBySymbolQuery,
+  useGetVaultsQuery,
+  useLazyGetVaultsQuery,
+} = injectedRtkApi;
 
 /**
  * @param resolver a function that accepts a captured request and may return a mocked response.
@@ -245,11 +335,13 @@ export const { useFindUserQuery, useLazyFindUserQuery, useAllUsersQuery, useLazy
  *   )
  * })
  */
-export const mockFindUserQuery = (resolver: ResponseResolver<GraphQLRequest<FindUserQueryVariables>, GraphQLContext<FindUserQuery>, any>) =>
-  graphql.query<FindUserQuery, FindUserQueryVariables>(
-    'findUser',
-    resolver
-  )
+export const mockFindUserQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<FindUserQueryVariables>,
+    GraphQLContext<FindUserQuery>,
+    any
+  >,
+) => graphql.query<FindUserQuery, FindUserQueryVariables>('findUser', resolver);
 
 /**
  * @param resolver a function that accepts a captured request and may return a mocked response.
@@ -261,11 +353,13 @@ export const mockFindUserQuery = (resolver: ResponseResolver<GraphQLRequest<Find
  *   )
  * })
  */
-export const mockAllUsersQuery = (resolver: ResponseResolver<GraphQLRequest<AllUsersQueryVariables>, GraphQLContext<AllUsersQuery>, any>) =>
-  graphql.query<AllUsersQuery, AllUsersQueryVariables>(
-    'allUsers',
-    resolver
-  )
+export const mockAllUsersQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<AllUsersQueryVariables>,
+    GraphQLContext<AllUsersQuery>,
+    any
+  >,
+) => graphql.query<AllUsersQuery, AllUsersQueryVariables>('allUsers', resolver);
 
 /**
  * @param resolver a function that accepts a captured request and may return a mocked response.
@@ -278,11 +372,17 @@ export const mockAllUsersQuery = (resolver: ResponseResolver<GraphQLRequest<AllU
  *   )
  * })
  */
-export const mockGetProductsBySymbolQuery = (resolver: ResponseResolver<GraphQLRequest<GetProductsBySymbolQueryVariables>, GraphQLContext<GetProductsBySymbolQuery>, any>) =>
+export const mockGetProductsBySymbolQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<GetProductsBySymbolQueryVariables>,
+    GraphQLContext<GetProductsBySymbolQuery>,
+    any
+  >,
+) =>
   graphql.query<GetProductsBySymbolQuery, GetProductsBySymbolQueryVariables>(
     'getProductsBySymbol',
-    resolver
-  )
+    resolver,
+  );
 
 /**
  * @param resolver a function that accepts a captured request and may return a mocked response.
@@ -295,8 +395,11 @@ export const mockGetProductsBySymbolQuery = (resolver: ResponseResolver<GraphQLR
  *   )
  * })
  */
-export const mockGetVaultsQuery = (resolver: ResponseResolver<GraphQLRequest<GetVaultsQueryVariables>, GraphQLContext<GetVaultsQuery>, any>) =>
-  graphql.query<GetVaultsQuery, GetVaultsQueryVariables>(
-    'getVaults',
-    resolver
-  )
+export const mockGetVaultsQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<GetVaultsQueryVariables>,
+    GraphQLContext<GetVaultsQuery>,
+    any
+  >,
+) =>
+  graphql.query<GetVaultsQuery, GetVaultsQueryVariables>('getVaults', resolver);

@@ -6,7 +6,7 @@ import {
 import { formatBalance, formatBalanceCurrency } from '../utils/formatBalance';
 import { vaults as vaultConfig } from '../config/auxoVaults';
 import { ethers } from 'ethers';
-import { BigNumberString, Vaults } from '../store/products/products.types';
+import { Vaults } from '../store/products/products.types';
 import { find, isEmpty } from 'lodash';
 
 export type VaultTableData = {
@@ -35,9 +35,6 @@ type TableStatus = {
   isError: boolean;
   formattedVaults: VaultTableData[];
 };
-
-const stringNameComparison = (a: string, b: string) =>
-  a.replace(/\s/g, '').toLowerCase() === b.replace(/\s/g, '').toLowerCase();
 
 export function useFormatDataForVaultsTable(
   vaults: Vaults,
@@ -80,12 +77,14 @@ export function useFormatDataForVaultsTable(
     if (shouldReturn) return;
 
     const ordervaults = filteredVaults.map((value) => {
-      const { name } = value;
+      const vault = find(vaults, { address: value.address });
+      const { address } = value;
       const dataFromConfig = find(vaultConfig, (o) => {
-        return stringNameComparison(o.name, name);
+        return o.address.toLowerCase() === address.toLowerCase();
       });
-      const beData = find(vaultsData.vaults, (o) =>
-        stringNameComparison(o.name, name),
+      const beData = find(
+        vaultsData.vaults,
+        (o) => o.address.toLowerCase() === address.toLowerCase(),
       );
       return {
         image: dataFromConfig.image,
@@ -100,57 +99,42 @@ export function useFormatDataForVaultsTable(
             currency,
           ),
         },
-        APY: `${vaults[name].estimatedReturn}%`,
+        APY: `${vault.estimatedReturn}%`,
         portfolioPercentage: `${(
-          (+ethers.utils.formatUnits(
-            vaults[name].balance,
-            vaults[name].decimals,
-          ) /
+          (+ethers.utils.formatUnits(vault.balance, vault.decimals) /
             Number(totalBalance)) *
           100
         ).toFixed()}%`,
         balance: Number(
-          ethers.utils.formatUnits(vaults[name].balance, vaults[name].decimals),
+          ethers.utils.formatUnits(vault.balance, vault.decimals),
         ).toFixed(2),
         value: formatBalanceCurrency(
           Number(
             beData.underlyingToken.marketData[0].currentPrice *
-              Number(
-                ethers.utils.formatUnits(
-                  vaults[name].balance,
-                  vaults[name].decimals,
-                ),
-              ),
+              Number(ethers.utils.formatUnits(vault.balance, vault.decimals)),
           ),
           locale,
           currency,
         ),
         subRow: {
           userDeposited: Number(
-            ethers.utils.formatUnits(
-              vaults[name].balance,
-              vaults[name].decimals,
-            ),
+            ethers.utils.formatUnits(vault.balance, vault.decimals),
           ).toFixed(2),
           userEarnings: formatBalance(
             find(userVaults, (o) => {
-              return stringNameComparison(o.name, name);
+              return o.address.toLowerCase() === address.toLowerCase();
             })?.totalEarnings || 0,
             locale,
             0,
           ),
           userEarningsTwentyFourHours: formatBalance(
             find(userVaults, (o) => {
-              return stringNameComparison(o.name, name);
+              return o.address.toLowerCase() === address.toLowerCase();
             })?.twentyFourHourEarnings || 0,
             locale,
             0,
           ),
-          totalDesposited: formatBalance(
-            vaults[name].totalDeposited,
-            locale,
-            0,
-          ),
+          totalDesposited: formatBalance(vault.totalDeposited, locale, 0),
         },
       };
     });

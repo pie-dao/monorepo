@@ -16,6 +16,7 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
       key={vault.name.main}
       as="div"
       className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
+      data-cy={`vault-table-${vault.name.main}`}
     >
       {({ open }) => (
         <>
@@ -43,15 +44,23 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                     </p>
                   </div>
                   <div className="flex-row items-center gap-x-2 hidden sm:flex flex-wrap">
-                    <p className="text-xs xl:text-base border rounded-full border-secondary text-center px-2 py-1 font-medium">
+                    <p
+                      className="text-xs xl:text-base border rounded-full border-secondary text-center px-2 py-1 font-medium"
+                      data-cy="APY"
+                    >
                       APY {vault.APY}
                     </p>
                   </div>
                   <div className="flex flex-col justify-center text-right hidden sm:block">
-                    <p className="text-base text-primary">{vault.balance}</p>
+                    <p className="text-base text-primary" data-cy="balance">
+                      {vault.balance}
+                    </p>
                   </div>
                   <div className="flex flex-col justify-center text-right">
-                    <p className="text-base text-primary font-medium ">
+                    <p
+                      className="text-base text-primary font-medium"
+                      data-cy="value"
+                    >
                       {vault.value}
                     </p>
                     <p className="text-base text-secondary block sm:hidden">
@@ -143,7 +152,9 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                   style={{ width: vault.portfolioPercentage }}
                 ></div>
               </div>
-              <div className="text-sm">{vault.portfolioPercentage}</div>
+              <div className="text-sm" data-cy="percentage">
+                {vault.portfolioPercentage}
+              </div>
             </div>
             <AnimatePresence initial={false}>
               {open && (
