@@ -1,19 +1,20 @@
 import { ReactElement, useEffect } from 'react';
-import { Layout } from '../components';
-import { wrapper } from '../store';
-import useMediaQuery from '../hooks/useMediaQuery';
+import { useWeb3React } from '@web3-react/core';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
-import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
+import { Layout } from '../components';
 import UserCard from '../components/UserCard/UserCard';
-import { useWeb3React } from '@web3-react/core';
+import DashboardTable from '../components/ProductTable/DashboardTable';
+import ProfitPerformance from '../components/ProfitPerformance/ProfitPerformance';
+import { wrapper } from '../store';
+import useMediaQuery from '../hooks/useMediaQuery';
+import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import {
   thunkGetProductsData,
   thunkGetVaultsData,
   thunkGetUserVaultsData,
 } from '../store/products/thunks';
-import DashboardTable from '../components/ProductTable/DashboardTable';
 
 export default function DashboardPage({ title }) {
   const dispatch = useAppDispatch();
@@ -42,7 +43,12 @@ export default function DashboardPage({ title }) {
               {t(title)}
             </h1>
           )}
-          {account && <UserCard />}
+          {account && (
+            <div className="flex-1 flex flex-row gap-5 flex-wrap">
+              <UserCard />
+              <ProfitPerformance />
+            </div>
+          )}
           <section>
             {account &&
               networks?.total !== 0 &&

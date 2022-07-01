@@ -42,7 +42,7 @@ module.exports = {
         red: withOpacityValue('--color-red'),
       },
       backgroundImage: {
-        'gradient-primary': `linear-gradient(90deg, #FFFFFF 0.33%, #FAF9FF 95.86%)`,
+        'gradient-primary': `linear-gradient(90deg, #FFFFFF 0.33%, #F6F7FF 95.86%)`,
         'gradient-overlay': `linear-gradient(
           0deg,
           rgba(11, 120, 221, 0.6) 0%,
