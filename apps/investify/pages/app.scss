@@ -1,0 +1,32 @@
+.main-title {
+  background-clip: text;
+  text-fill-color: transparent;
+  background-image: linear-gradient(
+    90deg,
+    rgba(11, 120, 221, 1) 0%,
+    rgba(11, 120, 221, 1) 80%,
+    rgba(11, 221, 145, 1) 100%
+  );
+  color: transparent;
+}
+
+@mixin hidden-balance-($color) {
+  color: transparent;
+  text-shadow: rgb($color) 0px 0px 14px;
+}
+
+.hidden-balance {
+  @include hidden-balance-(255 255 255);
+}
+
+.hidden-balance-primary {
+  @include hidden-balance-(var(--color-primary));
+}
+
+.hidden-balance-secondary {
+  @include hidden-balance-(var(--color-secondary));
+}
+
+.hidden-balance-sub-dark {
+  @include hidden-balance-(var(--color-sub-dark));
+}

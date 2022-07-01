@@ -7,6 +7,8 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { setSwap } from '../../store/sidebar/sidebar.slice';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../hooks';
+import classNames from '../../utils/classnames';
 
 export default function ProductTable({
   product,
@@ -15,6 +17,7 @@ export default function ProductTable({
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { hideBalance } = useAppSelector((state) => state.preferences);
   return (
     <Disclosure
       key={product.name.main}
@@ -56,13 +59,22 @@ export default function ProductTable({
                     </p>
                   </div>
                   <div className="flex flex-col justify-center text-right hidden sm:block">
-                    <p className="text-base text-primary" data-cy="balance">
+                    <p
+                      className={classNames(
+                        `text-base text-primary`,
+                        hideBalance && `hidden-balance-primary`,
+                      )}
+                      data-cy="balance"
+                    >
                       {product.balance}
                     </p>
                   </div>
                   <div className="flex flex-col justify-center text-right">
                     <p
-                      className="text-base text-primary font-medium"
+                      className={classNames(
+                        `text-base text-primary font-medium`,
+                        hideBalance && 'hidden-balance-primary',
+                      )}
                       data-cy="value"
                     >
                       {product.value}
@@ -137,12 +149,24 @@ export default function ProductTable({
                         </div>
                         <div className="flex flex-col justify-between hidden sm:block"></div>
                         <div className="flex flex-col justify-center text-right hidden sm:block">
-                          <p className="text-xs text-sub-dark">
+                          <p
+                            className={classNames(
+                              `text-xs text-sub-dark`,
+                              hideBalance && `hidden-balance-sub-dark`,
+                            )}
+                          >
                             {subRow.balance}
                           </p>
                         </div>
                         <div className="flex flex-col justify-center text-right">
-                          <p className="text-xs text-primary">{subRow.value}</p>
+                          <p
+                            className={classNames(
+                              `text-xs text-primary`,
+                              hideBalance && 'hidden-balance-primary',
+                            )}
+                          >
+                            {subRow.value}
+                          </p>
                           <p className="text-secondary block sm:hidden">
                             {subRow.allocationPercentage}
                           </p>
@@ -185,7 +209,7 @@ export default function ProductTable({
                     passHref
                   >
                     <button className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
-                      {t('Discover')}
+                      {t('dashboard:discover')}
                     </button>
                   </Link>
                   <button

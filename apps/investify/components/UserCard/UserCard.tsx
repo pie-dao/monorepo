@@ -47,7 +47,7 @@ export default function UserCard() {
 
   return (
     <div
-      className={`flex flex-col w-full h-56 sm:w-96 space-y-12 bg-dashboard-card dashboard-card bg-cover rounded-xl relative text-white shadow-md p-6 ${styles.dashboardCard}`}
+      className={`flex flex-col w-full max-w-[360px] h-56 space-y-12 bg-dashboard-card dashboard-card bg-cover rounded-xl relative text-white shadow-md p-6 ${styles.dashboardCard}`}
     >
       <div className="w-full flex justify-between items-center">
         <div className={`font-medium text-base ${styles.dashboardAddress}`}>

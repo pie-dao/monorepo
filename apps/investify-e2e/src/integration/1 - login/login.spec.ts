@@ -1,4 +1,4 @@
-import { getAccountButton } from '../support/app.po';
+import { getAccountButton } from '../../support/app.po';
 
 describe('Test User Login', () => {
   it('Connects with Metamask', () => {
