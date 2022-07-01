@@ -7,10 +7,13 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { setVault } from '../../store/sidebar/sidebar.slice';
+import classNames from '../../utils/classnames';
+import { useAppSelector } from '../../hooks';
 
 export default function VaultTable({ vault }: { vault: VaultTableData }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { hideBalance } = useAppSelector((state) => state.preferences);
   return (
     <Disclosure
       key={vault.name.main}
@@ -39,7 +42,12 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                     <p className="text-xs text-sub-dark hidden sm:block truncate">
                       {vault.name.sub}
                     </p>
-                    <p className="text-base text-sub-dark block sm:hidden truncate">
+                    <p
+                      className={classNames(
+                        'text-base text-sub-dark block sm:hidden truncate',
+                        hideBalance && 'hidden-balance-sub-dark',
+                      )}
+                    >
                       {vault.balance} {vault.name.sub}
                     </p>
                   </div>
@@ -52,13 +60,22 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                     </p>
                   </div>
                   <div className="flex flex-col justify-center text-right hidden sm:block">
-                    <p className="text-base text-primary" data-cy="balance">
+                    <p
+                      className={classNames(
+                        `text-base text-primary`,
+                        hideBalance && `hidden-balance-primary`,
+                      )}
+                      data-cy="balance"
+                    >
                       {vault.balance}
                     </p>
                   </div>
                   <div className="flex flex-col justify-center text-right">
                     <p
-                      className="text-base text-primary font-medium"
+                      className={classNames(
+                        'text-base text-primary font-medium',
+                        hideBalance && 'hidden-balance-primary',
+                      )}
                       data-cy="value"
                     >
                       {vault.value}
@@ -111,28 +128,42 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                   <div className="min-w-0 flex-1 flex items-start">
                     <div className="grid grid-cols-2 sm:flex min-w-0 flex-1 px-4 gap-2 sm:gap-4 items-center sm:text-center justify-between">
                       <div className="flex flex-col justify-between text-left">
-                        <h3 className="text-xs text-sub-dark">My Deposits</h3>
-                        <p className="text-xs text-primary">
+                        <h3 className="text-xs text-sub-dark">
+                          {t('dashboard:myDeposits')}
+                        </h3>
+                        <p
+                          className={classNames(
+                            'text-xs text-primary',
+                            hideBalance && 'hidden-balance-primary',
+                          )}
+                        >
                           {vault.subRow.userDeposited}
                         </p>
                       </div>
                       <div className="flex flex-col justify-between text-right sm:text-center">
-                        <h3 className="text-xs text-sub-dark">24H Deposits</h3>
+                        <h3 className="text-xs text-sub-dark">
+                          {t('dashboard:24hDeposits')}
+                        </h3>
                         <p className="text-xs text-primary">
                           {vault.subRow.userEarningsTwentyFourHours}
                         </p>
                       </div>
                       <div className="flex flex-col justify-between">
                         <h3 className="text-xs text-sub-dark">
-                          My Total Earnings
+                          {t('dashboard:userEarnings')}
                         </h3>
-                        <p className="text-xs text-primary">
+                        <p
+                          className={classNames(
+                            'text-xs text-primary',
+                            hideBalance && 'hidden-balance-primary',
+                          )}
+                        >
                           {vault.subRow.userEarnings}
                         </p>
                       </div>
                       <div className="flex flex-col justify-between text-right">
                         <h3 className="text-xs text-sub-dark">
-                          Total Deposits
+                          {t('dashboard:totalDeposits')}
                         </h3>
                         <p className="text-xs text-primary">
                           {vault.subRow.totalDesposited}
@@ -174,14 +205,14 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                     passHref
                   >
                     <button className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
-                      {t('Discover')}
+                      {t('dashboard:discover')}
                     </button>
                   </Link>
                   <button
                     className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white"
                     onClick={() => dispatch(setVault(vault.name.main))}
                   >
-                    {t('Trade')}
+                    {t('dashboard:trade')}
                   </button>
                 </motion.div>
               )}

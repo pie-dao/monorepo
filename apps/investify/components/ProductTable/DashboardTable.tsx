@@ -60,18 +60,18 @@ export default function DashboardTable() {
               <div className="flex-shrink-0 w-[40px]"></div>
               <div className="min-w-0 flex-1 px-4 sm:grid sm:grid-cols-4 sm:gap-4 ">
                 <div className="flex flex-col justify-between">
-                  <p className="text-xs">{t('dashboard:Name')}</p>
+                  <p className="text-xs">{t('dashboard:name')}</p>
                 </div>
                 <div className="flex flex-col justify-between">
-                  <p className="text-xs">{t('dashboard:Price')}</p>
+                  <p className="text-xs">{t('dashboard:price')}</p>
                 </div>
                 <div className="flex flex-col justify-center text-right">
                   <p className="text-xs text-sub-dark">
-                    {t('dashboard:Balance')}
+                    {t('dashboard:balance')}
                   </p>
                 </div>
                 <div className="flex flex-col justify-center text-right">
-                  <p className="text-xs text-primary">{t('dashboard:Value')}</p>
+                  <p className="text-xs text-primary">{t('dashboard:value')}</p>
                 </div>
               </div>
             </div>

@@ -9,6 +9,7 @@ import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
 import { wrapper } from '../store';
 import './styles.css';
+import './app.scss';
 
 export function reportWebVitals({
   id,
