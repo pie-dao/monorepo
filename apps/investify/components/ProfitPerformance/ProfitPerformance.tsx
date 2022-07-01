@@ -39,6 +39,7 @@ const ProfitPerformance: React.FC = () => {
       {ProfitPerformance.map((item, index) => {
         return (
           <div
+            data-cy={`pnl-block-${item.title.toLowerCase()}`}
             key={index}
             className="flex flex-col flex-0 bg-gradient-primary shadow-md rounded-md lg:h-36 py-2 px-3 items-center w-full lg:max-w-xs"
           >
