@@ -7,8 +7,9 @@ declare namespace Cypress {
 }
 
 Cypress.Commands.add('login', () => {
+  cy.disconnectMetamaskWalletFromAllDapps();
   cy.get('#connect-button').click();
   cy.get('#piedao-metamask-connect-button').click();
-  cy.acceptMetamaskAccess(true);
+  cy.acceptMetamaskAccess(false);
   cy.switchToCypressWindow();
 });
