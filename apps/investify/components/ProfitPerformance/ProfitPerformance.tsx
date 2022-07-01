@@ -26,11 +26,11 @@ const ProfitPerformance: React.FC = () => {
 
   const ProfitPerformance = [
     {
-      title: t('Profit'),
+      title: t('dashboard:profit'),
       value: profit,
     },
     {
-      title: t('Performance'),
+      title: t('dashboard:performance'),
       value: performance,
     },
   ];
@@ -55,12 +55,12 @@ const ProfitPerformance: React.FC = () => {
               </div>
               <div className="flex flex-col flex-1">
                 <div className="text-base font-medium text-sub-dark">
-                  {t(`dashboard:${item.title}`)}
+                  {item.title}
                 </div>
                 <h2
                   className={classNames(
                     'text-lg text-secondary font-medium',
-                    hideBalance && 'hidden-balance',
+                    hideBalance && 'hidden-balance-secondary',
                   )}
                 >
                   {item.value}
