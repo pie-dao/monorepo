@@ -3,14 +3,18 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
+import fs from 'fs';
 import { EpochEntity, EpochSchema } from '../entities/epoch.entity';
 import { StakingService } from '../staking.service';
 
-describe.skip('StakingService', () => {
+describe('StakingService', () => {
+  jest.setTimeout(5 * 60 * 1000);
+
   let service: StakingService;
+  let module: TestingModule;
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+    module = await Test.createTestingModule({
       providers: [StakingService],
       imports: [
         HttpModule,
@@ -26,15 +30,17 @@ describe.skip('StakingService', () => {
     service = module.get<StakingService>(StakingService);
   });
 
+  afterAll(async () => {
+    await module.close();
+  });
+
   it('Use this test to generate a new epoch', async () => {
-    const month = 5;
+    const month = 6;
     const year = 2022;
-    const blockNumber = 14881677;
-    const distributedRewards = '149744.16892452948';
-    const windowIndex = 8;
-    const proposalsIdsToExclude = [
-      '0x07cdffdae0321c8f939a54648ca7671b880f024af0f4bb6a190d468ffa0d93b7',
-    ];
+    const blockNumber = 15053226;
+    const distributedRewards = '113176.171097889';
+    const windowIndex = 9;
+    const proposalsIdsToExclude = [];
 
     const prevWindowIndex = windowIndex - 1;
 
@@ -46,8 +52,12 @@ describe.skip('StakingService', () => {
       prevWindowIndex,
       blockNumber,
       proposalsIdsToExclude,
+      true,
     );
 
-    console.log(JSON.stringify(result));
+    await fs.promises.writeFile(
+      `merkle-tree-${year}-${month}.json`,
+      JSON.stringify(result.merkleTree, null, 4),
+    );
   });
 });
