@@ -1,22 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { ethers } from 'ethers';
-import moment from 'moment';
 import ethDater from 'ethereum-block-by-date';
-import { EpochDocument, EpochEntity } from './entities/epoch.entity';
-import { MerkleTreeDistributor } from '../helpers/merkleTreeDistributor/merkleTreeDistributor';
-import { Staker, Lock } from './types/staking.types.Staker';
-import { Vote } from './types/staking.types.Vote';
-import { FreeRider } from './types/staking.types.FreeRider';
-import { Participation } from './types/staking.types.Participation';
-import { Delegate } from './types/staking.types.Delegate';
-import * as lodash from 'lodash';
-import { Console, Command, createSpinner } from 'nestjs-console';
+import { ethers } from 'ethers';
 import * as inquirer from 'inquirer';
-import { antoEpoch, totoEpoch } from './test/stubs';
+import * as lodash from 'lodash';
+import moment from 'moment';
+import { Model } from 'mongoose';
+import { Command, Console, createSpinner } from 'nestjs-console';
+import { MerkleTreeDistributor } from '../helpers/merkleTreeDistributor/merkleTreeDistributor';
 import { pieAbi as pieABI } from './abis';
+import { EpochDocument, EpochEntity } from './entities/epoch.entity';
+import { antoEpoch, totoEpoch } from './test/stubs';
+import { Delegate } from './types/staking.types.Delegate';
+import { Participation } from './types/staking.types.Participation';
+import { Lock, Staker } from './types/staking.types.Staker';
+import { Vote } from './types/staking.types.Vote';
 @Injectable()
 @Console()
 export class StakingService {
@@ -380,6 +379,10 @@ export class StakingService {
     prevWindowIndex: number,
     blockNumber: number,
     proposalsIds: Array<string>,
+    /**
+     * Set this to `true` if you only want to generate the epoch, but not save it.
+     */
+    dryRun = false,
   ): Promise<EpochEntity> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -426,6 +429,7 @@ export class StakingService {
           from.unix(),
           to.unix(),
           blockNumber,
+          dryRun,
         );
         /* istanbul ignore next */
         resolve(epoch);
@@ -443,6 +447,7 @@ export class StakingService {
     startDate: number,
     endDate: number,
     blockNumber: number,
+    dryRun = false,
   ): Promise<EpochEntity> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -472,7 +477,7 @@ export class StakingService {
         );
         epochModel.slice = await this.getSliceBreakdown();
 
-        let epochDB = await epochModel.save();
+        let epochDB = dryRun ? epochModel : await epochModel.save();
         resolve(epochDB);
       } catch (error) {
         reject(error);
