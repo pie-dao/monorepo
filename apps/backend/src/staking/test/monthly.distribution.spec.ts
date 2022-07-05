@@ -7,7 +7,7 @@ import fs from 'fs';
 import { EpochEntity, EpochSchema } from '../entities/epoch.entity';
 import { StakingService } from '../staking.service';
 
-describe('StakingService', () => {
+describe('Monthly Distribution', () => {
   jest.setTimeout(5 * 60 * 1000);
 
   let service: StakingService;
