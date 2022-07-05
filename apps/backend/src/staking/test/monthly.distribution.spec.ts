@@ -56,8 +56,8 @@ describe('Monthly Distribution', () => {
     );
 
     await fs.promises.writeFile(
-      `merkle-tree-${year}-${month}.json`,
-      JSON.stringify(result.merkleTree, null, 4),
+      `epochs/epoch-${year}-${month}.json`,
+      JSON.stringify(result, null, 4),
     );
   });
 });
