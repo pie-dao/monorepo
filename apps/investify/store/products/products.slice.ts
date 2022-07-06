@@ -4,12 +4,7 @@ import {
   thunkGetVaultsData,
   thunkGetUserVaultsData,
 } from './thunks';
-import {
-  Products,
-  SliceState,
-  Vaults,
-  BigNumberString,
-} from './products.types';
+import { Products, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
 
 const initialState: SliceState = {
@@ -29,6 +24,7 @@ const initialState: SliceState = {
     },
     balance: { tokens: 0, vaults: 0, total: 0 },
   },
+  activeVault: '',
 };
 
 const appSlice = createSlice({
@@ -138,9 +134,12 @@ const appSlice = createSlice({
       state.stats.balance.total =
         state.stats.balance.tokens + state.stats.balance.vaults;
     },
+    setActiveVault: (state, action: PayloadAction<string>) => {
+      state.activeVault = action.payload;
+    },
   },
 });
 
-export const { setState } = appSlice.actions;
+export const { setState, setActiveVault } = appSlice.actions;
 
 export default appSlice.reducer;

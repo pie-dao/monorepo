@@ -22,6 +22,7 @@ export type VaultTableData = {
   balance: string;
   portfolioPercentage: string;
   value: string;
+  address: string;
   subRow: {
     userDeposited: string;
     userEarnings: string;
@@ -116,6 +117,7 @@ export function useFormatDataForVaultsTable(
           locale,
           currency,
         ),
+        address: vault.address,
         subRow: {
           userDeposited: Number(
             ethers.utils.formatUnits(vault.balance, vault.decimals),

@@ -31,6 +31,8 @@ export type Vault = {
   totalDeposited: number;
   chainId: number;
   address: string;
+  isActive: boolean;
+  auth: boolean;
 };
 
 export type Stats = {
@@ -56,6 +58,7 @@ export type SliceState = {
   vaults: Vaults;
   stats: Stats;
   loading: boolean;
+  activeVault: string;
 };
 
 export type EnrichedProduct = {

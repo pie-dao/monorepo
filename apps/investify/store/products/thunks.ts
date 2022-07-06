@@ -1,14 +1,26 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, ethers } from 'ethers';
 import filter from 'lodash/filter';
+import find from 'lodash/find';
 import { promiseObject } from '../../utils/promiseObject';
 import { toBalance } from '../../utils/calculateAPY';
 import {
   contractWrappers,
+  FTMAuthContractWrapper,
+  PolygonAuthContractWrapper,
   FTMContractWrappers,
   PolygonContractWrappers,
+  underlyingContractsFTMWrappers,
+  underlyingContractsPolygonWrappers,
 } from './products.contracts';
-import { EnrichedProduct, Vault, Vaults } from './products.types';
+import {
+  BigNumberString,
+  EnrichedProduct,
+  Vault,
+  Vaults,
+} from './products.types';
+import { Erc20Abi } from '@shared/util-blockchain';
+import { vaults as vaultConfigs } from '../../config/auxoVaults';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -184,20 +196,47 @@ export const thunkGetUserVaultsData = createAsyncThunk(
     if (!account) return;
     const vaultsData = [
       ...PolygonContractWrappers.map((auxo) => {
+        const findUnderlyingAddress = find(vaultConfigs, {
+          address: auxo.address,
+        }).token.address;
+        const underlyingTokenContract = find(
+          underlyingContractsPolygonWrappers,
+          {
+            address: findUnderlyingAddress,
+          },
+        );
         const results = promiseObject({
           balance: auxo.balanceOf(account),
           name: auxo.name(),
           chainId: 137,
           decimals: auxo.decimals(),
+          auth: PolygonAuthContractWrapper.isDepositor(auxo.address, account),
+          userBatchBurnReceipts: auxo.userBatchBurnReceipts(account),
+          balanceOfUnderlying: underlyingTokenContract.balanceOf(account),
+          balanceOfVault: auxo.balanceOf(account),
+          balanceOfVaultUnderlying: auxo.balanceOfUnderlying(account),
+          allowance: underlyingTokenContract.allowance(account, auxo.address),
         });
         return results;
       }),
       ...FTMContractWrappers.map((ftm) => {
+        const findUnderlyingAddress = find(vaultConfigs, {
+          address: ftm.address,
+        }).token.address;
+        const underlyingTokenContract = find(underlyingContractsFTMWrappers, {
+          address: findUnderlyingAddress,
+        });
         const results = promiseObject({
           balance: ftm.balanceOf(account),
           name: ftm.name(),
           chainId: 250,
           decimals: ftm.decimals(),
+          auth: FTMAuthContractWrapper.isDepositor(ftm.address, account),
+          totalUnderlying: ftm.totalUnderlying(),
+          userBatchBurnReceipts: ftm.userBatchBurnReceipts(account),
+          balanceOfUnderlying: underlyingTokenContract.balanceOf(account),
+          balanceOfVaultUnderlying: ftm.balanceOfUnderlying(account),
+          allowance: underlyingTokenContract.allowance(account, ftm.address),
         });
         return results;
       }),
@@ -212,6 +251,13 @@ export const thunkGetUserVaultsData = createAsyncThunk(
             name: result.value.name,
             chainId: result.value.chainId,
             decimals: result.value.decimals,
+            auth: result.value.auth,
+            userBatchBurnReceipts:
+              result.value.userBatchBurnReceipts.toString(),
+            balanceOfUnderlying: result.value.balanceOfUnderlying.toString(),
+            balanceOfVaultUnderlying:
+              result.value.balanceOfVaultUnderlying.toString(),
+            allowance: result.value.allowance.toString(),
           },
         };
         return filterFulfilled;

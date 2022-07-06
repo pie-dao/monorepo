@@ -53,6 +53,6 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   presets: [require('../../tailwind-workspace-preset.js')],
 };

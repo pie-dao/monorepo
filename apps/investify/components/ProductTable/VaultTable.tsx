@@ -1,12 +1,12 @@
 import Image from 'next/image';
-import { VaultTableData } from '../../hooks/useFormatDataForVaults';
 import { Disclosure } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { setVault } from '../../store/sidebar/sidebar.slice';
+import { setActiveVault } from '../../store/products/products.slice';
+import { VaultTableData } from '../../hooks/useFormatDataForVaultsTable';
 import classNames from '../../utils/classnames';
 import { useAppSelector } from '../../hooks';
 
@@ -201,7 +201,7 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                   className="gap-x-2 flex"
                 >
                   <Link
-                    href={`/vaults/${encodeURIComponent(vault.name.main)}`}
+                    href={`/vaults/${encodeURIComponent(vault.address)}`}
                     passHref
                   >
                     <button className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
@@ -210,7 +210,7 @@ export default function VaultTable({ vault }: { vault: VaultTableData }) {
                   </Link>
                   <button
                     className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white"
-                    onClick={() => dispatch(setVault(vault.name.main))}
+                    onClick={() => dispatch(setActiveVault(vault.address))}
                   >
                     {t('dashboard:trade')}
                   </button>

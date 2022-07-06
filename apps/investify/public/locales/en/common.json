@@ -10,5 +10,12 @@
   "connect": "Connect",
   "connectWallet": "Connect Wallet",
   "connectingWallet": "Awaiting confirmation",
-  "waitingWallet": "Please confirm the connection from your wallet"
+  "waitingWallet": "Please confirm the connection from your wallet",
+  "about": "About",
+  "strategyDetails": "Strategy Details",
+  "optin": "Opt-in",
+  "withdraw": "Withdraw",
+  "deposit": "Deposit",
+  "restricted": "This vault is restricted to veDOUGH holders only",
+  "learnMore": "Learn More"
 }
