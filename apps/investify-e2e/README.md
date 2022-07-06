@@ -12,8 +12,8 @@ _At the time of writing, tests are written with an explicit test account in mind
 
 3. Start forks of the blockchain networks you wish to test. We will likely be migrating all config into this repo in the future, but for now:
 
-- 3a. Clone [this repo](https://github.com/pie-dao/dapp-workstation) and follow setup instructions
-- 3b. Run the following commands to start forks and initialise the state:
+- 3a. Clone [dapp-workstation](https://github.com/pie-dao/dapp-workstation) and follow setup instructions
+- 3b. Run the following commands inside the dapp-workstation to start forks and initialise the state:
 
 ```sh
 # Terminal 1
@@ -68,7 +68,7 @@ For Arch Linux based distros, ensure the following packages are installed:
 Arch Core:
 
 ```sh
-sudo pacman -s gtk2 gtk3 libnotify dconf nss alsa-lib libxtst xorg-xauth unzip
+sudo pacman -S gtk2 gtk3 libnotify dconf nss alsa-lib libxtst xorg-xauth unzip
 ```
 
 AUR (we are using Paru here as an example):
