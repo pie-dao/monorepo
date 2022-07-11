@@ -17,5 +17,17 @@
   "withdraw": "Withdraw",
   "deposit": "Deposit",
   "restricted": "This vault is restricted to veDOUGH holders only",
-  "learnMore": "Learn More"
+  "learnMore": "Learn More",
+  "makeDepositPending": "Your deposit is pending",
+  "makeDepositSuccess": "Your deposit was successful",
+  "makeDepositError": "Your deposit failed",
+  "approveDepositPending": "Your deposit is pending",
+  "approveDepositSuccess": "Your deposit was successful",
+  "approveDepositError": "Your deposit failed",
+  "increaseWithdrawalPending": "Your increase withdrawal request is pending",
+  "increaseWithdrawalSuccess": "Your increase withdrawal request was successful",
+  "increaseWithdrawalError": "Your increase withdrawal request failed",
+  "confirmWithdrawalPending": "Your withdrawal request is pending",
+  "confirmWithdrawalSuccess": "Your withdrawal request was successful",
+  "confirmWithdrawalError": "Your withdrawal request failed"
 }

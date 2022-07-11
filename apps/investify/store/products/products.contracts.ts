@@ -116,5 +116,5 @@ export const PolygonAuthContractWrapper = (() => {
     contractAbi,
     ethers.getDefaultProvider(),
   );
-  return FTMmulticall.wrap(contract);
+  return PolygonMulticall.wrap(contract);
 })();

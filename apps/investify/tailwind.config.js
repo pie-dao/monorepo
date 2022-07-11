@@ -34,6 +34,7 @@ module.exports = {
         'sub-dark': withOpacityValue('--color-sub-dark'),
         cards: withOpacityValue('--color-cards'),
         background: withOpacityValue('--color-background'),
+        sidebar: withOpacityValue('--color-sidebar'),
         'custom-border': withOpacityValue('--color-custom-border'),
         success: withOpacityValue('--color-success'),
         warning: withOpacityValue('--color-warning'),

@@ -10,7 +10,10 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMediaQuery } from 'usehooks-ts';
 import { useGetVaultsQuery } from '../../api/generated/graphql';
 import { setActiveVault } from '../../store/products/products.slice';
-import { setSidebarVault } from '../../store/sidebar/sidebar.slice';
+import {
+  setOpenModal,
+  setSidebarVault,
+} from '../../store/sidebar/sidebar.slice';
 import VaultTabs from '../../components/VaultTabs/VaultTabs';
 
 export default function VaultPage({ vault, title }) {
@@ -72,6 +75,9 @@ export default function VaultPage({ vault, title }) {
           </section>
           <section>
             <VaultTabs tabs={singleVault.tabs} />
+            <button onClick={() => dispatch(setOpenModal(true))}>
+              Click me
+            </button>
           </section>
         </>
       )}

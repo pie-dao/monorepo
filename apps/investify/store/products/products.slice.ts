@@ -3,9 +3,15 @@ import {
   thunkGetProductsData,
   thunkGetVaultsData,
   thunkGetUserVaultsData,
+  thunkMakeDeposit,
+  thunkApproveDeposit,
+  thunkIncreaseWithdrawal,
+  thunkConfirmWithdrawal,
+  thunkAuthorizeDepositor,
 } from './thunks';
 import { Products, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
+import addTxNotifications from '../../utils/notifications';
 
 const initialState: SliceState = {
   tokens: {},
@@ -83,6 +89,12 @@ const appSlice = createSlice({
       });
       state.loading = false;
     });
+
+    addTxNotifications(builder, thunkMakeDeposit, 'makeDeposit');
+    addTxNotifications(builder, thunkApproveDeposit, 'approveDeposit');
+    addTxNotifications(builder, thunkIncreaseWithdrawal, 'increaseWithdrawal');
+    addTxNotifications(builder, thunkConfirmWithdrawal, 'confirmWithdrawal');
+    addTxNotifications(builder, thunkAuthorizeDepositor, 'authorizeDepositor');
   },
 
   reducers: {

@@ -9,6 +9,7 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import sidebarReducer from './sidebar/sidebar.slice';
 import preferencesReducer from './preferences/preferences.slice';
 import productsReducer from './products/products.slice';
+import notificationsReducer from './notifications/notifications.slice';
 import { api } from '../api/generated/graphql';
 import { merge } from 'lodash';
 import memoize from 'proxy-memoize';
@@ -19,6 +20,7 @@ export const rootReducer = combineReducers({
   sidebar: sidebarReducer,
   preferences: preferencesReducer,
   dashboard: productsReducer,
+  notifications: notificationsReducer,
   [api.reducerPath]: api.reducer,
 });
 

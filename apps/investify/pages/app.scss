@@ -10,6 +10,12 @@
   color: transparent;
 }
 
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @mixin hidden-balance-($color) {
   color: transparent;
   text-shadow: rgb($color) 0px 0px 14px;

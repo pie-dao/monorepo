@@ -1,8 +1,8 @@
 import { useWeb3React } from '@web3-react/core';
-import { BigNumber, ethers } from 'ethers';
 import { find, isEmpty } from 'lodash';
 import { useMemo } from 'react';
-import { BigNumberString, Vault } from '../store/products/products.types';
+import { BigNumberReference, Vault } from '../store/products/products.types';
+import { zeroBalance } from '../utils/balances';
 import { useAppSelector } from './index';
 
 export const useSelectedVault = (
@@ -23,16 +23,30 @@ export const useSelectedVault = (
 
 export const useDecimals = (): number => {
   const vault = useSelectedVault();
-  return vault?.decimals ?? 0;
+  return vault?.token?.decimals ?? 0;
 };
 
-export const useVaultActualBNBalance = (): BigNumber => {
+export const useVaultTokenBalance = (): BigNumberReference => {
   const vault = useSelectedVault();
-  const decimals = useDecimals();
-  return ethers.utils.parseUnits(vault?.balance ?? '0', decimals);
+  return vault?.userBalances?.vault ?? zeroBalance;
 };
 
-export const useVaultTokenBalance = (): BigNumberString => {
+export const useApprovalLimit = (): { limit: BigNumberReference } => {
+  /**
+   * Determine current amount the vault is approved to spend
+   * We can use this to determine whether to allow a deposit, or
+   * request a higher limit
+   */
   const vault = useSelectedVault();
-  return vault?.balance ?? '0';
+  return { limit: vault?.userBalances?.allowance ?? zeroBalance };
+};
+
+export const useUserTokenBalance = (): BigNumberReference => {
+  const vault = useSelectedVault();
+  return vault?.userBalances?.wallet ?? zeroBalance;
+};
+
+export const useIsDepositor = (): boolean => {
+  const vault = useSelectedVault();
+  return !!vault?.auth.isDepositor;
 };

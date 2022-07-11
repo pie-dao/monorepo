@@ -29,14 +29,14 @@ export default function Sidebar() {
         >
           &#8203;
         </span>
-        <div className="w-screen bg-white drop-shadow rounded-t-md p-4">
+        <div className="w-screen bg-sidebar drop-shadow rounded-t-md p-4 absolute bottom-0">
           <SidebarContent />
         </div>
       </div>
     </Dialog>
   ) : (
     <aside className="h-screen hidden md:block sm:w-64 md:w-1/3 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
-      <div className="h-full bg-white drop-shadow rounded-lg py-2 px-4 w-full">
+      <div className="h-full bg-sidebar drop-shadow rounded-lg py-2 px-4 w-full">
         <SidebarContent />
       </div>
     </aside>

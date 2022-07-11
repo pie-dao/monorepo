@@ -8,8 +8,10 @@ import { Web3ReactProvider } from '@web3-react/core';
 import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
 import { wrapper } from '../store';
+import { NotificationDisplay } from '../components/Notifications/Notifications';
 import './styles.css';
 import './app.scss';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 export function reportWebVitals({
   id,
@@ -50,6 +52,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
           </Head>
           <GoogleAnalytics />
           <div className="h-full">
+            <NotificationDisplay />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>
