@@ -25,10 +25,10 @@ export class StakingService {
   private snapshotSpaceID = process.env.SNAPSHOT_SPACE_ID;
   private graphUrl = process.env.GRAPH_URL;
   private snapshotUrl = 'https://hub.snapshot.org/graphql';
-  private ethProvider = process.env.INFURA_RPC;
 
   constructor(
     private httpService: HttpService,
+    private provider: ethers.providers.JsonRpcProvider,
     @InjectModel(EpochEntity.name) private epochModel: Model<EpochDocument>,
   ) {}
 
@@ -128,14 +128,6 @@ export class StakingService {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  setEthProvider(provider: string): void {
-    this.ethProvider = provider;
-  }
-
-  getEthProvider(): string {
-    return this.ethProvider;
   }
 
   setSnapshotUrl(url: string): void {
@@ -451,8 +443,7 @@ export class StakingService {
   ): Promise<EpochEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const provider = new ethers.providers.JsonRpcProvider(this.ethProvider);
-        const ethDaterHelper = new ethDater(provider);
+        const ethDaterHelper = new ethDater(this.provider);
 
         let startBlock = await ethDaterHelper.getDate(startDate * 1000, true);
 
@@ -488,13 +479,10 @@ export class StakingService {
   getSliceBreakdown(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const provider = new ethers.providers.JsonRpcProvider(
-          process.env.INFURA_RPC,
-        );
         let rewardsContract = new ethers.Contract(
           this.SLICE_ADDRESS,
           pieABI,
-          provider,
+          this.provider,
         );
 
         let decimals = await rewardsContract.decimals();
@@ -509,7 +497,7 @@ export class StakingService {
           let underlyingContract = new ethers.Contract(
             underlyingAddress,
             pieABI,
-            provider,
+            this.provider,
           );
 
           underlying.push({

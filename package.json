@@ -5,7 +5,7 @@
   "license": "GPL-3.0-only",
   "scripts": {
     "prepare": "npx husky install",
-    "heroku-postbuild": "script/heroku-build $PROJECT_NAME",
+    "heroku-postbuild": "script/heroku-build $PROJECT_NAME && script/prune",
     "generate-api": "graphql-codegen --config codegen.yml"
   },
   "config": {
@@ -140,7 +140,7 @@
   "devDependencies": {
     "@babel/core": "7.16.7",
     "@babel/preset-typescript": "7.12.13",
-    "@ethersproject/providers": "^5.6.2",
+    "@ethersproject/providers": "^5.6.8",
     "@graphql-codegen/cli": "2.6.2",
     "@graphql-codegen/typescript": "2.5.0",
     "@graphql-codegen/typescript-operations": "2.4.1",
@@ -254,8 +254,14 @@
   "msw": {
     "workerDirectory": "public"
   },
+  "engines": {
+    "node": "16.15.0",
+    "yarn": "1.22.18",
+    "npm": "8.5.5"
+  },
   "volta": {
     "node": "16.15.0",
-    "yarn": "1.22.18"
+    "yarn": "1.22.18",
+    "npm": "8.5.5"
   }
 }

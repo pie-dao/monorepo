@@ -3,7 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
-import { SentryModule } from '@ntegral/nestjs-sentry';
+// import { SentryModule } from '@ntegral/nestjs-sentry';
 import { StakingModule } from '../../staking';
 import { PieDto } from '../dto/pies.dto';
 import { CgCoinEntity, CgCoinSchema } from '../entities';
@@ -36,12 +36,12 @@ describe('PiesService', () => {
         MongooseModule.forFeature([
           { name: CgCoinEntity.name, schema: CgCoinSchema },
         ]),
-        SentryModule.forRoot({
-          dsn: process.env.SENTRY_DSN,
-          debug: true,
-          environment: process.env.NODE_ENV,
-          release: '0.0.1',
-        }),
+        // SentryModule.forRoot({
+        //   dsn: process.env.SENTRY_DSN,
+        //   debug: true,
+        //   environment: process.env.NODE_ENV,
+        //   release: '0.0.1',
+        // }),
       ],
       providers: [PiesService],
     }).compile();
