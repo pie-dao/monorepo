@@ -4,10 +4,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
 import fs from 'fs';
+import { EthersProvider } from '../../ethers';
 import { EpochEntity, EpochSchema } from '../entities/epoch.entity';
 import { StakingService } from '../staking.service';
 
-describe('Monthly Distribution', () => {
+describe.skip('Monthly Distribution', () => {
   jest.setTimeout(5 * 60 * 1000);
 
   let service: StakingService;
@@ -15,7 +16,7 @@ describe('Monthly Distribution', () => {
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [StakingService],
+      providers: [StakingService, EthersProvider],
       imports: [
         HttpModule,
         ConfigModule.forRoot(),

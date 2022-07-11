@@ -21,7 +21,7 @@ import {
   PieEntity,
   pieGetterABI,
   PieHistoryDocument,
-  PieHistoryEntity
+  PieHistoryEntity,
 } from './';
 
 // workaround for sentry error: https://github.com/getsentry/sentry-javascript/issues/4731
@@ -423,7 +423,7 @@ export class PiesService {
         console.error(error);
       }
     } catch (e) {
-      this.sentry.instance().captureException(error);
+      this.sentry.instance().captureException(e);
       console.error(e);
     }
     return true;

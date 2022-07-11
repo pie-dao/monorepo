@@ -1,8 +1,5 @@
-import {
-  PieVault,
-  PieVaultHistory,
-  SupportedChain,
-} from '@domain/feature-funds';
+import { PieVault, PieVaultHistory } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-types';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
