@@ -3,7 +3,6 @@ import { useDecimals } from '../../hooks/useSelectedVault';
 import { BigNumberReference } from '../../store/products/products.types';
 import { SetStateType } from '../../types/utilities';
 import { zeroBalance } from '../../utils/balances';
-import { useCallback } from 'react';
 
 function InputSlider({
   value,

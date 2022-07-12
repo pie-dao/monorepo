@@ -1,7 +1,7 @@
 import { ActionReducerMapBuilder, AsyncThunk } from '@reduxjs/toolkit';
 import {
   successNotificationUpdate,
-  infoNotification,
+  errorNotificationUpdate,
 } from '../components/Notifications/Notifications';
 import { SliceState } from '../store/products/products.types';
 
@@ -18,11 +18,7 @@ const addTxNotifications = (
   });
 
   builder.addCase(thunk.rejected, (_state, { error }) => {
-    infoNotification({
-      title: `${notificationReason}Error`,
-      id: notificationReason,
-      type: 'error',
-    });
+    errorNotificationUpdate(notificationReason);
     // This is a good entry point for Sentry checks
     if (error instanceof Error) {
       console.error(error.message);

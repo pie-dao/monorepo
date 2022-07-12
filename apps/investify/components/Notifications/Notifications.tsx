@@ -1,16 +1,14 @@
-import { Id, toast, ToastContainer, TypeOptions } from 'react-toastify';
+import { Id, toast, ToastContainer } from 'react-toastify';
 import Trans from 'next-translate/Trans';
 
-export const infoNotification = ({
+export const pendingNotification = ({
   title,
   subtitle,
   id,
-  type,
 }: {
   title: string;
   subtitle?: string;
-  id?: string | number;
-  type?: TypeOptions;
+  id: string | number;
 }) =>
   toast(
     <>
@@ -26,9 +24,9 @@ export const infoNotification = ({
       </div>
     </>,
     {
-      type: type ?? 'default',
+      type: 'default',
       autoClose: 10_000,
-      toastId: id ?? title,
+      toastId: `${id}Pending`,
     },
   );
 
@@ -63,9 +61,38 @@ export const errorNotification = (err: string) => {
 
 export const walletSubmittedNotification = () => toast('Transaction approved!');
 
-export const successNotificationUpdate = (toastId: Id) =>
-  toast.update(toastId, {
-    render: Trans({ i18nKey: `${toastId}Success` }),
-    type: toast.TYPE.SUCCESS,
-    autoClose: 5000,
-  });
+export const successNotificationUpdate = (toastId: Id) => {
+  toast.dismiss(`${toastId}Pending`);
+  toast(
+    <>
+      <div className="ml-3 flex-1">
+        <p className="text-sm font-medium text-gray-900">
+          <Trans i18nKey={`${toastId}Success`} />
+        </p>
+      </div>
+    </>,
+    {
+      type: 'success',
+      autoClose: 10000,
+      toastId: `${toastId}Success`,
+    },
+  );
+};
+
+export const errorNotificationUpdate = (toastId: Id) => {
+  toast.dismiss(`${toastId}Pending`);
+  toast(
+    <>
+      <div className="ml-3 flex-1">
+        <p className="text-sm font-medium text-gray-900">
+          <Trans i18nKey={`${toastId}Error`} />
+        </p>
+      </div>
+    </>,
+    {
+      type: 'error',
+      autoClose: 10000,
+      toastId: `${toastId}Error`,
+    },
+  );
+};

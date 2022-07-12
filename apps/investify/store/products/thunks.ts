@@ -22,7 +22,7 @@ import {
 } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
 import { calculateSharesAvailable } from '../../utils/sharesAvailable';
-import { infoNotification } from '../../components/Notifications/Notifications';
+import { pendingNotification } from '../../components/Notifications/Notifications';
 import { getProof } from '../../utils/merkleProof';
 
 export const THUNKS = {
@@ -370,6 +370,12 @@ export const thunkIncreaseWithdrawal = createAsyncThunk(
   ) => {
     if (!auxo) return rejectWithValue('Missing Contract or Selected Vault');
     const tx = await auxo.enterBatchBurn(withdraw.value);
+
+    pendingNotification({
+      title: `increaseWithdrawalPending`,
+      id: 'increaseWithdrawal',
+    });
+
     const receipt = await tx.wait();
     const addressFromSigner = await auxo.signer.getAddress();
 
@@ -398,10 +404,9 @@ export const thunkApproveDeposit = createAsyncThunk(
     if (!token || !vaultAddress)
       return rejectWithValue('Missing token or selected vault');
     const tx = await token.approve(vaultAddress, deposit.value);
-    infoNotification({
+    pendingNotification({
       title: `approveDepositPending`,
       id: 'approveDeposit',
-      type: 'default',
     });
     const receipt = await tx.wait();
     const addressFromSigner = await token.signer.getAddress();
@@ -436,6 +441,12 @@ export const thunkMakeDeposit = createAsyncThunk(
         'Missing Contract, Selected Vault or Account Details',
       );
     const tx = await auxo.deposit(account, deposit.value);
+
+    pendingNotification({
+      title: `makeDepositPending`,
+      id: 'makeDeposit',
+    });
+
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
@@ -465,6 +476,12 @@ export const thunkConfirmWithdrawal = createAsyncThunk(
   ) => {
     if (!auxo) return rejectWithValue('Missing Contract');
     const tx = await auxo.exitBatchBurn();
+
+    pendingNotification({
+      title: `confirmWithdrawPending`,
+      id: 'confirmWithdraw',
+    });
+
     const receipt = await tx.wait();
     const addressFromSigner = await auxo.signer.getAddress();
 
@@ -499,6 +516,12 @@ export const thunkAuthorizeDepositor = createAsyncThunk(
         'The current account is unauthorized to use this vault.',
       );
     const tx = await auth.authorizeDepositor(account, proof);
+
+    pendingNotification({
+      title: `authorizeDepositPending`,
+      id: 'authorizeDeposit',
+    });
+
     const receipt = await tx.wait();
     if (receipt.status !== 1) return rejectWithValue('Authorization Failed');
   },
