@@ -39,7 +39,15 @@ export class PiesController {
     @Query('address') address?: string,
   ): Promise<PieEntity[]> {
     try {
-      return await this.piesService.getPies(name, address);
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getPies',
+        () => this.piesService.getPies(name, address),
+        {
+          name,
+          address,
+        },
+      );
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -51,8 +59,12 @@ export class PiesController {
   @Get('slice-dough-ratio')
   async getSliceDoughRatio(): Promise<SliceDoughRatioDto> {
     try {
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getSliceDoughRatio',
+        () => this.piesService.getSliceDoughRatio(),
+      );
       return {
-        value: await this.piesService.getSliceDoughRatio(),
+        value: result,
       };
     } catch (error) {
       throw new NotFoundException(error);
@@ -74,7 +86,16 @@ export class PiesController {
         days = 90;
       }
 
-      return await this.piesService.getMarketChart(address, days);
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getMarketChart',
+        () => this.piesService.getMarketChart(address, days),
+        {
+          address,
+          days,
+        },
+      );
+
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -104,13 +125,29 @@ export class PiesController {
         limit = 0;
       }
 
-      return await this.piesService.getCgCoin(address, from, to, order, limit, {
+      const projection = {
         'coin.symbol': 1,
         'coin.contract_address': 1,
         'coin.market_data.current_price.usd': 1,
         'coin.market_data.price_change_percentage_24h': 1,
         'coin.market_data.price_change_percentage_30d': 1,
-      });
+      };
+
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getCgCoin',
+        () =>
+          this.piesService.getCgCoin(
+            address,
+            from,
+            to,
+            order,
+            limit,
+            projection,
+          ),
+        { address, from, to, order, limit, projection },
+      );
+
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -142,14 +179,14 @@ export class PiesController {
         limit = 0;
       }
 
-      return await this.piesService.getPieHistory(
-        name,
-        address,
-        from,
-        to,
-        order,
-        limit,
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getPieHistory',
+        () =>
+          this.piesService.getPieHistory(name, address, from, to, order, limit),
+        { name, address, from, to, order, limit },
       );
+
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -164,14 +201,20 @@ export class PiesController {
     try {
       const from = moment(new Date()).subtract(7, 'days').toDate().getTime();
 
-      const data = await this.piesService.getPieHistory(
-        undefined,
-        address,
-        from.toString(),
-        undefined,
-        'descending',
-        0,
-      );
+      const { result: data } =
+        await this.callMonitorService.monitorAsyncRuntimeOf(
+          'getPieHistory7Days',
+          () =>
+            this.piesService.getPieHistory(
+              undefined,
+              address,
+              from.toString(),
+              undefined,
+              'descending',
+              0,
+            ),
+          { address },
+        );
 
       const history: PieHistoryEntity[] = [];
       const days: Date[] = [];
@@ -213,14 +256,20 @@ export class PiesController {
     @Query('address') address?: string,
   ): Promise<any> {
     try {
-      return await this.piesService.getPieHistory(
-        name,
-        address,
-        null,
-        null,
-        'descending',
-        1,
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getLastPieHistory',
+        () =>
+          this.piesService.getPieHistory(
+            name,
+            address,
+            null,
+            null,
+            'descending',
+            1,
+          ),
+        { name, address },
       );
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -232,7 +281,12 @@ export class PiesController {
   @Get('address/:address')
   async getPieByAddress(@Param('address') address: string): Promise<PieEntity> {
     try {
-      return await this.piesService.getPieByAddress(address);
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getPieByAddress',
+        () => this.piesService.getPieByAddress(address),
+        { address },
+      );
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
@@ -244,7 +298,12 @@ export class PiesController {
   @Get('name/:name')
   async getPieByName(@Param('name') name: string): Promise<PieEntity> {
     try {
-      return await this.piesService.getPieByName(name);
+      const { result } = await this.callMonitorService.monitorAsyncRuntimeOf(
+        'getPieByName',
+        () => this.piesService.getPieByName(name),
+        { name },
+      );
+      return result;
     } catch (error) {
       throw new NotFoundException(error);
     }
