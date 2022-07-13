@@ -113,6 +113,7 @@ export class PiesService {
   constructor(
     private httpService: HttpService,
     private stakingService: StakingService,
+    private provider: ethers.providers.JsonRpcProvider,
     @InjectModel(PieEntity.name) private pieModel: Model<PieDocument>,
     @InjectModel(PieHistoryEntity.name)
     private pieHistoryModel: Model<PieHistoryDocument>,
@@ -218,10 +219,6 @@ export class PiesService {
 
   @Interval(EVERY_HOUR)
   async updateCgCoins(test?: boolean): Promise<boolean> {
-    const tx = this.sentry.instance().startTransaction({
-      op: 'updateCgCoins',
-      name: 'updateCgCoins',
-    });
     try {
       const timestamp = moment().unix() * 1000;
       this.logger.debug(`updateCgCoins is running...`);
@@ -263,8 +260,6 @@ export class PiesService {
     } catch (error) {
       this.sentry.instance().captureException(error);
       this.logger.error(error.message);
-    } finally {
-      tx.finish();
     }
     return true;
   }
@@ -383,18 +378,11 @@ export class PiesService {
 
   @Interval(EVERY_MINUTE)
   async updateNAVs(test?: boolean): Promise<boolean> {
-    const tx = this.sentry.instance().startTransaction({
-      op: 'UpdateNAVs',
-      name: 'UpdateNAVs',
-    });
     try {
       // instance of the pie-getter contract...
       const timestamp = Date.now();
-      const provider = new ethers.providers.JsonRpcProvider(
-        process.env.INFURA_RPC,
-      );
       this.logger.debug(
-        `updateNAVs is running for block ${await provider.getBlockNumber()}`,
+        `updateNAVs is running for block ${await this.provider.getBlockNumber()}`,
       );
 
       // retrieving all pies from database...
@@ -424,12 +412,7 @@ export class PiesService {
       for (const pie of pies) {
         const pieModel = new this.pieModel(pie);
         pieHistoryPromises.push(
-          this.calculatePieHistory(
-            provider,
-            pieModel,
-            coingeckoPiesInfos,
-            timestamp,
-          ),
+          this.calculatePieHistory(pieModel, coingeckoPiesInfos, timestamp),
         );
       }
 
@@ -439,26 +422,26 @@ export class PiesService {
         this.sentry.instance().captureException(error);
         console.error(error);
       }
-    } finally {
-      tx.finish();
+    } catch (e) {
+      this.sentry.instance().captureException(e);
+      console.error(e);
     }
     return true;
   }
 
   async calculatePieHistory(
-    provider: ethers.providers.JsonRpcProvider,
     pie: PieDocument,
     coingeckoPiesInfos: any,
     timestamp: number,
   ): Promise<any> {
-    this.logger.debug(`${pie.symbol} - updating nav...`);
+    this.logger.debug(`${pie.name} - updating NAV`);
     const contract = new ethers.Contract(
       process.env.PIE_GETTER_CONTRACT,
       pieGetterABI,
-      provider,
+      this.provider,
     );
 
-    const pieContract = new ethers.Contract(pie.address, erc20, provider);
+    const pieContract = new ethers.Contract(pie.address, erc20, this.provider);
     const pieSupply = await pieContract.totalSupply();
     const pieDecimals = await pieContract.decimals();
     const piePrecision = new BigNumber(10).pow(pieDecimals);
@@ -500,13 +483,13 @@ export class PiesService {
         underlyingContract = new ethers.Contract(
           underlyingAssets[i],
           erc20,
-          provider,
+          this.provider,
         );
       } else {
         underlyingContract = new ethers.Contract(
           underlyingAssets[i],
           erc20byte32,
-          provider,
+          this.provider,
         );
       }
 

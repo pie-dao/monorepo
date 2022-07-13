@@ -1,17 +1,17 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { StakingService } from '../../staking.service';
+import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ScheduleModule } from '@nestjs/schedule';
+import { Test, TestingModule } from '@nestjs/testing';
+import ethDater from 'ethereum-block-by-date';
+import { EthersProvider } from '../../../ethers';
+import { EpochEntity, EpochSchema } from '../../entities/epoch.entity';
+import { StakingService } from '../../staking.service';
+import { StakersStub } from './stubs/stakers.stubs';
 import { VotesStub1 } from './stubs/windows/votes_window_1.stubs';
 import { VotesStub2 } from './stubs/windows/votes_window_2.stubs';
 import { VotesStub3 } from './stubs/windows/votes_window_3.stubs';
 import { VotesStub4 } from './stubs/windows/votes_window_4.stubs';
-import { StakersStub } from './stubs/stakers.stubs';
-import { HttpModule } from '@nestjs/axios';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ScheduleModule } from '@nestjs/schedule';
-import { EpochEntity, EpochSchema } from '../../entities/epoch.entity';
-import ethDater from 'ethereum-block-by-date';
-import { ethers } from 'ethers';
 
 /* 
 This test is, right now, just for the slashing mechanism.
@@ -62,12 +62,12 @@ describe('Slashing Mechanism Tests', () => {
   ];
 
   const { stakers, accounts } = StakersStub();
+  const provider = EthersProvider.useValue;
   let service: StakingService;
-  let provider: any;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      providers: [StakingService],
+      providers: [StakingService, EthersProvider],
       imports: [
         HttpModule,
         ConfigModule.forRoot(),
@@ -80,12 +80,14 @@ describe('Slashing Mechanism Tests', () => {
     }).compile();
 
     service = module.get<StakingService>(StakingService);
-    provider = new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-    expect(provider).toBeDefined();
   });
 
   describe('Generate Epoch 1', () => {

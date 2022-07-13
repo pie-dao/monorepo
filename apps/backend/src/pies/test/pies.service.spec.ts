@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import { EthersProvider } from '../../ethers';
+// import { SentryModule } from '@ntegral/nestjs-sentry';
 import { StakingModule } from '../../staking';
 import { PieDto } from '../dto/pies.dto';
 import { CgCoinEntity, CgCoinSchema } from '../entities';
@@ -43,7 +45,7 @@ describe('PiesService', () => {
           release: '0.0.1',
         }),
       ],
-      providers: [PiesService],
+      providers: [PiesService, EthersProvider],
     }).compile();
 
     service = module.get<PiesService>(PiesService);
