@@ -3,10 +3,18 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   CgCoinEntity,
-  CgCoinSchema, MongoPieRepository, PieEntity, PieHistoryEntity,
-  PieHistorySchema, PieRepository, PieSchema, PiesController, PiesService
+  CgCoinSchema,
+  MongoPieRepository,
+  PieEntity,
+  PieHistoryEntity,
+  PieHistorySchema,
+  PieRepository,
+  PieSchema,
+  PiesController,
+  PiesService,
 } from '.';
 import { EthersModule } from '../ethers';
+import { MonitoringModule } from '../monitoring';
 import { StakingModule } from '../staking/staking.module';
 
 export const MongoPieRepositoryProvider = {
@@ -18,6 +26,7 @@ export const MongoPieRepositoryProvider = {
   imports: [
     HttpModule,
     EthersModule,
+    MonitoringModule,
     StakingModule,
     MongooseModule.forFeature([{ name: PieEntity.name, schema: PieSchema }]),
     MongooseModule.forFeature([

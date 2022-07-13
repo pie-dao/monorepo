@@ -6,6 +6,8 @@ import { PiesService } from '../pies.service';
 import { PiesStub, PieStub } from './stubs/pies.stubs';
 import { PieHistoryStub } from './stubs/pies-history.stubs';
 import { NotFoundException } from '@nestjs/common';
+import { CallMonitorService } from '../../monitoring';
+import { SentryService } from '@ntegral/nestjs-sentry';
 
 jest.mock('../pies.service');
 
@@ -17,7 +19,7 @@ describe('PiesController', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [],
       controllers: [PiesController],
-      providers: [PiesService],
+      providers: [PiesService, CallMonitorService, SentryService],
     }).compile();
 
     controller = module.get<PiesController>(PiesController);

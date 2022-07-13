@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { SentryModule } from '@ntegral/nestjs-sentry';
 import { ConsoleModule } from 'nestjs-console';
 import { join } from 'path';
 import { AppController } from './app.controller';
@@ -10,12 +11,12 @@ import { AppService } from './app.service';
 import { AuthorizationModule } from './authorization/authorization.module';
 import { EthersModule } from './ethers';
 import { FundsModule } from './fund';
+import { MonitoringModule } from './monitoring';
 import { PiesModule } from './pies/pies.module';
 import { SentimentModule } from './sentiment/sentiment.module';
 import { StakingModule } from './staking/staking.module';
 import { TasksModule } from './tasks/tasks.module';
 import { TreasuryModule } from './treasury/treasury.module';
-import { SentryModule } from '@ntegral/nestjs-sentry';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SentryModule } from '@ntegral/nestjs-sentry';
     StakingModule,
     TreasuryModule,
     TasksModule,
+    MonitoringModule,
     ConsoleModule,
     SentimentModule,
     AuthorizationModule,

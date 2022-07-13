@@ -5,6 +5,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { EthersProvider } from '../../ethers';
+import { MonitoringModule } from '../../monitoring';
 // import { SentryModule } from '@ntegral/nestjs-sentry';
 import { StakingModule } from '../../staking';
 import { PieDto } from '../dto/pies.dto';
@@ -28,6 +29,7 @@ describe('PiesService', () => {
         StakingModule,
         ConfigModule.forRoot(),
         ScheduleModule.forRoot(),
+        MonitoringModule,
         MongooseModule.forRoot(process.env.MONGO_DB_TEST),
         MongooseModule.forFeature([
           { name: PieEntity.name, schema: PieSchema },
