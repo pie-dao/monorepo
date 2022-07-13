@@ -15,7 +15,7 @@ import { useMerkleAuthContract } from '../../hooks/useContracts';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import VaultCapSlider from '../VaultCapSlider/VaultCapSlider';
 
-export default function Vault() {
+export default function Vault({ id }: { id: string }) {
   const { account, chainId } = useWeb3React();
   const activeVault = useSelectedVault();
   const dispatch = useAppDispatch();
@@ -83,7 +83,7 @@ export default function Vault() {
                 {selected ? (
                   <motion.div
                     className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary"
-                    layoutId="underlineVault"
+                    layoutId={`underlineVault-${id}`}
                   />
                 ) : null}
               </>
@@ -106,7 +106,7 @@ export default function Vault() {
                 {selected ? (
                   <motion.div
                     className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary"
-                    layoutId="underlineVault"
+                    layoutId={`underlineVault-${id}`}
                   />
                 ) : null}
               </>

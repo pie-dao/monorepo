@@ -4,7 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector } from '../../hooks';
 import Vault from '../Vault/Vault';
 
-export default function SidebarContent() {
+export default function SidebarContent({ id }: { id: string }) {
   const { t } = useTranslation();
   const { step } = useAppSelector((state) => state.sidebar);
   return (
@@ -26,7 +26,7 @@ export default function SidebarContent() {
           )}
           {step === 'vault' && (
             <SidebarBox key="vault" className="w-full py-4">
-              <Vault />
+              <Vault id={id} />
             </SidebarBox>
           )}
         </div>

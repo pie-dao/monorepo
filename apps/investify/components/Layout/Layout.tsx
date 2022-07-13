@@ -1,4 +1,4 @@
-import useMediaQuery from '../../hooks/useMediaQuery';
+import { useMediaQuery } from 'usehooks-ts';
 import { useEffect, useState } from 'react';
 import { Navigation, Sidebar, Header } from '../../components';
 import {

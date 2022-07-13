@@ -2,7 +2,7 @@ import { ChainSwitcher, ConnectButton } from '@shared/ui-library';
 import useTranslation from 'next-translate/useTranslation';
 import { Dispatch, SetStateAction } from 'react';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
-import useMediaQuery from '../../hooks/useMediaQuery';
+import { useMediaQuery } from 'usehooks-ts';
 import GasPrice from '../GasPrice/GasPrice';
 import MenuIcon from './MenuIcon';
 
