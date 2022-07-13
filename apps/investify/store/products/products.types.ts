@@ -1,12 +1,11 @@
 import { SupportedChains } from '../../utils/networks';
 
-export type BigNumberString = string;
 export type ChainValue = Record<SupportedChains, BigNumberReference>;
 
 type Product = {
   balances: ChainValue;
   productDecimals: number;
-  totalBalance: BigNumberString;
+  totalBalance: BigNumberReference;
 };
 
 export type Products = {

@@ -1,7 +1,7 @@
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber } from 'ethers';
 import { BigNumberReference } from '../store/products/products.types';
 import { zeroBalance } from './balances';
-import { toBalance } from './formatBalance';
+import { fromScale, toBalance } from './formatBalance';
 
 export const calculateSharesAvailable = ({
   shares,
@@ -17,10 +17,8 @@ export const calculateSharesAvailable = ({
   userBatchBurnRound: number;
 }): BigNumberReference => {
   if (userBatchBurnRound === batchBurnRound) return zeroBalance;
+  const bigAvailable = shares.mul(amountPerShare);
 
-  const scaledPerShare = Number(
-    ethers.utils.formatUnits(amountPerShare, decimals),
-  );
-  const bigAvailable = shares.mul(scaledPerShare);
-  return toBalance(bigAvailable, decimals);
+  const formatFixed = fromScale(bigAvailable, decimals);
+  return toBalance(formatFixed, decimals);
 };

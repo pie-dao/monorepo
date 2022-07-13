@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, BytesLike, ethers } from 'ethers';
 import { YieldvaultAbi, Erc20Abi } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -23,7 +23,6 @@ import {
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
 import { calculateSharesAvailable } from '../../utils/sharesAvailable';
 import { pendingNotification } from '../../components/Notifications/Notifications';
-import { getProof } from '../../utils/merkleProof';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -127,7 +126,7 @@ export const thunkGetVaultsData = createAsyncThunk(
   THUNKS.GET_VAULTS_DATA,
   async () => {
     const vaultsData = [
-      ...PolygonContractWrappers.map((auxo) => {
+      ...PolygonContractWrappers.map(async (auxo) => {
         const findUnderlyingAddress = find(vaultConfigs, {
           address: auxo.address,
         }).token.address;
@@ -235,7 +234,29 @@ export const thunkGetUserVaultsData = createAsyncThunk(
   THUNKS.GET_USER_VAULTS_DATA,
   async (account: string) => {
     if (!account) return;
-    const vaultsData = [
+
+    const batchBurnsVaultData = [
+      ...PolygonContractWrappers.map(async (auxo) => {
+        const batchBurn = promiseObject({
+          batchBurnRound: auxo.batchBurnRound(),
+          address: auxo.address,
+        });
+        return batchBurn;
+      }),
+      ...FTMContractWrappers.map((ftm) => {
+        const batchBurn = promiseObject({
+          batchBurnRound: ftm.batchBurnRound(),
+          address: ftm.address,
+        });
+        return batchBurn;
+      }),
+    ];
+    const vaultsData = (
+      batchBurns: {
+        batchBurnRound: BigNumber;
+        address: string;
+      }[],
+    ) => [
       ...PolygonContractWrappers.map((auxo) => {
         const findUnderlyingAddress = find(vaultConfigs, {
           address: auxo.address,
@@ -246,6 +267,11 @@ export const thunkGetUserVaultsData = createAsyncThunk(
             address: findUnderlyingAddress,
           },
         );
+
+        const batchBurnRound = find(batchBurns, {
+          address: auxo.address,
+        }).batchBurnRound;
+        console.log(batchBurns);
         const results = promiseObject({
           vault: auxo.balanceOf(account),
           wallet: underlyingTokenContract.balanceOf(account),
@@ -256,11 +282,13 @@ export const thunkGetUserVaultsData = createAsyncThunk(
             account,
           ),
           userBatchBurnReceipts: auxo.userBatchBurnReceipts(account),
-          batchBurns: auxo.batchBurns(account),
+          batchBurnRound,
+          batchBurns: !batchBurnRound.isZero()
+            ? auxo.batchBurns(batchBurnRound.sub(BigNumber.from(1)))
+            : auxo.batchBurns(batchBurnRound),
           name: auxo.name(),
           chainId: 137,
           decimals: auxo.decimals(),
-          batchBurnRound: auxo.batchBurnRound(),
         });
         return results;
       }),
@@ -271,6 +299,11 @@ export const thunkGetUserVaultsData = createAsyncThunk(
         const underlyingTokenContract = find(underlyingContractsFTMWrappers, {
           address: findUnderlyingAddress,
         });
+
+        const batchBurnRound = find(batchBurns, {
+          address: ftm.address,
+        }).batchBurnRound;
+        console.log(batchBurns);
         const results = promiseObject({
           vault: ftm.balanceOf(account),
           wallet: underlyingTokenContract.balanceOf(account),
@@ -278,17 +311,28 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           allowance: underlyingTokenContract.allowance(account, ftm.address),
           isDepositor: FTMAuthContractWrapper.isDepositor(ftm.address, account),
           userBatchBurnReceipts: ftm.userBatchBurnReceipts(account),
-          batchBurns: ftm.batchBurns(account),
+          batchBurns: !batchBurnRound.isZero()
+            ? ftm.batchBurns(batchBurnRound.sub(BigNumber.from(1)))
+            : ftm.batchBurns(batchBurnRound),
+          batchBurnRound,
           name: ftm.name(),
           chainId: 250,
           decimals: ftm.decimals(),
-          batchBurnRound: ftm.batchBurnRound(),
         });
         return results;
       }),
     ];
 
-    const resolvedVaults = await Promise.allSettled(vaultsData);
+    const batchBurnData = await Promise.allSettled(batchBurnsVaultData);
+    const BatchBurnValues = Object.values(batchBurnData).map((result) => {
+      if (result.status === 'fulfilled') {
+        return result.value;
+      }
+    });
+
+    const resolvedVaults = await Promise.allSettled(
+      vaultsData(BatchBurnValues),
+    );
     const orderedVaults = Object.values(resolvedVaults).map((result) => {
       if (result.status === 'fulfilled') {
         const filterFulfilled = {
@@ -478,8 +522,8 @@ export const thunkConfirmWithdrawal = createAsyncThunk(
     const tx = await auxo.exitBatchBurn();
 
     pendingNotification({
-      title: `confirmWithdrawPending`,
-      id: 'confirmWithdraw',
+      title: `confirmWithdrawalPending`,
+      id: 'confirmWithdrawal',
     });
 
     const receipt = await tx.wait();
@@ -499,18 +543,18 @@ export const thunkConfirmWithdrawal = createAsyncThunk(
 export type ThunkAuthorizeDepositorProps = {
   account: string | null | undefined;
   auth: MerkleAuth | undefined;
+  proof: BytesLike[];
 };
 export const thunkAuthorizeDepositor = createAsyncThunk(
   THUNKS.AUTHORIZE_DEPOSITOR,
   async (
-    { account, auth }: ThunkAuthorizeDepositorProps,
-    { rejectWithValue },
+    { account, auth, proof }: ThunkAuthorizeDepositorProps,
+    { rejectWithValue, dispatch },
   ) => {
     if (!auth || !account)
       return rejectWithValue(
         'Missing Auth Contract, Selected Vault or account details',
       );
-    const proof = getProof(account);
     if (!proof)
       return rejectWithValue(
         'The current account is unauthorized to use this vault.',
@@ -518,11 +562,18 @@ export const thunkAuthorizeDepositor = createAsyncThunk(
     const tx = await auth.authorizeDepositor(account, proof);
 
     pendingNotification({
-      title: `authorizeDepositPending`,
-      id: 'authorizeDeposit',
+      title: `authorizeDepositorPending`,
+      id: 'authorizeDepositor',
     });
 
     const receipt = await tx.wait();
+
+    const addressFromSigner = await auth.signer.getAddress();
+
+    if (receipt.status === 1) {
+      dispatch(thunkGetUserVaultsData(addressFromSigner));
+      dispatch(thunkGetVaultsData());
+    }
     if (receipt.status !== 1) return rejectWithValue('Authorization Failed');
   },
 );

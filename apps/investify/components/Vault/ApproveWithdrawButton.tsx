@@ -8,6 +8,7 @@ import { zeroBalance } from '../../utils/balances';
 import { BigNumberReference } from '../../store/products/products.types';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { thunkIncreaseWithdrawal } from '../../store/products/thunks';
+import useTranslation from 'next-translate/useTranslation';
 
 function ApproveWithdrawButton({
   withdraw,
@@ -18,6 +19,7 @@ function ApproveWithdrawButton({
 }) {
   const [approving, setApproving] = useState(false);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const vault = useSelectedVault();
   const auxoContract = useAuxoVaultContract(vault?.address);
   const status = useStatus();
@@ -42,7 +44,7 @@ function ApproveWithdrawButton({
       }
       onClick={enterBatchBurn}
     >
-      {approving ? <LoadingSpinner /> : 'Request'}
+      {approving ? <LoadingSpinner /> : t('Request')}
     </button>
   );
 }

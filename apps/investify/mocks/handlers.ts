@@ -21,7 +21,7 @@ export const handlers = [
       ctx.data({
         user: {
           address,
-          totalBalance: 20000,
+          totalBalance: 20090,
           twentyFourHourChange: address ? -30.22 : null,
           pieVaults: [
             {
@@ -50,7 +50,7 @@ export const handlers = [
             },
           ],
           performance: 30.22,
-          profit: 20030.43,
+          profit: 2034345030.43,
         },
       }),
     );

@@ -3,7 +3,7 @@ import { useLazyGetProductsBySymbolQuery } from '../api/generated/graphql';
 import productsConfig from '../config/products.json';
 import { formatBalanceCurrency } from '../utils/formatBalance';
 import { ethers } from 'ethers';
-import { BigNumberString, Products } from '../store/products/products.types';
+import { Products } from '../store/products/products.types';
 import chainImages from '../utils/chainImages';
 import { chainMap } from '../utils/networks';
 import { isEmpty, pickBy } from 'lodash';
@@ -50,7 +50,7 @@ export function useFormatDataForAssetsTable(
     if (!isEmpty(products)) {
       const filterProducts = pickBy(
         products,
-        ({ totalBalance }) => totalBalance !== '0.0',
+        ({ totalBalance }) => totalBalance.label !== 0,
       );
       trigger({
         symbols: Object.keys(filterProducts),
@@ -90,46 +90,41 @@ export function useFormatDataForAssetsTable(
             change: marketData[0].twentyFourHourChange,
           },
           portfolioPercentage: `${(
-            (+products[symbol].totalBalance / Number(totalBalance)) *
+            (+products[symbol].totalBalance.label / Number(totalBalance)) *
             100
           ).toFixed()}%`,
-          balance: Number(products[symbol].totalBalance).toFixed(2),
+          balance: products[symbol].totalBalance.label.toFixed(2),
           value: formatBalanceCurrency(
-            marketData[0].currentPrice * +products[symbol].totalBalance,
+            marketData[0].currentPrice * +products[symbol].totalBalance.label,
             locale,
             currency,
           ),
-          subRows: Object.entries(products[symbol].balances).map(
-            ([balanceKey, balanceValue]) => ({
+          subRows: Object.entries(products[symbol].balances)
+            .filter(([, value]) => value.label !== 0)
+            .map(([balanceKey, balanceValue]) => ({
               chainImage: chainImages(Number(balanceKey)),
               chainName: chainMap[Number(balanceKey)].chainName,
-              balance: Number(
-                ethers.utils.formatUnits(
-                  balanceValue,
-                  products[symbol].productDecimals,
-                ),
-              ).toFixed(2),
+              balance: balanceValue.label.toFixed(2),
               allocationPercentage: `${(
                 (Number(
                   ethers.utils.formatUnits(
-                    balanceValue,
+                    balanceValue.value,
                     products[symbol].productDecimals,
                   ),
                 ) /
-                  +products[symbol].totalBalance) *
+                  +products[symbol].totalBalance.label) *
                 100
               ).toFixed(2)}%`,
               value: formatBalanceCurrency(
                 marketData[0].currentPrice *
                   +ethers.utils.formatUnits(
-                    balanceValue,
+                    balanceValue.value,
                     products[symbol].productDecimals,
                   ),
                 locale,
                 currency,
               ),
-            }),
-          ),
+            })),
         };
       },
     );
