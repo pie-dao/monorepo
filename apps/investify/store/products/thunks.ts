@@ -1,6 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { BigNumber, BytesLike, ethers } from 'ethers';
-import { YieldvaultAbi, Erc20Abi } from '@shared/util-blockchain';
+import {
+  YieldvaultAbi,
+  Erc20Abi,
+  MerkleauthAbi,
+} from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import { promiseObject } from '../../utils/promiseObject';
@@ -542,7 +546,7 @@ export const thunkConfirmWithdrawal = createAsyncThunk(
 
 export type ThunkAuthorizeDepositorProps = {
   account: string | null | undefined;
-  auth: MerkleAuth | undefined;
+  auth: MerkleauthAbi | undefined;
   proof: BytesLike[];
 };
 export const thunkAuthorizeDepositor = createAsyncThunk(

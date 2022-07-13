@@ -8,6 +8,7 @@ import { ProviderNotActivatedError } from '../errors';
 import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
+  MerkleauthAbi,
 } from '@shared/util-blockchain';
 import MerkleAuthAbi from '../config/MerkleAuth.json';
 import { Contract } from 'ethers';
@@ -98,5 +99,5 @@ export function useTokenContract(tokenAddress?: string) {
 }
 
 export function useMerkleAuthContract(vaultAddress?: string) {
-  return useAuthContract(vaultAddress);
+  return useAuthContract<MerkleauthAbi>(vaultAddress);
 }

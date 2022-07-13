@@ -68,9 +68,13 @@ export function useFormatDataForSingleVault(
           currency,
         ),
       },
-      APY: `${activeVault.estimatedReturn}%`,
+      APY: `${activeVault.stats.currentAPY}%`,
       address: activeVault.address,
-      totalDesposited: formatBalance(activeVault.totalDeposited, locale, 0),
+      totalDesposited: formatBalance(
+        activeVault.stats.deposits.label,
+        locale,
+        0,
+      ),
       tabs: {
         about: {
           content: 'My awesome content',
