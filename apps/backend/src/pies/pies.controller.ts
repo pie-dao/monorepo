@@ -12,17 +12,21 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import moment from 'moment';
+import { CallMonitorService } from '../monitoring';
 import { SliceDoughRatioDto } from './dto/SliceDoughRatioDto';
 import { CgCoinEntity } from './entities/cg_coin.entity';
 import { PieHistoryEntity } from './entities/pie-history.entity';
 import { PieEntity } from './entities/pie.entity';
 import { PiesService } from './pies.service';
-import moment from 'moment';
 
 @ApiTags('Pies')
 @Controller('pies')
 export class PiesController {
-  constructor(private readonly piesService: PiesService) {}
+  constructor(
+    private readonly piesService: PiesService,
+    private readonly callMonitorService: CallMonitorService,
+  ) {}
 
   @ApiOkResponse({ type: PieEntity, isArray: true })
   @ApiNotFoundResponse()
