@@ -31,7 +31,6 @@ const calculateSharesAvailable = ({
   batchBurnRound: number;
   userBatchBurnRound: number;
 }): Balance => {
-  debugger;
   if (userBatchBurnRound === batchBurnRound) return zeroBalance();
 
   const scaledPerShare = fromScale(amountPerShare, decimals);
