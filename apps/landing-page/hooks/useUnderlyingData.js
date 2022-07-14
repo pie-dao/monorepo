@@ -1,12 +1,13 @@
 import useSWR from 'swr';
 import fetcher from '../utils/fetcher';
+import underlyingData from '../config/underlyingData.json';
 
 function useUnderlyingData() {
-  const { data, error } = useSWR(`/api/history`, fetcher);
+  // const { data, error } = useSWR(`/api/history`, fetcher);
   return {
-    underlyingData: data,
-    isLoading: !error && !data,
-    isError: error,
+    underlyingData,
+    isLoading: false,
+    isError: false,
   };
 }
 

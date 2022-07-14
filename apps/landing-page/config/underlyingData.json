@@ -1,0 +1,87 @@
+{
+  "history": [
+    {
+      "_id": "62d01e25c0fc7894c4f3b4fd",
+      "timestamp": "1657806324720",
+      "underlyingAssets": [
+        {
+          "address": "0x0F5D2fB29fb7d3CFeE444a200298f468908cC942",
+          "symbol": "MANA",
+          "decimals": 18,
+          "amount": "161833122269728068599215",
+          "usdPrice": "0.793037",
+          "marginalTVL": "128339.65378541833833771567",
+          "marginalTVLPercentage": "27.37429824071432417303"
+        },
+        {
+          "address": "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c",
+          "symbol": "ENJ",
+          "decimals": 18,
+          "amount": "106975681786690816399197",
+          "usdPrice": "0.468664",
+          "marginalTVL": "50135.65092887766477691326",
+          "marginalTVLPercentage": "10.69371952112415259948"
+        },
+        {
+          "address": "0x15D4c048F83bd7e37d49eA4C83a07267Ec4203dA",
+          "symbol": "GALA",
+          "decimals": 8,
+          "amount": "54509909563243",
+          "usdPrice": "0.0470749",
+          "marginalTVL": "25660.485416987079007",
+          "marginalTVLPercentage": "5.47327158900216982263"
+        },
+        {
+          "address": "0x18aAA7115705e8be94bfFEBDE57Af9BFc265B998",
+          "symbol": "AUDIO",
+          "decimals": 18,
+          "amount": "49209141979189102432049",
+          "usdPrice": "0.312224",
+          "marginalTVL": "15364.27514531033831774407",
+          "marginalTVLPercentage": "3.27713405541308754583"
+        },
+        {
+          "address": "0x3845badAde8e6dFF049820680d1F14bD3903a5d0",
+          "symbol": "SAND",
+          "decimals": 18,
+          "amount": "113821738108046434300235",
+          "usdPrice": "1.13",
+          "marginalTVL": "128618.56406209247075926555",
+          "marginalTVLPercentage": "27.43378860764988868954"
+        },
+        {
+          "address": "0x767FE9EDC9E0dF98E07454847909b5E959D7ca0E",
+          "symbol": "ILV",
+          "decimals": 18,
+          "amount": "302232844961659361292",
+          "usdPrice": "93.6",
+          "marginalTVL": "28288.9942884113162169312",
+          "marginalTVLPercentage": "6.03392126860186416367"
+        },
+        {
+          "address": "0xBB0E17EF65F82Ab018d8EDd776e8DD940327B28b",
+          "symbol": "AXS",
+          "decimals": 18,
+          "amount": "5776989147511242349411",
+          "usdPrice": "13.23",
+          "marginalTVL": "76429.56642157373628270753",
+          "marginalTVLPercentage": "16.30209903114415450013"
+        },
+        {
+          "address": "0x25f8087EAD173b73D6e8B84329989A8eEA16CF73",
+          "symbol": "YGG",
+          "decimals": 18,
+          "amount": "26043850033236942525391",
+          "usdPrice": "0.614175",
+          "marginalTVL": "15995.48159416329917553202",
+          "marginalTVLPercentage": "3.4117676863503585057"
+        }
+      ],
+      "marginalTVL": "468832.6716428342428738093",
+      "totalSupply": { "_hex": "0x8361094561b952fed506", "_isBigNumber": true },
+      "decimals": 18,
+      "nav": 0.755669809111201,
+      "__v": 0
+    }
+  ]
+}
