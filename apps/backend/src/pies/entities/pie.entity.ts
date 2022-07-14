@@ -1,14 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsHexadecimal, IsObject } from 'class-validator';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsHexadecimal } from 'class-validator';
+import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { PieHistoryEntity } from './pie-history.entity';
-import * as mongoose from 'mongoose';
 
 export type PieDocument = PieEntity & Document;
 
 @Schema()
 export class PieEntity {
+  @Prop([{ type: mongoose.Schema.Types.ObjectId }])
+  _id: mongoose.ObjectId;
+
   @Prop()
   @ApiProperty()
   name: string;
@@ -27,9 +30,18 @@ export class PieEntity {
   history: PieHistoryEntity[];
 
   @Prop()
+  temp: PieHistoryEntity[];
+
+  @Prop()
   @ApiProperty()
   @IsHexadecimal()
   coingecko_id: string;
 }
 
 export const PieSchema = SchemaFactory.createForClass(PieEntity);
+
+PieSchema.virtual('temp', {
+  ref: 'PieHistoryEntity',
+  localField: '_id',
+  foreignField: 'pie',
+});

@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SentryModule } from '@ntegral/nestjs-sentry';
+import BigNumber from 'bignumber.js';
 import { EthersProvider } from '../../ethers';
 import { MonitoringModule } from '../../monitoring';
 // import { SentryModule } from '@ntegral/nestjs-sentry';
@@ -11,6 +12,7 @@ import { StakingModule } from '../../staking';
 import { PieDto } from '../dto/pies.dto';
 import { CgCoinEntity, CgCoinSchema } from '../entities';
 import {
+  PieHistoryDocument,
   PieHistoryEntity,
   PieHistorySchema,
 } from '../entities/pie-history.entity';
@@ -58,14 +60,27 @@ describe('PiesService', () => {
   });
 
   it('blah', async () => {
-    await service.getPieHistory(
-      undefined,
-      '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
-      '1657112421881',
-      undefined,
-      'descending',
-      0,
-    );
+    const pie = await service.createPie({
+      name: 'Lofasz',
+      address: '0x73b9C6Cf394085E900f7c834EF4566f3dd958912',
+      coingecko_id: 'lofasz',
+      history: [],
+      symbol: 'LOF',
+    });
+
+    await service.createPieHistory({
+      pie,
+      timestamp: new Date().getTime().toString(),
+      decimals: 18,
+      marginalTVL: new BigNumber('0'),
+      nav: 0,
+      totalSupply: new BigNumber('0'),
+      underlyingAssets: [],
+    });
+
+    const result = await service.getPie(pie._id);
+
+    console.log(result);
   });
 
   it('should be defined', () => {

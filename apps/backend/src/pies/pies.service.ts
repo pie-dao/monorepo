@@ -8,7 +8,7 @@ import { BigNumber } from 'bignumber.js';
 import { ethers } from 'ethers';
 import * as lodash from 'lodash';
 import moment from 'moment';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Command, Console, createSpinner } from 'nestjs-console';
 import { StakingService } from '../staking';
 import {
@@ -698,6 +698,14 @@ export class PiesService {
 
     const createdPie = new this.pieModel(pie);
     return createdPie.save();
+  }
+
+  createPieHistory(history: PieHistoryEntity): Promise<PieHistoryEntity> {
+    return new this.pieHistoryModel(history).save();
+  }
+
+  getPie(id: ObjectId): Promise<PieEntity> {
+    return this.pieModel.findById(id).populate('lofasz').exec();
   }
 
   deletePie(pie: PieEntity): Promise<PieEntity> {
