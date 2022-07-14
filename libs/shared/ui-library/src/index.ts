@@ -5,3 +5,4 @@ export { Icon, ChainSwitcher, ConnectButton };
 export * from './lib/test-utils/network';
 export * from './lib/hooks/use-outside-click';
 export * from './lib/hooks/use-ens-name';
+export * from './lib/utils/network';

@@ -10,6 +10,8 @@ Run it using the below command from the root directory:
 $ nx synpress investify-e2e
 ```
 
+> Remember to configure your .env file with the correct network informations (local RPC for instance) to test the target chain interactions.
+
 ## Troubleshooting
 
 ---

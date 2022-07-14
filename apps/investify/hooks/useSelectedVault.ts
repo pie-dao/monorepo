@@ -50,3 +50,9 @@ export const useIsDepositor = (): boolean => {
   const vault = useSelectedVault();
   return !!vault?.auth.isDepositor;
 };
+
+export const useWrongNetwork = (): boolean => {
+  const vault = useSelectedVault();
+  const { chainId } = useWeb3React();
+  return chainId !== vault?.chainId;
+};

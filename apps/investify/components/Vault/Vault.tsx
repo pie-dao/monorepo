@@ -63,8 +63,10 @@ export default function Vault({ id }: { id: string }) {
                 isDepositor && proof && 'hidden',
               )
             }
+            data-cy="vault-tab-optin"
           >
             {t('optin')}
+            <motion.div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
           </Tab>
           <Tab
             className={({ selected }) =>
@@ -76,6 +78,7 @@ export default function Vault({ id }: { id: string }) {
               )
             }
             disabled={!isDepositor}
+            data-cy="vault-tab-deposit"
           >
             {({ selected }) => (
               <>
@@ -99,6 +102,7 @@ export default function Vault({ id }: { id: string }) {
               )
             }
             disabled={!isDepositor}
+            data-cy="vault-tab-withdraw"
           >
             {({ selected }) => (
               <>
@@ -140,6 +144,7 @@ export default function Vault({ id }: { id: string }) {
                   className="w-full px-8 py-3 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                   onClick={submitProof}
                   disabled={isDisabled}
+                  data-cy="vault-optin-button"
                 >
                   {authorizing ? <LoadingSpinner /> : 'Opt In'}
                 </button>

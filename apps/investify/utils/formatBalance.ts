@@ -39,23 +39,16 @@ export const smallToBalance = (
   label: n,
 });
 
-/* 
+export const fromScale = (
+  n: number | BigNumber | undefined,
+  decimals: number,
+  precision = 0,
+): number => {
+  if (!n) return 0;
+  if (typeof n === 'number') return n;
 
-          ^._.^
-   ,— /_   _\-.
- (    .___ | __. )
-{    } \  - | - /  }
- \   \   \  / \ /,  /
-   ""    ||   || "
-
-*/
-
-export const fromScale = (n: BigNumber | number, decimals: number): number => {
-  const fixedNumber = FixedNumber.from(
-    n,
-    `fixed128x${decimals}`,
-  ).toUnsafeFloat();
-  return Number(ethers.utils.formatUnits(fixedNumber, decimals));
+  const stringLabel = ethers.utils.formatUnits(n, decimals);
+  return Number(parseFloat(stringLabel).toFixed(precision));
 };
 
 export const toBalance = (

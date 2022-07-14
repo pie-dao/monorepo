@@ -5,6 +5,7 @@ import {
   useApprovalLimit,
   useSelectedVault,
   useUserTokenBalance,
+  useWrongNetwork,
 } from '../../hooks/useSelectedVault';
 import {
   useTokenContract,
@@ -18,6 +19,7 @@ import {
   thunkMakeDeposit,
 } from '../../store/products/thunks';
 import { SetStateType } from '../../types/utilities';
+import useTranslation from 'next-translate/useTranslation';
 
 function ApproveDepositButton({ deposit }: { deposit: BigNumberReference }) {
   const [approving, setApproving] = useState(false);
@@ -46,6 +48,7 @@ function ApproveDepositButton({ deposit }: { deposit: BigNumberReference }) {
       }
       onClick={approveDeposit}
       className="w-full px-8 py-3 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+      data-cy="approve-button"
     >
       {approving ? <LoadingSpinner /> : 'Approve'}
     </button>
@@ -61,20 +64,21 @@ function DepositButtons({
 }) {
   const [depositing, setDepositing] = useState(false);
   const dispatch = useAppDispatch();
-  const { account, chainId } = useWeb3React();
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
   const { limit } = useApprovalLimit();
   const tokens = useUserTokenBalance();
   const vault = useSelectedVault();
   const auxoContract = useAuxoVaultContract(vault?.address);
+  const wrongNetwork = useWrongNetwork();
 
   const buttonDisabled = useMemo(() => {
     const invalidDepost = deposit.label <= 0;
     const sufficientApproval =
       compareBalances(limit, 'gte', deposit) &&
       compareBalances(tokens, 'gte', deposit);
-    const wrongNetwork = chainId !== vault?.chainId;
     return !sufficientApproval || wrongNetwork || invalidDepost || depositing;
-  }, [deposit, limit, tokens, chainId, vault?.chainId, depositing]);
+  }, [deposit, limit, tokens, wrongNetwork, depositing]);
 
   const makeDeposit = () => {
     setDepositing(true);
@@ -94,8 +98,9 @@ function DepositButtons({
       className="w-full px-8 py-3 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
       disabled={buttonDisabled}
       onClick={makeDeposit}
+      data-cy="deposit-button"
     >
-      Deposit
+      {t('Deposit')}
     </button>
   );
 }

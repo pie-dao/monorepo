@@ -65,7 +65,7 @@ export const successNotificationUpdate = (toastId: Id) => {
   toast.dismiss(`${toastId}Pending`);
   toast(
     <>
-      <div className="ml-3 flex-1">
+      <div className="ml-3 flex-1" data-cy={`${toastId}Success`}>
         <p className="text-sm font-medium text-gray-900">
           <Trans i18nKey={`${toastId}Success`} />
         </p>

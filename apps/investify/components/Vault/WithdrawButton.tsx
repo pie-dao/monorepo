@@ -1,11 +1,13 @@
-import { useWeb3React } from '@web3-react/core';
 import classNames from '../../utils/classnames';
 import useTranslation from 'next-translate/useTranslation';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useAppDispatch } from '../../hooks';
 import { useAuxoVaultContract } from '../../hooks/useContracts';
 import { useApproximatePendingAsUnderlying } from '../../hooks/useMaxDeposit';
-import { useSelectedVault } from '../../hooks/useSelectedVault';
+import {
+  useSelectedVault,
+  useWrongNetwork,
+} from '../../hooks/useSelectedVault';
 import { useStatus, WITHDRAWAL } from '../../hooks/useWithdrawalStatus';
 import { thunkConfirmWithdrawal } from '../../store/products/thunks';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
@@ -17,7 +19,6 @@ function WithdrawButton({
   showAvailable?: boolean;
   className?: string;
 }) {
-  const { chainId } = useWeb3React();
   const { t } = useTranslation();
   const [withdrawing, setWithdrawing] = useState(false);
   const vault = useSelectedVault();
@@ -26,16 +27,16 @@ function WithdrawButton({
   const available = vault?.userBalances?.batchBurn.available;
   const status = useStatus();
   const pendingSharesUnderlying = useApproximatePendingAsUnderlying();
+  const wrongNetwork = useWrongNetwork();
 
   const buttonText = showAvailable
-    ? `${t('withdraw')} ${available?.label} ${vault.symbol}`
+    ? `${t('withdraw')} ${available?.label} ${vault.underlyingSymbol}`
     : t('withdraw');
 
-  const buttonDisabled = (() => {
+  const buttonDisabled = useMemo((): boolean => {
     const wrongStatus = status !== WITHDRAWAL.READY;
-    const wrongNetwork = chainId !== vault?.chainId;
     return wrongNetwork || withdrawing || wrongStatus;
-  })();
+  }, [wrongNetwork, withdrawing, status]);
 
   const makeWithdrawal = () => {
     setWithdrawing(true);
@@ -55,6 +56,7 @@ function WithdrawButton({
         'w-full px-8 py-3 text-md font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70',
         className,
       )}
+      data-cy="confirm-withdrawal-button"
     >
       {withdrawing ? <LoadingSpinner /> : buttonText}
     </button>

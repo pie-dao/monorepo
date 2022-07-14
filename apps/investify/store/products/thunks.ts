@@ -274,8 +274,7 @@ export const thunkGetUserVaultsData = createAsyncThunk(
 
         const batchBurnRound = find(batchBurns, {
           address: auxo.address,
-        }).batchBurnRound;
-        console.log(batchBurns);
+        }).batchBurnRound.toNumber();
         const results = promiseObject({
           vault: auxo.balanceOf(account),
           wallet: underlyingTokenContract.balanceOf(account),
@@ -287,9 +286,10 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           ),
           userBatchBurnReceipts: auxo.userBatchBurnReceipts(account),
           batchBurnRound,
-          batchBurns: !batchBurnRound.isZero()
-            ? auxo.batchBurns(batchBurnRound.sub(BigNumber.from(1)))
-            : auxo.batchBurns(batchBurnRound),
+          batchBurns:
+            batchBurnRound > 0
+              ? auxo.batchBurns(batchBurnRound - 1)
+              : auxo.batchBurns(batchBurnRound),
           name: auxo.name(),
           chainId: 137,
           decimals: auxo.decimals(),
@@ -306,8 +306,7 @@ export const thunkGetUserVaultsData = createAsyncThunk(
 
         const batchBurnRound = find(batchBurns, {
           address: ftm.address,
-        }).batchBurnRound;
-        console.log(batchBurns);
+        }).batchBurnRound.toNumber();
         const results = promiseObject({
           vault: ftm.balanceOf(account),
           wallet: underlyingTokenContract.balanceOf(account),
@@ -315,9 +314,10 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           allowance: underlyingTokenContract.allowance(account, ftm.address),
           isDepositor: FTMAuthContractWrapper.isDepositor(ftm.address, account),
           userBatchBurnReceipts: ftm.userBatchBurnReceipts(account),
-          batchBurns: !batchBurnRound.isZero()
-            ? ftm.batchBurns(batchBurnRound.sub(BigNumber.from(1)))
-            : ftm.batchBurns(batchBurnRound),
+          batchBurns:
+            batchBurnRound > 0
+              ? ftm.batchBurns(batchBurnRound - 1)
+              : ftm.batchBurns(batchBurnRound),
           batchBurnRound,
           name: ftm.name(),
           chainId: 250,
@@ -365,7 +365,7 @@ export const thunkGetUserVaultsData = createAsyncThunk(
                   shares: result.value.userBatchBurnReceipts.shares,
                   amountPerShare: result.value.batchBurns.amountPerShare,
                   decimals: result.value.decimals,
-                  batchBurnRound: result.value.batchBurnRound.toNumber(),
+                  batchBurnRound: result.value.batchBurnRound,
                   userBatchBurnRound:
                     result.value.userBatchBurnReceipts.round.toNumber(),
                 }),

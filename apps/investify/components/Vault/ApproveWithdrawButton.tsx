@@ -43,6 +43,7 @@ function ApproveWithdrawButton({
         withdraw.value === '0' || status === WITHDRAWAL.READY || approving
       }
       onClick={enterBatchBurn}
+      data-cy="increase-withdrawal-button"
     >
       {approving ? <LoadingSpinner /> : t('Request')}
     </button>

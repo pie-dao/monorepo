@@ -57,11 +57,13 @@ function InputSlider({
             value={value.label.toString()}
             onChange={(e) => handleChange(e.target.value)}
             disabled={disabled}
+            data-cy="vault-input"
           />
           <button
             onClick={() => setValue(max)}
             disabled={max.value === '0'}
             className="text-secondary text-xs font-medium leading-3 px-3 pt-1 pb-3"
+            data-cy="max-button"
           >
             <span className="text-sub-dark">{`${max.label} ${label} `}</span>
             MAX
