@@ -57,6 +57,17 @@ describe('PiesService', () => {
     await module.close();
   });
 
+  it('blah', async () => {
+    await service.getPieHistory(
+      undefined,
+      '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
+      '1657112421881',
+      undefined,
+      'descending',
+      0,
+    );
+  });
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });

@@ -1,13 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { BigNumber } from 'bignumber.js';
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import { UnderlyingAsset } from '../domain/pie';
 
 export type PieHistoryDocument = PieHistoryEntity & Document;
 
 @Schema()
 export class PieHistoryEntity {
+  @Prop()
+  pieId: ObjectId;
+
   @Prop()
   @ApiProperty()
   timestamp: string;
