@@ -113,7 +113,7 @@ function DepositActions({
   setDeposit: SetStateType<BigNumberReference>;
 }) {
   return (
-    <div className="flex justify-between items-center gap-x-4 mt-4">
+    <div className="flex justify-between items-center gap-x-4 mt-4 flex-wrap gap-y-4">
       <ApproveDepositButton deposit={deposit} />
       <DepositButtons deposit={deposit} setDeposit={setDeposit} />
     </div>

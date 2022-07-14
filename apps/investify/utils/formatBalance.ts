@@ -1,10 +1,10 @@
-import { BigNumber, ethers, FixedNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { BigNumberReference } from '../store/products/products.types';
 
 export function formatBalanceCurrency(
   balanceAmount: number,
-  defaultLocale: string,
-  defaultCurrency: string,
+  defaultLocale?: string,
+  defaultCurrency?: string,
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'currency',
@@ -23,6 +23,7 @@ export function formatBalance(
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'decimal',
+    notation: 'compact',
     maximumFractionDigits: fixed ?? 0,
   }).format(balanceAmount ?? 0);
   return balance;

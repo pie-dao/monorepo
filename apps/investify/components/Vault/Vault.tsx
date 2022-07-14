@@ -14,6 +14,7 @@ import { thunkAuthorizeDepositor } from '../../store/products/thunks';
 import { useMerkleAuthContract } from '../../hooks/useContracts';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import VaultCapSlider from '../VaultCapSlider/VaultCapSlider';
+import VaultSummaryUser from '../VaultSummary/VaultSummary';
 
 export default function Vault({ id }: { id: string }) {
   const { account, chainId } = useWeb3React();
@@ -159,6 +160,9 @@ export default function Vault({ id }: { id: string }) {
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
+      {id === 'desktop' && (
+        <VaultSummaryUser vault={activeVault} loading={false} />
+      )}
     </>
   );
 }

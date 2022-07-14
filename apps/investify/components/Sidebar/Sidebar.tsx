@@ -21,7 +21,7 @@ export default function Sidebar() {
       }}
       className="fixed z-10 inset-0 overflow-y-auto"
     >
-      <div className="flex items-end justify-center min-h-screen text-center sm:block sm:p-0">
+      <div className="flex items-end justify-center min-h-screen text-center sm:block sm:p-0 h-5/6">
         <Dialog.Overlay className="fixed inset-0 backdrop-blur-sm" />
         <span
           className="hidden sm:inline-block sm:align-middle sm:h-screen"
@@ -35,8 +35,8 @@ export default function Sidebar() {
       </div>
     </Dialog>
   ) : (
-    <aside className="h-screen hidden md:block sm:w-64 md:w-1/3 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
-      <div className="h-full bg-sidebar drop-shadow rounded-lg py-2 px-4 w-full">
+    <aside className="flex hidden md:block sm:w-64 md:w-1/3 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
+      <div className="h-full bg-sidebar drop-shadow rounded-lg py-2 px-4 w-full overflow-y-scroll scrollbar-hidden">
         <SidebarContent id="desktop" />
       </div>
     </aside>

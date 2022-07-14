@@ -13,7 +13,7 @@ export default function SidebarContent({ id }: { id: string }) {
         {t(step)}
       </h3>
       <AnimatePresence initial={false}>
-        <div className="flex w-full">
+        <div className="flex w-full overflow-hidden">
           {step === 'quote' && (
             <SidebarBox key="quote" className="py-4">
               <p className="text-text text-2xl">Tasty test</p>

@@ -65,3 +65,16 @@ export const useMaxDeposit = (): BigNumberReference => {
 
   return balance ?? zeroBalance;
 };
+
+export const useLocked = (): number => {
+  /**
+   * When computing total value locked in auxo, we take the deposits in underlying USDC
+   * We also add the shares in the batch burn process, multiplied by the Exchange rate
+   * NB: need to understand how much ER and Amount Per Share can differ
+   */
+  const vault = useSelectedVault();
+  const amountDepositedUnderlying =
+    vault?.userBalances?.vaultUnderlying ?? zeroBalance;
+  const amountPendingUnderlying = useApproximatePendingAsUnderlying();
+  return amountPendingUnderlying.label + amountDepositedUnderlying.label;
+};
