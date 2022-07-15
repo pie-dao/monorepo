@@ -1,22 +1,8 @@
-import { useSelectedVault } from '../../hooks/useSelectedVault';
-import { zeroBalance } from '../../utils/balances';
-import { formatBalance } from '../../utils/formatBalance';
-import { useApproximatePendingAsUnderlying } from '../../hooks/useMaxDeposit';
-import { LockOpenIcon, LockClosedIcon } from '@heroicons/react/solid';
 import { useMemo } from 'react';
-
-export const useLocked = (): number => {
-  /**
-   * When computing total value locked in auxo, we take the deposits in underlying USDC
-   * We also add the shares in the batch burn process, multiplied by the Exchange rate
-   * NB: need to understand how much ER and Amount Per Share can differ
-   */
-  const vault = useSelectedVault();
-  const amountDepositedUnderlying =
-    vault?.userBalances?.vaultUnderlying ?? zeroBalance;
-  const amountPendingUnderlying = useApproximatePendingAsUnderlying();
-  return amountPendingUnderlying.label + amountDepositedUnderlying.label;
-};
+import { useLocked } from '../../hooks/useMaxDeposit';
+import { useSelectedVault } from '../../hooks/useSelectedVault';
+import { formatBalance } from '../../utils/formatBalance';
+import { LockOpenIcon, LockClosedIcon } from '@heroicons/react/solid';
 
 const VaultCapSlider = () => {
   const vault = useSelectedVault();

@@ -6,6 +6,7 @@ import { MultiCallWrapper } from '@sdk-utils/multicall';
 import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
+  MerkleauthAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -47,13 +48,6 @@ export const underlyingContractsFTM = Object.entries(FTM).map(
 
 export const underlyingContractsPolygon = Object.entries(Polygon).map(
   ([, value]) => value.token.address,
-);
-
-export const FTMAuthContract = '0xA86fc7aD871B5247f13BB38a08a67bE4d38e577B';
-export const PolygonAuthContract = '0xbc4639e6056c299b5a957c213bce3ea47210e2bd';
-
-export const PolygonAuthContracts = Object.entries(Polygon).map(
-  ([, value]) => value.auth.address,
 );
 
 export const contractWrappers = productContracts.map((addresses) => {
@@ -99,22 +93,18 @@ export const underlyingContractsPolygonWrappers =
     return PolygonMulticall.wrap(contract);
   });
 
-export const FTMAuthContractWrapper = (() => {
-  const contractAbi = ethers.ContractFactory.getInterface(MerkleAuthAbi);
-  const contract = new ethers.Contract(
-    FTMAuthContract,
-    contractAbi,
+export const FTMAuthContractWrapper = (authAddress: string) => {
+  const contract = MerkleauthAbi__factory.connect(
+    authAddress,
     ethers.getDefaultProvider(),
   );
   return FTMmulticall.wrap(contract);
-})();
+};
 
-export const PolygonAuthContractWrapper = (() => {
-  const contractAbi = ethers.ContractFactory.getInterface(MerkleAuthAbi);
-  const contract = new ethers.Contract(
-    PolygonAuthContract,
-    contractAbi,
+export const PolygonAuthContractWrapper = (authAddress: string) => {
+  const contract = MerkleauthAbi__factory.connect(
+    authAddress,
     ethers.getDefaultProvider(),
   );
   return PolygonMulticall.wrap(contract);
-})();
+};

@@ -8,10 +8,8 @@ import { ProviderNotActivatedError } from '../errors';
 import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
-  MerkleauthAbi,
+  MerkleauthAbi__factory,
 } from '@shared/util-blockchain';
-import MerkleAuthAbi from '../config/MerkleAuth.json';
-import { Contract } from 'ethers';
 
 function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
@@ -75,19 +73,19 @@ export function useERC20Contract(address?: string) {
   }, [address, library, account, active]);
 }
 
-export function useAuthContract<T extends Contract>(address?: string) {
+export function useAuthContract(address?: string) {
   const { library, account, active } = useWeb3React();
   return useMemo(() => {
     if (!address || !library) return;
     try {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
-      return new Contract(address, MerkleAuthAbi, providerSigner);
+      return MerkleauthAbi__factory.connect(address, providerSigner);
     } catch (error) {
       console.error('Failed to get contract', error);
       return undefined;
     }
-  }, [address, library, account, active]) as T;
+  }, [address, library, account, active]);
 }
 
 export function useAuxoVaultContract(vaultAddress?: string) {
@@ -99,5 +97,5 @@ export function useTokenContract(tokenAddress?: string) {
 }
 
 export function useMerkleAuthContract(vaultAddress?: string) {
-  return useAuthContract<MerkleauthAbi>(vaultAddress);
+  return useAuthContract(vaultAddress);
 }

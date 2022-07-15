@@ -239,6 +239,23 @@ export const thunkGetUserVaultsData = createAsyncThunk(
   async (account: string) => {
     if (!account) return;
 
+    const authContractsData = [
+      ...PolygonContractWrappers.map(async (auxo) => {
+        const auth = promiseObject({
+          auth: auxo.auth(),
+          address: auxo.address,
+        });
+        return auth;
+      }),
+      ...FTMContractWrappers.map((ftm) => {
+        const auth = promiseObject({
+          auth: ftm.auth(),
+          address: ftm.address,
+        });
+        return auth;
+      }),
+    ];
+
     const batchBurnsVaultData = [
       ...PolygonContractWrappers.map(async (auxo) => {
         const batchBurn = promiseObject({
@@ -260,6 +277,10 @@ export const thunkGetUserVaultsData = createAsyncThunk(
         batchBurnRound: BigNumber;
         address: string;
       }[],
+      auths: {
+        auth: string;
+        address: string;
+      }[],
     ) => [
       ...PolygonContractWrappers.map((auxo) => {
         const findUnderlyingAddress = find(vaultConfigs, {
@@ -272,6 +293,10 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           },
         );
 
+        const authAddress = find(auths, {
+          address: auxo.address,
+        }).auth;
+
         const batchBurnRound = find(batchBurns, {
           address: auxo.address,
         }).batchBurnRound.toNumber();
@@ -280,7 +305,7 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           wallet: underlyingTokenContract.balanceOf(account),
           vaultUnderlying: auxo.balanceOfUnderlying(account),
           allowance: underlyingTokenContract.allowance(account, auxo.address),
-          isDepositor: PolygonAuthContractWrapper.isDepositor(
+          isDepositor: PolygonAuthContractWrapper(authAddress).isDepositor(
             auxo.address,
             account,
           ),
@@ -304,6 +329,10 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           address: findUnderlyingAddress,
         });
 
+        const authAddress = find(auths, {
+          address: ftm.address,
+        }).auth;
+
         const batchBurnRound = find(batchBurns, {
           address: ftm.address,
         }).batchBurnRound.toNumber();
@@ -312,7 +341,10 @@ export const thunkGetUserVaultsData = createAsyncThunk(
           wallet: underlyingTokenContract.balanceOf(account),
           vaultUnderlying: ftm.balanceOfUnderlying(account),
           allowance: underlyingTokenContract.allowance(account, ftm.address),
-          isDepositor: FTMAuthContractWrapper.isDepositor(ftm.address, account),
+          isDepositor: FTMAuthContractWrapper(authAddress).isDepositor(
+            ftm.address,
+            account,
+          ),
           userBatchBurnReceipts: ftm.userBatchBurnReceipts(account),
           batchBurns:
             batchBurnRound > 0
@@ -334,8 +366,15 @@ export const thunkGetUserVaultsData = createAsyncThunk(
       }
     });
 
+    const authData = await Promise.allSettled(authContractsData);
+    const authDataValues = Object.values(authData).map((result) => {
+      if (result.status === 'fulfilled') {
+        return result.value;
+      }
+    });
+
     const resolvedVaults = await Promise.allSettled(
-      vaultsData(BatchBurnValues),
+      vaultsData(BatchBurnValues, authDataValues),
     );
     const orderedVaults = Object.values(resolvedVaults).map((result) => {
       if (result.status === 'fulfilled') {
