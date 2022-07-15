@@ -1,22 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { ethers } from 'ethers';
-import moment from 'moment';
 import ethDater from 'ethereum-block-by-date';
-import { EpochDocument, EpochEntity } from './entities/epoch.entity';
-import { MerkleTreeDistributor } from '../helpers/merkleTreeDistributor/merkleTreeDistributor';
-import { Staker, Lock } from './types/staking.types.Staker';
-import { Vote } from './types/staking.types.Vote';
-import { FreeRider } from './types/staking.types.FreeRider';
-import { Participation } from './types/staking.types.Participation';
-import { Delegate } from './types/staking.types.Delegate';
-import * as lodash from 'lodash';
-import { Console, Command, createSpinner } from 'nestjs-console';
+import { ethers } from 'ethers';
 import * as inquirer from 'inquirer';
-import { antoEpoch, totoEpoch } from './test/stubs';
+import * as lodash from 'lodash';
+import moment from 'moment';
+import { Model } from 'mongoose';
+import { Command, Console, createSpinner } from 'nestjs-console';
+import { MerkleTreeDistributor } from '../helpers/merkleTreeDistributor/merkleTreeDistributor';
 import { pieAbi as pieABI } from './abis';
+import { EpochDocument, EpochEntity } from './entities/epoch.entity';
+import { antoEpoch, totoEpoch } from './test/stubs';
+import { Delegate } from './types/staking.types.Delegate';
+import { Participation } from './types/staking.types.Participation';
+import { Lock, Staker } from './types/staking.types.Staker';
+import { Vote } from './types/staking.types.Vote';
 @Injectable()
 @Console()
 export class StakingService {
@@ -26,10 +25,10 @@ export class StakingService {
   private snapshotSpaceID = process.env.SNAPSHOT_SPACE_ID;
   private graphUrl = process.env.GRAPH_URL;
   private snapshotUrl = 'https://hub.snapshot.org/graphql';
-  private ethProvider = process.env.INFURA_RPC;
 
   constructor(
     private httpService: HttpService,
+    private provider: ethers.providers.JsonRpcProvider,
     @InjectModel(EpochEntity.name) private epochModel: Model<EpochDocument>,
   ) {}
 
@@ -129,14 +128,6 @@ export class StakingService {
     } catch (error) {
       console.error(error);
     }
-  }
-
-  setEthProvider(provider: string): void {
-    this.ethProvider = provider;
-  }
-
-  getEthProvider(): string {
-    return this.ethProvider;
   }
 
   setSnapshotUrl(url: string): void {
@@ -380,6 +371,10 @@ export class StakingService {
     prevWindowIndex: number,
     blockNumber: number,
     proposalsIds: Array<string>,
+    /**
+     * Set this to `true` if you only want to generate the epoch, but not save it.
+     */
+    dryRun = false,
   ): Promise<EpochEntity> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -426,6 +421,7 @@ export class StakingService {
           from.unix(),
           to.unix(),
           blockNumber,
+          dryRun,
         );
         /* istanbul ignore next */
         resolve(epoch);
@@ -443,11 +439,11 @@ export class StakingService {
     startDate: number,
     endDate: number,
     blockNumber: number,
+    dryRun = false,
   ): Promise<EpochEntity> {
     return new Promise(async (resolve, reject) => {
       try {
-        const provider = new ethers.providers.JsonRpcProvider(this.ethProvider);
-        const ethDaterHelper = new ethDater(provider);
+        const ethDaterHelper = new ethDater(this.provider);
 
         let startBlock = await ethDaterHelper.getDate(startDate * 1000, true);
 
@@ -472,7 +468,7 @@ export class StakingService {
         );
         epochModel.slice = await this.getSliceBreakdown();
 
-        let epochDB = await epochModel.save();
+        let epochDB = dryRun ? epochModel : await epochModel.save();
         resolve(epochDB);
       } catch (error) {
         reject(error);
@@ -483,13 +479,10 @@ export class StakingService {
   getSliceBreakdown(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
-        const provider = new ethers.providers.JsonRpcProvider(
-          process.env.INFURA_RPC,
-        );
         let rewardsContract = new ethers.Contract(
           this.SLICE_ADDRESS,
           pieABI,
-          provider,
+          this.provider,
         );
 
         let decimals = await rewardsContract.decimals();
@@ -504,7 +497,7 @@ export class StakingService {
           let underlyingContract = new ethers.Contract(
             underlyingAddress,
             pieABI,
-            provider,
+            this.provider,
           );
 
           underlying.push({

@@ -1,18 +1,17 @@
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { SentryModule } from '@ntegral/nestjs-sentry';
 import { ConsoleModule } from 'nestjs-console';
-import * as path from 'path';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthorizationModule } from './authorization/authorization.module';
+import { EthersModule } from './ethers';
 import { FundsModule } from './fund';
+import { MonitoringModule } from './monitoring';
 import { PiesModule } from './pies/pies.module';
 import { SentimentModule } from './sentiment/sentiment.module';
 import { StakingModule } from './staking/staking.module';
@@ -33,30 +32,36 @@ import { TreasuryModule } from './treasury/treasury.module';
     StakingModule,
     TreasuryModule,
     TasksModule,
+    MonitoringModule,
     ConsoleModule,
     SentimentModule,
     AuthorizationModule,
+    EthersModule,
     SentryModule.forRoot({
       dsn: process.env.SENTRY_DSN,
-      debug: true,
-      environment: process.env.NODE_ENV,
-      release: '0.0.1',
-    }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: path.join(
-        process.cwd(),
-        'libs/util-graphql/src/graphql-schemas/schema.graphql',
-      ),
-      sortSchema: true,
-      installSubscriptionHandlers: true,
-      playground: true,
       debug: process.env.NODE_ENV === 'development',
-      include: [FundsModule],
-      buildSchemaOptions: {
-        dateScalarMode: 'timestamp',
-      },
+      environment: process.env.NODE_ENV,
+      release: '0.1.0',
     }),
+    // 👇 We disabled this for now, because there is a possible memory leak:
+    // 👉 2022-07-05T11:07:54.436406+00:00 app[web.1]: Persisted queries are enabled and are using an unbounded cache.
+    // 👉 Your server is vulnerable to denial of service attacks via memory exhaustion. Set `cache: "bounded"` or `persistedQueries: false`
+    // 👉 in your ApolloServer constructor, or see https://go.apollo.dev/s/cache-backends for other alternatives.
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   autoSchemaFile: path.join(
+    //     process.cwd(),
+    //     'libs/util-graphql/src/graphql-schemas/schema.graphql',
+    //   ),
+    //   sortSchema: true,
+    //   installSubscriptionHandlers: true,
+    //   playground: true,
+    //   debug: process.env.NODE_ENV === 'development',
+    //   include: [FundsModule],
+    //   buildSchemaOptions: {
+    //     dateScalarMode: 'timestamp',
+    //   },
+    // }),
     FundsModule,
   ],
   controllers: [AppController],

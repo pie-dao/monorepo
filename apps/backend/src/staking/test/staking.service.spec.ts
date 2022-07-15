@@ -1,31 +1,32 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { StakingService } from '../staking.service';
 import { HttpModule } from '@nestjs/axios';
+import { NotFoundException } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
+import { Test, TestingModule } from '@nestjs/testing';
+import { EthersProvider } from '../../ethers';
 import { EpochEntity, EpochSchema } from '../entities/epoch.entity';
-import { EpochsStub } from './stubs/epochs.stubs';
-import { NotFoundException } from '@nestjs/common';
+import { StakingService } from '../staking.service';
 
 describe('StakingService', () => {
   let service: StakingService;
+  let module: TestingModule;
   let generatedEpoch = null;
 
-  let blockNumber = 13527858;
-  let month = 10;
-  let year = 2021;
-  let distributedRewards = '1350000';
-  let windowIndex = 0;
-  let proposals = [
+  const blockNumber = 13527858;
+  const month = 10;
+  const year = 2021;
+  const distributedRewards = '1350000';
+  const windowIndex = 0;
+  const proposals = [
     '"QmRkF9A2NigXcBBFfASnM7akNvAo6c9jgNxpt1faX6hvjK"',
     '"QmebDo3uTVJ5bHWgYhf7CvcK7by1da1WUX4jw5uX6M7EUW"',
     '"QmRakdstZdU1Mx1vYhjon8tYnv5o1dkir8v3HDBmmnCGUc"',
   ];
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [StakingService],
+    module = await Test.createTestingModule({
+      providers: [StakingService, EthersProvider],
       imports: [
         HttpModule,
         ConfigModule.forRoot(),
@@ -38,6 +39,10 @@ describe('StakingService', () => {
     }).compile();
 
     service = module.get<StakingService>(StakingService);
+  });
+
+  afterAll(async () => {
+    await module.close();
   });
 
   it('should be defined', () => {
@@ -85,7 +90,7 @@ describe('StakingService', () => {
       });
 
       test('then new snapshotUrl should be set', () => {
-        let snapshotUrl = service.getSnapshotUrl();
+        const snapshotUrl = service.getSnapshotUrl();
         expect(snapshotUrl).toEqual('wrong_url');
       });
     });
@@ -95,18 +100,6 @@ describe('StakingService', () => {
 
       beforeEach(async () => {
         jest.spyOn(service, 'generateEpoch');
-
-        jest.spyOn(service, 'setEthProvider');
-        service.setEthProvider('wrong_provider');
-      });
-
-      test('then it should call stakingService.setEthProvider', () => {
-        expect(service.setEthProvider).toHaveBeenCalledWith('wrong_provider');
-      });
-
-      test('then new snapshotUrl should be set', () => {
-        let ethProvider = service.getEthProvider();
-        expect(ethProvider).toEqual('wrong_provider');
       });
 
       test('it should throw an error if something went wrong', async () => {
@@ -211,7 +204,7 @@ describe('StakingService', () => {
         });
 
         test('then it should return an EpochEntity', () => {
-          let epochObj = <any>epoch;
+          const epochObj = <any>epoch;
           expect(JSON.stringify(epochObj.merkleTree.windowIndex)).toEqual(
             JSON.stringify(epoch.merkleTree.windowIndex),
           );
@@ -274,7 +267,7 @@ describe('StakingService', () => {
     describe('When getLocks is called with params', () => {
       jest.setTimeout(50000);
       let locks: any[];
-      let timestamp = Number(Date.now()).toString();
+      const timestamp = Number(Date.now()).toString();
 
       beforeEach(async () => {
         jest.spyOn(service, 'getLocks');

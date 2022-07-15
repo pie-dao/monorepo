@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm -Rf node_modules/@storybook
+rm -Rf node_modules/@swc
+rm -Rf node_modules/@next
+rm -Rf node_modules/react-icons
+rm -Rf node_modules/@angular-devkit
+rm -Rf node_modules/@testing-library
+rm -Rf node_modules/prettier
+rm -Rf node_modules/commitizen

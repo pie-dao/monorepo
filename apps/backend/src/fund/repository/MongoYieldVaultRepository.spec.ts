@@ -1,8 +1,5 @@
-import {
-  SupportedChain,
-  YieldVault,
-  YieldVaultHistory,
-} from '@domain/feature-funds';
+import { YieldVault, YieldVaultHistory } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-types';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
