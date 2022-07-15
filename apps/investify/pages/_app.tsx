@@ -35,7 +35,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-if (process.env.NEXT_PUBLIC_MOCKS_ENABLED) {
+if (process.env.NEXT_PUBLIC_MOCKS_ENABLED === 'true') {
   require('../mocks');
 }
 
