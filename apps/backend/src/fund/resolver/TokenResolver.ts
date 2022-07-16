@@ -1,7 +1,7 @@
 import {
   DEFAULT_CHILD_FILTER,
   DEFAULT_TOKEN_FILTER,
-  Filters,
+  TokenFilters,
 } from '@domain/feature-funds';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { pipe } from 'fp-ts/lib/function';
@@ -22,7 +22,7 @@ export class TokenResolver {
     @Args('filters', { nullable: true }) tokenFilters?: TokenFiltersInput,
   ): Promise<TokenEntity[]> {
     // 👇 This mapping is horrendous, but necessary. If you know a better solution pls share it.
-    const filters: Filters = {
+    const filters: TokenFilters = {
       token: DEFAULT_TOKEN_FILTER,
       marketData: DEFAULT_CHILD_FILTER,
     };
@@ -47,7 +47,7 @@ export class TokenResolver {
       };
     }
     return pipe(
-      this.tokenRepository.findAll(filters),
+      this.tokenRepository.find(filters),
       T.map((tokens) =>
         tokens.map((token) => ({
           ...token,

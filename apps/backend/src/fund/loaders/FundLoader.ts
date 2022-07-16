@@ -1,20 +1,20 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import {
+  BlockchainEntityNotFoundError,
   CurrencyData,
   DatabaseError,
   Token,
-  TokenNotFoundError,
 } from '@domain/feature-funds';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { check } from '@shared/helpers';
+import { SupportedCurrency } from '@shared/util-types';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
-import { SupportedCurrency } from '@shared/util-types';
 const THIRTY_MINUTES = 1000 * 60 * 30;
 
 export class MissingDataError extends Error {
@@ -111,7 +111,7 @@ export class FundLoader {
    * using an upsert operation.
    */
   public ensureFundsExist(): TE.TaskEither<
-    DatabaseError | TokenNotFoundError,
+    DatabaseError | BlockchainEntityNotFoundError,
     readonly Token[]
   > {
     return pipe(

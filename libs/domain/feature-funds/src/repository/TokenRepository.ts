@@ -2,25 +2,13 @@ import { SupportedChain } from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { MarketData, Token } from '../fund';
-
-export class DatabaseError extends Error {
-  public kind: 'DatabaseError' = 'DatabaseError';
-  constructor(public cause: unknown) {
-    super(`Database operation failed: ${cause}`);
-  }
-}
+import { DatabaseError, BlockchainEntityNotFoundError } from './error';
+import { Filter } from './filter';
 
 export class CreateMarketDataError extends Error {
   public kind: 'CreateMarketDataError' = 'CreateMarketDataError';
   constructor(public message: string) {
     super(`Saving market data entry failed: ${message}`);
-  }
-}
-
-export class TokenNotFoundError extends Error {
-  public kind: 'TokenNotFoundError' = 'TokenNotFoundError';
-  constructor(public address: string, public chain: SupportedChain) {
-    super(`Token with address ${address} was not found on chain ${chain}.`);
   }
 }
 
@@ -44,21 +32,15 @@ export const DEFAULT_TOKEN_FILTER: Filter = {
   },
 };
 
-export type Filters = {
-  token: Filter;
-  marketData: Filter;
-};
+export type TokenFilterField = 'token' | 'marketData';
 
-export type Filter = {
-  limit?: number;
-  orderBy?: Record<string, 'asc' | 'desc'>;
-};
+export type TokenFilters = Partial<Record<TokenFilterField, Filter>>;
 
-export interface TokenRepository<T extends Token, F extends Filters> {
+export interface TokenRepository<T extends Token, F extends TokenFilters> {
   /**
-   * Returns all funds.
+   * Returns all tokens that match the given filters.
    */
-  findAll(filters: Partial<F>): T.Task<Array<T>>;
+  find(filters: F): T.Task<Array<T>>;
 
   /**
    * Tries to find a token by its address on a specific chain.
@@ -67,8 +49,8 @@ export interface TokenRepository<T extends Token, F extends Filters> {
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Partial<Omit<F, 'token'>>,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, T>;
+    childFilters: Omit<F, 'token'>,
+  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, T>;
 
   /**
    * Saves the token to the database (recursively).
@@ -83,7 +65,7 @@ export interface TokenRepository<T extends Token, F extends Filters> {
     address: string,
     entry: MarketData,
   ): TE.TaskEither<
-    TokenNotFoundError | CreateMarketDataError | DatabaseError,
+    BlockchainEntityNotFoundError | CreateMarketDataError | DatabaseError,
     MarketData
   >;
 }

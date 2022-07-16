@@ -1,6 +1,7 @@
 import { BigNumber } from 'bignumber.js';
-import { FundHistory } from './FundHistory';
-import { Token } from './Token';
+import { FundHistory } from '../FundHistory';
+import { Token } from '../Token';
+import { YieldVaultStrategy } from './YieldVaultStrategy';
 
 /**
  * Represents the state of a {@link YieldVault} at the given {@link timestamp}.
@@ -137,42 +138,5 @@ export type YieldVaultHistory = FundHistory & {
    * withdrawal time, not validated upfront, meaning the queue may not reflect the "true" set used
    * for withdrawals.
    */
-  withdrawalQueue?: Strategy[];
-};
-
-export type Strategy = {
-  name: string;
-  /**
-   * The underlying token the strategy accepts.
-   */
-  underlyingToken: Token;
-
-  /**
-   * The amount of underlying tokens deposited in this strategy.
-   */
-  depositedAmount: BigNumber;
-
-  /**
-   * The estimated amount of underlying tokens managed by the strategy.
-   */
-  estimatedAmount: BigNumber;
-
-  /**
-   * The strategy manager.
-   */
-  manager: string;
-
-  /**
-   * The strategist (TODO: who is this?)
-   */
-  strategist: string;
-
-  /**
-   * Tells whether Vault will operate on a strategy.
-   */
-  trusted: boolean;
-  /**
-   * Used to determine profit and loss during harvests of the strategy.
-   */
-  balance: BigNumber;
+  withdrawalQueue?: YieldVaultStrategy[];
 };

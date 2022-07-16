@@ -1,4 +1,5 @@
 import {
+  BlockchainEntityNotFoundError,
   CreateHistoryError,
   DatabaseError,
   DEFAULT_CHILD_FILTER,
@@ -8,7 +9,6 @@ import {
   FundHistory,
   FundRepository,
   MarketData,
-  TokenNotFoundError,
 } from '@domain/feature-funds';
 import { SupportedChain } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
@@ -45,15 +45,15 @@ export abstract class FundRepositoryBase<
     super(model, marketModel);
   }
 
-  findAll(filters: Partial<FundFilters> = DEFAULT_FILTERS): T.Task<F[]> {
-    return super.findAll(filters);
+  find(filters: FundFilters = DEFAULT_FILTERS): T.Task<F[]> {
+    return super.find(filters);
   }
 
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Partial<Omit<FundFilters, 'token'>> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, F> {
+    childFilters: Omit<FundFilters, 'token'> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, F> {
     return super.findOne(chain, address, childFilters);
   }
 
@@ -61,7 +61,10 @@ export abstract class FundRepositoryBase<
     chain: SupportedChain,
     address: string,
     entry: H,
-  ): TE.TaskEither<TokenNotFoundError | CreateHistoryError | DatabaseError, H> {
+  ): TE.TaskEither<
+    DatabaseError | BlockchainEntityNotFoundError | CreateHistoryError,
+    H
+  > {
     return pipe(
       TE.tryCatch(
         () => {

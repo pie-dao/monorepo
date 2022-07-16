@@ -1,10 +1,10 @@
 import {
+  BlockchainEntityNotFoundError,
   DatabaseError,
   DEFAULT_CHILD_FILTER,
   DEFAULT_TOKEN_FILTER,
-  Filters,
   Token,
-  TokenNotFoundError,
+  TokenFilters,
 } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
 import { SupportedChain } from '@shared/util-types';
@@ -30,25 +30,25 @@ const DEFAULT_CHILD_FILTERS = {
 export class MongoTokenRepository extends TokenRepositoryBase<
   DiscriminatedTokenEntity,
   Token,
-  Filters
+  TokenFilters
 > {
   constructor() {
     super(DiscriminatedTokenModel, MarketDataModel);
   }
 
-  findAll(filters: Filters = DEFAULT_FILTERS): T.Task<Token[]> {
-    return super.findAll(filters);
+  find(filters: TokenFilters = DEFAULT_FILTERS): T.Task<Token[]> {
+    return super.find(filters);
   }
 
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Omit<Filters, 'token'> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, Token> {
+    childFilters: Omit<TokenFilters, 'token'> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, Token> {
     return super.findOne(chain, address, childFilters);
   }
 
-  protected getPaths(): Array<keyof Filters> {
+  protected getPaths(): Array<keyof TokenFilters> {
     return ['marketData'];
   }
 

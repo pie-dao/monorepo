@@ -1,11 +1,11 @@
 import {
+  BlockchainEntityNotFoundError,
   CreateMarketDataError,
   DatabaseError,
   DEFAULT_TOKEN_FILTER,
-  Filters,
   MarketData,
   Token,
-  TokenNotFoundError,
+  TokenFilters,
   TokenRepository,
 } from '@domain/feature-funds';
 import { SupportedChain } from '@shared/util-types';
@@ -19,7 +19,7 @@ import { toMongooseOptions } from '../Utils';
 export abstract class TokenRepositoryBase<
   E extends TokenEntity,
   T extends Token,
-  F extends Filters,
+  F extends TokenFilters,
 > implements TokenRepository<T, F>
 {
   constructor(
@@ -27,7 +27,7 @@ export abstract class TokenRepositoryBase<
     protected marketModel: Model<MarketData>,
   ) {}
 
-  findAll(filters: Partial<F>): T.Task<T[]> {
+  find(filters: Partial<F>): T.Task<T[]> {
     const { token = DEFAULT_TOKEN_FILTER, ...rest } = filters;
     const filter = toMongooseOptions(token);
     let find = this.model.find({}).sort(filter.sort).limit(filter.limit);
@@ -55,8 +55,8 @@ export abstract class TokenRepositoryBase<
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Partial<Omit<F, 'token'>>,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, T> {
+    childFilters: Omit<F, 'token'>,
+  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, T> {
     return pipe(
       TE.tryCatch(
         () => {
@@ -80,7 +80,7 @@ export abstract class TokenRepositoryBase<
         if (record) {
           return TE.right(this.toDomainObject(record as E));
         } else {
-          return TE.left(new TokenNotFoundError(address, chain));
+          return TE.left(new BlockchainEntityNotFoundError(address, chain));
         }
       }),
     );
@@ -112,7 +112,7 @@ export abstract class TokenRepositoryBase<
     address: string,
     entry: MarketData,
   ): TE.TaskEither<
-    TokenNotFoundError | DatabaseError | CreateMarketDataError,
+    BlockchainEntityNotFoundError | DatabaseError | CreateMarketDataError,
     MarketData
   > {
     return pipe(

@@ -1,7 +1,10 @@
 import { SupportedChain } from '@shared/util-types';
 import * as E from 'fp-ts/Either';
-import { Fund, MarketData, PieVaultHistory, Token, TokenDetails } from '.';
-import { TokenNotFoundError } from '../repository';
+import { BlockchainEntityNotFoundError } from '../../repository/error';
+import { Fund } from '../Fund';
+import { MarketData } from '../MarketData';
+import { Token } from '../Token';
+import { PieVaultHistory, TokenDetails } from './PieVaultHistory';
 
 /**
  * Pie Vaults are an evolution of Pie Smart Pools, but without the swapping functionality.
@@ -30,7 +33,7 @@ export class PieVault implements Fund<PieVaultHistory> {
     public history: PieVaultHistory[] = [],
     public marketData: MarketData[] = [],
   ) {
-    this.latest = history.length > 0 ? history[history.length - 1] : undefined;
+    this.latest = history.length > 0 ? history[0] : undefined;
   }
 
   /**
@@ -57,7 +60,9 @@ export class PieVault implements Fund<PieVaultHistory> {
         )!,
       );
     } else {
-      return E.left(new TokenNotFoundError(token.address, token.chain));
+      return E.left(
+        new BlockchainEntityNotFoundError(token.address, token.chain),
+      );
     }
   }
 }
