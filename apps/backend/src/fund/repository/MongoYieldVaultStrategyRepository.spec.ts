@@ -1,9 +1,26 @@
-import { TestStrategy, YieldVaultStrategy } from '@domain/feature-funds';
+import {
+  TestStrategy,
+  YieldData,
+  YieldVaultStrategy,
+} from '@domain/feature-funds';
 import { SupportedChain } from '@shared/util-types';
 import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoYieldVaultStrategyRepository } from '.';
+
+const vaults = ['0x7B7D39cD202067AF189276Af04fE40fb50C73D98'];
+
+const yields: YieldData[] = [
+  {
+    apr: 0.1,
+    apy: {
+      compoundingFrequency: 1,
+      value: 0.1,
+    },
+    timestamp: new Date(),
+  },
+];
 
 const STRATEGY_0 = new TestStrategy(
   SupportedChain.ETHEREUM,
@@ -20,6 +37,8 @@ const STRATEGY_0 = new TestStrategy(
     coinGeckoId: '',
   },
   true,
+  vaults,
+  yields,
 );
 
 const STRATEGY_1 = new TestStrategy(
@@ -64,6 +83,7 @@ describe('Given a Mongo Yield Vault Strategy Repository', () => {
     )()) as Right<YieldVaultStrategy>;
 
     expect(result.right.name).toEqual(STRATEGY_0.name);
+    expect(result.right.vaults).toEqual(STRATEGY_0.vaults);
   });
 
   it('When saving multiple Yield Vault entities Then they are all found by find', async () => {
@@ -80,5 +100,22 @@ describe('Given a Mongo Yield Vault Strategy Repository', () => {
     })();
 
     expect(result.map((e) => e.name)).toEqual(['ST1V', 'ST0V']);
+  });
+
+  it('When saving yield data Then it is saved', async () => {
+    await target.save(STRATEGY_1)();
+
+    await target.addYieldData(
+      STRATEGY_1.chain,
+      STRATEGY_1.address,
+      yields[0],
+    )();
+
+    const result = (await target.findOne(
+      STRATEGY_1.chain,
+      STRATEGY_1.address,
+    )()) as Right<YieldVaultStrategy>;
+
+    expect(result.right.yields.length).toEqual(1);
   });
 });
