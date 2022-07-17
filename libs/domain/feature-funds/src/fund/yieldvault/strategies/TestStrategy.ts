@@ -1,4 +1,5 @@
 import { SupportedChain } from '@shared/util-types';
+import { YieldData } from '../../Strategy';
 import { Token } from '../../Token';
 import { YieldVaultStrategy } from '../YieldVaultStrategy';
 
@@ -12,6 +13,7 @@ export class TestStrategy implements YieldVaultStrategy {
     public underlyingToken: Token,
     public trusted: boolean,
     public vaults: string[] = [],
+    public yields: YieldData[] = [],
   ) {}
 
   calculateAPR(): number {
