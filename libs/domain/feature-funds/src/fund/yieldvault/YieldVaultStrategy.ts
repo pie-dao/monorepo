@@ -1,57 +1,25 @@
-import { SupportedChain } from '@shared/util-types';
-import BigNumber from 'bignumber.js';
-import { Token } from '../Token';
+import { Strategy } from '../Strategy';
 
-export type YieldVaultStrategy = {
+export interface YieldVaultStrategy extends Strategy {
   /**
-   * The chain on which this strategy resides.
+   * Calculates the APR for this strategy.
+   *
+   * Annual percentage rate (APR) refers to the yearly interest generated
+   * by this strategy. This includes any fees or additional costs but does not
+   * take compounding into account.
    */
-  chain: SupportedChain;
-
-  /**
-   * The address where this strategy is deployed.
-   */
-  address: string;
-
-  name: string;
+  calculateAPR(): number;
 
   /**
-   * The kind of this `Token`. This property can be used
-   * to create tagged unions.
+   * Simulates the APY for this strategy for the given compounding frequency.
+   *
+   * Though an APR only accounts for simple interest, the annual percentage
+   * yield (APY) takes compound interest into account. As a result, APY is
+   * higher than APR. The higher the interest rate — and to a lesser extent,
+   * the smaller the compounding periods — the greater the difference between
+   * the APR and APY.
+   *
+   * @param compoundingFrequency How many times the APR is compounded per year.
    */
-  kind: string;
-
-  /**
-   * The underlying token the strategy accepts.
-   */
-  underlyingToken: Token;
-
-  /**
-   * The amount of underlying tokens deposited in this strategy.
-   */
-  depositedAmount: BigNumber;
-
-  /**
-   * The estimated amount of underlying tokens managed by the strategy.
-   */
-  estimatedAmount: BigNumber;
-
-  /**
-   * The strategy manager.
-   */
-  manager: string;
-
-  /**
-   * The strategist (TODO: who is this?)
-   */
-  strategist: string;
-
-  /**
-   * Tells whether the Vault will operate on the strategy.
-   */
-  trusted: boolean;
-  /**
-   * Used to determine profit and loss during harvests of the strategy.
-   */
-  balance: BigNumber;
-};
+  simulateAPY(compoundingFrequency: number): number;
+}

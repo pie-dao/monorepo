@@ -1,6 +1,6 @@
 import { SupportedChain } from '@shared/util-types';
 import * as E from 'fp-ts/Either';
-import { BlockchainEntityNotFoundError } from '../../repository/error';
+import { ContractNotFoundError } from '../../repository/error';
 import { Fund } from '../Fund';
 import { MarketData } from '../MarketData';
 import { Token } from '../Token';
@@ -60,9 +60,7 @@ export class PieVault implements Fund<PieVaultHistory> {
         )!,
       );
     } else {
-      return E.left(
-        new BlockchainEntityNotFoundError(token.address, token.chain),
-      );
+      return E.left(new ContractNotFoundError(token.address, token.chain));
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   YieldVaultHistory,
 } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
-import { FundRepositoryBase } from '.';
+import { FundRepositoryBase } from './base/FundRepositoryBase';
 import {
   MarketDataModel,
   YieldVaultEntity,
@@ -22,7 +22,7 @@ export class MongoYieldVaultRepository extends FundRepositoryBase<
     super(YieldVaultModel, MarketDataModel, YieldVaultHistoryModel);
   }
 
-  protected getPaths(): Array<Omit<keyof FundFilters, 'token'>> {
+  protected getPaths(): Array<Omit<keyof FundFilters, 'contract'>> {
     return ['marketData', 'history', 'strategies'];
   }
 

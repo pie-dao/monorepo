@@ -1,6 +1,6 @@
 import {
   DEFAULT_CHILD_FILTER,
-  DEFAULT_TOKEN_FILTER,
+  DEFAULT_CONTRACT_FILTER,
   TokenFilters,
 } from '@domain/feature-funds';
 import { Args, Query, Resolver } from '@nestjs/graphql';
@@ -23,7 +23,7 @@ export class TokenResolver {
   ): Promise<TokenEntity[]> {
     // 👇 This mapping is horrendous, but necessary. If you know a better solution pls share it.
     const filters: TokenFilters = {
-      token: DEFAULT_TOKEN_FILTER,
+      contract: DEFAULT_CONTRACT_FILTER,
       marketData: DEFAULT_CHILD_FILTER,
     };
     if (tokenFilters?.marketData) {
@@ -41,7 +41,7 @@ export class TokenResolver {
       tokenFilters?.token?.orderBy?.forEach(({ field, value }) => {
         orderBy[field] = value;
       });
-      filters.token = {
+      filters.contract = {
         limit: tokenFilters.token?.limit ?? undefined,
         orderBy,
       };

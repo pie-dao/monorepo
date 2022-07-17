@@ -1,6 +1,6 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
 import {
-  BlockchainEntityNotFoundError,
+  ContractNotFoundError,
   CurrencyData,
   DatabaseError,
   Token,
@@ -111,7 +111,7 @@ export class FundLoader {
    * using an upsert operation.
    */
   public ensureFundsExist(): TE.TaskEither<
-    DatabaseError | BlockchainEntityNotFoundError,
+    DatabaseError | ContractNotFoundError,
     readonly Token[]
   > {
     return pipe(

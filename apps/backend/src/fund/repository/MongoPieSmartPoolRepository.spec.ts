@@ -226,7 +226,7 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
     await target.save(PIE_SMART_POOL_2)();
 
     const result = await target.find({
-      token: {
+      contract: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },

@@ -3,7 +3,7 @@ import { SupportedChain } from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { YieldVaultStrategy } from '../fund';
-import { BlockchainEntityNotFoundError, DatabaseError } from './error';
+import { ContractNotFoundError, DatabaseError } from './error';
 
 export const STRATEGY_PARENT_FIELD = 'yieldVaultId';
 
@@ -27,5 +27,5 @@ export interface YieldVaultStrategyRepository<
   findOne(
     chain: SupportedChain,
     address: string,
-  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, S>;
+  ): TE.TaskEither<ContractNotFoundError | DatabaseError, S>;
 }

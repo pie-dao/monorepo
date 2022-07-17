@@ -1,9 +1,9 @@
 import {
-  BlockchainEntityNotFoundError,
+  ContractNotFoundError,
   CreateHistoryError,
   DatabaseError,
   DEFAULT_CHILD_FILTER,
-  DEFAULT_TOKEN_FILTER,
+  DEFAULT_CONTRACT_FILTER,
   Fund,
   FundFilters,
   FundHistory,
@@ -19,7 +19,7 @@ import { FundEntity } from '../../';
 import { TokenRepositoryBase } from './TokenRepositoryBase';
 
 const DEFAULT_FILTERS: FundFilters = {
-  token: DEFAULT_TOKEN_FILTER,
+  contract: DEFAULT_CONTRACT_FILTER,
   marketData: DEFAULT_CHILD_FILTER,
   history: DEFAULT_CHILD_FILTER,
 };
@@ -41,8 +41,9 @@ export abstract class FundRepositoryBase<
     model: Model<E>,
     marketModel: Model<MarketData>,
     private historyModel: Model<H>,
+    discriminated = false,
   ) {
-    super(model, marketModel);
+    super(model, marketModel, discriminated);
   }
 
   find(filters: FundFilters = DEFAULT_FILTERS): T.Task<F[]> {
@@ -52,8 +53,8 @@ export abstract class FundRepositoryBase<
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Omit<FundFilters, 'token'> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, F> {
+    childFilters: Omit<FundFilters, 'contract'> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<ContractNotFoundError | DatabaseError, F> {
     return super.findOne(chain, address, childFilters);
   }
 
@@ -62,7 +63,7 @@ export abstract class FundRepositoryBase<
     address: string,
     entry: H,
   ): TE.TaskEither<
-    DatabaseError | BlockchainEntityNotFoundError | CreateHistoryError,
+    DatabaseError | ContractNotFoundError | CreateHistoryError,
     H
   > {
     return pipe(
@@ -82,13 +83,13 @@ export abstract class FundRepositoryBase<
     );
   }
 
-  protected getPaths(): Array<Omit<keyof FundFilters, 'token'>> {
+  protected getPaths(): Array<Omit<keyof FundFilters, 'contract'>> {
     return ['marketData', 'history'];
   }
 
-  protected saveMarketData(token: HydratedDocument<E>): Promise<unknown> {
+  protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
     return Promise.all([
-      super.saveMarketData(token),
+      super.saveChildren(token),
       Promise.all(
         token.history.map((entry) =>
           new this.historyModel({

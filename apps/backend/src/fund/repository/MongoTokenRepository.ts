@@ -1,8 +1,8 @@
 import {
-  BlockchainEntityNotFoundError,
+  ContractNotFoundError,
   DatabaseError,
   DEFAULT_CHILD_FILTER,
-  DEFAULT_TOKEN_FILTER,
+  DEFAULT_CONTRACT_FILTER,
   Token,
   TokenFilters,
 } from '@domain/feature-funds';
@@ -18,7 +18,7 @@ import {
 } from './entity';
 
 const DEFAULT_FILTERS = {
-  token: DEFAULT_TOKEN_FILTER,
+  contract: DEFAULT_CONTRACT_FILTER,
   marketData: DEFAULT_CHILD_FILTER,
 };
 
@@ -33,7 +33,7 @@ export class MongoTokenRepository extends TokenRepositoryBase<
   TokenFilters
 > {
   constructor() {
-    super(DiscriminatedTokenModel, MarketDataModel);
+    super(DiscriminatedTokenModel, MarketDataModel, true);
   }
 
   find(filters: TokenFilters = DEFAULT_FILTERS): T.Task<Token[]> {
@@ -43,8 +43,8 @@ export class MongoTokenRepository extends TokenRepositoryBase<
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Omit<TokenFilters, 'token'> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<BlockchainEntityNotFoundError | DatabaseError, Token> {
+    childFilters: Omit<TokenFilters, 'contract'> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<ContractNotFoundError | DatabaseError, Token> {
     return super.findOne(chain, address, childFilters);
   }
 

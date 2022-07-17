@@ -2,7 +2,7 @@ import { SupportedChain } from '@shared/util-types';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenRepository } from '.';
 import { Fund, FundHistory } from '../fund';
-import { BlockchainEntityNotFoundError, DatabaseError } from './error';
+import { ContractNotFoundError, DatabaseError } from './error';
 import { Filter } from './filter';
 
 export class CreateHistoryError extends Error {
@@ -12,10 +12,10 @@ export class CreateHistoryError extends Error {
   }
 }
 
-export type FundFilterField = 'token' | 'marketData' | 'history';
+export type FundFilterField = 'contract' | 'marketData' | 'history';
 
 export type FundFilters = Partial<
-  Record<FundFilterField, Filter<'timestamp' | 'symbol' | 'name'>>
+  Record<FundFilterField, Filter<'_id' | 'timestamp' | 'symbol' | 'name'>>
 >;
 
 export interface FundRepository<H extends FundHistory, T extends Fund<H>>
@@ -28,7 +28,7 @@ export interface FundRepository<H extends FundHistory, T extends Fund<H>>
     address: string,
     entry: H,
   ) => TE.TaskEither<
-    DatabaseError | BlockchainEntityNotFoundError | CreateHistoryError,
+    DatabaseError | ContractNotFoundError | CreateHistoryError,
     H
   >;
 }

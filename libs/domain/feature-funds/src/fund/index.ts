@@ -6,3 +6,5 @@ export * from './piesmartpool';
 export * from './pievault';
 export * from './Token';
 export * from './yieldvault';
+export * from './Strategy';
+export * from './Contract';

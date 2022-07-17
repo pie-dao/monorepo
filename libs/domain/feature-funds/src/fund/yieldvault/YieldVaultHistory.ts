@@ -1,7 +1,7 @@
 import { BigNumber } from 'bignumber.js';
 import { FundHistory } from '../FundHistory';
+import { Strategy } from '../Strategy';
 import { Token } from '../Token';
-import { YieldVaultStrategy } from './YieldVaultStrategy';
 
 /**
  * Represents the state of a {@link YieldVault} at the given {@link timestamp}.
@@ -138,5 +138,5 @@ export type YieldVaultHistory = FundHistory & {
    * withdrawal time, not validated upfront, meaning the queue may not reflect the "true" set used
    * for withdrawals.
    */
-  withdrawalQueue?: YieldVaultStrategy[];
+  withdrawalQueue?: Strategy[];
 };
