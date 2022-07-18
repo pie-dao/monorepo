@@ -1,5 +1,11 @@
 import { Strategy } from '../Strategy';
 
+export enum CompoundingFrequency {
+  DAILY = 365,
+  WEEKLY = 52,
+  MONTHLY = 12,
+}
+
 export interface YieldVaultStrategy extends Strategy {
   /**
    * Calculates the APR for this strategy.
