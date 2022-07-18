@@ -15,7 +15,7 @@ import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
-const THIRTY_MINUTES = 1000 * 60 * 30;
+import { EVERY_30_MINUTES } from './constants';
 
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
@@ -37,7 +37,7 @@ export class FundLoader {
     this.sentry = this.sentryService.instance();
   }
 
-  @Interval(THIRTY_MINUTES)
+  @Interval(EVERY_30_MINUTES)
   public loadCgMarketData() {
     Logger.log('Loading CG market data...');
     return pipe(
