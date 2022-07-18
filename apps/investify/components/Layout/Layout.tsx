@@ -2,6 +2,7 @@ import { useMediaQuery } from 'usehooks-ts';
 import { useEffect, useState } from 'react';
 import { Navigation, Sidebar, Header } from '../../components';
 import {
+  thunkGetUserProductsData,
   thunkGetProductsData,
   thunkGetUserVaultsData,
   thunkGetVaultsData,
@@ -21,11 +22,12 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     if (!account) return;
-    dispatch(thunkGetProductsData(account));
+    dispatch(thunkGetUserProductsData(account));
     dispatch(thunkGetUserVaultsData(account));
   }, [account, dispatch]);
 
   useEffect(() => {
+    dispatch(thunkGetProductsData());
     dispatch(thunkGetVaultsData());
   }, [dispatch]);
 

@@ -13,7 +13,7 @@ function withOpacityValue(variable) {
 
 module.exports = {
   content: [
-    join(__dirname, './pages/*.{js,ts,jsx,tsx}'),
+    join(__dirname, './pages/**/*.{js,ts,jsx,tsx}'),
     join(__dirname, './components/**/*.{js,ts,jsx,tsx}'),
     ...createGlobPatternsForDependencies(__dirname),
   ],
@@ -41,6 +41,7 @@ module.exports = {
         error: withOpacityValue('--color-error'),
         info: withOpacityValue('--color-info'),
         red: withOpacityValue('--color-red'),
+        green: withOpacityValue('--color-green'),
       },
       backgroundImage: {
         'gradient-primary': `linear-gradient(90deg, #FFFFFF 0.33%, #F6F7FF 95.86%)`,

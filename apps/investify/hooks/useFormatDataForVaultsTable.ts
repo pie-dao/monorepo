@@ -103,6 +103,7 @@ export function useFormatDataForVaultsTable(
             beData.underlyingToken.marketData[0].currentPrice ?? 0,
             locale,
             currency,
+            true,
           ),
         },
         APY: `${vault.stats.currentAPY.label.toFixed(2)}%`,
@@ -122,6 +123,7 @@ export function useFormatDataForVaultsTable(
           ),
           locale,
           currency,
+          true,
         ),
         address: vault.address,
         subRow: {

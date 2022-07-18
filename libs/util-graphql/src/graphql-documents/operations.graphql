@@ -17,7 +17,10 @@ fragment UserFields on User {
     symbol
     name
   }
-  twentyFourHourChange
+  twentyFourHourChange {
+    price
+    change
+  }
   yieldVaults {
     name
     symbol
@@ -33,9 +36,17 @@ query getProductsBySymbol($symbols: [String!]!, $currency: String!) {
   tokensBySymbol(symbols: $symbols) {
     marketData {
       currentPrice(currency: $currency)
-      twentyFourHourChange
+      twentyFourHourChange {
+        price
+        change
+      }
+      fromInception
+      discount
+      interests
+      nav
     }
     symbol
+    riskGrade
   }
 }
 

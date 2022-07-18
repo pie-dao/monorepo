@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import { useLazyGetProductsBySymbolQuery } from '../api/generated/graphql';
 import productsConfig from '../config/products.json';
-import { formatBalanceCurrency } from '../utils/formatBalance';
+import { formatAsPercent, formatBalanceCurrency } from '../utils/formatBalance';
 import { ethers } from 'ethers';
 import { Products } from '../store/products/products.types';
 import chainImages from '../utils/chainImages';
 import { chainMap } from '../utils/networks';
-import { isEmpty, pickBy } from 'lodash';
+import { find, has, isEmpty, pickBy } from 'lodash';
 
 export type ProductTableData = {
   image: string;
@@ -17,7 +17,10 @@ export type ProductTableData = {
   symbol: string;
   price: {
     value: string;
-    change: string;
+    twentyFourHours: {
+      price: string;
+      change: string;
+    };
   };
   balance: string;
   portfolioPercentage: string;
@@ -50,14 +53,15 @@ export function useFormatDataForAssetsTable(
     if (!isEmpty(products)) {
       const filterProducts = pickBy(
         products,
-        ({ totalBalance }) => totalBalance.label !== 0,
+        ({ totalBalance }) => totalBalance && totalBalance.label !== 0,
       );
+      if (!filterProducts) return;
       trigger({
         symbols: Object.keys(filterProducts),
         currency,
       });
     }
-  }, [currency, products, trigger]);
+  }, [currency, products, totalBalance, trigger]);
 
   const formattedProducts = useMemo(() => {
     const shouldReturn =
@@ -67,6 +71,7 @@ export function useFormatDataForAssetsTable(
       currency.length === 0 ||
       isEmpty(products) ||
       isEmpty(productsData?.tokensBySymbol);
+    console.log(productsData);
 
     if (shouldReturn) return;
 
@@ -86,8 +91,20 @@ export function useFormatDataForAssetsTable(
               marketData[0].currentPrice,
               locale,
               currency,
+              true,
             ),
-            change: marketData[0].twentyFourHourChange,
+            twentyFourHours: {
+              price: formatBalanceCurrency(
+                marketData[0].twentyFourHourChange.price,
+                locale,
+                currency,
+                true,
+              ),
+              change: formatAsPercent(
+                marketData[0].twentyFourHourChange.change,
+                locale,
+              ),
+            },
           },
           portfolioPercentage: `${(
             (+products[symbol].totalBalance.label / Number(totalBalance)) *
@@ -98,6 +115,7 @@ export function useFormatDataForAssetsTable(
             marketData[0].currentPrice * +products[symbol].totalBalance.label,
             locale,
             currency,
+            true,
           ),
           subRows: Object.entries(products[symbol].balances)
             .filter(([, value]) => value.label !== 0)
@@ -123,6 +141,7 @@ export function useFormatDataForAssetsTable(
                   ),
                 locale,
                 currency,
+                true,
               ),
             })),
         };
@@ -135,8 +154,9 @@ export function useFormatDataForAssetsTable(
     isLoading,
     locale,
     products,
-    productsData?.tokensBySymbol,
+    productsData,
     totalBalance,
+    productsData?.tokensBySymbol,
   ]);
   return { formattedProducts, isLoading, isError };
 }

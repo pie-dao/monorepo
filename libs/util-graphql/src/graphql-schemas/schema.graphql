@@ -1,93 +1,100 @@
-# ------------------------------------------------------
-# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
-# ------------------------------------------------------
+scalar Timestamp
 
-"""Represents market data denominated in a specific currency."""
-type CurrencyDataEntity {
-  """The name of the currency (eg: ETH)"""
-  currency: String!
-  marketCap: Float!
-  price: Float!
-  volume: Float!
-}
-
-"""Contains market information for a given token at a specific timestamp."""
-type MarketDataEntity {
-  """The currently circulating supply of the token at the given timestamp."""
-  circulatingSupply: Float!
-
-  """Price metadata at the given timestamp in all the supported currencies."""
-  currencyData: [CurrencyDataEntity!]!
-
-  """The rank of the token at the given timestamp."""
-  marketCapRank: Int!
-
-  """The timestamp at which this data was taken."""
-  timestamp: Timestamp!
-}
-
-input MarketDataFilter {
-  limit: Int
-  orderBy: [MarketDataOrderBy!]
-}
-
-input MarketDataOrderBy {
-  field: MarketDataOrderByField!
-  value: Order!
-}
-
-enum MarketDataOrderByField {
-  timestamp
-}
-
-enum Order {
-  asc
-  desc
+schema {
+  query: Query
 }
 
 type Query {
-  """Returns all tokens regardless of their kind."""
-  tokens(filters: TokenFiltersInput): [TokenEntity!]!
+  me: User!
+  user(address: String!, currency: String! = "USD"): User
+  allUsers: [User]
+  token(symbol: String!): TokenEntity
+  tokens: [TokenEntity]
+  tokensBySymbol(symbols: [String!]!): [TokenEntity]
+  vaults(currency: String! = "USD"): [YieldVaultEntity]
 }
 
-"""
-`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
-"""
-scalar Timestamp
-
-type TokenEntity {
+type User {
   address: String!
+  pieVaults: [UserTokenEntity!]!
+  twentyFourHourChange: PriceChange!
+  yieldVaults: [UserYieldVaultEntity!]!
+  totalBalance: Float!
+  profit: Float!
+  performance: Float!
+}
 
-  """The chain on which this token lives."""
+type MarketDataEntity {
+  circulatingSupply: Float!
+  currentPrice(currency: String! = "USD"): Float!
+  marketCap: String!
+  marketCapRank: Float!
+  timestamp: Timestamp!
+  totalVolume: String!
+  twentyFourHourChange: PriceChange!
+  fromInception: Float!
+  discount: Float!
+  interests: Float!
+  nav: Float!
+}
+
+interface TokenInterface {
+  address: String!
   chain: String!
   coinGeckoId: String!
   decimals: Float!
-
-  """The kind of this token (eg: 'PieVault', 'YieldVault', etc)."""
   kind: String!
-
-  """Market data for this token."""
   marketData: [MarketDataEntity!]!
   name: String!
   symbol: String!
+  riskGrade: String!
 }
 
-input TokenFilter {
-  limit: Int
-  orderBy: [TokenOrderBy!]
+type TokenEntity implements TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+  riskGrade: String!
 }
 
-input TokenFiltersInput {
-  marketData: MarketDataFilter = {}
-  token: TokenFilter = {}
+type UserTokenEntity implements TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+  riskGrade: String!
 }
 
-input TokenOrderBy {
-  field: TokenOrderByField!
-  value: Order!
+interface YieldVaultInterface {
+  symbol: String!
+  name: String!
 }
 
-enum TokenOrderByField {
-  name
-  symbol
+type YieldVaultEntity implements YieldVaultInterface {
+  underlyingToken: TokenEntity!
+  symbol: String!
+  name: String!
+  address: String!
+}
+
+type UserYieldVaultEntity implements YieldVaultInterface {
+  symbol: String!
+  name: String!
+  address: String!
+  twentyFourHourEarnings: Float!
+  totalEarnings: Float!
+}
+
+type PriceChange {
+  price: Float!
+  change: Float!
 }

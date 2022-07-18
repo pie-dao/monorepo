@@ -35,5 +35,11 @@
   "authorizeDepositorError": "Your Opt In request failed",
   "withdrawBalance": "Your available tokens: <balance>${balance}</balance>",
   "maxWithdrawal": "You can only withdraw ${max}",
-  "withdrawReady": "Your withdraw is ready"
+  "withdrawReady": "Your withdraw is ready",
+  "fromInception": "From Inception",
+  "discount": "Discount",
+  "premium": "Premium",
+  "interests": "Interests",
+  "riskGrade": "Risk grade",
+  "nav": "Nav"
 }

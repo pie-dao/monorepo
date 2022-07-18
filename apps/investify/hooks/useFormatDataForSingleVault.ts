@@ -66,6 +66,7 @@ export function useFormatDataForSingleVault(
           beData.underlyingToken.marketData[0].currentPrice,
           locale,
           currency,
+          true,
         ),
       },
       APY: `${activeVault.stats.currentAPY}%`,

@@ -35,7 +35,7 @@ export default function UserCard() {
 
   const balanceAmount = data?.user?.totalBalance;
 
-  const volume = data?.user?.twentyFourHourChange;
+  const volume = data?.user?.twentyFourHourChange?.change;
 
   const balance = useFormattedBalance(
     balanceAmount,
@@ -88,7 +88,7 @@ export default function UserCard() {
               {t('24h')}{' '}
               <span
                 className={classNames(
-                  data?.user?.twentyFourHourChange > 0
+                  data?.user?.twentyFourHourChange?.change > 0
                     ? 'text-secondary'
                     : 'text-red',
                   hideBalance && 'hidden-balance',

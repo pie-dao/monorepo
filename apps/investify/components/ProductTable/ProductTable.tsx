@@ -50,15 +50,16 @@ export default function ProductTable({
                       {product.balance} {product.name.main}
                     </p>
                   </div>
-                  <div className="flex flex-col justify-between hidden sm:block">
+                  <div className="flex-col justify-between hidden sm:block">
                     <p className="text-base" data-cy="price">
                       {product.price.value}
                     </p>
                     <p className="text-xs text-secondary">
-                      {product.price.change}
+                      {product.price.twentyFourHours.price} /{' '}
+                      {product.price.twentyFourHours.change}
                     </p>
                   </div>
-                  <div className="flex flex-col justify-center text-right hidden sm:block">
+                  <div className="flex-col justify-center text-right hidden sm:block">
                     <p
                       className={classNames(
                         `text-base text-primary`,
@@ -80,7 +81,8 @@ export default function ProductTable({
                       {product.value}
                     </p>
                     <p className="text-base text-secondary block sm:hidden">
-                      {product.price.change}
+                      {product.price.twentyFourHours.price} /{' '}
+                      {product.price.twentyFourHours.change}
                     </p>
                   </div>
                 </div>
@@ -147,8 +149,8 @@ export default function ProductTable({
                             {subRow.balance} {product.name.main}
                           </p>
                         </div>
-                        <div className="flex flex-col justify-between hidden sm:block"></div>
-                        <div className="flex flex-col justify-center text-right hidden sm:block">
+                        <div className="flex-col justify-between hidden sm:block"></div>
+                        <div className="flex-col justify-center text-right hidden sm:block">
                           <p
                             className={classNames(
                               `text-xs text-sub-dark`,
