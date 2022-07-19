@@ -71,14 +71,22 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
           <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
             <div className="flex flex-1 items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full xl:w-auto">
               <Image src={image} alt={name} width={40} height={40} />
-              <h2 className="text-lg font-medium text-primary w-fit">{name}</h2>
+              <h2
+                className="text-lg font-medium text-primary w-fit"
+                data-cy="product-name"
+              >
+                {name}
+              </h2>
               {!isLoading && (
                 <div className="flex ml-auto mr-2 gap-x-2 items-center">
                   <div className="hidden lg:flex gap-x-1">
                     <span>{t('riskGrade')}</span>
                     <Tooltip>{t('riskGradeTooltip')}</Tooltip>
                   </div>
-                  <span className="border border-secondary rounded-full px-3">
+                  <span
+                    className="border border-secondary rounded-full px-3"
+                    data-cy="product-risk-grade"
+                  >
                     {data?.tokensBySymbol[0]?.riskGrade
                       ? data?.tokensBySymbol[0]?.riskGrade
                       : 'N/A'}
@@ -89,7 +97,7 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
             {!isLoading && (
               <div className="flex gap-x-2 items-start">
                 <div className="flex flex-col min-w-max bg-primary text-white rounded-md p-2 border border-custom-border">
-                  <p className="font-medium">
+                  <p className="font-medium" data-cy="product-inception">
                     {data?.tokensBySymbol[0]?.marketData[0]?.fromInception
                       ? formatAsPercent(
                           data?.tokensBySymbol[0]?.marketData[0]?.fromInception,
@@ -101,7 +109,7 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
                 </div>
                 <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border">
                   <div className="flex flex-col">
-                    <p className="font-medium">
+                    <p className="font-medium" data-cy="product-discount">
                       {data?.tokensBySymbol[0]?.marketData[0]?.discount
                         ? formatAsPercent(
                             data?.tokensBySymbol[0]?.marketData[0]?.discount,
@@ -119,7 +127,7 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
                 </div>
                 <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border">
                   <div className="flex flex-col">
-                    <p className="font-medium">
+                    <p className="font-medium" data-cy="product-interests">
                       {data?.tokensBySymbol[0]?.marketData[0]?.interests
                         ? formatAsPercent(
                             data?.tokensBySymbol[0]?.marketData[0]?.interests,
@@ -137,7 +145,10 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
           <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap mt-4">
             <div className="flex flex-1 items-center gap-x-6 self-center w-full xl:w-auto">
               <div className="flex-shrink-0">
-                <p className="text-2xl font-bold text-primary">
+                <p
+                  className="text-2xl font-bold text-primary"
+                  data-cy="product-current-price"
+                >
                   {data?.tokensBySymbol[0]?.marketData[0]?.currentPrice
                     ? formatBalanceCurrency(
                         data?.tokensBySymbol[0]?.marketData[0]?.currentPrice,
@@ -155,27 +166,35 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
                     'text-base font-medium',
                   )}
                 >
-                  {data?.tokensBySymbol[0]?.marketData[0]?.twentyFourHourChange
-                    ? formatBalanceCurrency(
-                        data?.tokensBySymbol[0]?.marketData[0]
-                          ?.twentyFourHourChange?.price,
-                        defaultLocale,
-                        defaultCurrency,
-                      )
-                    : 'N/A'}{' '}
-                  /{' '}
-                  {data?.tokensBySymbol[0]?.marketData[0]?.twentyFourHourChange
-                    ?.change
-                    ? formatAsPercent(
-                        data.tokensBySymbol[0].marketData[0]
-                          .twentyFourHourChange.change,
-                        defaultLocale,
-                      )
-                    : 'N/A'}
+                  <span data-cy="product-24-hour-change-price">
+                    {data?.tokensBySymbol[0]?.marketData[0]
+                      ?.twentyFourHourChange?.price
+                      ? formatBalanceCurrency(
+                          data?.tokensBySymbol[0]?.marketData[0]
+                            ?.twentyFourHourChange?.price,
+                          defaultLocale,
+                          defaultCurrency,
+                        )
+                      : 'N/A'}
+                  </span>
+                  {' / '}
+                  <span data-cy="product-24-hour-change-change">
+                    {data?.tokensBySymbol[0]?.marketData[0]
+                      ?.twentyFourHourChange?.change
+                      ? formatAsPercent(
+                          data.tokensBySymbol[0].marketData[0]
+                            .twentyFourHourChange.change,
+                          defaultLocale,
+                        )
+                      : 'N/A'}
+                  </span>
                 </p>
               </div>
               <div className="flex flex-col w-full bg-gradient-primary rounded-md py-1 px-4">
-                <p className="font-bold text-sub-dark text-xl">
+                <p
+                  className="font-bold text-sub-dark text-xl"
+                  data-cy="product-nav"
+                >
                   {data?.tokensBySymbol[0]?.marketData[0]?.nav
                     ? formatBalanceCurrency(
                         data.tokensBySymbol[0].marketData[0].nav,
@@ -184,10 +203,10 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
                       )
                     : 'N/A'}
                 </p>
-                <p className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-sub-dark font-medium gap-x-1">
                   {t('nav')}
                   <Tooltip>{t('navTooltip')}</Tooltip>
-                </p>
+                </div>
               </div>
             </div>
           </section>

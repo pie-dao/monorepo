@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import { Products } from '../store/products/products.types';
 import chainImages from '../utils/chainImages';
 import { chainMap } from '../utils/networks';
-import { find, has, isEmpty, pickBy } from 'lodash';
+import { isEmpty, pickBy } from 'lodash';
 
 export type ProductTableData = {
   image: string;
@@ -148,6 +148,7 @@ export function useFormatDataForAssetsTable(
       },
     );
     return orderProducts;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currency,
     isError,
