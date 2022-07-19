@@ -38,13 +38,13 @@ export const sidebarSlice = createSlice({
       state.swap = action.payload.swap;
       state.step = action.payload.step;
     },
-    setVault: (state, action: PayloadAction<string>) => {
+    setSidebarVault: (state, action: PayloadAction<string>) => {
       state.vault = action.payload;
       state.step = 'vault';
     },
   },
 });
 
-export const { setStep, setOpenModal, setSwap, setVault } =
+export const { setStep, setOpenModal, setSwap, setSidebarVault } =
   sidebarSlice.actions;
 export default sidebarSlice.reducer;

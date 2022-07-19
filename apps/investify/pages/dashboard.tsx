@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from 'react';
+import { ReactElement } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import Trans from 'next-translate/Trans';
 import useTranslation from 'next-translate/useTranslation';
@@ -7,32 +7,16 @@ import UserCard from '../components/UserCard/UserCard';
 import DashboardTable from '../components/ProductTable/DashboardTable';
 import ProfitPerformance from '../components/ProfitPerformance/ProfitPerformance';
 import { wrapper } from '../store';
-import useMediaQuery from '../hooks/useMediaQuery';
+import { useMediaQuery } from 'usehooks-ts';
 import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import {
-  thunkGetProductsData,
-  thunkGetVaultsData,
-  thunkGetUserVaultsData,
-} from '../store/products/thunks';
+import { useAppSelector } from '../hooks';
 
 export default function DashboardPage({ title }) {
-  const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const { t } = useTranslation();
   const mq = useMediaQuery('(min-width: 1024px)');
   const ready = useServerHandoffComplete();
   const { networks, assets } = useAppSelector((state) => state.dashboard.stats);
-
-  useEffect(() => {
-    if (!account) return;
-    dispatch(thunkGetProductsData(account));
-    dispatch(thunkGetUserVaultsData(account));
-  }, [account, dispatch]);
-
-  useEffect(() => {
-    dispatch(thunkGetVaultsData());
-  }, [dispatch]);
 
   return (
     <div className="flex-1 flex items-stretch">

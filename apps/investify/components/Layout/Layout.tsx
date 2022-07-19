@@ -1,14 +1,33 @@
-import useMediaQuery from '../../hooks/useMediaQuery';
+import { useMediaQuery } from 'usehooks-ts';
 import { useEffect, useState } from 'react';
 import { Navigation, Sidebar, Header } from '../../components';
+import {
+  thunkGetProductsData,
+  thunkGetUserVaultsData,
+  thunkGetVaultsData,
+} from '../../store/products/thunks';
+import { useAppDispatch } from '../../hooks';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 export default function Layout({ children }) {
   const mq = useMediaQuery('(max-width: 1023px)');
   const [open, setOpen] = useState(true);
-
+  const { account } = useWeb3React<Web3Provider>();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     setOpen(!mq);
   }, [mq]);
+
+  useEffect(() => {
+    if (!account) return;
+    dispatch(thunkGetProductsData(account));
+    dispatch(thunkGetUserVaultsData(account));
+  }, [account, dispatch]);
+
+  useEffect(() => {
+    dispatch(thunkGetVaultsData());
+  }, [dispatch]);
 
   return (
     <>

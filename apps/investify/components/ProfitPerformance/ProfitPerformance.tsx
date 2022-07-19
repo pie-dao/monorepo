@@ -17,6 +17,7 @@ const ProfitPerformance: React.FC = () => {
     data?.user?.profit,
     defaultLocale,
     defaultCurrency,
+    true,
   );
 
   const performance =

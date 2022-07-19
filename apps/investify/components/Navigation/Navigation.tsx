@@ -11,8 +11,8 @@ import {
   Variants,
 } from 'framer-motion';
 import classNames from '../../utils/classnames';
-import useMediaQuery from '../../hooks/useMediaQuery';
 import { Socials } from '../';
+import { useMediaQuery } from 'usehooks-ts';
 
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 

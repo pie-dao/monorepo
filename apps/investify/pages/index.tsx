@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import useMediaQuery from '../hooks/useMediaQuery';
+import { useMediaQuery } from 'usehooks-ts';
 import useTranslation from 'next-translate/useTranslation';
 import { useServerHandoffComplete } from '../hooks/useServerHandoffComplete';
 

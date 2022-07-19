@@ -3,14 +3,15 @@ import {
   thunkGetProductsData,
   thunkGetVaultsData,
   thunkGetUserVaultsData,
+  thunkMakeDeposit,
+  thunkApproveDeposit,
+  thunkIncreaseWithdrawal,
+  thunkConfirmWithdrawal,
+  thunkAuthorizeDepositor,
 } from './thunks';
-import {
-  Products,
-  SliceState,
-  Vaults,
-  BigNumberString,
-} from './products.types';
+import { Products, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
+import addTxNotifications from '../../utils/notifications';
 
 const initialState: SliceState = {
   tokens: {},
@@ -29,6 +30,7 @@ const initialState: SliceState = {
     },
     balance: { tokens: 0, vaults: 0, total: 0 },
   },
+  activeVault: '',
 };
 
 const appSlice = createSlice({
@@ -87,6 +89,12 @@ const appSlice = createSlice({
       });
       state.loading = false;
     });
+
+    addTxNotifications(builder, thunkMakeDeposit, 'makeDeposit');
+    addTxNotifications(builder, thunkApproveDeposit, 'approveDeposit');
+    addTxNotifications(builder, thunkIncreaseWithdrawal, 'increaseWithdrawal');
+    addTxNotifications(builder, thunkConfirmWithdrawal, 'confirmWithdrawal');
+    addTxNotifications(builder, thunkAuthorizeDepositor, 'authorizeDepositor');
   },
 
   reducers: {
@@ -138,9 +146,12 @@ const appSlice = createSlice({
       state.stats.balance.total =
         state.stats.balance.tokens + state.stats.balance.vaults;
     },
+    setActiveVault: (state, action: PayloadAction<string>) => {
+      state.activeVault = action.payload;
+    },
   },
 });
 
-export const { setState } = appSlice.actions;
+export const { setState, setActiveVault } = appSlice.actions;
 
 export default appSlice.reducer;

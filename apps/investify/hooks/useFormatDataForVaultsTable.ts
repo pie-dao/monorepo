@@ -22,6 +22,7 @@ export type VaultTableData = {
   balance: string;
   portfolioPercentage: string;
   value: string;
+  address: string;
   subRow: {
     userDeposited: string;
     userEarnings: string;
@@ -48,7 +49,11 @@ export function useFormatDataForVaultsTable(
 
   const filteredVaults = useMemo(() => {
     const filteredVaults = Object.values(vaults).filter(
-      (vault) => vault.balance && vault.balance !== '0',
+      (vault) =>
+        vault &&
+        vault.userBalances &&
+        vault.userBalances.vault &&
+        vault.userBalances.vault.label !== 0,
     );
     return filteredVaults;
   }, [vaults]);
@@ -86,6 +91,7 @@ export function useFormatDataForVaultsTable(
         vaultsData.vaults,
         (o) => o.address.toLowerCase() === address.toLowerCase(),
       );
+
       return {
         image: dataFromConfig.image,
         name: {
@@ -94,32 +100,33 @@ export function useFormatDataForVaultsTable(
         },
         price: {
           value: formatBalanceCurrency(
-            beData.underlyingToken.marketData[0].currentPrice,
+            beData.underlyingToken.marketData[0].currentPrice ?? 0,
             locale,
             currency,
           ),
         },
-        APY: `${vault.estimatedReturn}%`,
+        APY: `${vault.stats.currentAPY.label.toFixed(2)}%`,
         portfolioPercentage: `${(
-          (+ethers.utils.formatUnits(vault.balance, vault.decimals) /
-            Number(totalBalance)) *
+          (+ethers.utils.formatUnits(
+            vault.userBalances.vault.value,
+            vault.token.decimals,
+          ) /
+            totalBalance) *
           100
         ).toFixed()}%`,
-        balance: Number(
-          ethers.utils.formatUnits(vault.balance, vault.decimals),
-        ).toFixed(2),
+        balance: vault.userBalances.vault.label.toFixed(2),
         value: formatBalanceCurrency(
           Number(
             beData.underlyingToken.marketData[0].currentPrice *
-              Number(ethers.utils.formatUnits(vault.balance, vault.decimals)),
+              vault.userBalances.vault.label,
           ),
           locale,
           currency,
         ),
+        address: vault.address,
         subRow: {
-          userDeposited: Number(
-            ethers.utils.formatUnits(vault.balance, vault.decimals),
-          ).toFixed(2),
+          userDeposited: vault.userBalances.vault.label.toFixed(2),
+
           userEarnings: formatBalance(
             find(userVaults, (o) => {
               return o.address.toLowerCase() === address.toLowerCase();
@@ -134,7 +141,7 @@ export function useFormatDataForVaultsTable(
             locale,
             0,
           ),
-          totalDesposited: formatBalance(vault.totalDeposited, locale, 0),
+          totalDesposited: formatBalance(vault.stats.deposits.label, locale, 0),
         },
       };
     });

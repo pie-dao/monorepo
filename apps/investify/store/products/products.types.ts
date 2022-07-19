@@ -1,37 +1,84 @@
 import { SupportedChains } from '../../utils/networks';
 
-export type BigNumberString = string;
-export type ChainValue = Record<SupportedChains, BigNumberString>;
+export type ChainValue = Record<SupportedChains, BigNumberReference>;
 
 type Product = {
   balances: ChainValue;
   productDecimals: number;
-  totalBalance: BigNumberString;
+  totalBalance: BigNumberReference;
 };
 
 export type Products = {
   [currencySymbol: string]: Product;
 };
 
+interface BasicVaultInformation {
+  name: string;
+  address: string;
+  description: string;
+  symbol: string;
+  chainId: number;
+  underlyingSymbol: string;
+}
+
 export type Vaults = {
   [vaultSymbol: string]: Vault;
 };
 
-export type Vault = {
-  totalUnderlying: string;
-  lastHarvest: string;
-  estimatedReturn: string;
-  batchBurnRound: string;
-  userDepositLimit: string;
-  exchangeRate: string;
-  balance: string;
-  decimals: number;
-  symbol: string;
-  name: string;
-  totalDeposited: number;
-  chainId: number;
-  address: string;
+export type BigNumberReference = {
+  label: number;
+  value: string;
 };
+
+// Information about the underlying vault token
+export interface VaultToken {
+  address: string;
+  decimals: number;
+}
+
+// Properties shared across users, ie. total deposits
+export interface VaultStats {
+  currentAPY: BigNumberReference;
+  deposits: BigNumberReference;
+  lastHarvest: number;
+  batchBurnRound: number;
+  exchangeRate: BigNumberReference;
+}
+
+// Properties unique to a given user ie. own deposits
+export interface UserBalances {
+  wallet: BigNumberReference;
+  vaultUnderlying: BigNumberReference;
+  vault: BigNumberReference;
+  allowance: BigNumberReference;
+  batchBurn: {
+    round: number;
+    shares: BigNumberReference;
+    available: BigNumberReference;
+  };
+}
+
+// information about the vault auth contract, used for checking if an account is allowed to use this vault
+export interface VaultAuth {
+  address: string;
+  isDepositor: boolean;
+}
+
+// information about the per-account deposit limits (note, the vaultcap contract extends the vault base)
+export interface VaultCap {
+  underlying: BigNumberReference | null;
+}
+
+/**
+ * Additional Vault fields are populated at runtime, thus they may be optional
+ */
+export interface Vault extends BasicVaultInformation {
+  token: VaultToken;
+  auth: VaultAuth;
+  cap: VaultCap;
+  stats?: VaultStats;
+  userBalances?: UserBalances;
+}
 
 export type Stats = {
   networks: {
@@ -56,12 +103,13 @@ export type SliceState = {
   vaults: Vaults;
   stats: Stats;
   loading: boolean;
+  activeVault: string;
 };
 
 export type EnrichedProduct = {
   [x: string]: {
     balances: ChainValue;
     productDecimals: number;
-    totalBalance: string;
+    totalBalance: BigNumberReference;
   };
 };

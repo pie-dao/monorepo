@@ -34,6 +34,7 @@ module.exports = {
         'sub-dark': withOpacityValue('--color-sub-dark'),
         cards: withOpacityValue('--color-cards'),
         background: withOpacityValue('--color-background'),
+        sidebar: withOpacityValue('--color-sidebar'),
         'custom-border': withOpacityValue('--color-custom-border'),
         success: withOpacityValue('--color-success'),
         warning: withOpacityValue('--color-warning'),
@@ -53,6 +54,6 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
   presets: [require('../../tailwind-workspace-preset.js')],
 };

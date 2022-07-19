@@ -5,6 +5,10 @@ import {
   mockGetProductsBySymbolQuery,
   mockGetVaultsQuery,
 } from '../api/generated/graphql';
+import {
+  FTMContracts,
+  PolygonContracts,
+} from '../store/products/products.contracts';
 
 export const handlers = [
   mockAllUsersQuery((req, res, ctx) => {
@@ -21,7 +25,7 @@ export const handlers = [
       ctx.data({
         user: {
           address,
-          totalBalance: 20000,
+          totalBalance: 20090,
           twentyFourHourChange: address ? -30.22 : null,
           pieVaults: [
             {
@@ -50,7 +54,7 @@ export const handlers = [
             },
           ],
           performance: 30.22,
-          profit: 20030.43,
+          profit: 2034345030.43,
         },
       }),
     );
@@ -69,27 +73,25 @@ export const handlers = [
     );
   }),
   mockGetVaultsQuery((req, res, ctx) => {
-    const vaults = [
-      '0x16AD251B49E62995eC6f1b6A8F48A7004666397C',
-      '0x662556422AD3493fCAAc47767E8212f8C4E24513',
-    ];
     return res(
       ctx.data({
-        vaults: [vaults].flat().map((address) => ({
-          underlyingToken: {
-            marketData: [{ currentPrice: 230 }],
-            symbol: 'FTM',
-            address: '0x0',
-            chain: 137,
-            coinGeckoId: 'fantom',
-            decimals: 18,
-            kind: 'kind',
-            name: 'Fantom Token',
-          },
-          symbol: 'auxoWFTM',
-          name: 'Auxo Wrapped Fantom Vault',
-          address,
-        })),
+        vaults: [...FTMContracts, ...PolygonContracts]
+          .flat()
+          .map((address) => ({
+            underlyingToken: {
+              marketData: [{ currentPrice: 230 }],
+              symbol: 'FTM',
+              address: '0x0',
+              chain: 137,
+              coinGeckoId: 'fantom',
+              decimals: 18,
+              kind: 'kind',
+              name: 'Fantom Token',
+            },
+            symbol: 'auxoWFTM',
+            name: 'Auxo Wrapped Fantom Vault',
+            address,
+          })),
       }),
     );
   }),

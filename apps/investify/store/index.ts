@@ -9,21 +9,24 @@ import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 import sidebarReducer from './sidebar/sidebar.slice';
 import preferencesReducer from './preferences/preferences.slice';
 import productsReducer from './products/products.slice';
+import notificationsReducer from './notifications/notifications.slice';
 import { api } from '../api/generated/graphql';
+import { merge } from 'lodash';
+import memoize from 'proxy-memoize';
+import { useCallback } from 'react';
+import { useSelector } from 'react-redux';
 
 export const rootReducer = combineReducers({
   sidebar: sidebarReducer,
   preferences: preferencesReducer,
   dashboard: productsReducer,
+  notifications: notificationsReducer,
   [api.reducerPath]: api.reducer,
 });
 
 const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
   if (action.type === HYDRATE) {
-    const nextState = {
-      ...state, // use previous state
-      ...action.payload, // apply delta from hydration
-    };
+    const nextState = merge(state, action.payload);
     return nextState;
   } else {
     return rootReducer(state, action);
@@ -51,4 +54,18 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
+const createProxySelectorHook = <TState extends object = any>() => {
+  const useProxySelector = <TReturnType>(
+    fn: (state: TState) => TReturnType,
+    deps?: any[],
+  ): TReturnType => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return useSelector(useCallback(memoize(fn), deps as any));
+  };
+  return useProxySelector;
+};
+
 export const wrapper = createWrapper<AppStore>(makeStore);
+
+// use this when selector causes re-renders because of nested state
+export const useProxySelector = createProxySelectorHook<AppStore>();

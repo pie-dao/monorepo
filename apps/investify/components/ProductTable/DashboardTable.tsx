@@ -10,7 +10,7 @@ import {
 import {
   useFormatDataForVaultsTable,
   VaultTableData,
-} from '../../hooks/useFormatDataForVaults';
+} from '../../hooks/useFormatDataForVaultsTable';
 import ProductTable from './ProductTable';
 import VaultTable from './VaultTable';
 import { useFindUserQuery } from '../../api/generated/graphql';
