@@ -48,6 +48,7 @@ interface TokenInterface {
   name: String!
   symbol: String!
   riskGrade: String!
+  underlyingTokens: [underlyingTokenEntity!]!
 }
 
 type TokenEntity implements TokenInterface {
@@ -60,6 +61,7 @@ type TokenEntity implements TokenInterface {
   name: String!
   symbol: String!
   riskGrade: String!
+  underlyingTokens: [underlyingTokenEntity!]!
 }
 
 type UserTokenEntity implements TokenInterface {
@@ -72,6 +74,7 @@ type UserTokenEntity implements TokenInterface {
   name: String!
   symbol: String!
   riskGrade: String!
+  underlyingTokens: [underlyingTokenEntity!]!
 }
 
 interface YieldVaultInterface {
@@ -80,7 +83,7 @@ interface YieldVaultInterface {
 }
 
 type YieldVaultEntity implements YieldVaultInterface {
-  underlyingToken: TokenEntity!
+  underlyingToken: [TokenEntity!]!
   symbol: String!
   name: String!
   address: String!
@@ -97,4 +100,21 @@ type UserYieldVaultEntity implements YieldVaultInterface {
 type PriceChange {
   price: Float!
   change: Float!
+}
+
+type underlyingTokenEntity {
+  marketData: [underlyingTokenMarketData!]!
+  name: String!
+  symbol: String!
+  decimals: Float!
+  address: String!
+}
+
+type underlyingTokenMarketData {
+  marginalTVLPercentage: Float!
+  currentPrice(currency: String! = "USD"): Float!
+  twentyFourHourChange: PriceChange!
+  totalHeld: Float!
+  amountPerToken: Float!
+  allocation: Float!
 }

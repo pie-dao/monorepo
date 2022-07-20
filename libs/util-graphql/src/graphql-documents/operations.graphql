@@ -45,6 +45,23 @@ query getProductsBySymbol($symbols: [String!]!, $currency: String!) {
       interests
       nav
     }
+    underlyingTokens {
+      name
+      symbol
+      address
+      decimals
+      marketData {
+        currentPrice(currency: $currency)
+        amountPerToken
+        totalHeld
+        allocation
+        twentyFourHourChange {
+          price
+          change
+        }
+        marginalTVLPercentage
+      }
+    }
     symbol
     riskGrade
   }

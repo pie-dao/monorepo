@@ -41,5 +41,11 @@
   "premium": "Premium",
   "interests": "Interests",
   "riskGrade": "Risk grade",
-  "nav": "Nav"
+  "nav": "Nav",
+  "underlyingTokens": "Underlying tokens",
+  "token": "Token",
+  "price": "Price",
+  "amountPerToken": "Amount X token",
+  "totalHeld": "Total held",
+  "allocation": "Allocation"
 }

@@ -85,6 +85,7 @@ export type TokenEntity = TokenInterface & {
   name: Scalars['String'];
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
+  underlyingTokens: Array<UnderlyingTokenEntity>;
 };
 
 export type TokenInterface = {
@@ -97,6 +98,7 @@ export type TokenInterface = {
   name: Scalars['String'];
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
+  underlyingTokens: Array<UnderlyingTokenEntity>;
 };
 
 export type User = {
@@ -121,6 +123,7 @@ export type UserTokenEntity = TokenInterface & {
   name: Scalars['String'];
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
+  underlyingTokens: Array<UnderlyingTokenEntity>;
 };
 
 export type UserYieldVaultEntity = YieldVaultInterface & {
@@ -137,12 +140,35 @@ export type YieldVaultEntity = YieldVaultInterface & {
   address: Scalars['String'];
   name: Scalars['String'];
   symbol: Scalars['String'];
-  underlyingToken: TokenEntity;
+  underlyingToken: Array<TokenEntity>;
 };
 
 export type YieldVaultInterface = {
   name: Scalars['String'];
   symbol: Scalars['String'];
+};
+
+export type UnderlyingTokenEntity = {
+  __typename?: 'underlyingTokenEntity';
+  address: Scalars['String'];
+  decimals: Scalars['Float'];
+  marketData: Array<UnderlyingTokenMarketData>;
+  name: Scalars['String'];
+  symbol: Scalars['String'];
+};
+
+export type UnderlyingTokenMarketData = {
+  __typename?: 'underlyingTokenMarketData';
+  allocation: Scalars['Float'];
+  amountPerToken: Scalars['Float'];
+  currentPrice: Scalars['Float'];
+  marginalTVLPercentage: Scalars['Float'];
+  totalHeld: Scalars['Float'];
+  twentyFourHourChange: PriceChange;
+};
+
+export type UnderlyingTokenMarketDataCurrentPriceArgs = {
+  currency?: Scalars['String'];
 };
 
 export type FindUserQueryVariables = Exact<{
@@ -235,6 +261,26 @@ export type GetProductsBySymbolQuery = {
         change: number;
       };
     }>;
+    underlyingTokens: Array<{
+      __typename?: 'underlyingTokenEntity';
+      name: string;
+      symbol: string;
+      address: string;
+      decimals: number;
+      marketData: Array<{
+        __typename?: 'underlyingTokenMarketData';
+        currentPrice: number;
+        amountPerToken: number;
+        totalHeld: number;
+        allocation: number;
+        marginalTVLPercentage: number;
+        twentyFourHourChange: {
+          __typename?: 'PriceChange';
+          price: number;
+          change: number;
+        };
+      }>;
+    }>;
   } | null> | null;
 };
 
@@ -249,13 +295,13 @@ export type GetVaultsQuery = {
     symbol: string;
     name: string;
     address: string;
-    underlyingToken: {
+    underlyingToken: Array<{
       __typename?: 'TokenEntity';
       marketData: Array<{
         __typename?: 'MarketDataEntity';
         currentPrice: number;
       }>;
-    };
+    }>;
   } | null> | null;
 };
 
@@ -309,6 +355,23 @@ export const GetProductsBySymbolDocument = `
       discount
       interests
       nav
+    }
+    underlyingTokens {
+      name
+      symbol
+      address
+      decimals
+      marketData {
+        currentPrice(currency: $currency)
+        amountPerToken
+        totalHeld
+        allocation
+        twentyFourHourChange {
+          price
+          change
+        }
+        marginalTVLPercentage
+      }
     }
     symbol
     riskGrade
