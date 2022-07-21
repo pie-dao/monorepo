@@ -1,3 +1,4 @@
+import { Provider } from '@ethersproject/providers';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -28,7 +29,7 @@ export class StakingService {
 
   constructor(
     private httpService: HttpService,
-    private provider: ethers.providers.JsonRpcProvider,
+    private provider: Provider,
     @InjectModel(EpochEntity.name) private epochModel: Model<EpochDocument>,
   ) {}
 
