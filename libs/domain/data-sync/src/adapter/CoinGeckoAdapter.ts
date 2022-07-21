@@ -19,7 +19,7 @@ const BASE_URL = 'https://api.coingecko.com/api/v3';
 
 export const DEFAULT_FUNDS = [
   {
-    symbol: 'BTC++',
+    symbol: 'btc++',
     name: 'PieDAO BTC++',
     address: '0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd',
     coingeckoId: 'piedao-btc',
@@ -28,7 +28,7 @@ export const DEFAULT_FUNDS = [
     decimals: 18,
   },
   {
-    symbol: 'DEFI+S',
+    symbol: 'defi+s',
     name: 'PieDAO DEFI Small Cap',
     address: '0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c',
     coingeckoId: 'piedao-defi-small-cap',
@@ -37,7 +37,7 @@ export const DEFAULT_FUNDS = [
     decimals: 18,
   },
   {
-    symbol: 'DEFI++',
+    symbol: 'defi++',
     name: 'PieDAO DEFI++',
     address: '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
     coingeckoId: 'piedao-defi',
@@ -46,7 +46,7 @@ export const DEFAULT_FUNDS = [
     decimals: 18,
   },
   {
-    symbol: 'BCP',
+    symbol: 'bcp',
     name: 'PieDAO Balanced Crypto Pie',
     address: '0xe4f726adc8e89c6a6017f01eada77865db22da14',
     coingeckoId: 'piedao-balanced-crypto-pie',
@@ -55,7 +55,7 @@ export const DEFAULT_FUNDS = [
     decimals: 18,
   },
   {
-    symbol: 'YPIE',
+    symbol: 'ypie',
     name: 'PieDAO Yearn Ecosystem Pie',
     address: '0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31',
     coingeckoId: 'piedao-yearn-ecosystem-pie',
@@ -64,7 +64,7 @@ export const DEFAULT_FUNDS = [
     decimals: 18,
   },
   {
-    symbol: 'PLAY',
+    symbol: 'play',
     name: 'Metaverse NFT Index',
     address: '0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
     coingeckoId: 'metaverse-nft-index',
@@ -73,7 +73,7 @@ export const DEFAULT_FUNDS = [
     decimals: 18,
   },
   {
-    symbol: 'DEFI+L',
+    symbol: 'defi+l',
     name: 'PieDAO DEFI Large Cap',
     address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
     coingeckoId: 'piedao-defi-large-cap',
