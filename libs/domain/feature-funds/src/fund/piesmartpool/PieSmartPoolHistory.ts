@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
-import { FundHistory } from './FundHistory';
-import { Token } from './Token';
+import { FundHistory } from '../FundHistory';
+import { Token } from '../Token';
 
 /**
  * Represents the state of a {@link PieSmartPool} at the given {@link timestamp}.

@@ -1,10 +1,10 @@
 import {
+  ContractNotFoundError,
   DatabaseError,
   DEFAULT_CHILD_FILTER,
-  DEFAULT_TOKEN_FILTER,
-  Filters,
+  DEFAULT_CONTRACT_FILTER,
   Token,
-  TokenNotFoundError,
+  TokenFilters,
 } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
 import { SupportedChain } from '@shared/util-types';
@@ -18,7 +18,7 @@ import {
 } from './entity';
 
 const DEFAULT_FILTERS = {
-  token: DEFAULT_TOKEN_FILTER,
+  contract: DEFAULT_CONTRACT_FILTER,
   marketData: DEFAULT_CHILD_FILTER,
 };
 
@@ -30,25 +30,25 @@ const DEFAULT_CHILD_FILTERS = {
 export class MongoTokenRepository extends TokenRepositoryBase<
   DiscriminatedTokenEntity,
   Token,
-  Filters
+  TokenFilters
 > {
   constructor() {
-    super(DiscriminatedTokenModel, MarketDataModel);
+    super(DiscriminatedTokenModel, MarketDataModel, true);
   }
 
-  findAll(filters: Filters = DEFAULT_FILTERS): T.Task<Token[]> {
-    return super.findAll(filters);
+  find(filters: TokenFilters = DEFAULT_FILTERS): T.Task<Token[]> {
+    return super.find(filters);
   }
 
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Omit<Filters, 'token'> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, Token> {
+    childFilters: Omit<TokenFilters, 'contract'> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<ContractNotFoundError | DatabaseError, Token> {
     return super.findOne(chain, address, childFilters);
   }
 
-  protected getPaths(): Array<keyof Filters> {
+  protected getPaths(): Array<keyof TokenFilters> {
     return ['marketData'];
   }
 

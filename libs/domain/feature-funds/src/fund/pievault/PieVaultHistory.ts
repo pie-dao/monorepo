@@ -1,6 +1,6 @@
 import { BigNumber } from 'bignumber.js';
-import { FundHistory } from './FundHistory';
-import { Token } from './Token';
+import { FundHistory } from '../FundHistory';
+import { Token } from '../Token';
 
 /**
  * Represents the state of a `PieVault` at the given `timestamp`.

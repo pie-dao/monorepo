@@ -1,6 +1,6 @@
 import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
-import { FundRepositoryBase } from '.';
+import { FundRepositoryBase } from './base/FundRepositoryBase';
 import {
   MarketDataModel,
   PieSmartPoolEntity,
