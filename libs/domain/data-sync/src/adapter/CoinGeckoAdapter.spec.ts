@@ -1,5 +1,5 @@
 import { isRight, Right } from 'fp-ts/lib/Either';
-import { CoinGeckoAdapter, DEFAULT_PIES, MarketDto } from '.';
+import { CoinGeckoAdapter, DEFAULT_FUNDS, MarketDto } from '.';
 
 const coinId = 'piedao-balanced-crypto-pie';
 const vsCurrency = 'usd';
@@ -15,8 +15,8 @@ describe('Given a Coin Gecko adapter', () => {
   it('When we get the markets Then we get a valid list', async () => {
     const result = (await target.getMarkets()()) as Right<MarketDto[]>;
 
-    expect(DEFAULT_PIES.map((it) => it.id).sort()).toEqual(
-      result.right.map((it) => it.id).sort(),
+    expect(DEFAULT_FUNDS.map((it) => it.symbol).sort()).toEqual(
+      result.right.map((it) => it.symbol).sort(),
     );
   });
 
