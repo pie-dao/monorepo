@@ -1,19 +1,20 @@
-import { Filter } from '@ethersproject/providers';
 import { SupportedChain } from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { YieldVaultStrategy } from '../fund';
+import { YieldData, YieldVaultStrategy } from '../fund';
+import { ContractFilters } from './ContractRepository';
 import { ContractNotFoundError, DatabaseError } from './error';
 
-export const STRATEGY_PARENT_FIELD = 'yieldVaultId';
-
-export type StrategyFilterField = 'chain' | typeof STRATEGY_PARENT_FIELD;
-
-export type StrategyFilters = Partial<Record<StrategyFilterField, Filter>>;
+export class CreateYieldError extends Error {
+  public kind: 'CreateYieldError' = 'CreateYieldError';
+  constructor(public message: string) {
+    super(`Saving yield entry failed: ${message}`);
+  }
+}
 
 export interface YieldVaultStrategyRepository<
   S extends YieldVaultStrategy,
-  F extends StrategyFilters,
+  F extends ContractFilters,
 > {
   /**
    * Finds strategies using the given filters.
@@ -28,4 +29,16 @@ export interface YieldVaultStrategyRepository<
     chain: SupportedChain,
     address: string,
   ): TE.TaskEither<ContractNotFoundError | DatabaseError, S>;
+
+  /**
+   * Adds a yield data entry for the strategy with the given `chain` and `address`.
+   */
+  addYieldData(
+    chain: SupportedChain,
+    address: string,
+    entry: YieldData,
+  ): TE.TaskEither<
+    ContractNotFoundError | CreateYieldError | DatabaseError,
+    YieldData
+  >;
 }

@@ -28,6 +28,7 @@ const STRATEGY_0: Strategy = {
   },
   trusted: true,
   vaults: [],
+  yields: [],
 };
 
 const HISTORY_0: YieldVaultHistory = {

@@ -1,7 +1,4 @@
-import {
-  STRATEGY_PARENT_FIELD,
-  YieldVaultHistory,
-} from '@domain/feature-funds';
+import { YieldVaultHistory } from '@domain/feature-funds';
 import {
   getDiscriminatorModelForClass,
   getModelForClass,
@@ -116,12 +113,10 @@ export class YieldVaultEntity extends DiscriminatedTokenEntity {
   history: YieldVaultHistoryEntity[];
 
   @prop({
-    ref: () => YieldVaultStrategyEntity,
-    foreignField: STRATEGY_PARENT_FIELD,
-    localField: '_id',
+    type: String,
     default: [],
   })
-  strategies: Types.Array<YieldVaultStrategyEntity>;
+  strategies: Types.Array<string>;
 }
 
 export const YieldVaultModel = getDiscriminatorModelForClass(
