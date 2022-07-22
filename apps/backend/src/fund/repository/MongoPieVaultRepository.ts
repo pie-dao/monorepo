@@ -1,12 +1,12 @@
 import { PieVault, PieVaultHistory } from '@domain/feature-funds';
 import { Injectable } from '@nestjs/common';
+import { FundRepositoryBase } from './base/FundRepositoryBase';
 import {
   MarketDataModel,
   PieVaultEntity,
   PieVaultHistoryModel,
   PieVaultModel,
 } from './entity';
-import { FundRepositoryBase } from '.';
 
 @Injectable()
 export class MongoPieVaultRepository extends FundRepositoryBase<

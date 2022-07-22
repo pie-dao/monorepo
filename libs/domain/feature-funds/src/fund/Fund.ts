@@ -1,8 +1,8 @@
 import { FundHistory } from './FundHistory';
-import { PieSmartPool } from './PieSmartPool';
-import { PieVault } from './PieVault';
+import { PieSmartPool } from './piesmartpool';
+import { PieVault } from './pievault';
 import { Token } from './Token';
-import { YieldVault } from './YieldVault';
+import { YieldVault } from './yieldvault/YieldVault';
 
 /**
  * A fund type holds the current state of a fund, and also an array of

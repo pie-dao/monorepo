@@ -1,14 +1,14 @@
 import {
+  ContractNotFoundError,
   CreateHistoryError,
   DatabaseError,
   DEFAULT_CHILD_FILTER,
-  DEFAULT_TOKEN_FILTER,
+  DEFAULT_CONTRACT_FILTER,
   Fund,
   FundFilters,
   FundHistory,
   FundRepository,
   MarketData,
-  TokenNotFoundError,
 } from '@domain/feature-funds';
 import { SupportedChain } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
@@ -19,7 +19,7 @@ import { FundEntity } from '../../';
 import { TokenRepositoryBase } from './TokenRepositoryBase';
 
 const DEFAULT_FILTERS: FundFilters = {
-  token: DEFAULT_TOKEN_FILTER,
+  contract: DEFAULT_CONTRACT_FILTER,
   marketData: DEFAULT_CHILD_FILTER,
   history: DEFAULT_CHILD_FILTER,
 };
@@ -41,19 +41,20 @@ export abstract class FundRepositoryBase<
     model: Model<E>,
     marketModel: Model<MarketData>,
     private historyModel: Model<H>,
+    discriminated = false,
   ) {
-    super(model, marketModel);
+    super(model, marketModel, discriminated);
   }
 
-  findAll(filters: Partial<FundFilters> = DEFAULT_FILTERS): T.Task<F[]> {
-    return super.findAll(filters);
+  find(filters: FundFilters = DEFAULT_FILTERS): T.Task<F[]> {
+    return super.find(filters);
   }
 
   findOne(
     chain: SupportedChain,
     address: string,
-    childFilters: Partial<Omit<FundFilters, 'token'>> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<TokenNotFoundError | DatabaseError, F> {
+    childFilters: Omit<FundFilters, 'contract'> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<ContractNotFoundError | DatabaseError, F> {
     return super.findOne(chain, address, childFilters);
   }
 
@@ -61,7 +62,10 @@ export abstract class FundRepositoryBase<
     chain: SupportedChain,
     address: string,
     entry: H,
-  ): TE.TaskEither<TokenNotFoundError | CreateHistoryError | DatabaseError, H> {
+  ): TE.TaskEither<
+    DatabaseError | ContractNotFoundError | CreateHistoryError,
+    H
+  > {
     return pipe(
       TE.tryCatch(
         () => {
@@ -79,13 +83,13 @@ export abstract class FundRepositoryBase<
     );
   }
 
-  protected getPaths(): Array<Omit<keyof FundFilters, 'token'>> {
+  protected getPaths(): Array<Omit<keyof FundFilters, 'contract'>> {
     return ['marketData', 'history'];
   }
 
-  protected saveMarketData(token: HydratedDocument<E>): Promise<unknown> {
+  protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
     return Promise.all([
-      super.saveMarketData(token),
+      super.saveChildren(token),
       Promise.all(
         token.history.map((entry) =>
           new this.historyModel({

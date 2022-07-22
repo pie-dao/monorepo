@@ -1,10 +1,9 @@
 import { SupportedChain } from '@shared/util-types';
-import { Fund, MarketData, YieldVaultHistory } from '.';
+import { YieldVaultStrategy } from '.';
+import { Fund, MarketData, YieldVaultHistory } from '..';
 
 /**
  * Yield Vaults can be used to tokenize a yield-generating strategy for those tokens that don't have one.
- *
- * A fund type holds
  */
 export class YieldVault implements Fund<YieldVaultHistory> {
   public kind: 'YieldVault' = 'YieldVault';
@@ -17,5 +16,6 @@ export class YieldVault implements Fund<YieldVaultHistory> {
     public coinGeckoId: string,
     public history: YieldVaultHistory[] = [],
     public marketData: MarketData[] = [],
+    public strategies: YieldVaultStrategy[] = [],
   ) {}
 }

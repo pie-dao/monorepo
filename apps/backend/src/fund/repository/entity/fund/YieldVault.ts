@@ -1,4 +1,4 @@
-import { Strategy, YieldVaultHistory } from '@domain/feature-funds';
+import { YieldVaultHistory } from '@domain/feature-funds';
 import {
   getDiscriminatorModelForClass,
   getModelForClass,
@@ -7,38 +7,15 @@ import {
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { BigNumberType } from '..';
-import { HistoryEntityBase } from './base';
-import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
-
-export class StrategyEntity implements Strategy {
-  @prop({ required: true })
-  name: string;
-
-  @prop({ _id: false })
-  underlyingToken: DiscriminatedTokenEntity;
-
-  @prop({ type: BigNumberType, required: true })
-  depositedAmount: BigNumber;
-
-  @prop({ type: BigNumberType, required: true })
-  estimatedAmount: BigNumber;
-
-  @prop({ required: true })
-  manager: string;
-
-  @prop({ required: true })
-  strategist: string;
-
-  @prop({ required: true })
-  trusted: boolean;
-
-  @prop({ type: BigNumberType, required: true })
-  balance: BigNumber;
-}
+import { BigNumberType } from '../..';
+import { HistoryEntityBase } from '../base';
+import { YieldVaultStrategyEntity } from '../strategy';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from '../Token';
 
 @modelOptions({
-  schemaOptions: { collection: 'yieldvaulthistory' },
+  schemaOptions: {
+    collection: 'yieldvaulthistory',
+  },
 })
 export class YieldVaultHistoryEntity
   extends HistoryEntityBase
@@ -116,8 +93,8 @@ export class YieldVaultHistoryEntity
   @prop({ type: BigNumberType, required: true })
   totalUnderlying: BigNumber;
 
-  @prop({ type: StrategyEntity, default: [], _id: false })
-  withdrawalQueue?: Types.Array<StrategyEntity>;
+  @prop({ type: YieldVaultStrategyEntity, default: [], _id: false })
+  withdrawalQueue?: Types.Array<YieldVaultStrategyEntity>;
 }
 
 @modelOptions({
@@ -134,6 +111,12 @@ export class YieldVaultEntity extends DiscriminatedTokenEntity {
     default: [],
   })
   history: YieldVaultHistoryEntity[];
+
+  @prop({
+    type: String,
+    default: [],
+  })
+  strategies: Types.Array<string>;
 }
 
 export const YieldVaultModel = getDiscriminatorModelForClass(

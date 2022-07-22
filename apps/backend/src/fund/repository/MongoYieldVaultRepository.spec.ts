@@ -1,4 +1,4 @@
-import { YieldVault, YieldVaultHistory } from '@domain/feature-funds';
+import { Strategy, YieldVault, YieldVaultHistory } from '@domain/feature-funds';
 import { SupportedChain } from '@shared/util-types';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
@@ -10,6 +10,26 @@ import { PIE_VAULT_0 } from './MongoPieVaultRepository.spec';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
+
+const STRATEGY_0: Strategy = {
+  chain: SupportedChain.ETHEREUM,
+  address: '0xA4b18b66CF0136D7F0805d70Daa922A53707bCbb',
+  kind: 'Strategy Token',
+  name: 'Strategy Token',
+  underlyingToken: {
+    chain: SupportedChain.ETHEREUM,
+    address: '0x7B7D39cD201067EF189276Af04fE40fb50C73D99',
+    name: 'Strategy Token',
+    symbol: 'ST',
+    decimals: 18,
+    kind: 'Token',
+    marketData: [],
+    coinGeckoId: '',
+  },
+  trusted: true,
+  vaults: [],
+  yields: [],
+};
 
 const HISTORY_0: YieldVaultHistory = {
   timestamp: new Date(OLD),
@@ -31,27 +51,8 @@ const HISTORY_0: YieldVaultHistory = {
   totalFloat: new BigNumber('1'),
   lockedProfit: new BigNumber('1'),
   totalUnderlying: new BigNumber('1'),
-  withdrawalQueue: [
-    {
-      name: 'Strategy Token',
-      underlyingToken: {
-        chain: SupportedChain.ETHEREUM,
-        address: '0x7B7D39cD201067EF189276Af04fE40fb50C73D99',
-        name: 'Strategy Token',
-        symbol: 'ST',
-        decimals: 18,
-        kind: 'Token',
-        marketData: [],
-        coinGeckoId: '',
-      },
-      depositedAmount: new BigNumber('1'),
-      estimatedAmount: new BigNumber('1'),
-      manager: '0x16D0425B57B8a3E706f020723f206Dc2239095d7',
-      strategist: '0xC208d671A578BA7cf44AD1CcA0f4735Ec2501839',
-      trusted: true,
-      balance: new BigNumber('1'),
-    },
-  ],
+
+  withdrawalQueue: [STRATEGY_0],
 };
 
 const HISTORY_1: YieldVaultHistory = {
@@ -86,6 +87,7 @@ const YIELD_VAULT_0: YieldVault = {
   coinGeckoId: '',
   history: [],
   marketData: [],
+  strategies: [],
 };
 
 const YIELD_VAULT_1: YieldVault = {
@@ -98,6 +100,7 @@ const YIELD_VAULT_1: YieldVault = {
   coinGeckoId: '',
   history: [],
   marketData: [],
+  strategies: [],
 };
 
 const YIELD_VAULT_2: YieldVault = {
@@ -110,6 +113,7 @@ const YIELD_VAULT_2: YieldVault = {
   coinGeckoId: '',
   history: [],
   marketData: [],
+  strategies: [],
 };
 
 const YIELD_VAULT_WITH_HISTORY: YieldVault = {
@@ -199,8 +203,8 @@ describe('Given a Mongo Yield Vault Repository', () => {
     await target.save(YIELD_VAULT_1)();
     await target.save(YIELD_VAULT_2)();
 
-    const result = await target.findAll({
-      token: {
+    const result = await target.find({
+      contract: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },
@@ -216,7 +220,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     await target.save(YIELD_VAULT_1)();
     await pieRepo.save(PIE_VAULT_0)();
 
-    const result = await target.findAll()();
+    const result = await target.find()();
 
     expect(result.map((e) => e.symbol)).toEqual(['YFT', 'OFT']);
   });

@@ -26,6 +26,7 @@ import {
 
 // workaround for sentry error: https://github.com/getsentry/sentry-javascript/issues/4731
 import * as Tracing from '@sentry/tracing';
+import { Provider } from '@ethersproject/providers';
 Tracing && true;
 
 const EVERY_HOUR = 1000 * 60 * 60;
@@ -113,7 +114,7 @@ export class PiesService {
   constructor(
     private httpService: HttpService,
     private stakingService: StakingService,
-    private provider: ethers.providers.JsonRpcProvider,
+    private provider: Provider,
     @InjectModel(PieEntity.name) private pieModel: Model<PieDocument>,
     @InjectModel(PieHistoryEntity.name)
     private pieHistoryModel: Model<PieHistoryDocument>,

@@ -180,8 +180,8 @@ describe('Given a Mongo Pie Vault Repository', () => {
     await target.save(PIE_VAULT_1)();
     await target.save(PIE_VAULT_2)();
 
-    const result = await target.findAll({
-      token: {
+    const result = await target.find({
+      contract: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },

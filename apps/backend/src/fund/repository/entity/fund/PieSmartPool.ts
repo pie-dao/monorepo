@@ -7,9 +7,9 @@ import {
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
 import { Types } from 'mongoose';
-import { BigNumberType } from '..';
-import { HistoryEntityBase } from './base';
-import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from './Token';
+import { BigNumberType } from '../../BigNumberType';
+import { HistoryEntityBase } from '../base';
+import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from '../Token';
 
 export class TokenWeightEntity implements TokenWeight {
   @prop({ required: true })

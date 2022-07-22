@@ -1,10 +1,10 @@
 import { PieSmartPool, PieSmartPoolHistory } from '@domain/feature-funds';
+import { SupportedChain } from '@shared/util-types';
 import BigNumber from 'bignumber.js';
 import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoPieSmartPoolRepository } from '.';
-import { SupportedChain } from '@shared/util-types';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
@@ -225,8 +225,8 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
     await target.save(PIE_SMART_POOL_1)();
     await target.save(PIE_SMART_POOL_2)();
 
-    const result = await target.findAll({
-      token: {
+    const result = await target.find({
+      contract: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },
