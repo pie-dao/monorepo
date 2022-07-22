@@ -1,3 +1,5 @@
+import { getFirstUnderlying } from '../../support/app.po';
+
 describe('Test Product Page Data Display', () => {
   before(() => {
     cy.visit('/products/PLAY');
@@ -70,6 +72,54 @@ describe('Test Product Page Data Display', () => {
       .should(
         'match',
         /((?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{1,2})?$|N\/A)/,
+      );
+  });
+
+  it('should display product underlying assets', () => {
+    getFirstUnderlying().should('exist');
+  });
+
+  it('should display product underlying data', () => {
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-image"]')
+      .should('exist');
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-symbol"]')
+      .should('exist');
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-24h-price-change"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{1,3})?$|N\/A)/,
+      );
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-24h-price-percentage-change"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((\+|-)*(?=.*\d)(([1-9]\d{0,2}(,*\d{3})*)|0)?(\.\d{1,2})?%|N\/A)/,
+      );
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-amount-per-token"]')
+      .invoke('text')
+      .should(
+        'match',
+        /(?=.*\d)^(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{0,2})?(M|K|B|T)?/,
+      );
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-total-held"]')
+      .invoke('text')
+      .should(
+        'match',
+        /(?=.*\d)^(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{0,2})?(M|K|B|T)?/,
+      );
+    getFirstUnderlying()
+      .find('[data-cy="underlying-asset-allocation"]')
+      .invoke('text')
+      .should(
+        'match',
+        /(?=.*\d)^(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{0,2})?(M|K|B|T)?/,
       );
   });
 });
