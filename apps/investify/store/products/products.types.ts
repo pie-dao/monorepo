@@ -7,8 +7,7 @@ type Product = {
   productDecimals: number;
   totalBalance?: BigNumberReference;
   addresses: {
-    [chainId: string]: string;
-    [chainId: number]: string;
+    [chainId: number | string]: string;
   };
 };
 
