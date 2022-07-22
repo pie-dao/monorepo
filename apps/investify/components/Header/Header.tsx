@@ -26,7 +26,7 @@ export default function Header({
         <div className="w-full flex items-center gap-x-3 flex-wrap">
           <button
             type="button"
-            className="focus:outline-none p-2 relative z-10 ml-0 sm:-ml-5"
+            className="focus:outline-none p-2 relative z-10"
             onClick={() => setOpen(!open)}
           >
             <MenuIcon open={open} />
