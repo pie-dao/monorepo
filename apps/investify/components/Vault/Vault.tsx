@@ -49,7 +49,7 @@ export default function Vault({ id }: { id: string }) {
     }
   }, [account, isDepositor, proof]);
 
-  if (!activeVault || typeof isDepositor === 'undefined') return null;
+  if (!activeVault) return null;
   return (
     <>
       <VaultCapSlider />

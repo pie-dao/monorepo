@@ -137,7 +137,6 @@ export default function Navigation({
       <AnimatePresence initial={false}>
         <motion.aside
           animate={open ? 'visible' : 'hidden'}
-          initial="hidden"
           exit="hidden"
           drag="x"
           variants={sidebarVariants}

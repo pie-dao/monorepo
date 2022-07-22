@@ -18,12 +18,7 @@ import {
   underlyingContractsFTMWrappers,
   underlyingContractsPolygonWrappers,
 } from './products.contracts';
-import {
-  BigNumberReference,
-  EnrichedProduct,
-  Vault,
-  Vaults,
-} from './products.types';
+import { BigNumberReference, Products, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
 import { calculateSharesAvailable } from '../../utils/sharesAvailable';
 import { pendingNotification } from '../../components/Notifications/Notifications';
@@ -31,6 +26,7 @@ import { pendingNotification } from '../../components/Notifications/Notification
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
   GET_VAULTS_DATA: 'app/getVaultsData',
+  GET_USER_PRODUCTS_DATA: 'app/getUserProductsData',
   GET_USER_VAULTS_DATA: 'app/getUserVaultsData',
   VAULT_INCREASE_WITHDRAWAL: 'vault/increaseWithdrawal',
   VAULT_APPROVE_DEPOSIT: 'vault/approveDeposit',
@@ -44,21 +40,57 @@ const sumBalance = (x: number, y: number) => x + y;
 
 export const thunkGetProductsData = createAsyncThunk(
   THUNKS.GET_PRODUCTS_DATA,
-  async (account: string) => {
-    if (!account) return;
+  async () => {
     const productDataResults = await Promise.allSettled(
       contractWrappers.map((contractWrapper) => {
         const results = promiseObject({
-          balances: contractWrapper.multichain.balanceOf(account),
           productDecimals: contractWrapper.decimals(),
           symbol: contractWrapper.symbol(),
+          addresses: contractWrapper._multichainConfig,
+        });
+        return results;
+      }),
+    );
+    const results = productDataResults.map((result): Products => {
+      if (result.status === 'fulfilled') {
+        return {
+          [result.value.symbol]: {
+            productDecimals: result.value.productDecimals,
+            addresses: Object.assign(
+              {},
+              ...Object.entries(result.value.addresses).map(
+                ([chainId, result]) => ({
+                  [chainId]: result.address,
+                }),
+              ),
+            ),
+          },
+        };
+      }
+    });
+    return Object.assign({}, ...results);
+  },
+);
+
+export const thunkGetUserProductsData = createAsyncThunk(
+  THUNKS.GET_USER_PRODUCTS_DATA,
+  async (account: string) => {
+    const productDataResults = await Promise.allSettled(
+      contractWrappers.map((contractWrapper) => {
+        const results = promiseObject({
+          balances: account
+            ? contractWrapper.multichain.balanceOf(account)
+            : null,
+          productDecimals: contractWrapper.decimals(),
+          symbol: contractWrapper.symbol(),
+          addresses: contractWrapper._multichainConfig,
         });
         return results;
       }),
     );
 
     const enrichWithTotalBalance = productDataResults.map(
-      (result): EnrichedProduct => {
+      (result): Products => {
         if (result.status === 'fulfilled') {
           const { data } = result.value.balances;
           const filterFulfilled = Object.values(data).filter(
@@ -79,12 +111,19 @@ export const thunkGetProductsData = createAsyncThunk(
           const balancesFormatted = balances.map(([key, amount]) => ({
             [key]: toBalance(amount.value, result.value.productDecimals),
           }));
-
           return {
             [result.value.symbol]: {
               balances: Object.assign({}, ...balancesFormatted),
               productDecimals: result.value.productDecimals,
               totalBalance,
+              addresses: Object.assign(
+                {},
+                ...Object.entries(result.value.addresses).map(
+                  ([chainId, result]) => ({
+                    [chainId]: result.address,
+                  }),
+                ),
+              ),
             },
           };
         }
@@ -110,11 +149,11 @@ export const thunkGetProductsData = createAsyncThunk(
 
     const uniqueNetworks = filter(
       uniqueNetworksPerChain,
-      (value) => Number(value) !== 0,
+      ({ label }) => label !== 0,
     ).length;
 
     const totalAssets = enrichWithTotalBalance.filter((result) => {
-      return Object.values(result)[0].totalBalance.value !== '0.0';
+      return Object.values(result)[0].totalBalance.label !== 0;
     }).length;
 
     return {

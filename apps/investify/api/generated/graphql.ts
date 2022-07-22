@@ -25,15 +25,25 @@ export type MarketDataEntity = {
   __typename?: 'MarketDataEntity';
   circulatingSupply: Scalars['Float'];
   currentPrice: Scalars['Float'];
+  discount: Scalars['Float'];
+  fromInception: Scalars['Float'];
+  interests: Scalars['Float'];
   marketCap: Scalars['String'];
   marketCapRank: Scalars['Float'];
+  nav: Scalars['Float'];
   timestamp: Scalars['Timestamp'];
   totalVolume: Scalars['String'];
-  twentyFourHourChange: Scalars['String'];
+  twentyFourHourChange: PriceChange;
 };
 
 export type MarketDataEntityCurrentPriceArgs = {
   currency?: Scalars['String'];
+};
+
+export type PriceChange = {
+  __typename?: 'PriceChange';
+  change: Scalars['Float'];
+  price: Scalars['Float'];
 };
 
 export type Query = {
@@ -73,6 +83,7 @@ export type TokenEntity = TokenInterface & {
   kind: Scalars['String'];
   marketData: Array<MarketDataEntity>;
   name: Scalars['String'];
+  riskGrade: Scalars['String'];
   symbol: Scalars['String'];
 };
 
@@ -84,6 +95,7 @@ export type TokenInterface = {
   kind: Scalars['String'];
   marketData: Array<MarketDataEntity>;
   name: Scalars['String'];
+  riskGrade: Scalars['String'];
   symbol: Scalars['String'];
 };
 
@@ -94,7 +106,7 @@ export type User = {
   pieVaults: Array<UserTokenEntity>;
   profit: Scalars['Float'];
   totalBalance: Scalars['Float'];
-  twentyFourHourChange: Scalars['Float'];
+  twentyFourHourChange: PriceChange;
   yieldVaults: Array<UserYieldVaultEntity>;
 };
 
@@ -107,6 +119,7 @@ export type UserTokenEntity = TokenInterface & {
   kind: Scalars['String'];
   marketData: Array<MarketDataEntity>;
   name: Scalars['String'];
+  riskGrade: Scalars['String'];
   symbol: Scalars['String'];
 };
 
@@ -142,7 +155,6 @@ export type FindUserQuery = {
     __typename?: 'User';
     address: string;
     totalBalance: number;
-    twentyFourHourChange: number;
     profit: number;
     performance: number;
     pieVaults: Array<{
@@ -150,6 +162,11 @@ export type FindUserQuery = {
       symbol: string;
       name: string;
     }>;
+    twentyFourHourChange: {
+      __typename?: 'PriceChange';
+      price: number;
+      change: number;
+    };
     yieldVaults: Array<{
       __typename?: 'UserYieldVaultEntity';
       name: string;
@@ -172,7 +189,6 @@ export type UserFieldsFragment = {
   __typename?: 'User';
   address: string;
   totalBalance: number;
-  twentyFourHourChange: number;
   profit: number;
   performance: number;
   pieVaults: Array<{
@@ -180,6 +196,11 @@ export type UserFieldsFragment = {
     symbol: string;
     name: string;
   }>;
+  twentyFourHourChange: {
+    __typename?: 'PriceChange';
+    price: number;
+    change: number;
+  };
   yieldVaults: Array<{
     __typename?: 'UserYieldVaultEntity';
     name: string;
@@ -200,10 +221,19 @@ export type GetProductsBySymbolQuery = {
   tokensBySymbol?: Array<{
     __typename?: 'TokenEntity';
     symbol: string;
+    riskGrade: string;
     marketData: Array<{
       __typename?: 'MarketDataEntity';
       currentPrice: number;
-      twentyFourHourChange: string;
+      fromInception: number;
+      discount: number;
+      interests: number;
+      nav: number;
+      twentyFourHourChange: {
+        __typename?: 'PriceChange';
+        price: number;
+        change: number;
+      };
     }>;
   } | null> | null;
 };
@@ -237,7 +267,10 @@ export const UserFieldsFragmentDoc = `
     symbol
     name
   }
-  twentyFourHourChange
+  twentyFourHourChange {
+    price
+    change
+  }
   yieldVaults {
     name
     symbol
@@ -268,9 +301,17 @@ export const GetProductsBySymbolDocument = `
   tokensBySymbol(symbols: $symbols) {
     marketData {
       currentPrice(currency: $currency)
-      twentyFourHourChange
+      twentyFourHourChange {
+        price
+        change
+      }
+      fromInception
+      discount
+      interests
+      nav
     }
     symbol
+    riskGrade
   }
 }
     `;

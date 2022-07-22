@@ -14,7 +14,6 @@ import products from '../../config/products.json';
 import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
-import MerkleAuthAbi from '../../config/MerkleAuth.json';
 
 const _config = config as MultiChainWrapperConfig;
 

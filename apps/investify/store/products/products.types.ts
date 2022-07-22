@@ -3,13 +3,17 @@ import { SupportedChains } from '../../utils/networks';
 export type ChainValue = Record<SupportedChains, BigNumberReference>;
 
 type Product = {
-  balances: ChainValue;
+  balances?: ChainValue;
   productDecimals: number;
-  totalBalance: BigNumberReference;
+  totalBalance?: BigNumberReference;
+  addresses: {
+    [chainId: string]: string;
+    [chainId: number]: string;
+  };
 };
 
 export type Products = {
-  [currencySymbol: string]: Product;
+  [x: string]: Product;
 };
 
 interface BasicVaultInformation {
@@ -104,12 +108,4 @@ export type SliceState = {
   stats: Stats;
   loading: boolean;
   activeVault: string;
-};
-
-export type EnrichedProduct = {
-  [x: string]: {
-    balances: ChainValue;
-    productDecimals: number;
-    totalBalance: BigNumberReference;
-  };
 };

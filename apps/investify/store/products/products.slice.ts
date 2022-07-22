@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   thunkGetProductsData,
+  thunkGetUserProductsData,
   thunkGetVaultsData,
   thunkGetUserVaultsData,
   thunkMakeDeposit,
@@ -47,6 +48,25 @@ const appSlice = createSlice({
     });
 
     builder.addCase(thunkGetProductsData.fulfilled, (state, action) => {
+      appSlice.caseReducers.setProductsState(state, {
+        ...action,
+        payload: {
+          ...action.payload,
+        },
+      });
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetUserProductsData.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(thunkGetUserProductsData.rejected, (state, action) => {
+      console.error(action.error);
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetUserProductsData.fulfilled, (state, action) => {
       appSlice.caseReducers.setState(state, {
         ...action,
         payload: {
@@ -107,7 +127,7 @@ const appSlice = createSlice({
         totalBalances: number;
       }>,
     ) => {
-      state.tokens = action.payload.tokens;
+      state.tokens = merge({}, state.tokens, action.payload.tokens);
       state.stats.balance.tokens = action.payload.totalBalances;
       state.stats.networks.tokens = action.payload.uniqueNetworks;
       state.stats.assets.tokensUsed = action.payload.totalAssets;
@@ -117,6 +137,14 @@ const appSlice = createSlice({
         state.stats.assets.tokensUsed + state.stats.assets.vaultsUsed;
       state.stats.balance.total =
         state.stats.balance.tokens + state.stats.balance.vaults;
+    },
+    setProductsState: (
+      state,
+      action: PayloadAction<{
+        products: Products;
+      }>,
+    ) => {
+      state.tokens = merge({}, state.tokens, action.payload);
     },
     setVaultState: (
       state,

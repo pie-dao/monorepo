@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '.';
 import {
-  thunkGetProductsData,
+  thunkGetUserProductsData,
   thunkGetUserVaultsData,
 } from '../store/products/thunks';
 
@@ -10,7 +10,7 @@ export function useUserData(account: string) {
 
   useEffect(() => {
     if (!account) return;
-    dispatch(thunkGetProductsData(account));
+    dispatch(thunkGetUserProductsData(account));
     dispatch(thunkGetUserVaultsData(account));
   }, [account, dispatch]);
 }

@@ -35,7 +35,7 @@ export default function Sidebar() {
       </div>
     </Dialog>
   ) : (
-    <aside className="flex hidden md:block sm:w-64 md:w-1/3 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
+    <aside className="hidden md:block sm:w-64 md:w-1/3 max-w-sm px-4 py-5 pl-0 overflow-hidden relative">
       <div className="h-full bg-sidebar drop-shadow rounded-lg py-2 px-4 w-full overflow-y-scroll scrollbar-hidden">
         <SidebarContent id="desktop" />
       </div>

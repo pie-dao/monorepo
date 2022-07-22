@@ -26,7 +26,10 @@ export const handlers = [
         user: {
           address,
           totalBalance: 20090,
-          twentyFourHourChange: address ? -30.22 : null,
+          twentyFourHourChange: {
+            price: 20,
+            change: 10,
+          },
           pieVaults: [
             {
               symbol: 'PLAY',
@@ -65,9 +68,20 @@ export const handlers = [
       ctx.data({
         tokensBySymbol: [symbols].flat().map((symbol) => ({
           marketData: [
-            { currentPrice: 200, twentyFourHourChange: '$ 0,30 / 2,3%' },
+            {
+              currentPrice: 200,
+              twentyFourHourChange: {
+                price: 30.22,
+                change: 2.4,
+              },
+              fromInception: -30,
+              discount: -12.32,
+              interests: 20,
+              nav: 1.5,
+            },
           ],
           symbol: symbol,
+          riskGrade: 'AAA',
         })),
       }),
     );

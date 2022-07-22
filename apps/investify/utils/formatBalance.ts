@@ -5,11 +5,12 @@ export function formatBalanceCurrency(
   balanceAmount: number,
   defaultLocale?: string,
   defaultCurrency?: string,
+  compact?: boolean,
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'currency',
     currency: defaultCurrency ?? 'USD',
-    notation: 'compact',
+    notation: compact ? 'compact' : 'standard',
     compactDisplay: 'short',
     maximumSignificantDigits: 4,
   }).format(balanceAmount ?? 0);
@@ -27,6 +28,13 @@ export function formatBalance(
     maximumFractionDigits: fixed ?? 0,
   }).format(balanceAmount ?? 0);
   return balance;
+}
+
+export function formatAsPercent(num: number, defaultLocale?: string): string {
+  return new Intl.NumberFormat(defaultLocale ?? 'en-US', {
+    style: 'percent',
+    maximumFractionDigits: 2,
+  }).format(num / 100);
 }
 
 export const smallToBalance = (

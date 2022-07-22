@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Popover } from '@headlessui/react';
 import { usePopper } from 'react-popper';
 import { AnimatePresence, motion } from 'framer-motion';
+import { InformationCircleIcon } from '@heroicons/react/solid';
 
 type Props = {
   children: React.ReactNode;
@@ -33,9 +34,12 @@ const Tooltip: React.FC<Props> = ({ children }) => {
         <>
           <Popover.Button
             ref={setReferenceElement}
-            className="focus:outline-none"
+            className="focus:outline-none w-4 h-4 text-primary"
+            as={motion.button}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            ⓘ
+            <InformationCircleIcon />
           </Popover.Button>
           <AnimatePresence>
             {open && (
@@ -44,13 +48,13 @@ const Tooltip: React.FC<Props> = ({ children }) => {
                   static
                   ref={setPopperElement}
                   style={styles.popper}
-                  {...attributes.popper}
                   as={motion.div}
                   variants={variants}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="p-3 bg-gradient-primary rounded-md shadow-md"
+                  className="p-3 bg-gradient-primary rounded-md shadow-md z-50"
+                  {...attributes.popper}
                 >
                   {children}
                 </Popover.Panel>
