@@ -42,7 +42,7 @@ export default function Layout({ children }) {
               setOpen={setOpen}
               title={children.props.title}
             />
-            <main className="flex-1 max-h-full px-7 overflow-y-auto w-full">
+            <main className="flex-1 max-h-full px-7 overflow-y-auto w-full pb-10">
               {children}
             </main>
           </div>

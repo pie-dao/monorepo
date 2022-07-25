@@ -14,6 +14,7 @@ import {
 } from '../../utils/formatBalance';
 import classNames from '../../utils/classnames';
 import Tooltip from '../../components/Tooltip/Tooltip';
+import UnderlyingAssets from '../../components/UnderlyingAssets/UnderlyingAssets';
 
 type ProductConfig = {
   name: string;
@@ -211,6 +212,9 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
             </div>
           </section>
         </>
+      )}
+      {data?.tokensBySymbol[0]?.underlyingTokens && (
+        <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
       )}
     </>
   );

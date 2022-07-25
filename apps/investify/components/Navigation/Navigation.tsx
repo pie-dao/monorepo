@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect, useMemo } from 'react';
 import { TemplateIcon, UsersIcon } from '@heroicons/react/solid';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -39,46 +39,54 @@ export default function Navigation({
 
   const isDesktop = useMediaQuery('(min-width: 1024px)');
 
-  const sidebarVariants = !isDesktop
-    ? {
-        visible: {
-          width: 180,
-          x: 0,
-          opacity: 1,
-        },
-        hidden: {
-          width: 0,
-          x: -180,
-          opacity: 0,
-          transition: { duration: 0.5 },
-        },
-      }
-    : {
-        visible: {
-          width: 180,
-          x: 0,
-        },
-        hidden: {
-          width: 60,
-          x: 0,
-          transition: { duration: 0.5 },
-        },
-      };
-
-  const listVariants: Variants = !isDesktop
-    ? {
-        hidden: {},
-        visible: {
-          transition: {
-            delayChildren: 0.4,
-            staggerChildren: 0.1,
+  const sidebarVariants = useMemo(
+    (): Variants =>
+      !isDesktop
+        ? {
+            visible: {
+              width: 180,
+              x: 0,
+              opacity: 1,
+            },
+            hidden: {
+              width: 0,
+              x: -180,
+              opacity: 0,
+              transition: { duration: 0.5 },
+            },
+          }
+        : {
+            visible: {
+              width: 180,
+              x: 0,
+            },
+            hidden: {
+              width: 60,
+              x: 0,
+              transition: { duration: 0.5 },
+            },
           },
-        },
-      }
-    : {
-        hidden: {},
-        visible: {},
-      };
+    [isDesktop],
+  );
+
+  const listVariants = useMemo(
+    (): Variants =>
+      !isDesktop
+        ? {
+            hidden: {},
+            visible: {
+              transition: {
+                delayChildren: 0.4,
+                staggerChildren: 0.1,
+              },
+            },
+          }
+        : {
+            hidden: {},
+            visible: {},
+          },
+    [isDesktop],
+  );
 
   const itemVariants: Variants = {
     hidden: {
@@ -152,7 +160,7 @@ export default function Navigation({
           onDrag={handleDrag}
           onDragEnd={handleDragEnd}
           className={classNames(
-            'h-full w-[180px] fixed z-50 lg:z-0 lg:static bg-background',
+            'h-full w-[180px] fixed z-50 lg:z-0 lg:static bg-sidebar',
           )}
         >
           <div className="flex flex-col flex-grow pt-5 h-full">
