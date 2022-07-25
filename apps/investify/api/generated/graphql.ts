@@ -140,7 +140,7 @@ export type YieldVaultEntity = YieldVaultInterface & {
   address: Scalars['String'];
   name: Scalars['String'];
   symbol: Scalars['String'];
-  underlyingToken: Array<TokenEntity>;
+  underlyingToken: TokenEntity;
 };
 
 export type YieldVaultInterface = {
@@ -295,13 +295,13 @@ export type GetVaultsQuery = {
     symbol: string;
     name: string;
     address: string;
-    underlyingToken: Array<{
+    underlyingToken: {
       __typename?: 'TokenEntity';
       marketData: Array<{
         __typename?: 'MarketDataEntity';
         currentPrice: number;
       }>;
-    }>;
+    };
   } | null> | null;
 };
 

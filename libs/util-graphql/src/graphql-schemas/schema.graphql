@@ -83,7 +83,7 @@ interface YieldVaultInterface {
 }
 
 type YieldVaultEntity implements YieldVaultInterface {
-  underlyingToken: [TokenEntity!]!
+  underlyingToken: TokenEntity!
   symbol: String!
   name: String!
   address: String!
