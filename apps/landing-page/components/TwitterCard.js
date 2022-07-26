@@ -28,7 +28,7 @@ const TwitterCard = ({ twitterPost }) => {
       </div>
       <div className="w-full mt-auto">
         <p className="text-xs text-gray-500 text-left">
-          {new Date(twitterPost.created_at).toLocaleString()}
+          {new Date(twitterPost.created_at).toLocaleString('en-US')}
         </p>
       </div>
     </div>

@@ -42,7 +42,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
             </h3>
             <h4 className="text-sm text-white uppercase">{pieInfo.name}</h4>
           </div>
-          <div className="text-2xl text-white font-extrabold mx-auto mt-auto flex items-end mb-2 z-10">
+          {/* <div className="text-2xl text-white font-extrabold mx-auto mt-auto flex items-end mb-2 z-10">
             <span>{content.explore_products.nav.name}</span>{' '}
             <Popover className="relative flex self-start">
               <Popover.Button className="ml-1">
@@ -61,7 +61,7 @@ const PieCardPlain = ({ pieInfo, pieHistory }) => {
             <span className="text-4xl ml-4">
               {priceFormatter.format(pieHistory[0].nav)}
             </span>
-          </div>
+          </div> */}
         </div>
         <div className="absolute -bottom-2">
           <Image
