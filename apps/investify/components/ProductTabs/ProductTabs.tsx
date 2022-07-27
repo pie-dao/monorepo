@@ -150,7 +150,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
         </Tab.List>
         <Tab.Panels className="mt-2">
           <SingleProductPanel className="divide-y">
-            <div className="prose max-w-none prose-headings:text-primary prose-p:text-sub-dark prose-strong:text-primary">
+            <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
               <MDXRemote compiledSource={source.compiledSourceDescription} />
             </div>
             <div className="flex flex-wrap gap-x-2 gap-y-4 pt-6 pb-3 items-center mt-6">
@@ -183,7 +183,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
             </div>
           </SingleProductPanel>
           <SingleProductPanel className="divide-y">
-            <div className="prose max-w-none prose-headings:text-primary prose-p:text-sub-dark prose-strong:text-primary">
+            <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
               <MDXRemote compiledSource={source.compiledSourceThesis} />
             </div>
             {prospectus && (
@@ -220,7 +220,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                 </ul>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 py-4">
-                <div className="prose max-w-none prose-headings:text-primary prose-p:text-sub-dark prose-strong:text-primary">
+                <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
                   <MDXRemote
                     compiledSource={source.compiledSourceInvestmentFocus}
                   />
