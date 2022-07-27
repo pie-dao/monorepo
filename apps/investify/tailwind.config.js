@@ -20,7 +20,7 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
-        xs: '.75rem',
+        xs: ['.75rem', '1rem'],
       },
       fontFamily: {
         sans: ['Silka'],

@@ -21,17 +21,31 @@ export type Scalars = {
   Timestamp: any;
 };
 
+export type Governance = {
+  __typename?: 'Governance';
+  status: Scalars['String'];
+  timestamp: Scalars['Timestamp'];
+  title: Scalars['String'];
+  url: Scalars['String'];
+};
+
 export type MarketDataEntity = {
   __typename?: 'MarketDataEntity';
+  allTimeHigh: Scalars['Float'];
+  allTimeLow: Scalars['Float'];
   circulatingSupply: Scalars['Float'];
   currentPrice: Scalars['Float'];
   discount: Scalars['Float'];
   fromInception: Scalars['Float'];
+  holders: Scalars['Float'];
   interests: Scalars['Float'];
-  marketCap: Scalars['String'];
+  managementFee: Scalars['Float'];
+  marketCap: Scalars['Float'];
   marketCapRank: Scalars['Float'];
   nav: Scalars['Float'];
+  swapFee: Scalars['Float'];
   timestamp: Scalars['Timestamp'];
+  totalSupply: Scalars['Float'];
   totalVolume: Scalars['String'];
   twentyFourHourChange: PriceChange;
 };
@@ -80,6 +94,8 @@ export type TokenEntity = TokenInterface & {
   chain: Scalars['String'];
   coinGeckoId: Scalars['String'];
   decimals: Scalars['Float'];
+  governance: Array<Governance>;
+  inceptionDate: Scalars['Timestamp'];
   kind: Scalars['String'];
   marketData: Array<MarketDataEntity>;
   name: Scalars['String'];
@@ -93,6 +109,8 @@ export type TokenInterface = {
   chain: Scalars['String'];
   coinGeckoId: Scalars['String'];
   decimals: Scalars['Float'];
+  governance: Array<Governance>;
+  inceptionDate: Scalars['Timestamp'];
   kind: Scalars['String'];
   marketData: Array<MarketDataEntity>;
   name: Scalars['String'];
@@ -118,6 +136,8 @@ export type UserTokenEntity = TokenInterface & {
   chain: Scalars['String'];
   coinGeckoId: Scalars['String'];
   decimals: Scalars['Float'];
+  governance: Array<Governance>;
+  inceptionDate: Scalars['Timestamp'];
   kind: Scalars['String'];
   marketData: Array<MarketDataEntity>;
   name: Scalars['String'];
@@ -248,6 +268,7 @@ export type GetProductsBySymbolQuery = {
     __typename?: 'TokenEntity';
     symbol: string;
     riskGrade: string;
+    inceptionDate: any;
     marketData: Array<{
       __typename?: 'MarketDataEntity';
       currentPrice: number;
@@ -255,6 +276,13 @@ export type GetProductsBySymbolQuery = {
       discount: number;
       interests: number;
       nav: number;
+      marketCap: number;
+      holders: number;
+      allTimeHigh: number;
+      allTimeLow: number;
+      swapFee: number;
+      managementFee: number;
+      totalSupply: number;
       twentyFourHourChange: {
         __typename?: 'PriceChange';
         price: number;
@@ -280,6 +308,13 @@ export type GetProductsBySymbolQuery = {
           change: number;
         };
       }>;
+    }>;
+    governance: Array<{
+      __typename?: 'Governance';
+      title: string;
+      url: string;
+      status: string;
+      timestamp: any;
     }>;
   } | null> | null;
 };
@@ -355,6 +390,13 @@ export const GetProductsBySymbolDocument = `
       discount
       interests
       nav
+      marketCap
+      holders
+      allTimeHigh
+      allTimeLow
+      swapFee
+      managementFee
+      totalSupply
     }
     underlyingTokens {
       name
@@ -375,6 +417,13 @@ export const GetProductsBySymbolDocument = `
     }
     symbol
     riskGrade
+    inceptionDate
+    governance {
+      title
+      url
+      status
+      timestamp
+    }
   }
 }
     `;
