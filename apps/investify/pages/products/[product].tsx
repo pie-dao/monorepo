@@ -124,6 +124,7 @@ const ProductPage = ({
       data?.tokensBySymbol,
       defaultCurrency,
       defaultLocale,
+      investmentFocusImage,
       prospectus,
     ],
   );

@@ -36,6 +36,12 @@ export type Governance = {
   url: Scalars['String'];
 };
 
+export type LinkEntity = {
+  __typename?: 'LinkEntity';
+  title: Scalars['String'];
+  url: Scalars['String'];
+};
+
 export type MarketDataEntity = {
   __typename?: 'MarketDataEntity';
   allTimeHigh: Scalars['Float'];
@@ -101,6 +107,14 @@ export type QueryUserArgs = {
 
 export type QueryVaultsArgs = {
   currency?: Scalars['String'];
+};
+
+export type StrategyEntity = {
+  __typename?: 'StrategyEntity';
+  allocationPercentage: Scalars['Float'];
+  description: Scalars['String'];
+  links: Array<LinkEntity>;
+  title: Scalars['String'];
 };
 
 export type TokenEntity = TokenInterface & {
@@ -180,6 +194,7 @@ export type YieldVaultEntity = YieldVaultInterface & {
   __typename?: 'YieldVaultEntity';
   address: Scalars['String'];
   name: Scalars['String'];
+  strategies: Array<StrategyEntity>;
   symbol: Scalars['String'];
   underlyingToken: TokenEntity;
 };
@@ -378,6 +393,13 @@ export type GetVaultsQuery = {
         currentPrice: number;
       }>;
     };
+    strategies: Array<{
+      __typename?: 'StrategyEntity';
+      title: string;
+      description: string;
+      allocationPercentage: number;
+      links: Array<{ __typename?: 'LinkEntity'; title: string; url: string }>;
+    }>;
   } | null> | null;
 };
 
@@ -525,6 +547,15 @@ export const GetVaultsDocument = `
     symbol
     name
     address
+    strategies {
+      title
+      description
+      allocationPercentage
+      links {
+        title
+        url
+      }
+    }
   }
 }
     `;
