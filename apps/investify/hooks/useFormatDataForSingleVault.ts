@@ -19,7 +19,6 @@ export type VaultData = {
   totalDesposited: string;
   tabs: {
     about: {
-      content: string;
       network: string;
       contract: string;
       underlyingAsset: {
@@ -27,9 +26,10 @@ export type VaultData = {
         contract: string;
       };
     };
-    strategyDetails: {
+    strategies: {
       title: string;
-      content: string;
+      description: string;
+      allocationPercentage: number;
       links: {
         title: string;
         url: string;
@@ -78,44 +78,14 @@ export function useFormatDataForSingleVault(
       ),
       tabs: {
         about: {
-          content: 'My awesome content',
-          network: 'Fantom',
-          contract: '0x0',
+          network: dataFromConfig.network.name,
+          contract: dataFromConfig.address,
           underlyingAsset: {
-            symbol: 'DAI',
-            contract: '',
+            symbol: dataFromConfig.symbol,
+            contract: dataFromConfig.token.address,
           },
         },
-        strategyDetails: [
-          {
-            title: 'Lorem ipsum dolor sit amet',
-            content: 'Lorem ipsum dolor sit amet',
-            links: [
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-            ],
-          },
-          {
-            title: 'Lorem Ipsum Dolor Sit Amet',
-            content: 'lorem ipsum dolor sit amet',
-            links: [
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-            ],
-          },
-        ],
+        strategies: beData.strategies,
       },
     };
   }, [activeVault, vaultData, locale, currency]);

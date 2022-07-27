@@ -47,6 +47,29 @@ export const getProductData = (product: string | string[]) => {
   };
 };
 
+export const getVaultData = (vault: string | string[]) => {
+  const fullPathAbout = path.join(
+    process.cwd(),
+    'apps/investify/content/vaults',
+    `${vault}.mdx`,
+  );
+  const rawAbout = fs.readFileSync(fullPathAbout, 'utf8');
+
+  const { data: about, content: aboutContent } = matter(rawAbout);
+
+  return {
+    frontMatter: {
+      data: {
+        about,
+      },
+      vault,
+    },
+    content: {
+      aboutContent,
+    },
+  };
+};
+
 export const getProduct = async (product: string | string[]) => {
   const { frontMatter, content } = getProductData(product);
 
@@ -85,6 +108,26 @@ export const getProduct = async (product: string | string[]) => {
       compiledSourceDescription,
       compiledSourceThesis,
       compiledSourceInvestmentFocus,
+    },
+  };
+};
+
+export const getVault = async (vault: string | string[]) => {
+  const { frontMatter, content } = getVaultData(vault);
+
+  const sourceAbout = await serialize(content.aboutContent, {
+    parseFrontmatter: false,
+    mdxOptions: {
+      remarkPlugins: [[remarkGfm]],
+    },
+  });
+
+  const { compiledSource: compiledSourceAbout } = sourceAbout;
+
+  return {
+    frontMatter,
+    source: {
+      compiledSourceAbout,
     },
   };
 };

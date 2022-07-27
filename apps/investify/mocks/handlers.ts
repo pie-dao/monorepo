@@ -293,6 +293,40 @@ export const handlers = [
             symbol: 'auxoWFTM',
             name: 'Auxo Wrapped Fantom Vault',
             address,
+            strategies: [
+              {
+                title: 'Beethoven LP Strategy - USDC/fUSDT/MIM liquidity pool',
+                description:
+                  'Supplies liquidity to Beethovenx in the Ziggy Stardust & Magic Internet Money pool. LP position earns trading fees and BEETS. This strategy tries to maximise yield by providing part of earned BEETS in the Fidelio Duetto 80/20 pool and staking Fidelio Duetto BPTs to earn more BEETS. Earned rewards are sold and reinvested.',
+                allocationPercentage: 30,
+                links: [
+                  {
+                    title: 'Link 1',
+                    url: 'https://www.google.com',
+                  },
+                  {
+                    title: 'Link 2',
+                    url: 'https://www.google.com',
+                  },
+                ],
+              },
+              {
+                title: 'Beethoven LP Strategy - USDC/fUSDT/MIM liquidity pool',
+                description:
+                  'Supplies liquidity to Beethovenx in the Ziggy Stardust & Magic Internet Money pool. LP position earns trading fees and BEETS. This strategy tries to maximise yield by providing part of earned BEETS in the Fidelio Duetto 80/20 pool and staking Fidelio Duetto BPTs to earn more BEETS. Earned rewards are sold and reinvested.',
+                allocationPercentage: 70,
+                links: [
+                  {
+                    title: 'Link 1',
+                    url: 'https://www.google.com',
+                  },
+                  {
+                    title: 'Link 2',
+                    url: 'https://www.google.com',
+                  },
+                ],
+              },
+            ],
           })),
       }),
     );

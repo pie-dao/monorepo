@@ -64,5 +64,6 @@
   "totalSupplyDescription": "Currently circulating supply",
   "contract": "Contract",
   "downloadProspectus": "Download prospectus",
-  "audit": "Audit"
+  "audit": "Audit",
+  "network": "Network"
 }
