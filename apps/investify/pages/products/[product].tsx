@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from 'react';
 import Image from 'next/image';
-import { find } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import { useMediaQuery } from 'usehooks-ts';
 import useTranslation from 'next-translate/useTranslation';
 import products from '../../config/products.json';
@@ -62,8 +62,9 @@ const ProductPage = ({
     prospectus,
     coingeckoId,
     investmentFocusImage,
+    addresses,
   } = config;
-  const { data, isLoading, isError } = useGetProductsBySymbolQuery({
+  const { data, isLoading } = useGetProductsBySymbolQuery({
     symbols: name,
     currency: defaultCurrency ?? 'USD',
   });
@@ -71,54 +72,75 @@ const ProductPage = ({
   const productData = useMemo(() => {
     return find(
       tokens,
-      (token) => token.addresses[1] === config.addresses['1'].address,
+      (token) => token.addresses[1] === addresses['1'].address,
     );
-  }, [config.addresses, tokens]);
+  }, [addresses, tokens]);
 
   const tabsData = useMemo(
     () => ({
-      marketCap: formatBalanceCurrency(
-        data?.tokensBySymbol[0]?.marketData[0]?.marketCap,
-        defaultLocale,
-        defaultCurrency,
-      ),
-      holders: data?.tokensBySymbol[0]?.marketData[0]?.holders,
-      ath: formatBalanceCurrency(
-        data?.tokensBySymbol[0]?.marketData[0]?.allTimeHigh,
-        defaultLocale,
-        defaultCurrency,
-      ),
-      atl: formatBalanceCurrency(
-        data?.tokensBySymbol[0]?.marketData[0]?.allTimeLow,
-        defaultLocale,
-        defaultCurrency,
-      ),
-      inceptionDate: new Date(
-        data?.tokensBySymbol[0]?.inceptionDate,
-      ).toLocaleDateString('en-GB', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
-      swapFee: formatAsPercent(
-        data?.tokensBySymbol[0]?.marketData[0]?.swapFee,
-        defaultLocale,
-      ),
-      totalSupply: formatBalance(
-        data?.tokensBySymbol[0]?.marketData[0]?.totalSupply,
-        defaultLocale,
-      ),
-      managementFee: formatAsPercent(
-        data?.tokensBySymbol[0]?.marketData[0]?.managementFee,
-        defaultLocale,
-      ),
-      governance: data?.tokensBySymbol[0]?.governance,
+      marketCap: data?.tokensBySymbol[0]?.marketData[0]?.marketCap
+        ? formatBalanceCurrency(
+            data?.tokensBySymbol[0]?.marketData[0]?.marketCap,
+            defaultLocale,
+            defaultCurrency,
+          )
+        : null,
+      holders: data?.tokensBySymbol[0]?.marketData[0]?.holders
+        ? data?.tokensBySymbol[0]?.marketData[0]?.holders
+        : null,
+      ath: data?.tokensBySymbol[0]?.marketData[0]?.allTimeHigh
+        ? formatBalanceCurrency(
+            data?.tokensBySymbol[0]?.marketData[0]?.allTimeHigh,
+            defaultLocale,
+            defaultCurrency,
+          )
+        : null,
+      atl: data?.tokensBySymbol[0]?.marketData[0]?.allTimeLow
+        ? formatBalanceCurrency(
+            data?.tokensBySymbol[0]?.marketData[0]?.allTimeLow,
+            defaultLocale,
+            defaultCurrency,
+          )
+        : null,
+      inceptionDate: data?.tokensBySymbol[0]?.inceptionDate
+        ? new Date(data?.tokensBySymbol[0]?.inceptionDate).toLocaleDateString(
+            'en-GB',
+            {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            },
+          )
+        : null,
+      swapFee: data?.tokensBySymbol[0]?.marketData[0]?.swapFee
+        ? formatAsPercent(
+            data?.tokensBySymbol[0]?.marketData[0]?.swapFee,
+            defaultLocale,
+          )
+        : null,
+      totalSupply: data?.tokensBySymbol[0]?.marketData[0]?.totalSupply
+        ? formatBalance(
+            data?.tokensBySymbol[0]?.marketData[0]?.totalSupply,
+            defaultLocale,
+          )
+        : null,
+      managementFee: data?.tokensBySymbol[0]?.marketData[0]?.totalSupply
+        ? formatAsPercent(
+            data?.tokensBySymbol[0]?.marketData[0]?.managementFee,
+            defaultLocale,
+          )
+        : null,
+      governance: !isEmpty(data?.tokensBySymbol[0]?.governance)
+        ? data?.tokensBySymbol[0]?.governance
+        : null,
       prospectus,
       coingeckoId,
       investmentFocusImage,
+      address: config.addresses['1'].address,
     }),
     [
       coingeckoId,
+      config.addresses,
       data?.tokensBySymbol,
       defaultCurrency,
       defaultLocale,
@@ -288,9 +310,7 @@ const ProductPage = ({
           </section>
         </>
       )}
-      {!isLoading && !isError && (
-        <ProductTabs tabsData={tabsData} source={source} />
-      )}
+      {!isLoading && <ProductTabs tabsData={tabsData} source={source} />}
       {data?.tokensBySymbol[0]?.underlyingTokens && (
         <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
       )}

@@ -65,5 +65,7 @@
   "contract": "Contract",
   "downloadProspectus": "Download prospectus",
   "audit": "Audit",
-  "network": "Network"
+  "network": "Network",
+  "noStrategies": "There are no strategies available on this vault",
+  "noGovernance": "There is no governance data available"
 }

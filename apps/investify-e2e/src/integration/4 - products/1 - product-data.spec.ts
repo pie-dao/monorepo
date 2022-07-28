@@ -122,4 +122,87 @@ describe('Test Product Page Data Display', () => {
         /(?=.*\d)^(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{0,2})?(M|K|B|T)?/,
       );
   });
+
+  it('should display tabs with description content', () => {
+    cy.get('[data-cy="product-tab-description"]').click();
+    cy.get('[data-cy="product-tab-description"]').should(
+      'have.attr',
+      'aria-selected',
+      'true',
+    );
+  });
+
+  it('should display tabs with thesis', () => {
+    cy.get('[data-cy="product-tab-thesis"]').click();
+    cy.get('[data-cy="product-tab-thesis"]').should(
+      'have.attr',
+      'aria-selected',
+      'true',
+    );
+    cy.get('[data-cy="product-tab-thesis-prospectus"]').should(
+      'have.attr',
+      'href',
+      'https://gateway.pinata.cloud/ipfs/QmcNBx57qyjsuENaTZunsG7C12PN8i9t9BKjzaWzGSaBVK',
+    );
+  });
+
+  it('should display tabs with details', () => {
+    cy.get('[data-cy="product-tab-details"]').click();
+    cy.get('[data-cy="product-tab-details"]').should(
+      'have.attr',
+      'aria-selected',
+      'true',
+    );
+    cy.get('[data-cy="key-marketCap"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{1,3})?$|N\/A)/,
+      );
+
+    cy.get('[data-cy="key-holders"]')
+      .invoke('text')
+      .should('match', /(^[1-9]\d*$|N\/A)/);
+
+    cy.get('[data-cy="key-allTimeHigh"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{1,3})?$|N\/A)/,
+      );
+
+    cy.get('[data-cy="key-allTimeLow"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((?=.*\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{1,3})?$|N\/A)/,
+      );
+
+    cy.get('[data-cy="key-managementFee"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((?=.*\d)(([1-9]\d{0,2}(,*\d{3})*)|0)?(\.\d{1,2})?%|N\/A)/,
+      );
+
+    cy.get('[data-cy="key-swapFee"]')
+      .invoke('text')
+      .should(
+        'match',
+        /((?=.*\d)(([1-9]\d{0,2}(,*\d{3})*)|0)?(\.\d{1,2})?%|N\/A)/,
+      );
+
+    cy.get('[data-cy="key-totalSupply"]')
+      .invoke('text')
+      .should(
+        'match',
+        /(?=.*\d)^(([1-9]\d{0,2}(,\d{3})*)|0)?(\.\d{0,2})?(M|K|B|T)?/,
+      );
+
+    cy.get('[data-cy="product-tab-details-contract"]').should(
+      'have.attr',
+      'href',
+      'https://etherscan.io/address/0x33e18a092a93ff21ad04746c7da12e35d34dc7c4',
+    );
+  });
 });

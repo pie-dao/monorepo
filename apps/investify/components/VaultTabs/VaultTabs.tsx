@@ -13,6 +13,7 @@ import classNames from '../../utils/classnames';
 import { formatAsPercent } from '../../utils/formatBalance';
 import { chainMap } from '../../utils/networks';
 import { useSelectedVault } from '../../hooks/useSelectedVault';
+import { isEmpty } from 'lodash';
 
 const variants: Variants = {
   initial: {
@@ -93,6 +94,7 @@ export function VaultTabs({ tabsData, source }: ProductTabs) {
                 )
               }
               key={title}
+              data-cy={`tab-${title}`}
             >
               {({ selected }) => (
                 <>
@@ -109,7 +111,7 @@ export function VaultTabs({ tabsData, source }: ProductTabs) {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-2">
-          <SingleVaultPanel className="divide-y">
+          <SingleVaultPanel className="divide-y" testId="tab-about-content">
             <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
               <MDXRemote compiledSource={source.compiledSourceAbout} />
             </div>
@@ -121,7 +123,9 @@ export function VaultTabs({ tabsData, source }: ProductTabs) {
                       {t('network')}
                     </span>
                   </p>
-                  <p className="text-sub-dark text-right">{about.network}</p>
+                  <p className="text-sub-dark text-right first-letter:capitalize lowercase">
+                    {about?.network ? about.network : 'N/A'}
+                  </p>
                 </li>
                 <li className="flex justify-between gap-x-2">
                   <p className="flex flex-col">
@@ -132,107 +136,119 @@ export function VaultTabs({ tabsData, source }: ProductTabs) {
                   <a
                     href={urls.contract}
                     className="text-secondary text-right truncate max-w-[8rem]"
+                    data-cy="contract-address"
                   >
-                    {about.contract}
+                    {about.contract ? about.contract : 'N/A'}
                   </a>
                 </li>
                 <li className="flex justify-between gap-x-2">
                   <p className="flex flex-col">
                     <span className="font-bold text-primary">
-                      {about.underlyingAsset.symbol}
+                      {about?.underlyingAsset?.symbol
+                        ? about.underlyingAsset.symbol
+                        : 'N/A'}
                     </span>
                   </p>
-                  <a
-                    href={urls.token}
-                    className="text-secondary text-right truncate max-w-[8rem]"
-                  >
-                    {about.underlyingAsset.contract}
-                  </a>
+                  {about?.underlyingAsset?.contract && (
+                    <a
+                      href={urls.token}
+                      className="text-secondary text-right truncate max-w-[8rem]"
+                      data-cy="underlying-address"
+                    >
+                      {about.underlyingAsset.contract}
+                    </a>
+                  )}
                 </li>
               </ul>
             </div>
           </SingleVaultPanel>
-          <SingleVaultPanel>
+          <SingleVaultPanel testId="tab-strategyDetails-content">
             <div className="flex flex-col gap-y-3 my-4">
-              {strategies.map((item, index) => (
-                <Disclosure
-                  key={`${item.title}-${index}`}
-                  as="div"
-                  className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
-                >
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button as="div" className="cursor-pointer">
-                        <div className="flex items-center gap-x-2">
-                          <motion.div
-                            initial={{ rotate: 0 }}
-                            animate={{ rotate: open ? 180 : 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="flex"
+              {!isEmpty(strategies)
+                ? strategies.map((item, index) => (
+                    <Disclosure
+                      key={`${item.title}-${index}`}
+                      as="div"
+                      className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
+                      data-cy="strategy-item"
+                    >
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button
+                            as="div"
+                            className="cursor-pointer"
                           >
-                            <ChevronDownIcon
-                              className="h-5 w-5 text-sub-dark"
-                              aria-hidden="true"
-                            />
-                          </motion.div>
-                          <div className="flex-1">
-                            <h3 className="text-sm text-primary font-medium leading-5">
-                              {item.title}
-                            </h3>
-                          </div>
-                          <div>
-                            <p className="text-secondary text-sm">
-                              {formatAsPercent(item.allocationPercentage)}
-                            </p>
-                          </div>
-                        </div>
-                      </Disclosure.Button>
-                      <AnimatePresence initial={false}>
-                        {open && (
-                          <Disclosure.Panel
-                            as={motion.div}
-                            initial="collapsed"
-                            animate="open"
-                            static
-                            exit="collapsed"
-                            key={'panel-' + index}
-                            variants={{
-                              open: { opacity: 1, height: 'auto' },
-                              collapsed: { opacity: 0, height: 0 },
-                            }}
-                            transition={{
-                              duration: 0.2,
-                            }}
-                            className="overflow-hidden"
-                          >
-                            <motion.div
-                              variants={{
-                                collapsed: { opacity: 0, y: -20 },
-                                open: { opacity: 1, y: 0 },
-                              }}
-                              transition={{ duration: 0.3 }}
-                              className="py-2 space-y-1 border-t border-customBorder mt-2"
-                            >
-                              <p>{item.description}</p>
-                              <div className="flex flex-wrap gap-4 mt-4">
-                                {item.links.map((link, index) => (
-                                  <a
-                                    key={`${link.title}-${index}`}
-                                    href={link.url}
-                                    className="text-secondary text-sm"
-                                  >
-                                    {link.title}
-                                  </a>
-                                ))}
+                            <div className="flex items-center gap-x-2">
+                              <motion.div
+                                initial={{ rotate: 0 }}
+                                animate={{ rotate: open ? 180 : 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="flex"
+                              >
+                                <ChevronDownIcon
+                                  className="h-5 w-5 text-sub-dark"
+                                  aria-hidden="true"
+                                />
+                              </motion.div>
+                              <div className="flex-1">
+                                <h3 className="text-sm text-primary font-medium leading-5">
+                                  {item.title}
+                                </h3>
                               </div>
-                            </motion.div>
-                          </Disclosure.Panel>
-                        )}
-                      </AnimatePresence>
-                    </>
-                  )}
-                </Disclosure>
-              ))}
+                              <div>
+                                <p className="text-secondary text-sm">
+                                  {formatAsPercent(item.allocationPercentage)}
+                                </p>
+                              </div>
+                            </div>
+                          </Disclosure.Button>
+                          <AnimatePresence initial={false}>
+                            {open && (
+                              <Disclosure.Panel
+                                as={motion.div}
+                                initial="collapsed"
+                                animate="open"
+                                static
+                                exit="collapsed"
+                                key={'panel-' + index}
+                                variants={{
+                                  open: { opacity: 1, height: 'auto' },
+                                  collapsed: { opacity: 0, height: 0 },
+                                }}
+                                transition={{
+                                  duration: 0.2,
+                                }}
+                                className="overflow-hidden"
+                              >
+                                <motion.div
+                                  variants={{
+                                    collapsed: { opacity: 0, y: -20 },
+                                    open: { opacity: 1, y: 0 },
+                                  }}
+                                  transition={{ duration: 0.3 }}
+                                  className="py-2 space-y-1 border-t border-customBorder mt-2"
+                                >
+                                  <p>{item.description}</p>
+                                  <div className="flex flex-wrap gap-4 mt-4">
+                                    {item.links.map((link, index) => (
+                                      <a
+                                        key={`${link.title}-${index}`}
+                                        href={link.url}
+                                        className="text-secondary text-sm"
+                                      >
+                                        {link.title}
+                                      </a>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              </Disclosure.Panel>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      )}
+                    </Disclosure>
+                  ))
+                : t('noStrategies')}
             </div>
           </SingleVaultPanel>
         </Tab.Panels>
@@ -244,9 +260,11 @@ export function VaultTabs({ tabsData, source }: ProductTabs) {
 export function SingleVaultPanel({
   className,
   children,
+  testId,
 }: {
   className?: string;
   children: React.ReactNode;
+  testId?: string;
 }) {
   return (
     <AnimateSharedLayout>
@@ -255,6 +273,7 @@ export function SingleVaultPanel({
           as={motion.div}
           className="rounded-lg bg-gradient-primary p-3 shadow-md"
           layout
+          data-cy={testId}
         >
           <motion.div
             layout
