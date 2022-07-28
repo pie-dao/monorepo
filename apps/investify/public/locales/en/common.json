@@ -67,6 +67,7 @@
   "audit": "Audit",
   "network": "Network",
   "noStrategies": "There are no strategies available on this vault",
+<<<<<<< HEAD
   "noGovernance": "There is no governance data available",
   "1D": "1D",
   "1W": "1W",
@@ -75,4 +76,7 @@
   "ALL": "All Time",
   "sold": "You sold",
   "bought": "You bought"
+=======
+  "noGovernance": "There is no governance data available"
+>>>>>>> a876a2b (test(Tabs): Refactor and add tests to tabs vault)
 }

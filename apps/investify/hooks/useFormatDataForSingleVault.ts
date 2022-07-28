@@ -45,11 +45,11 @@ export function useFormatDataForSingleVault(
   locale: string,
 ): VaultData {
   const singleVaultData = useMemo(() => {
-    const shouldReturn = isEmpty(activeVault) || isEmpty(vaultData);
+    const shouldReturn = isEmpty(activeVault);
     if (shouldReturn) return;
 
     const beData = find(
-      vaultData.vaults,
+      vaultData?.vaults,
       (o) => o.address.toLowerCase() === activeVault.address.toLowerCase(),
     );
     const dataFromConfig = find(vaultConfig, (o) => {
@@ -62,20 +62,22 @@ export function useFormatDataForSingleVault(
         sub: dataFromConfig.symbol,
       },
       price: {
-        value: formatBalanceCurrency(
-          beData.underlyingToken.marketData[0].currentPrice,
-          locale,
-          currency,
-          true,
-        ),
+        value: beData?.underlyingToken.marketData[0]?.currentPrice
+          ? formatBalanceCurrency(
+              beData.underlyingToken.marketData[0].currentPrice,
+              locale,
+              currency,
+              true,
+            )
+          : null,
       },
-      APY: `${activeVault.stats.currentAPY}%`,
-      address: activeVault.address,
-      totalDesposited: formatBalance(
-        activeVault.stats.deposits.label,
-        locale,
-        0,
-      ),
+      APY: activeVault?.stats?.currentAPY
+        ? `${activeVault.stats.currentAPY}%`
+        : null,
+      address: activeVault?.address ? activeVault.address : null,
+      totalDesposited: activeVault?.address
+        ? formatBalance(activeVault.stats.deposits.label, locale, 0)
+        : null,
       tabs: {
         about: {
           network: dataFromConfig.network.name,
@@ -85,7 +87,7 @@ export function useFormatDataForSingleVault(
             contract: dataFromConfig.token.address,
           },
         },
-        strategies: beData.strategies,
+        strategies: beData?.strategies ? beData.strategies : null,
       },
     };
   }, [activeVault, vaultData, locale, currency]);
