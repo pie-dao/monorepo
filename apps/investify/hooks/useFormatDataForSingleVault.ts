@@ -62,7 +62,7 @@ export function useFormatDataForSingleVault(
         sub: dataFromConfig.symbol,
       },
       price: {
-        value: beData?.underlyingToken.marketData[0]?.currentPrice
+        value: beData?.underlyingToken?.marketData[0]?.currentPrice
           ? formatBalanceCurrency(
               beData.underlyingToken.marketData[0].currentPrice,
               locale,
