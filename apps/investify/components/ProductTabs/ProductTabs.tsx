@@ -85,11 +85,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
     address,
   } = tabsData;
   const { t } = useTranslation();
-
-  const url = useMemo(() => {
-    const blockExplorer = `${chainMap[1].blockExplorerUrls[0]}/address/`;
-    return blockExplorer + address;
-  }, [address]);
+  const url = `${chainMap[1].blockExplorerUrls[0]}/address/${address}`;
 
   const keyFacts = useMemo(
     () => [
