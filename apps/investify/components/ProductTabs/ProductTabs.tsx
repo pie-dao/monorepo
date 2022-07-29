@@ -175,7 +175,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
               >
                 <Image
                   src="https://raw.githubusercontent.com/pie-dao/brand/f66a0f41cc186013fd9dab2a5f618da9c8f10a74/misc/coingecko.svg"
-                  alt={'PieDao Logo'}
+                  alt={'Coingecko logo'}
                   layout="fill"
                   objectFit="contain"
                 />
@@ -228,7 +228,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                 <div className="flex-shrink-0 relative w-[207px] h-[189px]">
                   <Image
                     src={investmentFocusImage}
-                    alt={'PieDao Investment Focus'}
+                    alt={'Product Investment Focus'}
                     layout="fill"
                     objectFit="contain"
                   />
@@ -245,7 +245,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                   <div className="relative w-36 h-8 inline-flex">
                     <Image
                       src="https://static.tildacdn.com/tild3234-6331-4632-b931-346235343766/Logo-mixBytes3.svg"
-                      alt={'PieDao Logo'}
+                      alt={'Audit logo'}
                       layout="fill"
                       objectFit="contain"
                     />
