@@ -6,18 +6,15 @@ import remarkGfm from 'remark-gfm';
 
 export const getProductData = (product: string | string[]) => {
   const fullPathDescription = path.join(
-    process.cwd(),
-    'apps/investify/content/products',
+    'apps/investify/public/content/products',
     `${product}/description.mdx`,
   );
   const fullPathThesis = path.join(
-    process.cwd(),
-    'apps/investify/content/products',
+    'apps/investify/public/content/products',
     `${product}/thesis.mdx`,
   );
   const fullPathInvestmentFocus = path.join(
-    process.cwd(),
-    'apps/investify/content/products',
+    'apps/investify/public/content/products',
     `${product}/investmentFocus.mdx`,
   );
   const rawDescription = fs.readFileSync(fullPathDescription, 'utf8');
@@ -49,10 +46,10 @@ export const getProductData = (product: string | string[]) => {
 
 export const getVaultData = (vault: string | string[]) => {
   const fullPathAbout = path.join(
-    process.cwd(),
-    'apps/investify/content/vaults',
+    'apps/investify/public/content/vaults',
     `${vault}.mdx`,
   );
+
   const rawAbout = fs.readFileSync(fullPathAbout, 'utf8');
 
   const { data: about, content: aboutContent } = matter(rawAbout);
