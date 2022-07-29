@@ -2,6 +2,13 @@
   "sourceRoot": "apps/investify",
   "projectType": "application",
   "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["script/typechain", "nx serve-app investify"],
+        "parallel": false
+      }
+    },
     "build": {
       "executor": "@nrwl/next:build",
       "outputs": ["{options.outputPath}"],
@@ -15,7 +22,7 @@
         "production": {}
       }
     },
-    "serve": {
+    "serve-app": {
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
