@@ -6,18 +6,18 @@ describe('useFormattedBalance', () => {
     const { result } = renderHook(() =>
       useFormattedBalance(undefined, undefined, undefined),
     );
-    expect(result.current).toBe('$0.00');
+    expect(result.current).toBe('$0');
   });
   it('should be possible to render an amount of USD Money', async () => {
     const { result } = renderHook(() =>
       useFormattedBalance(200, 'en-US', 'USD'),
     );
-    expect(result.current).toBe('$200.00');
+    expect(result.current).toBe('$200');
   });
   it('should be possible to render an amount of EUR Money', async () => {
     const { result } = renderHook(() =>
       useFormattedBalance(200.3, 'en-US', 'EUR'),
     );
-    expect(result.current).toBe('€200.30');
+    expect(result.current).toBe('€200.3');
   });
 });
