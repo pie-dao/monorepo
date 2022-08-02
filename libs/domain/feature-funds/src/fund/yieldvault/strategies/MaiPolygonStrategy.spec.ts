@@ -1,6 +1,5 @@
 import { SupportedChain } from '@shared/util-types';
-import { Right } from 'fp-ts/lib/Either';
-import { APRBreakdown, APYBreakdown } from '../YieldVaultStrategy';
+import { isRight } from 'fp-ts/lib/Either';
 import { MaiPolygonStrategy } from './MaiPolygonStrategy';
 
 describe('mai polygon strategy', () => {
@@ -20,14 +19,14 @@ describe('mai polygon strategy', () => {
   );
 
   test('APR', async () => {
-    const result = (await target.calculateAPR()()) as Right<APRBreakdown>;
+    const result = await target.calculateAPR()();
 
-    console.log(result);
+    expect(isRight(result)).toBe(true);
   });
 
   test('APY', async () => {
-    const result = (await target.simulateAPY()()) as Right<APYBreakdown>;
+    const result = await target.simulateAPY()();
 
-    console.log(result);
+    expect(isRight(result)).toBe(true);
   });
 });

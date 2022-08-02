@@ -1,5 +1,4 @@
 import { DataTransferError } from '@hexworks/cobalt-http';
-import BigNumber from 'bignumber.js';
 import * as TE from 'fp-ts/TaskEither';
 import { Strategy } from '../Strategy';
 
