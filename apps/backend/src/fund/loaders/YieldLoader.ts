@@ -25,17 +25,20 @@ export class YieldLoader {
       TE.fromTask(this.strategyRepository.find()),
       TE.chainW(
         TE.traverseArray((strategy) => {
-          const apr = strategy.calculateAPR();
           const compoundingFrequency = CompoundingFrequency.DAILY;
-          const apy = strategy.simulateAPY(compoundingFrequency);
-          return this.strategyRepository.addYieldData(
-            strategy.chain,
-            strategy.address,
-            {
-              apr,
-              timestamp: new Date(),
-              apy: { compoundingFrequency, value: apy },
-            },
+          return pipe(
+            strategy.simulateAPY(compoundingFrequency, 1),
+            TE.map(({ totalAPR, totalAPY }) => {
+              return this.strategyRepository.addYieldData(
+                strategy.chain,
+                strategy.address,
+                {
+                  apr: totalAPR,
+                  timestamp: new Date(),
+                  apy: { compoundingFrequency, value: totalAPY },
+                },
+              );
+            }),
           );
         }),
       ),

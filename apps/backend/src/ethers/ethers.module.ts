@@ -10,6 +10,8 @@ export const EthersProvider = {
   ).multicallProvider,
 };
 
+export type EthersProvider = typeof EthersProvider;
+
 @Module({
   providers: [EthersProvider],
   exports: [EthersProvider],
