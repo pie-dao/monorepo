@@ -1,7 +1,9 @@
+import { CoinGeckoAdapter } from '@domain/data-sync';
 import { SentryService } from '@ntegral/nestjs-sentry';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { YieldLoader } from '.';
+import { EthersProvider } from '../../ethers';
 import { MongoYieldVaultStrategyRepository } from '../repository';
 
 describe('Given a Yield Loader', () => {
@@ -13,7 +15,10 @@ describe('Given a Yield Loader', () => {
     mongod = await MongoMemoryServer.create();
     connection = await connect(mongod.getUri());
     target = new YieldLoader(
-      new MongoYieldVaultStrategyRepository(),
+      new MongoYieldVaultStrategyRepository(
+        new CoinGeckoAdapter(),
+        EthersProvider,
+      ),
       new SentryService(),
     );
   });

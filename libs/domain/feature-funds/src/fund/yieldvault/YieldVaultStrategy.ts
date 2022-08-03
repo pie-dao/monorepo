@@ -11,6 +11,7 @@ export enum CompoundingFrequency {
 export type APRBreakdown = {
   tradingAPR: number;
   farmingAPR: number;
+  totalAPR: number;
 };
 
 export type APYBreakdown = APRBreakdown & {
