@@ -2,19 +2,22 @@ import { ReactElement, useMemo } from 'react';
 import Image from 'next/image';
 import { find } from 'lodash';
 import { useMediaQuery } from 'usehooks-ts';
+import useTranslation from 'next-translate/useTranslation';
 import products from '../../config/products.json';
 import { Layout } from '../../components';
+import Tooltip from '../../components/Tooltip/Tooltip';
+import UnderlyingAssets from '../../components/UnderlyingAssets/UnderlyingAssets';
 import { wrapper } from '../../store';
-import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector } from '../../hooks';
 import { useGetProductsBySymbolQuery } from '../../api/generated/graphql';
 import {
   formatAsPercent,
+  formatBalance,
   formatBalanceCurrency,
 } from '../../utils/formatBalance';
 import classNames from '../../utils/classnames';
-import Tooltip from '../../components/Tooltip/Tooltip';
-import UnderlyingAssets from '../../components/UnderlyingAssets/UnderlyingAssets';
+import { getProduct } from '../../utils/mdxUtils';
+import { ProductTabs } from '../../components/ProductTabs/ProductTabs';
 
 type ProductConfig = {
   name: string;
@@ -26,21 +29,41 @@ type ProductConfig = {
       exclude?: boolean;
     };
   };
+  prospectus?: string;
+  coingeckoId: string;
+  investmentFocusImage?: string;
 };
 
 type ProductsConfig = {
   [tokenSymbol: string]: ProductConfig;
 };
 
-const ProductPage = ({ config }: { config: ProductConfig }) => {
+const ProductPage = ({
+  config,
+  source,
+}: {
+  config: ProductConfig;
+  source: {
+    compiledSourceDescription: string;
+    compiledSourceThesis: string;
+    compiledSourceInvestmentFocus: string;
+  };
+}) => {
   const { t } = useTranslation();
   const mq = useMediaQuery('(min-width: 1024px)');
   const { tokens } = useAppSelector((state) => state.dashboard);
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
-  const { name, description, image } = config;
-  const { data, isLoading } = useGetProductsBySymbolQuery({
+  const {
+    name,
+    description,
+    image,
+    prospectus,
+    coingeckoId,
+    investmentFocusImage,
+  } = config;
+  const { data, isLoading, isError } = useGetProductsBySymbolQuery({
     symbols: name,
     currency: defaultCurrency ?? 'USD',
   });
@@ -51,6 +74,57 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
       (token) => token.addresses[1] === config.addresses['1'].address,
     );
   }, [config.addresses, tokens]);
+
+  const tabsData = useMemo(
+    () => ({
+      marketCap: formatBalanceCurrency(
+        data?.tokensBySymbol[0]?.marketData[0]?.marketCap,
+        defaultLocale,
+        defaultCurrency,
+      ),
+      holders: data?.tokensBySymbol[0]?.marketData[0]?.holders,
+      ath: formatBalanceCurrency(
+        data?.tokensBySymbol[0]?.marketData[0]?.allTimeHigh,
+        defaultLocale,
+        defaultCurrency,
+      ),
+      atl: formatBalanceCurrency(
+        data?.tokensBySymbol[0]?.marketData[0]?.allTimeLow,
+        defaultLocale,
+        defaultCurrency,
+      ),
+      inceptionDate: new Date(
+        data?.tokensBySymbol[0]?.inceptionDate,
+      ).toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+      swapFee: formatAsPercent(
+        data?.tokensBySymbol[0]?.marketData[0]?.swapFee,
+        defaultLocale,
+      ),
+      totalSupply: formatBalance(
+        data?.tokensBySymbol[0]?.marketData[0]?.totalSupply,
+        defaultLocale,
+      ),
+      managementFee: formatAsPercent(
+        data?.tokensBySymbol[0]?.marketData[0]?.managementFee,
+        defaultLocale,
+      ),
+      governance: data?.tokensBySymbol[0]?.governance,
+      prospectus,
+      coingeckoId,
+      investmentFocusImage,
+    }),
+    [
+      coingeckoId,
+      data?.tokensBySymbol,
+      defaultCurrency,
+      defaultLocale,
+      prospectus,
+    ],
+  );
 
   if (!productData) return null;
 
@@ -213,6 +287,9 @@ const ProductPage = ({ config }: { config: ProductConfig }) => {
           </section>
         </>
       )}
+      {!isLoading && !isError && (
+        <ProductTabs tabsData={tabsData} source={source} />
+      )}
       {data?.tokensBySymbol[0]?.underlyingTokens && (
         <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
       )}
@@ -230,6 +307,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
   () =>
     async ({ params }) => {
       const { product } = params;
+      const { source } = await getProduct(product);
+
       const _products = products as ProductsConfig;
       const config = _products[product.toString()];
 
@@ -237,6 +316,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         props: {
           config,
           title: config.description,
+          source,
         },
       };
     },

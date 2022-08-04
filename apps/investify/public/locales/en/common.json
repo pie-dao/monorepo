@@ -47,5 +47,22 @@
   "price": "Price",
   "amountPerToken": "Amount X token",
   "totalHeld": "Total held",
-  "allocation": "Allocation"
+  "allocation": "Allocation",
+  "holders": "Holders",
+  "marketCap": "MarketCap",
+  "keyFacts": "Key facts",
+  "allTimeHigh": "All time high",
+  "allTimeHighDescription": "All time high of the token",
+  "allTimeLow": "All time low",
+  "allTimeLowDescription": "All time low of the token",
+  "inceptionDate": "Inception date",
+  "swapFee": "Swap fee",
+  "swapFeeDescription": "Swap fee capture value during rebalancing",
+  "managementFee": "Fees",
+  "managementFeeDescription": "Management fee of the fund",
+  "totalSupply": "Total supply",
+  "totalSupplyDescription": "Currently circulating supply",
+  "contract": "Contract",
+  "downloadProspectus": "Download prospectus",
+  "audit": "Audit"
 }

@@ -27,7 +27,7 @@ type User {
 type MarketDataEntity {
   circulatingSupply: Float!
   currentPrice(currency: String! = "USD"): Float!
-  marketCap: String!
+  marketCap: Float!
   marketCapRank: Float!
   timestamp: Timestamp!
   totalVolume: String!
@@ -36,6 +36,12 @@ type MarketDataEntity {
   discount: Float!
   interests: Float!
   nav: Float!
+  holders: Float!
+  allTimeHigh: Float!
+  allTimeLow: Float!
+  swapFee: Float!
+  totalSupply: Float!
+  managementFee: Float!
 }
 
 interface TokenInterface {
@@ -49,6 +55,15 @@ interface TokenInterface {
   symbol: String!
   riskGrade: String!
   underlyingTokens: [underlyingTokenEntity!]!
+  inceptionDate: Timestamp!
+  governance: [Governance!]!
+}
+
+type Governance {
+  title: String!
+  url: String!
+  timestamp: Timestamp!
+  status: String!
 }
 
 type TokenEntity implements TokenInterface {
@@ -62,6 +77,8 @@ type TokenEntity implements TokenInterface {
   symbol: String!
   riskGrade: String!
   underlyingTokens: [underlyingTokenEntity!]!
+  inceptionDate: Timestamp!
+  governance: [Governance!]!
 }
 
 type UserTokenEntity implements TokenInterface {
@@ -75,6 +92,8 @@ type UserTokenEntity implements TokenInterface {
   symbol: String!
   riskGrade: String!
   underlyingTokens: [underlyingTokenEntity!]!
+  inceptionDate: Timestamp!
+  governance: [Governance!]!
 }
 
 interface YieldVaultInterface {

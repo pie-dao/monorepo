@@ -1,0 +1,90 @@
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+import { serialize } from 'next-mdx-remote/serialize';
+import remarkGfm from 'remark-gfm';
+
+export const getProductData = (product: string | string[]) => {
+  const fullPathDescription = path.join(
+    process.cwd(),
+    'apps/investify/content/products',
+    `${product}/description.mdx`,
+  );
+  const fullPathThesis = path.join(
+    process.cwd(),
+    'apps/investify/content/products',
+    `${product}/thesis.mdx`,
+  );
+  const fullPathInvestmentFocus = path.join(
+    process.cwd(),
+    'apps/investify/content/products',
+    `${product}/investmentFocus.mdx`,
+  );
+  const rawDescription = fs.readFileSync(fullPathDescription, 'utf8');
+  const rawThesis = fs.readFileSync(fullPathThesis, 'utf8');
+  const rawInvestmentFocus = fs.readFileSync(fullPathInvestmentFocus, 'utf8');
+
+  const { data: description, content: descriptionContent } =
+    matter(rawDescription);
+  const { data: thesis, content: thesisContent } = matter(rawThesis);
+  const { data: investmentFocus, content: investmentFocusContent } =
+    matter(rawInvestmentFocus);
+
+  return {
+    frontMatter: {
+      data: {
+        description,
+        thesis,
+        investmentFocus,
+      },
+      product,
+    },
+    content: {
+      descriptionContent,
+      thesisContent,
+      investmentFocusContent,
+    },
+  };
+};
+
+export const getProduct = async (product: string | string[]) => {
+  const { frontMatter, content } = getProductData(product);
+
+  const sourceDescription = await serialize(content.descriptionContent, {
+    parseFrontmatter: false,
+    mdxOptions: {
+      remarkPlugins: [[remarkGfm]],
+    },
+  });
+
+  const sourceThesis = await serialize(content.thesisContent, {
+    parseFrontmatter: false,
+    mdxOptions: {
+      remarkPlugins: [[remarkGfm]],
+    },
+  });
+
+  const sourceInvestmentFocus = await serialize(
+    content.investmentFocusContent,
+    {
+      parseFrontmatter: false,
+      mdxOptions: {
+        remarkPlugins: [[remarkGfm]],
+      },
+    },
+  );
+
+  const { compiledSource: compiledSourceDescription } = sourceDescription;
+  const { compiledSource: compiledSourceThesis } = sourceThesis;
+  const { compiledSource: compiledSourceInvestmentFocus } =
+    sourceInvestmentFocus;
+
+  return {
+    frontMatter,
+    source: {
+      compiledSourceDescription,
+      compiledSourceThesis,
+      compiledSourceInvestmentFocus,
+    },
+  };
+};
