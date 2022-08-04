@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ReactElement, useEffect } from 'react';
+import { ReactElement, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Layout } from '../../components';
 import { useSelectedVault } from '../../hooks/useSelectedVault';
@@ -14,9 +14,20 @@ import {
   setOpenModal,
   setSidebarVault,
 } from '../../store/sidebar/sidebar.slice';
-import VaultTabs from '../../components/VaultTabs/VaultTabs';
+import { getVault } from '../../utils/mdxUtils';
+import { VaultTabs } from '../../components/VaultTabs/VaultTabs';
 
-export default function VaultPage({ vault, title }) {
+export default function VaultPage({
+  vault,
+  title,
+  source,
+}: {
+  vault: string;
+  title: string;
+  source: {
+    compiledSourceAbout: string;
+  };
+}) {
   const dispatch = useAppDispatch();
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
@@ -74,7 +85,7 @@ export default function VaultPage({ vault, title }) {
             </div>
           </section>
           <section>
-            <VaultTabs tabs={singleVault.tabs} />
+            <VaultTabs tabsData={singleVault.tabs} source={source} />
             <button onClick={() => dispatch(setOpenModal(true))}>
               Click me
             </button>
@@ -92,12 +103,14 @@ VaultPage.getLayout = function getLayout(page: ReactElement) {
 export const getServerSideProps = wrapper.getServerSideProps(
   () =>
     async ({ params }) => {
-      const { vault } = params;
+      const { vault } = params as { vault: string };
+      const { source } = await getVault(vault.toLowerCase());
 
       return {
         props: {
           vault,
           title: 'Vault',
+          source,
         },
       };
     },
