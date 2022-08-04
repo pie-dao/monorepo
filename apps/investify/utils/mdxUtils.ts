@@ -4,41 +4,59 @@ import matter from 'gray-matter';
 import { serialize } from 'next-mdx-remote/serialize';
 import remarkGfm from 'remark-gfm';
 
+interface source {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  compiledSource: any;
+  scope?: Record<string, unknown>;
+  frontmatter?: Record<string, string>;
+}
+
 export const getProductData = (product: string | string[]) => {
   const fullPathDescription = path.join(
-    process.cwd(),
-    'apps/investify/content/products',
+    'apps/investify/public/content/products',
     `${product}/description.mdx`,
   );
   const fullPathThesis = path.join(
-    process.cwd(),
-    'apps/investify/content/products',
+    'apps/investify/public/content/products',
     `${product}/thesis.mdx`,
   );
   const fullPathInvestmentFocus = path.join(
-    process.cwd(),
-    'apps/investify/content/products',
+    'apps/investify/public/content/products',
     `${product}/investmentFocus.mdx`,
   );
-  const rawDescription = fs.readFileSync(fullPathDescription, 'utf8');
-  const rawThesis = fs.readFileSync(fullPathThesis, 'utf8');
-  const rawInvestmentFocus = fs.readFileSync(fullPathInvestmentFocus, 'utf8');
 
-  const { data: description, content: descriptionContent } =
-    matter(rawDescription);
-  const { data: thesis, content: thesisContent } = matter(rawThesis);
-  const { data: investmentFocus, content: investmentFocusContent } =
-    matter(rawInvestmentFocus);
+  const fullPathFallBack = path.join(
+    'apps/investify/public/content/fallback.mdx',
+  );
+
+  let rawDescription: string;
+  let rawThesis: string;
+  let rawInvestmentFocus: string;
+
+  try {
+    rawDescription = fs.readFileSync(fullPathDescription, 'utf8');
+  } catch (err) {
+    console.error(err);
+    rawDescription = fs.readFileSync(fullPathFallBack, 'utf8');
+  }
+  try {
+    rawThesis = fs.readFileSync(fullPathThesis, 'utf8');
+  } catch (err) {
+    console.error(err);
+    rawThesis = fs.readFileSync(fullPathFallBack, 'utf8');
+  }
+  try {
+    rawInvestmentFocus = fs.readFileSync(fullPathInvestmentFocus, 'utf8');
+  } catch (err) {
+    console.error(err);
+    rawInvestmentFocus = fs.readFileSync(fullPathFallBack, 'utf8');
+  }
+
+  const { content: descriptionContent } = matter(rawDescription);
+  const { content: thesisContent } = matter(rawThesis);
+  const { content: investmentFocusContent } = matter(rawInvestmentFocus);
 
   return {
-    frontMatter: {
-      data: {
-        description,
-        thesis,
-        investmentFocus,
-      },
-      product,
-    },
     content: {
       descriptionContent,
       thesisContent,
@@ -49,21 +67,26 @@ export const getProductData = (product: string | string[]) => {
 
 export const getVaultData = (vault: string | string[]) => {
   const fullPathAbout = path.join(
-    process.cwd(),
-    'apps/investify/content/vaults',
+    'apps/investify/public/content/vaults',
     `${vault}.mdx`,
   );
-  const rawAbout = fs.readFileSync(fullPathAbout, 'utf8');
 
-  const { data: about, content: aboutContent } = matter(rawAbout);
+  const fullPathFallBack = path.join(
+    'apps/investify/public/content/fallback.mdx',
+  );
+
+  let rawAbout: string;
+
+  try {
+    rawAbout = fs.readFileSync(fullPathAbout, 'utf8');
+  } catch (err) {
+    console.error(err);
+    rawAbout = fs.readFileSync(fullPathFallBack, 'utf8');
+  }
+
+  const { content: aboutContent } = matter(rawAbout);
 
   return {
-    frontMatter: {
-      data: {
-        about,
-      },
-      vault,
-    },
     content: {
       aboutContent,
     },
@@ -71,31 +94,46 @@ export const getVaultData = (vault: string | string[]) => {
 };
 
 export const getProduct = async (product: string | string[]) => {
-  const { frontMatter, content } = getProductData(product);
-
-  const sourceDescription = await serialize(content.descriptionContent, {
-    parseFrontmatter: false,
-    mdxOptions: {
-      remarkPlugins: [[remarkGfm]],
-    },
-  });
-
-  const sourceThesis = await serialize(content.thesisContent, {
-    parseFrontmatter: false,
-    mdxOptions: {
-      remarkPlugins: [[remarkGfm]],
-    },
-  });
-
-  const sourceInvestmentFocus = await serialize(
-    content.investmentFocusContent,
-    {
+  const { content } = getProductData(product);
+  const { content: fallbackContent } = getProductData('FALLBACK');
+  let sourceDescription: source;
+  let sourceThesis: source;
+  let sourceInvestmentFocus: source;
+  try {
+    sourceDescription = await serialize(content.descriptionContent, {
       parseFrontmatter: false,
       mdxOptions: {
         remarkPlugins: [[remarkGfm]],
       },
-    },
-  );
+    });
+  } catch (err) {
+    console.error(err);
+    sourceDescription = await serialize(fallbackContent.descriptionContent);
+  }
+  try {
+    sourceThesis = await serialize(content.thesisContent, {
+      parseFrontmatter: false,
+      mdxOptions: {
+        remarkPlugins: [[remarkGfm]],
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    sourceThesis = await serialize(fallbackContent.thesisContent);
+  }
+
+  try {
+    sourceInvestmentFocus = await serialize(content.investmentFocusContent, {
+      mdxOptions: {
+        remarkPlugins: [[remarkGfm]],
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    sourceInvestmentFocus = await serialize(
+      fallbackContent.investmentFocusContent,
+    );
+  }
 
   const { compiledSource: compiledSourceDescription } = sourceDescription;
   const { compiledSource: compiledSourceThesis } = sourceThesis;
@@ -103,7 +141,6 @@ export const getProduct = async (product: string | string[]) => {
     sourceInvestmentFocus;
 
   return {
-    frontMatter,
     source: {
       compiledSourceDescription,
       compiledSourceThesis,
@@ -113,19 +150,24 @@ export const getProduct = async (product: string | string[]) => {
 };
 
 export const getVault = async (vault: string | string[]) => {
-  const { frontMatter, content } = getVaultData(vault);
+  const { content } = getVaultData(vault);
+  const { content: fallbackContent } = getVaultData('fallback');
+  let sourceAbout: source;
 
-  const sourceAbout = await serialize(content.aboutContent, {
-    parseFrontmatter: false,
-    mdxOptions: {
-      remarkPlugins: [[remarkGfm]],
-    },
-  });
+  try {
+    sourceAbout = await serialize(content.aboutContent, {
+      mdxOptions: {
+        remarkPlugins: [[remarkGfm]],
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    sourceAbout = await serialize(fallbackContent.aboutContent);
+  }
 
   const { compiledSource: compiledSourceAbout } = sourceAbout;
 
   return {
-    frontMatter,
     source: {
       compiledSourceAbout,
     },
