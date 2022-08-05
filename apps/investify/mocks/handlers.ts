@@ -1,8 +1,10 @@
 // src/mocks/handlers.js
+import appleStock from '@visx/mock-data/lib/mocks/appleStock';
 import {
   mockAllUsersQuery,
   mockFindUserQuery,
   mockGetProductsBySymbolQuery,
+  mockGetTokenChartQuery,
   mockGetVaultsQuery,
 } from '../api/generated/graphql';
 import {
@@ -294,6 +296,40 @@ export const handlers = [
             name: 'Auxo Wrapped Fantom Vault',
             address,
           })),
+      }),
+    );
+  }),
+  mockGetTokenChartQuery((req, res, ctx) => {
+    const { interval } = req.variables;
+    const slicePerInterval = {
+      '1D': 2,
+      '1W': 7,
+      '1M': 100,
+      '1Y': 500,
+      ALL: 1000,
+    };
+    return res(
+      ctx.data({
+        getTokenChart: {
+          marketData: appleStock
+            .slice(appleStock.length - slicePerInterval[interval])
+            .map(({ date: timestamp, close: currentPrice }) => ({
+              timestamp,
+              currentPrice,
+              nav: currentPrice - 100 * Math.random(),
+              event:
+                Math.random() >= 0.98
+                  ? {
+                      eventType: Math.random() >= 0.5 ? 'buy' : 'sell',
+                      eventData: {
+                        amount: 203231231 * Math.random(),
+                        priceInETH: 14030.4595923 * Math.random(),
+                        priceInCurrency: 55875.4233 * Math.random(),
+                      },
+                    }
+                  : null,
+            })),
+        },
       }),
     );
   }),

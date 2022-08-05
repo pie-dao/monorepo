@@ -12,6 +12,11 @@ type Query {
   tokens: [TokenEntity]
   tokensBySymbol(symbols: [String!]!): [TokenEntity]
   vaults(currency: String! = "USD"): [YieldVaultEntity]
+  getTokenChart(
+    symbol: String!
+    currency: String! = "USD"
+    interval: String! = "1D"
+  ): UserTokenEntity
 }
 
 type User {
@@ -42,6 +47,18 @@ type MarketDataEntity {
   swapFee: Float!
   totalSupply: Float!
   managementFee: Float!
+  event: UserEvent
+}
+
+type UserEvent {
+  eventType: String!
+  eventData: EventData!
+}
+
+type EventData {
+  amount: Float!
+  priceInETH: Float!
+  priceInCurrency: Float!
 }
 
 interface TokenInterface {

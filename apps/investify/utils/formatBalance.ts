@@ -21,10 +21,11 @@ export function formatBalance(
   balanceAmount: number,
   defaultLocale?: string,
   fixed?: number,
+  notation?: 'compact' | 'standard' | 'scientific' | 'engineering',
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'decimal',
-    notation: 'compact',
+    notation: notation ?? 'compact',
     maximumFractionDigits: fixed ?? 0,
   }).format(balanceAmount ?? 0);
   return balance;

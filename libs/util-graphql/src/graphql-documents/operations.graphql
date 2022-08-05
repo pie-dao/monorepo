@@ -10,6 +10,22 @@ query allUsers {
   }
 }
 
+fragment ChartData on UserTokenEntity {
+  marketData {
+    currentPrice
+    nav
+    timestamp
+    event {
+      eventType
+      eventData {
+        amount
+        priceInETH
+        priceInCurrency
+      }
+    }
+  }
+}
+
 fragment UserFields on User {
   address
   totalBalance
@@ -91,5 +107,11 @@ query getVaults($currency: String!) {
     symbol
     name
     address
+  }
+}
+
+query getTokenChart($symbol: String!, $currency: String!, $interval: String!) {
+  getTokenChart(symbol: $symbol, currency: $currency, interval: $interval) {
+    ...ChartData
   }
 }

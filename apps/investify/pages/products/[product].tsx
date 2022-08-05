@@ -18,6 +18,8 @@ import {
 import classNames from '../../utils/classnames';
 import { getProduct } from '../../utils/mdxUtils';
 import { ProductTabs } from '../../components/ProductTabs/ProductTabs';
+import ParentSizeModern from '@visx/responsive/lib/components/ParentSizeModern';
+import PriceChart from '../../components/PriceChart/PriceChart';
 
 type ProductConfig = {
   name: string;
@@ -171,7 +173,7 @@ const ProductPage = ({
             </div>
             {!isLoading && (
               <div className="flex gap-x-2 items-start">
-                <div className="flex flex-col min-w-max bg-primary text-white rounded-md p-2 border border-custom-border">
+                <div className="flex flex-col min-w-max bg-primary text-white rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <p className="font-medium" data-cy="product-inception">
                     {data?.tokensBySymbol[0]?.marketData[0]?.fromInception
                       ? formatAsPercent(
@@ -182,7 +184,7 @@ const ProductPage = ({
                   </p>
                   <p className="text-white">{t('fromInception')}</p>
                 </div>
-                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border">
+                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <div className="flex flex-col">
                     <p className="font-medium" data-cy="product-discount">
                       {data?.tokensBySymbol[0]?.marketData[0]?.discount
@@ -200,7 +202,7 @@ const ProductPage = ({
                   </div>
                   <Tooltip>{t('discountTooltip')}</Tooltip>
                 </div>
-                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border">
+                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <div className="flex flex-col">
                     <p className="font-medium" data-cy="product-interests">
                       {data?.tokensBySymbol[0]?.marketData[0]?.interests
@@ -287,6 +289,13 @@ const ProductPage = ({
           </section>
         </>
       )}
+      <div className="h-[700px]">
+        <ParentSizeModern>
+          {({ width, height }) => (
+            <PriceChart width={width} height={height} symbol={name} />
+          )}
+        </ParentSizeModern>
+      </div>
       {!isLoading && !isError && (
         <ProductTabs tabsData={tabsData} source={source} />
       )}
