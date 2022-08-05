@@ -106,7 +106,9 @@ function PriceChart({
   }, [isLoading, isError, priceData, isUninitialized]);
 
   const dataRanges = ['1D', '1W', '1M', '1Y', 'ALL'];
-  const [dataRange, setDataRange] = useState(dataRanges[0]);
+  const [dataRange, setDataRange] = useState(
+    dataRanges.find((d) => d === '1Y'),
+  );
 
   const brushRef = useRef<BaseBrush | null>(null);
   const [filteredStock, setFilteredStock] = useState(stock);
