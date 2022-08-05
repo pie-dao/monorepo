@@ -6,5 +6,6 @@ export default {
     '^.+\\.[tj]sx?$': ['babel-jest', { presets: ['@nrwl/next/babel'] }],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  transformIgnorePatterns: ['node_modules/?!'],
   coverageDirectory: '../../coverage/apps/investify',
 };

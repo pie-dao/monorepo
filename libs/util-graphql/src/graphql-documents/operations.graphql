@@ -91,5 +91,14 @@ query getVaults($currency: String!) {
     symbol
     name
     address
+    strategies {
+      title
+      description
+      allocationPercentage
+      links {
+        title
+        url
+      }
+    }
   }
 }

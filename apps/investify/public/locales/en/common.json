@@ -64,5 +64,8 @@
   "totalSupplyDescription": "Currently circulating supply",
   "contract": "Contract",
   "downloadProspectus": "Download prospectus",
-  "audit": "Audit"
+  "audit": "Audit",
+  "network": "Network",
+  "noStrategies": "There are no strategies available on this vault",
+  "noGovernance": "There is no governance data available"
 }

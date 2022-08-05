@@ -19,7 +19,6 @@ export type VaultData = {
   totalDesposited: string;
   tabs: {
     about: {
-      content: string;
       network: string;
       contract: string;
       underlyingAsset: {
@@ -27,9 +26,10 @@ export type VaultData = {
         contract: string;
       };
     };
-    strategyDetails: {
+    strategies: {
       title: string;
-      content: string;
+      description: string;
+      allocationPercentage: number;
       links: {
         title: string;
         url: string;
@@ -45,11 +45,11 @@ export function useFormatDataForSingleVault(
   locale: string,
 ): VaultData {
   const singleVaultData = useMemo(() => {
-    const shouldReturn = isEmpty(activeVault) || isEmpty(vaultData);
+    const shouldReturn = isEmpty(activeVault);
     if (shouldReturn) return;
 
     const beData = find(
-      vaultData.vaults,
+      vaultData?.vaults,
       (o) => o.address.toLowerCase() === activeVault.address.toLowerCase(),
     );
     const dataFromConfig = find(vaultConfig, (o) => {
@@ -62,60 +62,32 @@ export function useFormatDataForSingleVault(
         sub: dataFromConfig.symbol,
       },
       price: {
-        value: formatBalanceCurrency(
-          beData.underlyingToken.marketData[0].currentPrice,
-          locale,
-          currency,
-          true,
-        ),
+        value: beData?.underlyingToken?.marketData[0]?.currentPrice
+          ? formatBalanceCurrency(
+              beData.underlyingToken.marketData[0].currentPrice,
+              locale,
+              currency,
+              true,
+            )
+          : null,
       },
-      APY: `${activeVault.stats.currentAPY}%`,
-      address: activeVault.address,
-      totalDesposited: formatBalance(
-        activeVault.stats.deposits.label,
-        locale,
-        0,
-      ),
+      APY: activeVault?.stats?.currentAPY
+        ? `${activeVault.stats.currentAPY}%`
+        : null,
+      address: activeVault?.address ? activeVault.address : null,
+      totalDesposited: activeVault?.address
+        ? formatBalance(activeVault.stats.deposits.label, locale, 0)
+        : null,
       tabs: {
         about: {
-          content: 'My awesome content',
-          network: 'Fantom',
-          contract: '0x0',
+          network: dataFromConfig.network.name,
+          contract: dataFromConfig.address,
           underlyingAsset: {
-            symbol: 'DAI',
-            contract: '',
+            symbol: dataFromConfig.symbol,
+            contract: dataFromConfig.token.address,
           },
         },
-        strategyDetails: [
-          {
-            title: 'Lorem ipsum dolor sit amet',
-            content: 'Lorem ipsum dolor sit amet',
-            links: [
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-            ],
-          },
-          {
-            title: 'Lorem Ipsum Dolor Sit Amet',
-            content: 'lorem ipsum dolor sit amet',
-            links: [
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-              {
-                title: 'lorem ipsum',
-                url: 'https://www.google.com',
-              },
-            ],
-          },
-        ],
+        strategies: beData?.strategies ? beData.strategies : null,
       },
     };
   }, [activeVault, vaultData, locale, currency]);
