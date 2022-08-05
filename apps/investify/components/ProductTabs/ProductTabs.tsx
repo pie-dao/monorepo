@@ -8,10 +8,11 @@ import {
 } from 'framer-motion';
 import { MDXRemote } from 'next-mdx-remote';
 import Image from 'next/image';
-import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 import { DocumentTextIcon } from '@heroicons/react/solid';
 import classNames from '../../utils/classnames';
+import { isEmpty } from 'lodash';
+import { chainMap } from '../../utils/networks';
 
 const variants: Variants = {
   initial: {
@@ -55,6 +56,7 @@ interface tabsData {
   prospectus?: string;
   coingeckoId: string;
   investmentFocusImage?: string;
+  address: string;
 }
 
 interface ProductTabs {
@@ -80,8 +82,10 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
     prospectus,
     coingeckoId,
     investmentFocusImage,
+    address,
   } = tabsData;
   const { t } = useTranslation();
+  const url = `${chainMap[1].blockExplorerUrls[0]}/address/${address}`;
 
   const keyFacts = useMemo(
     () => [
@@ -133,6 +137,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                 )
               }
               key={title}
+              data-cy={`product-tab-${title.toLowerCase()}`}
             >
               {({ selected }) => (
                 <>
@@ -149,7 +154,10 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-2">
-          <SingleProductPanel className="divide-y">
+          <SingleProductPanel
+            className="divide-y"
+            testId="product-tab-description-content"
+          >
             <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
               <MDXRemote compiledSource={source.compiledSourceDescription} />
             </div>
@@ -161,8 +169,8 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="https://raw.githubusercontent.com/pie-dao/brand/master/PieDAO%20Logo/PieDAO%20Complete%20Black.png"
-                  alt={'PieDao Logo'}
+                  src="/images/coinMarketCap.png"
+                  alt={'Coinmarketcap'}
                   layout="fill"
                   objectFit="contain"
                 />
@@ -182,13 +190,21 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
               </a>
             </div>
           </SingleProductPanel>
-          <SingleProductPanel className="divide-y">
+          <SingleProductPanel
+            className="divide-y"
+            testId="product-tab-thesis-content"
+          >
             <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
               <MDXRemote compiledSource={source.compiledSourceThesis} />
             </div>
             {prospectus && (
               <div className="flex flex-wrap gap-x-2 gap-y-4 pt-6 pb-3 items-center mt-6">
-                <a href={prospectus} target="_blank" rel="noreferrer noopener">
+                <a
+                  href={prospectus}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  data-cy="product-tab-thesis-prospectus"
+                >
                   <div className="w-full sm:w-auto px-8 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white cursor-pointer">
                     {t('downloadProspectus')}
                   </div>
@@ -196,16 +212,21 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
               </div>
             )}
           </SingleProductPanel>
-          <SingleProductPanel>
+          <SingleProductPanel
+            className="divide-y"
+            testId="product-tab-details-content"
+          >
             <div className="flex flex-col divide-y space-y-4 divide-custom-border">
               <div className="flex flex-col sm:flex-row gap-2 text-primary">
                 <h4 className="flex gap-x-2">
                   <span className="font-bold">{t('marketCap')}</span>
-                  <span>{marketCap}</span>
+                  <span data-cy="key-marketCap">
+                    {marketCap ? marketCap : 'N/A'}
+                  </span>
                 </h4>
                 <h4 className="flex gap-x-2">
                   <span className="font-bold">{t('holders')}</span>
-                  <span>{holders}</span>
+                  <span data-cy="key-holders">{holders ? holders : 'N/A'}</span>
                 </h4>
               </div>
               <div className="flex flex-col">
@@ -251,44 +272,49 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                     />
                   </div>
                 </a>
-                <Link href={'https://google.it'} passHref>
+                <a href={url} data-cy="product-tab-details-contract">
                   <div className="group flex items-center px-4 py-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm cursor-pointer text-primary">
                     <div className="h-5 w-5 cursor-pointer mr-2">
                       <DocumentTextIcon />
                     </div>
                     {t('contract')}
                   </div>
-                </Link>
+                </a>
               </div>
             </div>
           </SingleProductPanel>
-          <SingleProductPanel>
+          <SingleProductPanel testId="product-tab-governance-content">
             <div className="flex flex-col gap-y-3 my-4">
-              {governance.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-center gap-x-4 rounded-full cursor-pointer shadow-md p-3 text-sm"
-                  onClick={() => window.open(item.url)}
-                >
-                  {item && item.timestamp && (
-                    <p className="text-sub-dark text-sm">
-                      {new Date(item.timestamp).toLocaleDateString('en-GB', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
-                    </p>
-                  )}
-                  {item && item.status && (
-                    <p className="font-medium text-primary border border-secondary rounded-full px-3">
-                      {item.status}
-                    </p>
-                  )}
-                  {item && item.title && (
-                    <p className="text-primary">{item.title}</p>
-                  )}
-                </div>
-              ))}
+              {!isEmpty(governance)
+                ? governance.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-x-4 rounded-full cursor-pointer shadow-md p-3 text-sm"
+                      onClick={() => window.open(item.url)}
+                    >
+                      {item && item.timestamp && (
+                        <p className="text-sub-dark text-sm">
+                          {new Date(item.timestamp).toLocaleDateString(
+                            'en-GB',
+                            {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                            },
+                          )}
+                        </p>
+                      )}
+                      {item && item.status && (
+                        <p className="font-medium text-primary border border-secondary rounded-full px-3">
+                          {item.status}
+                        </p>
+                      )}
+                      {item && item.title && (
+                        <p className="text-primary">{item.title}</p>
+                      )}
+                    </div>
+                  ))
+                : t('noGovernance')}
             </div>
           </SingleProductPanel>
         </Tab.Panels>
@@ -300,9 +326,11 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
 export function SingleProductPanel({
   className,
   children,
+  testId,
 }: {
   className?: string;
   children: React.ReactNode;
+  testId?: string;
 }) {
   return (
     <AnimateSharedLayout>
@@ -319,6 +347,7 @@ export function SingleProductPanel({
             exit="exit"
             animate="animate"
             className={classNames('max-w-none', className)}
+            data-cy={testId}
           >
             {children}
           </motion.div>
@@ -344,7 +373,9 @@ export function KeyFact({
         <span className="font-bold text-primary">{t(title)}</span>
         <span className="text-sub-dark">{t(description)}</span>
       </p>
-      <p className="text-sub-dark text-right">{value}</p>
+      <p className="text-sub-dark text-right" data-cy={`key-${title}`}>
+        {value ? value : 'N/A'}
+      </p>
     </li>
   );
 }

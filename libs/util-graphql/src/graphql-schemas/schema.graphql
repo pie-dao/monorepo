@@ -83,6 +83,18 @@ type Governance {
   status: String!
 }
 
+type LinkEntity {
+  url: String!
+  title: String!
+}
+
+type StrategyEntity {
+  title: String!
+  description: String!
+  allocationPercentage: Float!
+  links: [LinkEntity!]!
+}
+
 type TokenEntity implements TokenInterface {
   address: String!
   chain: String!
@@ -123,6 +135,7 @@ type YieldVaultEntity implements YieldVaultInterface {
   symbol: String!
   name: String!
   address: String!
+  strategies: [StrategyEntity!]!
 }
 
 type UserYieldVaultEntity implements YieldVaultInterface {

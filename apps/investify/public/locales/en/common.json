@@ -66,13 +66,14 @@
   "downloadProspectus": "Download prospectus",
   "audit": "Audit",
   "network": "Network",
-  "noStrategies": "There are no strategies available on this vault",
-  "noGovernance": "There is no governance data available",
   "1D": "1D",
   "1W": "1W",
   "1M": "1M",
   "1Y": "1Y",
   "ALL": "All Time",
   "sold": "You sold",
-  "bought": "You bought"
+  "bought": "You bought",
+  "network": "Network",
+  "noStrategies": "There are no strategies available on this vault",
+  "noGovernance": "There is no governance data available"
 }
