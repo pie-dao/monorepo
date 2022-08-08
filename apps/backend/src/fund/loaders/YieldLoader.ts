@@ -5,7 +5,7 @@ import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/TaskEither';
 import { MongoYieldVaultStrategyRepository } from '../repository';
-import { EVERY_DAY } from './constants';
+import { ONE_DAY } from './constants';
 
 @Injectable()
 export class YieldLoader {
@@ -18,7 +18,7 @@ export class YieldLoader {
     this.sentry = this.sentryService.instance();
   }
 
-  @Interval(EVERY_DAY)
+  @Interval(ONE_DAY)
   public updateYields() {
     Logger.log('Updating strategy yields...');
     return pipe(
