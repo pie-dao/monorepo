@@ -12,7 +12,7 @@ describe('Given a Fund Loader', () => {
   let mongod: MongoMemoryServer;
   let target: FundLoader;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     mongod = await MongoMemoryServer.create();
     connection = await connect(mongod.getUri());
     target = new FundLoader(
@@ -22,7 +22,7 @@ describe('Given a Fund Loader', () => {
     );
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await connection.disconnect();
     await mongod.stop();
   });
