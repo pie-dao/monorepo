@@ -1,13 +1,12 @@
-import {
-  TestStrategy,
-  YieldData,
-  YieldVaultStrategy,
-} from '@domain/feature-funds';
+import { CoinGeckoAdapter } from '@domain/data-sync';
+import { YieldData, YieldVaultStrategy } from '@domain/feature-funds';
 import { SupportedChain } from '@shared/util-types';
 import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoYieldVaultStrategyRepository } from '.';
+import { EthersProvider } from '../../ethers';
+import { TestStrategy } from './test';
 
 const vaults = ['0x7B7D39cD202067AF189276Af04fE40fb50C73D98'];
 
@@ -66,7 +65,10 @@ describe('Given a Mongo Yield Vault Strategy Repository', () => {
   beforeEach(async () => {
     mongod = await MongoMemoryServer.create();
     connection = await connect(mongod.getUri());
-    target = new MongoYieldVaultStrategyRepository();
+    target = new MongoYieldVaultStrategyRepository(
+      new CoinGeckoAdapter(),
+      EthersProvider,
+    );
   });
 
   afterEach(async () => {
