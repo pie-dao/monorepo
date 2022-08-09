@@ -311,26 +311,10 @@ const ProductPage = ({
           </section>
         </>
       )}
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <div className="h-[700px]">
-        <ParentSizeModern>
-          {({ width, height }) => (
-            <PriceChart width={width} height={height} symbol={name} />
-          )}
-        </ParentSizeModern>
-      </div>
-      {!isLoading && !isError && (
-        <ProductTabs tabsData={tabsData} source={source} />
-      )}
-=======
-=======
 
       <ChartWrapper symbol={name} />
 
->>>>>>> 9ba7a4d (feat(ProductPage): WIP product page line chart)
       {!isLoading && <ProductTabs tabsData={tabsData} source={source} />}
->>>>>>> a876a2b (test(Tabs): Refactor and add tests to tabs vault)
       {data?.tokensBySymbol[0]?.underlyingTokens && (
         <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
       )}

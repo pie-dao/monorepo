@@ -67,7 +67,6 @@
   "audit": "Audit",
   "network": "Network",
   "noStrategies": "There are no strategies available on this vault",
-<<<<<<< HEAD
   "noGovernance": "There is no governance data available",
   "1D": "1D",
   "1W": "1W",
@@ -75,17 +74,10 @@
   "1Y": "1Y",
   "ALL": "All Time",
   "sold": "You sold",
-<<<<<<< HEAD
-  "bought": "You bought"
-=======
-  "noGovernance": "There is no governance data available"
->>>>>>> a876a2b (test(Tabs): Refactor and add tests to tabs vault)
-=======
   "bought": "You bought",
   "noStrategies": "There are no strategies available on this vault",
   "noGovernance": "There is no governance data available",
   "showPrice": "Price",
   "showNav": "Nav",
   "showFlags": "Flags"
->>>>>>> 9ba7a4d (feat(ProductPage): WIP product page line chart)
 }
