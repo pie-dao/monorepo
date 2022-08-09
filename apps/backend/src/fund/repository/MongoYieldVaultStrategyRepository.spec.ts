@@ -79,10 +79,10 @@ describe('Given a Mongo Yield Vault Strategy Repository', () => {
   it('When creating a new Yield Vault Strategy Entity then it is created', async () => {
     await target.save(STRATEGY_0)();
 
-    const result = (await target.findOne(
-      STRATEGY_0.chain,
-      STRATEGY_0.address,
-    )()) as Right<YieldVaultStrategy>;
+    const result = (await target.findOne({
+      chain: STRATEGY_0.chain,
+      address: STRATEGY_0.address,
+    })()) as Right<YieldVaultStrategy>;
 
     expect(result.right.name).toEqual(STRATEGY_0.name);
     expect(result.right.vaults).toEqual(STRATEGY_0.vaults);
@@ -93,7 +93,7 @@ describe('Given a Mongo Yield Vault Strategy Repository', () => {
     await target.save(STRATEGY_1)();
 
     const result = await target.find({
-      contract: {
+      entity: {
         orderBy: {
           _id: 'desc',
         },
@@ -113,10 +113,10 @@ describe('Given a Mongo Yield Vault Strategy Repository', () => {
       yields[0],
     )();
 
-    const result = (await target.findOne(
-      STRATEGY_1.chain,
-      STRATEGY_1.address,
-    )()) as Right<YieldVaultStrategy>;
+    const result = (await target.findOne({
+      chain: STRATEGY_1.chain,
+      address: STRATEGY_1.address,
+    })()) as Right<YieldVaultStrategy>;
 
     expect(result.right.yields.length).toEqual(1);
   });

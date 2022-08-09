@@ -1,13 +1,15 @@
 import {
-  ContractNotFoundError,
   CreateMarketDataError,
-  DatabaseError,
   MarketData,
   Token,
   TokenFilters,
   TokenRepository,
 } from '@domain/feature-funds';
-import { SupportedChain } from '@shared/util-types';
+import {
+  DatabaseError,
+  EntityNotFoundError,
+  SupportedChain,
+} from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { HydratedDocument, Model, Types } from 'mongoose';
@@ -35,7 +37,7 @@ export abstract class TokenRepositoryBase<
     address: string,
     entry: MarketData,
   ): TE.TaskEither<
-    ContractNotFoundError | DatabaseError | CreateMarketDataError,
+    EntityNotFoundError | DatabaseError | CreateMarketDataError,
     MarketData
   > {
     return pipe(
@@ -62,12 +64,15 @@ export abstract class TokenRepositoryBase<
    * Returns all the paths that are either filtered or populated
    * eg: `['marketData', 'history']
    */
-  protected abstract getPaths(): Array<Omit<keyof F, 'contract'>>;
+  protected abstract getPaths(): Array<Omit<keyof F, 'entity'>>;
 
-  protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
+  protected saveChildren(
+    token: T,
+    record: HydratedDocument<E>,
+  ): Promise<unknown> {
     return Promise.all(
       token.marketData.map((entry) =>
-        this.saveMarketDataEntity(token._id, entry)(),
+        this.saveMarketDataEntity(record._id, entry)(),
       ),
     );
   }
