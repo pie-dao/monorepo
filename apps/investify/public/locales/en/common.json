@@ -73,7 +73,9 @@
   "ALL": "All Time",
   "sold": "You sold",
   "bought": "You bought",
-  "network": "Network",
   "noStrategies": "There are no strategies available on this vault",
-  "noGovernance": "There is no governance data available"
+  "noGovernance": "There is no governance data available",
+  "showPrice": "Price",
+  "showNav": "Nav",
+  "showFlags": "Flags"
 }

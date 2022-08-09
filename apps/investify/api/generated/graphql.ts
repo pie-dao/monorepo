@@ -60,7 +60,7 @@ export type MarketDataEntity = {
   swapFee: Scalars['Float'];
   timestamp: Scalars['Timestamp'];
   totalSupply: Scalars['Float'];
-  totalVolume: Scalars['String'];
+  totalVolume: Scalars['Float'];
   twentyFourHourChange: PriceChange;
 };
 
@@ -274,6 +274,7 @@ export type ChartDataFragment = {
     currentPrice: number;
     nav: number;
     timestamp: any;
+    totalVolume: number;
     event?: {
       __typename?: 'UserEvent';
       eventType: string;
@@ -418,6 +419,7 @@ export type GetTokenChartQuery = {
       currentPrice: number;
       nav: number;
       timestamp: any;
+      totalVolume: number;
       event?: {
         __typename?: 'UserEvent';
         eventType: string;
@@ -438,6 +440,7 @@ export const ChartDataFragmentDoc = `
     currentPrice
     nav
     timestamp
+    totalVolume
     event {
       eventType
       eventData {

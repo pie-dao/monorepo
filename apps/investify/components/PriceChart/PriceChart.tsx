@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from 'react';
-import { scaleTime, scaleLinear } from '@visx/scale';
+import { scaleTime, scaleLinear, scaleBand } from '@visx/scale';
 import { Brush } from '@visx/brush';
 import { Bounds } from '@visx/brush/lib/types';
 import BaseBrush, {
@@ -13,20 +13,19 @@ import BaseBrush, {
   UpdateBrush,
 } from '@visx/brush/lib/BaseBrush';
 import { Group } from '@visx/group';
+import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
+import { localPoint } from '@visx/event';
+import { Bar, Line } from '@visx/shape';
+import { BrushHandleRenderProps } from '@visx/brush/lib/BrushHandle';
 import { max, extent } from 'd3-array';
 import LineChart from './LineChart';
-import { BrushHandleRenderProps } from '@visx/brush/lib/BrushHandle';
 import {
   useLazyGetTokenChartQuery,
   ChartDataFragment,
 } from '../../api/generated/graphql';
-import classNames from '../../utils/classnames';
-import { motion } from 'framer-motion';
-import useTranslation from 'next-translate/useTranslation';
-import { useTooltip, useTooltipInPortal } from '@visx/tooltip';
-import { localPoint } from '@visx/event';
-import { Line } from '@visx/shape';
-import { useBoolean } from 'usehooks-ts';
+import { useMediaQuery } from 'usehooks-ts';
+import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
+import { ScaleBand, ScaleLinear } from 'd3-scale';
 
 const brushMargin = { top: 10, bottom: 15, left: 50, right: 20 };
 const chartSeparation = 30;
@@ -46,6 +45,8 @@ type Index = ValueOf<Pick<ChartDataFragment, 'marketData'>>[0];
 // accessors
 const getDate = (d: Index) => new Date(d.timestamp);
 const getStockValue = (d: Index) => d.currentPrice;
+const getVolume = (d: Index) => d.totalVolume;
+const getTimestamp = (d: Index) => getDate(d).getTime();
 
 export type BrushProps = {
   width: number;
@@ -65,7 +66,17 @@ function PriceChart({
     bottom: 20,
     right: 20,
   },
-}: BrushProps & { symbol: string }) {
+  dataRange,
+  showPrice,
+  showFlags,
+  showNav,
+}: BrushProps & {
+  symbol: string;
+  dataRange: string;
+  showPrice: boolean;
+  showFlags: boolean;
+  showNav: boolean;
+}) {
   const {
     tooltipData,
     tooltipLeft,
@@ -80,10 +91,9 @@ function PriceChart({
     },
   });
 
-  const { value: showNav, toggle: toggleNav } = useBoolean(false);
-  const { value: showFlags, toggle: toggleFlags } = useBoolean(true);
+  const mq = useMediaQuery('(min-width: 640px)');
+  const ready = useServerHandoffComplete();
 
-  const { t } = useTranslation();
   const [trigger, { isLoading, isError, data: priceData, isUninitialized }] =
     useLazyGetTokenChartQuery();
 
@@ -94,21 +104,18 @@ function PriceChart({
           timestamp: new Date().getTime(),
           currentPrice: 0,
           nav: 0,
+          totalVolume: 0,
         },
         {
           timestamp: new Date().getTime(),
           currentPrice: 0,
           nav: 0,
+          totalVolume: 0,
         },
       ];
     }
     return priceData?.getTokenChart?.marketData;
   }, [isLoading, isError, priceData, isUninitialized]);
-
-  const dataRanges = ['1D', '1W', '1M', '1Y', 'ALL'];
-  const [dataRange, setDataRange] = useState(
-    dataRanges.find((d) => d === '1Y'),
-  );
 
   const brushRef = useRef<BaseBrush | null>(null);
   const [filteredStock, setFilteredStock] = useState(stock);
@@ -129,11 +136,14 @@ function PriceChart({
     ? chartSeparation / 2
     : chartSeparation + 10;
   const topChartHeight = 0.8 * innerHeight - topChartBottomMargin;
+  const volumeChartHeight =
+    topChartHeight + 0.3 * innerHeight - topChartBottomMargin;
   const bottomChartHeight = innerHeight - topChartHeight - chartSeparation;
 
   // bounds
   const xMax = Math.max(width - margin.left - margin.right, 0);
   const yMax = Math.max(topChartHeight, 0);
+  const yVolumeMax = Math.max(volumeChartHeight, 0);
   const xBrushMax = Math.max(width - brushMargin.left - brushMargin.right, 0);
   const yBrushMax = Math.max(
     bottomChartHeight - brushMargin.top - brushMargin.bottom,
@@ -149,6 +159,20 @@ function PriceChart({
       }),
     [xMax, filteredStock],
   );
+
+  // And then scale the graph by our data
+  const xScale = scaleBand({
+    range: [0, xMax],
+    round: true,
+    domain: filteredStock.map((t) => getTimestamp(t)),
+    padding: 0.4,
+  });
+  const yScale = scaleLinear({
+    range: [yMax, 0],
+    round: true,
+    domain: [0, Math.max(...filteredStock.map(getVolume))],
+  });
+
   const stockScale = useMemo(
     () =>
       scaleLinear<number>({
@@ -207,7 +231,7 @@ function PriceChart({
 
   const { containerRef, TooltipInPortal } = useTooltipInPortal({
     // use TooltipWithBounds to prevent tooltip from being rendered outside of the chart
-    detectBounds: false,
+    detectBounds: true,
     // when tooltip containers are scrolled, this will correctly update the Tooltip position
     scroll: true,
   });
@@ -218,6 +242,7 @@ function PriceChart({
         | React.TouchEvent<SVGRectElement>
         | React.MouseEvent<SVGRectElement>,
     ) => {
+      if (!mq && ready) return;
       const { x, y } = localPoint(event) || { x: 0, y: 0 };
       const x0 = dateScale.invert(x);
       const y0 = stockScale.invert(y) + 50;
@@ -228,17 +253,8 @@ function PriceChart({
         tooltipTop: y,
       });
     },
-    [dateScale, showTooltip, stockScale],
+    [dateScale, mq, ready, showTooltip, stockScale],
   );
-
-  const handleChartTime = (interval: string) => {
-    trigger({
-      symbol,
-      currency: 'USD',
-      interval,
-    });
-    setDataRange(interval);
-  };
 
   useEffect(() => {
     async function fetchData() {
@@ -260,30 +276,20 @@ function PriceChart({
     fetchData();
   }, [dataRange, handleResetClick, stock, symbol, trigger]);
 
+  const compose =
+    (
+      scale: ScaleBand<number> | ScaleLinear<number, number, never>,
+      accessor: any,
+    ) =>
+    (d: Index) =>
+      scale(accessor(d));
+  const xPoint = compose(xScale, getTimestamp);
+  const yPoint = compose(yScale, getVolume);
+
   if (isUninitialized || isLoading || isError) return null;
   return (
     <>
       <div>
-        <div className="flex gap-x-4 justify-around bg-gradient-primary rounded-full shadow-card w-full sm:w-fit px-4 py-1 text-xs ml-auto mb-12">
-          {dataRanges.map((range) => (
-            <motion.div
-              onClick={() => handleChartTime(range)}
-              className={classNames(
-                'relative cursor-pointer',
-                dataRange === range && 'text-secondary',
-              )}
-              key={range}
-            >
-              {t(range)}
-              {dataRange === range && (
-                <motion.div
-                  className="absolute -bottom-[5px] left-0 right-0 h-[2px] bg-secondary"
-                  layoutId={`underline-shared`}
-                />
-              )}
-            </motion.div>
-          ))}
-        </div>
         <svg width={width} height={height} ref={containerRef}>
           <linearGradient id="brushGradient">
             <stop stopColor="#681157" offset="53%" />
@@ -301,6 +307,7 @@ function PriceChart({
           <LineChart
             hideBottomAxis={compact}
             data={filteredStock}
+            showPrice={showPrice}
             showFlags={showFlags}
             width={width}
             margin={{ ...margin, bottom: topChartBottomMargin }}
@@ -313,10 +320,29 @@ function PriceChart({
             showNav={showNav}
             symbol={symbol}
           />
+          {/* <Group width={width}>
+            {filteredStock.map((d, i) => {
+              const barHeight = yMax - yPoint(d);
+              console.log(xScale);
+              console.log(dateScale);
+              return (
+                <Group key={`bar-${Math.random()}`}>
+                  <Bar
+                    x={xPoint(d)}
+                    y={yMax - barHeight}
+                    height={barHeight}
+                    width={xScale.bandwidth()}
+                    fill="grey"
+                  />
+                </Group>
+              );
+            })}
+          </Group> */}
           <LineChart
             hideBottomAxis
             hideLeftAxis
             noAnimation
+            showPrice={showPrice}
             showFlags={false}
             data={stock}
             width={width}
@@ -404,8 +430,6 @@ function PriceChart({
           </strong>
         </TooltipInPortal>
       )}
-      <input type="checkbox" checked={showFlags} onChange={toggleFlags}></input>
-      <input type="checkbox" checked={showNav} onChange={toggleNav}></input>
     </>
   );
 }
@@ -417,7 +441,11 @@ const BrushHandle = ({ x, height, isBrushActive }: BrushHandleRenderProps) => {
     return null;
   }
   return (
-    <Group left={x - 1} top={(height - pathHeight) / 2}>
+    <Group
+      left={x + 2}
+      top={(height - pathHeight) / 2}
+      className="cursor-ew-resize"
+    >
       <rect
         width="9.92202"
         height="14.37818"

@@ -35,7 +35,7 @@ type MarketDataEntity {
   marketCap: Float!
   marketCapRank: Float!
   timestamp: Timestamp!
-  totalVolume: String!
+  totalVolume: Float!
   twentyFourHourChange: PriceChange!
   fromInception: Float!
   discount: Float!

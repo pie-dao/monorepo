@@ -18,8 +18,7 @@ import {
 import classNames from '../../utils/classnames';
 import { getProduct } from '../../utils/mdxUtils';
 import { ProductTabs } from '../../components/ProductTabs/ProductTabs';
-import ParentSizeModern from '@visx/responsive/lib/components/ParentSizeModern';
-import PriceChart from '../../components/PriceChart/PriceChart';
+import ChartWrapper from '../../components/PriceChart/ChartWrapper';
 
 type ProductConfig = {
   name: string;
@@ -312,13 +311,9 @@ const ProductPage = ({
           </section>
         </>
       )}
-      <div className="h-[700px]">
-        <ParentSizeModern>
-          {({ width, height }) => (
-            <PriceChart width={width} height={height} symbol={name} />
-          )}
-        </ParentSizeModern>
-      </div>
+
+      <ChartWrapper symbol={name} />
+
       {!isLoading && <ProductTabs tabsData={tabsData} source={source} />}
       {data?.tokensBySymbol[0]?.underlyingTokens && (
         <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
