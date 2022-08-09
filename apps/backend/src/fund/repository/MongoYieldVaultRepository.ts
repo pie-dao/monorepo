@@ -22,7 +22,7 @@ export class MongoYieldVaultRepository extends FundRepositoryBase<
     super(YieldVaultModel, MarketDataModel, YieldVaultHistoryModel);
   }
 
-  protected getPaths(): Array<Omit<keyof FundFilters, 'contract'>> {
+  protected getPaths(): Array<Omit<keyof FundFilters, 'entity'>> {
     return ['marketData', 'history', 'strategies'];
   }
 

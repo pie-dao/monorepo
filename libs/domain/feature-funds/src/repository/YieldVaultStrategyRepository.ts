@@ -1,9 +1,12 @@
-import { SupportedChain } from '@shared/util-types';
+import {
+  DatabaseError,
+  EntityNotFoundError,
+  SupportedChain,
+} from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { YieldData, YieldVaultStrategy } from '../fund';
-import { ContractFilters } from './ContractRepository';
-import { ContractNotFoundError, DatabaseError } from './error';
+import { ContractFilters, FindOneParams } from './ContractRepository';
 
 export class CreateYieldError extends Error {
   public kind: 'CreateYieldError' = 'CreateYieldError';
@@ -26,9 +29,8 @@ export interface YieldVaultStrategyRepository<
    * @returns either the token, or an error if the token was not found.
    */
   findOne(
-    chain: SupportedChain,
-    address: string,
-  ): TE.TaskEither<ContractNotFoundError | DatabaseError, S>;
+    keys: FindOneParams,
+  ): TE.TaskEither<EntityNotFoundError | DatabaseError, S>;
 
   /**
    * Adds a yield data entry for the strategy with the given `chain` and `address`.
@@ -38,7 +40,7 @@ export interface YieldVaultStrategyRepository<
     address: string,
     entry: YieldData,
   ): TE.TaskEither<
-    ContractNotFoundError | CreateYieldError | DatabaseError,
+    EntityNotFoundError | CreateYieldError | DatabaseError,
     YieldData
   >;
 }

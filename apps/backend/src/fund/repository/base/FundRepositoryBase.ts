@@ -1,25 +1,28 @@
 import {
-  ContractNotFoundError,
   CreateHistoryError,
-  DatabaseError,
   DEFAULT_CHILD_FILTER,
-  DEFAULT_CONTRACT_FILTER,
+  DEFAULT_ENTITY_FILTER,
+  FindOneParams,
   Fund,
   FundFilters,
   FundHistory,
   FundRepository,
   MarketData,
 } from '@domain/feature-funds';
-import { SupportedChain } from '@shared/util-types';
+import {
+  DatabaseError,
+  EntityNotFoundError,
+  SupportedChain,
+} from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { HydratedDocument, Model } from 'mongoose';
-import { FundEntity } from '../../';
+import { FundEntity } from '../entity';
 import { TokenRepositoryBase } from './TokenRepositoryBase';
 
 const DEFAULT_FILTERS: FundFilters = {
-  contract: DEFAULT_CONTRACT_FILTER,
+  entity: DEFAULT_ENTITY_FILTER,
   marketData: DEFAULT_CHILD_FILTER,
   history: DEFAULT_CHILD_FILTER,
 };
@@ -51,11 +54,10 @@ export abstract class FundRepositoryBase<
   }
 
   findOne(
-    chain: SupportedChain,
-    address: string,
-    childFilters: Omit<FundFilters, 'contract'> = DEFAULT_CHILD_FILTERS,
-  ): TE.TaskEither<ContractNotFoundError | DatabaseError, F> {
-    return super.findOne(chain, address, childFilters);
+    keys: FindOneParams,
+    childFilters: Partial<Omit<FundFilters, 'entity'>> = DEFAULT_CHILD_FILTERS,
+  ): TE.TaskEither<EntityNotFoundError | DatabaseError, F> {
+    return super.findOne(keys, childFilters);
   }
 
   public addHistoryEntry(
@@ -63,7 +65,7 @@ export abstract class FundRepositoryBase<
     address: string,
     entry: H,
   ): TE.TaskEither<
-    DatabaseError | ContractNotFoundError | CreateHistoryError,
+    DatabaseError | EntityNotFoundError | CreateHistoryError,
     H
   > {
     return pipe(
@@ -83,18 +85,21 @@ export abstract class FundRepositoryBase<
     );
   }
 
-  protected getPaths(): Array<Omit<keyof FundFilters, 'contract'>> {
+  protected getPaths(): Array<Omit<keyof FundFilters, 'entity'>> {
     return ['marketData', 'history'];
   }
 
-  protected saveChildren(token: HydratedDocument<E>): Promise<unknown> {
+  protected saveChildren(
+    token: F,
+    record: HydratedDocument<E>,
+  ): Promise<unknown> {
     return Promise.all([
-      super.saveChildren(token),
+      super.saveChildren(token, record),
       Promise.all(
         token.history.map((entry) =>
           new this.historyModel({
             ...entry,
-            fundId: token._id,
+            fundId: record._id,
           }).save(),
         ),
       ),

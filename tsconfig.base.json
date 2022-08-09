@@ -20,6 +20,7 @@
     "paths": {
       "@domain/data-sync": ["libs/domain/data-sync/src/index.ts"],
       "@domain/feature-funds": ["libs/domain/feature-funds/src/index.ts"],
+      "@domain/user": ["libs/domain/user/src/index.ts"],
       "@sdk-utils/core": ["libs/sdk-utils/core/src/index.ts"],
       "@sdk-utils/docs": ["libs/sdk-utils/docs/src/index.ts"],
       "@sdk-utils/multicall": ["libs/sdk-utils/multicall/src/index.ts"],
