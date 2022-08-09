@@ -1,9 +1,25 @@
-import { SupportedChain } from '@shared/util-types';
+import {
+  DatabaseError,
+  DefaultFiltersKey,
+  EntityNotFoundError,
+  Filters,
+  Repository,
+  SupportedChain,
+} from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { Contract } from '../fund';
-import { ContractNotFoundError, DatabaseError } from './error';
 import { Filter } from './filter';
+
+/**
+ * The filter that should be used by default for contract records.
+ */
+export const DEFAULT_ENTITY_FILTER: Filter = {
+  limit: 1000,
+  orderBy: {
+    _id: 'asc',
+  },
+};
 
 /**
  * The filter that should be used by default for child records.
@@ -15,24 +31,18 @@ export const DEFAULT_CHILD_FILTER: Filter = {
   },
 };
 
-/**
- * The filter that should be used by default for token records.
- */
-export const DEFAULT_CONTRACT_FILTER: Filter = {
-  limit: 1000,
-  orderBy: {
-    _id: 'asc',
-  },
-};
+export type ContractFilters<F extends DefaultFiltersKey = 'entity'> =
+  Filters<F>;
 
-export type ContractFilters<F extends string = 'contract'> = Partial<
-  Record<F, Filter>
->;
+export type FindOneParams = {
+  chain: SupportedChain;
+  address: string;
+};
 
 export interface ContractRepository<
   C extends Contract,
   F extends ContractFilters,
-> {
+> extends Repository<C, FindOneParams, F> {
   /**
    * Returns all contracts that match the given filters.
    */
@@ -43,10 +53,9 @@ export interface ContractRepository<
    * @returns either the contract, or an error if the contract was not found.
    */
   findOne(
-    chain: SupportedChain,
-    address: string,
-    childFilters: Omit<F, 'contract'>,
-  ): TE.TaskEither<ContractNotFoundError | DatabaseError, C>;
+    params: FindOneParams,
+    childFilters: Partial<Omit<F, 'entity'>>,
+  ): TE.TaskEither<EntityNotFoundError | DatabaseError, C>;
 
   /**
    * Saves the contract to the database (recursively).
