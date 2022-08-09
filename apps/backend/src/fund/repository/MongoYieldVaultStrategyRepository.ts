@@ -1,10 +1,9 @@
 import { CoinGeckoAdapter } from '@domain/data-sync';
 import {
   ContractFilters,
-  ContractNotFoundError,
   CreateYieldError,
-  DatabaseError,
-  DEFAULT_CONTRACT_FILTER,
+  DEFAULT_ENTITY_FILTER,
+  FindOneParams,
   MaiPolygonStrategy,
   MAI_POLYGON_STRATEGY_KIND,
   YieldData,
@@ -12,7 +11,11 @@ import {
   YieldVaultStrategyRepository,
 } from '@domain/feature-funds';
 import { Inject, Injectable } from '@nestjs/common';
-import { SupportedChain } from '@shared/util-types';
+import {
+  DatabaseError,
+  EntityNotFoundError,
+  SupportedChain,
+} from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
@@ -26,7 +29,7 @@ import {
 import { TestStrategy, TEST_STRATEGY_KIND } from './test';
 
 const DEFAULT_FILTERS = {
-  contract: DEFAULT_CONTRACT_FILTER,
+  entity: DEFAULT_ENTITY_FILTER,
 };
 
 @Injectable()
@@ -52,11 +55,9 @@ export class MongoYieldVaultStrategyRepository
   }
 
   findOne(
-    chain: SupportedChain,
-    address: string,
-    childFilters: Omit<ContractFilters, 'contract'> = {},
-  ): TE.TaskEither<ContractNotFoundError | DatabaseError, YieldVaultStrategy> {
-    return super.findOne(chain, address, childFilters);
+    keys: FindOneParams,
+  ): TE.TaskEither<EntityNotFoundError | DatabaseError, YieldVaultStrategy> {
+    return super.findOne(keys);
   }
 
   addYieldData(
@@ -64,7 +65,7 @@ export class MongoYieldVaultStrategyRepository
     address: string,
     entry: YieldData,
   ): TE.TaskEither<
-    ContractNotFoundError | DatabaseError | CreateYieldError,
+    EntityNotFoundError | DatabaseError | CreateYieldError,
     YieldData
   > {
     return pipe(

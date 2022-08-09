@@ -140,10 +140,10 @@ describe('Given a Mongo Yield Vault Repository', () => {
   it('When creating a new Yield Vault Entity then it is created', async () => {
     await target.save(YIELD_VAULT_WITH_HISTORY)();
 
-    const result = await target.findOne(
-      YIELD_VAULT_WITH_HISTORY.chain,
-      YIELD_VAULT_WITH_HISTORY.address,
-    )();
+    const result = await target.findOne({
+      chain: YIELD_VAULT_WITH_HISTORY.chain,
+      address: YIELD_VAULT_WITH_HISTORY.address,
+    })();
 
     const yieldVault = (result as Right<YieldVault>).right;
 
@@ -184,12 +184,18 @@ describe('Given a Mongo Yield Vault Repository', () => {
     )();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
-    const result = await target.findOne(yieldVault.chain, yieldVault.address, {
-      history: {
-        limit: 2,
-        orderBy: { timestamp: 'asc' },
+    const result = await target.findOne(
+      {
+        chain: yieldVault.chain,
+        address: yieldVault.address,
       },
-    })();
+      {
+        history: {
+          limit: 2,
+          orderBy: { timestamp: 'asc' },
+        },
+      },
+    )();
 
     const updatedYieldVault = (result as Right<YieldVault>).right;
 
@@ -204,7 +210,7 @@ describe('Given a Mongo Yield Vault Repository', () => {
     await target.save(YIELD_VAULT_2)();
 
     const result = await target.find({
-      contract: {
+      entity: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },

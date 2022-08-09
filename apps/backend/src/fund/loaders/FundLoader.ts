@@ -1,15 +1,14 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
-import {
-  ContractNotFoundError,
-  CurrencyData,
-  DatabaseError,
-  Token,
-} from '@domain/feature-funds';
+import { CurrencyData, Token } from '@domain/feature-funds';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { check } from '@shared/helpers';
-import { SupportedCurrency } from '@shared/util-types';
+import {
+  DatabaseError,
+  EntityNotFoundError,
+  SupportedCurrency,
+} from '@shared/util-types';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
@@ -111,7 +110,7 @@ export class FundLoader {
    * using an upsert operation.
    */
   public ensureFundsExist(): TE.TaskEither<
-    DatabaseError | ContractNotFoundError,
+    DatabaseError | EntityNotFoundError,
     readonly Token[]
   > {
     return pipe(
@@ -146,7 +145,10 @@ export class FundLoader {
       TE.sequenceArray,
       TE.chain(
         TE.traverseArray((fund) => {
-          return this.tokenRepository.findOne(fund.chain, fund.address);
+          return this.tokenRepository.findOne({
+            chain: fund.chain,
+            address: fund.address,
+          });
         }),
       ),
     );
