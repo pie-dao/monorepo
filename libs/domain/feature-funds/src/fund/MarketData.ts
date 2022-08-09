@@ -1,10 +1,14 @@
 import { SupportedCurrency } from '@shared/util-types';
 
 export type CurrencyData = {
-  currency: SupportedCurrency;
   price: number;
   marketCap: number;
+  currency: SupportedCurrency;
   volume: number;
+  priceChange24h?: number;
+  priceChangePercentage24h?: number;
+  ath?: number;
+  atl?: number;
 };
 
 /**

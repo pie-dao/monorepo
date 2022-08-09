@@ -59,9 +59,9 @@ export class FundLoader {
           Object.entries(metadata.market_data.current_price).forEach(
             ([currency, amount]) => {
               currencyDataLookup.set(currency as SupportedCurrency, {
-                currency: currency as SupportedCurrency,
                 price: amount,
                 marketCap: 0,
+                currency: currency as SupportedCurrency,
                 volume: 0,
               });
             },
@@ -78,16 +78,42 @@ export class FundLoader {
                 amount;
             },
           );
+          Object.entries(
+            metadata.market_data.price_change_24h_in_currency,
+          ).forEach(([currency, amount]) => {
+            currencyDataLookup.get(
+              currency as SupportedCurrency,
+            ).priceChange24h = amount;
+          });
+          Object.entries(
+            metadata.market_data.price_change_percentage_24h_in_currency,
+          ).forEach(([currency, amount]) => {
+            currencyDataLookup.get(
+              currency as SupportedCurrency,
+            ).priceChangePercentage24h = amount;
+          });
+          Object.entries(metadata.market_data.ath).forEach(
+            ([currency, amount]) => {
+              currencyDataLookup.get(currency as SupportedCurrency).ath =
+                amount;
+            },
+          );
+          Object.entries(metadata.market_data.atl).forEach(
+            ([currency, amount]) => {
+              currencyDataLookup.get(currency as SupportedCurrency).atl =
+                amount;
+            },
+          );
           const currencyData = Array.from(currencyDataLookup.values());
           const marketCapRank = metadata.market_data.market_cap_rank;
           const circulatingSupply = metadata.market_data.circulating_supply;
           const timestamp = new Date(Date.parse(metadata.last_updated));
 
           return this.tokenRepository.addMarketData(fund.chain, fund.address, {
-            currencyData,
             marketCapRank,
             circulatingSupply,
             timestamp,
+            currencyData,
           });
         }),
       ),

@@ -1,169 +1,142 @@
-scalar Timestamp
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
 
-schema {
-  query: Query
-}
-
-type Query {
-  me: User!
-  user(address: String!, currency: String! = "USD"): User
-  allUsers: [User]
-  token(symbol: String!): TokenEntity
-  tokens: [TokenEntity]
-  tokensBySymbol(symbols: [String!]!): [TokenEntity]
-  vaults(currency: String! = "USD"): [YieldVaultEntity]
-  getTokenChart(
-    symbol: String!
-    currency: String! = "USD"
-    interval: String! = "1D"
-  ): UserTokenEntity
-}
-
-type User {
-  address: String!
-  pieVaults: [UserTokenEntity!]!
-  twentyFourHourChange: PriceChange!
-  yieldVaults: [UserYieldVaultEntity!]!
-  totalBalance: Float!
-  profit: Float!
-  performance: Float!
-}
-
-type MarketDataEntity {
-  circulatingSupply: Float!
-  currentPrice(currency: String! = "USD"): Float!
-  marketCap: Float!
-  marketCapRank: Float!
-  timestamp: Timestamp!
-  totalVolume: Float!
-  twentyFourHourChange: PriceChange!
-  fromInception: Float!
-  discount: Float!
-  interests: Float!
-  nav: Float!
-  holders: Float!
-  allTimeHigh: Float!
-  allTimeLow: Float!
-  swapFee: Float!
-  totalSupply: Float!
-  managementFee: Float!
-  event: UserEvent
-}
-
-type UserEvent {
-  eventType: String!
-  eventData: EventData!
-}
-
-type EventData {
-  amount: Float!
-  priceInETH: Float!
-  priceInCurrency: Float!
-}
-
-interface TokenInterface {
-  address: String!
-  chain: String!
-  coinGeckoId: String!
-  decimals: Float!
-  kind: String!
-  marketData: [MarketDataEntity!]!
-  name: String!
-  symbol: String!
-  riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
-  inceptionDate: Timestamp!
-  governance: [Governance!]!
-}
-
-type Governance {
-  title: String!
-  url: String!
-  timestamp: Timestamp!
+type GovernanceEntity {
   status: String!
-}
-
-type LinkEntity {
+  timestamp: String!
+  title: String!
   url: String!
-  title: String!
 }
 
-type StrategyEntity {
-  title: String!
-  description: String!
-  allocationPercentage: Float!
-  links: [LinkEntity!]!
+type Interests {
+  apr: Float!
+  apy: Float!
 }
 
-type TokenEntity implements TokenInterface {
+"""Contains market information for a given token at a specific timestamp."""
+type MarketDataEntity {
+  allTimeHigh: Float
+  allTimeLow: Float
+  currentPrice: Float!
+
+  """
+  The premium or the discount between price and nav. Positive is premium, negative is discount.
+  """
+  deltaToNav: Float!
+
+  """
+  The performance (%) from the creation of the pie until today. All pies start at $1, so the performance is the nav.
+  """
+  fromInception: Float!
+  interests: Interests!
+
+  """AKA streaming fee is an annualized fee for the pie."""
+  managementFee: Float
+
+  """Total supply * nav."""
+  marketCap: Float!
+
+  """
+  Nav is the difference between the price of the token and the aggregated price of its unerlyings.
+  """
+  nav: Float!
+
+  """
+  The number of users that are holding this token. (defaults to `0` if not available)
+  """
+  numberOfHolders: Int!
+  swapFee: Float
+  totalSupply: Float!
+  twentyFourHourChange: PriceChange!
+}
+
+input MarketDataFilter {
+  limit: Int
+  orderBy: [MarketDataOrderBy!]
+}
+
+input MarketDataOrderBy {
+  field: MarketDataOrderByField!
+  value: Order!
+}
+
+enum MarketDataOrderByField {
+  timestamp
+}
+
+enum Order {
+  asc
+  desc
+}
+
+type PieVaultEntity {
   address: String!
+
+  """The chain on which this token lives."""
   chain: String!
-  coinGeckoId: String!
-  decimals: Float!
+  currency: String!
+  decimals: Int!
+  governance: [GovernanceEntity!]!
+  inceptionDate: String!
+
+  """The kind of this token (eg: 'PieVault', 'YieldVault', etc)."""
   kind: String!
+
+  """Market data for this token."""
   marketData: [MarketDataEntity!]!
   name: String!
-  symbol: String!
   riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
-  inceptionDate: Timestamp!
-  governance: [Governance!]!
-}
-
-type UserTokenEntity implements TokenInterface {
-  address: String!
-  chain: String!
-  coinGeckoId: String!
-  decimals: Float!
-  kind: String!
-  marketData: [MarketDataEntity!]!
-  name: String!
   symbol: String!
-  riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
-  inceptionDate: Timestamp!
-  governance: [Governance!]!
-}
-
-interface YieldVaultInterface {
-  symbol: String!
-  name: String!
-}
-
-type YieldVaultEntity implements YieldVaultInterface {
-  underlyingToken: TokenEntity!
-  symbol: String!
-  name: String!
-  address: String!
-  strategies: [StrategyEntity!]!
-}
-
-type UserYieldVaultEntity implements YieldVaultInterface {
-  symbol: String!
-  name: String!
-  address: String!
-  twentyFourHourEarnings: Float!
-  totalEarnings: Float!
+  underlyingTokens: [PieVaultEntity!]!
 }
 
 type PriceChange {
-  price: Float!
-  change: Float!
+  change: Float
+  price: Float
 }
 
-type underlyingTokenEntity {
-  marketData: [underlyingTokenMarketData!]!
+type Query {
+  """Returns all tokens regardless of their kind."""
+  tokens(filters: TokenFiltersInput): [TokenEntity!]!
+
+  """Returns all pie vaults."""
+  vaults(currency: String!, filters: TokenFiltersInput): [PieVaultEntity!]!
+}
+
+type TokenEntity {
+  address: String!
+
+  """The chain on which this token lives."""
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+
+  """The kind of this token (eg: 'PieVault', 'YieldVault', etc)."""
+  kind: String!
+
+  """Market data for this token."""
+  marketData: [MarketDataEntity!]!
   name: String!
   symbol: String!
-  decimals: Float!
-  address: String!
 }
 
-type underlyingTokenMarketData {
-  marginalTVLPercentage: Float!
-  currentPrice(currency: String! = "USD"): Float!
-  twentyFourHourChange: PriceChange!
-  totalHeld: Float!
-  amountPerToken: Float!
-  allocation: Float!
+input TokenFilter {
+  limit: Int
+  orderBy: [TokenOrderBy!]
+}
+
+input TokenFiltersInput {
+  marketData: MarketDataFilter = {}
+  token: TokenFilter = {}
+}
+
+input TokenOrderBy {
+  field: TokenOrderByField!
+  value: Order!
+}
+
+enum TokenOrderByField {
+  name
+  symbol
 }

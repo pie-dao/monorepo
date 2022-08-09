@@ -35,7 +35,7 @@ export const marketDataCodec = t.strict({
   //     percentage: withMessage(t.number, () => 'roi percentage is missing'),
   //   }),
   // ),
-  // ath: withMessage(t.record(t.string, t.number), () => 'ath is missing'),
+  ath: nullable(t.record(t.string, t.number)),
   // ath_change_percentage: withMessage(
   //   t.record(t.string, t.number),
   //   () => 'ath change percentage is missing',
@@ -44,7 +44,7 @@ export const marketDataCodec = t.strict({
   //   t.record(t.string, t.string),
   //   () => 'ath date is missing',
   // ),
-  // atl: withMessage(t.record(t.string, t.number), () => 'atl is missing'),
+  atl: nullable(t.record(t.string, t.number)),
   // atl_change_percentage: withMessage(
   //   t.record(t.string, t.number),
   //   () => 'atl change percentage is missing',
@@ -69,13 +69,13 @@ export const marketDataCodec = t.strict({
   // price_change_percentage_1y: nullable(t.number),
   // market_cap_change_24h: nullable(t.number),
   // market_cap_change_percentage_24h: nullable(t.number),
-  // price_change_24h_in_currency: nullable(t.record(t.string, t.number)),
+  price_change_24h_in_currency: nullable(t.record(t.string, t.number)),
   // price_change_percentage_1h_in_currency: nullable(
   //   t.record(t.string, t.number),
   // ),
-  // price_change_percentage_24h_in_currency: nullable(
-  //   t.record(t.string, t.number),
-  // ),
+  price_change_percentage_24h_in_currency: nullable(
+    t.record(t.string, t.number),
+  ),
   // price_change_percentage_7d_in_currency: nullable(
   //   t.record(t.string, t.number),
   // ),
@@ -98,7 +98,7 @@ export const marketDataCodec = t.strict({
   // market_cap_change_percentage_24h_in_currency: nullable(
   //   t.record(t.string, t.number),
   // ),
-  // total_supply: nullable(t.number),
+  total_supply: nullable(t.number),
   // max_supply: nullable(t.number),
 });
 

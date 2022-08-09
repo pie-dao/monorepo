@@ -46,13 +46,14 @@ export class TokenResolver {
         orderBy,
       };
     }
-    return pipe(
-      this.tokenRepository.find(filters),
-      T.map((tokens) =>
-        tokens.map((token) => ({
-          ...token,
-        })),
-      ),
-    )();
+    return Promise.resolve([]);
+    // return pipe(
+    //   this.tokenRepository.find(filters),
+    //   T.map((tokens) =>
+    //     tokens.map((token) => ({
+    //       ...token,
+    //     })),
+    //   ),
+    // )();
   }
 }

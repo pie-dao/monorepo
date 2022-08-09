@@ -41,7 +41,6 @@ export const makeFind =
     let query = model.find({}).sort(filter.sort).limit(filter.limit);
 
     getPaths().forEach((path: string) => {
-      console.log(`populating ${path}`);
       const pathFilter = rest[path];
       query = query.populate({
         path,
