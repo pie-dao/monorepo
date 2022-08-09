@@ -124,7 +124,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
   );
 
   return (
-    <div className="w-full px-2 py-16 sm:px-0">
+    <div className="w-full px-2 pt-0 pb-16 sm:px-0">
       <Tab.Group>
         <Tab.List className="flex space-x-1 rounded-xl p-1 max-w-xs">
           {['Description', 'Thesis', 'Details', 'Governance'].map((title) => (

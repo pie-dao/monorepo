@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { useIsFirstRender } from 'usehooks-ts';
 import { Group } from '@visx/group';
 import { AxisLeft, AxisBottom, AxisScale } from '@visx/axis';
 import { LinearGradient } from '@visx/gradient';
@@ -8,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Annotation } from '@visx/annotation';
 import { HtmlLabel } from '@visx/annotation';
 import useTranslation from 'next-translate/useTranslation';
+import { nanoid } from '@reduxjs/toolkit';
 import { ChartDataFragment } from '../../api/generated/graphql';
 import {
   formatBalance,
@@ -49,6 +51,15 @@ const variantsFlagTooltip = {
   },
 };
 
+const priceVariants = {
+  visible: {
+    pathLength: 1,
+  },
+  hidden: {
+    pathLength: 0,
+  },
+};
+
 // accessors
 const getDate = (d: Index) => new Date(d.timestamp);
 const getStockValue = (d: Index) => d.currentPrice;
@@ -71,6 +82,7 @@ export default function AreaChart({
   hideTooltip,
   handleTooltip,
   showNav,
+  showPrice,
   showFlags = false,
   symbol,
 }: {
@@ -95,6 +107,7 @@ export default function AreaChart({
   className?: string;
   showNav?: boolean;
   showFlags?: boolean;
+  showPrice?: boolean;
 }) {
   const { t } = useTranslation();
   const refs = useRef<SVGPathElement[]>([]);
@@ -102,6 +115,8 @@ export default function AreaChart({
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
+
+  const isFirst = useIsFirstRender();
 
   if (width < 10) return null;
   return (
@@ -113,32 +128,36 @@ export default function AreaChart({
         to={gradientColor}
         toOpacity={0.2}
       />
-      <LinePath
-        data={data}
-        x={(d) => xScale(getDate(d)) || 0}
-        y={(d) => yScale(getStockValue(d)) || 0}
-        curve={curveLinear}
-      >
-        {({ path }) => {
-          const d = path(data) || '';
-          return (
-            <motion.path
-              d={d}
-              initial={!noAnimation ? { pathLength: 0 } : undefined}
-              animate={!noAnimation ? { pathLength: 1 } : undefined}
-              transition={
-                !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
-              }
-              fill="none"
-              stroke={
-                noAnimation ? 'rgba(186, 189, 220, 1)' : 'rgba(11, 120, 221, 1)'
-              }
-              strokeWidth={noAnimation ? 1 : 1.5}
-              key={d}
-            />
-          );
-        }}
-      </LinePath>
+      {showPrice && (
+        <LinePath
+          data={data}
+          x={(d) => xScale(getDate(d)) || 0}
+          y={(d) => yScale(getStockValue(d)) || 0}
+          curve={curveLinear}
+        >
+          {({ path }) => {
+            const d = path(data) || '';
+            return (
+              <motion.path
+                d={d}
+                initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
+                variants={priceVariants}
+                animate={'visible'}
+                transition={
+                  !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
+                }
+                fill="none"
+                stroke={
+                  noAnimation
+                    ? 'rgba(186, 189, 220, 1)'
+                    : 'rgba(11, 120, 221, 1)'
+                }
+                strokeWidth={noAnimation ? 1 : 1.5}
+              />
+            );
+          }}
+        </LinePath>
+      )}
       {showNav && (
         <LinePath
           data={data}
@@ -151,15 +170,15 @@ export default function AreaChart({
             return (
               <motion.path
                 d={d}
-                initial={!noAnimation ? { pathLength: 0 } : undefined}
-                animate={!noAnimation ? { pathLength: 1 } : undefined}
+                initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
+                variants={priceVariants}
+                animate={'visible'}
                 transition={
                   !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
                 }
                 fill="none"
                 stroke={noAnimation ? 'rgba(186, 189, 220, 1)' : subDark}
                 strokeWidth={1}
-                key={d}
               />
             );
           }}
@@ -170,7 +189,7 @@ export default function AreaChart({
           top={yMax}
           scale={xScale}
           numTicks={width > 520 ? 10 : 5}
-          stroke={subDark}
+          stroke={'transparent'}
           tickStroke={subDark}
           tickLabelProps={() => axisBottomTickLabelProps}
         />
@@ -208,7 +227,7 @@ export default function AreaChart({
             return (
               <>
                 <motion.path
-                  key={`flag-${i}-${d.timestamp}`}
+                  key={`flag-${d.timestamp}`}
                   className="[pointer-events:all] cursor-pointer"
                   ref={(el) => (refs.current[i] = el)}
                   initial={{ y: -innerHeight, x: left, opacity: 0 }}
@@ -241,7 +260,7 @@ export default function AreaChart({
             const { event } = d;
             return (
               refs.current[i] === hovered && (
-                <AnimatePresence>
+                <AnimatePresence key={nanoid()}>
                   <Annotation x={left} y={top} dx={dx} dy={dy}>
                     <HtmlLabel
                       containerStyle={{

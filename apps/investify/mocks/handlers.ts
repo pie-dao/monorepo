@@ -336,11 +336,11 @@ export const handlers = [
   mockGetTokenChartQuery((req, res, ctx) => {
     const { interval } = req.variables;
     const slicePerInterval = {
-      '1D': 2,
-      '1W': 7,
-      '1M': 100,
-      '1Y': 500,
-      ALL: 1000,
+      '1D': 24,
+      '1W': 24 * 7,
+      '1M': 24 * 30,
+      '1Y': 24 * 365,
+      ALL: 24 * 365 * 3,
     };
     return res(
       ctx.data({
@@ -351,6 +351,7 @@ export const handlers = [
               timestamp,
               currentPrice,
               nav: currentPrice - 100 * Math.random(),
+              totalVolume: currentPrice,
               event:
                 Math.random() >= 0.98
                   ? {

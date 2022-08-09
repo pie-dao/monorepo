@@ -15,6 +15,7 @@ fragment ChartData on UserTokenEntity {
     currentPrice
     nav
     timestamp
+    totalVolume
     event {
       eventType
       eventData {
