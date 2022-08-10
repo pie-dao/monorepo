@@ -326,11 +326,7 @@ export class FundLoader {
             return this.tokenRepository.save({
               kind: 'token',
               coinGeckoId: '',
-              marketData: [
-                {
-                  price: price.usd,
-                },
-              ],
+              marketData: [],
               ...asset,
             });
           }),

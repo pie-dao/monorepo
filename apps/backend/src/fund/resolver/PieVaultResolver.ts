@@ -101,6 +101,7 @@ export class PieVaultResolver {
       decimals: vault.decimals,
       currency: currency,
       riskGrade: 'AAA',
+      // TODO: get this from somewhere 👇
       inceptionDate: '',
       kind: 'PieVault',
       marketData: vault.marketData.map((marketData) => {
@@ -138,7 +139,7 @@ export class PieVaultResolver {
           },
         };
       }),
-      underlyingTokens: vault.history[0].underlyingTokens,
+      underlyingTokens: [],
       // TODO: load this from Snapshot 👇
       governance: [],
     };
