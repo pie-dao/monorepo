@@ -9,12 +9,12 @@ import {
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { Contract } from '../fund';
-import { Filter } from './filter';
+import { Options } from './filter';
 
 /**
  * The filter that should be used by default for contract records.
  */
-export const DEFAULT_ENTITY_FILTER: Filter = {
+export const DEFAULT_ENTITY_OPTIONS: Options = {
   limit: 1000,
   orderBy: {
     _id: 'asc',
@@ -24,7 +24,7 @@ export const DEFAULT_ENTITY_FILTER: Filter = {
 /**
  * The filter that should be used by default for child records.
  */
-export const DEFAULT_CHILD_FILTER: Filter = {
+export const DEFAULT_CHILD_FILTER: Options = {
   limit: 1,
   orderBy: {
     _id: 'asc',

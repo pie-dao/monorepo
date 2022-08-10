@@ -2,7 +2,7 @@ import { CoinGeckoAdapter } from '@domain/data-sync';
 import {
   ContractFilters,
   CreateYieldError,
-  DEFAULT_ENTITY_FILTER,
+  DEFAULT_ENTITY_OPTIONS,
   FindOneParams,
   MaiPolygonStrategy,
   MAI_POLYGON_STRATEGY_KIND,
@@ -29,7 +29,7 @@ import {
 import { TestStrategy, TEST_STRATEGY_KIND } from './test';
 
 const DEFAULT_FILTERS = {
-  entity: DEFAULT_ENTITY_FILTER,
+  entity: DEFAULT_ENTITY_OPTIONS,
 };
 
 @Injectable()

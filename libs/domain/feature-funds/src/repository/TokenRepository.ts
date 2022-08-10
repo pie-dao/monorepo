@@ -7,7 +7,7 @@ import {
 import * as TE from 'fp-ts/TaskEither';
 import { MarketData, Token } from '../fund';
 import { ContractRepository } from './ContractRepository';
-import { Filter } from './filter';
+import { Options } from './filter';
 
 export class CreateMarketDataError extends Error {
   public kind: 'CreateMarketDataError' = 'CreateMarketDataError';
@@ -18,7 +18,7 @@ export class CreateMarketDataError extends Error {
 
 export type TokenFilterField = DefaultFiltersKey | 'marketData';
 
-export type TokenFilters = Partial<Record<TokenFilterField, Filter>>;
+export type TokenFilters = Partial<Record<TokenFilterField, Options>>;
 
 export interface TokenRepository<T extends Token, F extends TokenFilters>
   extends ContractRepository<T, F> {

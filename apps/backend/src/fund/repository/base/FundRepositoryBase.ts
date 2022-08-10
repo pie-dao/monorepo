@@ -1,7 +1,7 @@
 import {
   CreateHistoryError,
   DEFAULT_CHILD_FILTER,
-  DEFAULT_ENTITY_FILTER,
+  DEFAULT_ENTITY_OPTIONS,
   FindOneParams,
   Fund,
   FundFilters,
@@ -22,7 +22,7 @@ import { FundEntity } from '../entity';
 import { TokenRepositoryBase } from './TokenRepositoryBase';
 
 const DEFAULT_FILTERS: FundFilters = {
-  entity: DEFAULT_ENTITY_FILTER,
+  entity: DEFAULT_ENTITY_OPTIONS,
   marketData: DEFAULT_CHILD_FILTER,
   history: DEFAULT_CHILD_FILTER,
 };

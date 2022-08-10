@@ -51,23 +51,24 @@ type MarketDataEntity {
   twentyFourHourChange: PriceChange!
 }
 
-input MarketDataFilter {
+input Option {
   limit: Int
-  orderBy: [MarketDataOrderBy!]
+  orderBy: [OrderBy!]
 }
 
-input MarketDataOrderBy {
-  field: MarketDataOrderByField!
-  value: Order!
-}
-
-enum MarketDataOrderByField {
-  timestamp
+input Options {
+  entity: Option = {}
+  marketData: Option = {}
 }
 
 enum Order {
   asc
   desc
+}
+
+input OrderBy {
+  field: String!
+  value: Order!
 }
 
 type PieVaultEntity {
@@ -97,11 +98,14 @@ type PriceChange {
 }
 
 type Query {
-  """Returns all tokens regardless of their kind."""
-  tokens(filters: TokenFiltersInput): [TokenEntity!]!
+  """Returns a pie vault by its address."""
+  pieVault(address: String!, chain: String!, currency: String!): PieVaultEntity!
 
   """Returns all pie vaults."""
-  vaults(currency: String!, filters: TokenFiltersInput): [PieVaultEntity!]!
+  pieVaults(currency: String!, options: Options): [PieVaultEntity!]!
+
+  """Returns all tokens regardless of their kind."""
+  tokens(filters: Options): [TokenEntity!]!
 }
 
 type TokenEntity {
@@ -119,24 +123,4 @@ type TokenEntity {
   marketData: [MarketDataEntity!]!
   name: String!
   symbol: String!
-}
-
-input TokenFilter {
-  limit: Int
-  orderBy: [TokenOrderBy!]
-}
-
-input TokenFiltersInput {
-  marketData: MarketDataFilter = {}
-  token: TokenFilter = {}
-}
-
-input TokenOrderBy {
-  field: TokenOrderByField!
-  value: Order!
-}
-
-enum TokenOrderByField {
-  name
-  symbol
 }

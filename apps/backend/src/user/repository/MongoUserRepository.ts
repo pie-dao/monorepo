@@ -1,4 +1,4 @@
-import { DEFAULT_ENTITY_FILTER } from '@domain/feature-funds';
+import { DEFAULT_ENTITY_OPTIONS } from '@domain/feature-funds';
 import {
   RawUserEvent,
   User,
@@ -28,7 +28,7 @@ export class MongoUserRepository implements UserRepository {
 
   find(filters: UserFilters = {}): T.Task<User[]> {
     return makeFind({
-      defaultFilter: DEFAULT_ENTITY_FILTER,
+      defaultFilter: DEFAULT_ENTITY_OPTIONS,
       model: this.model,
       getPaths: () => this.getPaths(),
       toDomainObject: (record: HydratedDocument<UserEntity>) =>

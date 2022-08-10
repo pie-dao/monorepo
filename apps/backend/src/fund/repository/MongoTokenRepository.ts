@@ -1,6 +1,6 @@
 import {
   DEFAULT_CHILD_FILTER,
-  DEFAULT_ENTITY_FILTER,
+  DEFAULT_ENTITY_OPTIONS,
   FindOneParams,
   Token,
   TokenFilters,
@@ -17,7 +17,7 @@ import {
 } from './entity';
 
 const DEFAULT_FILTERS = {
-  entity: DEFAULT_ENTITY_FILTER,
+  entity: DEFAULT_ENTITY_OPTIONS,
   marketData: DEFAULT_CHILD_FILTER,
 };
 

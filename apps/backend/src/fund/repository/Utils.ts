@@ -1,4 +1,4 @@
-import { Filter } from '@domain/feature-funds';
+import { Options } from '@domain/feature-funds';
 import {
   DatabaseError,
   DefaultFiltersKey,
@@ -10,7 +10,10 @@ import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { HydratedDocument, Model, QueryOptions } from 'mongoose';
 
-export const toMongooseOptions = ({ limit, orderBy }: Filter): QueryOptions => {
+export const toMongooseOptions = ({
+  limit,
+  orderBy,
+}: Options): QueryOptions => {
   const sort: Record<string, number> = {};
   Object.keys(orderBy ?? {}).forEach((key) => {
     sort[key] = orderBy[key] === 'asc' ? 1 : -1;
@@ -25,7 +28,7 @@ export type FindOneParams<D, E, F extends Filters> = {
 };
 
 export type FindParams<D, E, F extends Filters> = {
-  defaultFilter: Filter;
+  defaultFilter: Options;
 } & FindOneParams<D, E, F>;
 
 export const makeFind =

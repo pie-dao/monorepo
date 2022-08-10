@@ -7,7 +7,7 @@ import {
 import * as TE from 'fp-ts/TaskEither';
 import { TokenRepository } from '.';
 import { Fund, FundHistory } from '../fund';
-import { Filter } from './filter';
+import { Options } from './filter';
 
 export class CreateHistoryError extends Error {
   public kind: 'CreateHistoryError' = 'CreateHistoryError';
@@ -19,7 +19,7 @@ export class CreateHistoryError extends Error {
 export type FundFilterField = DefaultFiltersKey | 'marketData' | 'history';
 
 export type FundFilters = Partial<
-  Record<FundFilterField, Filter<'_id' | 'timestamp' | 'symbol' | 'name'>>
+  Record<FundFilterField, Options<'_id' | 'timestamp' | 'symbol' | 'name'>>
 >;
 
 export interface FundRepository<H extends FundHistory, T extends Fund<H>>

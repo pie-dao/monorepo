@@ -2,7 +2,7 @@ import {
   Contract,
   ContractFilters,
   ContractRepository,
-  DEFAULT_ENTITY_FILTER,
+  DEFAULT_ENTITY_OPTIONS,
   FindOneParams,
 } from '@domain/feature-funds';
 import {
@@ -26,7 +26,7 @@ export abstract class ContractRepositoryBase<
 
   find(filters: F): T.Task<C[]> {
     return makeFind({
-      defaultFilter: DEFAULT_ENTITY_FILTER,
+      defaultFilter: DEFAULT_ENTITY_OPTIONS,
       model: this.model,
       getPaths: () => this.getPaths(),
       toDomainObject: (record: E) => this.toDomainObject(record),
