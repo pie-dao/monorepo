@@ -14,55 +14,12 @@ import {
 } from '.';
 import { SupportedDays } from '..';
 import { SupportedChain, SupportedCurrency } from '@shared/util-types';
+import { tokenPricesCodec, TokenPricesDto } from './codec/TokenPrices';
+import { pipe } from 'fp-ts/lib/function';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
 export const DEFAULT_FUNDS = [
-  {
-    symbol: 'btc++',
-    name: 'PieDAO BTC++',
-    address: '0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd',
-    coingeckoId: 'piedao-btc',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
-  {
-    symbol: 'defi+s',
-    name: 'PieDAO DEFI Small Cap',
-    address: '0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c',
-    coingeckoId: 'piedao-defi-small-cap',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
-  {
-    symbol: 'defi++',
-    name: 'PieDAO DEFI++',
-    address: '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
-    coingeckoId: 'piedao-defi',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
-  {
-    symbol: 'bcp',
-    name: 'PieDAO Balanced Crypto Pie',
-    address: '0xe4f726adc8e89c6a6017f01eada77865db22da14',
-    coingeckoId: 'piedao-balanced-crypto-pie',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieSmartPool',
-    decimals: 18,
-  },
-  {
-    symbol: 'ypie',
-    name: 'PieDAO Yearn Ecosystem Pie',
-    address: '0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31',
-    coingeckoId: 'piedao-yearn-ecosystem-pie',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
   {
     symbol: 'play',
     name: 'Metaverse NFT Index',
@@ -72,15 +29,60 @@ export const DEFAULT_FUNDS = [
     kind: 'PieVault',
     decimals: 18,
   },
-  {
-    symbol: 'defi+l',
-    name: 'PieDAO DEFI Large Cap',
-    address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
-    coingeckoId: 'piedao-defi-large-cap',
-    chain: SupportedChain.ETHEREUM,
-    kind: 'PieVault',
-    decimals: 18,
-  },
+  // {
+  //   symbol: 'btc++',
+  //   name: 'PieDAO BTC++',
+  //   address: '0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd',
+  //   coingeckoId: 'piedao-btc',
+  //   chain: SupportedChain.ETHEREUM,
+  //   kind: 'PieVault',
+  //   decimals: 18,
+  // },
+  // {
+  //   symbol: 'defi+s',
+  //   name: 'PieDAO DEFI Small Cap',
+  //   address: '0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c',
+  //   coingeckoId: 'piedao-defi-small-cap',
+  //   chain: SupportedChain.ETHEREUM,
+  //   kind: 'PieVault',
+  //   decimals: 18,
+  // },
+  // {
+  //   symbol: 'defi++',
+  //   name: 'PieDAO DEFI++',
+  //   address: '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
+  //   coingeckoId: 'piedao-defi',
+  //   chain: SupportedChain.ETHEREUM,
+  //   kind: 'PieVault',
+  //   decimals: 18,
+  // },
+  // {
+  //   symbol: 'bcp',
+  //   name: 'PieDAO Balanced Crypto Pie',
+  //   address: '0xe4f726adc8e89c6a6017f01eada77865db22da14',
+  //   coingeckoId: 'piedao-balanced-crypto-pie',
+  //   chain: SupportedChain.ETHEREUM,
+  //   kind: 'PieSmartPool',
+  //   decimals: 18,
+  // },
+  // {
+  //   symbol: 'ypie',
+  //   name: 'PieDAO Yearn Ecosystem Pie',
+  //   address: '0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31',
+  //   coingeckoId: 'piedao-yearn-ecosystem-pie',
+  //   chain: SupportedChain.ETHEREUM,
+  //   kind: 'PieVault',
+  //   decimals: 18,
+  // },
+  // {
+  //   symbol: 'defi+l',
+  //   name: 'PieDAO DEFI Large Cap',
+  //   address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
+  //   coingeckoId: 'piedao-defi-large-cap',
+  //   chain: SupportedChain.ETHEREUM,
+  //   kind: 'PieVault',
+  //   decimals: 18,
+  // },
 ];
 
 export type CoinSummary = typeof DEFAULT_FUNDS[0];
@@ -90,6 +92,30 @@ export class CoinGeckoAdapter {
 
   constructor(coins: CoinSummary[] = DEFAULT_FUNDS) {
     this.pieIds = coins.map((it) => it.coingeckoId).join(',');
+  }
+
+  public getPrices(
+    addresses: string[],
+    vsCurrency: SupportedCurrency = 'usd',
+  ): TE.TaskEither<DataTransferError, TokenPricesDto> {
+    return pipe(
+      get(`${BASE_URL}/simple/token_price/ethereum`, tokenPricesCodec, {
+        params: {
+          contract_addresses: addresses.join(','),
+          vs_currencies: vsCurrency,
+          include_market_cap: true,
+          include_24hr_vol: true,
+          include_24hr_change: true,
+        },
+      }),
+      TE.map((prices) => {
+        const result: TokenPricesDto = {};
+        Object.keys(prices).forEach((key) => {
+          result[key.toLowerCase()] = prices[key];
+        });
+        return result;
+      }),
+    );
   }
 
   public getMarkets(

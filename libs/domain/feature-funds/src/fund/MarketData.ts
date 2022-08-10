@@ -5,6 +5,7 @@ export type CurrencyData = {
   marketCap: number;
   currency: SupportedCurrency;
   volume: number;
+  nav: number;
   priceChange24h?: number;
   priceChangePercentage24h?: number;
   ath?: number;

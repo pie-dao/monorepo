@@ -1,5 +1,6 @@
 import { CoinGeckoAdapter } from '@domain/data-sync';
 import { Module } from '@nestjs/common';
+import { EthersModule, EthersProvider } from '../ethers';
 import { FundLoader } from './loaders/FundLoader';
 import {
   MongooseConnectionProvider,

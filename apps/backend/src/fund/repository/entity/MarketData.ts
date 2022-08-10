@@ -11,12 +11,30 @@ import { Types } from 'mongoose';
 export class CurrencyDataEntity implements CurrencyData {
   @prop({ required: true, type: String })
   currency: SupportedCurrency;
+
   @prop({ required: true })
   price: number;
+
   @prop({ required: true })
   marketCap: number;
+
   @prop({ required: true })
   volume: number;
+
+  @prop({ required: true })
+  nav: number;
+
+  @prop()
+  priceChange24h?: number;
+
+  @prop()
+  priceChangePercentage24h?: number;
+
+  @prop()
+  ath?: number;
+
+  @prop()
+  atl?: number;
 }
 
 @modelOptions({

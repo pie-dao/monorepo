@@ -1,4 +1,5 @@
 import {
+  CurrencyData,
   DEFAULT_CHILD_FILTER,
   DEFAULT_ENTITY_OPTIONS,
   PieVault,
@@ -6,12 +7,12 @@ import {
 } from '@domain/feature-funds';
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { SupportedChain } from '@shared/util-types';
+import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import * as E from 'fp-ts/Either';
 import { MongoPieVaultRepository } from '../repository';
-import { Options as Options } from './dto';
+import { Options } from './dto';
 import { PieVaultEntity } from './entity';
 
 @Resolver(() => PieVaultEntity)
@@ -103,33 +104,43 @@ export class PieVaultResolver {
       inceptionDate: '',
       kind: 'PieVault',
       marketData: vault.marketData.map((marketData) => {
-        const currencyData = marketData.currencyData.find(
+        const currencyData: CurrencyData = marketData.currencyData.find(
           (entry) => entry.currency === currency,
-        );
+        ) ?? {
+          currency: 'usd',
+          price: 0,
+          marketCap: 0,
+          volume: 0,
+          nav: 0,
+        };
+        const spread = currencyData.price - currencyData.nav;
         return {
-          currentPrice: currencyData?.price ?? 0,
+          currentPrice: currencyData.price,
           twentyFourHourChange: {
-            price: currencyData?.priceChange24h,
-            change: currencyData?.priceChangePercentage24h,
+            price: currencyData.priceChange24h,
+            change: currencyData.priceChangePercentage24h,
           },
-          fromInception: 0,
-          deltaToNav: 0,
+          fromInception: (currencyData.nav - 1) * 100,
+          deltaToNav: (spread / currencyData.price) * 100,
+          nav: currencyData.nav,
+          marketCap: currencyData.marketCap,
+          allTimeHigh: currencyData.ath,
+          allTimeLow: currencyData.atl,
+          totalSupply: marketData.circulatingSupply,
+
+          // TODO: implement these 👇
+          numberOfHolders: 0,
+          swapFee: null,
+          managementFee: null,
           interests: {
             apr: 0,
             apy: 0,
           },
-          nav: 0,
-          marketCap: currencyData?.marketCap ?? 0,
-          numberOfHolders: 0,
-          allTimeHigh: currencyData?.ath,
-          allTimeLow: currencyData?.atl,
-          swapFee: null,
-          managementFee: null,
-          totalSupply: marketData.circulatingSupply,
         };
       }),
+      underlyingTokens: vault.history[0].underlyingTokens,
+      // TODO: load this from Snapshot 👇
       governance: [],
-      underlyingTokens: [],
     };
   }
 }

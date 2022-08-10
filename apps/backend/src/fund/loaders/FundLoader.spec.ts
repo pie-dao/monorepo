@@ -1,11 +1,14 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
+import { Token } from '@domain/feature-funds';
 import { SentryService } from '@ntegral/nestjs-sentry';
 import { isRight, Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
-import { MarketDataModel, TokenEntity, TokenModel } from '../repository/entity';
+import { MarketDataModel, TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { FundLoader } from './FundLoader';
+
+jest.setTimeout(60 * 1000);
 
 describe('Given a Fund Loader', () => {
   let connection: Mongoose;
@@ -28,7 +31,7 @@ describe('Given a Fund Loader', () => {
   });
 
   it('When ensuring funds exist with an empty database Then we get the newly created funds back', async () => {
-    const result = (await target.ensureFundsExist()()) as Right<TokenEntity[]>;
+    const result = (await target.ensureFundsExist()()) as Right<Token[]>;
 
     expect(isRight(result)).toBeTruthy();
 
@@ -53,12 +56,13 @@ describe('Given a Fund Loader', () => {
   });
 
   it('When loading current Coin Gecko Data Then it runs without an error', async () => {
-    const result = await target.loadCgMarketData();
+    const result = await target.loadMarketData();
+
     expect(isRight(result)).toBeTruthy();
   });
 
   it('When loading current Coin Gecko Data Then new market data entries are created', async () => {
-    await target.loadCgMarketData();
+    await target.loadMarketData();
 
     const result = await MarketDataModel.count().exec();
 
@@ -66,11 +70,11 @@ describe('Given a Fund Loader', () => {
   });
 
   it('When loading current Coin Gecko Data Twice Then no duplicates are created', async () => {
-    await target.loadCgMarketData();
+    await target.loadMarketData();
 
     const firstCount = await MarketDataModel.count().exec();
 
-    await target.loadCgMarketData();
+    await target.loadMarketData();
 
     const secondCount = await MarketDataModel.count().exec();
 

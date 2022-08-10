@@ -158,10 +158,21 @@ export const makeSaveWithKind =
     return pipe(
       TE.tryCatch(
         (): Promise<HydratedDocument<E>> => {
-          return new model({
-            ...discriminator,
-            ...rest,
-          }).save() as Promise<HydratedDocument<E>>;
+          return model
+            .findOneAndUpdate(
+              {
+                timestamp: new Date(),
+              },
+              {
+                ...discriminator,
+                ...rest,
+              },
+              {
+                upsert: true,
+                new: true,
+              },
+            )
+            .exec() as Promise<HydratedDocument<E>>;
         },
         (err: unknown) => new DatabaseError(err),
       ),
