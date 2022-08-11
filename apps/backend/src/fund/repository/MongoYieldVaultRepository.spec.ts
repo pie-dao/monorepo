@@ -13,7 +13,7 @@ const NEW = 1654509027;
 
 const STRATEGY_0: Strategy = {
   chain: SupportedChain.ETHEREUM,
-  address: '0xA4b18b66CF0136D7F0805d70Daa922A53707bCbb',
+  address: '0x14b18b66CF0136D7F0805d70Daa922A53707bCbb',
   kind: 'Strategy Token',
   name: 'Strategy Token',
   underlyingToken: {
@@ -35,7 +35,7 @@ const HISTORY_0: YieldVaultHistory = {
   timestamp: new Date(OLD),
   underlyingToken: {
     chain: SupportedChain.ETHEREUM,
-    address: '0xA4b18b66CF0136D7F0805d70Daa922A53707bCbb',
+    address: '0x24b18b66CF0136D7F0805d70Daa922A53707bCbb',
     name: 'Fun Token',
     symbol: 'FUN',
     decimals: 18,
@@ -59,7 +59,7 @@ const HISTORY_1: YieldVaultHistory = {
   timestamp: new Date(NEW),
   underlyingToken: {
     chain: SupportedChain.ETHEREUM,
-    address: '0xA4b18b66CF013637F0805d70Daa922A53707bCbb',
+    address: '0x34b18b66CF013637F0805d70Daa922A53707bCbb',
     name: 'History Token',
     symbol: 'HST',
     decimals: 18,
@@ -79,7 +79,7 @@ const HISTORY_1: YieldVaultHistory = {
 
 const YIELD_VAULT_0: YieldVault = {
   chain: SupportedChain.ETHEREUM,
-  address: '0x2eCa39776894a91Cb3203B88BF0404eeBA077107',
+  address: '0x1eCa39776894a91Cb3203B88BF0404eeBA077107',
   name: 'Yield Fund Token',
   decimals: 18,
   kind: 'YieldVault',
@@ -105,7 +105,7 @@ const YIELD_VAULT_1: YieldVault = {
 
 const YIELD_VAULT_2: YieldVault = {
   chain: SupportedChain.ETHEREUM,
-  address: '0x2eCa39276894a91Cb3203B88BF0404eeBA077307',
+  address: '0x3eCa39276894a91Cb3203B88BF0404eeBA077307',
   name: 'Very Fun Token',
   decimals: 18,
   kind: 'YieldVault',
@@ -177,9 +177,11 @@ describe('Given a Mongo Yield Vault Repository', () => {
     const saveResult = await target.save(YIELD_VAULT_WITH_HISTORY)();
     const yieldVault = (saveResult as Right<YieldVault>).right;
 
-    await target.addHistoryEntry(
-      yieldVault.chain,
-      yieldVault.address,
+    await target.addFundHistory(
+      {
+        chain: yieldVault.chain,
+        address: yieldVault.address,
+      },
       HISTORY_1,
     )();
 

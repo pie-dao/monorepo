@@ -1,28 +1,30 @@
-import {
-  Contract,
-  ContractFilters,
-  ContractRepository,
-  DEFAULT_ENTITY_OPTIONS,
-  FindOneParams,
-} from '@domain/feature-funds';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Contract, ContractParams } from '@domain/feature-funds';
 import {
   DatabaseError,
   DefaultFiltersKey,
+  DEFAULT_ENTITY_OPTIONS,
   EntityNotFoundError,
+  QueryOptions,
+  Repository,
 } from '@shared/util-types';
 import * as T from 'fp-ts/lib/Task';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { HydratedDocument, Model } from 'mongoose';
 import { ContractEntity } from '../entity/base/ContractEntity';
-import { makeFind, makeFindOne, makeSaveWithKind } from '../Utils';
+import { makeFind, makeFindOne, makeSave } from '../Utils';
 
 export abstract class ContractRepositoryBase<
   E extends ContractEntity,
   C extends Contract,
-  F extends ContractFilters,
-> implements ContractRepository<C, F>
+  F extends QueryOptions = QueryOptions,
+> implements Repository<ContractParams, C, F>
 {
-  constructor(protected model: Model<E>, private discriminated = false) {}
+  constructor(protected model: Model<E>) {}
+
+  getKeys(): (keyof ContractParams)[] {
+    return ['chain', 'address'];
+  }
 
   find(filters: F): T.Task<C[]> {
     return makeFind({
@@ -34,7 +36,7 @@ export abstract class ContractRepositoryBase<
   }
 
   findOne(
-    params: FindOneParams,
+    params: ContractParams,
     childFilters: Partial<Omit<F, 'entity'>> = {},
   ): TE.TaskEither<EntityNotFoundError | DatabaseError, C> {
     return makeFindOne({
@@ -45,10 +47,10 @@ export abstract class ContractRepositoryBase<
   }
 
   save(contract: C): TE.TaskEither<DatabaseError, C> {
-    return makeSaveWithKind({
+    return makeSave({
+      keys: this.getKeys(),
       model: this.model,
       saveChildren: (c: C, e: HydratedDocument<E>) => this.saveChildren(c, e),
-      toDomainObject: (record: E) => this.toDomainObject(record),
     })(contract);
   }
 

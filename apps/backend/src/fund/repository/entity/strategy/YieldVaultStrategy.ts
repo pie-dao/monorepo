@@ -17,8 +17,10 @@ export class ApyEntity {
 export class YieldDataEntity implements YieldData {
   @prop({ required: true })
   apr: number;
+
   @prop({ required: true, _id: false })
   apy: ApyEntity;
+
   @prop({ required: true })
   timestamp: Date;
 }
@@ -30,6 +32,9 @@ export class YieldVaultStrategyEntity
   extends ContractEntity
   implements Strategy
 {
+  @prop({ required: true, index: true })
+  name: string;
+
   @prop({ type: YieldDataEntity, default: [], _id: false })
   yields: Types.Array<YieldDataEntity>;
 

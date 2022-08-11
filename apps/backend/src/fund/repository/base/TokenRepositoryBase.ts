@@ -1,15 +1,12 @@
 import {
+  ContractParams,
   CreateMarketDataError,
   MarketData,
   Token,
   TokenFilters,
   TokenRepository,
 } from '@domain/feature-funds';
-import {
-  DatabaseError,
-  EntityNotFoundError,
-  SupportedChain,
-} from '@shared/util-types';
+import { DatabaseError, EntityNotFoundError } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as TE from 'fp-ts/lib/TaskEither';
 import { HydratedDocument, Model, Types } from 'mongoose';
@@ -24,17 +21,12 @@ export abstract class TokenRepositoryBase<
   extends ContractRepositoryBase<E, T, F>
   implements TokenRepository<T, F>
 {
-  constructor(
-    model: Model<E>,
-    protected marketModel: Model<MarketData>,
-    discriminated = false,
-  ) {
-    super(model, discriminated);
+  constructor(model: Model<E>, protected marketModel: Model<MarketData>) {
+    super(model);
   }
 
   addMarketData(
-    chain: SupportedChain,
-    address: string,
+    keys: ContractParams,
     entry: MarketData,
   ): TE.TaskEither<
     EntityNotFoundError | DatabaseError | CreateMarketDataError,
@@ -43,7 +35,7 @@ export abstract class TokenRepositoryBase<
     return pipe(
       TE.tryCatch(
         () => {
-          return this.model.findOne({ address, chain }).exec();
+          return this.model.findOne(keys).exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),

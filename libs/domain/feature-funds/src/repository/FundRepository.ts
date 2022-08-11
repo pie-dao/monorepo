@@ -2,12 +2,11 @@ import {
   DatabaseError,
   DefaultFiltersKey,
   EntityNotFoundError,
-  SupportedChain,
+  Options,
 } from '@shared/util-types';
 import * as TE from 'fp-ts/TaskEither';
-import { TokenRepository } from '.';
+import { ContractParams, TokenRepository } from '.';
 import { Fund, FundHistory } from '../fund';
-import { Options } from './filter';
 
 export class CreateHistoryError extends Error {
   public kind: 'CreateHistoryError' = 'CreateHistoryError';
@@ -27,9 +26,8 @@ export interface FundRepository<H extends FundHistory, T extends Fund<H>>
   /**
    * Adds a history entry for the given fund.
    */
-  addHistoryEntry: (
-    chain: SupportedChain,
-    address: string,
+  addFundHistory: (
+    keys: ContractParams,
     entry: H,
   ) => TE.TaskEither<
     DatabaseError | EntityNotFoundError | CreateHistoryError,

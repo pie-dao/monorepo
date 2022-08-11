@@ -5,6 +5,7 @@ import { Right } from 'fp-ts/lib/Either';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
 import { MongoPieVaultRepository } from './';
+import { PieVaultModel } from './entity';
 
 const OLD = 1644509027;
 const NEW = 1654509027;
@@ -76,7 +77,7 @@ export const PIE_VAULT_0 = new PieVault(
 
 const PIE_VAULT_1 = new PieVault(
   SupportedChain.ETHEREUM,
-  '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
+  '0x3eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Fragrant Pie',
   'FPT',
   18,
@@ -85,7 +86,7 @@ const PIE_VAULT_1 = new PieVault(
 
 const PIE_VAULT_2 = new PieVault(
   SupportedChain.ETHEREUM,
-  '0x2eCa39776894a91Cb3203B88BF0404eeBA077307',
+  '0x4eCa39776894a91Cb3203B88BF0404eeBA077307',
   'Weird Pie',
   'WPT',
   18,
@@ -156,7 +157,13 @@ describe('Given a Mongo Pie Vault Repository', () => {
     const saveResult = await target.save(PIE_VAULT_WITH_HISTORY)();
     const pieVault = (saveResult as Right<PieVault>).right;
 
-    await target.addHistoryEntry(pieVault.chain, pieVault.address, HISTORY_1)();
+    await target.addFundHistory(
+      {
+        chain: pieVault.chain,
+        address: pieVault.address,
+      },
+      HISTORY_1,
+    )();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
     const result = await target.findOne(

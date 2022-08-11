@@ -6,6 +6,7 @@ import { Contract, MarketData } from '.';
  */
 export interface Token extends Contract {
   symbol: string;
+  name: string;
   decimals: number;
   /**
    * The identifier for this token on Coin Gecko.

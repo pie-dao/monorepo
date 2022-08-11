@@ -15,6 +15,7 @@ export interface YieldData {
  * It is attached to one or more vault(s).
  */
 export interface Strategy extends Contract {
+  name: string;
   yields: YieldData[];
   /**
    * The vault addresses this strategy is attached to.

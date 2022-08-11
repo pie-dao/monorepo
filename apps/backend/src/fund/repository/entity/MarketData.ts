@@ -44,12 +44,16 @@ export class CurrencyDataEntity implements CurrencyData {
 export class MarketDataEntity implements MarketData {
   @prop({ required: true, index: true })
   public tokenId: Types.ObjectId;
+
   @prop({ required: true, type: CurrencyDataEntity, _id: false })
   currencyData: Array<CurrencyDataEntity>;
+
   @prop({ required: true })
   marketCapRank: number;
+
   @prop({ required: true })
   circulatingSupply: number;
+
   @prop({ required: true, index: true })
   timestamp: Date;
 }

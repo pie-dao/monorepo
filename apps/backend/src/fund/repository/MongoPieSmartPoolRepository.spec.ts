@@ -193,9 +193,11 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
     const saveResult = await target.save(PIE_SMART_POOL_WITH_HISTORY)();
     const pieSmartPool = (saveResult as Right<PieSmartPool>).right;
 
-    await target.addHistoryEntry(
-      pieSmartPool.chain,
-      pieSmartPool.address,
+    await target.addFundHistory(
+      {
+        chain: pieSmartPool.chain,
+        address: pieSmartPool.address,
+      },
       HISTORY_1,
     )();
 

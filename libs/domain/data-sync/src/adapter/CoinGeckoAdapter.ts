@@ -16,6 +16,8 @@ import { SupportedDays } from '..';
 import { SupportedChain, SupportedCurrency } from '@shared/util-types';
 import { tokenPricesCodec, TokenPricesDto } from './codec/TokenPrices';
 import { pipe } from 'fp-ts/lib/function';
+import { coinListCodec, CoinListDto } from './codec/CoinList';
+import { sleep } from '@shared/helpers';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
@@ -29,66 +31,72 @@ export const DEFAULT_FUNDS = [
     kind: 'PieVault',
     decimals: 18,
   },
-  // {
-  //   symbol: 'btc++',
-  //   name: 'PieDAO BTC++',
-  //   address: '0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd',
-  //   coingeckoId: 'piedao-btc',
-  //   chain: SupportedChain.ETHEREUM,
-  //   kind: 'PieVault',
-  //   decimals: 18,
-  // },
-  // {
-  //   symbol: 'defi+s',
-  //   name: 'PieDAO DEFI Small Cap',
-  //   address: '0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c',
-  //   coingeckoId: 'piedao-defi-small-cap',
-  //   chain: SupportedChain.ETHEREUM,
-  //   kind: 'PieVault',
-  //   decimals: 18,
-  // },
-  // {
-  //   symbol: 'defi++',
-  //   name: 'PieDAO DEFI++',
-  //   address: '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
-  //   coingeckoId: 'piedao-defi',
-  //   chain: SupportedChain.ETHEREUM,
-  //   kind: 'PieVault',
-  //   decimals: 18,
-  // },
-  // {
-  //   symbol: 'bcp',
-  //   name: 'PieDAO Balanced Crypto Pie',
-  //   address: '0xe4f726adc8e89c6a6017f01eada77865db22da14',
-  //   coingeckoId: 'piedao-balanced-crypto-pie',
-  //   chain: SupportedChain.ETHEREUM,
-  //   kind: 'PieSmartPool',
-  //   decimals: 18,
-  // },
-  // {
-  //   symbol: 'ypie',
-  //   name: 'PieDAO Yearn Ecosystem Pie',
-  //   address: '0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31',
-  //   coingeckoId: 'piedao-yearn-ecosystem-pie',
-  //   chain: SupportedChain.ETHEREUM,
-  //   kind: 'PieVault',
-  //   decimals: 18,
-  // },
-  // {
-  //   symbol: 'defi+l',
-  //   name: 'PieDAO DEFI Large Cap',
-  //   address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
-  //   coingeckoId: 'piedao-defi-large-cap',
-  //   chain: SupportedChain.ETHEREUM,
-  //   kind: 'PieVault',
-  //   decimals: 18,
-  // },
+  {
+    symbol: 'btc++',
+    name: 'PieDAO BTC++',
+    address: '0x0327112423f3a68efdf1fcf402f6c5cb9f7c33fd',
+    coingeckoId: 'piedao-btc',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+    decimals: 18,
+  },
+  {
+    symbol: 'defi+s',
+    name: 'PieDAO DEFI Small Cap',
+    address: '0xad6a626ae2b43dcb1b39430ce496d2fa0365ba9c',
+    coingeckoId: 'piedao-defi-small-cap',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+    decimals: 18,
+  },
+  {
+    symbol: 'defi++',
+    name: 'PieDAO DEFI++',
+    address: '0x8d1ce361eb68e9e05573443c407d4a3bed23b033',
+    coingeckoId: 'piedao-defi',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+    decimals: 18,
+  },
+  {
+    symbol: 'bcp',
+    name: 'PieDAO Balanced Crypto Pie',
+    address: '0xe4f726adc8e89c6a6017f01eada77865db22da14',
+    coingeckoId: 'piedao-balanced-crypto-pie',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieSmartPool',
+    decimals: 18,
+  },
+  {
+    symbol: 'ypie',
+    name: 'PieDAO Yearn Ecosystem Pie',
+    address: '0x17525E4f4Af59fbc29551bC4eCe6AB60Ed49CE31',
+    coingeckoId: 'piedao-yearn-ecosystem-pie',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+    decimals: 18,
+  },
+  {
+    symbol: 'defi+l',
+    name: 'PieDAO DEFI Large Cap',
+    address: '0x78f225869c08d478c34e5f645d07a87d3fe8eb78',
+    coingeckoId: 'piedao-defi-large-cap',
+    chain: SupportedChain.ETHEREUM,
+    kind: 'PieVault',
+    decimals: 18,
+  },
 ];
 
 export type CoinSummary = typeof DEFAULT_FUNDS[0];
 
+/**
+ * CG limits us to 8 calls / second.
+ */
+export const CG_RATE_LIMIT = 125;
+
 export class CoinGeckoAdapter {
   private pieIds: string;
+  private lastCall = new Date().getTime();
 
   constructor(coins: CoinSummary[] = DEFAULT_FUNDS) {
     this.pieIds = coins.map((it) => it.coingeckoId).join(',');
@@ -98,50 +106,57 @@ export class CoinGeckoAdapter {
     addresses: string[],
     vsCurrency: SupportedCurrency = 'usd',
   ): TE.TaskEither<DataTransferError, TokenPricesDto> {
-    return pipe(
-      get(`${BASE_URL}/simple/token_price/ethereum`, tokenPricesCodec, {
-        params: {
-          contract_addresses: addresses.join(','),
-          vs_currencies: vsCurrency,
-          include_market_cap: true,
-          include_24hr_vol: true,
-          include_24hr_change: true,
-        },
-      }),
-      TE.map((prices) => {
-        const result: TokenPricesDto = {};
-        Object.keys(prices).forEach((key) => {
-          result[key.toLowerCase()] = prices[key];
-        });
-        return result;
-      }),
+    return this.callWithRateLimitSatisfied(
+      pipe(
+        get(`${BASE_URL}/simple/token_price/ethereum`, tokenPricesCodec, {
+          params: {
+            contract_addresses: addresses.join(','),
+            vs_currencies: vsCurrency,
+            include_market_cap: true,
+            include_24hr_vol: true,
+            include_24hr_change: true,
+          },
+        }),
+        TE.map((prices) => {
+          const result: TokenPricesDto = {};
+          Object.keys(prices).forEach((key) => {
+            result[key.toLowerCase()] = prices[key];
+          });
+          return result;
+        }),
+      ),
     );
   }
 
   public getMarkets(
+    ids: string = this.pieIds,
     vsCurrency: SupportedCurrency = 'usd',
   ): TE.TaskEither<DataTransferError, MarketDto[]> {
-    return get(`${BASE_URL}/coins/markets`, marketsCodec, {
-      params: {
-        vs_currency: vsCurrency,
-        ids: this.pieIds,
-        price_change_percentage: '1h,24h,7d',
-      },
-    });
+    return this.callWithRateLimitSatisfied(
+      get(`${BASE_URL}/coins/markets`, marketsCodec, {
+        params: {
+          vs_currency: vsCurrency,
+          ids: ids,
+          price_change_percentage: '1h,24h,7d',
+        },
+      }),
+    );
   }
 
   public getCoinMetadata(
     coinId: string,
   ): TE.TaskEither<DataTransferError, CoinMetadataDto> {
-    return get(`${BASE_URL}/coins/${coinId}`, coinMetadataCodec, {
-      params: {
-        localization: true,
-        tickers: true,
-        market_data: true,
-        community_data: true,
-        developer_data: true,
-      },
-    });
+    return this.callWithRateLimitSatisfied(
+      get(`${BASE_URL}/coins/${coinId}`, coinMetadataCodec, {
+        params: {
+          localization: true,
+          tickers: true,
+          market_data: true,
+          community_data: true,
+          developer_data: true,
+        },
+      }),
+    );
   }
 
   public getOhlc({
@@ -153,23 +168,59 @@ export class CoinGeckoAdapter {
     vsCurrency: SupportedCurrency;
     days: SupportedDays;
   }): TE.TaskEither<DataTransferError, OhlcDto[]> {
-    return get(`${BASE_URL}/coins/${coinId}/ohlc`, t.array(ohlcCodec), {
-      params: {
-        vs_currency: vsCurrency,
-        days,
-      },
-    });
+    return this.callWithRateLimitSatisfied(
+      get(`${BASE_URL}/coins/${coinId}/ohlc`, t.array(ohlcCodec), {
+        params: {
+          vs_currency: vsCurrency,
+          days,
+        },
+      }),
+    );
   }
 
   public getCoinHistory(
     coinId: string,
     date: Date,
   ): TE.TaskEither<DataTransferError, CoinHistoryDto> {
-    return get(`${BASE_URL}/coins/${coinId}/history`, coinHistoryCodec, {
-      params: {
-        date: moment(date).format('DD-MM-YYYY'),
-        localization: false,
-      },
-    });
+    return this.callWithRateLimitSatisfied(
+      get(`${BASE_URL}/coins/${coinId}/history`, coinHistoryCodec, {
+        params: {
+          date: moment(date).format('DD-MM-YYYY'),
+          localization: false,
+        },
+      }),
+    );
+  }
+
+  public getCoinList(): TE.TaskEither<DataTransferError, CoinListDto> {
+    return this.callWithRateLimitSatisfied(
+      get(`${BASE_URL}/coins/list`, coinListCodec, {
+        params: {
+          include_platform: true,
+        },
+      }),
+    );
+  }
+
+  private callWithRateLimitSatisfied<E, R>(
+    te: TE.TaskEither<E, R>,
+  ): TE.TaskEither<E, R> {
+    return pipe(
+      this.throttle<E>(),
+      TE.chain(() => {
+        this.lastCall = new Date().getTime();
+        return te;
+      }),
+    );
+  }
+
+  private throttle<E>(): TE.TaskEither<E, unknown> {
+    const now = new Date().getTime();
+    const timeDiff = now - this.lastCall;
+    if (timeDiff < CG_RATE_LIMIT) {
+      return TE.fromTask(sleep(CG_RATE_LIMIT));
+    } else {
+      return TE.right(undefined);
+    }
   }
 }

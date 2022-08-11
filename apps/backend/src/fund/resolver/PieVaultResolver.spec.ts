@@ -31,8 +31,4 @@ describe('PieVaultResolver', () => {
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
-
-  it('Works', async () => {
-    const result = await resolver.findAll('USD');
-  });
 });

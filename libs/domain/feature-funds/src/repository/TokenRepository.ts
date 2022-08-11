@@ -2,12 +2,12 @@ import {
   DatabaseError,
   DefaultFiltersKey,
   EntityNotFoundError,
-  SupportedChain,
+  Options,
+  Repository,
 } from '@shared/util-types';
 import * as TE from 'fp-ts/TaskEither';
 import { MarketData, Token } from '../fund';
-import { ContractRepository } from './ContractRepository';
-import { Options } from './filter';
+import { ContractParams } from './ContractParams';
 
 export class CreateMarketDataError extends Error {
   public kind: 'CreateMarketDataError' = 'CreateMarketDataError';
@@ -18,16 +18,17 @@ export class CreateMarketDataError extends Error {
 
 export type TokenFilterField = DefaultFiltersKey | 'marketData';
 
-export type TokenFilters = Partial<Record<TokenFilterField, Options>>;
+export type TokenFilters = Partial<
+  Record<TokenFilterField, Options<'_id' | 'symbol', '_id' | 'kind' | 'symbol'>>
+>;
 
 export interface TokenRepository<T extends Token, F extends TokenFilters>
-  extends ContractRepository<T, F> {
+  extends Repository<ContractParams, T, F> {
   /**
    * Adds a market data entry for the token with the given `chain` and `address`.
    */
   addMarketData(
-    chain: SupportedChain,
-    address: string,
+    keys: ContractParams,
     entry: MarketData,
   ): TE.TaskEither<
     EntityNotFoundError | CreateMarketDataError | DatabaseError,

@@ -1,12 +1,10 @@
+import { CurrencyData, PieVault, TokenFilters } from '@domain/feature-funds';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import {
-  CurrencyData,
   DEFAULT_CHILD_FILTER,
   DEFAULT_ENTITY_OPTIONS,
-  PieVault,
-  TokenFilters,
-} from '@domain/feature-funds';
-import { Args, Query, Resolver } from '@nestjs/graphql';
-import { SupportedChain } from '@shared/util-types';
+  SupportedChain,
+} from '@shared/util-types';
 import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';

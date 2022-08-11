@@ -1,11 +1,9 @@
+import { TokenFilters } from '@domain/feature-funds';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import {
   DEFAULT_CHILD_FILTER,
   DEFAULT_ENTITY_OPTIONS,
-  TokenFilters,
-} from '@domain/feature-funds';
-import { Args, Query, Resolver } from '@nestjs/graphql';
-import { pipe } from 'fp-ts/lib/function';
-import * as T from 'fp-ts/Task';
+} from '@shared/util-types';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { Options } from './dto';
 import { TokenEntity } from './entity';

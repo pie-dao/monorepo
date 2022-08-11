@@ -8,6 +8,9 @@ import { MarketDataEntity } from './MarketData';
 })
 export class TokenEntity extends ContractEntity implements Token {
   @prop({ required: true, index: true })
+  name: string;
+
+  @prop({ required: true, index: true })
   symbol: string;
 
   @prop({ required: true })

@@ -13,9 +13,6 @@ export type Contract = {
    * The address where this contract is deployed.
    */
   address: string;
-
-  name: string;
-
   /**
    * The kind of this `Contract`. This property can be used
    * to create tagged unions.

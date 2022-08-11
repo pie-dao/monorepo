@@ -1,9 +1,11 @@
 import { isRight, Right } from 'fp-ts/lib/Either';
-import { CoinGeckoAdapter, DEFAULT_FUNDS, MarketDto } from '.';
+import { CoinGeckoAdapter, DEFAULT_FUNDS, MarketDto, CG_RATE_LIMIT } from '.';
 
 const coinId = 'piedao-balanced-crypto-pie';
 const vsCurrency = 'usd';
 const days = '1';
+
+jest.setTimeout(60 * 1000);
 
 describe('Given a Coin Gecko adapter', () => {
   let target: CoinGeckoAdapter;
@@ -51,5 +53,24 @@ describe('Given a Coin Gecko adapter', () => {
     ])();
 
     expect(isRight(result)).toBeTruthy();
+  });
+
+  test('When we get the coin list Then it succeeds', async () => {
+    const result = await target.getCoinList()();
+
+    expect(isRight(result)).toBeTruthy();
+  });
+
+  test('When we get a lot of stuff Then the rate limit is satisfied', async () => {
+    const repeats = 20;
+    const start = new Date().getTime();
+    for (let i = 0; i < repeats; i++) {
+      await target.getCoinHistory('ethereum', new Date())();
+    }
+    const end = new Date().getTime();
+
+    const diff = end - start;
+
+    expect(diff).toBeGreaterThanOrEqual(repeats * CG_RATE_LIMIT);
   });
 });

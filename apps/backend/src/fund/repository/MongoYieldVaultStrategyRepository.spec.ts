@@ -23,7 +23,7 @@ const yields: YieldData[] = [
 
 const STRATEGY_0 = new TestStrategy(
   SupportedChain.ETHEREUM,
-  '0xA4b18b66CF0136D7F0805D70DCC923A53707bCbb',
+  '0x14b18b66CF0136D7F0805D70DCC923A53707bCbb',
   'ST0V',
   {
     chain: SupportedChain.ETHEREUM,
@@ -42,7 +42,7 @@ const STRATEGY_0 = new TestStrategy(
 
 const STRATEGY_1 = new TestStrategy(
   SupportedChain.ETHEREUM,
-  '0xA4b18b66AF0136D7F0805d70DBB922A53707bCbb',
+  '0x24b18b66AF0136D7F0805d70DBB922A53707bCbb',
   'ST1V',
   {
     chain: SupportedChain.ETHEREUM,

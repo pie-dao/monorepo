@@ -1,16 +1,16 @@
 import {
+  ContractParams,
   CreateHistoryError,
-  DEFAULT_CHILD_FILTER,
-  DEFAULT_ENTITY_OPTIONS,
-  FindOneParams,
   Fund,
-  FundFilters,
+  FundFilters as FundQueryOptions,
   FundHistory,
   FundRepository,
   MarketData,
 } from '@domain/feature-funds';
 import {
   DatabaseError,
+  DEFAULT_CHILD_FILTER,
+  DEFAULT_ENTITY_OPTIONS,
   EntityNotFoundError,
   SupportedChain,
 } from '@shared/util-types';
@@ -21,7 +21,7 @@ import { HydratedDocument, Model } from 'mongoose';
 import { FundEntity } from '../entity';
 import { TokenRepositoryBase } from './TokenRepositoryBase';
 
-const DEFAULT_FILTERS: FundFilters = {
+const DEFAULT_FILTERS: FundQueryOptions = {
   entity: DEFAULT_ENTITY_OPTIONS,
   marketData: DEFAULT_CHILD_FILTER,
   history: DEFAULT_CHILD_FILTER,
@@ -37,32 +37,32 @@ export abstract class FundRepositoryBase<
     E extends FundEntity<H>,
     F extends Fund<H>,
   >
-  extends TokenRepositoryBase<E, F, FundFilters>
+  extends TokenRepositoryBase<E, F, FundQueryOptions>
   implements FundRepository<H, Fund<H>>
 {
   constructor(
     model: Model<E>,
     marketModel: Model<MarketData>,
     private historyModel: Model<H>,
-    discriminated = false,
   ) {
-    super(model, marketModel, discriminated);
+    super(model, marketModel);
   }
 
-  find(filters: FundFilters = DEFAULT_FILTERS): T.Task<F[]> {
+  find(filters: FundQueryOptions = DEFAULT_FILTERS): T.Task<F[]> {
     return super.find(filters);
   }
 
   findOne(
-    keys: FindOneParams,
-    childFilters: Partial<Omit<FundFilters, 'entity'>> = DEFAULT_CHILD_FILTERS,
+    keys: ContractParams,
+    childFilters: Partial<
+      Omit<FundQueryOptions, 'entity'>
+    > = DEFAULT_CHILD_FILTERS,
   ): TE.TaskEither<EntityNotFoundError | DatabaseError, F> {
     return super.findOne(keys, childFilters);
   }
 
-  public addHistoryEntry(
-    chain: SupportedChain,
-    address: string,
+  public addFundHistory(
+    keys: ContractParams,
     entry: H,
   ): TE.TaskEither<
     DatabaseError | EntityNotFoundError | CreateHistoryError,
@@ -71,7 +71,7 @@ export abstract class FundRepositoryBase<
     return pipe(
       TE.tryCatch(
         () => {
-          return this.model.findOne({ address, chain }).exec();
+          return this.model.findOne(keys).exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),
@@ -85,7 +85,7 @@ export abstract class FundRepositoryBase<
     );
   }
 
-  protected getPaths(): Array<Omit<keyof FundFilters, 'entity'>> {
+  protected getPaths(): Array<Omit<keyof FundQueryOptions, 'entity'>> {
     return ['marketData', 'history'];
   }
 
@@ -95,6 +95,7 @@ export abstract class FundRepositoryBase<
   ): Promise<unknown> {
     return Promise.all([
       super.saveChildren(token, record),
+      // TODO: use batch update?
       Promise.all(
         token.history.map((entry) =>
           new this.historyModel({

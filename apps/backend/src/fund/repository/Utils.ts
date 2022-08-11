@@ -1,50 +1,55 @@
-import { Options } from '@domain/feature-funds';
 import {
   DatabaseError,
   DefaultFiltersKey,
   EntityNotFoundError,
-  Filters,
+  Options,
+  QueryOptions,
 } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { HydratedDocument, Model, QueryOptions } from 'mongoose';
+import {
+  HydratedDocument,
+  Model,
+  QueryOptions as MQueryOptions,
+} from 'mongoose';
 
 export const toMongooseOptions = ({
   limit,
   orderBy,
-}: Options): QueryOptions => {
+  filter,
+}: Options): MQueryOptions => {
   const sort: Record<string, number> = {};
   Object.keys(orderBy ?? {}).forEach((key) => {
     sort[key] = orderBy[key] === 'asc' ? 1 : -1;
   });
-  return { limit, sort };
+  return { limit, sort, ...filter };
 };
 
-export type FindOneParams<D, E, F extends Filters> = {
+export type FindOneParams<D, E, F extends QueryOptions> = {
   model: Model<E>;
   getPaths: () => Array<Omit<keyof F, DefaultFiltersKey>>;
   toDomainObject: (record: HydratedDocument<E>) => D;
 };
 
-export type FindParams<D, E, F extends Filters> = {
+export type FindParams<D, E, F extends QueryOptions> = {
   defaultFilter: Options;
 } & FindOneParams<D, E, F>;
 
 export const makeFind =
-  <D, E, F extends Filters>({
+  <D, E, F extends QueryOptions>({
     defaultFilter,
     model,
     getPaths,
     toDomainObject,
   }: FindParams<D, E, F>) =>
   (filters: Partial<F>): T.Task<D[]> => {
-    const { entity = defaultFilter, ...rest } = filters;
-    const filter = toMongooseOptions(entity);
-    let query = model.find({}).sort(filter.sort).limit(filter.limit);
+    const { entity = defaultFilter, ...paths } = filters;
+    const { sort, limit, ...filter } = toMongooseOptions(entity);
+    let query = model.find(filter).sort(sort).limit(limit);
 
     getPaths().forEach((path: string) => {
-      const pathFilter = rest[path];
+      const pathFilter = paths[path];
       query = query.populate({
         path,
         options: pathFilter ? toMongooseOptions(pathFilter) : {},
@@ -64,7 +69,7 @@ export const makeFind =
   };
 
 export const makeFindOne =
-  <D, E, F extends Filters, K extends Record<string, unknown>>({
+  <D, E, F extends QueryOptions, K extends Record<string, unknown>>({
     model,
     getPaths,
     toDomainObject,
@@ -102,85 +107,57 @@ export const makeFindOne =
     );
   };
 
-export type SaveParams<D, E> = {
+export type SaveParams<K, D extends K, E> = {
+  keys: (keyof K)[];
   model: Model<E>;
   saveChildren: (
     domainObject: D,
     record: HydratedDocument<E>,
   ) => Promise<unknown>;
-  toDomainObject: (record: HydratedDocument<E>) => D;
 };
 
-export const makeSave =
-  <D, E>({ model, saveChildren, toDomainObject }: SaveParams<D, E>) =>
-  (domainObject: D): TE.TaskEither<DatabaseError, D> => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { ...rest } = domainObject;
+export const makeSave = <K, D extends K, E>({
+  keys,
+  model,
+  saveChildren,
+}: SaveParams<K, D, E>) => {
+  const keyMap: Map<string, boolean> = new Map(
+    keys.map((key) => [key.toString(), true]),
+  );
 
-    return pipe(
-      TE.tryCatch(
-        (): Promise<HydratedDocument<E>> => {
-          return new model({
-            ...rest,
-          }).save() as Promise<HydratedDocument<E>>;
-        },
-        (err: unknown) => new DatabaseError(err),
-      ),
-      TE.chainFirstIOK((record) => {
-        return T.of(saveChildren(domainObject, record));
-      }),
-      TE.map((record) => {
-        return toDomainObject(record);
-      }),
-    );
-  };
+  return (domainObject: D): TE.TaskEither<DatabaseError, D> => {
+    const filter: Record<string, unknown> = {};
 
-export type SaveWithKindParams<D extends { kind: string }, E> = {
-  model: Model<E>;
-  saveChildren: (
-    domainObject: D,
-    record: HydratedDocument<E>,
-  ) => Promise<unknown>;
-  toDomainObject: (record: HydratedDocument<E>) => D;
-};
-
-export const makeSaveWithKind =
-  <D extends { kind: string }, E>({
-    model,
-    saveChildren,
-    toDomainObject,
-  }: SaveWithKindParams<D, E>) =>
-  (domainObject: D): TE.TaskEither<DatabaseError, D> => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { kind, ...rest } = domainObject;
-    const discriminator = { kind };
+    Object.entries(domainObject)
+      .filter(([key]) => keyMap.has(key))
+      .forEach(([key, value]) => {
+        filter[key] = value;
+      });
 
     return pipe(
       TE.tryCatch(
         (): Promise<HydratedDocument<E>> => {
           return model
             .findOneAndUpdate(
+              filter,
               {
-                timestamp: new Date(),
-              },
-              {
-                ...discriminator,
-                ...rest,
+                ...domainObject,
               },
               {
                 upsert: true,
                 new: true,
               },
             )
-            .exec() as Promise<HydratedDocument<E>>;
+            .exec();
         },
         (err: unknown) => new DatabaseError(err),
       ),
       TE.chainFirstIOK((record) => {
         return T.of(saveChildren(domainObject, record));
       }),
-      TE.map((record) => {
-        return toDomainObject(record);
+      TE.map(() => {
+        return domainObject;
       }),
     );
   };
+};

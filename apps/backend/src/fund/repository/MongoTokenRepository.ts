@@ -1,12 +1,11 @@
+import { ContractParams, Token, TokenFilters } from '@domain/feature-funds';
+import { Injectable } from '@nestjs/common';
 import {
+  DatabaseError,
   DEFAULT_CHILD_FILTER,
   DEFAULT_ENTITY_OPTIONS,
-  FindOneParams,
-  Token,
-  TokenFilters,
-} from '@domain/feature-funds';
-import { Injectable } from '@nestjs/common';
-import { DatabaseError, EntityNotFoundError } from '@shared/util-types';
+  EntityNotFoundError,
+} from '@shared/util-types';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenRepositoryBase } from './base/TokenRepositoryBase';
@@ -14,6 +13,7 @@ import {
   DiscriminatedTokenEntity,
   DiscriminatedTokenModel,
   MarketDataModel,
+  TokenModel,
 } from './entity';
 
 const DEFAULT_FILTERS = {
@@ -32,7 +32,7 @@ export class MongoTokenRepository extends TokenRepositoryBase<
   TokenFilters
 > {
   constructor() {
-    super(DiscriminatedTokenModel, MarketDataModel, true);
+    super(TokenModel, MarketDataModel);
   }
 
   find(filters: TokenFilters = DEFAULT_FILTERS): T.Task<Token[]> {
@@ -40,7 +40,7 @@ export class MongoTokenRepository extends TokenRepositoryBase<
   }
 
   findOne(
-    keys: FindOneParams,
+    keys: ContractParams,
     childFilters: Omit<TokenFilters, 'entity'> = DEFAULT_CHILD_FILTERS,
   ): TE.TaskEither<EntityNotFoundError | DatabaseError, Token> {
     return super.findOne(keys, childFilters);

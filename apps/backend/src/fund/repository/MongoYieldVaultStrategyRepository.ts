@@ -1,9 +1,7 @@
 import { CoinGeckoAdapter } from '@domain/data-sync';
 import {
-  ContractFilters,
+  ContractParams,
   CreateYieldError,
-  DEFAULT_ENTITY_OPTIONS,
-  FindOneParams,
   MaiPolygonStrategy,
   MAI_POLYGON_STRATEGY_KIND,
   YieldData,
@@ -13,7 +11,9 @@ import {
 import { Inject, Injectable } from '@nestjs/common';
 import {
   DatabaseError,
+  DEFAULT_ENTITY_OPTIONS,
   EntityNotFoundError,
+  QueryOptions,
   SupportedChain,
 } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
@@ -23,8 +23,8 @@ import { EthersProvider } from '../../ethers';
 import { ContractRepositoryBase } from './base/ContractRepositoryBase';
 import {
   DiscriminatedYieldVaultStrategyEntity,
-  DiscriminatedYieldVaultStrategyModel,
   YieldVaultStrategyEntity,
+  YieldVaultStrategyModel,
 } from './entity';
 import { TestStrategy, TEST_STRATEGY_KIND } from './test';
 
@@ -35,27 +35,29 @@ const DEFAULT_FILTERS = {
 @Injectable()
 export class MongoYieldVaultStrategyRepository
   extends ContractRepositoryBase<
-    DiscriminatedYieldVaultStrategyEntity,
+    YieldVaultStrategyEntity,
     YieldVaultStrategy,
-    ContractFilters
+    QueryOptions
   >
-  implements YieldVaultStrategyRepository<YieldVaultStrategy, ContractFilters>
+  implements YieldVaultStrategyRepository<YieldVaultStrategy, QueryOptions>
 {
   constructor(
     @Inject() private cg: CoinGeckoAdapter,
     @Inject() private provider: EthersProvider,
   ) {
-    super(DiscriminatedYieldVaultStrategyModel, true);
+    super(YieldVaultStrategyModel);
   }
 
-  find(
-    filters: ContractFilters = DEFAULT_FILTERS,
-  ): T.Task<YieldVaultStrategy[]> {
+  protected getPaths(): Omit<'entity', 'entity'>[] {
+    return [];
+  }
+
+  find(filters: QueryOptions = DEFAULT_FILTERS): T.Task<YieldVaultStrategy[]> {
     return super.find(filters);
   }
 
   findOne(
-    keys: FindOneParams,
+    keys: ContractParams,
   ): TE.TaskEither<EntityNotFoundError | DatabaseError, YieldVaultStrategy> {
     return super.findOne(keys);
   }
@@ -86,10 +88,6 @@ export class MongoYieldVaultStrategyRepository
         return TE.of(entry);
       }),
     );
-  }
-
-  protected getPaths(): Array<keyof ContractFilters> {
-    return [];
   }
 
   protected toDomainObject(

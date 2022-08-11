@@ -1,4 +1,3 @@
-import { DEFAULT_ENTITY_OPTIONS } from '@domain/feature-funds';
 import {
   RawUserEvent,
   User,
@@ -10,6 +9,7 @@ import { Injectable } from '@nestjs/common';
 import {
   DatabaseError,
   DefaultFiltersKey,
+  DEFAULT_ENTITY_OPTIONS,
   EntityNotFoundError,
 } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
@@ -25,6 +25,10 @@ export class MongoUserRepository implements UserRepository {
     private readonly model: Model<UserEntity>,
     private readonly rawEventModel: Model<RawUserEventEntity>,
   ) {}
+
+  getKeys(): 'id'[] {
+    return ['id'];
+  }
 
   find(filters: UserFilters = {}): T.Task<User[]> {
     return makeFind({
@@ -50,17 +54,16 @@ export class MongoUserRepository implements UserRepository {
 
   save(entity: User): TE.TaskEither<DatabaseError, User> {
     return makeSave({
+      keys: this.getKeys(),
       model: this.model,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      saveChildren: (user: User, record: HydratedDocument<UserEntity>) => {
+      saveChildren: (user: User) => {
         return Promise.all(
           user.rawUserEvents.map((rawEvent) => {
             return new this.rawEventModel(rawEvent).save();
           }),
         );
       },
-      toDomainObject: (record: HydratedDocument<UserEntity>) =>
-        this.toDomainObject(record),
     })(entity);
   }
 

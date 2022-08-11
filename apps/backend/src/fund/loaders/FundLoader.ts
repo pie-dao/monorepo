@@ -1,6 +1,12 @@
-import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
+import {
+  CoinGeckoAdapter,
+  CoinListDto,
+  DEFAULT_FUNDS,
+  MarketDto,
+} from '@domain/data-sync';
 import { CurrencyData, Token } from '@domain/feature-funds';
 import { Provider } from '@ethersproject/providers';
+import { DataTransferError } from '@hexworks/cobalt-http';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
@@ -9,7 +15,6 @@ import {
   Erc20Abi__factory,
   PiegetterAbi,
   PiegetterAbi__factory,
-  PievaultAbi__factory,
 } from '@shared/util-blockchain';
 import {
   DatabaseError,
@@ -27,6 +32,7 @@ import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { THIRTY_MINUTES as EVERY_THIRTY_MINUTES } from './constants';
 import { ContractExecutionError } from './error';
+import { sleep } from '@shared/helpers';
 
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
@@ -43,8 +49,6 @@ type AssetBalance = {
 type UnderlyingDetails = {
   chain: SupportedChain;
   address: string;
-  symbol: string;
-  name: string;
   decimals: number;
 };
 
@@ -66,6 +70,7 @@ export class FundLoader {
   private sentry: ReturnType<SentryService['instance']>;
   private provider: Provider;
   private contract: PiegetterAbi;
+  private cgCoinList: CoinListDto;
 
   constructor(
     private tokenRepository: MongoTokenRepository,
@@ -156,18 +161,25 @@ export class FundLoader {
           const circulatingSupply = metadata.market_data.circulating_supply;
           const timestamp = new Date(Date.parse(metadata.last_updated));
 
-          return this.tokenRepository.addMarketData(fund.chain, fund.address, {
-            marketCapRank,
-            circulatingSupply,
-            timestamp,
-            currencyData,
-          });
+          return this.tokenRepository.addMarketData(
+            {
+              chain: fund.chain,
+              address: fund.address,
+            },
+            {
+              marketCapRank,
+              circulatingSupply,
+              timestamp,
+              currencyData,
+            },
+          );
         }),
       ),
       TE.bimap(
         (error) => {
           this.sentry.captureException(error);
           Logger.error(error);
+          console.log(error);
           return error;
         },
         (result) => {
@@ -236,16 +248,10 @@ export class FundLoader {
           pie.address,
           this.provider,
         );
-        const pieContract = PievaultAbi__factory.connect(
-          pie.address,
-          this.provider,
-        );
         // TODO: load pie history here 👇
-        const [supply, decimals, entryFee, exitFee] = await Promise.all([
+        const [supply, decimals] = await Promise.all([
           pieErc20Contract.totalSupply(),
           pieErc20Contract.decimals(),
-          pieContract.getEntryFee(),
-          pieContract.getExitFee(),
         ]);
         const precision = new BigNumber(10).pow(decimals);
         const totalSupply = new BigNumber(supply.toString()).div(precision);
@@ -268,7 +274,7 @@ export class FundLoader {
     return TE.tryCatch(
       async () => {
         const staticResult =
-          this.contract.callStatic.getAssetsAndAmountsForAmount(
+          await this.contract.callStatic.getAssetsAndAmountsForAmount(
             token.address,
             token.supply,
           );
@@ -287,8 +293,6 @@ export class FundLoader {
             promiseObject({
               address: address,
               chain: SupportedChain.ETHEREUM,
-              symbol: underlyingContract.symbol(),
-              name: underlyingContract.name(),
               decimals: underlyingContract.decimals(),
             }),
           );
@@ -319,20 +323,9 @@ export class FundLoader {
           underlyingAssets.map((asset) => asset.address),
         ),
       ),
-      TE.chainFirstIOK(({ underlyingAssets, prices }) => {
-        return pipe(
-          underlyingAssets.map((asset) => {
-            const price = prices[asset.address.toLowerCase()];
-            return this.tokenRepository.save({
-              kind: 'token',
-              coinGeckoId: '',
-              marketData: [],
-              ...asset,
-            });
-          }),
-          TE.sequenceArray,
-        );
-      }),
+      TE.chainFirstIOK(({ underlyingAssets }) =>
+        this.ensureUnderlyingsExist(underlyingAssets),
+      ),
       TE.chain(({ tokenDetails, underlyingAssets, prices }) =>
         TE.tryCatch(
           async () => {
@@ -351,6 +344,83 @@ export class FundLoader {
           (error) => new ContractExecutionError(error),
         ),
       ),
+    );
+  }
+
+  private fetchCoinList(): TE.TaskEither<DataTransferError, CoinListDto> {
+    if (this.cgCoinList) {
+      return TE.of(this.cgCoinList);
+    } else {
+      return pipe(
+        this.coinGeckoAdapter.getCoinList(),
+        TE.map((list) => {
+          this.cgCoinList = list;
+          return list;
+        }),
+      );
+    }
+  }
+
+  public ensureUnderlyingsExist(
+    underlyingAssets: UnderlyingAsset[],
+  ): TE.TaskEither<DatabaseError | DataTransferError, readonly Token[]> {
+    return pipe(
+      TE.Do,
+      TE.bind('coins', () => this.fetchCoinList()),
+      TE.bind('lookup', ({ coins }) => {
+        const lookup = new Map(
+          underlyingAssets.map((asset) => [asset.address, '']),
+        );
+        coins
+          .filter((coin) => lookup.has(coin.platforms['ethereum']))
+          .forEach((coin) => {
+            lookup.set(coin.platforms['ethereum'], coin.id);
+          });
+        return TE.of(lookup);
+      }),
+      TE.bind('markets', ({ lookup }) =>
+        this.coinGeckoAdapter.getMarkets(Array.from(lookup.values()).join(',')),
+      ),
+      TE.map(({ lookup, markets }) => {
+        return underlyingAssets.map((asset) => {
+          const market: MarketDto | undefined = markets.find(
+            (m) => m.id === lookup.get(asset.address),
+          );
+          return this.tokenRepository.save({
+            chain: SupportedChain.ETHEREUM,
+            address: asset.address,
+            name: market.name,
+            symbol: market.symbol,
+            decimals: asset.decimals,
+            coinGeckoId: lookup.get(asset.address),
+            kind: 'token',
+            marketData: market
+              ? [
+                  {
+                    circulatingSupply: market.circulating_supply,
+                    marketCapRank: market.market_cap_rank,
+                    timestamp: new Date(Date.parse(market.last_updated)),
+                    currencyData: [
+                      {
+                        currency: 'usd',
+                        marketCap: market.market_cap,
+                        price: market.current_price,
+                        volume: market.total_volume,
+                        nav: market.current_price,
+                        ath: market.ath,
+                        atl: market.atl,
+                        priceChange24h: market.price_change_24h,
+                        priceChangePercentage24h:
+                          market.price_change_percentage_24h,
+                      },
+                    ],
+                  },
+                ]
+              : [],
+          });
+        });
+      }),
+      TE.chainW((result) => TE.sequenceArray(result)),
     );
   }
 }
