@@ -16,4 +16,5 @@ if [ -z "$1" ]; then
     print_usage "Project name is missing!"
 fi
 
+script/typechain
 nx build $1 --prod
