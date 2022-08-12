@@ -39,7 +39,7 @@ const variants: Variants = {
 
 interface tabsData {
   marketCap: string;
-  holders: number;
+  numberOfHolders: number;
   ath: string;
   atl: string;
   inceptionDate: string;
@@ -72,7 +72,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
   const {
     governance,
     marketCap,
-    holders,
+    numberOfHolders,
     ath,
     atl,
     inceptionDate,
@@ -226,7 +226,9 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
                 </h4>
                 <h4 className="flex gap-x-2">
                   <span className="font-bold">{t('holders')}</span>
-                  <span data-cy="key-holders">{holders ? holders : 'N/A'}</span>
+                  <span data-cy="key-holders">
+                    {numberOfHolders ? numberOfHolders : 'N/A'}
+                  </span>
                 </h4>
               </div>
               <div className="flex flex-col">

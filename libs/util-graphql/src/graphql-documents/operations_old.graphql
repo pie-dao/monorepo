@@ -1,0 +1,126 @@
+query findUser($address: String!) {
+  user(address: $address) {
+    ...UserFields
+  }
+}
+
+query allUsers {
+  allUsers {
+    address
+  }
+}
+
+fragment ChartData on UserTokenEntity {
+  marketData {
+    currentPrice
+    nav
+    timestamp
+    totalVolume
+    event {
+      eventType
+      eventData {
+        amount
+        priceInETH
+        priceInCurrency
+      }
+    }
+  }
+}
+
+fragment UserFields on User {
+  address
+  totalBalance
+  pieVaults {
+    symbol
+    name
+  }
+  twentyFourHourChange {
+    price
+    change
+  }
+  yieldVaults {
+    name
+    symbol
+    twentyFourHourEarnings
+    totalEarnings
+    address
+  }
+  profit
+  performance
+}
+
+query getProductsBySymbol($symbols: [String!]!, $currency: String!) {
+  tokensBySymbol(symbols: $symbols) {
+    marketData {
+      currentPrice(currency: $currency)
+      twentyFourHourChange {
+        price
+        change
+      }
+      fromInception
+      discount
+      nav
+      marketCap
+      holders
+      allTimeHigh
+      allTimeLow
+      swapFee
+      managementFee
+      totalSupply
+    }
+    underlyingTokens {
+      name
+      symbol
+      address
+      decimals
+      marketData {
+        currentPrice(currency: $currency)
+        amountPerToken
+        totalHeld
+        allocation
+        twentyFourHourChange {
+          price
+          change
+        }
+        marginalTVLPercentage
+      }
+    }
+    symbol
+    riskGrade
+    inceptionDate
+    governance {
+      title
+      url
+      status
+      timestamp
+    }
+  }
+}
+
+query getVaults($currency: String!) {
+  vaults(currency: $currency) {
+    underlyingToken {
+      marketData {
+        currentPrice(currency: $currency)
+      }
+    }
+    symbol
+    name
+    address
+    strategies {
+      title
+      description
+      allocationPercentage
+      links {
+        title
+        url
+      }
+    }
+  }
+}
+
+query getTokenChart($symbol: String!, $currency: String!, $interval: String!) {
+  getTokenChart(symbol: $symbol, currency: $currency, interval: $interval) {
+    ...ChartData
+  }
+}

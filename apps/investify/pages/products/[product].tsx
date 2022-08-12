@@ -9,7 +9,7 @@ import Tooltip from '../../components/Tooltip/Tooltip';
 import UnderlyingAssets from '../../components/UnderlyingAssets/UnderlyingAssets';
 import { wrapper } from '../../store';
 import { useAppSelector } from '../../hooks';
-import { useGetProductsBySymbolQuery } from '../../api/generated/graphql';
+import { usePieVaultQuery } from '../../api/generated/graphql';
 import {
   formatAsPercent,
   formatBalance,
@@ -65,8 +65,8 @@ const ProductPage = ({
     investmentFocusImage,
     addresses,
   } = config;
-  const { data, isLoading } = useGetProductsBySymbolQuery({
-    symbols: name,
+  const { data, isLoading } = usePieVaultQuery({
+    address: addresses['1'].address,
     currency: defaultCurrency ?? 'USD',
   });
 
@@ -79,60 +79,54 @@ const ProductPage = ({
 
   const tabsData = useMemo(
     () => ({
-      marketCap: data?.tokensBySymbol[0]?.marketData[0]?.marketCap
+      marketCap: data?.pieVault?.marketData[0]?.marketCap
         ? formatBalanceCurrency(
-            data?.tokensBySymbol[0]?.marketData[0]?.marketCap,
+            data?.pieVault?.marketData[0]?.marketCap,
             defaultLocale,
             defaultCurrency,
           )
         : null,
-      holders: data?.tokensBySymbol[0]?.marketData[0]?.holders
-        ? data?.tokensBySymbol[0]?.marketData[0]?.holders
+      numberOfHolders: data?.pieVault?.marketData[0]?.numberOfHolders
+        ? data?.pieVault?.marketData[0]?.numberOfHolders
         : null,
-      ath: data?.tokensBySymbol[0]?.marketData[0]?.allTimeHigh
+      ath: data?.pieVault?.marketData[0]?.allTimeHigh
         ? formatBalanceCurrency(
-            data?.tokensBySymbol[0]?.marketData[0]?.allTimeHigh,
+            data?.pieVault?.marketData[0]?.allTimeHigh,
             defaultLocale,
             defaultCurrency,
           )
         : null,
-      atl: data?.tokensBySymbol[0]?.marketData[0]?.allTimeLow
+      atl: data?.pieVault?.marketData[0]?.allTimeLow
         ? formatBalanceCurrency(
-            data?.tokensBySymbol[0]?.marketData[0]?.allTimeLow,
+            data?.pieVault?.marketData[0]?.allTimeLow,
             defaultLocale,
             defaultCurrency,
           )
         : null,
-      inceptionDate: data?.tokensBySymbol[0]?.inceptionDate
-        ? new Date(data?.tokensBySymbol[0]?.inceptionDate).toLocaleDateString(
-            'en-GB',
-            {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            },
-          )
+      inceptionDate: data?.pieVault?.inceptionDate
+        ? new Date(data?.pieVault?.inceptionDate).toLocaleDateString('en-GB', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })
         : null,
-      swapFee: data?.tokensBySymbol[0]?.marketData[0]?.swapFee
-        ? formatAsPercent(
-            data?.tokensBySymbol[0]?.marketData[0]?.swapFee,
-            defaultLocale,
-          )
+      swapFee: data?.pieVault?.marketData[0]?.swapFee
+        ? formatAsPercent(data?.pieVault?.marketData[0]?.swapFee, defaultLocale)
         : null,
-      totalSupply: data?.tokensBySymbol[0]?.marketData[0]?.totalSupply
+      totalSupply: data?.pieVault?.marketData[0]?.totalSupply
         ? formatBalance(
-            data?.tokensBySymbol[0]?.marketData[0]?.totalSupply,
+            data?.pieVault?.marketData[0]?.totalSupply,
             defaultLocale,
           )
         : null,
-      managementFee: data?.tokensBySymbol[0]?.marketData[0]?.totalSupply
+      managementFee: data?.pieVault?.marketData[0]?.totalSupply
         ? formatAsPercent(
-            data?.tokensBySymbol[0]?.marketData[0]?.managementFee,
+            data?.pieVault?.marketData[0]?.managementFee,
             defaultLocale,
           )
         : null,
-      governance: !isEmpty(data?.tokensBySymbol[0]?.governance)
-        ? data?.tokensBySymbol[0]?.governance
+      governance: !isEmpty(data?.pieVault?.governance)
+        ? data?.pieVault?.governance
         : null,
       prospectus,
       coingeckoId,
@@ -142,7 +136,9 @@ const ProductPage = ({
     [
       coingeckoId,
       config.addresses,
-      data?.tokensBySymbol,
+      data?.pieVault?.governance,
+      data?.pieVault?.inceptionDate,
+      data?.pieVault?.marketData,
       defaultCurrency,
       defaultLocale,
       investmentFocusImage,
@@ -186,8 +182,8 @@ const ProductPage = ({
                     className="border border-secondary rounded-full px-3"
                     data-cy="product-risk-grade"
                   >
-                    {data?.tokensBySymbol[0]?.riskGrade
-                      ? data?.tokensBySymbol[0]?.riskGrade
+                    {data?.pieVault?.riskGrade
+                      ? data?.pieVault?.riskGrade
                       : 'N/A'}
                   </span>
                 </div>
@@ -197,9 +193,9 @@ const ProductPage = ({
               <div className="flex gap-x-2 items-start">
                 <div className="flex flex-col min-w-max bg-primary text-white rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <p className="font-medium" data-cy="product-inception">
-                    {data?.tokensBySymbol[0]?.marketData[0]?.fromInception
+                    {data?.pieVault?.marketData[0]?.fromInception
                       ? formatAsPercent(
-                          data?.tokensBySymbol[0]?.marketData[0]?.fromInception,
+                          data?.pieVault?.marketData[0]?.fromInception,
                           defaultLocale,
                         )
                       : 'N/A'}
@@ -209,15 +205,15 @@ const ProductPage = ({
                 <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <div className="flex flex-col">
                     <p className="font-medium" data-cy="product-discount">
-                      {data?.tokensBySymbol[0]?.marketData[0]?.discount
+                      {data?.pieVault?.marketData[0]?.deltaToNav
                         ? formatAsPercent(
-                            data?.tokensBySymbol[0]?.marketData[0]?.discount,
+                            data?.pieVault?.marketData[0]?.deltaToNav,
                             defaultLocale,
                           )
                         : 'N/A'}
                     </p>
                     <p className="text-sub-dark">
-                      {data?.tokensBySymbol[0]?.marketData[0]?.discount >= 0
+                      {data?.pieVault?.marketData[0]?.deltaToNav >= 0
                         ? t('discount')
                         : t('premium')}
                     </p>
@@ -227,9 +223,9 @@ const ProductPage = ({
                 <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <div className="flex flex-col">
                     <p className="font-medium" data-cy="product-interests">
-                      {data?.tokensBySymbol[0]?.marketData[0]?.interests
+                      {data?.pieVault?.marketData[0]?.interests?.apy
                         ? formatAsPercent(
-                            data?.tokensBySymbol[0]?.marketData[0]?.interests,
+                            data?.pieVault?.marketData[0]?.interests.apy,
                             defaultLocale,
                           )
                         : 'N/A'}
@@ -248,9 +244,9 @@ const ProductPage = ({
                   className="text-2xl font-bold text-primary"
                   data-cy="product-current-price"
                 >
-                  {data?.tokensBySymbol[0]?.marketData[0]?.currentPrice
+                  {data?.pieVault?.marketData[0]?.currentPrice
                     ? formatBalanceCurrency(
-                        data?.tokensBySymbol[0]?.marketData[0]?.currentPrice,
+                        data?.pieVault?.marketData[0]?.currentPrice,
                         defaultLocale,
                         defaultCurrency,
                       )
@@ -258,7 +254,7 @@ const ProductPage = ({
                 </p>
                 <p
                   className={classNames(
-                    data?.tokensBySymbol[0]?.marketData[0]?.twentyFourHourChange
+                    data?.pieVault?.marketData[0]?.twentyFourHourChange
                       ?.change > 0
                       ? 'text-green'
                       : 'text-red',
@@ -266,11 +262,10 @@ const ProductPage = ({
                   )}
                 >
                   <span data-cy="product-24-hour-change-price">
-                    {data?.tokensBySymbol[0]?.marketData[0]
-                      ?.twentyFourHourChange?.price
+                    {data?.pieVault?.marketData[0]?.twentyFourHourChange?.price
                       ? formatBalanceCurrency(
-                          data?.tokensBySymbol[0]?.marketData[0]
-                            ?.twentyFourHourChange?.price,
+                          data?.pieVault?.marketData[0]?.twentyFourHourChange
+                            ?.price,
                           defaultLocale,
                           defaultCurrency,
                         )
@@ -278,11 +273,10 @@ const ProductPage = ({
                   </span>
                   {' / '}
                   <span data-cy="product-24-hour-change-change">
-                    {data?.tokensBySymbol[0]?.marketData[0]
-                      ?.twentyFourHourChange?.change
+                    {data?.pieVault?.marketData[0]?.twentyFourHourChange?.change
                       ? formatAsPercent(
-                          data.tokensBySymbol[0].marketData[0]
-                            .twentyFourHourChange.change,
+                          data.pieVault.marketData[0].twentyFourHourChange
+                            .change,
                           defaultLocale,
                         )
                       : 'N/A'}
@@ -294,9 +288,9 @@ const ProductPage = ({
                   className="font-bold text-sub-dark text-xl"
                   data-cy="product-nav"
                 >
-                  {data?.tokensBySymbol[0]?.marketData[0]?.nav
+                  {data?.pieVault?.marketData[0]?.nav
                     ? formatBalanceCurrency(
-                        data.tokensBySymbol[0].marketData[0].nav,
+                        data.pieVault.marketData[0].nav,
                         defaultLocale,
                         defaultCurrency,
                       )
@@ -315,8 +309,8 @@ const ProductPage = ({
       <ChartWrapper symbol={name} />
 
       {!isLoading && <ProductTabs tabsData={tabsData} source={source} />}
-      {data?.tokensBySymbol[0]?.underlyingTokens && (
-        <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
+      {data?.pieVault?.underlyingTokens && (
+        <UnderlyingAssets tokens={data.pieVault.underlyingTokens} />
       )}
     </>
   );

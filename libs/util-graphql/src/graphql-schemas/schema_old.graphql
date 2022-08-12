@@ -1,0 +1,173 @@
+scalar Timestamp
+
+schema {
+  query: Query
+}
+
+type Query {
+  me: User!
+  user(address: String!, currency: String! = "USD"): User
+  allUsers: [User]
+  tokensBySymbol(symbols: [String!]!): [TokenEntity]
+  vaults(currency: String! = "USD"): [YieldVaultEntity]
+  getTokenChart(
+    symbol: String!
+    currency: String! = "USD"
+    interval: String! = "1D"
+  ): UserTokenEntity
+}
+
+type User {
+  address: String!
+  pieVaults: [UserTokenEntity!]!
+  twentyFourHourChange: PriceChange!
+  yieldVaults: [UserYieldVaultEntity!]!
+  totalBalance: Float!
+  profit: Float!
+  performance: Float!
+}
+
+type Interests {
+  apr: Float!
+  apy: Float!
+}
+
+type MarketDataEntity {
+  circulatingSupply: Float!
+  currentPrice(currency: String! = "USD"): Float!
+  marketCap: Float!
+  marketCapRank: Float!
+  timestamp: Timestamp!
+  totalVolume: Float!
+  twentyFourHourChange: PriceChange!
+  fromInception: Float!
+  deltaToNav: Float!
+  interests: Interests!
+  discount: Float!
+  nav: Float!
+  holders: Float!
+  allTimeHigh: Float!
+  allTimeLow: Float!
+  swapFee: Float!
+  totalSupply: Float!
+  managementFee: Float!
+  event: UserEvent
+}
+
+type UserEvent {
+  eventType: String!
+  eventData: EventData!
+}
+
+type EventData {
+  amount: Float!
+  priceInETH: Float!
+  priceInCurrency: Float!
+}
+
+interface TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+  riskGrade: String!
+  underlyingTokens: [underlyingTokenEntity!]!
+  inceptionDate: Timestamp!
+  governance: [Governance!]!
+}
+
+type Governance {
+  title: String!
+  url: String!
+  timestamp: Timestamp!
+  status: String!
+}
+
+type LinkEntity {
+  url: String!
+  title: String!
+}
+
+type StrategyEntity {
+  title: String!
+  description: String!
+  allocationPercentage: Float!
+  links: [LinkEntity!]!
+}
+
+type TokenEntity implements TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+  riskGrade: String!
+  underlyingTokens: [underlyingTokenEntity!]!
+  inceptionDate: Timestamp!
+  governance: [Governance!]!
+}
+
+type UserTokenEntity implements TokenInterface {
+  address: String!
+  chain: String!
+  coinGeckoId: String!
+  decimals: Float!
+  kind: String!
+  marketData: [MarketDataEntity!]!
+  name: String!
+  symbol: String!
+  riskGrade: String!
+  underlyingTokens: [underlyingTokenEntity!]!
+  inceptionDate: Timestamp!
+  governance: [Governance!]!
+}
+
+interface YieldVaultInterface {
+  symbol: String!
+  name: String!
+}
+
+type YieldVaultEntity implements YieldVaultInterface {
+  underlyingToken: TokenEntity!
+  symbol: String!
+  name: String!
+  address: String!
+  strategies: [StrategyEntity!]!
+}
+
+type UserYieldVaultEntity implements YieldVaultInterface {
+  symbol: String!
+  name: String!
+  address: String!
+  twentyFourHourEarnings: Float!
+  totalEarnings: Float!
+}
+
+type PriceChange {
+  price: Float!
+  change: Float!
+}
+
+type underlyingTokenEntity {
+  marketData: [underlyingTokenMarketData!]!
+  name: String!
+  symbol: String!
+  decimals: Float!
+  address: String!
+}
+
+type underlyingTokenMarketData {
+  marginalTVLPercentage: Float!
+  currentPrice(currency: String! = "USD"): Float!
+  twentyFourHourChange: PriceChange!
+  totalHeld: Float!
+  amountPerToken: Float!
+  allocation: Float!
+}
