@@ -75,7 +75,7 @@ interface TokenInterface {
   name: String!
   symbol: String!
   riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
+  underlyingTokens: [underlyingTokenEntityOld!]!
   inceptionDate: Timestamp!
   governance: [Governance!]!
 }
@@ -109,7 +109,7 @@ type TokenEntity implements TokenInterface {
   name: String!
   symbol: String!
   riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
+  underlyingTokens: [underlyingTokenEntityOld!]!
   inceptionDate: Timestamp!
   governance: [Governance!]!
 }
@@ -124,7 +124,7 @@ type UserTokenEntity implements TokenInterface {
   name: String!
   symbol: String!
   riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
+  underlyingTokens: [underlyingTokenEntityOld!]!
   inceptionDate: Timestamp!
   governance: [Governance!]!
 }
@@ -155,7 +155,7 @@ type PriceChange {
   change: Float!
 }
 
-type underlyingTokenEntity {
+type underlyingTokenEntityOld {
   marketData: [underlyingTokenMarketData!]!
   name: String!
   symbol: String!

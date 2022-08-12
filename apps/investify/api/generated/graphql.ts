@@ -211,7 +211,7 @@ export type TokenEntity = TokenInterface & {
   name: Scalars['String'];
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
-  underlyingTokens: Array<UnderlyingTokenEntity>;
+  underlyingTokens: Array<UnderlyingTokenEntityOld>;
 };
 
 export type TokenInterface = {
@@ -226,7 +226,7 @@ export type TokenInterface = {
   name: Scalars['String'];
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
-  underlyingTokens: Array<UnderlyingTokenEntity>;
+  underlyingTokens: Array<UnderlyingTokenEntityOld>;
 };
 
 export type UnderlyingTokenEntity = {
@@ -287,7 +287,7 @@ export type UserTokenEntity = TokenInterface & {
   name: Scalars['String'];
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
-  underlyingTokens: Array<UnderlyingTokenEntity>;
+  underlyingTokens: Array<UnderlyingTokenEntityOld>;
 };
 
 export type UserYieldVaultEntity = YieldVaultInterface & {
@@ -313,8 +313,8 @@ export type YieldVaultInterface = {
   symbol: Scalars['String'];
 };
 
-export type UnderlyingTokenEntity = {
-  __typename?: 'underlyingTokenEntity';
+export type UnderlyingTokenEntityOld = {
+  __typename?: 'underlyingTokenEntityOld';
   address: Scalars['String'];
   decimals: Scalars['Float'];
   marketData: Array<UnderlyingTokenMarketData>;
@@ -497,7 +497,7 @@ export type GetProductsBySymbolQuery = {
       };
     }>;
     underlyingTokens: Array<{
-      __typename?: 'underlyingTokenEntity';
+      __typename?: 'underlyingTokenEntityOld';
       name: string;
       symbol: string;
       address: string;
