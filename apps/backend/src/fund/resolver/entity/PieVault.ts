@@ -2,21 +2,8 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { SupportedChain } from '@shared/util-types';
 import { GovernanceEntity } from './Governance';
 import { MarketDataEntity } from './MarketData';
-
-// type UnerlyingMarketData = MarketData & {
-//   /**
-//    * The amount of the underlying token that needs to be present for the minting of a pie.
-//    */
-//   amountPerToken: number;
-//   /**
-//    * The amount of underlying token held by the pie.
-//    */
-//   totalHeld: number;
-//   /**
-//    * The percentage of the underlying token held by the pie.
-//    */
-//   allocation: number;
-// };
+import { TokenEntity } from './Token';
+import { UnderlyingTokenEntity } from './UnderlyingToken';
 
 @ObjectType()
 export class PieVaultEntity {
@@ -57,6 +44,6 @@ export class PieVaultEntity {
   @Field(() => [GovernanceEntity])
   governance: GovernanceEntity[];
 
-  @Field(() => [PieVaultEntity])
-  underlyingTokens: PieVaultEntity[];
+  @Field(() => [UnderlyingTokenEntity])
+  underlyingTokens: UnderlyingTokenEntity[];
 }

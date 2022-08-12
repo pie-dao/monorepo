@@ -2,7 +2,7 @@ import {
   CoinGeckoAdapter,
   CoinListDto,
   DEFAULT_FUNDS,
-  MarketDto,
+  TokenPricesDto,
 } from '@domain/data-sync';
 import { CurrencyData, Token } from '@domain/feature-funds';
 import { Provider } from '@ethersproject/providers';
@@ -28,14 +28,21 @@ import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { EthersProvider } from '../../ethers';
+import { MongoPieVaultRepository } from '../repository';
 import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
-import { THIRTY_MINUTES as EVERY_THIRTY_MINUTES } from './constants';
+import { FUND_LOADING_INTERVAL } from './constants';
 import { ContractExecutionError } from './error';
-import { sleep } from '@shared/helpers';
 
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
+  constructor(message: string) {
+    super(message);
+  }
+}
+
+export class DataDiscrepancyError extends Error {
+  public kind: 'DataDiscrepancyError' = 'DataDiscrepancyError';
   constructor(message: string) {
     super(message);
   }
@@ -50,11 +57,14 @@ type UnderlyingDetails = {
   chain: SupportedChain;
   address: string;
   decimals: number;
+  supply: BigNumberish;
+  name: string;
+  symbol: string;
 };
 
 type UnderlyingAsset = AssetBalance & UnderlyingDetails;
 
-type PieDetails = {
+export type PieDetails = {
   address: string;
   supply: BigNumberish;
   decimals: number;
@@ -74,6 +84,7 @@ export class FundLoader {
 
   constructor(
     private tokenRepository: MongoTokenRepository,
+    private pieRepository: MongoPieVaultRepository,
     private coinGeckoAdapter: CoinGeckoAdapter,
     @InjectSentry()
     private sentryService: SentryService,
@@ -86,13 +97,14 @@ export class FundLoader {
     );
   }
 
-  @Interval(EVERY_THIRTY_MINUTES)
+  @Interval(30 * 1000)
   public loadMarketData() {
     Logger.log('Loading market data...');
     return pipe(
       this.ensureFundsExist(),
       TE.chainW(
         TE.traverseArray((fund) => {
+          Logger.log(`Loading market data for ${fund.name}...`);
           return pipe(
             TE.Do,
             TE.bind('fund', () => TE.of(fund)),
@@ -113,7 +125,6 @@ export class FundLoader {
                 price: amount,
                 marketCap: 0,
                 currency: currency as SupportedCurrency,
-                volume: 0,
                 nav: nav,
               });
             },
@@ -121,38 +132,6 @@ export class FundLoader {
           Object.entries(metadata.market_data.market_cap).forEach(
             ([currency, amount]) => {
               currencyDataLookup.get(currency as SupportedCurrency).marketCap =
-                amount;
-            },
-          );
-          Object.entries(metadata.market_data.total_volume).forEach(
-            ([currency, amount]) => {
-              currencyDataLookup.get(currency as SupportedCurrency).volume =
-                amount;
-            },
-          );
-          Object.entries(
-            metadata.market_data.price_change_24h_in_currency,
-          ).forEach(([currency, amount]) => {
-            currencyDataLookup.get(
-              currency as SupportedCurrency,
-            ).priceChange24h = amount;
-          });
-          Object.entries(
-            metadata.market_data.price_change_percentage_24h_in_currency,
-          ).forEach(([currency, amount]) => {
-            currencyDataLookup.get(
-              currency as SupportedCurrency,
-            ).priceChangePercentage24h = amount;
-          });
-          Object.entries(metadata.market_data.ath).forEach(
-            ([currency, amount]) => {
-              currencyDataLookup.get(currency as SupportedCurrency).ath =
-                amount;
-            },
-          );
-          Object.entries(metadata.market_data.atl).forEach(
-            ([currency, amount]) => {
-              currencyDataLookup.get(currency as SupportedCurrency).atl =
                 amount;
             },
           );
@@ -179,7 +158,6 @@ export class FundLoader {
         (error) => {
           this.sentry.captureException(error);
           Logger.error(error);
-          console.log(error);
           return error;
         },
         (result) => {
@@ -203,7 +181,7 @@ export class FundLoader {
       A.map((fund) => {
         return TE.tryCatch(
           () => {
-            check(fund.coingeckoId.length > 0, `coingeckoId can't be empty`);
+            check(fund.coinGeckoId.length > 0, `coingeckoId can't be empty`);
             return TokenModel.findOneAndUpdate(
               {
                 address: fund.address,
@@ -216,7 +194,7 @@ export class FundLoader {
                 symbol: fund.symbol,
                 decimals: fund.decimals,
                 kind: fund.kind,
-                coinGeckoId: fund.coingeckoId,
+                coinGeckoId: fund.coinGeckoId,
               },
               {
                 upsert: true,
@@ -239,7 +217,7 @@ export class FundLoader {
     );
   }
 
-  private getPieDetails(
+  public getPieDetails(
     pie: Token,
   ): TE.TaskEither<ContractExecutionError, PieDetails> {
     return TE.tryCatch(
@@ -268,7 +246,7 @@ export class FundLoader {
     );
   }
 
-  private getUnderlyingAssets(
+  public getUnderlyingAssets(
     token: PieDetails,
   ): TE.TaskEither<ContractExecutionError, UnderlyingAsset[]> {
     return TE.tryCatch(
@@ -294,6 +272,9 @@ export class FundLoader {
               address: address,
               chain: SupportedChain.ETHEREUM,
               decimals: underlyingContract.decimals(),
+              supply: underlyingContract.totalSupply(),
+              name: underlyingContract.name(),
+              symbol: underlyingContract.symbol(),
             }),
           );
         }
@@ -312,6 +293,7 @@ export class FundLoader {
   }
 
   private calculateNAV(token: Token): TE.TaskEither<Error, number> {
+    Logger.log(`Calculating NAV for ${token.name}`);
     return pipe(
       TE.Do,
       TE.bind('tokenDetails', () => this.getPieDetails(token)),
@@ -323,9 +305,28 @@ export class FundLoader {
           underlyingAssets.map((asset) => asset.address),
         ),
       ),
-      TE.chainFirstIOK(({ underlyingAssets }) =>
-        this.ensureUnderlyingsExist(underlyingAssets),
+      TE.bindW('underlyingTokens', ({ underlyingAssets, prices }) =>
+        this.ensureUnderlyingsExist(underlyingAssets, prices),
       ),
+      TE.chainFirstIOK(({ underlyingTokens, underlyingAssets }) => {
+        const ua = new Map(underlyingAssets.map((a) => [a.address, a]));
+
+        console.log(`=== saving history ===`);
+
+        return this.pieRepository.addFundHistory(
+          {
+            address: token.address,
+            chain: token.chain,
+          },
+          {
+            timestamp: new Date(),
+            underlyingTokens: underlyingTokens.map((ut) => ({
+              token: ut,
+              balance: ua.get(ut.address).balance,
+            })),
+          },
+        );
+      }),
       TE.chain(({ tokenDetails, underlyingAssets, prices }) =>
         TE.tryCatch(
           async () => {
@@ -363,62 +364,74 @@ export class FundLoader {
 
   public ensureUnderlyingsExist(
     underlyingAssets: UnderlyingAsset[],
-  ): TE.TaskEither<DatabaseError | DataTransferError, readonly Token[]> {
+    prices: TokenPricesDto,
+  ): TE.TaskEither<
+    DatabaseError | DataTransferError | DataDiscrepancyError,
+    readonly Token[]
+  > {
     return pipe(
       TE.Do,
       TE.bind('coins', () => this.fetchCoinList()),
-      TE.bind('lookup', ({ coins }) => {
+      TE.bindW('lookup', ({ coins }) => {
         const lookup = new Map(
-          underlyingAssets.map((asset) => [asset.address, '']),
+          underlyingAssets.map((asset) => [asset.address.toLowerCase(), '']),
         );
         coins
-          .filter((coin) => lookup.has(coin.platforms['ethereum']))
+          .filter((coin) =>
+            lookup.has(coin.platforms['ethereum']?.toLowerCase()),
+          )
           .forEach((coin) => {
-            lookup.set(coin.platforms['ethereum'], coin.id);
+            lookup.set(coin.platforms['ethereum']?.toLowerCase(), coin.id);
           });
+
+        const missingIds = Array.from(lookup.entries())
+          .filter(([__, v]) => v === '')
+          .map(([k]) => k)
+          .join(',');
+
+        if (missingIds.length > 0) {
+          return TE.left(
+            new DataDiscrepancyError(
+              `The following addresses don't have coingecko ids: ${missingIds}`,
+            ),
+          );
+        }
+
         return TE.of(lookup);
       }),
-      TE.bind('markets', ({ lookup }) =>
-        this.coinGeckoAdapter.getMarkets(Array.from(lookup.values()).join(',')),
-      ),
-      TE.map(({ lookup, markets }) => {
-        return underlyingAssets.map((asset) => {
-          const market: MarketDto | undefined = markets.find(
-            (m) => m.id === lookup.get(asset.address),
-          );
-          return this.tokenRepository.save({
-            chain: SupportedChain.ETHEREUM,
-            address: asset.address,
-            name: market.name,
-            symbol: market.symbol,
-            decimals: asset.decimals,
-            coinGeckoId: lookup.get(asset.address),
-            kind: 'token',
-            marketData: market
-              ? [
-                  {
-                    circulatingSupply: market.circulating_supply,
-                    marketCapRank: market.market_cap_rank,
-                    timestamp: new Date(Date.parse(market.last_updated)),
-                    currencyData: [
-                      {
-                        currency: 'usd',
-                        marketCap: market.market_cap,
-                        price: market.current_price,
-                        volume: market.total_volume,
-                        nav: market.current_price,
-                        ath: market.ath,
-                        atl: market.atl,
-                        priceChange24h: market.price_change_24h,
-                        priceChangePercentage24h:
-                          market.price_change_percentage_24h,
-                      },
-                    ],
-                  },
-                ]
-              : [],
-          });
-        });
+      TE.chainW(({ lookup }) => {
+        return TE.of(
+          underlyingAssets.map((asset) => {
+            const supply = new BigNumber(asset.supply.toString()).toNumber();
+            const price: number | undefined =
+              prices[asset.address.toLowerCase()]?.usd;
+            return this.tokenRepository.save({
+              chain: SupportedChain.ETHEREUM,
+              address: asset.address,
+              name: asset.name,
+              symbol: asset.symbol,
+              decimals: asset.decimals,
+              coinGeckoId: lookup.get(asset.address),
+              kind: 'token',
+              marketData: price
+                ? [
+                    {
+                      circulatingSupply: supply,
+                      timestamp: new Date(),
+                      currencyData: [
+                        {
+                          currency: 'usd',
+                          marketCap: price * supply,
+                          price: price,
+                          nav: price,
+                        },
+                      ],
+                    },
+                  ]
+                : [],
+            });
+          }),
+        );
       }),
       TE.chainW((result) => TE.sequenceArray(result)),
     );

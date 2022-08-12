@@ -19,8 +19,7 @@ import { PieVaultHistory, TokenDetails } from './PieVaultHistory';
  */
 export class PieVault implements Fund<PieVaultHistory> {
   public kind: 'PieVault' = 'PieVault';
-
-  private latest?: PieVaultHistory;
+  latest?: PieVaultHistory;
 
   constructor(
     public chain: SupportedChain,
@@ -33,35 +32,5 @@ export class PieVault implements Fund<PieVaultHistory> {
     public marketData: MarketData[] = [],
   ) {
     this.latest = history.length > 0 ? history[0] : undefined;
-  }
-
-  /**
-   * Tells whether this fund has an allocation for the given {@link Token}.
-   */
-  public hasToken(token: Token): boolean {
-    return (
-      this.latest?.underlyingTokens.some(
-        (underlying) => underlying.token.address === token.address,
-      ) ?? false
-    );
-  }
-
-  /**
-   * Returns the details for a given {@link Token} in this {@link Fund}.
-   * @returns either the {@link TokenDetails} or an {@link Error} if it was missing.
-   */
-  public getUnderlyingToken(token: Token): E.Either<Error, TokenDetails> {
-    if (this.hasToken(token)) {
-      return E.right(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.latest!.underlyingTokens.find(
-          (t) => t.token.address === token.address,
-        )!,
-      );
-    } else {
-      return E.left(
-        new EntityNotFoundError({ address: token.address, chain: token.chain }),
-      );
-    }
   }
 }

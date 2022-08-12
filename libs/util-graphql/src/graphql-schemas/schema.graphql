@@ -16,8 +16,6 @@ type Interests {
 
 """Contains market information for a given token at a specific timestamp."""
 type MarketDataEntity {
-  allTimeHigh: Float
-  allTimeLow: Float
   currentPrice: Float!
 
   """
@@ -89,7 +87,7 @@ type PieVaultEntity {
   name: String!
   riskGrade: String!
   symbol: String!
-  underlyingTokens: [PieVaultEntity!]!
+  underlyingTokens: [UnderlyingTokenEntity!]!
 }
 
 type PriceChange {
@@ -113,7 +111,6 @@ type TokenEntity {
 
   """The chain on which this token lives."""
   chain: String!
-  coinGeckoId: String!
   decimals: Float!
 
   """The kind of this token (eg: 'PieVault', 'YieldVault', etc)."""
@@ -123,4 +120,37 @@ type TokenEntity {
   marketData: [MarketDataEntity!]!
   name: String!
   symbol: String!
+}
+
+type UnderlyingTokenEntity {
+  address: String!
+
+  """The chain on which this token lives."""
+  chain: String!
+  decimals: Float!
+
+  """The kind of this token (eg: 'PieVault', 'YieldVault', etc)."""
+  kind: String!
+
+  """Market data for this underlying token."""
+  marketData: [UnerlyingMarketData!]!
+  name: String!
+  symbol: String!
+}
+
+"""Contains market information for an underlying token."""
+type UnerlyingMarketData {
+  allocation: Float!
+  amountPerToken: Float
+  currentPrice: Float!
+
+  """Total supply * nav."""
+  marketCap: Float!
+
+  """
+  Nav is the difference between the price of the token and the aggregated price of its unerlyings.
+  """
+  nav: Float!
+  totalHeld: Float!
+  totalSupply: Float!
 }

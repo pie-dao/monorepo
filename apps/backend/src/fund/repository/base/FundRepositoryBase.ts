@@ -75,6 +75,13 @@ export abstract class FundRepositoryBase<
         },
         (err: unknown) => new DatabaseError(err),
       ),
+      TE.chainW((tokenEntity) => {
+        if (!tokenEntity) {
+          return TE.left(new EntityNotFoundError(keys));
+        } else {
+          return TE.right(tokenEntity);
+        }
+      }),
       TE.map((tokenEntity) => {
         return new this.historyModel({
           ...entry,

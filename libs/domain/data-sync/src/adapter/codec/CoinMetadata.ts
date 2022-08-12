@@ -11,7 +11,7 @@ export const marketDataCodec = t.strict({
     t.record(t.string, t.number),
     () => 'market cap is missing',
   ),
-  market_cap_rank: withMessage(t.number, () => 'market cap rank is missing'),
+  market_cap_rank: nullable(t.number),
   total_volume: withMessage(
     t.record(t.string, t.number),
     () => 'total volume is missing',
@@ -150,7 +150,7 @@ export const coinMetadataCodec = t.strict({
   id: withMessage(t.string, () => 'id is missing'),
   symbol: withMessage(t.string, () => 'symbol is missing'),
   name: withMessage(t.string, () => 'name is missing'),
-  market_cap_rank: withMessage(t.number, () => 'market cap rank is missing'),
+  market_cap_rank: nullable(t.number),
   coingecko_rank: withMessage(t.number, () => 'coingecko rank is missing'),
   coingecko_score: withMessage(t.number, () => 'coingecko score is missing'),
   developer_score: withMessage(t.number, () => 'developer score is missing'),

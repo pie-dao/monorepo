@@ -1,10 +1,9 @@
-import { Token } from '@domain/feature-funds';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { SupportedChain } from '@shared/util-types';
-import { MarketDataEntity } from './MarketData';
+import { UnerlyingMarketData } from './UnderlyingMarketData';
 
 @ObjectType()
-export class TokenEntity {
+export class UnderlyingTokenEntity {
   @Field(() => String, { description: 'The chain on which this token lives.' })
   chain: SupportedChain;
 
@@ -25,8 +24,8 @@ export class TokenEntity {
   })
   public kind: string;
 
-  @Field(() => [MarketDataEntity], {
-    description: 'Market data for this token.',
+  @Field(() => [UnerlyingMarketData], {
+    description: 'Market data for this underlying token.',
   })
-  marketData: MarketDataEntity[];
+  marketData: UnerlyingMarketData[];
 }

@@ -66,16 +66,6 @@ export class MarketDataEntity {
   @Field(() => Float, {
     nullable: true,
   })
-  allTimeHigh: number | null;
-
-  @Field(() => Float, {
-    nullable: true,
-  })
-  allTimeLow: number | null;
-
-  @Field(() => Float, {
-    nullable: true,
-  })
   swapFee: number | null;
 
   @Field(() => Float, {

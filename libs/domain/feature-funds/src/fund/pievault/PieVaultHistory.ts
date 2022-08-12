@@ -10,47 +10,47 @@ export type PieVaultHistory = FundHistory & {
    * The entry fee paid when minting.
    * This is a percentage value. 1e18 == 100%. Capped at 100%.
    */
-  entryFee: BigNumber;
+  entryFee?: BigNumber;
 
   /**
    * The fee paid when exiting the fund.
    * This is a percentage value. 1e18 == 100%. Capped at 100%.
    */
-  exitFee: BigNumber;
+  exitFee?: BigNumber;
 
   /**
    * Fee paid annually. Often referred to as streaming fee.
    * This is a percentage value. 1e18 == 100%. Capped at 100%.
    */
-  annualizedFee: BigNumber;
+  annualizedFee?: BigNumber;
 
   /**
    * The address receiving the fees.
    */
-  feeBeneficiary: string;
+  feeBeneficiary?: string;
 
   /**
    * The share of the entry fee that the fee beneficiary gets.
    * This is a percentage value. 1e18 == 100%. Capped at 100%.
    */
-  feeBeneficiaryEntryShare: BigNumber;
+  feeBeneficiaryEntryShare?: BigNumber;
 
   /**
    * The share of the exit fee that the fee beneficiary gets.
    * This is a percentage value. 1e18 == 100%. Capped at 100%.
    */
-  feeBeneficiaryExitShare: BigNumber;
+  feeBeneficiaryExitShare?: BigNumber;
 
   /**
    * The outstanding annualized fee: the amount of pool tokens
    * to be minted to charge the annualized fee.
    */
-  outstandingAnnualizedFee: BigNumber;
+  outstandingAnnualizedFee?: BigNumber;
 
   /**
    * Tells whether the pool is locked or not. (not accepting exit and entry)
    */
-  locked: boolean;
+  locked?: boolean;
 
   /**
    * The block at which the pool is unlocked.
@@ -60,7 +60,7 @@ export type PieVaultHistory = FundHistory & {
   /**
    * The maximum of pool tokens that can be minted.
    */
-  cap: BigNumber;
+  cap?: BigNumber;
 
   underlyingTokens: TokenDetails[];
 };

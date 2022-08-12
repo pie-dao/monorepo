@@ -4,13 +4,17 @@ import { SentryService } from '@ntegral/nestjs-sentry';
 import { SupportedChain } from '@shared/util-types';
 import BigNumber from 'bignumber.js';
 import { isRight, Right } from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/function';
+import * as TE from 'fp-ts/TaskEither';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, Mongoose } from 'mongoose';
+import { MongoPieVaultRepository } from '../repository';
 import { MarketDataModel, TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
 import { FundLoader } from './FundLoader';
+import * as E from 'fp-ts/Either';
 
-jest.setTimeout(60 * 1000);
+jest.setTimeout(10 * 60 * 1000);
 
 const DECENTRALAND_ADDRESS = '0x0f5d2fb29fb7d3cfee444a200298f468908cc942';
 
@@ -24,6 +28,7 @@ describe('Given a Fund Loader', () => {
     connection = await connect(mongod.getUri());
     target = new FundLoader(
       new MongoTokenRepository(),
+      new MongoPieVaultRepository(),
       new CoinGeckoAdapter(),
       new SentryService(),
     );
@@ -86,14 +91,24 @@ describe('Given a Fund Loader', () => {
   });
 
   test('When loading underlyings Then they are properly saved', async () => {
-    await target.ensureUnderlyingsExist([
+    const underlyings = await target.ensureUnderlyingsExist(
+      [
+        {
+          address: DECENTRALAND_ADDRESS,
+          balance: new BigNumber(0),
+          decimals: 0,
+          chain: SupportedChain.ETHEREUM,
+          name: 'Decentraland',
+          supply: 100,
+          symbol: 'MANA',
+        },
+      ],
       {
-        address: DECENTRALAND_ADDRESS,
-        balance: new BigNumber(0),
-        decimals: 0,
-        chain: SupportedChain.ETHEREUM,
+        [DECENTRALAND_ADDRESS]: {
+          usd: 1,
+        },
       },
-    ])();
+    )();
 
     const result = await TokenModel.find().exec();
     const marketData = await MarketDataModel.find().exec();
@@ -101,5 +116,43 @@ describe('Given a Fund Loader', () => {
     expect(result.length).toEqual(1);
     expect(result[0].address).toEqual(DECENTRALAND_ADDRESS);
     expect(marketData.length).toEqual(1);
+  });
+
+  test('When loading underlyings Then they are properly saved', async () => {
+    await target.ensureUnderlyingsExist(
+      [
+        {
+          address: DECENTRALAND_ADDRESS,
+          balance: new BigNumber(0),
+          decimals: 0,
+          chain: SupportedChain.ETHEREUM,
+          name: 'Decentraland',
+          supply: 100,
+          symbol: 'MANA',
+        },
+      ],
+      {},
+    )();
+
+    const result = await TokenModel.find().exec();
+    const marketData = await MarketDataModel.find().exec();
+
+    expect(result.length).toEqual(1);
+    expect(result[0].address).toEqual(DECENTRALAND_ADDRESS);
+    expect(marketData.length).toEqual(1);
+  });
+
+  test('When getting underlying assets Then they are properly returned', async () => {
+    for (const fund of DEFAULT_FUNDS) {
+      const result = await pipe(
+        target.getPieDetails({
+          ...fund,
+          marketData: [],
+        }),
+        TE.chain((details) => target.getUnderlyingAssets(details)),
+      )();
+
+      expect(isRight(result)).toBeTruthy();
+    }
   });
 });
