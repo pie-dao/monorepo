@@ -6,7 +6,7 @@ import {
   modelOptions,
   prop,
 } from '@typegoose/typegoose';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 export class CurrencyDataEntity implements CurrencyData {
   @prop({ required: true, type: String })
@@ -58,4 +58,6 @@ export class MarketDataEntity implements MarketData {
   timestamp: Date;
 }
 
-export const MarketDataModel = getModelForClass(MarketDataEntity);
+export const MarketDataModel = getModelForClass(
+  MarketDataEntity,
+) as unknown as Model<MarketData>;

@@ -1,6 +1,6 @@
 import { Strategy, YieldData } from '@domain/feature-funds';
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ContractEntity } from '../base/ContractEntity';
 import { DiscriminatedTokenEntity } from '../Token';
 
@@ -55,8 +55,8 @@ export class DiscriminatedYieldVaultStrategyEntity extends YieldVaultStrategyEnt
 
 export const YieldVaultStrategyModel = getModelForClass(
   YieldVaultStrategyEntity,
-);
+) as unknown as Model<YieldVaultStrategyEntity>;
 
 export const DiscriminatedYieldVaultStrategyModel = getModelForClass(
   DiscriminatedYieldVaultStrategyEntity,
-);
+) as unknown as Model<DiscriminatedYieldVaultStrategyEntity>;

@@ -10,7 +10,7 @@ import {
   prop,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BigNumberType } from '../../BigNumberType';
 import { HistoryEntityBase } from '../base';
 import { ContractEntity } from '../base/ContractEntity';
@@ -102,6 +102,8 @@ export const PieVaultModel = getDiscriminatorModelForClass(
   DiscriminatedTokenModel,
   PieVaultEntity,
   'PieVault',
-);
+) as unknown as Model<PieVaultEntity>;
 
-export const PieVaultHistoryModel = getModelForClass(PieVaultHistoryEntity);
+export const PieVaultHistoryModel = getModelForClass(
+  PieVaultHistoryEntity,
+) as unknown as Model<PieVaultHistory>;

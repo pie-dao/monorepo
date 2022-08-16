@@ -11,7 +11,6 @@ import * as TE from 'fp-ts/TaskEither';
 import { TokenRepositoryBase } from './base/TokenRepositoryBase';
 import {
   DiscriminatedTokenEntity,
-  DiscriminatedTokenModel,
   MarketDataModel,
   TokenModel,
 } from './entity';

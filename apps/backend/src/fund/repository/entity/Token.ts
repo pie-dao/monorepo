@@ -1,5 +1,6 @@
 import { Token } from '@domain/feature-funds';
 import { getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
+import { Model } from 'mongoose';
 import { ContractEntity } from './base/ContractEntity';
 import { MarketDataEntity } from './MarketData';
 
@@ -33,8 +34,10 @@ export class TokenEntity extends ContractEntity implements Token {
 })
 export class DiscriminatedTokenEntity extends TokenEntity {}
 
-export const TokenModel = getModelForClass(TokenEntity);
+export const TokenModel = getModelForClass(
+  TokenEntity,
+) as unknown as Model<TokenEntity>;
 
 export const DiscriminatedTokenModel = getModelForClass(
   DiscriminatedTokenEntity,
-);
+) as unknown as Model<DiscriminatedTokenEntity>;

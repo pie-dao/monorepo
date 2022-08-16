@@ -6,7 +6,7 @@ import {
   prop,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BigNumberType } from '../../BigNumberType';
 import { HistoryEntityBase } from '../base';
 import { DiscriminatedTokenEntity, DiscriminatedTokenModel } from '../Token';
@@ -97,8 +97,8 @@ export const PieSmartPoolModel = getDiscriminatorModelForClass(
   DiscriminatedTokenModel,
   PieSmartPoolEntity,
   'PieSmartPool',
-);
+) as unknown as Model<PieSmartPoolEntity>;
 
 export const PieSmartPoolHistoryModel = getModelForClass(
   PieSmartPoolHistoryEntity,
-);
+) as unknown as Model<PieSmartPoolHistory>;

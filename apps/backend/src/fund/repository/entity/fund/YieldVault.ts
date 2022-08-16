@@ -6,7 +6,7 @@ import {
   prop,
 } from '@typegoose/typegoose';
 import BigNumber from 'bignumber.js';
-import { Types } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { BigNumberType } from '../..';
 import { HistoryEntityBase } from '../base';
 import { YieldVaultStrategyEntity } from '../strategy';
@@ -123,6 +123,8 @@ export const YieldVaultModel = getDiscriminatorModelForClass(
   DiscriminatedTokenModel,
   YieldVaultEntity,
   'YieldVault',
-);
+) as unknown as Model<YieldVaultEntity>;
 
-export const YieldVaultHistoryModel = getModelForClass(YieldVaultHistoryEntity);
+export const YieldVaultHistoryModel = getModelForClass(
+  YieldVaultHistoryEntity,
+) as unknown as Model<YieldVaultHistory>;

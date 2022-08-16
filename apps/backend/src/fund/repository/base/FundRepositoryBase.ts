@@ -12,7 +12,6 @@ import {
   DEFAULT_CHILD_FILTER,
   DEFAULT_ENTITY_OPTIONS,
   EntityNotFoundError,
-  SupportedChain,
 } from '@shared/util-types';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
