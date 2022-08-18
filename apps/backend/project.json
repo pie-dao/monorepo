@@ -38,10 +38,17 @@
         "lintFilePatterns": ["apps/backend/**/*.ts"]
       }
     },
-    "mongodb": {
+    "mongodb-up": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["docker-compose up"],
+        "commands": ["docker-compose up -d"],
+        "cwd": "apps/backend"
+      }
+    },
+    "mongodb-down": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": ["docker-compose down"],
         "cwd": "apps/backend"
       }
     },

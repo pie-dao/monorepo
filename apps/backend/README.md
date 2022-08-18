@@ -40,14 +40,12 @@ script/run backend
 
 > 📙 Note that `script/run` will only work after a `script/build` is performed.
 
-
 ## Heroku Deployment
 
 > 📘 Note that we already have some deployments on Heroku. If you want to use them
 > you don't need to create your own ones! These are the remotes that we have deployed:
 > staging: `https://git.heroku.com/piedao-backend-stage.git`
-> prod:    `https://git.heroku.com/piedao-nestjs.git`
-
+> prod: `https://git.heroku.com/piedao-nestjs.git`
 
 If you want to deploy an instance to _Heroku_, these are the necessary steps:
 
@@ -83,13 +81,13 @@ Then we'll need to add a `heroku-postbuild` script to override the default build
 
 > 📘 We already have this in `package.json`, we include this instruction here so that you know how this works.
 
-```bash
+````bash
 
 ```json
 scripts: {
   "heroku-postbuild": "script/heroku-build $PROJECT_NAME"
 }
-```
+````
 
 > 📘 A note on the `script` folder: this project follows the [Scripts to Rule them All](https://github.com/github/scripts-to-rule-them-all) guidelines.
 > You'll find scripts for most tasks that you might want to execute there. If you call a script you'll see some documentation too.
@@ -124,12 +122,13 @@ There are some known issues with the project that are outlined here:
 
 In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB in Docker.
 
-If you have Docker already installed, all you need to do is
+If you have Docker and Docker-compose already installed, all you need to do is run:
 
 ```bash
-# install the mongoDB docker, and initialize it as follows
-docker run --name mongodb -d -e MONGO_INITDB_ROOT_USERNAME=piedao -e MONGO_INITDB_ROOT_PASSWORD=piedao -e MONGO_INITDB_DATABASE=PieDAOTesting -p 27017:27017 mongo
+nx run mongodb-up
+```
 
+```bash
 # add this to your local .env file
 MONGO_DB_TEST=mongodb://piedao:piedao@localhost:27017/admin
 ```
@@ -205,7 +204,6 @@ The `Simulator` can be used to create new `Fund` objects to test out theories. S
 
 ![The Simulator](the_simulator.png)
 
-
 ## Generating Epochs for SLICE Distribution
 
 Once each month we generate a new epoch for the SLICE distribution. There is a test in the codebase that can be used to do so. It is located at [src/staking/test/monthly.distribution.spec.ts](src/staking/test/monthly.distribution.spec.ts).
@@ -238,12 +236,12 @@ like [this](https://github.com/pie-dao/pie-reporter/pull/12/files#diff-e9df6e881
 
 ```json
 {
-    "date": "2022-5",
-    "start_timestamp": 1651356000,
-    "end_timestamp": 1654034399,
-    "block_snapshot": 14881677,
-    "distribution_window": 8,
-    "slice_to_distribute": "149744.16892452948"
+  "date": "2022-5",
+  "start_timestamp": 1651356000,
+  "end_timestamp": 1654034399,
+  "block_snapshot": 14881677,
+  "distribution_window": 8,
+  "slice_to_distribute": "149744.16892452948"
 }
 ```
 

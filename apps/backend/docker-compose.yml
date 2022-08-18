@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
   mongo:
@@ -10,11 +10,11 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=piedao
       - MONGO_INITDB_ROOT_PASSWORD=piedao
-      - MONGO_INITDB_DATABASE=piedao
+      - MONGO_INITDB_DATABASE=PieDAOTesting
 
   mongo-seed:
     build:
-      context: "."
+      context: '.'
     volumes:
       - .:/usr/tmp/mongo
     links:
