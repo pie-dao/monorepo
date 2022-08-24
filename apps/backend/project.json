@@ -11,6 +11,7 @@
         "outputPath": "dist/apps/backend",
         "main": "apps/backend/src/main.ts",
         "tsConfig": "apps/backend/tsconfig.app.json",
+        "generatePackageJson": true,
         "assets": [
           "apps/backend/src/assets"
         ]

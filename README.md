@@ -34,6 +34,9 @@ script/setup
 
 Now you can start making changes.
 
+> 📘 Note that this project uses [Scripts to rule them all](https://github.com/github/scripts-to-rule-them-all). This means that you'll find scripts for most of the
+> things that you'll need to do in the `script` folder including things like (`build`, `run`, `serve`, etc). Peruse the scripts to figure out what they do.
+
 ## Packages
 
 This project contains multiple individual packages that can be deployed separately:

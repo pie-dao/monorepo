@@ -1,3 +1,4 @@
 #!/bin/bash
 
+# Builds a production version of all the packages in this project.
 nx run-many --target=build --all
