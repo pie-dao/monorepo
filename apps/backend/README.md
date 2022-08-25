@@ -20,17 +20,27 @@ ZAPPER_API_KEY=YOUR_ZAPPER_KEY_HERE
 
 Once you set this up you can build the project by running
 
+```sh
+# either
+yarn
+npm i
 ```
+
+Then 
+
+```sh
 script/build-all
 ```
 
 and then you can use
 
-```
+```sh
 script/serve backend
 ```
 
 to have a development version of the backend served (with hot code replace).
+
+> ⚠️ When serving locally, the backend will assume there is a running instance of MongoDB on port 27017. See below on how to setup a Dockerised Mongo Instance.
 
 For a production build you can simply call
 
@@ -45,18 +55,30 @@ script/run backend
 
 > 📘 Note that we already have some deployments on Heroku. If you want to use them
 > you don't need to create your own ones! These are the remotes that we have deployed:
+> 
 > staging: `https://git.heroku.com/piedao-backend-stage.git`
+> 
+> staging URL: `https://piedao-backend-stage.herokuapp.com/`
+> 
 > prod:    `https://git.heroku.com/piedao-nestjs.git`
+> 
+> prod URL: `https://piedao-nestjs.herokuapp.com/`
 
 
 If you want to deploy an instance to _Heroku_, these are the necessary steps:
 
 > 📙 Make sure that you call `heroku login` before trying to do this. You'll also need the Heroku CLI installed
 
-First, we create the app on Heroku:
+First, we will select a name for our app, that we can use in subsequent commands:
 
 ```bash
-heroku create <pick-an-app-name> --remote <pick-a-remote-name> # --team if you use teams
+export APP_NAME=<pick-an-app-name>
+```
+
+Next, we create the app on Heroku:
+
+```sh
+heroku create $APP_NAME --remote <pick-a-remote-name> # --team if you use teams
 ```
 
 Now you need to add the [multi-procfile buildpack](https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-multi-procfile) to them.
@@ -64,19 +86,19 @@ Now you need to add the [multi-procfile buildpack](https://elements.heroku.com/b
 This is because Heroku assumes that you have one app per repo by default, and this enables to have multiple `Procfile`s (deployments) in a repo
 
 ```bash
-heroku buildpacks:add --app <app-name-you-picked> heroku-community/multi-procfile
+heroku buildpacks:add --app $APP_NAME heroku-community/multi-procfile
 ```
 
 Of course this won't work because Heroku doesn't know about node, so we need to add the node buildpack too:
 
 ```bash
-heroku buildpacks:add --app <app-name-you-picked> heroku/nodejs
+heroku buildpacks:add --app $APP_NAME heroku/nodejs
 ```
 
 Then we'll have to tell Heroku where these `Procfile`s are:
 
 ```bash
-heroku config:set --app <app-name-you-picked> PROCFILE=apps/backend/Procfile
+heroku config:set --app $APP_NAME PROCFILE=apps/backend/Procfile
 ```
 
 Then we'll need to add a `heroku-postbuild` script to override the default build behavior of Heroku and let it build the project we need. This goes into the `package.json` in the root folder:
@@ -97,7 +119,7 @@ scripts: {
 Heroku needs to know the value of `$PROJECT_NAME` for each deployment so let's set it:
 
 ```bash
-heroku config:set --app <app-name-you-picked> PROJECT_NAME=backend
+heroku config:set --app $APPNAME PROJECT_NAME=backend
 ```
 
 If you need to set any configuration values (like `MONGO_DB`) you can do it like this:
@@ -110,8 +132,22 @@ Finally, we push it to _Heroku_
 
 > 📙 Don't forget to commit your changes before pushing 😅. Also make sure that you're on the fully up-to-date `main` branch.
 
+Set the Heroku remote:
+
+```sh
+heroku git:remote -a $APP_NAME
+
+>>> set git remote heroku to https://git.heroku.com/${APP_NAME}.git
+```
+
+Push to the heroku remote - heroku only builds with a push to its main branch
+
 ```bash
-git push <your-remote> main
+# push our main to heroku's main
+git push heroku main
+
+# push a local branch to the remote's main branch
+git push my-new-branch:main
 ```
 
 ## Troubleshooting
@@ -120,15 +156,12 @@ There are some known issues with the project that are outlined here:
 
 - There is a bandwidth bottleneck between the app and Atlas, so make sure that if you are running queries that return huge payloads (eg: `>1MB`) then please use projections to limit the size of the payload (only query the fields you read).
 
-## Test
+## Setting up MongoDB
 
-In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB in Docker.
-
-If you have Docker already installed, all you need to do is
+In order to be able to quickly test the whole project, we strongly recommend you to use a local mongoDB in Docker. You will need Docker & Docker Compose installed, and be on a Unix-based system (Linux, MacOS) or Windows with WSL enabled.  
 
 ```bash
-# install the mongoDB docker, and initialize it as follows
-docker run --name mongodb -d -e MONGO_INITDB_ROOT_USERNAME=piedao -e MONGO_INITDB_ROOT_PASSWORD=piedao -e MONGO_INITDB_DATABASE=PieDAOTesting -p 27017:27017 mongo
+nx mongodb-up backend
 
 # add this to your local .env file
 MONGO_DB_TEST=mongodb://piedao:piedao@localhost:27017/admin
