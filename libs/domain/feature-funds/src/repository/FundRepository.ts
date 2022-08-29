@@ -1,8 +1,12 @@
-import { SupportedChain } from '@shared/util-types';
+import {
+  DatabaseError,
+  DefaultFiltersKey,
+  EntityNotFoundError,
+  SupportedChain,
+} from '@shared/util-types';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenRepository } from '.';
 import { Fund, FundHistory } from '../fund';
-import { ContractNotFoundError, DatabaseError } from './error';
 import { Filter } from './filter';
 
 export class CreateHistoryError extends Error {
@@ -12,7 +16,7 @@ export class CreateHistoryError extends Error {
   }
 }
 
-export type FundFilterField = 'contract' | 'marketData' | 'history';
+export type FundFilterField = DefaultFiltersKey | 'marketData' | 'history';
 
 export type FundFilters = Partial<
   Record<FundFilterField, Filter<'_id' | 'timestamp' | 'symbol' | 'name'>>
@@ -28,7 +32,7 @@ export interface FundRepository<H extends FundHistory, T extends Fund<H>>
     address: string,
     entry: H,
   ) => TE.TaskEither<
-    DatabaseError | ContractNotFoundError | CreateHistoryError,
+    DatabaseError | EntityNotFoundError | CreateHistoryError,
     H
   >;
 }

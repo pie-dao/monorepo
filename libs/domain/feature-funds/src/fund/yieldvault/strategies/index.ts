@@ -1,1 +1,1 @@
-export * from './TestStrategy';
+export * from './MaiPolygonStrategy';

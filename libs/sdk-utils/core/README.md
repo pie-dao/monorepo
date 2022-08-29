@@ -6,7 +6,7 @@ SDK core contains the base SDK components that are reused by all other modules. 
 - First-class plugin support.
 - Compile-time error checking > Runtime error checking.
 
-What this means in english is that the SDK wants to stay out of your way until you need it. All SDK modules function using the [decorator pattern](https://refactoring.guru/design-patterns/decorator/typescript/example#:~:text=Decorator%20is%20a%20structural%20pattern,decorators%20follow%20the%20same%20interface), specifically on top of the ethers.js library. Ethers is a well-maintained, battle-tested and well-built library and our aim is not to get in the way of you using it as you see fit.
+What this means in English is that the SDK wants to stay out of your way until you need it. All SDK modules function using the [decorator pattern](https://refactoring.guru/design-patterns/decorator/typescript/example#:~:text=Decorator%20is%20a%20structural%20pattern,decorators%20follow%20the%20same%20interface), specifically on top of the ethers.js library. Ethers is a well-maintained, battle-tested and well-built library and our aim is not to get in the way of you using it as you see fit.
 
 Instead, SDK modules _wrap_ (or decorate) the ethers.js contract with additional methods and properties, that add support for common operations you might have to write yourself, such as:
 

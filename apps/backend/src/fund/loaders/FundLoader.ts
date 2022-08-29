@@ -1,21 +1,20 @@
 import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
-import {
-  ContractNotFoundError,
-  CurrencyData,
-  DatabaseError,
-  Token,
-} from '@domain/feature-funds';
+import { CurrencyData, Token } from '@domain/feature-funds';
 import { Injectable, Logger } from '@nestjs/common';
 import { Interval } from '@nestjs/schedule';
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
 import { check } from '@shared/helpers';
-import { SupportedCurrency } from '@shared/util-types';
+import {
+  DatabaseError,
+  EntityNotFoundError,
+  SupportedCurrency,
+} from '@shared/util-types';
 import * as A from 'fp-ts/Array';
 import { pipe } from 'fp-ts/function';
 import * as TE from 'fp-ts/TaskEither';
 import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
-const THIRTY_MINUTES = 1000 * 60 * 30;
+import { THIRTY_MINUTES as EVERY_THIRTY_MINUTES } from './constants';
 
 export class MissingDataError extends Error {
   public kind: 'MissingDataError' = 'MissingDataError';
@@ -37,7 +36,7 @@ export class FundLoader {
     this.sentry = this.sentryService.instance();
   }
 
-  @Interval(THIRTY_MINUTES)
+  @Interval(EVERY_THIRTY_MINUTES)
   public loadCgMarketData() {
     Logger.log('Loading CG market data...');
     return pipe(
@@ -111,7 +110,7 @@ export class FundLoader {
    * using an upsert operation.
    */
   public ensureFundsExist(): TE.TaskEither<
-    DatabaseError | ContractNotFoundError,
+    DatabaseError | EntityNotFoundError,
     readonly Token[]
   > {
     return pipe(
@@ -146,7 +145,10 @@ export class FundLoader {
       TE.sequenceArray,
       TE.chain(
         TE.traverseArray((fund) => {
-          return this.tokenRepository.findOne(fund.chain, fund.address);
+          return this.tokenRepository.findOne({
+            chain: fund.chain,
+            address: fund.address,
+          });
         }),
       ),
     );

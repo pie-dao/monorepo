@@ -122,10 +122,10 @@ describe('Given a Mongo Pie Vault Repository', () => {
   it('When creating a new Pie Vault Entity then it is created', async () => {
     await target.save(PIE_VAULT_WITH_HISTORY)();
 
-    const result = await target.findOne(
-      PIE_VAULT_WITH_HISTORY.chain,
-      PIE_VAULT_WITH_HISTORY.address,
-    )();
+    const result = await target.findOne({
+      chain: PIE_VAULT_WITH_HISTORY.chain,
+      address: PIE_VAULT_WITH_HISTORY.address,
+    })();
 
     const pieVault = (result as Right<PieVault>).right;
 
@@ -159,12 +159,18 @@ describe('Given a Mongo Pie Vault Repository', () => {
     await target.addHistoryEntry(pieVault.chain, pieVault.address, HISTORY_1)();
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
-    const result = await target.findOne(pieVault.chain, pieVault.address, {
-      history: {
-        limit: 2,
-        orderBy: { timestamp: 'asc' },
+    const result = await target.findOne(
+      {
+        chain: pieVault.chain,
+        address: pieVault.address,
       },
-    })();
+      {
+        history: {
+          limit: 2,
+          orderBy: { timestamp: 'asc' },
+        },
+      },
+    )();
 
     const updatedPieVault = (result as Right<PieVault>).right;
 
@@ -181,7 +187,7 @@ describe('Given a Mongo Pie Vault Repository', () => {
     await target.save(PIE_VAULT_2)();
 
     const result = await target.find({
-      contract: {
+      entity: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },

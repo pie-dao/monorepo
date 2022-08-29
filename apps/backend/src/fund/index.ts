@@ -1,3 +1,3 @@
-export * from './repository/entity';
+export * from './repository';
 export * from './funds.module';
 export * from './repository';

@@ -4,6 +4,7 @@
     "backend": "apps/backend",
     "domain-data-sync": "libs/domain/data-sync",
     "domain-feature-funds": "libs/domain/feature-funds",
+    "domain-user": "libs/domain/user",
     "investify": "apps/investify",
     "investify-e2e": "apps/investify-e2e",
     "landing-page": "apps/landing-page",

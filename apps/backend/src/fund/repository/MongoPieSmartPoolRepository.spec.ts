@@ -158,10 +158,10 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
   it('When creating a new Pie Smart Pool Entity then it is created', async () => {
     await target.save(PIE_SMART_POOL_WITH_HISTORY)();
 
-    const result = await target.findOne(
-      PIE_SMART_POOL_WITH_HISTORY.chain,
-      PIE_SMART_POOL_WITH_HISTORY.address,
-    )();
+    const result = await target.findOne({
+      chain: PIE_SMART_POOL_WITH_HISTORY.chain,
+      address: PIE_SMART_POOL_WITH_HISTORY.address,
+    })();
 
     const pieSmartPool = (result as Right<PieSmartPool>).right;
 
@@ -201,8 +201,10 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
 
     // 👇 By default this only returns the latest history entry so we test the filter here too
     const result = await target.findOne(
-      pieSmartPool.chain,
-      pieSmartPool.address,
+      {
+        chain: pieSmartPool.chain,
+        address: pieSmartPool.address,
+      },
       {
         history: {
           limit: 2,
@@ -226,7 +228,7 @@ describe('Given a Mongo Pie Smart Pool Repository', () => {
     await target.save(PIE_SMART_POOL_2)();
 
     const result = await target.find({
-      contract: {
+      entity: {
         orderBy: { symbol: 'desc' },
         limit: 2,
       },

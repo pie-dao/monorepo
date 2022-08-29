@@ -16,7 +16,10 @@ export const marketDataCodec = t.strict({
     t.record(t.string, t.number),
     () => 'total volume is missing',
   ),
-  total_value_locked: nullable(t.number),
+  // total_value_locked: withMessage(
+  //   t.record(t.string, t.number),
+  //   () => 'tvl is missing',
+  // ),
   circulating_supply: withMessage(
     t.number,
     () => 'circulating supply is missing',
