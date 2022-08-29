@@ -17,7 +17,6 @@ describe('Test Product Page Chart Display', () => {
   });
 
   it('should be possible to change the chart period', () => {
-    console.log(getChartRange().find('[data-cy="1D"]'));
     getChartRange().find('[data-cy="1D"]').click();
     cy.get('[data-cy="product-price-chart"]').should('exist');
     getChartRange().find('[data-cy="1W"]').click();

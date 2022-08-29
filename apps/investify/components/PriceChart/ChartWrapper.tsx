@@ -6,6 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { useLazyGetTokenChartQuery } from '../../api/generated/graphql';
 import { useBoolean } from 'usehooks-ts';
+import { dataRanges, INTERVAL } from '../../types/intervals';
 
 function ChartWrapper({ symbol }: { symbol: string }) {
   const [trigger] = useLazyGetTokenChartQuery();
@@ -23,12 +24,9 @@ function ChartWrapper({ symbol }: { symbol: string }) {
     !e.target.checked && setFlagValue(e.target.checked);
   };
 
-  const dataRanges = ['1D', '1W', '1M', '1Y', 'ALL'];
-  const [dataRange, setDataRange] = useState(
-    dataRanges.find((d) => d === '1Y'),
-  );
+  const [dataRange, setDataRange] = useState<INTERVAL>('1Y');
 
-  const handleChartTime = (interval: string) => {
+  const handleChartTime = (interval: INTERVAL) => {
     trigger({
       symbol,
       currency: 'USD',
