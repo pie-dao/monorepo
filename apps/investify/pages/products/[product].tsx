@@ -328,7 +328,7 @@ ProductPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
+export const getStaticProps = wrapper.getStaticProps(
   () =>
     async ({ params }) => {
       const { product } = params;
@@ -346,3 +346,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
       };
     },
 );
+
+export async function getStaticPaths() {
+  return {
+    paths: Object.keys(products).map((key) => ({
+      params: { product: key },
+    })),
+    fallback: false,
+  };
+}
