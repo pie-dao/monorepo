@@ -71,7 +71,6 @@ export function useFormatDataForAssetsTable(
       currency.length === 0 ||
       isEmpty(products) ||
       isEmpty(productsData?.tokensBySymbol);
-    console.log(productsData);
 
     if (shouldReturn) return;
 

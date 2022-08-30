@@ -21,6 +21,13 @@ export type Scalars = {
   Timestamp: any;
 };
 
+export type EventData = {
+  __typename?: 'EventData';
+  amount: Scalars['Float'];
+  priceInCurrency: Scalars['Float'];
+  priceInETH: Scalars['Float'];
+};
+
 export type Governance = {
   __typename?: 'Governance';
   status: Scalars['String'];
@@ -42,6 +49,7 @@ export type MarketDataEntity = {
   circulatingSupply: Scalars['Float'];
   currentPrice: Scalars['Float'];
   discount: Scalars['Float'];
+  event?: Maybe<UserEvent>;
   fromInception: Scalars['Float'];
   holders: Scalars['Float'];
   interests: Scalars['Float'];
@@ -52,7 +60,7 @@ export type MarketDataEntity = {
   swapFee: Scalars['Float'];
   timestamp: Scalars['Timestamp'];
   totalSupply: Scalars['Float'];
-  totalVolume: Scalars['String'];
+  totalVolume: Scalars['Float'];
   twentyFourHourChange: PriceChange;
 };
 
@@ -69,12 +77,19 @@ export type PriceChange = {
 export type Query = {
   __typename?: 'Query';
   allUsers?: Maybe<Array<Maybe<User>>>;
+  getTokenChart?: Maybe<UserTokenEntity>;
   me: User;
   token?: Maybe<TokenEntity>;
   tokens?: Maybe<Array<Maybe<TokenEntity>>>;
   tokensBySymbol?: Maybe<Array<Maybe<TokenEntity>>>;
   user?: Maybe<User>;
   vaults?: Maybe<Array<Maybe<YieldVaultEntity>>>;
+};
+
+export type QueryGetTokenChartArgs = {
+  currency?: Scalars['String'];
+  interval?: Scalars['String'];
+  symbol: Scalars['String'];
 };
 
 export type QueryTokenArgs = {
@@ -142,6 +157,12 @@ export type User = {
   totalBalance: Scalars['Float'];
   twentyFourHourChange: PriceChange;
   yieldVaults: Array<UserYieldVaultEntity>;
+};
+
+export type UserEvent = {
+  __typename?: 'UserEvent';
+  eventData: EventData;
+  eventType: Scalars['String'];
 };
 
 export type UserTokenEntity = TokenInterface & {
@@ -244,6 +265,27 @@ export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
 export type AllUsersQuery = {
   __typename?: 'Query';
   allUsers?: Array<{ __typename?: 'User'; address: string } | null> | null;
+};
+
+export type ChartDataFragment = {
+  __typename?: 'UserTokenEntity';
+  marketData: Array<{
+    __typename?: 'MarketDataEntity';
+    currentPrice: number;
+    nav: number;
+    timestamp: any;
+    totalVolume: number;
+    event?: {
+      __typename?: 'UserEvent';
+      eventType: string;
+      eventData: {
+        __typename?: 'EventData';
+        amount: number;
+        priceInETH: number;
+        priceInCurrency: number;
+      };
+    } | null;
+  }>;
 };
 
 export type UserFieldsFragment = {
@@ -362,6 +404,54 @@ export type GetVaultsQuery = {
   } | null> | null;
 };
 
+export type GetTokenChartQueryVariables = Exact<{
+  symbol: Scalars['String'];
+  currency: Scalars['String'];
+  interval: Scalars['String'];
+}>;
+
+export type GetTokenChartQuery = {
+  __typename?: 'Query';
+  getTokenChart?: {
+    __typename?: 'UserTokenEntity';
+    marketData: Array<{
+      __typename?: 'MarketDataEntity';
+      currentPrice: number;
+      nav: number;
+      timestamp: any;
+      totalVolume: number;
+      event?: {
+        __typename?: 'UserEvent';
+        eventType: string;
+        eventData: {
+          __typename?: 'EventData';
+          amount: number;
+          priceInETH: number;
+          priceInCurrency: number;
+        };
+      } | null;
+    }>;
+  } | null;
+};
+
+export const ChartDataFragmentDoc = `
+    fragment ChartData on UserTokenEntity {
+  marketData {
+    currentPrice
+    nav
+    timestamp
+    totalVolume
+    event {
+      eventType
+      eventData {
+        amount
+        priceInETH
+        priceInCurrency
+      }
+    }
+  }
+}
+    `;
 export const UserFieldsFragmentDoc = `
     fragment UserFields on User {
   address
@@ -472,6 +562,13 @@ export const GetVaultsDocument = `
   }
 }
     `;
+export const GetTokenChartDocument = `
+    query getTokenChart($symbol: String!, $currency: String!, $interval: String!) {
+  getTokenChart(symbol: $symbol, currency: $currency, interval: $interval) {
+    ...ChartData
+  }
+}
+    ${ChartDataFragmentDoc}`;
 
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -493,6 +590,11 @@ const injectedRtkApi = api.injectEndpoints({
     getVaults: build.query<GetVaultsQuery, GetVaultsQueryVariables>({
       query: (variables) => ({ document: GetVaultsDocument, variables }),
     }),
+    getTokenChart: build.query<GetTokenChartQuery, GetTokenChartQueryVariables>(
+      {
+        query: (variables) => ({ document: GetTokenChartDocument, variables }),
+      },
+    ),
   }),
 });
 
@@ -506,6 +608,8 @@ export const {
   useLazyGetProductsBySymbolQuery,
   useGetVaultsQuery,
   useLazyGetVaultsQuery,
+  useGetTokenChartQuery,
+  useLazyGetTokenChartQuery,
 } = injectedRtkApi;
 
 /**
@@ -587,3 +691,26 @@ export const mockGetVaultsQuery = (
   >,
 ) =>
   graphql.query<GetVaultsQuery, GetVaultsQueryVariables>('getVaults', resolver);
+
+/**
+ * @param resolver a function that accepts a captured request and may return a mocked response.
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockGetTokenChartQuery((req, res, ctx) => {
+ *   const { symbol, currency, interval } = req.variables;
+ *   return res(
+ *     ctx.data({ getTokenChart })
+ *   )
+ * })
+ */
+export const mockGetTokenChartQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<GetTokenChartQueryVariables>,
+    GraphQLContext<GetTokenChartQuery>,
+    any
+  >,
+) =>
+  graphql.query<GetTokenChartQuery, GetTokenChartQueryVariables>(
+    'getTokenChart',
+    resolver,
+  );

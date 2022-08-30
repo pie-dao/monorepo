@@ -36,19 +36,16 @@ export const getProductData = (product: string | string[]) => {
   try {
     rawDescription = fs.readFileSync(fullPathDescription, 'utf8');
   } catch (err) {
-    console.error(err);
     rawDescription = fs.readFileSync(fullPathFallBack, 'utf8');
   }
   try {
     rawThesis = fs.readFileSync(fullPathThesis, 'utf8');
   } catch (err) {
-    console.error(err);
     rawThesis = fs.readFileSync(fullPathFallBack, 'utf8');
   }
   try {
     rawInvestmentFocus = fs.readFileSync(fullPathInvestmentFocus, 'utf8');
   } catch (err) {
-    console.error(err);
     rawInvestmentFocus = fs.readFileSync(fullPathFallBack, 'utf8');
   }
 
@@ -80,7 +77,6 @@ export const getVaultData = (vault: string | string[]) => {
   try {
     rawAbout = fs.readFileSync(fullPathAbout, 'utf8');
   } catch (err) {
-    console.error(err);
     rawAbout = fs.readFileSync(fullPathFallBack, 'utf8');
   }
 
@@ -95,7 +91,7 @@ export const getVaultData = (vault: string | string[]) => {
 
 export const getProduct = async (product: string | string[]) => {
   const { content } = getProductData(product);
-  const { content: fallbackContent } = getProductData('FALLBACK');
+  const { content: fallbackContent } = getProductData('fallback');
   let sourceDescription: source;
   let sourceThesis: source;
   let sourceInvestmentFocus: source;

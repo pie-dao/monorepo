@@ -1,11 +1,6 @@
 import { useMemo } from 'react';
 import { Tab } from '@headlessui/react';
-import {
-  motion,
-  Variants,
-  AnimateSharedLayout,
-  AnimatePresence,
-} from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { MDXRemote } from 'next-mdx-remote';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
@@ -124,7 +119,7 @@ export function ProductTabs({ tabsData, source }: ProductTabs) {
   );
 
   return (
-    <div className="w-full px-2 py-16 sm:px-0">
+    <div className="w-full px-2 pt-0 pb-16 sm:px-0">
       <Tab.Group>
         <Tab.List className="flex space-x-1 rounded-xl p-1 max-w-xs">
           {['Description', 'Thesis', 'Details', 'Governance'].map((title) => (
@@ -333,27 +328,25 @@ export function SingleProductPanel({
   testId?: string;
 }) {
   return (
-    <AnimateSharedLayout>
-      <AnimatePresence>
-        <Tab.Panel
-          as={motion.div}
-          className="rounded-lg bg-gradient-primary p-3 shadow-md"
+    <AnimatePresence>
+      <Tab.Panel
+        as={motion.div}
+        className="rounded-lg bg-gradient-primary p-3 shadow-md"
+        layoutId="product-tabs"
+      >
+        <motion.div
           layout
+          variants={variants}
+          initial="initial"
+          exit="exit"
+          animate="animate"
+          className={classNames('max-w-none', className)}
+          data-cy={testId}
         >
-          <motion.div
-            layout
-            variants={variants}
-            initial="initial"
-            exit="exit"
-            animate="animate"
-            className={classNames('max-w-none', className)}
-            data-cy={testId}
-          >
-            {children}
-          </motion.div>
-        </Tab.Panel>
-      </AnimatePresence>
-    </AnimateSharedLayout>
+          {children}
+        </motion.div>
+      </Tab.Panel>
+    </AnimatePresence>
   );
 }
 

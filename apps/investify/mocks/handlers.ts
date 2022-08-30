@@ -1,14 +1,17 @@
 // src/mocks/handlers.js
+import appleStock from '@visx/mock-data/lib/mocks/appleStock';
 import {
   mockAllUsersQuery,
   mockFindUserQuery,
   mockGetProductsBySymbolQuery,
+  mockGetTokenChartQuery,
   mockGetVaultsQuery,
 } from '../api/generated/graphql';
 import {
   FTMContracts,
   PolygonContracts,
 } from '../store/products/products.contracts';
+import { INTERVAL, slicePerInterval } from '../types/intervals';
 
 export const handlers = [
   mockAllUsersQuery((req, res, ctx) => {
@@ -328,6 +331,36 @@ export const handlers = [
               },
             ],
           })),
+      }),
+    );
+  }),
+  mockGetTokenChartQuery((req, res, ctx) => {
+    return res(
+      ctx.data({
+        getTokenChart: {
+          marketData: appleStock
+            .slice(
+              appleStock.length -
+                slicePerInterval[req.variables.interval as INTERVAL],
+            )
+            .map(({ date: timestamp, close: currentPrice }) => ({
+              timestamp,
+              currentPrice,
+              nav: currentPrice - 100 * Math.random(),
+              totalVolume: currentPrice,
+              event:
+                Math.random() >= 0.98
+                  ? {
+                      eventType: Math.random() >= 0.5 ? 'buy' : 'sell',
+                      eventData: {
+                        amount: 203231231 * Math.random(),
+                        priceInETH: 14030.4595923 * Math.random(),
+                        priceInCurrency: 55875.4233 * Math.random(),
+                      },
+                    }
+                  : null,
+            })),
+        },
       }),
     );
   }),

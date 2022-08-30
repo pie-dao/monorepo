@@ -1,10 +1,5 @@
 import { Disclosure, Tab } from '@headlessui/react';
-import {
-  motion,
-  Variants,
-  AnimateSharedLayout,
-  AnimatePresence,
-} from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { useMemo } from 'react';
 import { MDXRemote } from 'next-mdx-remote';
 import useTranslation from 'next-translate/useTranslation';
@@ -267,26 +262,24 @@ export function SingleVaultPanel({
   testId?: string;
 }) {
   return (
-    <AnimateSharedLayout>
-      <AnimatePresence>
-        <Tab.Panel
-          as={motion.div}
-          className="rounded-lg bg-gradient-primary p-3 shadow-md"
+    <AnimatePresence>
+      <Tab.Panel
+        as={motion.div}
+        className="rounded-lg bg-gradient-primary p-3 shadow-md"
+        layoutId="tab-content"
+        data-cy={testId}
+      >
+        <motion.div
           layout
-          data-cy={testId}
+          variants={variants}
+          initial="initial"
+          exit="exit"
+          animate="animate"
+          className={classNames('max-w-none', className)}
         >
-          <motion.div
-            layout
-            variants={variants}
-            initial="initial"
-            exit="exit"
-            animate="animate"
-            className={classNames('max-w-none', className)}
-          >
-            {children}
-          </motion.div>
-        </Tab.Panel>
-      </AnimatePresence>
-    </AnimateSharedLayout>
+          {children}
+        </motion.div>
+      </Tab.Panel>
+    </AnimatePresence>
   );
 }

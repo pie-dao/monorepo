@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ReactElement, useEffect, useMemo } from 'react';
+import { ReactElement, useEffect } from 'react';
 import Image from 'next/image';
 import { Layout } from '../../components';
 import { useSelectedVault } from '../../hooks/useSelectedVault';
@@ -16,6 +16,7 @@ import {
 } from '../../store/sidebar/sidebar.slice';
 import { getVault } from '../../utils/mdxUtils';
 import { VaultTabs } from '../../components/VaultTabs/VaultTabs';
+import { vaults } from '../../config/auxoVaults';
 
 export default function VaultPage({
   vault,
@@ -100,7 +101,7 @@ VaultPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
+export const getStaticProps = wrapper.getStaticProps(
   () =>
     async ({ params }) => {
       const { vault } = params as { vault: string };
@@ -115,3 +116,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
       };
     },
 );
+
+export async function getStaticPaths() {
+  return {
+    paths: Object.values(vaults).map(({ address }) => ({
+      params: { vault: address },
+    })),
+    fallback: false,
+  };
+}

@@ -18,6 +18,7 @@ import {
 import classNames from '../../utils/classnames';
 import { getProduct } from '../../utils/mdxUtils';
 import { ProductTabs } from '../../components/ProductTabs/ProductTabs';
+import ChartWrapper from '../../components/PriceChart/ChartWrapper';
 
 type ProductConfig = {
   name: string;
@@ -194,7 +195,7 @@ const ProductPage = ({
             </div>
             {!isLoading && (
               <div className="flex gap-x-2 items-start">
-                <div className="flex flex-col min-w-max bg-primary text-white rounded-md p-2 border border-custom-border">
+                <div className="flex flex-col min-w-max bg-primary text-white rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <p className="font-medium" data-cy="product-inception">
                     {data?.tokensBySymbol[0]?.marketData[0]?.fromInception
                       ? formatAsPercent(
@@ -205,7 +206,7 @@ const ProductPage = ({
                   </p>
                   <p className="text-white">{t('fromInception')}</p>
                 </div>
-                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border">
+                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <div className="flex flex-col">
                     <p className="font-medium" data-cy="product-discount">
                       {data?.tokensBySymbol[0]?.marketData[0]?.discount
@@ -223,7 +224,7 @@ const ProductPage = ({
                   </div>
                   <Tooltip>{t('discountTooltip')}</Tooltip>
                 </div>
-                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border">
+                <div className="flex min-w-max bg-gradient-primary text-primary rounded-md p-2 border border-custom-border text-xs sm:text-sm">
                   <div className="flex flex-col">
                     <p className="font-medium" data-cy="product-interests">
                       {data?.tokensBySymbol[0]?.marketData[0]?.interests
@@ -310,6 +311,9 @@ const ProductPage = ({
           </section>
         </>
       )}
+
+      <ChartWrapper symbol={name} />
+
       {!isLoading && <ProductTabs tabsData={tabsData} source={source} />}
       {data?.tokensBySymbol[0]?.underlyingTokens && (
         <UnderlyingAssets tokens={data.tokensBySymbol[0].underlyingTokens} />
@@ -324,7 +328,7 @@ ProductPage.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
+export const getStaticProps = wrapper.getStaticProps(
   () =>
     async ({ params }) => {
       const { product } = params;
@@ -342,3 +346,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
       };
     },
 );
+
+export async function getStaticPaths() {
+  return {
+    paths: Object.keys(products).map((key) => ({
+      params: { product: key },
+    })),
+    fallback: false,
+  };
+}
