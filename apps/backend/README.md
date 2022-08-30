@@ -40,14 +40,12 @@ script/run backend
 
 > 📙 Note that `script/run` will only work after a `script/build` is performed.
 
-
 ## Heroku Deployment
 
 > 📘 Note that we already have some deployments on Heroku. If you want to use them
 > you don't need to create your own ones! These are the remotes that we have deployed:
 > staging: `https://git.heroku.com/piedao-backend-stage.git`
-> prod:    `https://git.heroku.com/piedao-nestjs.git`
-
+> prod: `https://git.heroku.com/piedao-nestjs.git`
 
 If you want to deploy an instance to _Heroku_, these are the necessary steps:
 
@@ -83,13 +81,13 @@ Then we'll need to add a `heroku-postbuild` script to override the default build
 
 > 📘 We already have this in `package.json`, we include this instruction here so that you know how this works.
 
-```bash
+````bash
 
 ```json
 scripts: {
   "heroku-postbuild": "script/heroku-build $PROJECT_NAME"
 }
-```
+````
 
 > 📘 A note on the `script` folder: this project follows the [Scripts to Rule them All](https://github.com/github/scripts-to-rule-them-all) guidelines.
 > You'll find scripts for most tasks that you might want to execute there. If you call a script you'll see some documentation too.
@@ -205,7 +203,6 @@ The `Simulator` can be used to create new `Fund` objects to test out theories. S
 
 ![The Simulator](the_simulator.png)
 
-
 ## Generating Epochs for SLICE Distribution
 
 Once each month we generate a new epoch for the SLICE distribution. There is a test in the codebase that can be used to do so. It is located at [src/staking/test/monthly.distribution.spec.ts](src/staking/test/monthly.distribution.spec.ts).
@@ -238,12 +235,12 @@ like [this](https://github.com/pie-dao/pie-reporter/pull/12/files#diff-e9df6e881
 
 ```json
 {
-    "date": "2022-5",
-    "start_timestamp": 1651356000,
-    "end_timestamp": 1654034399,
-    "block_snapshot": 14881677,
-    "distribution_window": 8,
-    "slice_to_distribute": "149744.16892452948"
+  "date": "2022-5",
+  "start_timestamp": 1651356000,
+  "end_timestamp": 1654034399,
+  "block_snapshot": 14881677,
+  "distribution_window": 8,
+  "slice_to_distribute": "149744.16892452948"
 }
 ```
 
@@ -273,3 +270,14 @@ This will create a new entry in the `epochentities` collection and it will also 
 You need to put this in a file, and share it in the thread.
 
 You're done.
+
+## Userful Links
+
+In case you're new to fp-ts here are some links for you to help internalize the knowledge:
+
+- [Practical Guide to Fp-ts](https://rlee.dev/series/practical-guide-to-fp-ts)
+- [Domain modeling in TypeScript](https://dev.to/ruizb/series/11683)
+- [Functional design](https://dev.to/gcanti/series/679)
+- [Getting started with fp-ts](https://dev.to/gcanti/series/680)
+- [Do syntax](https://paulgray.net/do-syntax-in-typescript/)
+- [fp-ts Cheatsheet](https://github.com/inato/fp-ts-cheatsheet)
