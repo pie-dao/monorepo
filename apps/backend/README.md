@@ -271,3 +271,14 @@ This will create a new entry in the `epochentities` collection and it will also 
 You need to put this in a file, and share it in the thread.
 
 You're done.
+
+## Userful Links
+
+In case you're new to fp-ts here are some links for you to help internalize the knowledge:
+
+- [Practical Guide to Fp-ts](https://rlee.dev/series/practical-guide-to-fp-ts)
+- [Domain modeling in TypeScript](https://dev.to/ruizb/series/11683)
+- [Functional design](https://dev.to/gcanti/series/679)
+- [Getting started with fp-ts](https://dev.to/gcanti/series/680)
+- [Do syntax](https://paulgray.net/do-syntax-in-typescript/)
+- [fp-ts Cheatsheet](https://github.com/inato/fp-ts-cheatsheet)
