@@ -5,6 +5,8 @@ export type CurrencyData = {
   marketCap: number;
   currency: SupportedCurrency;
   nav: number;
+  ath?: number;
+  atl?: number;
 };
 
 /**

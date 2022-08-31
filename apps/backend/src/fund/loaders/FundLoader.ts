@@ -31,7 +31,6 @@ import { EthersProvider } from '../../ethers';
 import { MongoPieVaultRepository } from '../repository';
 import { TokenModel } from '../repository/entity';
 import { MongoTokenRepository } from '../repository/MongoTokenRepository';
-import { FUND_LOADING_INTERVAL } from './constants';
 import { ContractExecutionError } from './error';
 
 export class MissingDataError extends Error {
@@ -132,6 +131,18 @@ export class FundLoader {
           Object.entries(metadata.market_data.market_cap).forEach(
             ([currency, amount]) => {
               currencyDataLookup.get(currency as SupportedCurrency).marketCap =
+                amount;
+            },
+          );
+          Object.entries(metadata.market_data.ath).forEach(
+            ([currency, amount]) => {
+              currencyDataLookup.get(currency as SupportedCurrency).ath =
+                amount;
+            },
+          );
+          Object.entries(metadata.market_data.atl).forEach(
+            ([currency, amount]) => {
+              currencyDataLookup.get(currency as SupportedCurrency).atl =
                 amount;
             },
           );

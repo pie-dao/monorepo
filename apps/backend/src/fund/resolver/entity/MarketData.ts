@@ -43,6 +43,16 @@ export class MarketDataEntity {
   })
   deltaToNav: number;
 
+  @Field(() => Float, {
+    description: 'The all time high price of the token.',
+  })
+  allTimeHigh: number;
+
+  @Field(() => Float, {
+    description: 'The all time low price of the token.',
+  })
+  allTimeLow: number;
+
   @Field(() => Interests)
   interests: Interests;
 
