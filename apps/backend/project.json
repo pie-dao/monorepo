@@ -59,6 +59,14 @@
         "jestConfig": "apps/backend/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "distribution": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "node 'node_modules/.bin/jest' 'apps/backend/src/staking/test/monthly.distribution.spec.ts' -c 'apps/backend/jest.config.ts' -t 'Use this test to generate a new epoch'"
+        ]
+      }
     }
   },
   "tags": []
