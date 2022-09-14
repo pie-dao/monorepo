@@ -1,4 +1,8 @@
-import { CoinGeckoAdapter, DEFAULT_FUNDS } from '@domain/data-sync';
+import {
+  CoinGeckoAdapter,
+  TheGraphAdapter,
+  DEFAULT_FUNDS,
+} from '@domain/data-sync';
 import { Token } from '@domain/feature-funds';
 import { SentryService } from '@ntegral/nestjs-sentry';
 import { SupportedChain } from '@shared/util-types';
@@ -30,6 +34,7 @@ describe('Given a Fund Loader', () => {
       new MongoTokenRepository(),
       new MongoPieVaultRepository(),
       new CoinGeckoAdapter(),
+      new TheGraphAdapter(),
       new SentryService(),
     );
   });

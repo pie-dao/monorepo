@@ -1,4 +1,4 @@
-import { CoinGeckoAdapter } from '@domain/data-sync';
+import { CoinGeckoAdapter, TheGraphAdapter } from '@domain/data-sync';
 import { Module } from '@nestjs/common';
 import { EthersModule, EthersProvider } from '../ethers';
 import { FundLoader } from './loaders/FundLoader';
@@ -16,6 +16,11 @@ const CoinGeckoAdapterProvider = {
   useClass: CoinGeckoAdapter,
 };
 
+const TheGraphAdapterProvider = {
+  provide: TheGraphAdapter,
+  useClass: TheGraphAdapter,
+};
+
 @Module({
   imports: [],
   controllers: [],
@@ -26,6 +31,7 @@ const CoinGeckoAdapterProvider = {
     MongoYieldVaultRepository,
     FundLoader,
     CoinGeckoAdapterProvider,
+    TheGraphAdapterProvider,
     MongooseConnectionProvider,
     TokenResolver,
     PieVaultResolver,

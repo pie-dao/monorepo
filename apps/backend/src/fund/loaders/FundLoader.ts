@@ -1,5 +1,6 @@
 import {
   CoinGeckoAdapter,
+  TheGraphAdapter,
   CoinListDto,
   DEFAULT_FUNDS,
   TokenPricesDto,
@@ -85,6 +86,7 @@ export class FundLoader {
     private tokenRepository: MongoTokenRepository,
     private pieRepository: MongoPieVaultRepository,
     private coinGeckoAdapter: CoinGeckoAdapter,
+    private theGraphAdapter: TheGraphAdapter,
     @InjectSentry()
     private sentryService: SentryService,
   ) {
@@ -117,7 +119,6 @@ export class FundLoader {
       TE.chainW(
         TE.traverseArray(({ fund, metadata, nav }) => {
           const currencyDataLookup = new Map<SupportedCurrency, CurrencyData>();
-
           Object.entries(metadata.market_data.current_price).forEach(
             ([currency, amount]) => {
               currencyDataLookup.set(currency as SupportedCurrency, {
@@ -316,28 +317,36 @@ export class FundLoader {
           underlyingAssets.map((asset) => asset.address),
         ),
       ),
+      TE.bind('onChainData', () =>
+        this.theGraphAdapter.getTheGraphData(token.address),
+      ),
       TE.bindW('underlyingTokens', ({ underlyingAssets, prices }) =>
         this.ensureUnderlyingsExist(underlyingAssets, prices),
       ),
-      TE.chainFirstIOK(({ underlyingTokens, underlyingAssets }) => {
-        const ua = new Map(underlyingAssets.map((a) => [a.address, a]));
+      TE.chainFirstIOK(
+        ({ underlyingTokens, underlyingAssets, onChainData }) => {
+          const ua = new Map(underlyingAssets.map((a) => [a.address, a]));
 
-        console.log(`=== saving history ===`);
+          console.log(`=== saving history ===`);
 
-        return this.pieRepository.addFundHistory(
-          {
-            address: token.address,
-            chain: token.chain,
-          },
-          {
-            timestamp: new Date(),
-            underlyingTokens: underlyingTokens.map((ut) => ({
-              token: ut,
-              balance: ua.get(ut.address).balance,
-            })),
-          },
-        );
-      }),
+          return this.pieRepository.addFundHistory(
+            {
+              address: token.address,
+              chain: token.chain,
+            },
+            {
+              timestamp: new Date(),
+              underlyingTokens: underlyingTokens.map((ut) => ({
+                token: ut,
+                balance: ua.get(ut.address).balance,
+              })),
+              annualizedFee: new BigNumber(
+                onChainData.data.erc20Contract.getAnnualFee,
+              ),
+            },
+          );
+        },
+      ),
       TE.chain(({ tokenDetails, underlyingAssets, prices }) =>
         TE.tryCatch(
           async () => {
