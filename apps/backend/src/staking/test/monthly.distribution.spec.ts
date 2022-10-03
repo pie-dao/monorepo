@@ -36,11 +36,11 @@ describe.skip('Monthly Distribution', () => {
   });
 
   it('Use this test to generate a new epoch', async () => {
-    const month = 6;
+    const month = 8;
     const year = 2022;
-    const blockNumber = 15053226;
-    const distributedRewards = '113176.171097889';
-    const windowIndex = 9;
+    const blockNumber = 15449618;
+    const distributedRewards = '116027.623046077';
+    const windowIndex = 11;
     const proposalsIdsToExclude = [];
 
     const prevWindowIndex = windowIndex - 1;
