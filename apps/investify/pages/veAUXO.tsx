@@ -1,55 +1,58 @@
-import useTranslation from 'next-translate/useTranslation';
 import { ReactElement } from 'react';
 import Image from 'next/image';
+import type { NextPageWithLayout } from './_app';
+import veAUXOicon from '../public/tokens/veAUXO.svg';
 import { Layout } from '../components';
-import AuxoIcon from '../public/images/auxoIcon.svg';
+import { wrapper } from '../store';
+import { addVeAUXOToWallet } from '../utils/addTokenToWallet';
 import { MetamaskIcon } from '@shared/ui-library';
-import { addAuxoToWallet } from '../utils/addTokenToWallet';
-import {
-  formatAsPercent,
-  formatBalance,
-  formatBalanceCurrency,
-} from '../utils/formatBalance';
-import { useAppSelector } from '../hooks';
+import useTranslation from 'next-translate/useTranslation';
 import Tooltip from '../components/Tooltip/Tooltip';
-import { TreasuryTabs } from '../components/TreasuryTable';
-import { useGetTreasuryQuery } from '../api/generated/graphql';
 import {
-  BaseSubDarkTextSkeleton,
   BoldSubDarkTextSkeleton,
+  BaseSubDarkTextSkeleton,
   BoxLoading,
 } from '../components/Skeleton';
-import PositionsTabs from '../components/Positions';
+import {
+  formatBalanceCurrency,
+  formatBalance,
+  formatAsPercent,
+} from '../utils/formatBalance';
+import { useAppSelector } from '../hooks';
 
-export default function Treasury(): ReactElement {
+const VeAUXO: NextPageWithLayout = () => {
+  const { t } = useTranslation();
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
 
-  const { data, isLoading, isError } = useGetTreasuryQuery({
-    currency: defaultCurrency,
-  });
-
-  const { t } = useTranslation();
+  const isLoading = false;
+  const data = null;
+  const isError = false;
 
   return (
     <>
       <div className="flex flex-col">
-        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap px-4 md:px-10">
+        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap px-4 md:pl-12 md:pr-8">
           <div className="flex flex-1 items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full xl:w-auto p-2 md:p-0">
-            <Image src={AuxoIcon} alt={'Auxo Icon'} width={32} height={32} />
+            <Image
+              src={veAUXOicon}
+              alt={'veAUXO Icon'}
+              width={32}
+              height={32}
+            />
             <h2
               className="text-lg font-medium text-primary w-fit"
               data-cy="product-name"
             >
-              AUXO
+              veAUXO
             </h2>
-            <button className="flex ml-auto pr-2" onClick={addAuxoToWallet}>
+            <button className="flex ml-auto pr-2" onClick={addVeAUXOToWallet}>
               <div className="flex gap-x-2 items-center">
-                <div className="hidden sm:flex gap-x-1">
+                <div className="hidden lg:flex gap-x-1">
                   <span className="text-sub-dark underline text-sm hover:text-sub-light">
                     {t('addTokenToWallet', {
-                      token: `AUXO`,
+                      token: `veAUXO`,
                     })}
                   </span>
                 </div>
@@ -58,10 +61,9 @@ export default function Treasury(): ReactElement {
             </button>
           </div>
         </section>
-
         {/* Section for TVL, Capital Utilization, and APY */}
         <section className="flex flex-wrap justify-between gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
-          <div className="grid grid-cols-3 gap-x-4">
+          <div className="flex gap-x-4 items-center w-full sm:w-fit">
             <div className="flex flex-col py-1">
               {isLoading ? (
                 <>
@@ -81,8 +83,10 @@ export default function Treasury(): ReactElement {
                   </p>
 
                   <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
-                    {t('tvl')}
-                    <Tooltip>{t('tvlTooltip')}</Tooltip>
+                    {t('totalStaked', { token: 'veAUXO' })}
+                    <Tooltip>
+                      {t('totalStakedTooltip', { token: 'veAUXO' })}
+                    </Tooltip>
                   </div>
                 </>
               )}
@@ -111,8 +115,8 @@ export default function Treasury(): ReactElement {
                     )}
                   </p>
                   <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
-                    {t('tvlInEth')}
-                    <Tooltip>{t('tvlInEthTooltip')}</Tooltip>
+                    {t('total', { token: 'veAUXO' })}
+                    <Tooltip>{t('totalTooltip', { token: 'veAUXO' })}</Tooltip>
                   </div>
                 </>
               )}
@@ -136,16 +140,16 @@ export default function Treasury(): ReactElement {
                         )}
                   </p>
                   <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
-                    {t('capitalUtilization')}
-                    <Tooltip>{t('capitalUtilizationTooltip')}</Tooltip>
+                    {t('votingAddresses')}
+                    <Tooltip>{t('votingAddressesTooltip')}</Tooltip>
                   </div>
                 </>
               )}
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-x-2 items-center w-full sm:w-fit">
-            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-40">
-              <div className="bg-gradient-to-r from-white via-white to-background p-1 rounded-md">
+          <div className="flex gap-x-2 items-center w-full sm:w-fit">
+            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
+              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
                 {isLoading ? (
                   <BoxLoading />
                 ) : (
@@ -153,21 +157,18 @@ export default function Treasury(): ReactElement {
                     <p className="font-bold text-primary text-xl">
                       {isError || !data?.getTreasury?.marketData?.avgAPR
                         ? 'N/A'
-                        : formatAsPercent(
-                            data.getTreasury.marketData.avgAPR,
-                            defaultLocale,
-                          )}
+                        : formatAsPercent(0, defaultLocale)}
                     </p>
                     <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                      {t('averageAPR')}
-                      <Tooltip>{t('capitalUtilizationTooltip')}</Tooltip>
+                      {t('lastMonthDistribution')}
+                      <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                     </div>
                   </>
                 )}
               </div>
             </div>
-            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-40">
-              <div className="bg-gradient-to-r from-white via-white to-background p-1 rounded-md">
+            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
+              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
                 {isLoading ? (
                   <BoxLoading />
                 ) : (
@@ -181,8 +182,8 @@ export default function Treasury(): ReactElement {
                           )}
                     </p>
                     <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                      {t('AUXOAPR')}
-                      <Tooltip>{t('capitalUtilizationTooltip')}</Tooltip>
+                      {t('apr', { token: 'veAUXO' })}
+                      <Tooltip>{t('aprTooltip', { token: 'veAUXO' })}</Tooltip>
                     </div>
                   </>
                 )}
@@ -190,13 +191,21 @@ export default function Treasury(): ReactElement {
             </div>
           </div>
         </section>
-        {isLoading ? <></> : <TreasuryTabs {...data.getTreasury.content} />}
-        <PositionsTabs />
       </div>
     </>
   );
-}
+};
 
-Treasury.getLayout = function getLayout(page: ReactElement) {
+VeAUXO.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
+
+export const getStaticProps = wrapper.getStaticProps(() => () => {
+  // this gets rendered on the server, then not on the client
+  return {
+    // does not seem to work with key `initialState`
+    props: { title: 'Stake' },
+  };
+});
+
+export default VeAUXO;

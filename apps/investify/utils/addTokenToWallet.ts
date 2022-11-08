@@ -1,4 +1,4 @@
-const addTokenToMetamask = async (
+const addTokenToWallet = async (
   address: string,
   symbol: string,
   image: string,
@@ -25,12 +25,20 @@ const addTokenToMetamask = async (
   }
 };
 
-export default addTokenToMetamask;
+export default addTokenToWallet;
 
-export const addAuxoToMetamask = async () => {
-  await addTokenToMetamask(
+export const addAuxoToWallet = async () => {
+  await addTokenToWallet(
     '0x0000000000000000000000000000',
     'AUXO',
     `${window.location.origin}/images/auxoIcon.svg`,
+  );
+};
+
+export const addVeAUXOToWallet = async () => {
+  await addTokenToWallet(
+    '0x0000000000000000000000000000',
+    'veAUXO',
+    `${window.location.origin}/tokens/veAUXO.svg`,
   );
 };

@@ -27,7 +27,7 @@ export function reportWebVitals({
   });
 }
 
-type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
