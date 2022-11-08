@@ -125,3 +125,54 @@ query getTokenChart($symbol: String!, $currency: String!, $interval: String!) {
     ...ChartData
   }
 }
+
+query getTreasury($currency: String! = "usd") {
+  getTreasury(currency: $currency) {
+    content {
+      about
+      links {
+        title
+        url
+        urlText
+      }
+      news {
+        title
+        description
+        type
+      }
+    }
+    marketData {
+      currentPrice(currency: $currency)
+      tvl(currency: $currency)
+      tvlInEth
+      capitalUtilisation
+      avgAPR
+      auxoAPR
+      twentyFourHourChange {
+        change
+      }
+    }
+  }
+}
+
+query getTreasuryPositions($currency: String! = "usd") {
+  getTreasuryPositions(currency: $currency) {
+    position {
+      tokens {
+        name
+        symbol
+      }
+      principalAmount
+      marketData {
+        price24h(currency: $currency) {
+          price
+          change
+        }
+        total(currency: $currency)
+      }
+      strategies {
+        name
+      }
+    }
+  }
+}

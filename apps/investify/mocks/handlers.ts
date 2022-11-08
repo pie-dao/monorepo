@@ -6,6 +6,7 @@ import {
   mockGetProductsBySymbolQuery,
   mockGetTokenChartQuery,
   mockGetVaultsQuery,
+  mockGetTreasuryQuery,
 } from '../api/generated/graphql';
 import {
   FTMContracts,
@@ -360,6 +361,61 @@ export const handlers = [
                     }
                   : null,
             })),
+        },
+      }),
+    );
+  }),
+  mockGetTreasuryQuery((_req, res, ctx) => {
+    return res(
+      ctx.data({
+        getTreasury: {
+          content: {
+            about:
+              'AUXO is a stable coin pegged to U.S. dollar value issued by Frax Finance. Auxo FRAX Vault seeks yield by allocating deposited FRAX on strategies involving lending, liquidity provision, yield farming and more. Note: please ensure you have the correct FRAX tokens in your wallet, there are multiple.',
+            links: [
+              {
+                title: 'Link 1',
+                url: 'https://www.google.com',
+                urlText: 'Link 2 Text',
+              },
+              {
+                title: 'Link 2',
+                url: 'https://www.google.com',
+                urlText: 'Link 2 Text',
+              },
+            ],
+            news: [
+              {
+                title: 'News 1',
+                description:
+                  'AUXO is a stable coin pegged to U.S. dollar value issued by Frax Finance. Auxo FRAX Vault seeks yield by allocating deposited FRAX on strategies involving lending, liquidity provision, yield farming and more.',
+                type: 'flag',
+              },
+              {
+                title: 'News 2',
+                description:
+                  'AUXO is a stable coin pegged to U.S. dollar value issued by Frax Finance. Auxo FRAX Vault seeks yield by allocating deposited FRAX on strategies involving lending, liquidity provision, yield farming and more.',
+                type: 'hot',
+              },
+              {
+                title: 'News 3',
+                description:
+                  'AUXO is a stable coin pegged to U.S. dollar value issued by Frax Finance. Auxo FRAX Vault seeks yield by allocating deposited FRAX on strategies involving lending, liquidity provision, yield farming and more.',
+                type: 'info',
+              },
+            ],
+          },
+          marketData: {
+            currentPrice: 0.793037,
+            tvl: 1000000,
+            tvlInEth: 1000000,
+            capitalUtilisation: 22.2020133,
+            avgAPR: 10.3430303,
+            auxoAPR: 12.492,
+            twentyFourHourChange: {
+              change: 20.392,
+            },
+          },
         },
       }),
     );

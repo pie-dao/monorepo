@@ -17,6 +17,7 @@ type Query {
     currency: String! = "USD"
     interval: String! = "1D"
   ): UserTokenEntity
+  getTreasury(currency: String! = "usd"): TreasuryEntity!
 }
 
 type User {
@@ -166,4 +167,37 @@ type underlyingTokenMarketData {
   totalHeld: Float!
   amountPerToken: Float!
   allocation: Float!
+}
+
+type LinkEntity {
+  url: String!
+  urlText: String!
+  title: String!
+}
+
+type NewsEntity {
+  title: String!
+  description: String!
+  type: String!
+}
+
+type TreasuryMarketDataEntity {
+  currentPrice(currency: String! = "usd"): Float!
+  tvl(currency: String = "usd"): Float!
+  tvlInEth: Float!
+  capitalUtilisation: Float!
+  avgAPR: Float!
+  auxoAPR: Float!
+  twentyFourHourChange: PriceChange!
+}
+
+type TreasuryContentEntity {
+  about: String!
+  links: [LinkEntity!]!
+  news: [NewsEntity!]!
+}
+
+type TreasuryEntity {
+  content: TreasuryContentEntity!
+  marketData: TreasuryMarketDataEntity!
 }

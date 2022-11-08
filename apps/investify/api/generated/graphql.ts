@@ -40,6 +40,7 @@ export type LinkEntity = {
   __typename?: 'LinkEntity';
   title: Scalars['String'];
   url: Scalars['String'];
+  urlText: Scalars['String'];
 };
 
 export type MarketDataEntity = {
@@ -68,6 +69,13 @@ export type MarketDataEntityCurrentPriceArgs = {
   currency?: Scalars['String'];
 };
 
+export type NewsEntity = {
+  __typename?: 'NewsEntity';
+  description: Scalars['String'];
+  title: Scalars['String'];
+  type: Scalars['String'];
+};
+
 export type PriceChange = {
   __typename?: 'PriceChange';
   change: Scalars['Float'];
@@ -78,6 +86,7 @@ export type Query = {
   __typename?: 'Query';
   allUsers?: Maybe<Array<Maybe<User>>>;
   getTokenChart?: Maybe<UserTokenEntity>;
+  getTreasury: TreasuryEntity;
   me: User;
   token?: Maybe<TokenEntity>;
   tokens?: Maybe<Array<Maybe<TokenEntity>>>;
@@ -90,6 +99,10 @@ export type QueryGetTokenChartArgs = {
   currency?: Scalars['String'];
   interval?: Scalars['String'];
   symbol: Scalars['String'];
+};
+
+export type QueryGetTreasuryArgs = {
+  currency?: Scalars['String'];
 };
 
 export type QueryTokenArgs = {
@@ -146,6 +159,38 @@ export type TokenInterface = {
   riskGrade: Scalars['String'];
   symbol: Scalars['String'];
   underlyingTokens: Array<UnderlyingTokenEntity>;
+};
+
+export type TreasuryContentEntity = {
+  __typename?: 'TreasuryContentEntity';
+  about: Scalars['String'];
+  links: Array<LinkEntity>;
+  news: Array<NewsEntity>;
+};
+
+export type TreasuryEntity = {
+  __typename?: 'TreasuryEntity';
+  content: TreasuryContentEntity;
+  marketData: TreasuryMarketDataEntity;
+};
+
+export type TreasuryMarketDataEntity = {
+  __typename?: 'TreasuryMarketDataEntity';
+  auxoAPR: Scalars['Float'];
+  avgAPR: Scalars['Float'];
+  capitalUtilisation: Scalars['Float'];
+  currentPrice: Scalars['Float'];
+  tvl: Scalars['Float'];
+  tvlInEth: Scalars['Float'];
+  twentyFourHourChange: PriceChange;
+};
+
+export type TreasuryMarketDataEntityCurrentPriceArgs = {
+  currency?: Scalars['String'];
+};
+
+export type TreasuryMarketDataEntityTvlArgs = {
+  currency?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -434,6 +479,43 @@ export type GetTokenChartQuery = {
   } | null;
 };
 
+export type GetTreasuryQueryVariables = Exact<{
+  currency?: Scalars['String'];
+}>;
+
+export type GetTreasuryQuery = {
+  __typename?: 'Query';
+  getTreasury: {
+    __typename?: 'TreasuryEntity';
+    content: {
+      __typename?: 'TreasuryContentEntity';
+      about: string;
+      links: Array<{
+        __typename?: 'LinkEntity';
+        title: string;
+        url: string;
+        urlText: string;
+      }>;
+      news: Array<{
+        __typename?: 'NewsEntity';
+        title: string;
+        description: string;
+        type: string;
+      }>;
+    };
+    marketData: {
+      __typename?: 'TreasuryMarketDataEntity';
+      currentPrice: number;
+      tvl: number;
+      tvlInEth: number;
+      capitalUtilisation: number;
+      avgAPR: number;
+      auxoAPR: number;
+      twentyFourHourChange: { __typename?: 'PriceChange'; change: number };
+    };
+  };
+};
+
 export const ChartDataFragmentDoc = `
     fragment ChartData on UserTokenEntity {
   marketData {
@@ -569,6 +651,36 @@ export const GetTokenChartDocument = `
   }
 }
     ${ChartDataFragmentDoc}`;
+export const GetTreasuryDocument = `
+    query getTreasury($currency: String! = "usd") {
+  getTreasury(currency: $currency) {
+    content {
+      about
+      links {
+        title
+        url
+        urlText
+      }
+      news {
+        title
+        description
+        type
+      }
+    }
+    marketData {
+      currentPrice(currency: $currency)
+      tvl(currency: $currency)
+      tvlInEth
+      capitalUtilisation
+      avgAPR
+      auxoAPR
+      twentyFourHourChange {
+        change
+      }
+    }
+  }
+}
+    `;
 
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -595,6 +707,12 @@ const injectedRtkApi = api.injectEndpoints({
         query: (variables) => ({ document: GetTokenChartDocument, variables }),
       },
     ),
+    getTreasury: build.query<
+      GetTreasuryQuery,
+      GetTreasuryQueryVariables | void
+    >({
+      query: (variables) => ({ document: GetTreasuryDocument, variables }),
+    }),
   }),
 });
 
@@ -610,6 +728,8 @@ export const {
   useLazyGetVaultsQuery,
   useGetTokenChartQuery,
   useLazyGetTokenChartQuery,
+  useGetTreasuryQuery,
+  useLazyGetTreasuryQuery,
 } = injectedRtkApi;
 
 /**
@@ -712,5 +832,28 @@ export const mockGetTokenChartQuery = (
 ) =>
   graphql.query<GetTokenChartQuery, GetTokenChartQueryVariables>(
     'getTokenChart',
+    resolver,
+  );
+
+/**
+ * @param resolver a function that accepts a captured request and may return a mocked response.
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockGetTreasuryQuery((req, res, ctx) => {
+ *   const { currency } = req.variables;
+ *   return res(
+ *     ctx.data({ getTreasury })
+ *   )
+ * })
+ */
+export const mockGetTreasuryQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<GetTreasuryQueryVariables>,
+    GraphQLContext<GetTreasuryQuery>,
+    any
+  >,
+) =>
+  graphql.query<GetTreasuryQuery, GetTreasuryQueryVariables>(
+    'getTreasury',
     resolver,
   );

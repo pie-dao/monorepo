@@ -53,7 +53,7 @@ const Tooltip: React.FC<Props> = ({ children }) => {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="p-3 bg-gradient-primary rounded-md shadow-md z-50 max-w-xs"
+                  className="p-3 mx-3 bg-gradient-primary rounded-md shadow-md z-50 max-w-xs"
                   {...attributes.popper}
                 >
                   {children}

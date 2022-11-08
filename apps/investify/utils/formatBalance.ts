@@ -12,7 +12,7 @@ export function formatBalanceCurrency(
     currency: defaultCurrency ?? 'USD',
     notation: compact ? 'compact' : 'standard',
     compactDisplay: 'short',
-    maximumSignificantDigits: 4,
+    maximumFractionDigits: 2,
   }).format(balanceAmount ?? 0);
   return balance;
 }
