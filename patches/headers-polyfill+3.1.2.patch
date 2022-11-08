@@ -1,0 +1,14 @@
+diff --git a/node_modules/headers-polyfill/package.json b/node_modules/headers-polyfill/package.json
+index 83849d7..4eb24a3 100644
+--- a/node_modules/headers-polyfill/package.json
++++ b/node_modules/headers-polyfill/package.json
+@@ -10,7 +10,8 @@
+       "types": "./lib/index.d.ts",
+       "require": "./lib/index.js",
+       "default": "./lib/index.mjs"
+-    }
++    },
++    "./lib": "./lib/index.js"
+   },
+   "repository": "https://github.com/mswjs/headers-polyfill",
+   "author": "Artem Zakharchenko",
