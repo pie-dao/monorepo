@@ -32,6 +32,12 @@ The next step is to call the setup script:
 script/setup
 ```
 
+Next, run patches if any
+```bash
+patch-package
+```
+
+
 Now you can start making changes.
 
 ## Packages
