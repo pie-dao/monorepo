@@ -65,7 +65,7 @@ const getDate = (d: Index) => new Date(d.timestamp);
 const getStockValue = (d: Index) => d.currentPrice;
 const getNavValue = (d: Index) => d.nav;
 
-export default function AreaChart({
+export default function LineChart({
   data,
   gradientColor,
   width,
@@ -140,6 +140,7 @@ export default function AreaChart({
             return (
               <motion.path
                 d={d}
+                data-cy="price-line"
                 initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
                 variants={priceVariants}
                 animate={'visible'}
@@ -164,6 +165,7 @@ export default function AreaChart({
           x={(d) => xScale(getDate(d)) || 0}
           y={(d) => yScale(getNavValue(d)) || 0}
           curve={curveLinear}
+          data-cy="nav-line"
         >
           {({ path }) => {
             const d = path(data) || '';
@@ -225,28 +227,27 @@ export default function AreaChart({
             const left = xScale(getDate(d)) - 6;
             const top = yScale(getStockValue(d)) - 18;
             return (
-              <>
-                <motion.path
-                  key={`flag-${d.timestamp}`}
-                  className="[pointer-events:all] cursor-pointer"
-                  ref={(el) => (refs.current[i] = el)}
-                  initial={{ y: -innerHeight, x: left, opacity: 0 }}
-                  animate={{ y: top - 12, x: left, opacity: 1 }}
-                  exit={{ y: -innerHeight, x: left, opacity: 0 }}
-                  onTouchStart={(e) => setHovered(e.currentTarget)}
-                  onMouseEnter={(e) => setHovered(e.currentTarget)}
-                  onMouseLeave={() => setHovered(null)}
-                  transition={{
-                    type: 'spring',
-                    bounce: 0.15,
-                    duration: 0.6,
-                    delay: 1.5 + i * 0.1,
-                  }}
-                  fill="#1F0860"
-                  stroke="#F7F7FF"
-                  d="M20.5 15.5v-9c0-.55228-.4477-1-1-1h-5.05c-.2316-1.14112-1.2405-2-2.45-2H6.5v-1c0-.55228-.44772-1-1-1h-1c-.55228 0-1 .44772-1 1v19c0 .5523.44772 1 1 1h1c.55228 0 1-.4477 1-1v-7h5.05c.2316 1.1411 1.2405 2 2.45 2h5.5c.5523 0 1-.4477 1-1Z"
-                />
-              </>
+              <motion.path
+                key={`flag-${d.timestamp}`}
+                data-cy={`flag-${d.timestamp}`}
+                className="[pointer-events:all] cursor-pointer"
+                ref={(el) => (refs.current[i] = el)}
+                initial={{ y: -innerHeight, x: left, opacity: 0 }}
+                animate={{ y: top - 12, x: left, opacity: 1 }}
+                exit={{ y: -innerHeight, x: left, opacity: 0 }}
+                onTouchStart={(e) => setHovered(e.currentTarget)}
+                onMouseEnter={(e) => setHovered(e.currentTarget)}
+                onMouseLeave={() => setHovered(null)}
+                transition={{
+                  type: 'spring',
+                  bounce: 0.15,
+                  duration: 0.6,
+                  delay: 1.5 + i * 0.1,
+                }}
+                fill="#1F0860"
+                stroke="#F7F7FF"
+                d="M20.5 15.5v-9c0-.55228-.4477-1-1-1h-5.05c-.2316-1.14112-1.2405-2-2.45-2H6.5v-1c0-.55228-.44772-1-1-1h-1c-.55228 0-1 .44772-1 1v19c0 .5523.44772 1 1 1h1c.55228 0 1-.4477 1-1v-7h5.05c.2316 1.1411 1.2405 2 2.45 2h5.5c.5523 0 1-.4477 1-1Z"
+              />
             );
           })}
       {showFlags &&

@@ -3,6 +3,7 @@ import { getFirstUnderlying } from '../../support/app.po';
 describe('Test Product Page Data Display', () => {
   before(() => {
     cy.visit('/products/PLAY');
+    cy.login();
   });
 
   it('should display product name', () => {

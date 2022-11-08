@@ -9,7 +9,6 @@ import * as E from 'fp-ts/Either';
 import { pipe } from 'fp-ts/lib/function';
 import * as T from 'fp-ts/Task';
 import * as TE from 'fp-ts/TaskEither';
-import { chownSync } from 'fs';
 import { FUND_LOADING_INTERVAL, ONE_DAY } from '../loaders/constants';
 import { MongoPieVaultRepository } from '../repository';
 import { Options } from './dto';
@@ -145,7 +144,8 @@ export class PieVaultResolver {
           nav: latestPrice.nav,
           marketCap: latestPrice.marketCap,
           totalSupply: latest.circulatingSupply,
-
+          allTimeHigh: latestPrice.ath,
+          allTimeLow: latestPrice.atl,
           // TODO: implement these 👇
           numberOfHolders: 0,
           swapFee: null,

@@ -6,6 +6,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useState } from 'react';
 import { useLazyGetTokenChartQuery } from '../../api/generated/graphql';
 import { useBoolean } from 'usehooks-ts';
+import { dataRanges, INTERVAL } from '../../types/intervals';
 
 function ChartWrapper({ symbol }: { symbol: string }) {
   const [trigger] = useLazyGetTokenChartQuery();
@@ -23,12 +24,9 @@ function ChartWrapper({ symbol }: { symbol: string }) {
     !e.target.checked && setFlagValue(e.target.checked);
   };
 
-  const dataRanges = ['1D', '1W', '1M', '1Y', 'ALL'];
-  const [dataRange, setDataRange] = useState(
-    dataRanges.find((d) => d === '1Y'),
-  );
+  const [dataRange, setDataRange] = useState<INTERVAL>('1Y');
 
-  const handleChartTime = (interval: string) => {
+  const handleChartTime = (interval: INTERVAL) => {
     trigger({
       symbol,
       currency: 'USD',
@@ -39,8 +37,11 @@ function ChartWrapper({ symbol }: { symbol: string }) {
 
   const { t } = useTranslation();
   return (
-    <div>
-      <div className="flex gap-x-4 justify-around bg-gradient-primary rounded-full shadow-card w-full sm:w-fit px-4 py-1 text-xs ml-auto mb-12">
+    <div data-cy="product-price-chart">
+      <div
+        data-cy="product-price-chart-range"
+        className="flex gap-x-4 justify-around bg-gradient-primary rounded-full shadow-card w-full sm:w-fit px-4 py-1 text-xs ml-auto mb-12"
+      >
         {dataRanges.map((range) => (
           <motion.div
             onClick={() => handleChartTime(range)}
@@ -49,6 +50,7 @@ function ChartWrapper({ symbol }: { symbol: string }) {
               dataRange === range && 'text-secondary',
             )}
             key={range}
+            data-cy={range}
           >
             {t(range)}
             {dataRange === range && (
@@ -87,6 +89,7 @@ function ChartWrapper({ symbol }: { symbol: string }) {
             type="checkbox"
             checked={showPrice}
             id="price-toggle"
+            data-cy="price-toggle"
             onChange={handlePriceValueChange}
             disabled={!showNav}
             className={classNames(
@@ -116,6 +119,7 @@ function ChartWrapper({ symbol }: { symbol: string }) {
             type="checkbox"
             checked={showNav}
             id="nav-toggle"
+            data-cy="nav-toggle"
             onChange={toggleNav}
             disabled={!showPrice}
             className={classNames(
@@ -146,6 +150,7 @@ function ChartWrapper({ symbol }: { symbol: string }) {
             type="checkbox"
             checked={showFlags}
             id="flags-toggle"
+            data-cy="flags-toggle"
             className="sr-only peer"
             disabled={!showPrice}
             onChange={toggleFlags}

@@ -1,11 +1,6 @@
 import { useMemo } from 'react';
 import { Tab } from '@headlessui/react';
-import {
-  motion,
-  Variants,
-  AnimateSharedLayout,
-  AnimatePresence,
-} from 'framer-motion';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { MDXRemote } from 'next-mdx-remote';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
@@ -335,27 +330,25 @@ export function SingleProductPanel({
   testId?: string;
 }) {
   return (
-    <AnimateSharedLayout>
-      <AnimatePresence>
-        <Tab.Panel
-          as={motion.div}
-          className="rounded-lg bg-gradient-primary p-3 shadow-md"
+    <AnimatePresence>
+      <Tab.Panel
+        as={motion.div}
+        className="rounded-lg bg-gradient-primary p-3 shadow-md"
+        layoutId="product-tabs"
+      >
+        <motion.div
           layout
+          variants={variants}
+          initial="initial"
+          exit="exit"
+          animate="animate"
+          className={classNames('max-w-none', className)}
+          data-cy={testId}
         >
-          <motion.div
-            layout
-            variants={variants}
-            initial="initial"
-            exit="exit"
-            animate="animate"
-            className={classNames('max-w-none', className)}
-            data-cy={testId}
-          >
-            {children}
-          </motion.div>
-        </Tab.Panel>
-      </AnimatePresence>
-    </AnimateSharedLayout>
+          {children}
+        </motion.div>
+      </Tab.Panel>
+    </AnimatePresence>
   );
 }
 

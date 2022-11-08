@@ -16,6 +16,11 @@ type Interests {
 
 """Contains market information for a given token at a specific timestamp."""
 type MarketDataEntity {
+  """The all time high price of the token."""
+  allTimeHigh: Float!
+
+  """The all time low price of the token."""
+  allTimeLow: Float!
   currentPrice: Float!
 
   """

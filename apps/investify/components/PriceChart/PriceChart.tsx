@@ -55,6 +55,11 @@ export type BrushProps = {
   compact?: boolean;
 };
 
+type TooltipData = {
+  x0: Date;
+  y0: number;
+};
+
 function PriceChart({
   compact = false,
   symbol,
@@ -84,12 +89,7 @@ function PriceChart({
     tooltipOpen,
     showTooltip,
     hideTooltip,
-  } = useTooltip({
-    tooltipData: {
-      x0: new Date(),
-      y0: 0,
-    },
-  });
+  } = useTooltip<TooltipData>();
 
   const mq = useMediaQuery('(min-width: 640px)');
   const ready = useServerHandoffComplete();

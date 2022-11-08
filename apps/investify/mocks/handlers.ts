@@ -12,6 +12,7 @@ import {
   FTMContracts,
   PolygonContracts,
 } from '../store/products/products.contracts';
+import { INTERVAL, slicePerInterval } from '../types/intervals';
 
 export const handlers = [
   mockAllUsersQuery((req, res, ctx) => {
@@ -343,19 +344,14 @@ export const handlers = [
     );
   }),
   mockGetTokenChartQuery((req, res, ctx) => {
-    const { interval } = req.variables;
-    const slicePerInterval = {
-      '1D': 24,
-      '1W': 24 * 7,
-      '1M': 24 * 30,
-      '1Y': 24 * 365,
-      ALL: 24 * 365 * 3,
-    };
     return res(
       ctx.data({
         getTokenChart: {
           marketData: appleStock
-            .slice(appleStock.length - slicePerInterval[interval])
+            .slice(
+              appleStock.length -
+                slicePerInterval[req.variables.interval as INTERVAL],
+            )
             .map(({ date: timestamp, close: currentPrice }) => ({
               timestamp,
               currentPrice,
