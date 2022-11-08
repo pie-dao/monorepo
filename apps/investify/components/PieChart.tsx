@@ -149,7 +149,6 @@ function AnimatedPie<Datum>({
   return transitions((props, arc, { key }) => {
     const [centroidX, centroidY] = path.centroid(arc);
     const hasSpaceForLabel = arc.endAngle - arc.startAngle >= 0.1;
-    console.log(arc.data);
     return (
       <g key={key}>
         <animated.path
@@ -185,6 +184,8 @@ function AnimatedPie<Datum>({
               subtitleDy={0}
               titleFontWeight="thin"
               title={getKey(arc)}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
               subtitle={`${arc.data.usage}%`}
               showAnchorLine={false}
             ></Label>
