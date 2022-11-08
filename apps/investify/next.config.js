@@ -12,7 +12,11 @@ const nextConfig = {
     svgr: false,
   },
   images: {
-    domains: ['raw.githubusercontent.com', 'static.tildacdn.com'],
+    domains: [
+      'raw.githubusercontent.com',
+      'static.tildacdn.com',
+      '188.166.45.35', // CMS images
+    ],
   },
   reactStrictMode: true,
 };
