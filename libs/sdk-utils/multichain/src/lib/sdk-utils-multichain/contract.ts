@@ -67,18 +67,19 @@ export class MultichainContract<T extends Contract> extends Contract {
 
     Object.entries(this).forEach(([key, value]) => {
       if (!this.isContractFunction(key, value)) return;
-
-      const self = this;
+      // eslint-disable-next-line
+      // const self = this;
       // Here we are iterating through the ABI and attaching the functions to the withMultiChain property.
       // This allows for typesafety and for a cross-chain return type.
       // ts ignore due to dynamic assignment of object properties being near impossible to type.
+      // eslint-disable-next-line
       // @ts-ignore
-      this.multichain[key as keyof ContractFunctions<T>] = async function (
-        args: any,
-      ): Promise<MultiChainResponse<T>> {
-        const calls = self.setupContractCalls(key, args);
+      this.multichain[key as keyof ContractFunctions<T>] = async (
+        ...args: any
+      ): Promise<MultiChainResponse<T>> => {
+        const calls = this.setupContractCalls(key, ...args);
         const data = await promiseObjectAllSettled(calls);
-        const meta = self.getMeta(data);
+        const meta = this.getMeta(data);
         if (meta.errors === meta.total)
           console.error('All contract calls failed');
         return { data, meta };
@@ -97,14 +98,13 @@ export class MultichainContract<T extends Contract> extends Contract {
    */
   private setupContractCalls(
     key: string,
-    args: any,
+    ...args: any
   ): Promise<BaseMultiChainResponse<T>> {
     const configEntries = Object.entries(this._multichainConfig ?? []);
     return configEntries.reduce((obj, [chainId, config]) => {
       let res: Promise<BaseMultiChainResponse<T>>;
 
       if (!this.provider || !config.provider) throw ERRORS.NO_PROVIDER;
-      // if (!this.address || !config.address) throw ERRORS.MISSING_ADDRESS;
 
       // early return if the call should be excluded
       if (config && config.exclude) return obj;
@@ -116,10 +116,11 @@ export class MultichainContract<T extends Contract> extends Contract {
       );
 
       // 'undefined' will serialise to unexpected calldata and throw an error
-      if (args === undefined) {
+      // we are checking for literal undefined only, it is not a falsy check
+      if (args === undefined || (<any[]>args).length === 0) {
         res = { ...obj, [chainId]: contract[key]() };
       } else {
-        res = { ...obj, [chainId]: contract[key](args) };
+        res = { ...obj, [chainId]: contract[key](...args) };
       }
       return res;
     }, {} as Promise<BaseMultiChainResponse<T>>);
