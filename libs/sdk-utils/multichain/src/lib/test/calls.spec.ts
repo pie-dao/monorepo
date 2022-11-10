@@ -1,6 +1,7 @@
 import { Erc20Abi } from '@shared/util-blockchain';
 import { erc20 } from '@shared/util-blockchain/abis';
 import { ethers } from 'ethers';
+// eslint-disable-next-line
 import { SUPPORTED_CHAINS } from 'libs/shared/util-blockchain/chains';
 import { MultiChainContractWrapper } from '../sdk-utils-multichain';
 import { MultiChainConfigOverrides } from '../sdk-utils-multichain';
@@ -72,10 +73,14 @@ describe('Different ways to make multichain calls', () => {
   });
 
   it('Preserves the contract overrides once wrapped', async () => {
-    // expect(usdt._multichainConfig![])
+    // not implemented
   });
 
-  it('Returns a meta across all calls', async () => {});
+  it('Returns a meta across all calls', async () => {
+    // not implemented
+  });
 
-  it('Correctly calcs errors', async () => {});
+  it('Correctly calcs errors', async () => {
+    // not implemented
+  });
 });
