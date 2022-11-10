@@ -9,8 +9,9 @@ import {
   thunkIncreaseWithdrawal,
   thunkConfirmWithdrawal,
   thunkAuthorizeDepositor,
+  thunkStakeAuxo,
 } from './thunks';
-import { Products, SliceState, Vaults } from './products.types';
+import { Tokens, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
 import addTxNotifications from '../../utils/notifications';
 
@@ -32,6 +33,7 @@ const initialState: SliceState = {
     balance: { tokens: 0, vaults: 0, total: 0 },
   },
   activeVault: '',
+  activeToken: '',
 };
 
 const appSlice = createSlice({
@@ -115,13 +117,14 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkIncreaseWithdrawal, 'increaseWithdrawal');
     addTxNotifications(builder, thunkConfirmWithdrawal, 'confirmWithdrawal');
     addTxNotifications(builder, thunkAuthorizeDepositor, 'authorizeDepositor');
+    addTxNotifications(builder, thunkStakeAuxo, 'stakeAuxo');
   },
 
   reducers: {
     setState: (
       state,
       action: PayloadAction<{
-        tokens: Products;
+        tokens: Tokens;
         uniqueNetworks: number;
         totalAssets: number;
         totalBalances: number;
@@ -141,7 +144,7 @@ const appSlice = createSlice({
     setProductsState: (
       state,
       action: PayloadAction<{
-        products: Products;
+        products: Tokens;
       }>,
     ) => {
       state.tokens = merge({}, state.tokens, action.payload);
@@ -176,6 +179,9 @@ const appSlice = createSlice({
     },
     setActiveVault: (state, action: PayloadAction<string>) => {
       state.activeVault = action.payload;
+    },
+    setActiveToken: (state, action: PayloadAction<string>) => {
+      state.activeToken = action.payload;
     },
   },
 });

@@ -1,6 +1,5 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import Image from 'next/image';
-import type { NextPageWithLayout } from './_app';
 import veAUXOicon from '../public/tokens/veAUXO.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
@@ -18,13 +17,30 @@ import {
   formatBalance,
   formatAsPercent,
 } from '../utils/formatBalance';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import Stake from '../components/Stake/Stake';
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { thunkGetUserProductsData } from '../store/products/thunks';
+import veAUXOConfig from '../config/veAUXO.json';
+import { TokenConfig } from '../types/tokensConfig';
 
-const VeAUXO: NextPageWithLayout = () => {
+const VeAUXO = ({ tokenConfig }: { tokenConfig: TokenConfig }) => {
   const { t } = useTranslation();
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
+  const { account, chainId } = useWeb3React<Web3Provider>();
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (!account && !chainId) return;
+    dispatch(
+      thunkGetUserProductsData({
+        account,
+        spender: tokenConfig.addresses[chainId]?.address,
+      }),
+    );
+  }, [account, dispatch, tokenConfig.addresses, chainId]);
 
   const isLoading = false;
   const data = null;
@@ -191,6 +207,10 @@ const VeAUXO: NextPageWithLayout = () => {
             </div>
           </div>
         </section>
+        {/* Section for Staking and Summary */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+          <Stake tokenConfig={tokenConfig} />
+        </section>
       </div>
     </>
   );
@@ -201,10 +221,14 @@ VeAUXO.getLayout = function getLayout(page: ReactElement) {
 };
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
-  // this gets rendered on the server, then not on the client
+  const veAUXO = veAUXOConfig['veAUXO'] as TokenConfig;
+
   return {
     // does not seem to work with key `initialState`
-    props: { title: 'Stake' },
+    props: {
+      title: 'Stake',
+      tokenConfig: veAUXO,
+    },
   };
 });
 

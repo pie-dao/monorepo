@@ -9,7 +9,9 @@ import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
   MerkleauthAbi__factory,
+  TokenlockerAbi__factory,
 } from '@shared/util-blockchain';
+import tokensConfig from '../config/products.json';
 
 function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
@@ -88,6 +90,21 @@ export function useAuthContract(address?: string) {
   }, [address, library, account, active]);
 }
 
+export function useStakingContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return TokenlockerAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
 export function useAuxoVaultContract(vaultAddress?: string) {
   return useVaultContract(vaultAddress);
 }
@@ -98,4 +115,11 @@ export function useTokenContract(tokenAddress?: string) {
 
 export function useMerkleAuthContract(vaultAddress?: string) {
   return useAuthContract(vaultAddress);
+}
+
+export function useStakingTokenContract(token?: string) {
+  const { chainId } = useWeb3React();
+  return useStakingContract(
+    tokensConfig[token]?.addresses[chainId]?.stakingContract,
+  );
 }

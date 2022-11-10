@@ -46,7 +46,6 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
   const availableChains = useMemo(() => {
     return filteredChainMap(allowedChains);
   }, [allowedChains]);
-
   const supportedChain = useMemo(() => {
     return isChainSupported(chainId)
       ? availableChains[chainId as SUPPORTED_CHAIN_ID]

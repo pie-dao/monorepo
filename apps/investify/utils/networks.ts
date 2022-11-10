@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 
 export const SUPPORTED_CHAINS = {
   MAINNET: 1,
+  GOERLI: 5,
   FANTOM: 250,
   POLYGON: 137,
 } as const;
@@ -13,11 +14,13 @@ const RPC_URLS =
   process.env.NEXT_PUBLIC_TESTNET === 'true'
     ? {
         1: 'http://127.0.0.1:8545/',
+        5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'http://127.0.0.1:8546',
       }
     : {
         1: 'https://rpc.ankr.com/eth',
+        5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'https://rpc.ankr.com/fantom',
       };
@@ -85,5 +88,17 @@ export const chainMap: ChainMap = {
     },
     rpcUrls: ['https://polygon-rpc.com/'],
     blockExplorerUrls: ['https://polygonscan.com'],
+  },
+  [SUPPORTED_CHAINS.GOERLI]: {
+    blockTime: 1,
+    chainId: `0x${Number(SUPPORTED_CHAINS.GOERLI).toString(16)}`,
+    chainName: 'Goerli',
+    nativeCurrency: {
+      name: 'Goerli Ether',
+      symbol: 'GoerliETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e'],
+    blockExplorerUrls: ['https://goerli.etherscan.io'],
   },
 };

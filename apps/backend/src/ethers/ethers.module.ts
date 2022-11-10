@@ -6,7 +6,9 @@ import { ethers } from 'ethers';
 export const EthersProvider = {
   provide: Provider,
   useValue: new MultiCallWrapper(
-    new ethers.providers.JsonRpcProvider(process.env.INFURA_RPC),
+    new ethers.providers.JsonRpcProvider(
+      'https://mainnet.infura.io/v3/25ed038142a3459d9e8c0c7fd42bd58a',
+    ),
   ).multicallProvider,
 };
 

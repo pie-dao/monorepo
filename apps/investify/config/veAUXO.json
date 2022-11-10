@@ -1,0 +1,12 @@
+{
+  "veAUXO": {
+    "image": "/tokens/AUXO.svg",
+    "name": "AUXO",
+    "description": "AUXO Token",
+    "addresses": {
+      "5": { "address": "0x977633fa0bf8d71788d1ec1ca9fcf32f669034b4" }
+    },
+    "prospectus": null,
+    "coingeckoId": "auxo-token"
+  }
+}

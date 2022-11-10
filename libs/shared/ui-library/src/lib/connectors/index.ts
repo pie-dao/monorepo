@@ -10,6 +10,8 @@ export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ftm.tools/',
   [SUPPORTED_CHAINS.POLYGON]:
     'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
+  [SUPPORTED_CHAINS.GOERLI]:
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
 };
 
 export const network = (chainId = 1) => {
@@ -26,6 +28,7 @@ export const injected = new InjectedConnector({
     SUPPORTED_CHAINS.MAINNET,
     SUPPORTED_CHAINS.FANTOM,
     SUPPORTED_CHAINS.POLYGON,
+    SUPPORTED_CHAINS.GOERLI,
   ],
 });
 
@@ -50,11 +53,13 @@ export const walletconnect = new WalletConnectConnector({
     [SUPPORTED_CHAINS.FANTOM]: RPC_URLS[SUPPORTED_CHAINS.FANTOM],
     [SUPPORTED_CHAINS.POLYGON]: RPC_URLS[SUPPORTED_CHAINS.POLYGON],
     [SUPPORTED_CHAINS.MAINNET]: RPC_URLS[SUPPORTED_CHAINS.MAINNET],
+    [SUPPORTED_CHAINS.GOERLI]: RPC_URLS[SUPPORTED_CHAINS.GOERLI],
   },
   supportedChainIds: [
     SUPPORTED_CHAINS.FANTOM,
     SUPPORTED_CHAINS.POLYGON,
     SUPPORTED_CHAINS.MAINNET,
+    SUPPORTED_CHAINS.GOERLI,
   ],
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,

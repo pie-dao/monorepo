@@ -1,6 +1,7 @@
 export const SUPPORTED_CHAINS = {
   FANTOM: 250,
   POLYGON: 137,
+  GOERLI: 5,
   MAINNET: 1,
 } as const;
 

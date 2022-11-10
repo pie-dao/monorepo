@@ -1,18 +1,22 @@
 import { SupportedChains } from '../../utils/networks';
 
 export type ChainValue = Record<SupportedChains, BigNumberReference>;
+export type ChainBasedInfo = Record<SupportedChains, ChainInfo>;
 
-type Product = {
-  balances?: ChainValue;
-  productDecimals: number;
-  totalBalance?: BigNumberReference;
-  addresses: {
-    [chainId: number | string]: string;
-  };
+export type ChainInfo = {
+  address: string;
+  balance?: BigNumberReference;
+  allowance?: BigNumberReference;
 };
 
-export type Products = {
-  [x: string]: Product;
+export type Token = {
+  productDecimals: number;
+  totalBalance?: BigNumberReference;
+  chainInfo: ChainBasedInfo;
+};
+
+export type Tokens = {
+  [x: string | number]: Token;
 };
 
 interface BasicVaultInformation {
@@ -102,9 +106,10 @@ export type Stats = {
 };
 
 export type SliceState = {
-  tokens: Products;
+  tokens: Tokens;
   vaults: Vaults;
   stats: Stats;
   loading: boolean;
   activeVault: string;
+  activeToken: string;
 };

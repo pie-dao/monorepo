@@ -116,5 +116,12 @@
   "total": "Total ${token}",
   "totalTooltip": "Total amount of ${token}",
   "votingAddresses": "Voting addresses",
-  "votingAddressesTooltip": "Number of addresses that vote"
+  "votingAddressesTooltip": "Number of addresses that vote",
+  "stake": "Stake",
+  "howToGetAuxo": "How do I get AUXO?",
+  "amountToStake": "Amount to stake",
+  "youGet": "You get",
+  "stakeTime": "Stake time",
+  "whyLocked": "Why are my AUXO locked?",
+  "months": "Months"
 }

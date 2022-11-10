@@ -3,5 +3,6 @@ import pievault from './pie-vault/pievault.abi.json';
 import smartPool from './smart-pool/smartpool.abi.json';
 import yieldVault from './yield-vault/yieldvault.abi.json';
 import merkleAuth from './merkle-auth/merkleauth.abi.json';
+import tokenLocker from './token-locker/tokenlocker.abi.json';
 
-export { erc20, pievault, smartPool, yieldVault, merkleAuth };
+export { erc20, pievault, smartPool, yieldVault, merkleAuth, tokenLocker };
