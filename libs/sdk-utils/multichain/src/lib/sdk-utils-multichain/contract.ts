@@ -68,18 +68,18 @@ export class MultichainContract<T extends Contract> extends Contract {
     Object.entries(this).forEach(([key, value]) => {
       if (!this.isContractFunction(key, value)) return;
       // eslint-disable-next-line
-      const self = this;
+      // const self = this;
       // Here we are iterating through the ABI and attaching the functions to the withMultiChain property.
       // This allows for typesafety and for a cross-chain return type.
       // ts ignore due to dynamic assignment of object properties being near impossible to type.
       // eslint-disable-next-line
       // @ts-ignore
-      this.multichain[key as keyof ContractFunctions<T>] = async function (
+      this.multichain[key as keyof ContractFunctions<T>] = async (
         ...args: any
-      ): Promise<MultiChainResponse<T>> {
-        const calls = self.setupContractCalls(key, ...args);
+      ): Promise<MultiChainResponse<T>> => {
+        const calls = this.setupContractCalls(key, ...args);
         const data = await promiseObjectAllSettled(calls);
-        const meta = self.getMeta(data);
+        const meta = this.getMeta(data);
         if (meta.errors === meta.total)
           console.error('All contract calls failed');
         return { data, meta };
@@ -105,7 +105,6 @@ export class MultichainContract<T extends Contract> extends Contract {
       let res: Promise<BaseMultiChainResponse<T>>;
 
       if (!this.provider || !config.provider) throw ERRORS.NO_PROVIDER;
-      // if (!this.address || !config.address) throw ERRORS.MISSING_ADDRESS;
 
       // early return if the call should be excluded
       if (config && config.exclude) return obj;
