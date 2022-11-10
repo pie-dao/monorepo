@@ -48,20 +48,6 @@ function APYChart({ symbol }: { symbol: string }) {
           </motion.div>
         ))}
       </div>
-      <div className="h-[500px]">
-        <ParentSizeModern>
-          {({ width, height }) => (
-            <APYOverTime
-              width={width}
-              height={height}
-              symbol={symbol}
-              dataRange={dataRange}
-              showPrice={true}
-              showNav={false}
-            />
-          )}
-        </ParentSizeModern>
-      </div>
     </div>
   );
 }
