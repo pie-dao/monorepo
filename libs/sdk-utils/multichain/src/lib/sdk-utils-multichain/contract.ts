@@ -67,16 +67,17 @@ export class MultichainContract<T extends Contract> extends Contract {
 
     Object.entries(this).forEach(([key, value]) => {
       if (!this.isContractFunction(key, value)) return;
-
+      // eslint-disable-next-line
       const self = this;
       // Here we are iterating through the ABI and attaching the functions to the withMultiChain property.
       // This allows for typesafety and for a cross-chain return type.
       // ts ignore due to dynamic assignment of object properties being near impossible to type.
+      // eslint-disable-next-line
       // @ts-ignore
       this.multichain[key as keyof ContractFunctions<T>] = async function (
-        args: any,
+        ...args: any
       ): Promise<MultiChainResponse<T>> {
-        const calls = self.setupContractCalls(key, args);
+        const calls = self.setupContractCalls(key, ...args);
         const data = await promiseObjectAllSettled(calls);
         const meta = self.getMeta(data);
         if (meta.errors === meta.total)
@@ -97,7 +98,7 @@ export class MultichainContract<T extends Contract> extends Contract {
    */
   private setupContractCalls(
     key: string,
-    args: any,
+    ...args: any
   ): Promise<BaseMultiChainResponse<T>> {
     const configEntries = Object.entries(this._multichainConfig ?? []);
     return configEntries.reduce((obj, [chainId, config]) => {
@@ -116,10 +117,11 @@ export class MultichainContract<T extends Contract> extends Contract {
       );
 
       // 'undefined' will serialise to unexpected calldata and throw an error
-      if (args === undefined) {
+      // we are checking for literal undefined only, it is not a falsy check
+      if (args === undefined || (<any[]>args).length === 0) {
         res = { ...obj, [chainId]: contract[key]() };
       } else {
-        res = { ...obj, [chainId]: contract[key](args) };
+        res = { ...obj, [chainId]: contract[key](...args) };
       }
       return res;
     }, {} as Promise<BaseMultiChainResponse<T>>);
