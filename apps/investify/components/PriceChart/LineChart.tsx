@@ -121,201 +121,203 @@ export default function LineChart({
   if (width < 10) return null;
   return (
     <Group left={left || margin.left} top={top || margin.top}>
-      <LinearGradient
-        id="gradient"
-        from={gradientColor}
-        fromOpacity={1}
-        to={gradientColor}
-        toOpacity={0.2}
-      />
-      {showPrice && (
-        <LinePath
-          data={data}
-          x={(d) => xScale(getDate(d)) || 0}
-          y={(d) => yScale(getStockValue(d)) || 0}
-          curve={curveLinear}
-        >
-          {({ path }) => {
-            const d = path(data) || '';
-            return (
-              <motion.path
-                d={d}
-                data-cy="price-line"
-                initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
-                variants={priceVariants}
-                animate={'visible'}
-                transition={
-                  !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
-                }
-                fill="none"
-                stroke={
-                  noAnimation
-                    ? 'rgba(186, 189, 220, 1)'
-                    : 'rgba(11, 120, 221, 1)'
-                }
-                strokeWidth={noAnimation ? 1 : 1.5}
-              />
-            );
-          }}
-        </LinePath>
-      )}
-      {showNav && (
-        <LinePath
-          data={data}
-          x={(d) => xScale(getDate(d)) || 0}
-          y={(d) => yScale(getNavValue(d)) || 0}
-          curve={curveLinear}
-          data-cy="nav-line"
-        >
-          {({ path }) => {
-            const d = path(data) || '';
-            return (
-              <motion.path
-                d={d}
-                initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
-                variants={priceVariants}
-                animate={'visible'}
-                transition={
-                  !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
-                }
-                fill="none"
-                stroke={noAnimation ? 'rgba(186, 189, 220, 1)' : subDark}
-                strokeWidth={1}
-              />
-            );
-          }}
-        </LinePath>
-      )}
-      {!hideBottomAxis && (
-        <AxisBottom
-          top={yMax}
-          scale={xScale}
-          numTicks={width > 520 ? 10 : 5}
-          stroke={'transparent'}
-          tickStroke={subDark}
-          tickLabelProps={() => axisBottomTickLabelProps}
+      <>
+        <LinearGradient
+          id="gradient"
+          from={gradientColor}
+          fromOpacity={1}
+          to={gradientColor}
+          toOpacity={0.2}
         />
-      )}
-      {!hideLeftAxis && (
-        <AxisLeft
-          scale={yScale}
-          numTicks={5}
-          stroke={'transparent'}
-          tickStroke={subDark}
-          tickLabelProps={() => axisLeftTickLabelProps}
-        />
-      )}
-      {!hideLeftAxis && (
-        <Bar
-          x={0}
-          y={0}
-          width={width - margin.left - margin.right}
-          height={yMax}
-          fill="transparent"
-          rx={14}
-          onTouchStart={handleTooltip}
-          onTouchMove={handleTooltip}
-          onMouseMove={handleTooltip}
-          onMouseLeave={() => hideTooltip()}
-          className="cursor-crosshair"
-        />
-      )}
-      {showFlags &&
-        data
-          .filter((d) => d.event)
-          .map((d, i) => {
-            const left = xScale(getDate(d)) - 6;
-            const top = yScale(getStockValue(d)) - 18;
-            return (
-              <motion.path
-                key={`flag-${d.timestamp}`}
-                data-cy={`flag-${d.timestamp}`}
-                className="[pointer-events:all] cursor-pointer"
-                ref={(el) => (refs.current[i] = el)}
-                initial={{ y: -innerHeight, x: left, opacity: 0 }}
-                animate={{ y: top - 12, x: left, opacity: 1 }}
-                exit={{ y: -innerHeight, x: left, opacity: 0 }}
-                onTouchStart={(e) => setHovered(e.currentTarget)}
-                onMouseEnter={(e) => setHovered(e.currentTarget)}
-                onMouseLeave={() => setHovered(null)}
-                transition={{
-                  type: 'spring',
-                  bounce: 0.15,
-                  duration: 0.6,
-                  delay: 1.5 + i * 0.1,
-                }}
-                fill="#1F0860"
-                stroke="#F7F7FF"
-                d="M20.5 15.5v-9c0-.55228-.4477-1-1-1h-5.05c-.2316-1.14112-1.2405-2-2.45-2H6.5v-1c0-.55228-.44772-1-1-1h-1c-.55228 0-1 .44772-1 1v19c0 .5523.44772 1 1 1h1c.55228 0 1-.4477 1-1v-7h5.05c.2316 1.1411 1.2405 2 2.45 2h5.5c.5523 0 1-.4477 1-1Z"
-              />
-            );
-          })}
-      {showFlags &&
-        data
-          .filter((d) => d.event)
-          .map((d, i) => {
-            const left = xScale(getDate(d)) - 6;
-            const top = yScale(getStockValue(d)) - 18;
-            const dx = left > width / 2 ? -10 : 10;
-            const dy = top > yMax / 2 ? -10 : 10;
-            const { event } = d;
-            return (
-              refs.current[i] === hovered && (
-                <AnimatePresence key={nanoid()}>
-                  <Annotation x={left} y={top} dx={dx} dy={dy}>
-                    <HtmlLabel
-                      containerStyle={{
-                        border: '0',
-                      }}
-                      showAnchorLine={false}
-                    >
-                      <motion.div
-                        variants={variantsFlagTooltip}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        className="w-48 bg-gradient-primary rounded-md px-1 py-2 shadow-md text-xs flex flex-col"
+        {showPrice && (
+          <LinePath
+            data={data}
+            x={(d) => xScale(getDate(d)) || 0}
+            y={(d) => yScale(getStockValue(d)) || 0}
+            curve={curveLinear}
+          >
+            {({ path }) => {
+              const d = path(data) || '';
+              return (
+                <motion.path
+                  d={d}
+                  data-cy="price-line"
+                  initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
+                  variants={priceVariants}
+                  animate={'visible'}
+                  transition={
+                    !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
+                  }
+                  fill="none"
+                  stroke={
+                    noAnimation
+                      ? 'rgba(186, 189, 220, 1)'
+                      : 'rgba(11, 120, 221, 1)'
+                  }
+                  strokeWidth={noAnimation ? 1 : 1.5}
+                />
+              );
+            }}
+          </LinePath>
+        )}
+        {showNav && (
+          <LinePath
+            data={data}
+            x={(d) => xScale(getDate(d)) || 0}
+            y={(d) => yScale(getNavValue(d)) || 0}
+            curve={curveLinear}
+            data-cy="nav-line"
+          >
+            {({ path }) => {
+              const d = path(data) || '';
+              return (
+                <motion.path
+                  d={d}
+                  initial={!noAnimation && isFirst ? 'hidden' : 'visible'}
+                  variants={priceVariants}
+                  animate={'visible'}
+                  transition={
+                    !noAnimation ? { duration: 1.5, bounce: 0 } : undefined
+                  }
+                  fill="none"
+                  stroke={noAnimation ? 'rgba(186, 189, 220, 1)' : subDark}
+                  strokeWidth={1}
+                />
+              );
+            }}
+          </LinePath>
+        )}
+        {!hideBottomAxis && (
+          <AxisBottom
+            top={yMax}
+            scale={xScale}
+            numTicks={width > 520 ? 10 : 5}
+            stroke={'transparent'}
+            tickStroke={subDark}
+            tickLabelProps={() => axisBottomTickLabelProps}
+          />
+        )}
+        {!hideLeftAxis && (
+          <AxisLeft
+            scale={yScale}
+            numTicks={5}
+            stroke={'transparent'}
+            tickStroke={subDark}
+            tickLabelProps={() => axisLeftTickLabelProps}
+          />
+        )}
+        {!hideLeftAxis && (
+          <Bar
+            x={0}
+            y={0}
+            width={width - margin.left - margin.right}
+            height={yMax}
+            fill="transparent"
+            rx={14}
+            onTouchStart={handleTooltip}
+            onTouchMove={handleTooltip}
+            onMouseMove={handleTooltip}
+            onMouseLeave={() => hideTooltip()}
+            className="cursor-crosshair"
+          />
+        )}
+        {showFlags &&
+          data
+            .filter((d) => d.event)
+            .map((d, i) => {
+              const left = xScale(getDate(d)) - 6;
+              const top = yScale(getStockValue(d)) - 18;
+              return (
+                <motion.path
+                  key={`flag-${d.timestamp}`}
+                  data-cy={`flag-${d.timestamp}`}
+                  className="[pointer-events:all] cursor-pointer"
+                  ref={(el) => (refs.current[i] = el)}
+                  initial={{ y: -innerHeight, x: left, opacity: 0 }}
+                  animate={{ y: top - 12, x: left, opacity: 1 }}
+                  exit={{ y: -innerHeight, x: left, opacity: 0 }}
+                  onTouchStart={(e) => setHovered(e.currentTarget)}
+                  onMouseEnter={(e) => setHovered(e.currentTarget)}
+                  onMouseLeave={() => setHovered(null)}
+                  transition={{
+                    type: 'spring',
+                    bounce: 0.15,
+                    duration: 0.6,
+                    delay: 1.5 + i * 0.1,
+                  }}
+                  fill="#1F0860"
+                  stroke="#F7F7FF"
+                  d="M20.5 15.5v-9c0-.55228-.4477-1-1-1h-5.05c-.2316-1.14112-1.2405-2-2.45-2H6.5v-1c0-.55228-.44772-1-1-1h-1c-.55228 0-1 .44772-1 1v19c0 .5523.44772 1 1 1h1c.55228 0 1-.4477 1-1v-7h5.05c.2316 1.1411 1.2405 2 2.45 2h5.5c.5523 0 1-.4477 1-1Z"
+                />
+              );
+            })}
+        {showFlags &&
+          data
+            .filter((d) => d.event)
+            .map((d, i) => {
+              const left = xScale(getDate(d)) - 6;
+              const top = yScale(getStockValue(d)) - 18;
+              const dx = left > width / 2 ? -10 : 10;
+              const dy = top > yMax / 2 ? -10 : 10;
+              const { event } = d;
+              return (
+                refs.current[i] === hovered && (
+                  <AnimatePresence key={nanoid()}>
+                    <Annotation x={left} y={top} dx={dx} dy={dy}>
+                      <HtmlLabel
+                        containerStyle={{
+                          border: '0',
+                        }}
+                        showAnchorLine={false}
                       >
-                        <h3 className="flex text-secondary text-sm justify-between">
-                          <span>
-                            {event.eventType === 'buy'
-                              ? t('bought')
-                              : t('sold')}
-                            :
-                          </span>
-                          <span>{`${formatBalance(
-                            event.eventData.amount,
-                          )} ${symbol}`}</span>
-                        </h3>
-                        <hr className="my-1" />
-                        <p className="text-sub-dark text-sm">{t('price')}:</p>
-                        <div className="flex justify-between">
-                          <p>
-                            {formatBalance(
-                              event.eventData.priceInETH,
-                              defaultLocale,
-                              2,
-                              'standard',
-                            )}{' '}
-                            ETH
-                          </p>
-                          <p>
-                            {formatBalanceCurrency(
-                              event.eventData.priceInCurrency,
-                              defaultLocale,
-                              defaultCurrency,
-                              true,
-                            )}
-                          </p>
-                        </div>
-                      </motion.div>
-                    </HtmlLabel>
-                  </Annotation>
-                </AnimatePresence>
-              )
-            );
-          })}
-      {children}
+                        <motion.div
+                          variants={variantsFlagTooltip}
+                          initial="hidden"
+                          animate="visible"
+                          exit="hidden"
+                          className="w-48 bg-gradient-primary rounded-md px-1 py-2 shadow-md text-xs flex flex-col"
+                        >
+                          <h3 className="flex text-secondary text-sm justify-between">
+                            <span>
+                              {event.eventType === 'buy'
+                                ? t('bought')
+                                : t('sold')}
+                              :
+                            </span>
+                            <span>{`${formatBalance(
+                              event.eventData.amount,
+                            )} ${symbol}`}</span>
+                          </h3>
+                          <hr className="my-1" />
+                          <p className="text-sub-dark text-sm">{t('price')}:</p>
+                          <div className="flex justify-between">
+                            <p>
+                              {formatBalance(
+                                event.eventData.priceInETH,
+                                defaultLocale,
+                                2,
+                                'standard',
+                              )}{' '}
+                              ETH
+                            </p>
+                            <p>
+                              {formatBalanceCurrency(
+                                event.eventData.priceInCurrency,
+                                defaultLocale,
+                                defaultCurrency,
+                                true,
+                              )}
+                            </p>
+                          </div>
+                        </motion.div>
+                      </HtmlLabel>
+                    </Annotation>
+                  </AnimatePresence>
+                )
+              );
+            })}
+        {children}
+      </>
     </Group>
   );
 }

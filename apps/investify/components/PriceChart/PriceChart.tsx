@@ -353,23 +353,25 @@ function PriceChart({
             top={topChartHeight + topChartBottomMargin + margin.top}
             gradientColor={background2}
           >
-            <Brush
-              xScale={brushDateScale}
-              yScale={brushStockScale}
-              width={xBrushMax}
-              height={yBrushMax}
-              margin={brushMargin}
-              handleSize={14}
-              innerRef={brushRef}
-              resizeTriggerAreas={['left', 'right']}
-              brushDirection="horizontal"
-              initialBrushPosition={initialBrushPosition}
-              onChange={onBrushChange}
-              onClick={() => setFilteredStock(stock)}
-              selectedBoxStyle={selectedBrushStyle}
-              useWindowMoveEvents
-              renderBrushHandle={(props) => <BrushHandle {...props} />}
-            />
+            <>
+              <Brush
+                xScale={brushDateScale}
+                yScale={brushStockScale}
+                width={xBrushMax}
+                height={yBrushMax}
+                margin={brushMargin}
+                handleSize={14}
+                innerRef={brushRef}
+                resizeTriggerAreas={['left', 'right']}
+                brushDirection="horizontal"
+                initialBrushPosition={initialBrushPosition}
+                onChange={onBrushChange}
+                onClick={() => setFilteredStock(stock)}
+                selectedBoxStyle={selectedBrushStyle}
+                useWindowMoveEvents
+                renderBrushHandle={(props) => <BrushHandle {...props} />}
+              />
+            </>
           </LineChart>
           {tooltipData && (
             <g>
