@@ -1,8 +1,7 @@
 import { Tab } from '@headlessui/react';
-import { motion, Variants, AnimatePresence, LayoutGroup } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import useTranslation from 'next-translate/useTranslation';
 import classNames from '../../utils/classnames';
-import APYChart from '../APYChart';
 import { TreasuryContentEntity } from '../../api/generated/graphql';
 import ParentSize from '@visx/responsive/lib/components/ParentSizeModern';
 import PieChart from '../PieChart';
