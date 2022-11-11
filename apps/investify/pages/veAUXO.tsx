@@ -25,7 +25,7 @@ import { thunkGetUserProductsData } from '../store/products/thunks';
 import veAUXOConfig from '../config/veAUXO.json';
 import { TokenConfig } from '../types/tokensConfig';
 
-const VeAUXO = ({ tokenConfig }: { tokenConfig: TokenConfig }) => {
+export default function VeAUXO({ tokenConfig }: { tokenConfig: TokenConfig }) {
   const { t } = useTranslation();
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
@@ -214,7 +214,7 @@ const VeAUXO = ({ tokenConfig }: { tokenConfig: TokenConfig }) => {
       </div>
     </>
   );
-};
+}
 
 VeAUXO.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
@@ -231,5 +231,3 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
     },
   };
 });
-
-export default VeAUXO;
