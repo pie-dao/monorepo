@@ -66,8 +66,10 @@ export default function Vault({ id }: { id: string }) {
             }
             data-cy="vault-tab-optin"
           >
-            {t('optin')}
-            <motion.div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+            <>
+              {t('optin')}
+              <motion.div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+            </>
           </Tab>
           <Tab
             className={({ selected }) =>
