@@ -19,6 +19,12 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
+  typescript: {
+    // !! WARN !!
+    // ONLY FOR TESTING VERCEL BUILD IN DEVELOPMENT
+    // DO NOT USE THIS IN PRODUCTION
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = withNx(nextTranslate(nextConfig));
