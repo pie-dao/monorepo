@@ -7,6 +7,7 @@ import { formatBalance } from '../../../utils/formatBalance';
 
 const imageMap = {
   AUXO: '/tokens/AUXO.svg',
+  veAUXO: '/tokens/veAUXO.svg',
   xAUXO: '/tokens/xAUXO.svg',
 };
 
@@ -34,8 +35,8 @@ export default function StakeConfirm() {
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="flex items-center self-center justify-between w-full py-2">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+            <div className="grid grid-cols-3 justify-items-center w-full py-2">
+              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
                 <Image
                   src={imageMap[swap.from.token]}
                   alt={swap.from.token}
@@ -80,7 +81,7 @@ export default function StakeConfirm() {
             </div>
           )}
           {swap?.stakingTime && (
-            <div className="flex items-center self-center justify-between w-full py-2">
+            <div className="flex items-center self-center justify-between w-full py-2 justify-self-end">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <span className="text-xl font-medium text-primary">
                   {t('stakeTime')}

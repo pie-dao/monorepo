@@ -47,16 +47,15 @@ export default function StakeConfirm() {
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
-            {t('stakeTokenModalDescription', {
+            {t('stakeCompletedModalDescription', {
               token: swap?.from.token,
-              months: swap?.stakingTime,
             })}
           </p>
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="flex items-center self-center justify-between w-full py-2">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+            <div className="grid grid-cols-3 justify-items-center w-full py-2">
+              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
                 <Image
                   src={imageMap[swap.from.token]}
                   alt={swap.from.token}
@@ -81,7 +80,7 @@ export default function StakeConfirm() {
                   height={24}
                 />
               </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
                 <Image
                   src={imageMap[swap.to.token]}
                   alt={swap.to.token}
