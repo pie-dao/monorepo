@@ -39,7 +39,7 @@ export const addAuxoToWallet = async () => {
 
 export const addVeAUXOToWallet = async () => {
   await addTokenToWallet(
-    '0x0000000000000000000000000000',
+    products['veAUXO'].addresses[5].address,
     'veAUXO',
     `${window.location.origin}/tokens/veAUXO.svg`,
   );

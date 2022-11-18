@@ -3,7 +3,7 @@ import Image from 'next/image';
 import xAUXOIcon from '../public/tokens/xAUXO.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import { addVeAUXOToWallet } from '../utils/addTokenToWallet';
+import { addXAUXOToWallet } from '../utils/addTokenToWallet';
 import { MetamaskIcon } from '@shared/ui-library';
 import useTranslation from 'next-translate/useTranslation';
 import Tooltip from '../components/Tooltip/Tooltip';
@@ -80,7 +80,7 @@ export default function XAUXO({
             >
               xAUXO
             </h2>
-            <button className="flex ml-auto pr-2" onClick={addVeAUXOToWallet}>
+            <button className="flex ml-auto pr-2" onClick={addXAUXOToWallet}>
               <div className="flex gap-x-2 items-center">
                 <div className="hidden lg:flex gap-x-1">
                   <span className="text-sub-dark underline text-sm hover:text-sub-light">
