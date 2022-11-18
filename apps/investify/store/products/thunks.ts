@@ -4,7 +4,7 @@ import {
   YieldvaultAbi,
   Erc20Abi,
   MerkleauthAbi,
-  TokenlockerAbi,
+  TokenLockerAbi,
   XAUXOAbi,
   VeAUXOAbi,
 } from '@shared/util-blockchain';
@@ -823,7 +823,7 @@ export const thunkApproveToken = createAsyncThunk(
 export type ThunkStakeAuxoProps = {
   deposit: BigNumberReference;
   stakingTime: BigNumberish;
-  tokenLocker: TokenlockerAbi | undefined;
+  tokenLocker: TokenLockerAbi | undefined;
   account: string | null | undefined;
 };
 export const thunkStakeAuxo = createAsyncThunk(
@@ -868,17 +868,17 @@ export const thunkStakeAuxo = createAsyncThunk(
 export type ThunkIncreaseStakeAuxoProps = {
   deposit: BigNumberReference;
   stakingTime: BigNumberish;
-  tokenLocker: TokenlockerAbi | undefined;
+  tokenLocker: TokenLockerAbi | undefined;
   account: string;
 };
 
 export const thunkIncreaseStakeAuxo = createAsyncThunk(
   THUNKS.STAKE_AUXO,
   async (
-    { account, deposit, tokenLocker, stakingTime }: ThunkIncreaseStakeAuxoProps,
+    { account, deposit, tokenLocker }: ThunkIncreaseStakeAuxoProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!tokenLocker || !stakingTime)
+    if (!tokenLocker)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
     const tx = await tokenLocker.increaseAmount(deposit.value);

@@ -114,7 +114,7 @@ export default function VeAUXO({
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
-                      0,
+                      2,
                       'standard',
                     )}
                   </p>

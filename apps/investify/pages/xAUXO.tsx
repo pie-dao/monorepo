@@ -109,7 +109,7 @@ export default function XAUXO({
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
-                      0,
+                      2,
                       'standard',
                     )}
                   </p>
