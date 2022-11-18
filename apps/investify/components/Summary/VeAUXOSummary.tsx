@@ -86,7 +86,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   ]);
 
   return (
-    <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-white gap-y-4">
+    <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-gradient-primary gap-y-4">
       <div className="flex items-center justify-between w-full">
         <h3 className="text-xl font-medium text-primary">{t('summary')}</h3>
       </div>
@@ -95,11 +95,13 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           className="bg-sidebar flex items-center gap-x-2 rounded-md shadow-card self-center w-full p-2"
           key={index}
         >
-          <dt className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+          <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
             {icon && icon}
             {t(title)}:
           </dt>
-          <dd className="flex ml-auto pr-2 text-sm text-sub-dark">{value}</dd>
+          <dd className="flex ml-auto pr-2 font-medium text-base text-primary">
+            {value}
+          </dd>
         </div>
       ))}
     </div>

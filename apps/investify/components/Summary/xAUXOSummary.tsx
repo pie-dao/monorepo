@@ -69,11 +69,13 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           className="bg-sidebar flex items-center gap-x-2 rounded-md shadow-card self-center w-full p-2"
           key={index}
         >
-          <dt className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+          <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
             {icon && icon}
             {t(title)}:
           </dt>
-          <dd className="flex ml-auto pr-2 text-sm text-sub-dark">{value}</dd>
+          <dd className="flex ml-auto pr-2 font-medium text-base text-primary">
+            {value}
+          </dd>
         </div>
       ))}
     </div>

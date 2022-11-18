@@ -74,13 +74,13 @@ function DepositActions({
   };
 
   return (
-    <div className="flex justify-between items-center gap-x-4 flex-wrap gap-y-4">
+    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4">
       {account ? (
         <>
           <button
             onClick={openModal}
             disabled={disabledStake}
-            className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            className="px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
             {t('Stake')}
           </button>

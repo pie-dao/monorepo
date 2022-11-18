@@ -29,7 +29,7 @@ const Swap: React.FC<Props> = ({ tokenConfig }) => {
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/veAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2">
+      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/xAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2">
         <div className="flex items-center justify-between w-full ">
           <h3 className="text-xl font-medium text-primary">{t('stake')}</h3>
           <p className="underline text-sub-dark">

@@ -204,13 +204,18 @@ export default function Navigation({
                       }
                     >
                       <Link href={item.href} passHref>
-                        <span
+                        <div
                           className={classNames(
                             active
                               ? 'text-primary cursor-default bg-white'
                               : 'text-gray-400 cursor-pointer hover:text-primary',
                             'group flex items-center p-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm',
                           )}
+                          onClick={() => {
+                            if (!isDesktop) {
+                              setOpen(false);
+                            }
+                          }}
                         >
                           <div className="flex items-center justify-center w-6 h-6">
                             <Image
@@ -228,7 +233,7 @@ export default function Navigation({
                           >
                             {item.name}
                           </motion.span>
-                        </span>
+                        </div>
                       </Link>
                     </motion.li>
                   );
