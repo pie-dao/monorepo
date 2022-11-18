@@ -10,17 +10,16 @@ import { ConnectButton } from '@shared/ui-library';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import { setIsOpen, setStep, setSwap } from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
-import { useStakingTokenContract } from '../../hooks/useContracts';
+import { useXAUXOTokenContract } from '../../hooks/useContracts';
 
 function DepositActions({
   deposit,
   estimation,
   tokenConfig,
-  stakingTime,
   toToken,
 }: {
   deposit: BigNumberReference;
-  estimation: number;
+  estimation: BigNumberReference;
   tokenConfig: TokenConfig;
   stakingTime?: number;
   toToken: string;
@@ -29,8 +28,8 @@ function DepositActions({
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
-  const stakingContract = useStakingTokenContract(tokenConfig.name);
-  const { limit } = useApprovalLimit('AUXO', stakingContract?.address);
+  const xAUXOContract = useXAUXOTokenContract();
+  const { limit } = useApprovalLimit('AUXO', xAUXOContract?.address);
   const tokens = useTokenBalance(tokenConfig.name);
 
   const sufficientApproval = useMemo(() => {
@@ -48,7 +47,7 @@ function DepositActions({
   const openModal = () => {
     dispatch(
       setStep(
-        sufficientApproval ? STEPS.CONFIRM_STAKE_VEAUXO : STEPS.APPROVE_TOKEN,
+        sufficientApproval ? STEPS.CONFIRM_STAKE_XAUXO : STEPS.APPROVE_TOKEN,
       ),
     );
     dispatch(
@@ -60,13 +59,9 @@ function DepositActions({
           },
           to: {
             token: toToken,
-            amount: {
-              label: estimation,
-              value: estimation.toString(),
-            },
+            amount: estimation,
           },
-          stakingTime,
-          spender: stakingContract.address,
+          spender: xAUXOContract.address,
         },
       }),
     );

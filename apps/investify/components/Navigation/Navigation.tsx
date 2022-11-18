@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState, useEffect, useMemo } from 'react';
-import { TemplateIcon, UsersIcon } from '@heroicons/react/solid';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
@@ -10,6 +10,9 @@ import {
   useMotionValue,
   Variants,
 } from 'framer-motion';
+import diamond from '../../public/images/icons/diamond.svg';
+import xAUXOIcon from '../../public/tokens/xAUXO.svg';
+import veAUXOIcon from '../../public/tokens/veAUXO.svg';
 import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
@@ -28,9 +31,10 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    { name: t('Homepage'), href: '/', icon: TemplateIcon },
-    { name: t('Dashboard'), href: '/dashboard', icon: TemplateIcon },
-    { name: t('Discover'), href: '/discover', icon: UsersIcon },
+    { name: t('Homepage'), href: '/', icon: diamond },
+    { name: t('Dashboard'), href: '/treasury', icon: diamond },
+    { name: t('veAUXO'), href: '/veAUXO', icon: veAUXOIcon },
+    { name: t('xAUXO'), href: '/xAUXO', icon: xAUXOIcon },
   ];
 
   useEffect(() => {
@@ -180,7 +184,7 @@ export default function Navigation({
                 variants={listVariants}
                 initial="hidden"
                 animate="visible"
-                className="space-y-5"
+                className="space-y-2"
               >
                 {navigation.map((item) => {
                   const active = pathname === item.href;
@@ -208,10 +212,14 @@ export default function Navigation({
                             'group flex items-center p-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm',
                           )}
                         >
-                          <item.icon
-                            className="flex-shrink-0 h-6 w-6 text-primary"
-                            aria-hidden="true"
-                          />
+                          <div className="flex items-center justify-center w-6 h-6">
+                            <Image
+                              src={item.icon}
+                              alt={item.name}
+                              width={24}
+                              height={24}
+                            />
+                          </div>
                           <motion.span
                             variants={itemVariants}
                             className="text-base ml-5"

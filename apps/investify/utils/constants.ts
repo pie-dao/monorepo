@@ -1,0 +1,1 @@
+export const AVG_SECONDS_IN_MONTH = 2628000;

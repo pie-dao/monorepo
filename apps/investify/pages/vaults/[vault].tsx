@@ -10,10 +10,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMediaQuery } from 'usehooks-ts';
 import { useGetVaultsQuery } from '../../api/generated/graphql';
 import { setActiveVault } from '../../store/products/products.slice';
-import {
-  setOpenModal,
-  setSidebarVault,
-} from '../../store/sidebar/sidebar.slice';
+import { setIsOpen } from '../../store/modal/modal.slice';
 import { getVault } from '../../utils/mdxUtils';
 import { VaultTabs } from '../../components/VaultTabs/VaultTabs';
 import { vaults } from '../../config/auxoVaults';
@@ -42,7 +39,6 @@ export default function VaultPage({
   });
 
   useEffect(() => {
-    dispatch(setSidebarVault(vault));
     dispatch(setActiveVault(vault));
   }, [dispatch, vault]);
 
@@ -87,9 +83,7 @@ export default function VaultPage({
           </section>
           <section>
             <VaultTabs tabsData={singleVault.tabs} source={source} />
-            <button onClick={() => dispatch(setOpenModal(true))}>
-              Click me
-            </button>
+            <button onClick={() => dispatch(setIsOpen(true))}>Click me</button>
           </section>
         </>
       )}

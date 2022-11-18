@@ -7,6 +7,10 @@ import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
   MerkleauthAbi__factory,
+  TokenLockerAbi__factory,
+  XAUXOAbi__factory,
+  StakingManagerAbi__factory,
+  VeAUXOAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -59,6 +63,34 @@ export const contractWrappers = productContracts.map((addresses) => {
   );
   return mcw.wrap(contract, addresses);
 });
+
+export const stakingContract = TokenLockerAbi__factory.connect(
+  products['AUXO'].addresses[5].stakingAddress,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
+
+export const veAUXOContract = VeAUXOAbi__factory.connect(
+  products['veAUXO'].addresses[5].address,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
+
+export const xAUXOContract = XAUXOAbi__factory.connect(
+  products['xAUXO'].addresses[5].address,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
+
+export const xAUXOStakingManager = StakingManagerAbi__factory.connect(
+  products['xAUXO'].addresses[5].stakingAddress,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
 
 export const FTMContractWrappers = FTMContracts.map((address) => {
   const contract = YieldvaultAbi__factory.connect(

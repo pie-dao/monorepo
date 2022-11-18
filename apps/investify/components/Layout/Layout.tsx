@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import { Navigation, Header } from '../../components';
 import {
   thunkGetProductsData,
+  thunkGetVeAUXOStakingData,
   thunkGetVaultsData,
+  thunkGetXAUXOStakingData,
 } from '../../store/products/thunks';
 import { useAppDispatch } from '../../hooks';
 
@@ -17,6 +19,8 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     dispatch(thunkGetProductsData());
+    dispatch(thunkGetVeAUXOStakingData());
+    dispatch(thunkGetXAUXOStakingData());
     dispatch(thunkGetVaultsData());
   }, [dispatch]);
 

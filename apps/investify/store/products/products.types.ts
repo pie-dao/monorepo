@@ -12,7 +12,16 @@ export type ChainInfo = {
 export type Token = {
   productDecimals: number;
   totalBalance?: BigNumberReference;
-  chainInfo: ChainBasedInfo;
+  chainInfo?: ChainBasedInfo;
+  stakingAmount?: BigNumberReference;
+  totalSupply?: BigNumberReference;
+  stakingToken?: string;
+  fee?: BigNumberReference;
+  userStakingData?: {
+    amount: BigNumberReference;
+    lockedAt: number;
+    lockDuration: number;
+  };
 };
 
 export type Tokens = {

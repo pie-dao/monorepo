@@ -5,6 +5,8 @@ import {
   Erc20Abi,
   MerkleauthAbi,
   TokenlockerAbi,
+  XAUXOAbi,
+  VeAUXOAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -18,23 +20,34 @@ import {
   PolygonContractWrappers,
   underlyingContractsFTMWrappers,
   underlyingContractsPolygonWrappers,
+  stakingContract,
+  xAUXOStakingManager,
+  xAUXOContract,
+  veAUXOContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
 import { calculateSharesAvailable } from '../../utils/sharesAvailable';
 import { pendingNotification } from '../../components/Notifications/Notifications';
+import { setStep, setTx, setTxHash, setTxState } from '../modal/modal.slice';
+import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
+  GET_VE_AUXO_STAKING_DATA: 'app/getVeAUXOStakingData',
+  GET_X_AUXO_STAKING_DATA: 'app/getXAUXOStakingData',
   GET_VAULTS_DATA: 'app/getVaultsData',
   GET_USER_PRODUCTS_DATA: 'app/getUserProductsData',
+  GET_USER_STAKING_DATA: 'app/getUserStakingData',
   GET_USER_VAULTS_DATA: 'app/getUserVaultsData',
   VAULT_INCREASE_WITHDRAWAL: 'vault/increaseWithdrawal',
   VAULT_APPROVE_DEPOSIT: 'vault/approveDeposit',
   VAULT_MAKE_DEPOSIT: 'vault/makeDeposit',
   VAULT_CONFIRM_WITHDRAWAL: 'vault/confirmWithdrawal',
   AUTHORIZE_DEPOSITOR: 'vault/authorizrDepositor',
+  APPROVE_STAKE_AUXO: 'veAUXO/approveStakeAUXO',
   STAKE_AUXO: 'veAUXO/stakeAUXO',
+  STAKE_X_AUXO: 'xAUXO/stakeXAUXO',
 };
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
@@ -53,7 +66,6 @@ export const thunkGetProductsData = createAsyncThunk(
         return results;
       }),
     );
-    console.log(productDataResults);
     const results = productDataResults.map((result): Tokens => {
       if (result.status === 'fulfilled') {
         return {
@@ -118,7 +130,6 @@ export const thunkGetUserProductsData = createAsyncThunk(
         const balancesFormatted = balances.map(([key, amount]) => ({
           [key]: toBalance(amount.value, result.value.productDecimals),
         }));
-
         const allowances = Object.entries(result.value.allowances.data).filter(
           ([, value]) => value.status === 'fulfilled',
         ) as [string, PromiseFulfilledResult<BigNumber>][];
@@ -136,9 +147,11 @@ export const thunkGetUserProductsData = createAsyncThunk(
                     balance: balancesFormatted.find(
                       (balance) => balance[chainId],
                     )?.[chainId],
-                    allowance: allowancesFormatted.find(
-                      (allowance) => allowance[chainId],
-                    )?.[chainId],
+                    allowance: {
+                      [spender]: allowancesFormatted.find(
+                        (allowance) => allowance[chainId],
+                      )?.[chainId],
+                    },
                   },
                 }),
               ),
@@ -181,6 +194,83 @@ export const thunkGetUserProductsData = createAsyncThunk(
       uniqueNetworks,
       totalAssets,
       totalBalances,
+    };
+  },
+);
+
+export const thunkGetVeAUXOStakingData = createAsyncThunk(
+  THUNKS.GET_VE_AUXO_STAKING_DATA,
+  async () => {
+    const results = promiseObject({
+      stakingAmount: contractWrappers[0].balanceOf(stakingContract.address),
+      stakingToken: stakingContract.depositToken(),
+      decimals: veAUXOContract.decimals(),
+      totalSupply: veAUXOContract.totalSupply(),
+    });
+
+    const stakingData = await results;
+
+    return {
+      ['veAUXO']: {
+        stakingAmount: toBalance(
+          stakingData.stakingAmount,
+          stakingData.decimals,
+        ),
+        stakingToken: stakingData.stakingToken,
+        totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
+      },
+    };
+  },
+);
+
+export const thunkGetXAUXOStakingData = createAsyncThunk(
+  THUNKS.GET_X_AUXO_STAKING_DATA,
+  async () => {
+    const results = promiseObject({
+      stakingAmount: veAUXOContract.balanceOf(xAUXOStakingManager.address),
+      decimals: xAUXOContract.decimals(),
+      totalSupply: xAUXOContract.totalSupply(),
+      fee: xAUXOContract.entryFee(),
+    });
+
+    const stakingData = await results;
+
+    return {
+      ['xAUXO']: {
+        stakingAmount: toBalance(
+          stakingData.stakingAmount,
+          stakingData.decimals,
+        ),
+        totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
+        fee: toBalance(stakingData.fee, stakingData.decimals),
+      },
+    };
+  },
+);
+
+export const thunkGetUserStakingData = createAsyncThunk(
+  THUNKS.GET_USER_STAKING_DATA,
+  async ({ account }: { account: string }) => {
+    if (!account) return;
+
+    const results = promiseObject({
+      lock: stakingContract.lockOf(account),
+      decimals: veAUXOContract.decimals(),
+    });
+
+    const userStakingData = await results;
+
+    return {
+      ['veAUXO']: {
+        userStakingData: {
+          amount: toBalance(
+            userStakingData.lock.amount,
+            userStakingData.decimals,
+          ),
+          lockedAt: userStakingData.lock.lockedAt,
+          lockDuration: userStakingData.lock.lockDuration,
+        },
+      },
     };
   },
 );
@@ -550,6 +640,7 @@ export const thunkApproveDeposit = createAsyncThunk(
     if (!token || !spender)
       return rejectWithValue('Missing token or selected vault');
     const tx = await token.approve(spender, deposit.value);
+
     pendingNotification({
       title: `approveDepositPending`,
       id: 'approveDeposit',
@@ -647,6 +738,7 @@ export type ThunkAuthorizeDepositorProps = {
   auth: MerkleauthAbi | undefined;
   proof: BytesLike[];
 };
+
 export const thunkAuthorizeDepositor = createAsyncThunk(
   THUNKS.AUTHORIZE_DEPOSITOR,
   async (
@@ -680,6 +772,51 @@ export const thunkAuthorizeDepositor = createAsyncThunk(
   },
 );
 
+export type ThunkApproveTokenProps = {
+  deposit: BigNumberReference;
+  token: Erc20Abi | XAUXOAbi | VeAUXOAbi | undefined;
+  spender: string;
+  nextStep: Steps;
+};
+export const thunkApproveToken = createAsyncThunk(
+  THUNKS.APPROVE_STAKE_AUXO,
+  async (
+    { deposit, token, spender, nextStep }: ThunkApproveTokenProps,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!token || !spender)
+      return rejectWithValue('Missing token or staking contract');
+    const tx = await token.approve(spender, deposit.value);
+
+    pendingNotification({
+      title: `approveDepositPending`,
+      id: 'approveDeposit',
+    });
+
+    dispatch(
+      setTx({
+        hash: tx.hash,
+        status: TX_STATES.PENDING,
+      }),
+    );
+
+    const receipt = await tx.wait();
+    const addressFromSigner = await token.signer.getAddress();
+
+    if (receipt.status === 1) {
+      dispatch(setTxState(TX_STATES.COMPLETE));
+      dispatch(setStep(nextStep));
+      dispatch(
+        thunkGetUserProductsData({ account: addressFromSigner, spender }),
+      );
+    }
+
+    return receipt.status === 1
+      ? { deposit }
+      : rejectWithValue('Approval Failed');
+  },
+);
+
 /**
  * Actually make the deposit of underlying tokens into the auxo vault
  */
@@ -703,6 +840,9 @@ export const thunkStakeAuxo = createAsyncThunk(
       account,
     );
 
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
     pendingNotification({
       title: `stakeAuxoPending`,
       id: 'stakeAuxoDeposit',
@@ -711,8 +851,107 @@ export const thunkStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(thunkGetUserVaultsData(account));
-      dispatch(thunkGetVaultsData());
+      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({ account, spender: tokenLocker.address }),
+      );
+    }
+
+    return receipt.status === 1
+      ? { deposit }
+      : rejectWithValue('Deposit Failed');
+  },
+);
+
+export type ThunkIncreaseStakeAuxoProps = {
+  deposit: BigNumberReference;
+  stakingTime: BigNumberish;
+  tokenLocker: TokenlockerAbi | undefined;
+  account: string;
+};
+
+export const thunkIncreaseStakeAuxo = createAsyncThunk(
+  THUNKS.STAKE_AUXO,
+  async (
+    { account, deposit, tokenLocker, stakingTime }: ThunkIncreaseStakeAuxoProps,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!tokenLocker || !stakingTime)
+      return rejectWithValue('Missing Contract, Account Details or Deposit');
+
+    const tx = await tokenLocker.increaseAmount(deposit.value);
+
+    // set block explorer transaction hash
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `stakeAuxoPending`,
+      id: 'stakeAuxoDeposit',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({
+          account,
+          spender: tokenLocker.address,
+        }),
+      );
+    }
+
+    return receipt.status === 1
+      ? { deposit }
+      : rejectWithValue('Deposit Failed');
+  },
+);
+
+export type ThunkStakeXAUXOProps = {
+  deposit: BigNumberReference;
+  xAUXOContract: XAUXOAbi | undefined;
+  account: string;
+};
+
+export const ThunkStakeXAUXO = createAsyncThunk(
+  THUNKS.STAKE_X_AUXO,
+  async (
+    { account, deposit, xAUXOContract }: ThunkStakeXAUXOProps,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!deposit || !xAUXOContract || !account)
+      return rejectWithValue('Missing Contract, Account Details or Deposit');
+
+    const tx = await xAUXOContract.depositFor(account, deposit.value);
+
+    // set block explorer transaction hash
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `stakeAuxoPending`,
+      id: 'stakeAuxoDeposit',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({
+          account,
+          spender: xAUXOContract.address,
+        }),
+      );
     }
 
     return receipt.status === 1

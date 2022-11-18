@@ -1,3 +1,5 @@
+import products from '../config/products.json';
+
 const addTokenToWallet = async (
   address: string,
   symbol: string,
@@ -40,5 +42,13 @@ export const addVeAUXOToWallet = async () => {
     '0x0000000000000000000000000000',
     'veAUXO',
     `${window.location.origin}/tokens/veAUXO.svg`,
+  );
+};
+
+export const addXAUXOToWallet = async () => {
+  await addTokenToWallet(
+    products['xAUXO'].addresses[5].address,
+    'xAUXO',
+    `${window.location.origin}/tokens/xAUXO.svg`,
   );
 };

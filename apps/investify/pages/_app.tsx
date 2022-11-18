@@ -9,6 +9,7 @@ import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
 import { wrapper } from '../store';
 import { NotificationDisplay } from '../components/Notifications/Notifications';
+import ModalManager from '../components/Modals/ModalManager';
 import './styles.css';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -53,6 +54,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
           <GoogleAnalytics />
           <div className="h-full">
             <NotificationDisplay />
+            <ModalManager />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>
