@@ -4,11 +4,14 @@ import { useAppSelector } from '../../../hooks';
 import Image from 'next/image';
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
+import AUXOImage from '../../../public/tokens/AUXO.svg';
+import veAUXOImage from '../../../public/tokens/veAUXO.svg';
+import xAUXOImage from '../../../public/tokens/xAUXO.svg';
 
 const imageMap = {
-  AUXO: '/tokens/AUXO.svg',
-  veAUXO: '/tokens/veAUXO.svg',
-  xAUXO: '/tokens/xAUXO.svg',
+  AUXO: AUXOImage,
+  veAUXO: veAUXOImage,
+  xAUXO: xAUXOImage,
 };
 
 export default function StakeConfirm() {

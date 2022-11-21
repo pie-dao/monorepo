@@ -71,3 +71,15 @@ export const toBalance = (
   label: Number(ethers.utils.formatUnits(n, decimals)),
   value: String(n),
 });
+
+export const percentageBetween = (
+  n1: BigNumber,
+  n2: BigNumber,
+  decimals: number,
+): BigNumberReference => {
+  const total = n1.add(n2);
+  const percentage = n1
+    .mul(ethers.utils.parseUnits('100', decimals))
+    .div(total);
+  return toBalance(percentage, decimals);
+};

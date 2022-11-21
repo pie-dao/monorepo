@@ -61,6 +61,14 @@ export const useUserLockAmount = (token: string): BigNumberReference => {
   );
 };
 
+export const useUserVotingPower = (token: string): BigNumberReference => {
+  return useAppSelector(
+    (state) =>
+      state.dashboard?.tokens?.[token]?.userStakingData?.votingPower ??
+      zeroBalance,
+  );
+};
+
 export const useTokenBalance = (token: string): BigNumberReference => {
   const { chainId } = useWeb3React();
   return useAppSelector(

@@ -149,5 +149,7 @@
   "stakeVeAUXOCompletedModalDescription": "You have successfully staked ${token} for ${months} months",
   "monthsAmount": "${count} months",
   "blockExplorer": "Transaction:",
-  "transactionCompleted": "Transaction completed"
+  "transactionCompleted": "Transaction completed",
+  "boostPosition": "Boost position",
+  "boostPositionDescription": "Boost your position by restarting your lock"
 }

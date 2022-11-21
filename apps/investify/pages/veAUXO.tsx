@@ -27,6 +27,7 @@ import Summary from '../components/Summary/VeAUXOSummary';
 import ContentBanner from '../components/ContentBanner/ContentBanner';
 import StakingHistory from '../components/StakingHistory/StakingHistory';
 import { useUserLockDurationInSeconds } from '../hooks/useToken';
+import BoostStake from '../components/BoostStake/BoostStake';
 
 export default function VeAUXO({
   tokenConfig,
@@ -235,6 +236,11 @@ export default function VeAUXO({
         <section className="grid grid-cols-1 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
           <StakingHistory />
         </section>
+        {account && userLockDuration && (
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+            <BoostStake />
+          </section>
+        )}
       </div>
     </>
   );

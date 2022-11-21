@@ -11,7 +11,7 @@ import {
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import { promiseObject } from '../../utils/promiseObject';
-import { toBalance } from '../../utils/formatBalance';
+import { percentageBetween, toBalance } from '../../utils/formatBalance';
 import {
   contractWrappers,
   FTMAuthContractWrapper,
@@ -256,10 +256,11 @@ export const thunkGetUserStakingData = createAsyncThunk(
     const results = promiseObject({
       lock: stakingContract.lockOf(account),
       decimals: veAUXOContract.decimals(),
+      totalSupply: veAUXOContract.totalSupply(),
+      votes: veAUXOContract.getVotes(account),
     });
 
     const userStakingData = await results;
-
     return {
       ['veAUXO']: {
         userStakingData: {
@@ -269,6 +270,11 @@ export const thunkGetUserStakingData = createAsyncThunk(
           ),
           lockedAt: userStakingData.lock.lockedAt,
           lockDuration: userStakingData.lock.lockDuration,
+          votingPower: percentageBetween(
+            userStakingData.votes,
+            userStakingData.totalSupply,
+            userStakingData.decimals,
+          ),
         },
       },
     };

@@ -4,15 +4,10 @@ import AuxoIcon from '../../public/tokens/AUXO.svg';
 import veAUXOIcon from '../../public/tokens/veAUXO.svg';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
-import {
-  useDecimals,
-  useTokenBalance,
-  useTotalSupply,
-} from '../../hooks/useToken';
+import { useTokenBalance, useUserVotingPower } from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
 import { useAppSelector } from '../../hooks';
 
 type Props = {
@@ -26,9 +21,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   const { t } = useTranslation();
   const auxoBalance = useTokenBalance('AUXO');
   const veAUXOBalance = useTokenBalance(name);
-  const totalSupply = useTotalSupply(name);
-  const veAUXODecimals = useDecimals(name);
-  const auxoDecimals = useDecimals('AUXO');
+  const votingPower = useUserVotingPower(name);
 
   const summaryData = useMemo(() => {
     return [
@@ -61,29 +54,11 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
       {
         title: t('votingPower'),
         value: `${
-          account
-            ? formatAsPercent(
-                Number(
-                  ethers.utils.formatUnits(veAUXOBalance.value, auxoDecimals),
-                ) /
-                  Number(
-                    ethers.utils.formatUnits(totalSupply.value, veAUXODecimals),
-                  ),
-              )
-            : '0'
+          account && votingPower ? formatAsPercent(votingPower.label) : '0'
         }`,
       },
     ];
-  }, [
-    account,
-    auxoBalance,
-    auxoDecimals,
-    defaultLocale,
-    t,
-    totalSupply.value,
-    veAUXOBalance,
-    veAUXODecimals,
-  ]);
+  }, [account, auxoBalance, defaultLocale, t, veAUXOBalance, votingPower]);
 
   return (
     <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-gradient-primary gap-y-4">
