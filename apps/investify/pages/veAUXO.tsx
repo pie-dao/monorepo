@@ -239,7 +239,7 @@ export default function VeAUXO({
         {account && userLockDuration && (
           <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
             <BoostStake />
-            {!isMaxxed && <IncreaseLock tokenConfig={tokenConfig} />}
+            {!isMaxxed && <IncreaseLock />}
           </section>
         )}
       </div>
