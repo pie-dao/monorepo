@@ -29,7 +29,7 @@ function DepositActions({
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
-  const stakingContract = useStakingTokenContract(tokenConfig.name);
+  const stakingContract = useStakingTokenContract('veAUXO');
   const { limit } = useApprovalLimit('AUXO', stakingContract?.address);
   const tokens = useTokenBalance(tokenConfig.name);
 

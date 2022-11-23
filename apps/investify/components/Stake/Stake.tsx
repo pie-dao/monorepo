@@ -7,7 +7,11 @@ import DepositActions from './ApproveDepositButton';
 import { BalanceWarning } from './Alerts';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
-import { useDecimals, useTokenBalance } from '../../hooks/useToken';
+import {
+  useDecimals,
+  useTokenBalance,
+  useUserLockDurationInSeconds,
+} from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
 import { ethers } from 'ethers';
@@ -29,6 +33,7 @@ const Stake: React.FC<Props> = ({ tokenConfig }) => {
   const [depositValue, setDepositValue] = useState(zeroBalance);
   const balance = useTokenBalance(name);
   const decimals = useDecimals(name);
+  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
 
   const veAuxoEstimationCalc = useCallback(() => {
     const veAuxoEstimation = () => {
@@ -55,14 +60,14 @@ const Stake: React.FC<Props> = ({ tokenConfig }) => {
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/veAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2">
+      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/veAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full">
         <div className="flex items-center justify-between w-full ">
           <h3 className="text-xl font-medium text-primary">{t('stake')}</h3>
           <p className="underline text-sub-dark">
             <Link href="#">{t('howToGetAuxo')}</Link>
           </p>
         </div>
-        <div className="flex items-center justify-between w-full ">
+        <div className="flex items-center justify-between w-full">
           <p>{t('amountToStake')}</p>
           <div className="flex items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-fit px-2 py-0.5">
             <Image src={AuxoIcon} alt={'AUXO Icon'} width={24} height={24} />
@@ -99,11 +104,13 @@ const Stake: React.FC<Props> = ({ tokenConfig }) => {
           tokenConfig={tokenConfig}
           toToken="veAUXO"
         />
-        <StakeSlider
-          tokenConfig={tokenConfig}
-          commitmentValue={commitmentValue}
-          setCommitmentValue={setCommitmentValue}
-        />
+        {!userLockDuration ? (
+          <StakeSlider
+            tokenConfig={tokenConfig}
+            commitmentValue={commitmentValue}
+            setCommitmentValue={setCommitmentValue}
+          />
+        ) : null}
       </div>
     </div>
   );

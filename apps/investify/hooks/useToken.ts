@@ -4,8 +4,11 @@ import { BigNumberReference } from '../store/products/products.types';
 import { zeroBalance } from '../utils/balances';
 import { useAppSelector } from './index';
 import { useTokenContract } from './useContracts';
-import { AVG_SECONDS_IN_MONTH } from '../utils/constants';
-import { useCallback } from 'react';
+import {
+  AVG_SECONDS_IN_MONTH,
+  MAX_LOCK_DURATION_IN_SECONDS,
+} from '../utils/constants';
+import { useCallback, useMemo } from 'react';
 import { BigNumber } from 'ethers';
 import { toBalance } from '../utils/formatBalance';
 
@@ -40,6 +43,15 @@ export const useUserLockDuration = (token: string): number => {
   return lockFromContract ? lockFromContract / AVG_SECONDS_IN_MONTH : null;
 };
 
+export const useIsUserMaxLockDuration = (token: string): boolean => {
+  const lockFromContract = useAppSelector(
+    (state) => state?.dashboard?.tokens?.[token]?.userStakingData?.lockDuration,
+  );
+  return useMemo(() => {
+    return lockFromContract === MAX_LOCK_DURATION_IN_SECONDS;
+  }, [lockFromContract]);
+};
+
 export const useUserLockDurationInSeconds = (token: string): number => {
   const lockFromContract = useAppSelector(
     (state) => state?.dashboard?.tokens?.[token]?.userStakingData?.lockDuration,
@@ -66,6 +78,12 @@ export const useUserVotingPower = (token: string): BigNumberReference => {
     (state) =>
       state.dashboard?.tokens?.[token]?.userStakingData?.votingPower ??
       zeroBalance,
+  );
+};
+
+export const useDelegatorAddress = (token: string): string => {
+  return useAppSelector(
+    (state) => state.dashboard?.tokens?.[token]?.userStakingData?.delegator,
   );
 };
 

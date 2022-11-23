@@ -29,7 +29,7 @@ export default function StakeConfirm() {
   const { hash } = tx;
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
-  const stakingContract = useStakingTokenContract(swap.from.token);
+  const stakingContract = useStakingTokenContract(swap.to.token);
   const hasLock = useUserLockDuration(swap.to.token);
 
   const makeDeposit = () => {
@@ -39,7 +39,6 @@ export default function StakeConfirm() {
         ? thunkIncreaseStakeAuxo({
             deposit: swap?.from?.amount,
             tokenLocker: stakingContract,
-            stakingTime: swap.stakingTime,
             account,
           })
         : thunkStakeAuxo({

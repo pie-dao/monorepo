@@ -48,6 +48,9 @@ export const THUNKS = {
   APPROVE_STAKE_AUXO: 'veAUXO/approveStakeAUXO',
   STAKE_AUXO: 'veAUXO/stakeAUXO',
   STAKE_X_AUXO: 'xAUXO/stakeXAUXO',
+  BOOST_VE_AUXO: 'veAUXO/boostVeAUXO',
+  INCREASE_LOCK_VE_AUXO: 'veAUXO/increaseLockVeAUXO',
+  WITHDRAW_VE_AUXO: 'veAUXO/withdrawVeAUXO',
 };
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
@@ -109,10 +112,10 @@ export const thunkGetUserProductsData = createAsyncThunk(
     );
 
     const enrichWithTotalBalance = productDataResults.map((result): Tokens => {
-      if (result.status === 'fulfilled') {
-        const { data } = result.value.balances;
-        console.log(result.value);
-        const filterFulfilled = Object.values(data).filter(
+      if (result.status === 'fulfilled' && result.value.balances.data) {
+        const filterFulfilled = Object.values(
+          result.value.balances.data,
+        ).filter(
           (value) => value.status === 'fulfilled',
         ) as PromiseFulfilledResult<BigNumber>[];
         const totalBalanceBN = filterFulfilled
@@ -130,12 +133,21 @@ export const thunkGetUserProductsData = createAsyncThunk(
         const balancesFormatted = balances.map(([key, amount]) => ({
           [key]: toBalance(amount.value, result.value.productDecimals),
         }));
-        const allowances = Object.entries(result.value.allowances.data).filter(
-          ([, value]) => value.status === 'fulfilled',
-        ) as [string, PromiseFulfilledResult<BigNumber>][];
-        const allowancesFormatted = allowances.map(([key, amount]) => ({
-          [key]: toBalance(amount.value, result.value.productDecimals),
-        }));
+
+        let allowancesFormatted: { [x: string]: BigNumberReference }[];
+
+        if (result?.value?.allowances?.data && spender) {
+          const allowances = Object.entries(
+            result.value.allowances.data,
+          ).filter(([, value]) => value.status === 'fulfilled') as [
+            string,
+            PromiseFulfilledResult<BigNumber>,
+          ][];
+          allowancesFormatted = allowances.map(([key, amount]) => ({
+            [key]: toBalance(amount.value, result.value.productDecimals),
+          }));
+        }
+
         return {
           [result.value.symbol]: {
             chainInfo: Object.assign(
@@ -147,11 +159,14 @@ export const thunkGetUserProductsData = createAsyncThunk(
                     balance: balancesFormatted.find(
                       (balance) => balance[chainId],
                     )?.[chainId],
-                    allowance: {
-                      [spender]: allowancesFormatted.find(
-                        (allowance) => allowance[chainId],
-                      )?.[chainId],
-                    },
+                    allowance:
+                      spender && allowancesFormatted
+                        ? {
+                            [spender]: allowancesFormatted.find(
+                              (allowance) => allowance[chainId],
+                            )?.[chainId],
+                          }
+                        : null,
                   },
                 }),
               ),
@@ -258,6 +273,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
       votes: veAUXOContract.getVotes(account),
+      delegation: veAUXOContract.delegates(account),
     });
 
     const userStakingData = await results;
@@ -275,6 +291,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
             userStakingData.totalSupply,
             userStakingData.decimals,
           ),
+          delegator: userStakingData.delegation,
         },
       },
     };
@@ -838,8 +855,9 @@ export const thunkStakeAuxo = createAsyncThunk(
     { deposit, tokenLocker, account, stakingTime }: ThunkStakeAuxoProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!tokenLocker || !account || !stakingTime)
+    if (!tokenLocker || !account || !stakingTime || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
+    dispatch(setTxHash(null));
     const tx = await tokenLocker.depositByMonths(
       deposit.value,
       stakingTime,
@@ -873,7 +891,6 @@ export const thunkStakeAuxo = createAsyncThunk(
 
 export type ThunkIncreaseStakeAuxoProps = {
   deposit: BigNumberReference;
-  stakingTime: BigNumberish;
   tokenLocker: TokenLockerAbi | undefined;
   account: string;
 };
@@ -884,8 +901,9 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     { account, deposit, tokenLocker }: ThunkIncreaseStakeAuxoProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!tokenLocker)
+    if (!tokenLocker || !account || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
+    dispatch(setTxHash(null));
 
     const tx = await tokenLocker.increaseAmount(deposit.value);
 
@@ -919,6 +937,140 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
   },
 );
 
+export type ThunkBoostToMaxVeAUXO = {
+  account: string;
+  tokenLocker: TokenLockerAbi | undefined;
+};
+
+export const thunkBoostToMaxVeAUXO = createAsyncThunk(
+  THUNKS.BOOST_VE_AUXO,
+  async (
+    { account, tokenLocker }: ThunkBoostToMaxVeAUXO,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!tokenLocker || !account)
+      return rejectWithValue('Missing Contract or Account Details');
+    dispatch(setTxHash(null));
+
+    const tx = await tokenLocker.boostToMax();
+
+    // set block explorer transaction hash
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `boostVeAuxoPending`,
+      id: 'boostVeAuxoDeposit',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({
+          account,
+          spender: tokenLocker.address,
+        }),
+      );
+    }
+
+    if (receipt.status !== 1) return rejectWithValue('Boost Failed');
+  },
+);
+
+export type ThunkWithdrawFromVeAUXO = {
+  tokenLocker: TokenLockerAbi | undefined;
+  account: string;
+};
+
+export const thunkWithdrawFromVeAUXO = createAsyncThunk(
+  THUNKS.WITHDRAW_VE_AUXO,
+  async (
+    { account, tokenLocker }: ThunkBoostToMaxVeAUXO,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!tokenLocker || !account)
+      return rejectWithValue('Missing Contract or Account Details');
+    dispatch(setTxHash(null));
+
+    const tx = await tokenLocker.withdraw();
+
+    // set block explorer transaction hash
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `withdrawVeAuxoPending`,
+      id: 'withdrawVeAuxoDeposit',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({
+          account,
+          spender: tokenLocker.address,
+        }),
+      );
+    }
+
+    if (receipt.status !== 1) return rejectWithValue('Withdraw Failed');
+  },
+);
+
+export type ThunkIncreaseLockVeAUXO = {
+  tokenLocker: TokenLockerAbi | undefined;
+  account: string;
+  months: number;
+};
+
+export const thunkIncreaseLockVeAUXO = createAsyncThunk(
+  THUNKS.INCREASE_LOCK_VE_AUXO,
+  async (
+    { months, account, tokenLocker }: ThunkIncreaseLockVeAUXO,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!tokenLocker || !months || !account)
+      return rejectWithValue('Missing Contract, Account Details or months');
+
+    dispatch(setTxHash(null));
+
+    const tx = await tokenLocker.increaseByMonths(months);
+
+    // set block explorer transaction hash
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `increaseLockVeAuxoPending`,
+      id: 'increaseLockVeAuxoDeposit',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({
+          account,
+          spender: tokenLocker.address,
+        }),
+      );
+    }
+
+    if (receipt.status !== 1) return rejectWithValue('Withdraw Failed');
+  },
+);
+
 export type ThunkStakeXAUXOProps = {
   deposit: BigNumberReference;
   xAUXOContract: XAUXOAbi | undefined;
@@ -934,6 +1086,7 @@ export const ThunkStakeXAUXO = createAsyncThunk(
     if (!deposit || !xAUXOContract || !account)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
+    dispatch(setTxHash(null));
     const tx = await xAUXOContract.depositFor(account, deposit.value);
 
     // set block explorer transaction hash

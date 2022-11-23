@@ -25,9 +25,12 @@ import TokensConfig from '../config/products.json';
 import { TokenConfig } from '../types/tokensConfig';
 import Summary from '../components/Summary/VeAUXOSummary';
 import ContentBanner from '../components/ContentBanner/ContentBanner';
-import StakingHistory from '../components/StakingHistory/StakingHistory';
-import { useUserLockDurationInSeconds } from '../hooks/useToken';
+import {
+  useIsUserMaxLockDuration,
+  useUserLockDurationInSeconds,
+} from '../hooks/useToken';
 import BoostStake from '../components/BoostStake/BoostStake';
+import IncreaseLock from '../components/IncreaseLock/IncreaseLock';
 
 export default function VeAUXO({
   tokenConfig,
@@ -48,6 +51,7 @@ export default function VeAUXO({
   );
 
   const userLockDuration = useUserLockDurationInSeconds('veAUXO');
+  const isMaxxed = useIsUserMaxLockDuration('veAUXO');
 
   const { account, chainId } = useWeb3React<Web3Provider>();
   const dispatch = useAppDispatch();
@@ -212,14 +216,14 @@ export default function VeAUXO({
           </div>
         </section>
         {/* Section for Staking and Summary */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+        <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
           <Stake tokenConfig={stakingTokenConfig} />
           <Summary tokenConfig={tokenConfig} />
         </section>
         {/* Non connected wallet content */}
         {!account ||
           (!userLockDuration && (
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+            <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
               <ContentBanner
                 title="stakeAUXO"
                 icon={<Image src={diamond} alt="diamond" />}
@@ -232,13 +236,10 @@ export default function VeAUXO({
               />
             </section>
           ))}
-        {/* Section for Staking History */}
-        <section className="grid grid-cols-1 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
-          <StakingHistory />
-        </section>
         {account && userLockDuration && (
-          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+          <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
             <BoostStake />
+            {!isMaxxed && <IncreaseLock tokenConfig={tokenConfig} />}
           </section>
         )}
       </div>

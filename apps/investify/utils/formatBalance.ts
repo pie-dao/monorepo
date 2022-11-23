@@ -31,10 +31,14 @@ export function formatBalance(
   return balance;
 }
 
-export function formatAsPercent(num: number, defaultLocale?: string): string {
+export function formatAsPercent(
+  num: number,
+  defaultLocale?: string,
+  maximumFractionDigits?: number,
+): string {
   return new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'percent',
-    maximumFractionDigits: 2,
+    maximumFractionDigits: maximumFractionDigits ?? 3,
   }).format(num / 100);
 }
 

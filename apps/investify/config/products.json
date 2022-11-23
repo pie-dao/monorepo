@@ -6,8 +6,7 @@
     "addresses": {
       "1": { "exclude": true },
       "5": {
-        "address": "0x75b75d0D1df5d4fc97901E983006cc6f4ec22D56",
-        "stakingAddress": "0xdfA09F28cB101b4FA67c98851A4074f5084D5223"
+        "address": "0x75b75d0D1df5d4fc97901E983006cc6f4ec22D56"
       },
       "250": { "exclude": true },
       "137": { "exclude": true }
@@ -21,7 +20,10 @@
     "description": "veAUXO Token",
     "addresses": {
       "1": { "exclude": true },
-      "5": { "address": "0xdE5F653cC17dC817E7f1c9Da778126d8B1d94eb9" },
+      "5": {
+        "address": "0xdE5F653cC17dC817E7f1c9Da778126d8B1d94eb9",
+        "stakingAddress": "0xdfA09F28cB101b4FA67c98851A4074f5084D5223"
+      },
       "250": { "exclude": true },
       "137": { "exclude": true }
     },

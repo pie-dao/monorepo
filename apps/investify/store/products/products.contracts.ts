@@ -65,7 +65,7 @@ export const contractWrappers = productContracts.map((addresses) => {
 });
 
 export const stakingContract = TokenLockerAbi__factory.connect(
-  products['AUXO'].addresses[5].stakingAddress,
+  products['veAUXO'].addresses[5].stakingAddress,
   new ethers.providers.JsonRpcProvider(
     'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
   ),

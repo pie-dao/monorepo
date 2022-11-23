@@ -22,6 +22,7 @@ export type Token = {
     lockedAt: number;
     lockDuration: number;
     votingPower?: BigNumberReference;
+    delegator?: string;
   };
 };
 
