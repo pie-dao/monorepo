@@ -37,7 +37,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
 
   const votingPowerValue = useMemo(
     (): JSX.Element =>
-      (account && votingPower?.label !== 0) || veAUXOBalance.label === 0 ? (
+      (account && votingPower?.label !== 0) || veAUXOBalance?.label === 0 ? (
         <p>{formatAsPercent(votingPower.label)}</p>
       ) : account && delegator && delegator === ethers.constants.AddressZero ? (
         <a
@@ -58,7 +58,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           {t('delegatedTo', { account: trimAccount(delegator, true) })}
         </a>
       ) : null,
-    [account, delegator, votingPower, t],
+    [account, votingPower?.label, veAUXOBalance?.label, delegator, t],
   );
 
   const summaryData = useMemo(() => {
