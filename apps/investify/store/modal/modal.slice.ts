@@ -17,6 +17,7 @@ const initialState: SliceState = {
       amount: null,
       token: null,
     },
+    spender: null,
   },
 };
 
