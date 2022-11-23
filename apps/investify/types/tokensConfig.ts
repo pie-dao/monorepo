@@ -9,7 +9,6 @@ export type TokenConfig = {
       exclude?: boolean;
     };
   };
-  prospectus?: string;
   coingeckoId: string;
   investmentFocusImage?: string;
 };

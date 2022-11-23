@@ -125,6 +125,7 @@ export function useXAUXOEstimation(
     if (!amount) return zeroBalance;
     if (!fee) return amount;
     const amountBN = BigNumber.from(amount.value);
+    if (!amountBN) return zeroBalance;
 
     return toBalance(amountBN.mul(fee.value).div(100).add(amountBN), decimals);
   }, [amount, fee, decimals]);

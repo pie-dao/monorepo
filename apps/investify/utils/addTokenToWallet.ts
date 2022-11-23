@@ -1,10 +1,10 @@
 import products from '../config/products.json';
 
-const addTokenToWallet = async (
+const addToken = async (
   address: string,
   symbol: string,
   image: string,
-  decimals?: number,
+  decimals = 18,
 ) => {
   try {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -16,7 +16,7 @@ const addTokenToWallet = async (
         options: {
           address,
           symbol,
-          decimals: decimals ?? 18,
+          decimals,
           image,
         },
       },
@@ -27,28 +27,17 @@ const addTokenToWallet = async (
   }
 };
 
+type tokenName = keyof typeof products;
+
+export const addTokenToWallet = async (
+  chainId: number,
+  tokenName: tokenName,
+) => {
+  await addToken(
+    products?.[tokenName]?.addresses?.[chainId]?.address,
+    tokenName,
+    `${window.location.origin}/tokens/${tokenName}.svg`,
+  );
+};
+
 export default addTokenToWallet;
-
-export const addAuxoToWallet = async () => {
-  await addTokenToWallet(
-    '0x0000000000000000000000000000',
-    'AUXO',
-    `${window.location.origin}/images/auxoIcon.svg`,
-  );
-};
-
-export const addVeAUXOToWallet = async () => {
-  await addTokenToWallet(
-    products['veAUXO'].addresses[5].address,
-    'veAUXO',
-    `${window.location.origin}/tokens/veAUXO.svg`,
-  );
-};
-
-export const addXAUXOToWallet = async () => {
-  await addTokenToWallet(
-    products['xAUXO'].addresses[5].address,
-    'xAUXO',
-    `${window.location.origin}/tokens/xAUXO.svg`,
-  );
-};

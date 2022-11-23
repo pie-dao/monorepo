@@ -4,7 +4,7 @@ import veAUXOicon from '../public/tokens/veAUXO.svg';
 import diamond from '../public/images/icons/diamond.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import { addVeAUXOToWallet } from '../utils/addTokenToWallet';
+import addTokenToWallet from '../utils/addTokenToWallet';
 import { MetamaskIcon } from '@shared/ui-library';
 import useTranslation from 'next-translate/useTranslation';
 import Tooltip from '../components/Tooltip/Tooltip';
@@ -90,7 +90,10 @@ export default function VeAUXO({
             >
               veAUXO
             </h2>
-            <button className="flex ml-auto pr-2" onClick={addVeAUXOToWallet}>
+            <button
+              className="flex ml-auto pr-2"
+              onClick={async () => await addTokenToWallet(chainId, 'veAUXO')}
+            >
               <div className="flex gap-x-2 items-center">
                 <div className="hidden lg:flex gap-x-1">
                   <span className="text-sub-dark underline text-sm hover:text-sub-light">
