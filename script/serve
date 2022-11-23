@@ -21,4 +21,4 @@ fi
 
 cd ..
 
-nx serve backend
+nx serve ${project_names[$1]}

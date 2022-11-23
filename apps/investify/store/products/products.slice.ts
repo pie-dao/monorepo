@@ -37,7 +37,6 @@ const initialState: SliceState = {
     balance: { tokens: 0, vaults: 0, total: 0 },
   },
   activeVault: '',
-  activeToken: '',
 };
 
 const appSlice = createSlice({
@@ -241,9 +240,6 @@ const appSlice = createSlice({
     },
     setActiveVault: (state, action: PayloadAction<string>) => {
       state.activeVault = action.payload;
-    },
-    setActiveToken: (state, action: PayloadAction<string>) => {
-      state.activeToken = action.payload;
     },
   },
 });
