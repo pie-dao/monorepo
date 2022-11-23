@@ -217,7 +217,7 @@ export default function Navigation({
                             }
                           }}
                         >
-                          <div className="flex items-center justify-center w-6 h-6">
+                          <div className="flex items-center justify-center w-6 h-6 flex-shrink-0">
                             <Image
                               src={item.icon}
                               alt={item.name}
