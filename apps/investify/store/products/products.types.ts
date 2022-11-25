@@ -16,6 +16,7 @@ export type Token = {
   stakingAmount?: BigNumberReference;
   totalSupply?: BigNumberReference;
   stakingToken?: string;
+  votingAddresses?: number;
   fee?: BigNumberReference;
   userStakingData?: {
     amount: BigNumberReference;

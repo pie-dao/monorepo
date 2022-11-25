@@ -216,14 +216,38 @@ export const thunkGetUserProductsData = createAsyncThunk(
 export const thunkGetVeAUXOStakingData = createAsyncThunk(
   THUNKS.GET_VE_AUXO_STAKING_DATA,
   async () => {
+    const depositedFilter = stakingContract.filters.Deposited();
+
     const results = promiseObject({
       stakingAmount: contractWrappers[0].balanceOf(stakingContract.address),
       stakingToken: stakingContract.depositToken(),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
+      tokensDeposited: stakingContract.queryFilter(depositedFilter),
     });
 
     const stakingData = await results;
+
+    const uniqueAddresses = new Set<string>();
+    stakingData.tokensDeposited.map(({ args }) => {
+      uniqueAddresses.add(args.owner);
+    });
+
+    const checkForCurrentVotingPower = async () => {
+      let totalVotingAdresses = 0;
+      const currentVotingPower = [...uniqueAddresses].map(async (address) => {
+        await veAUXOContract.getVotes(address).then((votePower) => {
+          if (!votePower.isZero()) {
+            totalVotingAdresses++;
+          }
+        });
+        return totalVotingAdresses;
+      });
+      await Promise.all(currentVotingPower);
+      return totalVotingAdresses;
+    };
+
+    const currentVotingPower = await checkForCurrentVotingPower();
 
     return {
       ['veAUXO']: {
@@ -233,6 +257,7 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
         ),
         stakingToken: stakingData.stakingToken,
         totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
+        votingAddresses: currentVotingPower,
       },
     };
   },

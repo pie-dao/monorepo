@@ -43,11 +43,15 @@ export default function VeAUXO({
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
   const stakingAmount = useAppSelector(
-    (state) => state.dashboard?.tokens[tokenConfig.name]?.stakingAmount,
+    (state) => state.dashboard?.tokens?.[tokenConfig.name]?.stakingAmount,
   );
 
   const totalSupply = useAppSelector(
-    (state) => state.dashboard?.tokens[tokenConfig.name]?.totalSupply,
+    (state) => state.dashboard?.tokens?.[tokenConfig.name]?.totalSupply,
+  );
+
+  const votingAddresses = useAppSelector(
+    (state) => state.dashboard?.tokens?.[tokenConfig.name]?.votingAddresses,
   );
 
   const userLockDuration = useUserLockDurationInSeconds('veAUXO');
@@ -162,7 +166,7 @@ export default function VeAUXO({
             </div>
 
             <div className="flex flex-col py-1">
-              {!totalSupply ? (
+              {!votingAddresses ? (
                 <>
                   <BaseSubDarkTextSkeleton />
                   <BoldSubDarkTextSkeleton />
@@ -170,13 +174,7 @@ export default function VeAUXO({
               ) : (
                 <>
                   <p className="font-bold text-sub-dark sm:text-xl">
-                    {isError ||
-                    !data?.getTreasury?.marketData?.capitalUtilisation
-                      ? 'N/A'
-                      : formatAsPercent(
-                          data.getTreasury.marketData.capitalUtilisation,
-                          defaultLocale,
-                        )}
+                    {!votingAddresses ? 'N/A' : votingAddresses}
                   </p>
                   <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
                     {t('votingAddresses')}
