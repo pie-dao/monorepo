@@ -21,7 +21,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'http://bore.pub:41339';
+const localRPC = 'http://bore.pub:36241';
 
 const selectedNetwork = 1;
 
