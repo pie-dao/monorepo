@@ -160,10 +160,3 @@ export function useXAUXOTokenContract() {
   const { chainId } = useWeb3React();
   return useXAUXOContract(tokensConfig['xAUXO']?.addresses[chainId]?.address);
 }
-
-export function useStakingManagerContract(token?: string) {
-  const { chainId } = useWeb3React();
-  return useStakingManager(
-    tokensConfig[token]?.addresses[chainId]?.stakingAddress,
-  );
-}

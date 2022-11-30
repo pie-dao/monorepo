@@ -6,3 +6,14 @@ export function addMonths(numOfMonths: number, date = new Date()) {
   dateCopy.setSeconds(dateCopy.getSeconds() + addMonthsInSecs);
   return dateCopy;
 }
+
+export function formatDate(
+  date: string | number | Date,
+  defaultLocale = 'en-US',
+) {
+  return new Date(date).toLocaleDateString(defaultLocale, {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}

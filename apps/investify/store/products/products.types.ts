@@ -122,5 +122,4 @@ export type SliceState = {
   stats: Stats;
   loading: boolean;
   activeVault: string;
-  activeToken: string;
 };
