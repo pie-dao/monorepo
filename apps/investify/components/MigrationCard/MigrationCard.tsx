@@ -3,6 +3,8 @@ import useTranslation from 'next-translate/useTranslation';
 import Lock from '../Lock/Lock';
 import { formatDate } from '../../utils/dates';
 import classNames from '../../utils/classnames';
+import { formatBalance } from '../../utils/formatBalance';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type Props = {
   title: string;
@@ -23,38 +25,9 @@ const MigrationCard: React.FC<Props> = ({
 }) => {
   const { t } = useTranslation('migration');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const veDOUGHPositions = [
-    {
-      vested: formatDate('2021-10-01', defaultLocale),
-      end: formatDate('2021-10-11', defaultLocale),
-      amount: 2321,
-    },
-    {
-      vested: formatDate('2021-10-01', defaultLocale),
-      end: formatDate('2021-10-11', defaultLocale),
-      amount: 2321,
-    },
-    {
-      vested: formatDate('2021-10-01', defaultLocale),
-      end: formatDate('2021-10-11', defaultLocale),
-      amount: 2321,
-    },
-    {
-      vested: formatDate('2021-10-01', defaultLocale),
-      end: formatDate('2021-10-11', defaultLocale),
-      amount: 2321,
-    },
-    {
-      vested: formatDate('2021-10-01', defaultLocale),
-      end: formatDate('2021-10-11', defaultLocale),
-      amount: 2321,
-    },
-    {
-      vested: formatDate('2021-10-01', defaultLocale),
-      end: formatDate('2021-10-11', defaultLocale),
-      amount: 2321,
-    },
-  ];
+  const { positions, loadingPositions } = useAppSelector(
+    (state) => state.migration,
+  );
 
   return (
     <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center divide-y w-full font-medium">
@@ -64,29 +37,41 @@ const MigrationCard: React.FC<Props> = ({
       </div>
       <div className="flex w-full flex-col pt-4 text-center">
         <p className="text-base text-secondary">{t(description)}</p>
-        <div className="flex flex-col gap-y-2 mt-4 max-h-36 pr-4 overflow-y-scroll p-2">
-          {veDOUGHPositions.map(({ vested, end, amount }, i) => (
-            <div
-              key={i}
-              className={classNames(
-                'flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-primary rounded-sm',
-                i !== 0 && isSingleLock && 'opacity-30',
-              )}
-            >
-              <div className="flex flex-shrink-0 w-5 h-5">
-                <Lock isCompleted={false} />
+        <div className="flex flex-col gap-y-2 mt-4 h-36 pr-4 overflow-y-scroll p-2">
+          {loadingPositions && (
+            <LoadingSpinner className="self-center h-full w-full" />
+          )}
+          {positions &&
+            positions.map(({ amount, lockDuration, lockedAt }, i) => (
+              <div
+                key={i}
+                className={classNames(
+                  'w-full flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-primary rounded-sm',
+                  i !== 0 && isSingleLock && 'opacity-30',
+                )}
+              >
+                <div className="flex flex-shrink-0 w-5 h-5">
+                  <Lock isCompleted={false} />
+                </div>
+                <p className="font-normal">
+                  <span className="font-medium">{t('vested')}</span>:{' '}
+                  {formatDate(lockedAt * 1000, defaultLocale)}
+                </p>
+                <p className="font-normal">
+                  <span className="font-medium">{t('end')}</span>:{' '}
+                  {formatDate(
+                    lockedAt * 1000 + lockDuration * 1000,
+                    defaultLocale,
+                  )}
+                </p>
+                <p className="ml-auto font-medium">
+                  <>
+                    {formatBalance(amount.label, defaultLocale, 2, 'compact')}{' '}
+                    {t('veDOUGH')}
+                  </>
+                </p>
               </div>
-              <p className="font-normal">
-                <span className="font-medium">{t('vested')}</span>: {vested}
-              </p>
-              <p className="font-normal">
-                <span className="font-medium">{t('end')}</span>: {end}
-              </p>
-              <p className="ml-auto font-medium">
-                {amount} {t('veDOUGH')}
-              </p>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 

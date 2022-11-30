@@ -11,10 +11,12 @@ import {
   XAUXOAbi__factory,
   StakingManagerAbi__factory,
   VeAUXOAbi__factory,
+  SharesTimeLockAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
 import products from '../../config/products.json';
+import migration from '../../config/migration.json';
 import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
@@ -83,6 +85,11 @@ export const xAUXOContract = XAUXOAbi__factory.connect(
 
 export const xAUXOStakingManager = StakingManagerAbi__factory.connect(
   products['xAUXO'].addresses[selectedNetwork].stakingAddress,
+  new ethers.providers.JsonRpcProvider(localRPC),
+);
+
+export const veDOUGHSharesTimeLock = SharesTimeLockAbi__factory.connect(
+  migration['veDOUGH'].addresses[selectedNetwork].stakingAddress,
   new ethers.providers.JsonRpcProvider(localRPC),
 );
 

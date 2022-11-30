@@ -1,10 +1,17 @@
+import classNames from '../../utils/classnames';
+
 const LoadingSpinner: React.FC<{
   className?: string;
   spinnerClass?: string;
   fill?: string;
   stroke?: string;
-}> = ({ spinnerClass, stroke }) => (
-  <span className={'flex justify-center align-middle items-center'}>
+}> = ({ spinnerClass, stroke, className }) => (
+  <span
+    className={classNames(
+      'flex justify-center align-middle items-center',
+      className,
+    )}
+  >
     <svg
       className={'animate-spin h-5 w-5 text-white' + spinnerClass}
       xmlns="http://www.w3.org/2000/svg"

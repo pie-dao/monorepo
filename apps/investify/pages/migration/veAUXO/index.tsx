@@ -1,14 +1,24 @@
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { Layout } from '../../../components';
 import { wrapper } from '../../../store';
 import ChooseMigration from '../../../components/veAUXOMigration/ChooseMigration';
 import ConfirmMigration from '../../../components/veAUXOMigration/ConfirmMigration';
-import { useAppSelector } from '../../../hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { STEPS_LIST } from '../../../store/migration/migration.types';
 import SelectWalletMigration from '../../../components/SelectWalletMigration/SelectWalletMigration';
+import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.thunks';
+import { useWeb3React } from '@web3-react/core';
 
 export default function Migration() {
   const { currentStep } = useAppSelector((state) => state.migration);
+  const dispatch = useAppDispatch();
+  const { account } = useWeb3React();
+
+  useEffect(() => {
+    if (account) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account }));
+    }
+  }, [account, dispatch]);
 
   const getStep = () => {
     switch (currentStep) {
