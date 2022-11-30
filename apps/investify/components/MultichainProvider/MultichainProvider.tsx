@@ -1,7 +1,6 @@
 import React from 'react';
 import { ethers } from 'ethers';
-import { RPC_URLS } from '../../connectors';
-import { SUPPORTED_CHAINS } from '../../utils/networks';
+import { SUPPORTED_CHAINS, RPC_URLS } from '../../utils/networks';
 import { LibraryProvider } from '../../types/utilities';
 
 /**

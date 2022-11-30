@@ -26,7 +26,7 @@ export default function Layout({ children }) {
     dispatch(thunkGetProductsData());
     dispatch(thunkGetVeAUXOStakingData());
     dispatch(thunkGetXAUXOStakingData());
-    dispatch(thunkGetVaultsData());
+    // dispatch(thunkGetVaultsData());
     if (account) {
       thunkGetUserProductsData({ account });
       thunkGetUserStakingData({ account });
@@ -38,7 +38,7 @@ export default function Layout({ children }) {
       library.getBlockNumber().then(() => {
         updateOnBlock();
       });
-      library.on('block', updateOnBlock);
+      //     library.on('block', updateOnBlock);
       return () => {
         library.removeListener('block', updateOnBlock);
       };

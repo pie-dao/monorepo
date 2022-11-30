@@ -19,6 +19,10 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
+const localRPC = 'http://bore.pub:41339';
+
+const selectedNetwork = 1;
+
 const _config = config as MultiChainWrapperConfig;
 
 const mcw = new MultiChainContractWrapper(_config);
@@ -56,40 +60,30 @@ export const underlyingContractsPolygon = Object.entries(Polygon).map(
 
 export const contractWrappers = productContracts.map((addresses) => {
   const contract = Erc20Abi__factory.connect(
-    addresses[5].address,
-    new ethers.providers.JsonRpcProvider(
-      'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
-    ),
+    addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
   );
   return mcw.wrap(contract, addresses);
 });
 
 export const stakingContract = TokenLockerAbi__factory.connect(
-  products['veAUXO'].addresses[5].stakingAddress,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
-  ),
+  products['veAUXO'].addresses[selectedNetwork].stakingAddress,
+  new ethers.providers.JsonRpcProvider(localRPC),
 );
 
 export const veAUXOContract = VeAUXOAbi__factory.connect(
-  products['veAUXO'].addresses[5].address,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
-  ),
+  products['veAUXO'].addresses[selectedNetwork].address,
+  new ethers.providers.JsonRpcProvider(localRPC),
 );
 
 export const xAUXOContract = XAUXOAbi__factory.connect(
-  products['xAUXO'].addresses[5].address,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
-  ),
+  products['xAUXO'].addresses[selectedNetwork].address,
+  new ethers.providers.JsonRpcProvider(localRPC),
 );
 
 export const xAUXOStakingManager = StakingManagerAbi__factory.connect(
-  products['xAUXO'].addresses[5].stakingAddress,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
-  ),
+  products['xAUXO'].addresses[selectedNetwork].stakingAddress,
+  new ethers.providers.JsonRpcProvider(localRPC),
 );
 
 export const FTMContractWrappers = FTMContracts.map((address) => {

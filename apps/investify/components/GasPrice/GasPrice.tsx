@@ -13,15 +13,15 @@ export default function GasPrice() {
       setGasPrice(formatted.toFixed());
     };
 
-    if (library) {
-      library.getBlockNumber().then(() => {
-        getGasPrice();
-      });
-      library.on('block', getGasPrice);
-      return () => {
-        library.removeListener('block', getGasPrice);
-      };
-    }
+    // if (library) {
+    //   library.getBlockNumber().then(() => {
+    //     getGasPrice();
+    //   });
+    //   library.on('block', getGasPrice);
+    //   return () => {
+    //     library.removeListener('block', getGasPrice);
+    //   };
+    // }
   }, [gasPrice, library, setGasPrice]);
   if (!gasPrice) return null;
 
