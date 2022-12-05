@@ -6,22 +6,29 @@ import {
   setCurrentStep,
   setPreviousStep,
 } from '../../store/migration/migration.slice';
+import { STEPS_LIST } from '../../store/migration/migration.types';
 
 type Props = {
   token?: string;
+  goTo?: STEPS_LIST;
 };
 
-const BackBar: React.FC<Props> = ({ token }) => {
+const BackBar: React.FC<Props> = ({ goTo }) => {
   const { t } = useTranslation();
   const { currentStep } = useAppSelector((state) => state.migration);
   const dispatch = useAppDispatch();
 
   const goBack = () => {
-    if (currentStep === 1) {
+    if (
+      currentStep === STEPS_LIST.CHOOSE_MIGRATION_TYPE ||
+      currentStep === STEPS_LIST.MIGRATE_SUCCESS
+    ) {
       router.push('/migration');
+      dispatch(setCurrentStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE));
+      dispatch(setPreviousStep(null));
     } else {
-      dispatch(setCurrentStep(currentStep - 1));
-      dispatch(setPreviousStep(currentStep - 1));
+      dispatch(setCurrentStep(goTo ? goTo : currentStep - 1));
+      dispatch(setPreviousStep(goTo ? goTo - 1 : currentStep - 1));
     }
   };
 

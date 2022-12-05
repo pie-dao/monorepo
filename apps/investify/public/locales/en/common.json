@@ -9,6 +9,7 @@
   "quote": "quote",
   "swap": "swap",
   "switchNetwork": "Switch Network",
+  "wallet": "Wallet",
   "connect": "Connect",
   "connectWallet": "Connect Wallet",
   "connectingWallet": "Awaiting confirmation",
@@ -158,5 +159,10 @@
   "withdrawToken": "Withdraw ${token}",
   "delegatedTo": "Delegated to ${account}",
   "notDelegated": "Delegate your voting power",
-  "back": "Back"
+  "back": "Back",
+  "keepLiquidity": "Keep liquidity",
+  "noStakeTime": "No stake time",
+  "veAUXO": "veAUXO",
+  "xAUXO": "xAUXO",
+  "migration": "Migration"
 }

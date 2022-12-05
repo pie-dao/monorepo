@@ -12,8 +12,10 @@ import {
   TokenLockerAbi__factory,
   StakingManagerAbi__factory,
   XAUXOAbi__factory,
+  UpgradoorAbi__factory,
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
+import migration from '../config/migration.json';
 
 function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
@@ -122,6 +124,21 @@ export function useStakingContract(address?: string) {
   }, [address, library, account, active]);
 }
 
+export function useUpgradoorContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return UpgradoorAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
 export function useStakingManager(address?: string) {
   const { library, account, active } = useWeb3React();
   return useMemo(() => {
@@ -159,4 +176,11 @@ export function useStakingTokenContract(token?: string) {
 export function useXAUXOTokenContract() {
   const { chainId } = useWeb3React();
   return useXAUXOContract(tokensConfig['xAUXO']?.addresses[chainId]?.address);
+}
+
+export function useUpgradoor() {
+  const { chainId } = useWeb3React();
+  return useUpgradoorContract(
+    migration['veDOUGH']?.addresses?.[chainId]?.upgradoorAddress,
+  );
 }

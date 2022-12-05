@@ -6,6 +6,7 @@ module.exports = {
     '*': ['common', 'dashboard'],
     '/migration': ['migration'],
     '/migration/veAUXO': ['migration'],
+    '/migration/xAUXO': ['migration'],
   },
   interpolation: {
     prefix: '${',

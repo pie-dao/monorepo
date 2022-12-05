@@ -1,5 +1,4 @@
 import { ReactElement, useEffect, useMemo } from 'react';
-import { useWeb3React } from '@web3-react/core';
 import { Layout } from '../../../components';
 import { wrapper } from '../../../store';
 import ChooseMigration from '../../../components/veAUXOMigration/ChooseMigration';
@@ -8,8 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { STEPS_LIST } from '../../../store/migration/migration.types';
 import SelectWalletMigration from '../../../components/SelectWalletMigration/SelectWalletMigration';
 import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.thunks';
+import { useWeb3React } from '@web3-react/core';
 import MigrationCompleted from '../../../components/MigrationCompleted/MigrationCompleted';
-import { thunkGetUserProductsData } from '../../../store/products/thunks';
 
 export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
   const { currentStep } = useAppSelector((state) => state.migration);
@@ -19,7 +18,6 @@ export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
   useEffect(() => {
     if (account) {
       dispatch(ThunkGetVeDOUGHStakingData({ account }));
-      dispatch(thunkGetUserProductsData({ account }));
     }
   }, [account, dispatch]);
 
@@ -49,7 +47,7 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
     props: {
       title: 'migration',
-      token: 'veAUXO',
+      token: 'xAUXO',
     },
   };
 });

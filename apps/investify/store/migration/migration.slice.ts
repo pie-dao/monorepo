@@ -1,15 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ThunkGetVeDOUGHStakingData } from './migration.thunks';
+import addTxNotifications from '../../utils/notifications';
+import {
+  ThunkGetVeDOUGHStakingData,
+  ThunkMigrateVeDOUGH,
+  ThunkPreviewMigration,
+} from './migration.thunks';
 import { SliceState, STEPS_LIST } from './migration.types';
 
 const initialState: SliceState = {
   isFirstTimeMigration: true,
-  currentStep: STEPS_LIST.CHOOSE_MIGRATION_TYPE_VE_AUXO,
+  currentStep: STEPS_LIST.CHOOSE_MIGRATION_TYPE,
   previousStep: null,
-  migrateTo: null,
+  isSingleLock: false,
   destinationWallet: null,
   loadingPositions: false,
+  loadingPreview: false,
   positions: [],
+  estimatedOutput: null,
+  tx: {
+    hash: null,
+    status: null,
+  },
 };
 
 export const migrationSlice = createSlice({
@@ -32,6 +43,22 @@ export const migrationSlice = createSlice({
       });
       state.loadingPositions = false;
     });
+
+    builder.addCase(ThunkPreviewMigration.pending, (state) => {
+      state.loadingPreview = true;
+    });
+
+    builder.addCase(ThunkPreviewMigration.rejected, (state, action) => {
+      console.error(action.error);
+      state.loadingPreview = false;
+    });
+
+    builder.addCase(ThunkPreviewMigration.fulfilled, (state, action) => {
+      state.loadingPreview = false;
+      state.estimatedOutput = action.payload;
+    });
+
+    addTxNotifications(builder, ThunkMigrateVeDOUGH, 'ThunkMigrateVeDOUGH');
   },
 
   reducers: {
@@ -50,9 +77,6 @@ export const migrationSlice = createSlice({
     ) => {
       state.previousStep = action.payload;
     },
-    setMigrateTo: (state, action: PayloadAction<SliceState['migrateTo']>) => {
-      state.migrateTo = action.payload;
-    },
     setDestinationWallet: (state, action: PayloadAction<string>) => {
       state.destinationWallet = action.payload;
     },
@@ -62,6 +86,24 @@ export const migrationSlice = createSlice({
     ) => {
       state.positions = action.payload;
     },
+    setSingleLock: (state, action: PayloadAction<boolean>) => {
+      state.isSingleLock = action.payload;
+    },
+    setEstimatedOutput: (
+      state,
+      action: PayloadAction<SliceState['estimatedOutput']>,
+    ) => {
+      state.estimatedOutput = action.payload;
+    },
+    setTx: (state, action: PayloadAction<SliceState['tx']>) => {
+      state.tx = action.payload;
+    },
+    setTxHash: (state, action: PayloadAction<string>) => {
+      state.tx.hash = action.payload;
+    },
+    setTxState: (state, action: PayloadAction<SliceState['tx']['status']>) => {
+      state.tx.status = action.payload;
+    },
   },
 });
 
@@ -70,5 +112,9 @@ export const {
   setCurrentStep,
   setPreviousStep,
   setDestinationWallet,
+  setSingleLock,
+  setTx,
+  setTxHash,
+  setTxState,
 } = migrationSlice.actions;
 export default migrationSlice.reducer;

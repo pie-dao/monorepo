@@ -31,7 +31,7 @@
   "lockAmount": "You have ${locks} locks vested",
   "timeToMigrate": "Time to migrate",
   "timeToMigrateSubtitle": "⚠️ Migration is available until XX-WW-YYYY After that you will not be able to migrate.",
-  "vested": "Vested",
+  "vested": "Start",
   "end": "End",
   "veDOUGH": "veDOUGH",
   "migrateOneLock": "Migrate single lock",
@@ -50,5 +50,11 @@
   "differentWalletSubtitle": "Use different wallet",
   "differentWalletAddress": "Type wallet address:",
   "differentWalletButton": "Use this wallet",
-  "smartContractAddressNotAllowed": "⚠️ Smart contract wallet like Argent or Gnosis Safe are not allowed."
+  "smartContractAddressNotAllowed": "⚠️ Smart contract wallet like Argent or Gnosis Safe are not allowed.",
+  "noLocks": "You have no veDOUGH positions",
+  "oneLock": "You have one veDOUGH position",
+  "multipleLocks": "You have ${locks} veDOUGH positions",
+  "withoutBoost": "⚠️ Without boost, the vesting end date will be the longest among your veDOUGH locks.",
+  "boostToMax": "Boost to max (36 months)",
+  "veDOUGHToToken": "DOUGH to ${tokenOut}"
 }

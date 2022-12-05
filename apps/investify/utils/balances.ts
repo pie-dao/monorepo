@@ -66,3 +66,8 @@ export const convertToUnderlying = (
 
 export const BigNumberMin = (b1: BigNumber, b2: BigNumber): BigNumber =>
   b1.gt(b2) ? b2 : b1;
+
+export const isZero = (b: BigNumberReference, decimals: number): boolean => {
+  const value = ethers.utils.parseUnits(b.value, decimals ?? 18);
+  return value.isZero();
+};

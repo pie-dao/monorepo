@@ -4,19 +4,38 @@ import Heading from '../Heading/Heading';
 import MigrationCard from '../MigrationCard/MigrationCard';
 import {
   setCurrentStep,
+  setDestinationWallet,
   setPreviousStep,
+  setSingleLock,
 } from '../../store/migration/migration.slice';
 import { STEPS_LIST } from '../../store/migration/migration.types';
 import { useAppDispatch } from '../../hooks';
+import { useWeb3React } from '@web3-react/core';
+import { useTokenBalance } from '../../hooks/useToken';
+import { isZero } from '../../utils/balances';
 
-const ChooseMigration: React.FC = () => {
+type Props = {
+  token: string;
+};
+
+const ChooseMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
   const dispatch = useAppDispatch();
+  const { account } = useWeb3React();
+  const noLocks = isZero(useTokenBalance(token), 18);
 
-  const goToAllLocks = () => {
-    dispatch(setPreviousStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE_VE_AUXO));
-    dispatch(setCurrentStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE_VE_AUXO + 1));
+  const nextStep = (isSingleLock: boolean) => {
+    dispatch(setSingleLock(isSingleLock));
+    dispatch(setPreviousStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE));
+    if (isSingleLock) {
+      dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SELECT_WALLET));
+    } else {
+      dispatch(setDestinationWallet(account));
+      dispatch(setCurrentStep(STEPS_LIST.MIGRATE_CONFIRM));
+    }
   };
+
+  const notVeAuxoOrNoLocks = token !== 'veAUXO' && !noLocks;
 
   return (
     <>
@@ -24,23 +43,25 @@ const ChooseMigration: React.FC = () => {
         title={t('timeToMigrate')}
         subtitle={t('timeToMigrateSubtitle')}
       />
-      <BackBar token="veAUXO" />
-      <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 text-xs md:text-inherit mt-6">
-        <MigrationCard
-          title={t('migrateMultipleLocks')}
-          description={t('migrateMultipleLocksDescription')}
-          subtitle={t('migrateMultipleLocksSubtitle')}
-          tokenOut="veAUXO"
-          isSingleLock={false}
-          goToStep={goToAllLocks}
-        />
+      <BackBar />
+      <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
+        {notVeAuxoOrNoLocks && (
+          <MigrationCard
+            title={t('migrateMultipleLocks')}
+            description={t('migrateMultipleLocksDescription')}
+            subtitle={t('migrateMultipleLocksSubtitle')}
+            tokenOut={token}
+            isSingleLock={false}
+            goToStep={() => nextStep(false)}
+          />
+        )}
         <MigrationCard
           title={t('migrateOneLock')}
           description={t('migrateOneLockDescription')}
           subtitle={t('migrateOneLockSubtitle')}
-          tokenOut="veAUXO"
+          tokenOut={token}
           isSingleLock={true}
-          goToStep={() => null}
+          goToStep={() => nextStep(true)}
         />
       </section>
     </>

@@ -1,15 +1,27 @@
 import Heading from '../../components/Heading/Heading';
 import useTranslation from 'next-translate/useTranslation';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement, useEffect, useMemo } from 'react';
 import { Layout } from '../../components';
 import { wrapper } from '../../store';
 import MigrationCardOption from '../../components/MigrationCardOption/MigrationCardOption';
 import veAUXOIcon from '../../public/tokens/veAUXO.svg';
 import XAUXOIcon from '../../public/tokens/xAUXO.svg';
 import Image from 'next/image';
+import { useWeb3React } from '@web3-react/core';
+import { useAppDispatch } from '../../hooks';
+import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thunks';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
+
+  const dispatch = useAppDispatch();
+  const { account } = useWeb3React();
+
+  useEffect(() => {
+    if (account) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account }));
+    }
+  }, [account, dispatch]);
 
   const migrationCardsContent = useMemo(() => {
     return [
@@ -108,7 +120,7 @@ export default function Migration() {
         title={t('timeToMigrate')}
         subtitle={t('timeToMigrateSubtitle')}
       />
-      <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 text-xs md:text-inherit mt-6">
+      <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         {migrationCardsContent.map((card) => (
           <MigrationCardOption key={card.title} {...card} />
         ))}
@@ -123,9 +135,8 @@ Migration.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
-    // does not seem to work with key `initialState`
     props: {
-      title: 'Migration',
+      title: 'migration',
     },
   };
 });
