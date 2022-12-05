@@ -1,5 +1,6 @@
 import { Id, toast, ToastContainer } from 'react-toastify';
 import Trans from 'next-translate/Trans';
+import { XIcon } from '@heroicons/react/solid';
 
 export const pendingNotification = ({
   title,
@@ -25,7 +26,7 @@ export const pendingNotification = ({
     </>,
     {
       type: 'default',
-      autoClose: 10_000,
+      autoClose: false,
       toastId: `${id}Pending`,
     },
   );
@@ -41,7 +42,12 @@ export const NotificationDisplay = () => (
     pauseOnFocusLoss
     draggable
     pauseOnHover
+    closeButton={CloseButton}
   />
+);
+
+export const CloseButton = ({ closeToast }) => (
+  <XIcon className="w-5 h-5 text-sub-dark" onClick={closeToast} />
 );
 
 export const depositSuccessNotification = () => {
