@@ -4,6 +4,8 @@ module.exports = {
   localeDetection: false,
   pages: {
     '*': ['common', 'dashboard'],
+    '/migration': ['migration'],
+    '/migration/veAUXO': ['migration'],
   },
   interpolation: {
     prefix: '${',

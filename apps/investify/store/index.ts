@@ -10,6 +10,7 @@ import modalReducer from './modal/modal.slice';
 import preferencesReducer from './preferences/preferences.slice';
 import productsReducer from './products/products.slice';
 import notificationsReducer from './notifications/notifications.slice';
+import migrationReducer from './migration/migration.slice';
 import { api } from '../api/generated/graphql';
 import { merge } from 'lodash';
 import memoize from 'proxy-memoize';
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
   preferences: preferencesReducer,
   dashboard: productsReducer,
   notifications: notificationsReducer,
+  migration: migrationReducer,
   [api.reducerPath]: api.reducer,
 });
 

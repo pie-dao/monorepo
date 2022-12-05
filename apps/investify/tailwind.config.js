@@ -53,6 +53,11 @@ module.exports = {
           rgba(11, 221, 145, 0.6) 100%
         );`,
         'dashboard-card': `url('/credit_card.png')`,
+        'gradient-major-colors': `linear-gradient(
+          90deg,
+          rgb(var(--color-secondary)) 0%,
+          rgb(var(--color-green)) 100%
+        )`,
       },
     },
   },

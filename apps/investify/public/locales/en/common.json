@@ -157,5 +157,6 @@
   "boostNow": "Boost now",
   "withdrawToken": "Withdraw ${token}",
   "delegatedTo": "Delegated to ${account}",
-  "notDelegated": "Delegate your voting power"
+  "notDelegated": "Delegate your voting power",
+  "back": "Back"
 }

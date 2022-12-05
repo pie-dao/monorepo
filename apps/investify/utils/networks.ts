@@ -13,7 +13,7 @@ export type SupportedChains = ValueOf<typeof SUPPORTED_CHAINS>;
 export const RPC_URLS =
   process.env.NEXT_PUBLIC_TESTNET === 'true'
     ? {
-        1: 'https://fifty-impalas-enter-94-62-202-181.loca.lt',
+        1: 'http://127.0.0.1:8545/',
         5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'http://127.0.0.1:8546',

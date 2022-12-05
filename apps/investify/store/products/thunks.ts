@@ -98,6 +98,7 @@ export const thunkGetUserProductsData = createAsyncThunk(
     if (!account) return;
     const productDataResults = await Promise.allSettled(
       contractWrappers.map((contractWrapper) => {
+        console.log(contractWrapper);
         const results = promiseObject({
           balances: contractWrapper.multichain.balanceOf(account),
           productDecimals: contractWrapper.decimals(),
