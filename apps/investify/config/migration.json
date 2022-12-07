@@ -11,7 +11,9 @@
       },
       "5": {
         "address": null,
-        "exclude": true
+        "exclude": true,
+        "stakingAddress": "0x0000000000000000000000000000000000000000",
+        "upgradoorAddress": null
       },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }

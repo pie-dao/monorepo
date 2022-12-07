@@ -19,7 +19,7 @@ export const RPC_URLS =
         250: 'http://127.0.0.1:8546',
       }
     : {
-        1: 'http://188.166.45.35:34529',
+        1: 'https://cloudflare-eth.com/',
         5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'https://rpc.ankr.com/fantom',

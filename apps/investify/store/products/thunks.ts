@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, BigNumberish, BytesLike, ethers } from 'ethers';
+import { BigNumber, BigNumberish, BytesLike, constants, ethers } from 'ethers';
 import {
   YieldvaultAbi,
   Erc20Abi,
@@ -7,6 +7,7 @@ import {
   TokenLockerAbi,
   XAUXOAbi,
   VeAUXOAbi,
+  AUXOAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -31,6 +32,9 @@ import { calculateSharesAvailable } from '../../utils/sharesAvailable';
 import { pendingNotification } from '../../components/Notifications/Notifications';
 import { setStep, setTx, setTxHash, setTxState } from '../modal/modal.slice';
 import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
+import { getPermitSignature } from '../../utils/permit';
+import { JsonRpcSigner } from '@ethersproject/providers';
+import { ONE_HOUR_DEADLINE } from '../../utils/constants';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -844,24 +848,46 @@ export const thunkApproveToken = createAsyncThunk(
  * Actually make the deposit of underlying tokens into the auxo vault
  */
 export type ThunkStakeAuxoProps = {
+  signer: JsonRpcSigner;
   deposit: BigNumberReference;
   stakingTime: BigNumberish;
   tokenLocker: TokenLockerAbi | undefined;
+  AUXOToken: AUXOAbi;
   account: string | null | undefined;
 };
 export const thunkStakeAuxo = createAsyncThunk(
   THUNKS.STAKE_AUXO,
   async (
-    { deposit, tokenLocker, account, stakingTime }: ThunkStakeAuxoProps,
+    {
+      deposit,
+      tokenLocker,
+      account,
+      stakingTime,
+      signer,
+      AUXOToken,
+    }: ThunkStakeAuxoProps,
     { rejectWithValue, dispatch },
   ) => {
     if (!tokenLocker || !account || !stakingTime || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
-    const tx = await tokenLocker.depositByMonths(
+
+    const { r, v, s } = await getPermitSignature(
+      signer,
+      AUXOToken,
+      tokenLocker.address,
+      deposit.value,
+      constants.MaxUint256,
+    );
+
+    const tx = await tokenLocker.depositByMonthsWithSignature(
       deposit.value,
       stakingTime,
-      account,
+      signer._address,
+      constants.MaxUint256,
+      v,
+      r,
+      s,
     );
 
     const { hash } = tx;
@@ -892,22 +918,39 @@ export const thunkStakeAuxo = createAsyncThunk(
 export type ThunkIncreaseStakeAuxoProps = {
   deposit: BigNumberReference;
   tokenLocker: TokenLockerAbi | undefined;
-  account: string;
+  signer: JsonRpcSigner;
+  AUXOToken: AUXOAbi;
 };
 
 export const thunkIncreaseStakeAuxo = createAsyncThunk(
   THUNKS.STAKE_AUXO,
   async (
-    { account, deposit, tokenLocker }: ThunkIncreaseStakeAuxoProps,
+    { signer, deposit, tokenLocker, AUXOToken }: ThunkIncreaseStakeAuxoProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!tokenLocker || !account || !deposit)
+    if (!tokenLocker || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
 
-    const tx = await tokenLocker.increaseAmount(deposit.value);
+    const deadline = Math.floor(
+      Date.now() / 1000 + ONE_HOUR_DEADLINE,
+    ).toString();
 
-    // set block explorer transaction hash
+    const { r, v, s } = await getPermitSignature(
+      signer,
+      AUXOToken,
+      tokenLocker.address,
+      deposit.value,
+      deadline,
+    );
+
+    const tx = await tokenLocker.increaseAmountWithSignature(
+      deposit.value,
+      deadline,
+      v,
+      r,
+      s,
+    );
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
@@ -922,10 +965,10 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.STAKE_COMPLETED));
       dispatch(thunkGetVeAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(thunkGetUserStakingData({ account: signer._address }));
       dispatch(
         thunkGetUserProductsData({
-          account,
+          account: signer._address,
           spender: tokenLocker.address,
         }),
       );

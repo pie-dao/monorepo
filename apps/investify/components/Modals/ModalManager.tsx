@@ -4,7 +4,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Dialog } from '@headlessui/react';
 import { STEPS } from '../../store/modal/modal.types';
 import { setIsOpen, setTx } from '../../store/modal/modal.slice';
-import Approve from './ModalSteps/Approve';
 import StakeComplete from './ModalSteps/StakeComplete';
 import StakeConfirm from './ModalSteps/StakeConfirm';
 import SwapConfirm from './ModalSteps/xAUXO/SwapConfirm';
@@ -36,7 +35,6 @@ export default function ModalManager() {
           <div className="flex min-h-full items-center justify-center p-2 text-center">
             <Dialog.Panel className="w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl">
               <ModalBox>
-                {step === STEPS.APPROVE_TOKEN && <Approve />}
                 {step === STEPS.CONFIRM_STAKE_VEAUXO && <StakeConfirm />}
                 {step === STEPS.CONFIRM_STAKE_XAUXO && <SwapConfirm />}
                 {step === STEPS.STAKE_COMPLETED && <StakeComplete />}

@@ -146,6 +146,7 @@
   "stakeToken": "Stake ${token}",
   "approveTokenModalDescription": "You need to approve ${token} to be able to stake it",
   "stakeTokenModalDescription": "You are about to stake ${token} for ${months} months",
+  "stakeTokenIncreaseAmountModalDescription": "You are about to stake more ${token}",
   "stakeCompletedModalDescription": "You have successfully staked ${token}",
   "stakeVeAUXOCompletedModalDescription": "You have successfully staked ${token} for ${months} months",
   "monthsAmount": "${count} months",

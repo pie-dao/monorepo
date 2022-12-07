@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../../hooks';
-import { useApprovalLimit, useTokenBalance } from '../../hooks/useToken';
+import { useTokenBalance } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
 import { compareBalances } from '../../utils/balances';
 import useTranslation from 'next-translate/useTranslation';
@@ -30,15 +30,7 @@ function DepositActions({
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
   const stakingContract = useStakingTokenContract('veAUXO');
-  const { limit } = useApprovalLimit('AUXO', stakingContract?.address);
   const tokens = useTokenBalance(tokenConfig.name);
-
-  const sufficientApproval = useMemo(() => {
-    const limitCheck = compareBalances(limit, 'gte', deposit);
-    const tokenCheck = compareBalances(tokens, 'gte', deposit);
-    return limitCheck && tokenCheck;
-  }, [deposit, limit, tokens]);
-
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;
     const sufficientTokens = compareBalances(tokens, 'gte', deposit);
@@ -46,11 +38,7 @@ function DepositActions({
   }, [deposit, tokens]);
 
   const openModal = () => {
-    dispatch(
-      setStep(
-        sufficientApproval ? STEPS.CONFIRM_STAKE_VEAUXO : STEPS.APPROVE_TOKEN,
-      ),
-    );
+    dispatch(setStep(STEPS.CONFIRM_STAKE_VEAUXO));
     dispatch(
       setSwap({
         swap: {

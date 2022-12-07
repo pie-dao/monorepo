@@ -100,7 +100,7 @@ const Stake: React.FC<Props> = ({ tokenConfig }) => {
         <DepositActions
           deposit={depositValue}
           estimation={veAUXOEstimation}
-          stakingTime={commitmentValue}
+          stakingTime={!userLockDuration ? commitmentValue : null}
           tokenConfig={tokenConfig}
           toToken="veAUXO"
         />

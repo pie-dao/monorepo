@@ -13,11 +13,15 @@ import {
   StakingManagerAbi__factory,
   XAUXOAbi__factory,
   UpgradoorAbi__factory,
+  AUXOAbi__factory,
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
 import migration from '../config/migration.json';
 
-function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
+export function getSigner(
+  library: LibraryProvider,
+  account: string,
+): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
 }
 
@@ -77,6 +81,21 @@ export function useERC20Contract(address?: string) {
       return undefined;
     }
   }, [address, library, account, active]);
+}
+
+export function useAUXOContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return AUXOAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [library, active, account, address]);
 }
 
 export function useXAUXOContract(address?: string) {
@@ -171,6 +190,11 @@ export function useStakingTokenContract(token?: string) {
   return useStakingContract(
     tokensConfig[token]?.addresses[chainId]?.stakingAddress,
   );
+}
+
+export function useAUXOTokenContract() {
+  const { chainId } = useWeb3React();
+  return useAUXOContract(tokensConfig['AUXO']?.addresses[chainId]?.address);
 }
 
 export function useXAUXOTokenContract() {
