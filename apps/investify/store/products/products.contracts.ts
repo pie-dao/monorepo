@@ -21,9 +21,9 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e';
+const localRPC = 'http://188.166.45.35:8545';
 
-const selectedNetwork = 5;
+const selectedNetwork = 1;
 
 const _config = config as MultiChainWrapperConfig;
 

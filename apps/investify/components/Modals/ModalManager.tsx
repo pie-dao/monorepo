@@ -7,6 +7,7 @@ import { setIsOpen, setTx } from '../../store/modal/modal.slice';
 import StakeComplete from './ModalSteps/StakeComplete';
 import StakeConfirm from './ModalSteps/StakeConfirm';
 import SwapConfirm from './ModalSteps/xAUXO/SwapConfirm';
+import { XIcon } from '@heroicons/react/solid';
 
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
@@ -34,11 +35,17 @@ export default function ModalManager() {
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-2 text-center">
             <Dialog.Panel className="w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl">
-              <ModalBox>
-                {step === STEPS.CONFIRM_STAKE_VEAUXO && <StakeConfirm />}
-                {step === STEPS.CONFIRM_STAKE_XAUXO && <SwapConfirm />}
-                {step === STEPS.STAKE_COMPLETED && <StakeComplete />}
-              </ModalBox>
+              <>
+                <XIcon
+                  className="absolute top-4 right-4 w-5 h-5 cursor-pointer"
+                  onClick={closeModal}
+                />
+                <ModalBox>
+                  {step === STEPS.CONFIRM_STAKE_VEAUXO && <StakeConfirm />}
+                  {step === STEPS.CONFIRM_STAKE_XAUXO && <SwapConfirm />}
+                  {step === STEPS.STAKE_COMPLETED && <StakeComplete />}
+                </ModalBox>
+              </>
             </Dialog.Panel>
           </div>
         </div>

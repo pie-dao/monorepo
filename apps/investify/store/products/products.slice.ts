@@ -11,9 +11,13 @@ import {
   thunkConfirmWithdrawal,
   thunkAuthorizeDepositor,
   thunkStakeAuxo,
+  thunkStakeXAUXO,
   thunkGetVeAUXOStakingData,
   thunkGetUserStakingData,
   thunkGetXAUXOStakingData,
+  thunkIncreaseStakeAuxo,
+  thunkIncreaseLockVeAUXO,
+  thunkBoostToMaxVeAUXO,
 } from './thunks';
 import { Tokens, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
@@ -179,6 +183,10 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkConfirmWithdrawal, 'confirmWithdrawal');
     addTxNotifications(builder, thunkAuthorizeDepositor, 'authorizeDepositor');
     addTxNotifications(builder, thunkStakeAuxo, 'stakeAuxo');
+    addTxNotifications(builder, thunkStakeXAUXO, 'stakeXAUXO');
+    addTxNotifications(builder, thunkIncreaseStakeAuxo, 'increaseStakeAuxo');
+    addTxNotifications(builder, thunkIncreaseLockVeAUXO, 'increaseLockVeAuxo');
+    addTxNotifications(builder, thunkBoostToMaxVeAUXO, 'boostToMaxVeAuxo');
   },
 
   reducers: {

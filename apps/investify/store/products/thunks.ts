@@ -1,5 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BigNumber, BigNumberish, BytesLike, constants, ethers } from 'ethers';
+import {
+  BigNumber,
+  BigNumberish,
+  BytesLike,
+  ContractTransaction,
+  ethers,
+} from 'ethers';
 import {
   YieldvaultAbi,
   Erc20Abi,
@@ -51,6 +57,7 @@ export const THUNKS = {
   AUTHORIZE_DEPOSITOR: 'vault/authorizrDepositor',
   APPROVE_STAKE_AUXO: 'veAUXO/approveStakeAUXO',
   STAKE_AUXO: 'veAUXO/stakeAUXO',
+  INCREASE_STAKE_AUXO: 'veAUXO/increaseStakeAUXO',
   STAKE_X_AUXO: 'xAUXO/stakeXAUXO',
   BOOST_VE_AUXO: 'veAUXO/boostVeAUXO',
   INCREASE_LOCK_VE_AUXO: 'veAUXO/increaseLockVeAUXO',
@@ -872,30 +879,49 @@ export const thunkStakeAuxo = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
 
-    const { r, v, s } = await getPermitSignature(
-      signer,
-      AUXOToken,
-      tokenLocker.address,
-      deposit.value,
-      constants.MaxUint256,
-    );
+    const deadline = Math.floor(
+      Date.now() / 1000 + ONE_HOUR_DEADLINE,
+    ).toString();
 
-    const tx = await tokenLocker.depositByMonthsWithSignature(
-      deposit.value,
-      stakingTime,
-      signer._address,
-      constants.MaxUint256,
-      v,
-      r,
-      s,
-    );
+    let tx: ContractTransaction;
+    let r: string;
+    let v: number;
+    let s: string;
+
+    try {
+      ({ r, v, s } = await getPermitSignature(
+        signer,
+        AUXOToken,
+        tokenLocker.address,
+        deposit.value,
+        deadline,
+      ));
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Permit Signature Failed');
+    }
+
+    try {
+      tx = await tokenLocker.depositByMonthsWithSignature(
+        deposit.value,
+        stakingTime,
+        signer._address,
+        deadline,
+        v,
+        r,
+        s,
+      );
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Deposit Failed');
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
 
     pendingNotification({
       title: `stakeAuxoPending`,
-      id: 'stakeAuxoDeposit',
+      id: 'stakeAuxo',
     });
 
     const receipt = await tx.wait();
@@ -923,7 +949,7 @@ export type ThunkIncreaseStakeAuxoProps = {
 };
 
 export const thunkIncreaseStakeAuxo = createAsyncThunk(
-  THUNKS.STAKE_AUXO,
+  THUNKS.INCREASE_STAKE_AUXO,
   async (
     { signer, deposit, tokenLocker, AUXOToken }: ThunkIncreaseStakeAuxoProps,
     { rejectWithValue, dispatch },
@@ -936,28 +962,43 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
       Date.now() / 1000 + ONE_HOUR_DEADLINE,
     ).toString();
 
-    const { r, v, s } = await getPermitSignature(
-      signer,
-      AUXOToken,
-      tokenLocker.address,
-      deposit.value,
-      deadline,
-    );
+    let tx: ContractTransaction;
+    let r: string;
+    let v: number;
+    let s: string;
 
-    const tx = await tokenLocker.increaseAmountWithSignature(
-      deposit.value,
-      deadline,
-      v,
-      r,
-      s,
-    );
+    try {
+      ({ r, v, s } = await getPermitSignature(
+        signer,
+        AUXOToken,
+        tokenLocker.address,
+        deposit.value,
+        deadline,
+      ));
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Permit Signature Failed');
+    }
+
+    try {
+      tx = await tokenLocker.increaseAmountWithSignature(
+        deposit.value,
+        deadline,
+        v,
+        r,
+        s,
+      );
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Increase Amount Failed');
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
 
     pendingNotification({
-      title: `stakeAuxoPending`,
-      id: 'stakeAuxoDeposit',
+      title: `increaseStakeAuxoPending`,
+      id: 'increaseStakeAuxo',
     });
 
     const receipt = await tx.wait();
@@ -1004,7 +1045,7 @@ export const thunkBoostToMaxVeAUXO = createAsyncThunk(
 
     pendingNotification({
       title: `boostVeAuxoPending`,
-      id: 'boostVeAuxoDeposit',
+      id: 'boostToMaxVeAuxo',
     });
 
     const receipt = await tx.wait();
@@ -1094,7 +1135,7 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 
     pendingNotification({
       title: `increaseLockVeAuxoPending`,
-      id: 'increaseLockVeAuxoDeposit',
+      id: 'increaseLockVeAuxo',
     });
 
     const receipt = await tx.wait();
@@ -1120,7 +1161,7 @@ export type ThunkStakeXAUXOProps = {
   account: string;
 };
 
-export const ThunkStakeXAUXO = createAsyncThunk(
+export const thunkStakeXAUXO = createAsyncThunk(
   THUNKS.STAKE_X_AUXO,
   async (
     { account, deposit, xAUXOContract }: ThunkStakeXAUXOProps,
@@ -1138,8 +1179,8 @@ export const ThunkStakeXAUXO = createAsyncThunk(
     dispatch(setTxHash(hash));
 
     pendingNotification({
-      title: `stakeAuxoPending`,
-      id: 'stakeAuxoDeposit',
+      title: `stakeXAUXOPending`,
+      id: 'stakeXAUXODeposit',
     });
 
     const receipt = await tx.wait();
