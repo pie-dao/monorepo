@@ -8,6 +8,7 @@ import StakeComplete from './ModalSteps/StakeComplete';
 import StakeConfirm from './ModalSteps/StakeConfirm';
 import SwapConfirm from './ModalSteps/xAUXO/SwapConfirm';
 import { XIcon } from '@heroicons/react/solid';
+import BoostStakeModal from './ModalSteps/BoostStakeModal';
 
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
@@ -42,6 +43,7 @@ export default function ModalManager() {
                 />
                 <ModalBox>
                   {step === STEPS.CONFIRM_STAKE_VEAUXO && <StakeConfirm />}
+                  {step === STEPS.BOOST_STAKE_VEAUXO && <BoostStakeModal />}
                   {step === STEPS.CONFIRM_STAKE_XAUXO && <SwapConfirm />}
                   {step === STEPS.STAKE_COMPLETED && <StakeComplete />}
                 </ModalBox>

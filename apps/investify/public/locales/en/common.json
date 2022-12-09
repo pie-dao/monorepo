@@ -165,5 +165,7 @@
   "noStakeTime": "No stake time",
   "veAUXO": "veAUXO",
   "xAUXO": "xAUXO",
-  "migration": "Migration"
+  "migration": "Migration",
+  "todayTo": "Today to",
+  "boostStakeModalDescription": "You are about to restake your ${token}"
 }
