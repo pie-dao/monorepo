@@ -1,6 +1,7 @@
 {
   "aggregate": "Aggregate veDOUGH to ${token}",
-  "aggregateDescription": "Aggregate all locks to ${token} and some more information would be good to add",
+  "aggregateDescription": "Enjoy the maximum rewards and voting power",
+  "beLiquid": "Be liquid, delegate voting power and just enjoy your rewards*",
   "maxPossible": "Max possible",
   "rewards": "💰 Rewards",
   "governance": "🏛️ Governance",
@@ -30,7 +31,12 @@
   "singleLock": "You have one lock vested",
   "lockAmount": "You have ${locks} locks vested",
   "timeToMigrate": "Time to migrate",
-  "timeToMigrateSubtitle": "⚠️ Migration is available until XX-WW-YYYY After that you will not be able to migrate.",
+  "timeToMigrateSubtitle": "Migration is available until XX-WW-YYYY. After that, you will not be able to migrate your DOUGH anymore.",
+  "timeToMigrateArrived": "The time has finally arrived, all PieDAO members are now allowed to migrate all their DOUGH locks to veAUXO or xAUXO. Follow the steps to discover and migrate.",
+  "lockStart": "Start lock",
+  "lockEnd": "End lock",
+  "lockedFor": "Locked for",
+  "remainingTime": "Remaining time",
   "vested": "Start",
   "end": "End",
   "veDOUGH": "veDOUGH",
@@ -56,5 +62,9 @@
   "multipleLocks": "You have ${locks} veDOUGH positions",
   "withoutBoost": "⚠️ Without boost, the vesting end date will be the longest among your veDOUGH locks.",
   "boostToMax": "Boost to max (36 months)",
-  "veDOUGHToToken": "DOUGH to ${tokenOut}"
+  "veDOUGHToToken": "DOUGH to ${tokenOut}",
+  "veAUXOConversionBanner": "Conversion 100 DOUGH = 1 veAUXO, at the next step the details",
+  "xAUXOConversionBanner": "Conversion 100 DOUGH = 1 xAUXO, at the next step the details",
+  "veAUXODisclaimerBanner": "Previous locks which are not boosted are re-locked for the remaining months.",
+  "xAUXODisclaimerBanner": "This conversion is irreversible. You can buy and sell xAUXO tokens but you cannot convert them back to AUXO"
 }

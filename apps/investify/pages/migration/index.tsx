@@ -10,6 +10,8 @@ import Image from 'next/image';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thunks';
+import MigrationBanner from '../../components/MigrationBanner/MigrationBanner';
+import { ExclamationIcon } from '@heroicons/react/outline';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -27,7 +29,7 @@ export default function Migration() {
     return [
       {
         title: t('aggregate', { token: 'veAUXO' }),
-        description: t('aggregateDescription', { token: 'veAUXO' }),
+        description: t('aggregateDescription'),
         icon: <Image src={veAUXOIcon} alt="veAUXO" width={26} height={26} />,
         features: [
           {
@@ -67,10 +69,26 @@ export default function Migration() {
           text: t('upgradeTo', { token: 'veAUXO' }),
           url: '/migration/veAUXO',
         },
+        banners: [
+          {
+            content: t('veAUXOConversionBanner'),
+            bgColor: 'bg-info',
+          },
+          {
+            icon: (
+              <ExclamationIcon
+                className="h-5 w-5 text-primary"
+                aria-hidden="true"
+              />
+            ),
+            content: t('veAUXODisclaimerBanner'),
+            bgColor: 'bg-warning',
+          },
+        ],
       },
       {
         title: t('aggregate', { token: 'xAUXO' }),
-        description: t('aggregateDescription', { token: 'xAUXO' }),
+        description: t('beLiquid'),
         icon: <Image src={XAUXOIcon} alt="xAUXO" width={26} height={26} />,
         features: [
           {
@@ -110,15 +128,32 @@ export default function Migration() {
           text: t('upgradeTo', { token: 'xAUXO' }),
           url: '/migration/xAUXO',
         },
+        banners: [
+          {
+            content: t('xAUXOConversionBanner'),
+            bgColor: 'bg-info',
+          },
+          {
+            icon: (
+              <ExclamationIcon
+                className="h-5 w-5 text-primary"
+                aria-hidden="true"
+              />
+            ),
+            content: t('xAUXODisclaimerBanner'),
+            bgColor: 'bg-warning',
+          },
+        ],
       },
     ];
   }, [t]);
 
   return (
     <div className="flex flex-col h-screen">
+      <MigrationBanner />
       <Heading
         title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateSubtitle')}
+        subtitle={t('timeToMigrateArrived')}
       />
       <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         {migrationCardsContent.map((card) => (

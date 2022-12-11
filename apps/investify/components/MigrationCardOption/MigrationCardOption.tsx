@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useAppSelector } from '../../hooks';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
+import Banner from '../Banner/Banner';
 
 type Props = {
   title: string;
@@ -17,6 +18,11 @@ type Props = {
     text: string;
     url: string;
   };
+  banners: {
+    icon?: React.ReactNode;
+    content: string;
+    bgColor?: string;
+  }[];
 };
 
 const MigrationCardOption: React.FC<Props> = ({
@@ -25,6 +31,7 @@ const MigrationCardOption: React.FC<Props> = ({
   description,
   features,
   button,
+  banners,
 }) => {
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
@@ -51,7 +58,12 @@ const MigrationCardOption: React.FC<Props> = ({
           </div>
         ))}
       </div>
-      <div className="flex flex-col w-full text-center pt-4">
+      <div className="flex flex-col w-full pt-4 gap-y-2">
+        {banners.map((props, i) => (
+          <Banner {...props} key={i} />
+        ))}
+      </div>
+      <div className="flex flex-col w-full text-center pt-4 mt-auto">
         {account && ready ? (
           <Link href={button.url} passHref>
             <button
