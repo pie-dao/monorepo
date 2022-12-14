@@ -110,5 +110,11 @@
   "migrationXAUXOIrriversible": "<firstLine>This conversion is irreversible.</firstLine> You can buy and sell xAUXO tokens but you cannot convert them back to AUXO",
   "nothingToMigrate": "Nothing to migrate",
   "benefitsOfMigrating": "Now you can enjoy the benefits of ${token}",
-  "migrationCompletedDescription": "Your migration is completed, you can now enjoy the benefits of ${token}"
+  "migrationCompletedDescription": "Your migration is completed, you can now enjoy the benefits of ${token}",
+  "aggregateAndBoostVeDOUGHPending": "Aggregating and boosting veDOUGH pending",
+  "aggregateAndBoostVeDOUGHSuccess": "Aggregated and boosted veDOUGH successfully",
+  "aggregateAndBoostVeDOUGHError": "There was an error while aggregating and boosting veDOUGH",
+  "aggregateVeDOUGHPending": "Aggregate veDOUGH pending",
+  "aggregateVeDOUGHSuccess": "Aggregate veDOUGH successfully",
+  "aggregateVeDOUGHError": "There was an error while aggregating veDOUGH"
 }
