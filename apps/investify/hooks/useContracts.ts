@@ -9,7 +9,11 @@ import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
   MerkleauthAbi__factory,
+  TokenLockerAbi__factory,
+  StakingManagerAbi__factory,
+  XAUXOAbi__factory,
 } from '@shared/util-blockchain';
+import tokensConfig from '../config/products.json';
 
 function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
@@ -73,6 +77,21 @@ export function useERC20Contract(address?: string) {
   }, [address, library, account, active]);
 }
 
+export function useXAUXOContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return XAUXOAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
 export function useAuthContract(address?: string) {
   const { library, account, active } = useWeb3React();
   return useMemo(() => {
@@ -81,6 +100,36 @@ export function useAuthContract(address?: string) {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
       return MerkleauthAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
+export function useStakingContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return TokenLockerAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
+export function useStakingManager(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return StakingManagerAbi__factory.connect(address, providerSigner);
     } catch (error) {
       console.error('Failed to get contract', error);
       return undefined;
@@ -98,4 +147,23 @@ export function useTokenContract(tokenAddress?: string) {
 
 export function useMerkleAuthContract(vaultAddress?: string) {
   return useAuthContract(vaultAddress);
+}
+
+export function useStakingTokenContract(token?: string) {
+  const { chainId } = useWeb3React();
+  return useStakingContract(
+    tokensConfig[token]?.addresses[chainId]?.stakingAddress,
+  );
+}
+
+export function useXAUXOTokenContract() {
+  const { chainId } = useWeb3React();
+  return useXAUXOContract(tokensConfig['xAUXO']?.addresses[chainId]?.address);
+}
+
+export function useStakingManagerContract(token?: string) {
+  const { chainId } = useWeb3React();
+  return useStakingManager(
+    tokensConfig[token]?.addresses[chainId]?.stakingAddress,
+  );
 }

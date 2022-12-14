@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Layout } from '../components';
 import AuxoIcon from '../public/images/auxoIcon.svg';
 import { MetamaskIcon } from '@shared/ui-library';
-import { addAuxoToMetamask } from '../utils/addERC20ToMetamask';
+import addTokenToWallet from '../utils/addTokenToWallet';
 import {
   formatAsPercent,
   formatBalance,
@@ -20,6 +20,7 @@ import {
   BoxLoading,
 } from '../components/Skeleton';
 import PositionsTabs from '../components/Positions';
+import { useWeb3React } from '@web3-react/core';
 
 export default function Treasury(): ReactElement {
   const { defaultCurrency, defaultLocale } = useAppSelector(
@@ -31,6 +32,7 @@ export default function Treasury(): ReactElement {
   });
 
   const { t } = useTranslation();
+  const { chainId } = useWeb3React();
 
   return (
     <>
@@ -44,11 +46,14 @@ export default function Treasury(): ReactElement {
             >
               AUXO
             </h2>
-            <button className="flex ml-auto" onClick={addAuxoToMetamask}>
+            <button
+              className="flex ml-auto pr-2"
+              onClick={async () => await addTokenToWallet(chainId, 'AUXO')}
+            >
               <div className="flex gap-x-2 items-center">
-                <div className="hidden lg:flex gap-x-1">
+                <div className="hidden sm:flex gap-x-1">
                   <span className="text-sub-dark underline text-sm hover:text-sub-light">
-                    {t('addTokenToMetaMask', {
+                    {t('addTokenToWallet', {
                       token: `AUXO`,
                     })}
                   </span>

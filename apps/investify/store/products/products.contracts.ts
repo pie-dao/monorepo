@@ -7,6 +7,10 @@ import {
   Erc20Abi__factory,
   YieldvaultAbi__factory,
   MerkleauthAbi__factory,
+  TokenLockerAbi__factory,
+  XAUXOAbi__factory,
+  StakingManagerAbi__factory,
+  VeAUXOAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -18,6 +22,7 @@ import { Polygon } from '../../config/auxoVaults/POLYGON';
 const _config = config as MultiChainWrapperConfig;
 
 const mcw = new MultiChainContractWrapper(_config);
+
 const FTMmulticall = new MultiCallWrapper(
   _config[SUPPORTED_CHAINS.FANTOM.toString()].provider,
 );
@@ -51,11 +56,41 @@ export const underlyingContractsPolygon = Object.entries(Polygon).map(
 
 export const contractWrappers = productContracts.map((addresses) => {
   const contract = Erc20Abi__factory.connect(
-    addresses[1].address,
-    ethers.getDefaultProvider(),
+    addresses[5].address,
+    new ethers.providers.JsonRpcProvider(
+      'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+    ),
   );
   return mcw.wrap(contract, addresses);
 });
+
+export const stakingContract = TokenLockerAbi__factory.connect(
+  products['veAUXO'].addresses[5].stakingAddress,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
+
+export const veAUXOContract = VeAUXOAbi__factory.connect(
+  products['veAUXO'].addresses[5].address,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
+
+export const xAUXOContract = XAUXOAbi__factory.connect(
+  products['xAUXO'].addresses[5].address,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
+
+export const xAUXOStakingManager = StakingManagerAbi__factory.connect(
+  products['xAUXO'].addresses[5].stakingAddress,
+  new ethers.providers.JsonRpcProvider(
+    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  ),
+);
 
 export const FTMContractWrappers = FTMContracts.map((address) => {
   const contract = YieldvaultAbi__factory.connect(

@@ -1,37 +1,46 @@
 {
-  "DEFI++": {
-    "image": "/tokens/defi++.svg",
-    "name": "DEFI++",
-    "description": "DEFI Token",
+  "AUXO": {
+    "image": "/tokens/AUXO.svg",
+    "name": "AUXO",
+    "description": "AUXO Token",
     "addresses": {
-      "1": { "address": "0x8d1ce361eb68e9e05573443c407d4a3bed23b033" },
-      "137": { "exclude": true },
-      "250": { "exclude": true }
+      "1": { "address": null, "exclude": true },
+      "5": {
+        "address": "0x75b75d0D1df5d4fc97901E983006cc6f4ec22D56"
+      },
+      "250": { "address": null, "exclude": true },
+      "137": { "address": null, "exclude": true }
     },
-    "prospectus": null,
-    "coingeckoId": "piedao-defi",
-    "investmentFocusImage": "/images/investmentFocus/DEFI++.png"
+    "coingeckoId": "auxo-token"
   },
-  "BCP": {
-    "image": "/tokens/bcp.svg",
-    "name": "BCP",
-    "description": "Balanced Crypto Pie",
+  "veAUXO": {
+    "image": "/tokens/veAUXO.svg",
+    "name": "veAUXO",
+    "description": "veAUXO Token",
     "addresses": {
-      "1": { "address": "0xe4f726adc8e89c6a6017f01eada77865db22da14" }
+      "1": { "address": null, "exclude": true },
+      "5": {
+        "address": "0xdE5F653cC17dC817E7f1c9Da778126d8B1d94eb9",
+        "stakingAddress": "0xdfA09F28cB101b4FA67c98851A4074f5084D5223"
+      },
+      "250": { "address": null, "exclude": true },
+      "137": { "address": null, "exclude": true }
     },
-    "prospectus": null,
-    "coingeckoId": "piedao-balanced-crypto-pie",
-    "investmentFocusImage": "/images/investmentFocus/BCP.png"
+    "coingeckoId": "veAuxo-token"
   },
-  "PLAY": {
-    "image": "/tokens/PLAY.svg",
-    "name": "PLAY",
-    "description": "Metaverse Gaming",
+  "xAUXO": {
+    "image": "/tokens/xAUXO.svg",
+    "name": "xAUXO",
+    "description": "xAUXO Token",
     "addresses": {
-      "1": { "address": "0x33e18a092a93ff21ad04746c7da12e35d34dc7c4" }
+      "1": { "address": null, "exclude": true },
+      "5": {
+        "address": "0xcba82bbb092813783c7a83d8217ae91a487ca309",
+        "stakingAddress": "0xB641bCb969e5B15D47ede28ac6b6dEFe499335B6"
+      },
+      "250": { "address": null, "exclude": true },
+      "137": { "address": null, "exclude": true }
     },
-    "prospectus": "https://gateway.pinata.cloud/ipfs/QmcNBx57qyjsuENaTZunsG7C12PN8i9t9BKjzaWzGSaBVK",
-    "coingeckoId": "metaverse-nft-index",
-    "investmentFocusImage": "/images/investmentFocus/PLAY.png"
+    "coingeckoId": "xAuxo-token"
   }
 }

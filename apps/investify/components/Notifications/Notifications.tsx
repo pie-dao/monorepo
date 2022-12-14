@@ -79,13 +79,13 @@ export const successNotificationUpdate = (toastId: Id) => {
   );
 };
 
-export const errorNotificationUpdate = (toastId: Id) => {
+export const errorNotificationUpdate = (toastId: Id, message: string) => {
   toast.dismiss(`${toastId}Pending`);
   toast(
     <>
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={`${toastId}Error`} />
+          <Trans i18nKey={message} />
         </p>
       </div>
     </>,

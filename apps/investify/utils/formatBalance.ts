@@ -31,10 +31,14 @@ export function formatBalance(
   return balance;
 }
 
-export function formatAsPercent(num: number, defaultLocale?: string): string {
+export function formatAsPercent(
+  num: number,
+  defaultLocale?: string,
+  maximumFractionDigits?: number,
+): string {
   return new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'percent',
-    maximumFractionDigits: 2,
+    maximumFractionDigits: maximumFractionDigits ?? 3,
   }).format(num / 100);
 }
 
@@ -71,3 +75,15 @@ export const toBalance = (
   label: Number(ethers.utils.formatUnits(n, decimals)),
   value: String(n),
 });
+
+export const percentageBetween = (
+  n1: BigNumber,
+  n2: BigNumber,
+  decimals: number,
+): BigNumberReference => {
+  const total = n1.add(n2);
+  const percentage = n1
+    .mul(ethers.utils.parseUnits('100', decimals))
+    .div(total);
+  return toBalance(percentage, decimals);
+};

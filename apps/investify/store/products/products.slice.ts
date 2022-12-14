@@ -6,11 +6,16 @@ import {
   thunkGetUserVaultsData,
   thunkMakeDeposit,
   thunkApproveDeposit,
+  thunkApproveToken,
   thunkIncreaseWithdrawal,
   thunkConfirmWithdrawal,
   thunkAuthorizeDepositor,
+  thunkStakeAuxo,
+  thunkGetVeAUXOStakingData,
+  thunkGetUserStakingData,
+  thunkGetXAUXOStakingData,
 } from './thunks';
-import { Products, SliceState, Vaults } from './products.types';
+import { Tokens, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
 import addTxNotifications from '../../utils/notifications';
 
@@ -110,18 +115,77 @@ const appSlice = createSlice({
       state.loading = false;
     });
 
+    builder.addCase(thunkGetVeAUXOStakingData.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(thunkGetVeAUXOStakingData.rejected, (state, action) => {
+      console.error(action.error);
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetVeAUXOStakingData.fulfilled, (state, action) => {
+      appSlice.caseReducers.setProductsState(state, {
+        ...action,
+        payload: {
+          ...action.payload,
+        },
+      });
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetXAUXOStakingData.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(thunkGetXAUXOStakingData.rejected, (state, action) => {
+      console.error(action.error);
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetXAUXOStakingData.fulfilled, (state, action) => {
+      appSlice.caseReducers.setProductsState(state, {
+        ...action,
+        payload: {
+          ...action.payload,
+        },
+      });
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetUserStakingData.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(thunkGetUserStakingData.rejected, (state, action) => {
+      console.error(action.error);
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetUserStakingData.fulfilled, (state, action) => {
+      appSlice.caseReducers.setProductsState(state, {
+        ...action,
+        payload: {
+          ...action.payload,
+        },
+      });
+      state.loading = false;
+    });
+
     addTxNotifications(builder, thunkMakeDeposit, 'makeDeposit');
     addTxNotifications(builder, thunkApproveDeposit, 'approveDeposit');
+    addTxNotifications(builder, thunkApproveToken, 'approveToken');
     addTxNotifications(builder, thunkIncreaseWithdrawal, 'increaseWithdrawal');
     addTxNotifications(builder, thunkConfirmWithdrawal, 'confirmWithdrawal');
     addTxNotifications(builder, thunkAuthorizeDepositor, 'authorizeDepositor');
+    addTxNotifications(builder, thunkStakeAuxo, 'stakeAuxo');
   },
 
   reducers: {
     setState: (
       state,
       action: PayloadAction<{
-        tokens: Products;
+        tokens: Tokens;
         uniqueNetworks: number;
         totalAssets: number;
         totalBalances: number;
@@ -141,7 +205,7 @@ const appSlice = createSlice({
     setProductsState: (
       state,
       action: PayloadAction<{
-        products: Products;
+        products: Tokens;
       }>,
     ) => {
       state.tokens = merge({}, state.tokens, action.payload);

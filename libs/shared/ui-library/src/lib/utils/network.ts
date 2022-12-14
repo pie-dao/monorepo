@@ -52,6 +52,17 @@ export const chainMap: ChainMap = {
     rpcUrls: ['https://polygon-rpc.com/'],
     blockExplorerUrls: ['https://polygonscan.com'],
   },
+  [SUPPORTED_CHAINS.GOERLI]: {
+    chainId: `0x${Number(SUPPORTED_CHAINS.GOERLI).toString(16)}`,
+    chainName: 'Goerli',
+    nativeCurrency: {
+      name: 'Goerli Ether',
+      symbol: 'GoerliETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e'],
+    blockExplorerUrls: ['https://goerli.etherscan.io'],
+  },
 };
 
 export const supportedChains = Object.values(chainMap).map(

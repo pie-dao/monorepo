@@ -17,7 +17,6 @@ export default function Header({
 }) {
   const { t } = useTranslation();
   const ready = useServerHandoffComplete();
-  const mqLg = useMediaQuery('(min-width: 1024px)');
   const mqXl = useMediaQuery('(min-width: 1280px)');
 
   return (
@@ -31,17 +30,15 @@ export default function Header({
           >
             <MenuIcon open={open} />
           </button>
-          {mqLg && ready && (
-            <h1 className="text-2xl font-bold text-primary w-auto">
-              {t(title)}
-            </h1>
-          )}
+          <h1 className="hidden sm:flex text-2xl font-bold text-primary w-auto">
+            {t(title)}
+          </h1>
           <div className="ml-auto flex gap-x-3 items-center">
             {ready && (
               <>
                 <GasPrice />
                 <ChainSwitcher
-                  allowedChains={['MAINNET', 'FANTOM', 'POLYGON']}
+                  allowedChains={['MAINNET', 'FANTOM', 'POLYGON', 'GOERLI']}
                   showNetworkName={mqXl}
                 />
                 <ConnectButton />

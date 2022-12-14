@@ -18,9 +18,9 @@ const addTxNotifications = (
   });
 
   builder.addCase(thunk.rejected, (_state, { error }) => {
-    errorNotificationUpdate(notificationReason);
     // This is a good entry point for Sentry checks
     if (error instanceof Error) {
+      errorNotificationUpdate(notificationReason, error.message);
       console.error(error.message);
     }
   });

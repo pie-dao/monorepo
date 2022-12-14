@@ -34,7 +34,7 @@ function ApproveDepositButton({ deposit }: { deposit: BigNumberReference }) {
       thunkApproveDeposit({
         deposit,
         token: tokenContract,
-        vaultAddress: vault.address,
+        spender: vault.address,
       }),
     ).finally(() => setApproving(false));
   };

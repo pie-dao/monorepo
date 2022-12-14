@@ -11,7 +11,6 @@ import {
 } from '../../utils/formatBalance';
 import PriceChange from '../PriceChange/PriceChange';
 import { getChainImageUrl } from '../../utils/images';
-import APYChart from '../APYChart';
 import { isEmpty } from 'lodash';
 
 const variants: Variants = {
@@ -213,7 +212,6 @@ export default function PositionsTabs(treasuryPositions) {
                                       </a>
                                     ))}
                                   </div>
-                                  <APYChart symbol={'ETH'} />
                                 </motion.div>
                               </Disclosure.Panel>
                             )}

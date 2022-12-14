@@ -1,18 +1,34 @@
 import { SupportedChains } from '../../utils/networks';
 
 export type ChainValue = Record<SupportedChains, BigNumberReference>;
+export type ChainBasedInfo = Record<SupportedChains, ChainInfo>;
 
-type Product = {
-  balances?: ChainValue;
+export type ChainInfo = {
+  address: string;
+  balance?: BigNumberReference;
+  allowance?: BigNumberReference;
+};
+
+export type Token = {
   productDecimals: number;
   totalBalance?: BigNumberReference;
-  addresses: {
-    [chainId: number | string]: string;
+  chainInfo?: ChainBasedInfo;
+  stakingAmount?: BigNumberReference;
+  totalSupply?: BigNumberReference;
+  stakingToken?: string;
+  votingAddresses?: number;
+  fee?: BigNumberReference;
+  userStakingData?: {
+    amount: BigNumberReference;
+    lockedAt: number;
+    lockDuration: number;
+    votingPower?: BigNumberReference;
+    delegator?: string;
   };
 };
 
-export type Products = {
-  [x: string]: Product;
+export type Tokens = {
+  [x: string | number]: Token;
 };
 
 interface BasicVaultInformation {
@@ -102,9 +118,10 @@ export type Stats = {
 };
 
 export type SliceState = {
-  tokens: Products;
+  tokens: Tokens;
   vaults: Vaults;
   stats: Stats;
   loading: boolean;
   activeVault: string;
+  activeToken: string;
 };

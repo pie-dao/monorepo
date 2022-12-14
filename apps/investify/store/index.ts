@@ -6,7 +6,7 @@ import {
   AnyAction,
 } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-import sidebarReducer from './sidebar/sidebar.slice';
+import modalReducer from './modal/modal.slice';
 import preferencesReducer from './preferences/preferences.slice';
 import productsReducer from './products/products.slice';
 import notificationsReducer from './notifications/notifications.slice';
@@ -17,7 +17,7 @@ import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 
 export const rootReducer = combineReducers({
-  sidebar: sidebarReducer,
+  modal: modalReducer,
   preferences: preferencesReducer,
   dashboard: productsReducer,
   notifications: notificationsReducer,

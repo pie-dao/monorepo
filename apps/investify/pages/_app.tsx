@@ -9,6 +9,7 @@ import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
 import { wrapper } from '../store';
 import { NotificationDisplay } from '../components/Notifications/Notifications';
+import ModalManager from '../components/Modals/ModalManager';
 import './styles.css';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -27,17 +28,13 @@ export function reportWebVitals({
   });
 }
 
-type NextPageWithLayout = NextPage & {
+export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
-
-if (process.env.NEXT_PUBLIC_MOCKS_ENABLED === 'true') {
-  require('../mocks');
-}
 
 function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
   const { props, store } = wrapper.useWrappedStore(rest);
@@ -53,6 +50,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
           <GoogleAnalytics />
           <div className="h-full">
             <NotificationDisplay />
+            <ModalManager />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>
