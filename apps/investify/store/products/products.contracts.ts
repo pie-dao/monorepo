@@ -21,7 +21,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'http://188.166.45.35:8545';
+const localRPC = 'http://188.166.45.35:420/rpc/migration-testnet';
 
 const selectedNetwork = 1;
 

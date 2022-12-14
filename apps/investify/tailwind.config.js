@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const { join } = require('path');
 const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind');
+const plugin = require('tailwindcss/plugin');
 
 function withOpacityValue(variable) {
   return ({ opacityValue }) => {
@@ -65,6 +66,15 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('tailwindcss-radix'),
+    plugin(function ({ addVariant, addComponents }) {
+      addVariant(
+        'supports-scrollbars',
+        '@supports selector(::-webkit-scrollbar)',
+      );
+      addVariant('scrollbar', '&::-webkit-scrollbar');
+      addVariant('scrollbar-track', '&::-webkit-scrollbar-track');
+      addVariant('scrollbar-thumb', '&::-webkit-scrollbar-thumb');
+    }),
   ],
   presets: [require('../../tailwind-workspace-preset.js')],
 };

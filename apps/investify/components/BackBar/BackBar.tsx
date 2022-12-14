@@ -7,13 +7,17 @@ import {
   setPreviousStep,
 } from '../../store/migration/migration.slice';
 import { STEPS_LIST } from '../../store/migration/migration.types';
+import classNames from '../../utils/classnames';
 
 type Props = {
   token?: string;
   goTo?: STEPS_LIST;
+  children?: React.ReactNode;
+  title: string;
+  singleCard?: boolean;
 };
 
-const BackBar: React.FC<Props> = ({ goTo }) => {
+const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
   const { t } = useTranslation();
   const { currentStep } = useAppSelector((state) => state.migration);
   const dispatch = useAppDispatch();
@@ -33,11 +37,24 @@ const BackBar: React.FC<Props> = ({ goTo }) => {
   };
 
   return (
-    <div className="flex flex-col rounded-md justify-center p-4 bg-white shadow-md w-full">
-      <button className="flex items-center" onClick={goBack}>
-        <ChevronLeftIcon className="h-7 w-7 text-sub-dark" aria-hidden="true" />
-        <span className="text-sub-dark">{t('back')}</span>
-      </button>
+    <div
+      className={classNames(
+        'flex flex-col rounded-md justify-center p-4 bg-white shadow-md mx-auto md:min-w-[44rem]',
+        singleCard ? 'w-fit' : 'w-full',
+      )}
+    >
+      <div className="flex justify-between">
+        <button className="w-fit flex items-center" onClick={goBack}>
+          <ChevronLeftIcon
+            className="h-7 w-7 text-sub-dark"
+            aria-hidden="true"
+          />
+          <span className="text-sub-dark">{t('back')}</span>
+        </button>
+        <h2 className="text-base font-medium text-primary">{title}</h2>
+      </div>
+      <hr className="my-4 border-sub-light" />
+      {children}
     </div>
   );
 };

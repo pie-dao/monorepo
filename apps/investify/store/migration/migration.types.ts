@@ -7,6 +7,12 @@ export enum STEPS_LIST {
   MIGRATE_SUCCESS,
 }
 
+export const MIGRATION_TYPE = {
+  AGGREGATE_AND_BOOST: 'aggregateAndBoost',
+  AGGREGATE: 'aggregate',
+  SINGLE_LOCK: 'singleLock',
+} as const;
+
 export const TX_STATES = {
   PENDING: 'PENDING',
   COMPLETE: 'COMPLETE',
@@ -28,7 +34,20 @@ export type SliceState = {
   loadingPositions: boolean;
   loadingPreview: boolean;
   positions: Position[];
-  estimatedOutput: BigNumberReference | null;
+  boost: boolean;
+  migrationType: typeof MIGRATION_TYPE[keyof typeof MIGRATION_TYPE] | null;
+  DOUGHInput: string;
+  estimatedOutput: {
+    veAUXO: {
+      aggregateAndBoost: BigNumberReference;
+      aggregate: BigNumberReference;
+      singleLock: BigNumberReference;
+    };
+    xAUXO: {
+      aggregate: BigNumberReference;
+      singleLock: BigNumberReference;
+    };
+  };
   tx: {
     hash: string | null;
     status: string | null;

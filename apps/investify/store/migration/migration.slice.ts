@@ -17,6 +17,9 @@ const initialState: SliceState = {
   loadingPreview: false,
   positions: [],
   estimatedOutput: null,
+  boost: false,
+  migrationType: null,
+  DOUGHInput: '',
   tx: {
     hash: null,
     status: null,
@@ -32,7 +35,7 @@ export const migrationSlice = createSlice({
     });
 
     builder.addCase(ThunkGetVeDOUGHStakingData.rejected, (state, action) => {
-      console.error(action.error);
+      console.error(action.payload);
       state.loadingPositions = false;
     });
 
@@ -49,7 +52,7 @@ export const migrationSlice = createSlice({
     });
 
     builder.addCase(ThunkPreviewMigration.rejected, (state, action) => {
-      console.error(action.error);
+      console.error(action.payload);
       state.loadingPreview = false;
     });
 
@@ -58,7 +61,7 @@ export const migrationSlice = createSlice({
       state.estimatedOutput = action.payload;
     });
 
-    addTxNotifications(builder, ThunkMigrateVeDOUGH, 'ThunkMigrateVeDOUGH');
+    addTxNotifications(builder, ThunkMigrateVeDOUGH, 'aggregateVeDOUGH');
   },
 
   reducers: {
@@ -104,6 +107,18 @@ export const migrationSlice = createSlice({
     setTxState: (state, action: PayloadAction<SliceState['tx']['status']>) => {
       state.tx.status = action.payload;
     },
+    setBoost: (state, action: PayloadAction<boolean>) => {
+      state.boost = action.payload;
+    },
+    setMigrationType: (
+      state,
+      action: PayloadAction<SliceState['migrationType']>,
+    ) => {
+      state.migrationType = action.payload;
+    },
+    setConvertedDOUGHLabel: (state, action: PayloadAction<string>) => {
+      state.DOUGHInput = action.payload;
+    },
   },
 });
 
@@ -116,5 +131,8 @@ export const {
   setTx,
   setTxHash,
   setTxState,
+  setBoost,
+  setMigrationType,
+  setConvertedDOUGHLabel,
 } = migrationSlice.actions;
 export default migrationSlice.reducer;

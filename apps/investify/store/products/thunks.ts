@@ -1089,7 +1089,7 @@ export const thunkWithdrawFromVeAUXO = createAsyncThunk(
 
     pendingNotification({
       title: `withdrawVeAuxoPending`,
-      id: 'withdrawVeAuxoDeposit',
+      id: 'withdrawVeAuxo',
     });
 
     const receipt = await tx.wait();

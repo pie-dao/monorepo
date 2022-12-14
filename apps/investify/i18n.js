@@ -5,6 +5,7 @@ module.exports = {
   pages: {
     '*': ['common', 'dashboard'],
     '/migration': ['migration'],
+    '/migration/start': ['migration'],
     '/migration/veAUXO': ['migration'],
     '/migration/xAUXO': ['migration'],
   },

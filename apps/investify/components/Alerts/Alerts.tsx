@@ -1,4 +1,4 @@
-import { ExclamationIcon } from '@heroicons/react/solid';
+import { ExclamationIcon } from '@heroicons/react/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 import classNames from '../../utils/classnames';
 
@@ -6,7 +6,6 @@ const variants = {
   visible: {
     opacity: 1,
     y: 0,
-    marginTop: '1rem',
     transition: {
       duration: 0.2,
       ease: 'easeInOut',
@@ -14,7 +13,6 @@ const variants = {
   },
   hidden: {
     opacity: 0,
-    marginTop: 0,
     y: -10,
     transition: {
       duration: 0.2,
@@ -35,23 +33,21 @@ export function Alert({
       {open && (
         <motion.div
           className={classNames(
-            'bg-yellow-50 rounded-md border-yellow-400 p-3 flex',
+            'rounded-lg items-center py-1 justify-center bg-warning',
           )}
           variants={variants}
           initial="hidden"
           animate="visible"
           exit="hidden"
         >
-          <div className="flex">
+          <div className="flex w-full items-center gap-x-3 mx-auto px-2">
             <div className="flex-shrink-0">
               <ExclamationIcon
-                className="h-5 w-5 text-yellow-400"
+                className="h-5 w-5 text-primary"
                 aria-hidden="true"
               />
             </div>
-            <div className="ml-1">
-              <p className="text-xs text-yellow-700">{children}</p>
-            </div>
+            <p className="text-sm text-primary font-medium">{children}</p>
           </div>
         </motion.div>
       )}

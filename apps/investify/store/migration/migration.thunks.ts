@@ -4,7 +4,7 @@ import { veDOUGHSharesTimeLock } from '../../store/products/products.contracts';
 import { toBalance } from '../../utils/formatBalance';
 import { UpgradoorAbi } from '@shared/util-blockchain';
 import { pendingNotification } from '../../components/Notifications/Notifications';
-import { BigNumber, ContractTransaction } from 'ethers';
+import { ContractTransaction } from 'ethers';
 import { setCurrentStep, setTx, setTxState } from './migration.slice';
 import { STEPS_LIST, TX_STATES } from './migration.types';
 
@@ -31,8 +31,6 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
       }),
     );
 
-    console.log(locks);
-
     return locks
       .sort((a, b) => {
         if (a.lockDuration === b.lockDuration) return -1;
@@ -40,9 +38,6 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
       })
       .map((lock) => {
         const { amount, lockDuration, lockedAt } = lock;
-        console.log(lockDuration);
-        console.log('------');
-        console.log(lockedAt);
         return {
           amount: toBalance(amount, 18),
           lockDuration,
@@ -58,6 +53,7 @@ export type ThunkMigrateVeDOUGHProps = {
   destinationWallet: string;
   token: 'veAUXO' | 'xAUXO';
   isSingleLock: boolean;
+  sender: string;
 };
 
 export const ThunkMigrateVeDOUGH = createAsyncThunk(
@@ -69,6 +65,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       destinationWallet,
       token,
       isSingleLock,
+      sender,
     }: ThunkMigrateVeDOUGHProps,
     { rejectWithValue, dispatch },
   ) => {
@@ -91,44 +88,45 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       }),
     );
 
-    let tx: ContractTransaction;
+    const {
+      aggregateAndBoost,
+      aggregateToVeAuxo,
+      upgradeSingleLockVeAuxo,
+      aggregateToXAuxo,
+      upgradeSingleLockXAuxo,
+    } = upgradoor;
 
-    switch (token) {
-      case 'veAUXO':
-        if (!isSingleLock) {
-          if (boost) {
-            tx = await upgradoor.aggregateAndBoost();
-            pendingNotification({
-              title: `aggregateAndBoostVeDOUGHPending`,
-              id: 'aggregateAndBoostVeDOUGH',
-            });
-            return tx.wait();
-          } else {
-            tx = await upgradoor.aggregateToVeAuxo();
-            pendingNotification({
-              title: `aggregateVeDOUGHPending`,
-              id: 'aggregateVeDOUGH',
-            });
-          }
-        } else {
-          tx = await upgradoor.upgradeSingleLockVeAuxo(destinationWallet);
-        }
-        break;
-      case 'xAUXO':
-        if (!isSingleLock) {
-          tx = await upgradoor.aggregateToXAuxo();
-          pendingNotification({
-            title: `aggregateveDOUGHPending`,
-            id: 'aggregateveDOUGH',
-          });
-        } else {
-          tx = await upgradoor.upgradeSingleLockXAuxo(destinationWallet);
-          pendingNotification({
-            title: `aggregateVeDOUGHPending`,
-            id: 'aggregateVeDOUGH',
-          });
-        }
-        break;
+    let tx: ContractTransaction;
+    if (token === 'veAUXO') {
+      if (isSingleLock) {
+        tx = await upgradeSingleLockVeAuxo(destinationWallet);
+      } else if (boost) {
+        tx = await aggregateAndBoost();
+        pendingNotification({
+          title: `aggregateAndBoostVeDOUGHPending`,
+          id: 'aggregateVeDOUGH',
+        });
+      } else {
+        tx = await aggregateToVeAuxo();
+        pendingNotification({
+          title: `aggregateVeDOUGHPending`,
+          id: 'aggregateVeDOUGH',
+        });
+      }
+    } else {
+      if (isSingleLock) {
+        tx = await upgradeSingleLockXAuxo(destinationWallet);
+        pendingNotification({
+          title: `aggregateVeDOUGHPending`,
+          id: 'aggregateVeDOUGH',
+        });
+      } else {
+        tx = await aggregateToXAuxo();
+        pendingNotification({
+          title: `aggregateveDOUGHPending`,
+          id: 'aggregateVeDOUGH',
+        });
+      }
     }
 
     dispatch(
@@ -143,6 +141,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     if (receipt.status === 1) {
       setTxState(TX_STATES.COMPLETE);
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SUCCESS));
+      dispatch(ThunkGetVeDOUGHStakingData({ account: sender }));
     }
 
     if (receipt.status !== 1) {
@@ -162,7 +161,7 @@ export const ThunkPreviewMigration = createAsyncThunk(
       token,
       isSingleLock,
       sender,
-    }: ThunkMigrateVeDOUGHProps & { sender: string },
+    }: ThunkMigrateVeDOUGHProps,
     { rejectWithValue },
   ) => {
     if (
@@ -177,35 +176,36 @@ export const ThunkPreviewMigration = createAsyncThunk(
       );
     }
 
-    let preview: BigNumber;
+    const previews = promiseObject({
+      veAUXOAggregateAndBoost:
+        upgradoor.previewAggregateAndBoost(destinationWallet),
+      veAUXOAggregate: upgradoor.previewAggregateVeAUXO(destinationWallet),
+      veAUXOSingleLock: upgradoor.previewUpgradeSingleLockVeAuxo(
+        sender,
+        destinationWallet,
+      ),
+      xAUXOAggregate: upgradoor.previewAggregateToXAUXO(sender),
+      xAUXOSingleLock: upgradoor.previewUpgradeSingleLockXAUXO(sender),
+    });
 
-    switch (token) {
-      case 'veAUXO':
-        if (!isSingleLock) {
-          if (boost) {
-            preview = await upgradoor.previewAggregateAndBoost(
-              destinationWallet,
-            );
-          } else {
-            preview = await upgradoor.previewAggregateVeAUXO(destinationWallet);
-          }
-        } else {
-          preview = await upgradoor.previewUpgradeSingleLockVeAuxo(
-            sender,
-            destinationWallet,
-          );
-        }
+    const {
+      veAUXOAggregateAndBoost,
+      veAUXOAggregate,
+      veAUXOSingleLock,
+      xAUXOAggregate,
+      xAUXOSingleLock,
+    } = await previews;
 
-        break;
-      case 'xAUXO':
-        if (!isSingleLock) {
-          preview = await upgradoor.previewAggregateToXAUXO(sender);
-        } else {
-          preview = await upgradoor.previewUpgradeSingleLockXAUXO(sender);
-        }
-        break;
-    }
-
-    return toBalance(preview, 18);
+    return {
+      veAUXO: {
+        aggregateAndBoost: toBalance(veAUXOAggregateAndBoost, 18),
+        aggregate: toBalance(veAUXOAggregate, 18),
+        singleLock: toBalance(veAUXOSingleLock, 18),
+      },
+      xAUXO: {
+        aggregate: toBalance(xAUXOAggregate, 18),
+        singleLock: toBalance(xAUXOSingleLock, 18),
+      },
+    };
   },
 );

@@ -13,6 +13,8 @@ import {
 } from '../../store/migration/migration.slice';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import { ConnectButton } from '@shared/ui-library';
+import { ExclamationIcon } from '@heroicons/react/outline';
+import Banner from '../Banner/Banner';
 
 type Props = {
   isCurrentWallet: boolean;
@@ -96,24 +98,19 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
   }, [anotherWallet]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center divide-y w-full font-medium align-middle transition-all sm:max-w-2xl mx-auto">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full font-medium align-middle transition-all sm:max-w-2xl mx-auto">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">
           {isCurrentWallet ? t('sameWallet') : t('differentWallet')}
         </h3>
-        <p className="text-sm text-primary">
-          {isCurrentWallet
-            ? t('sameWalletSubtitle')
-            : t('differentWalletSubtitle')}
-        </p>
       </div>
       <div className="flex w-full flex-col pt-4 text-center gap-y-2 pb-1">
         {isCurrentWallet ? (
           <>
-            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm">
+            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm text-base">
               {t('sameWalletAddress')}
             </div>
-            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm leading-5">
+            <div className="flex items-center gap-x-2 p-2 text-primary leading-5 text-sm">
               {account ? trimAccount(account, true) : t('walletNotConnected')}
             </div>
           </>
@@ -126,17 +123,27 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
               <input
                 placeholder="0x..."
                 type="text"
-                className="border-none leading-5 font-medium text-sm text-primary rounded-lg focus:outline-none focus:ring-0 block w-full [appearance:textfield]"
+                className="bg-white shadow-md border-none leading-5 font-medium text-sm text-primary rounded-lg focus:outline-none focus:ring-0 block w-full [appearance:textfield]"
                 value={anotherWallet}
                 onChange={async (e) => await handleChange(e)}
               />
             </div>
             <Alert open={!isAnotherWalletValid}>{invalidReason}</Alert>
+            <Banner
+              bgColor="bg-warning"
+              content={t('smartContractAddressNotAllowed')}
+              icon={
+                <ExclamationIcon
+                  className="h-5 w-5 text-primary"
+                  aria-hidden="true"
+                />
+              }
+            />
           </>
         )}
       </div>
-
-      <div className="flex flex-col w-full text-center pt-4">
+      <hr className="w-full border-1 border-custom-border" />
+      <div className="flex flex-col w-full text-center pt-4 mt-auto">
         {isCurrentWallet &&
           (account && ready ? (
             <button

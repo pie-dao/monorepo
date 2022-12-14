@@ -60,7 +60,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
             <Popover.Button
               as="div"
               className={classNames(
-                'cursor-pointer w-full',
+                'cursor-pointer w-full px-2',
                 memoizedLocks === 0 && 'pointer-events-none',
               )}
               ref={setReferenceElement}
@@ -132,7 +132,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                       open: { scale: 1 },
                     }}
                     transition={{ duration: 0.3 }}
-                    className="origin-top space-y-3 max-h-48 overflow-y-auto"
+                    className="origin-top space-y-3 max-h-48 overflow-y-auto p-4 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full"
                   >
                     {memoizedPositions &&
                       memoizedPositions.length > 0 &&

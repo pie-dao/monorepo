@@ -1,13 +1,11 @@
 import classNames from '../../utils/classnames';
-import useTranslation from 'next-translate/useTranslation';
 
 export type Props = {
-  content: string;
+  content: string | React.ReactNode;
   icon?: React.ReactNode;
   bgColor?: string;
 };
 const Banner: React.FC<Props> = ({ icon, content, bgColor }) => {
-  const { t } = useTranslation('migration');
   return (
     <div
       className={classNames(

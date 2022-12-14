@@ -12,21 +12,20 @@ const SelectWalletMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
 
   const noLocks = isZero(useTokenBalance(token), 18);
-  const notVeAuxoOrNoLocks = token !== 'veAUXO' || !noLocks;
+  const notVeAuxoOrNoLocks = token !== 'veAUXO' || noLocks;
 
   return (
     <>
       <Heading title={t('selectWallet')} subtitle={t('selectWalletSubtitle')} />
-      <BackBar />
-      <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
-        {notVeAuxoOrNoLocks && <AddressCard isCurrentWallet={true} />}
-        <AddressCard isCurrentWallet={false} />
-      </section>
-      <div className="flex justify-center mt-6">
-        <p className="text-sm text-sub-dark font-medium">
-          {t('smartContractAddressNotAllowed')}
-        </p>
-      </div>
+      <BackBar
+        title={t('chooseWhereToMigrate')}
+        singleCard={!notVeAuxoOrNoLocks}
+      >
+        <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
+          {notVeAuxoOrNoLocks && <AddressCard isCurrentWallet={true} />}
+          <AddressCard isCurrentWallet={false} />
+        </section>
+      </BackBar>
     </>
   );
 };

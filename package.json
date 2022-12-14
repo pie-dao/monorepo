@@ -39,6 +39,8 @@
     "@nomiclabs/hardhat-ethers": "^2.0.4",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@ntegral/nestjs-sentry": "^3.0.7",
+    "@radix-ui/react-checkbox": "^1.0.1",
+    "@radix-ui/react-label": "^2.0.0",
     "@radix-ui/react-slider": "^1.1.0",
     "@radix-ui/react-switch": "^1.0.1",
     "@react-spring/web": "^9.5.5",

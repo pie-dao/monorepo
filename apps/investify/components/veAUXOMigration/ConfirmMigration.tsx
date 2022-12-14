@@ -3,20 +3,38 @@ import useTranslation from 'next-translate/useTranslation';
 import BackBar from '../BackBar/BackBar';
 import Heading from '../Heading/Heading';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { formatDate } from '../../utils/dates';
+import {
+  addMonths,
+  formatDate,
+  fromLockedAtToMonths,
+  getRemainingMonths,
+} from '../../utils/dates';
 import classNames from '../../utils/classnames';
-import Lock from '../Lock/Lock';
 import { useUpgradoor } from '../../hooks/useContracts';
 import {
   ThunkMigrateVeDOUGH,
   ThunkPreviewMigration,
 } from '../../store/migration/migration.thunks';
-import { formatBalance } from '../../utils/formatBalance';
-import * as Switch from '@radix-ui/react-switch';
+import { formatBalance, toBalance } from '../../utils/formatBalance';
 import { STEPS_LIST } from '../../store/migration/migration.types';
 import { useWeb3React } from '@web3-react/core';
-import Image from 'next/image';
 import PreviewMigration from './PreviewMigration';
+import {
+  MigrationRecap,
+  MigrationRecapProps,
+} from '../MigrationRecap/MigrationRecap';
+import { addBalances } from '../../utils/balances';
+import { BigNumber } from 'ethers';
+import { isEmpty } from 'lodash';
+import trimAccount from '../../utils/trimAccount';
+import React from 'react';
+import * as Checkbox from '@radix-ui/react-checkbox';
+import * as Label from '@radix-ui/react-label';
+import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
+import Banner from '../Banner/Banner';
+import Trans from 'next-translate/Trans';
+import MigratingPositions from '../MigrationPositions/MigrationPositions';
+import { setConvertedDOUGHLabel } from '../../store/migration/migration.slice';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -26,11 +44,17 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { destinationWallet, positions, loadingPositions, isSingleLock } =
-    useAppSelector((state) => state.migration);
+  const {
+    destinationWallet,
+    positions,
+    isSingleLock,
+    boost,
+    migrationType,
+    estimatedOutput,
+  } = useAppSelector((state) => state.migration);
   const dispatch = useAppDispatch();
   const upgradoor = useUpgradoor();
-  const [boost, setBoost] = useState<boolean>(false);
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
   const memoizedPositions = useMemo(() => {
     if (!positions) return [];
@@ -39,12 +63,18 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
 
   const handleConfirm = async () => {
     dispatch(
+      setConvertedDOUGHLabel(
+        formatBalance(totalDOUGHConverted, defaultLocale, 4, 'standard'),
+      ),
+    );
+    dispatch(
       ThunkMigrateVeDOUGH({
         upgradoor,
         destinationWallet,
         boost,
         token,
         isSingleLock,
+        sender: account,
       }),
     );
   };
@@ -70,6 +100,117 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     account,
   ]);
 
+  const totalDOUGHConverted = useMemo(() => {
+    if (isEmpty(positions)) return 0;
+    if (isSingleLock) return positions[0].amount.label;
+    return positions.reduce(
+      (acc, position) => addBalances(acc, position.amount),
+      toBalance(BigNumber.from(0), 18),
+    ).label;
+  }, [isSingleLock, positions]);
+
+  const textForMigrationType = useMemo(() => {
+    const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const boostText = token === 'veAUXO' && boost ? 'Boost' : '';
+    const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
+    return t(`${lockText}${baseText}${boostText}`);
+  }, [token, boost, isSingleLock, t]);
+
+  const migrationRecapContent = useMemo<MigrationRecapProps>(() => {
+    if (!positions) return null;
+    const migrationTypeText = textForMigrationType;
+    const totalOutput = `${formatBalance(
+      estimatedOutput[token][migrationType].label,
+      defaultLocale,
+      4,
+      'standard',
+    )}${' '} ${token}`;
+    const totalDOUGH = formatBalance(
+      totalDOUGHConverted,
+      defaultLocale,
+      4,
+      'standard',
+    );
+    const locks = {
+      numberOfLocks: isSingleLock ? 1 : positions.length,
+      totalMigrating: totalDOUGH,
+      migratingTo:
+        token === 'veAUXO'
+          ? boost
+            ? t('oneBoostedLockOutput')
+            : t('oneLockOutput')
+          : t('xAUXO'),
+    };
+
+    const preview = {
+      from: totalDOUGH,
+      to: formatBalance(
+        totalDOUGHConverted / 100,
+        defaultLocale,
+        4,
+        'standard',
+      ),
+    };
+
+    const newLockDuration =
+      token === 'veAUXO'
+        ? boost
+          ? 36
+          : getRemainingMonths(
+              new Date(),
+              new Date(
+                memoizedPositions[0].lockedAt * 1000 +
+                  memoizedPositions[0].lockDuration * 1000,
+              ),
+            )
+        : null;
+
+    const willReceive = {
+      AUXO: formatBalance(
+        totalDOUGHConverted / 100,
+        defaultLocale,
+        4,
+        'standard',
+      ),
+      estimatedOutput: totalOutput,
+    };
+
+    const receiver = trimAccount(destinationWallet, true);
+    const newLockEnd =
+      token === 'veAUXO'
+        ? formatDate(addMonths(newLockDuration), defaultLocale)
+        : null;
+
+    const oldLockDuration = fromLockedAtToMonths(
+      memoizedPositions[0].lockDuration,
+    );
+
+    return {
+      migrationType: migrationTypeText,
+      locks,
+      preview,
+      willReceive,
+      receiver,
+      newLockDuration,
+      newLockEnd,
+      oldLockDuration,
+      token,
+    };
+  }, [
+    positions,
+    textForMigrationType,
+    estimatedOutput,
+    token,
+    migrationType,
+    defaultLocale,
+    totalDOUGHConverted,
+    isSingleLock,
+    boost,
+    t,
+    memoizedPositions,
+    destinationWallet,
+  ]);
+
   return (
     <>
       <Heading
@@ -83,121 +224,83 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
             ? STEPS_LIST.MIGRATE_SELECT_WALLET
             : STEPS_LIST.CHOOSE_MIGRATION_TYPE
         }
-      />
-      <section className="grid grid-cols-1 items-center gap-4 text-xs md:text-inherit mt-6">
-        <div className="align-middle sm:max-w-2xl mx-auto flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center divide-y w-full font-medium">
-          <div className="flex flex-col items-center w-full border-hidden gap-y-1">
-            <h3 className="text-lg font-medium text-secondary">
-              {t('veDOUGHToToken', { tokenOut: token })}
-            </h3>
-          </div>
-          <div className="flex w-full flex-col text-center">
-            <div className="flex flex-col gap-y-2 mt-2 max-h-40 pr-4 overflow-y-scroll">
-              {memoizedPositions &&
-                memoizedPositions.length > 0 &&
-                !loadingPositions &&
-                memoizedPositions.map(
-                  ({ amount, lockDuration, lockedAt }, i) => {
-                    return (
-                      <div
-                        key={i}
-                        className={classNames(
-                          'flex items-center gap-x-2 p-2 bg-secondary shadow-md text-white rounded-md',
-                          i !== 0 && isSingleLock && 'opacity-30',
-                        )}
-                      >
-                        <div className="flex flex-shrink-0 w-5 h-5">
-                          <Lock fill="#ffffff" isCompleted={false} />
-                        </div>
-                        <p className="font-normal">
-                          <span className="font-medium">{t('vested')}</span>:{' '}
-                          {formatDate(lockedAt * 1000, defaultLocale)}
-                        </p>
-                        <p className="font-normal">
-                          <span className="font-medium">{t('end')}</span>:{' '}
-                          {formatDate(
-                            lockedAt * 1000 + lockDuration * 1000,
-                            defaultLocale,
-                          )}
-                        </p>
-                        <p className="ml-auto font-medium">
-                          <>
-                            {formatBalance(
-                              amount.label,
-                              defaultLocale,
-                              4,
-                              'standard',
-                            )}{' '}
-                            {t('DOUGH')}
-                          </>
-                        </p>
-                      </div>
-                    );
-                  },
+        title={t('confirmToUpgrade')}
+        singleCard={true}
+      >
+        <section className="grid grid-cols-1 items-center gap-4 text-xs md:text-inherit sm:max-w-3xl w-full">
+          <div className="align-middle flex flex-col gap-y-3 items-center font-medium">
+            <div className="flex flex-col items-center gap-y-1">
+              <h3 className="text-lg font-medium text-secondary">
+                {t('veDOUGHToToken', { tokenOut: token })}
+              </h3>
+            </div>
+            <MigratingPositions positions={memoizedPositions} />
+            <div className="flex w-full">
+              <PreviewMigration
+                token={token}
+                previewType={migrationType}
+                isSingleLock={isSingleLock}
+              />
+            </div>
+            <MigrationRecap {...migrationRecapContent} />
+            {token === 'xAUXO' && (
+              <div className="flex flex-col gap-y-2 w-full text-center">
+                <Banner
+                  bgColor="bg-warning"
+                  content={
+                    <Trans
+                      i18nKey="migrationXAUXOIrriversible"
+                      components={{
+                        firstLine: (
+                          <span className="w-full flex justify-self-auto" />
+                        ),
+                      }}
+                      ns="migration"
+                    />
+                  }
+                  icon={
+                    <ExclamationIcon
+                      className="h-5 w-5 text-primary"
+                      aria-hidden="true"
+                    />
+                  }
+                />
+              </div>
+            )}
+            <div className="flex items-center justify-center w-full text-center pt-4">
+              <Checkbox.Root
+                id="c1"
+                checked={isTermsAccepted}
+                onCheckedChange={() => setIsTermsAccepted(!isTermsAccepted)}
+                className={classNames(
+                  'flex h-5 w-5 items-center justify-center rounded pointer',
+                  'radix-state-checked:bg-secondary radix-state-unchecked:bg-light-gray ring-2 ring-offset-2 ring-secondary',
+                  'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
                 )}
+              >
+                <Checkbox.Indicator>
+                  <CheckIcon className="h-4 w-4 self-center text-white" />
+                </Checkbox.Indicator>
+              </Checkbox.Root>
+              <Label.Label
+                htmlFor="c1"
+                className="ml-3 select-none text-sm font-medium text-primary cursor-pointer"
+              >
+                {t('termsOfMigration')}
+              </Label.Label>
+            </div>
+            <div className="flex flex-col w-full text-center pt-4">
+              <button
+                disabled={!isTermsAccepted}
+                onClick={handleConfirm}
+                className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
+              >
+                {t('confirmAndUpgrade')}
+              </button>
             </div>
           </div>
-          <div className="flex flex-col w-full pt-4 pr-4">
-            <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
-              <p className="text-primary text-base font-medium truncate">
-                {t('common:wallet')}: <span>{destinationWallet}</span>
-              </p>
-            </div>
-          </div>
-          {token === 'xAUXO' && (
-            <div className="flex flex-col w-full pt-4 pr-4">
-              <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
-                <p>{t('common:noStakeTime')}</p>
-                <p className="text-secondary font-medium text-md">
-                  {t('common:keepLiquidity')}
-                </p>
-              </div>
-            </div>
-          )}
-          {!isSingleLock && token === 'veAUXO' && (
-            <div className="flex flex-col w-full justify-between pr-4 py-2">
-              <div className="text-center text-sub-dark font-medium text-sm py-4">
-                <p>{t('withoutBoost')}</p>
-              </div>
-              <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
-                <label
-                  className="pr-2 text-sub-dark font-medium"
-                  htmlFor="boost"
-                >
-                  {t('boostToMax')}
-                </label>
-                <Switch.Root
-                  className={classNames(
-                    'group',
-                    'flex bg-sub-dark relative items-center h-[15px] w-[44px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out',
-                    'focus:outline-none focus-visible:ring focus-visible:ring-sub-dark focus-visible:ring-opacity-75',
-                  )}
-                  id="boost"
-                  onCheckedChange={setBoost}
-                  checked={boost}
-                >
-                  <Switch.Thumb
-                    className={classNames(
-                      'group-radix-state-checked:translate-x-6',
-                      'group-radix-state-unchecked:-translate-x-1',
-                      'pointer-events-none flex h-[23px] w-[23px] transform rounded-full bg-secondary shadow-lg ring-0 transition duration-200 ease-in-out',
-                    )}
-                  />
-                </Switch.Root>
-              </div>
-            </div>
-          )}
-          <PreviewMigration token={token} />
-          <div className="flex flex-col w-full text-center pt-4">
-            <button
-              onClick={handleConfirm}
-              className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
-            >
-              {t('confirmAndUpgrade')}
-            </button>
-          </div>
-        </div>
-      </section>
+        </section>
+      </BackBar>
     </>
   );
 };
