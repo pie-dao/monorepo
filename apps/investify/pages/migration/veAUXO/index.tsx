@@ -10,6 +10,7 @@ import SelectWalletMigration from '../../../components/SelectWalletMigration/Sel
 import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.thunks';
 import MigrationCompleted from '../../../components/MigrationCompleted/MigrationCompleted';
 import { thunkGetUserProductsData } from '../../../store/products/thunks';
+import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 
 export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
   const { currentStep } = useAppSelector((state) => state.migration);
@@ -38,7 +39,12 @@ export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
     }
   }, [currentStep, token]);
 
-  return <div className="flex flex-col h-screen">{getStep}</div>;
+  return (
+    <div className="flex flex-col h-screen isolate">
+      <MigrationBackground />
+      {getStep}
+    </div>
+  );
 }
 
 Migration.getLayout = function getLayout(page: ReactElement) {

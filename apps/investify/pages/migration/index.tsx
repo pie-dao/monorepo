@@ -16,6 +16,7 @@ import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { Disclosure } from '@headlessui/react';
 import classNames from '../../utils/classnames';
 import { motion, AnimatePresence } from 'framer-motion';
+import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -58,7 +59,8 @@ export default function Migration() {
   ];
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen isolate">
+      <MigrationBackground />
       <MigrationBanner />
       <Heading
         title={t('timeToMigrate')}

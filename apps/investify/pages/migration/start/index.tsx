@@ -13,6 +13,7 @@ import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.t
 import MigrationBanner from '../../../components/MigrationBanner/MigrationBanner';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import BackBar from '../../../components/BackBar/BackBar';
+import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -150,7 +151,8 @@ export default function Migration() {
   }, [t]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen isolate">
+      <MigrationBackground />
       <MigrationBanner />
       <Heading
         title={t('timeToMigrate')}

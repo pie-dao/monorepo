@@ -47,12 +47,11 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
               : MIGRATION_TYPE.AGGREGATE,
           ),
         );
-        dispatch(setDestinationWallet(account));
-        dispatch(setCurrentStep(STEPS_LIST.MIGRATE_CONFIRM));
       } else {
         dispatch(setMigrationType(MIGRATION_TYPE.AGGREGATE));
-        dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SELECT_WALLET));
       }
+      dispatch(setDestinationWallet(account));
+      dispatch(setCurrentStep(STEPS_LIST.MIGRATE_CONFIRM));
     }
   };
 
