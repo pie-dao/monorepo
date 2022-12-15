@@ -26,7 +26,6 @@ import MigratingPositions from '../MigrationPositions/MigrationPositions';
 type Props = {
   title: string;
   subtitle: string;
-  description: string;
   tokenOut: 'veAUXO' | 'xAUXO';
   isSingleLock: boolean;
   goToStep: () => void;
@@ -35,7 +34,6 @@ type Props = {
 const MigrationCard: React.FC<Props> = ({
   title,
   subtitle,
-  description,
   tokenOut,
   isSingleLock,
   goToStep,
@@ -95,7 +93,10 @@ const MigrationCard: React.FC<Props> = ({
       {!loadingPositions ? (
         <>
           {' '}
-          <MigratingPositions positions={memoizedPositions} />
+          <MigratingPositions
+            positions={memoizedPositions}
+            isSingleLock={isSingleLock}
+          />
           <PreviewMigration
             token={tokenOut}
             previewType={

@@ -27,6 +27,7 @@ export type MigrationRecapProps = {
   newLockEnd?: string;
   token: 'veAUXO' | 'xAUXO';
   oldLockDuration: number;
+  fee: string;
 };
 
 export const MigrationRecap: React.FC<MigrationRecapProps> = ({
@@ -39,6 +40,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
   newLockEnd,
   oldLockDuration,
   token,
+  fee,
 }) => {
   const { t } = useTranslation('migration');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -94,7 +96,6 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
     ),
     <p className="text-primary font-normal" key={4}>
       <Trans
-        key={4}
         i18nKey="willReceive"
         values={{
           AUXO: willReceive.AUXO,
@@ -106,6 +107,17 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         }}
         ns="migration"
       />
+      {token === 'xAUXO' && (
+        <>
+          {' '}
+          <Trans
+            i18nKey="xAUXOFee"
+            values={{ fee }}
+            components={{ fee: <span className="font-bold" /> }}
+            ns="migration"
+          />
+        </>
+      )}
     </p>,
     <p className="text-primary font-normal" key={5}>
       <Trans

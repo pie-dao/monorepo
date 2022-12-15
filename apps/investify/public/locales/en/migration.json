@@ -99,6 +99,7 @@
   "preview": "🔄 Your <from>${from} DOUGH</from> will be migrated to <to>${to} AUXO</to> (Rate 100:1)",
   "newLockDuration": "🆕 Your new lock will start today for <newLockDuration>${newLockDuration}</newLockDuration> months",
   "willReceive": "🧮 You will receive <estimatedOutput>${estimatedOutput}</estimatedOutput> for <AUXO>${AUXO} AUXO</AUXO>",
+  "xAUXOFee": "(<fee>${fee} AUXO</fee> fee applied)",
   "receiver": "📥 The receiver address is <receiver>${receiver}</receiver>",
   "newLockEnd": "🗓️ You can withdraw your AUXO after the lock ends on <newLockEnd>${newLockEnd}</newLockEnd>",
   "oneLockOutput": "one lock",

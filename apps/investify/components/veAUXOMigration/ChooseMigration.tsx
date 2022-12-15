@@ -68,7 +68,6 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           {notVeAuxoOrNoLocks && (
             <MigrationCard
               title={t('migrateMultipleLocks')}
-              description={t('migrateMultipleLocksDescription')}
               subtitle={t('migrateMultipleLocksSubtitle')}
               tokenOut={token}
               isSingleLock={false}
@@ -77,7 +76,6 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           )}
           <MigrationCard
             title={t('migrateOneLock')}
-            description={t('migrateOneLockDescription')}
             subtitle={t('migrateOneLockSubtitle')}
             tokenOut={token}
             isSingleLock={true}

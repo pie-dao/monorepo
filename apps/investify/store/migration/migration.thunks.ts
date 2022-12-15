@@ -26,7 +26,6 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
 
     const locks = await Promise.all(
       Array.from(Array(locksLength.toNumber())).map((_, i) => {
-        console.log(i);
         return veDOUGHSharesTimeLock.locksOf(account, i);
       }),
     );

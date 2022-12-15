@@ -52,7 +52,7 @@ export const migrationSlice = createSlice({
     });
 
     builder.addCase(ThunkPreviewMigration.rejected, (state, action) => {
-      console.error(action.payload);
+      console.error(action.error);
       state.loadingPreview = false;
     });
 
@@ -91,12 +91,6 @@ export const migrationSlice = createSlice({
     },
     setSingleLock: (state, action: PayloadAction<boolean>) => {
       state.isSingleLock = action.payload;
-    },
-    setEstimatedOutput: (
-      state,
-      action: PayloadAction<SliceState['estimatedOutput']>,
-    ) => {
-      state.estimatedOutput = action.payload;
     },
     setTx: (state, action: PayloadAction<SliceState['tx']>) => {
       state.tx = action.payload;

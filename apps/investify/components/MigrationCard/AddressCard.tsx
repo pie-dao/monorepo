@@ -98,7 +98,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
   }, [anotherWallet]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full font-medium align-middle transition-all sm:max-w-2xl mx-auto">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center divide-y w-full font-medium align-middle transition-all mx-auto">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">
           {isCurrentWallet ? t('sameWallet') : t('differentWallet')}

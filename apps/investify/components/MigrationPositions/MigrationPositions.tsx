@@ -12,15 +12,15 @@ import Lock from '../Lock/Lock';
 
 export type MigratingPositionsProps = {
   positions: Position[];
+  isSingleLock?: boolean;
 };
 
 const MigratingPositions: React.FC<MigratingPositionsProps> = ({
   positions,
+  isSingleLock,
 }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { loadingPositions, isSingleLock } = useAppSelector(
-    (state) => state.migration,
-  );
+  const { loadingPositions } = useAppSelector((state) => state.migration);
   const { t } = useTranslation('migration');
   return (
     <div className="flex w-full flex-col pt-4 text-center">
