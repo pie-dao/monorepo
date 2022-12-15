@@ -67,7 +67,7 @@ const PreviewMigration: React.FC<Props> = ({
           <Image src={imageMap[token]} alt={token} width={24} height={24} />
           <span className="text-xl font-medium text-secondary">
             {formatBalance(
-              estimatedOutput[token][previewType].label,
+              estimatedOutput?.[token]?.[previewType]?.label,
               defaultLocale,
               4,
               'standard',

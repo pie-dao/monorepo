@@ -120,7 +120,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     if (!positions) return null;
     const migrationTypeText = textForMigrationType;
     const totalOutput = `${formatBalance(
-      estimatedOutput[token][migrationType].label,
+      estimatedOutput?.[token]?.[migrationType]?.label,
       defaultLocale,
       4,
       'standard',
