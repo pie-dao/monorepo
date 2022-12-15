@@ -40,7 +40,7 @@ export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
   }, [currentStep, token]);
 
   return (
-    <div className="flex flex-col h-screen isolate">
+    <div className="flex flex-col h-screen isolate relative">
       <MigrationBackground />
       {getStep}
     </div>
