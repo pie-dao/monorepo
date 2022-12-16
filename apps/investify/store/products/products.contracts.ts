@@ -37,6 +37,10 @@ const PolygonMulticall = new MultiCallWrapper(
   _config[SUPPORTED_CHAINS.POLYGON.toString()].provider,
 );
 
+const MAINNETMulticall = new MultiCallWrapper(
+  _config[SUPPORTED_CHAINS.MAINNET.toString()].provider,
+);
+
 export const productContracts = Object.entries(products).map(
   ([, value]) => value.addresses,
 );
@@ -69,29 +73,39 @@ export const contractWrappers = productContracts.map((addresses) => {
   return mcw.wrap(contract, addresses);
 });
 
-export const stakingContract = TokenLockerAbi__factory.connect(
-  products['veAUXO'].addresses[selectedNetwork].stakingAddress,
-  new ethers.providers.JsonRpcProvider(localRPC),
+export const stakingContract = MAINNETMulticall.wrap(
+  TokenLockerAbi__factory.connect(
+    products['veAUXO'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
 );
 
-export const veAUXOContract = VeAUXOAbi__factory.connect(
-  products['veAUXO'].addresses[selectedNetwork].address,
-  new ethers.providers.JsonRpcProvider(localRPC),
+export const veAUXOContract = MAINNETMulticall.wrap(
+  VeAUXOAbi__factory.connect(
+    products['veAUXO'].addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
 );
 
-export const xAUXOContract = XAUXOAbi__factory.connect(
-  products['xAUXO'].addresses[selectedNetwork].address,
-  new ethers.providers.JsonRpcProvider(localRPC),
+export const xAUXOContract = MAINNETMulticall.wrap(
+  XAUXOAbi__factory.connect(
+    products['xAUXO'].addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
 );
 
-export const xAUXOStakingManager = StakingManagerAbi__factory.connect(
-  products['xAUXO'].addresses[selectedNetwork].stakingAddress,
-  new ethers.providers.JsonRpcProvider(localRPC),
+export const xAUXOStakingManager = MAINNETMulticall.wrap(
+  StakingManagerAbi__factory.connect(
+    products['xAUXO'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
 );
 
-export const veDOUGHSharesTimeLock = SharesTimeLockAbi__factory.connect(
-  migration['veDOUGH'].addresses[selectedNetwork].stakingAddress,
-  new ethers.providers.JsonRpcProvider(localRPC),
+export const veDOUGHSharesTimeLock = MAINNETMulticall.wrap(
+  SharesTimeLockAbi__factory.connect(
+    migration['veDOUGH'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
 );
 
 export const FTMContractWrappers = FTMContracts.map((address) => {

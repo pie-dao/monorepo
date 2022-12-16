@@ -3,7 +3,10 @@ import { useWeb3React } from '@web3-react/core';
 import trimAccount from '../../utils/trimAccount';
 import { useCallback, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
-import { useStakingTokenContract } from '../../hooks/useContracts';
+import {
+  useStakingTokenContract,
+  useVeDOUGHStakingContract,
+} from '../../hooks/useContracts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Alert } from '../Alerts/Alerts';
 import {
@@ -15,6 +18,7 @@ import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import { ConnectButton } from '@shared/ui-library';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import Banner from '../Banner/Banner';
+import { veDOUGHSharesTimeLock } from '../../store/products/products.contracts';
 
 type Props = {
   isCurrentWallet: boolean;
@@ -30,6 +34,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
   const tokenLocker = useStakingTokenContract('veAUXO');
+  const eDOUGHTokenLocker = useVeDOUGHStakingContract();
   const dispatch = useAppDispatch();
 
   const goToConfirm = useCallback(() => {
@@ -74,10 +79,19 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
       if (isAddress && e.target.value.toLowerCase() !== account.toLowerCase()) {
         try {
           const hasLock = await tokenLocker.hasLock(e.target.value);
+          const hasVeDOUGH = await eDOUGHTokenLocker.getLocksOfLength(
+            e.target.value,
+          );
+
           if (hasLock) {
             handleInvalidAddress({
               isValid: false,
               reason: t('alreadyLocked'),
+            });
+          } else if (!hasVeDOUGH.isZero()) {
+            handleInvalidAddress({
+              isValid: false,
+              reason: t('alreadyLockedVeDOUGH'),
             });
           } else {
             handleInvalidAddress({
@@ -90,7 +104,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
         }
       }
     },
-    [account, t, tokenLocker],
+    [account, eDOUGHTokenLocker, t, tokenLocker],
   );
 
   const anotherWalletEnabled = useMemo(() => {
@@ -98,7 +112,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
   }, [anotherWallet]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center divide-y w-full font-medium align-middle transition-all mx-auto">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full font-medium align-middle transition-all mx-auto">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">
           {isCurrentWallet ? t('sameWallet') : t('differentWallet')}
@@ -157,7 +171,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
           ))}
         {!isCurrentWallet && (
           <button
-            disabled={!anotherWalletEnabled}
+            disabled={!anotherWalletEnabled || !isAnotherWalletValid}
             onClick={goToConfirm}
             className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
           >

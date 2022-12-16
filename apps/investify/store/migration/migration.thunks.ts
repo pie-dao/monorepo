@@ -156,20 +156,20 @@ export const ThunkPreviewMigration = createAsyncThunk(
     {
       upgradoor,
       boost,
-      destinationWallet,
       token,
       isSingleLock,
       sender,
+      destinationWallet,
     }: ThunkMigrateVeDOUGHProps,
     { rejectWithValue },
   ) => {
     if (
       !upgradoor ||
       typeof boost !== 'boolean' ||
-      !destinationWallet ||
       !token ||
       typeof isSingleLock !== 'boolean' ||
-      !sender
+      !sender ||
+      !destinationWallet
     ) {
       return rejectWithValue(
         'Missing Contract, Boost, Destination Wallet, Token to migrate to or single lock definition',
@@ -177,9 +177,8 @@ export const ThunkPreviewMigration = createAsyncThunk(
     }
 
     const previews = promiseObject({
-      veAUXOAggregateAndBoost:
-        upgradoor.previewAggregateAndBoost(destinationWallet),
-      veAUXOAggregate: upgradoor.previewAggregateVeAUXO(destinationWallet),
+      veAUXOAggregateAndBoost: upgradoor.previewAggregateAndBoost(sender),
+      veAUXOAggregate: upgradoor.previewAggregateVeAUXO(sender),
       veAUXOSingleLock: upgradoor.previewUpgradeSingleLockVeAuxo(
         sender,
         destinationWallet,

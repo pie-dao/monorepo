@@ -72,10 +72,7 @@ const MigrationCard: React.FC<Props> = ({
     dispatch(
       ThunkPreviewMigration({
         upgradoor,
-        destinationWallet:
-          tokenOut === 'veAUXO' && hasLock
-            ? Wallet.createRandom().address
-            : account,
+        destinationWallet: hasLock ? Wallet.createRandom().address : account,
         boost,
         token: tokenOut,
         isSingleLock,
