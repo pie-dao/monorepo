@@ -4,7 +4,10 @@ import { Layout } from '../../../components';
 import { wrapper } from '../../../store';
 import { useAppDispatch } from '../../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.thunks';
-import { thunkGetUserProductsData } from '../../../store/products/thunks';
+import {
+  thunkGetUserProductsData,
+  thunkGetUserStakingData,
+} from '../../../store/products/thunks';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import useMigrationSteps from '../../../hooks/migrationSteps';
 
@@ -17,6 +20,7 @@ export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
     if (account) {
       dispatch(ThunkGetVeDOUGHStakingData({ account }));
       dispatch(thunkGetUserProductsData({ account }));
+      dispatch(thunkGetUserStakingData({ account }));
     }
   }, [account, dispatch]);
 

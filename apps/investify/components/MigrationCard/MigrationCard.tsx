@@ -16,6 +16,7 @@ import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { Wallet } from 'ethers';
+import { useUserLockDuration } from '../../hooks/useToken';
 
 type Props = {
   title: string;
@@ -40,6 +41,7 @@ const MigrationCard: React.FC<Props> = ({
   const { account } = useWeb3React();
   const dispatch = useAppDispatch();
   const upgradoor = useUpgradoor();
+  const hasLock = !!useUserLockDuration('veAUXO');
 
   const memoizedPositions = useMemo(() => {
     if (!positions) return [];
@@ -66,18 +68,21 @@ const MigrationCard: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (!account && !upgradoor) return;
+    if (!account || !upgradoor || typeof hasLock !== 'boolean') return;
     dispatch(
       ThunkPreviewMigration({
         upgradoor,
-        destinationWallet: Wallet.createRandom().address,
+        destinationWallet:
+          tokenOut === 'veAUXO' && hasLock
+            ? Wallet.createRandom().address
+            : account,
         boost,
         token: tokenOut,
         isSingleLock,
         sender: account,
       }),
     );
-  }, [dispatch, upgradoor, boost, isSingleLock, account, tokenOut]);
+  }, [dispatch, upgradoor, boost, isSingleLock, account, tokenOut, hasLock]);
 
   return (
     <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto">

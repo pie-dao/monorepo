@@ -32,7 +32,7 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
 
     return locks
       .sort((a, b) => {
-        if (a.lockDuration === b.lockDuration) return -1;
+        if (a.lockDuration === b.lockDuration) return 1;
         return b.lockDuration - a.lockDuration;
       })
       .map((lock) => {
@@ -168,7 +168,8 @@ export const ThunkPreviewMigration = createAsyncThunk(
       typeof boost !== 'boolean' ||
       !destinationWallet ||
       !token ||
-      typeof isSingleLock !== 'boolean'
+      typeof isSingleLock !== 'boolean' ||
+      !sender
     ) {
       return rejectWithValue(
         'Missing Contract, Boost, Destination Wallet, Token to migrate to or single lock definition',

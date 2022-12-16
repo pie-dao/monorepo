@@ -21,7 +21,8 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://bestnet.alexintosh.com/rpc/00a52c545';
+const localRPC =
+  'https://bestnet.alexintosh.com/rpc/8ece3fa70b5a0916409ebdd019de9574b792346e';
 
 const selectedNetwork = 1;
 
