@@ -35,7 +35,7 @@ export const migrationSlice = createSlice({
     });
 
     builder.addCase(ThunkGetVeDOUGHStakingData.rejected, (state, action) => {
-      console.error(action.payload);
+      console.error(action);
       state.loadingPositions = false;
     });
 
@@ -52,7 +52,7 @@ export const migrationSlice = createSlice({
     });
 
     builder.addCase(ThunkPreviewMigration.rejected, (state, action) => {
-      console.error(action.error);
+      console.error(action);
       state.loadingPreview = false;
     });
 

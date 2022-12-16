@@ -1,14 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import useTranslation from 'next-translate/useTranslation';
-import Lock from '../Lock/Lock';
-import {
-  addMonths,
-  formatDate,
-  fromLockedAtToMonths,
-  getRemainingMonths,
-} from '../../utils/dates';
+import { addMonths, formatDate, getRemainingMonths } from '../../utils/dates';
 import classNames from '../../utils/classnames';
-import { formatBalance } from '../../utils/formatBalance';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { useCallback, useEffect, useMemo } from 'react';
 import * as Switch from '@radix-ui/react-switch';
@@ -22,6 +15,7 @@ import { ThunkPreviewMigration } from '../../store/migration/migration.thunks';
 import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
+import { Wallet } from 'ethers';
 
 type Props = {
   title: string;
@@ -72,10 +66,11 @@ const MigrationCard: React.FC<Props> = ({
   };
 
   useEffect(() => {
+    if (!account && !upgradoor) return;
     dispatch(
       ThunkPreviewMigration({
         upgradoor,
-        destinationWallet: account,
+        destinationWallet: Wallet.createRandom().address,
         boost,
         token: tokenOut,
         isSingleLock,

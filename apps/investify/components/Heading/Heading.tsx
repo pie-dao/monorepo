@@ -33,12 +33,6 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
   const memoizedLocks = useMemo(() => {
-    return (
-      positions?.filter((position) => position.lockDuration !== 0)?.length ?? 0
-    );
-  }, [positions]);
-
-  const memoizedPositions = useMemo(() => {
     if (!positions) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
@@ -61,7 +55,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
               as="div"
               className={classNames(
                 'cursor-pointer w-full px-2',
-                memoizedLocks === 0 && 'pointer-events-none',
+                memoizedLocks?.length === 0 && 'pointer-events-none',
               )}
               ref={setReferenceElement}
             >
@@ -80,18 +74,18 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                   <>
                     {loadingPositions ? (
                       <LoadingSpinner className="self-center h-full w-full" />
-                    ) : memoizedLocks === 0 ? (
+                    ) : memoizedLocks?.length === 0 ? (
                       <motion.span className="flex">{t('noLocks')}</motion.span>
-                    ) : memoizedLocks === 1 ? (
+                    ) : memoizedLocks?.length === 1 ? (
                       <motion.span className="flex">{t('oneLock')}</motion.span>
                     ) : (
                       <motion.span className="flex">
-                        {t('multipleLocks', { locks: memoizedLocks })}
+                        {t('multipleLocks', { locks: memoizedLocks?.length })}
                       </motion.span>
                     )}
                   </>
                 </div>
-                {memoizedLocks !== 0 && (
+                {memoizedLocks?.length !== 0 && (
                   <motion.div
                     initial={{ rotate: 0 }}
                     animate={{ rotate: open ? 180 : 0 }}
@@ -134,10 +128,10 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                     transition={{ duration: 0.3 }}
                     className="origin-top space-y-3 max-h-48 overflow-y-auto p-4 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full"
                   >
-                    {memoizedPositions &&
-                      memoizedPositions.length > 0 &&
+                    {memoizedLocks &&
+                      memoizedLocks.length > 0 &&
                       !loadingPositions &&
-                      memoizedPositions.map(
+                      memoizedLocks.map(
                         ({ amount, lockDuration, lockedAt }, i) => {
                           const lockedAtFormatted = formatDate(
                             lockedAt * 1000,

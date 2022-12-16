@@ -85,6 +85,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   };
 
   useEffect(() => {
+    if (!upgradoor || !destinationWallet || !account) return;
     dispatch(
       ThunkPreviewMigration({
         upgradoor,

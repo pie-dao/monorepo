@@ -116,7 +116,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
           </>
         ) : (
           <>
-            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm">
+            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm text-base">
               {t('differentWalletAddress')}
             </div>
             <div className="flex flex-col items-start focus-within:ring-2 ring-secondary rounded-lg border border-custom-border bg-white">

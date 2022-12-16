@@ -9,7 +9,7 @@ const Banner: React.FC<Props> = ({ icon, content, bgColor }) => {
   return (
     <div
       className={classNames(
-        bgColor ? bgColor : 'bg-white',
+        bgColor ?? 'bg-white',
         'rounded-lg items-center py-1 justify-center',
       )}
     >

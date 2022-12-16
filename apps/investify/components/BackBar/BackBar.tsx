@@ -31,7 +31,7 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
       dispatch(setCurrentStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE));
       dispatch(setPreviousStep(null));
     } else {
-      dispatch(setCurrentStep(goTo ? goTo : currentStep - 1));
+      dispatch(setCurrentStep(goTo ?? currentStep - 1));
       dispatch(setPreviousStep(goTo ? goTo - 1 : currentStep - 1));
     }
   };
@@ -43,7 +43,7 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
         singleCard ? 'w-fit' : 'w-full',
       )}
     >
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <button className="w-fit flex items-center" onClick={goBack}>
           <ChevronLeftIcon
             className="h-7 w-7 text-sub-dark"

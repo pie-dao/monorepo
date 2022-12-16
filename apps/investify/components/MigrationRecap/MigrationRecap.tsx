@@ -45,7 +45,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
   const { t } = useTranslation('migration');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const textLabels = [
-    <p className="text-primary font-normal" key={5}>
+    <p className="text-primary font-normal" key={0}>
       <Trans
         key={0}
         i18nKey="recap"
@@ -54,7 +54,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         ns="migration"
       />
     </p>,
-    <p className="text-primary font-normal" key={5}>
+    <p className="text-primary font-normal" key={1}>
       <Trans
         key={1}
         i18nKey="locks"
@@ -71,7 +71,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         ns="migration"
       />
     </p>,
-    <p className="text-primary font-normal" key={5}>
+    <p className="text-primary font-normal" key={2}>
       <Trans
         key={2}
         i18nKey="preview"
@@ -84,9 +84,8 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
       />
     </p>,
     token === 'veAUXO' && (
-      <p className="text-primary font-normal">
+      <p className="text-primary font-normal" key={3}>
         <Trans
-          key={3}
           i18nKey="newLockDuration"
           values={{ newLockDuration }}
           components={{ newLockDuration: <span className="font-bold" /> }}
@@ -129,7 +128,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
     </p>,
     token === 'veAUXO' && oldLockDuration && (
       <Fragment key={6}>
-        <p className="text-primary font-normal" key={6}>
+        <p className="text-primary font-normal">
           <Trans
             i18nKey="newLockEnd"
             values={{ newLockEnd }}

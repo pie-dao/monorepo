@@ -15,11 +15,11 @@ export const pendingNotification = ({
     <>
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={title} />
+          <Trans i18nKey={title} ns={'notifications'} />
         </p>
         {subtitle && (
           <p className="mt-1 text-sm text-gray-500">
-            <Trans i18nKey={subtitle} />
+            <Trans i18nKey={subtitle} ns={'notifications'} />
           </p>
         )}
       </div>
@@ -73,7 +73,7 @@ export const successNotificationUpdate = (toastId: Id) => {
     <>
       <div className="ml-3 flex-1" data-cy={`${toastId}Success`}>
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={`${toastId}Success`} />
+          <Trans i18nKey={`${toastId}Success`} ns={'notifications'} />
         </p>
       </div>
     </>,
@@ -91,7 +91,7 @@ export const errorNotificationUpdate = (toastId: Id, message: string) => {
     <>
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={message} />
+          <Trans i18nKey={message} ns={'notifications'} />
         </p>
       </div>
     </>,
