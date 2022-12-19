@@ -82,7 +82,7 @@ const MigrationCard: React.FC<Props> = ({
   }, [dispatch, upgradoor, boost, isSingleLock, account, tokenOut, hasLock]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-4xl">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">{t(title)}</h3>
         <p className="text-sm text-primary">{t(subtitle)}</p>
@@ -173,7 +173,7 @@ const MigrationCard: React.FC<Props> = ({
             <button
               disabled={memoizedPositions.length === 0}
               onClick={goToStep}
-              className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
+              className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
             >
               {isSingleLock
                 ? t('upgradeSingleLock', { token: tokenOut })

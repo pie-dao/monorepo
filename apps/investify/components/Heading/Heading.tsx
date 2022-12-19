@@ -38,13 +38,16 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
   }, [positions]);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-y-3 my-8">
-      <h1 className="text-4xl font-medium text-secondary text-center">
-        {title}
-      </h1>
-      <p className="text-base text-center max-w-2xl text-primary font-medium">
-        {subtitle}
-      </p>
+    <div className="flex flex-col items-center justify-center gap-y-10 mt-16 mb-20">
+      <div className="flex flex-col gap-y-1">
+        <h1 className="text-4xl font-medium text-secondary text-center">
+          {title}
+        </h1>
+        <p className="text-base text-center max-w-2xl text-primary font-medium">
+          {subtitle}
+        </p>
+      </div>
+
       <Popover
         as="div"
         className="bg-white shadow-md rounded-lg py-2 w-full max-w-xl relative"
@@ -60,7 +63,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
               ref={setReferenceElement}
             >
               <div className="flex items-center">
-                <div className="w-full flex-1 flex items-start justify-center gap-x-2 text-primary font-medium text-xl">
+                <div className="w-full flex-1 flex items-start justify-center gap-x-2 text-primary font-medium text-lg">
                   {!loadingPositions && (
                     <div className="flex flex-shrink-0 self-center">
                       <Image

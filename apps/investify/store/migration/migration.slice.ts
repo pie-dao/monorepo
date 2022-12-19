@@ -113,6 +113,23 @@ export const migrationSlice = createSlice({
     setConvertedDOUGHLabel: (state, action: PayloadAction<string>) => {
       state.DOUGHInput = action.payload;
     },
+    setCleanupFlow: (state) => {
+      state.currentStep = STEPS_LIST.CHOOSE_MIGRATION_TYPE;
+      state.previousStep = null;
+      state.isSingleLock = false;
+      state.destinationWallet = null;
+      state.loadingPositions = false;
+      state.loadingPreview = false;
+      state.positions = [];
+      state.estimatedOutput = null;
+      state.boost = false;
+      state.migrationType = null;
+      state.DOUGHInput = '';
+      state.tx = {
+        hash: null,
+        status: null,
+      };
+    },
   },
 });
 
@@ -128,5 +145,6 @@ export const {
   setBoost,
   setMigrationType,
   setConvertedDOUGHLabel,
+  setCleanupFlow,
 } = migrationSlice.actions;
 export default migrationSlice.reducer;

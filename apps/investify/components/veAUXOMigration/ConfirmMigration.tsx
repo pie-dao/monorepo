@@ -237,7 +237,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
         title={t('confirmToUpgrade')}
         singleCard={true}
       >
-        <section className="grid grid-cols-1 items-center gap-4 text-xs md:text-inherit sm:max-w-3xl w-full">
+        <section className="grid grid-cols-1 items-center gap-4 text-base md:text-inherit sm:max-w-3xl w-full">
           <div className="align-middle flex flex-col gap-y-3 items-center font-medium">
             <div className="flex flex-col items-center gap-y-1">
               <h3 className="text-lg font-medium text-secondary">
@@ -306,7 +306,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
               <button
                 disabled={!isTermsAccepted}
                 onClick={handleConfirm}
-                className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
+                className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
               >
                 {t('confirmAndUpgrade')}
               </button>

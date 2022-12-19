@@ -66,7 +66,8 @@ module.exports = {
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
     require('tailwindcss-radix'),
-    plugin(function ({ addVariant, addComponents }) {
+    require('@tailwindcss/container-queries'),
+    plugin(function ({ addVariant }) {
       addVariant(
         'supports-scrollbars',
         '@supports selector(::-webkit-scrollbar)',

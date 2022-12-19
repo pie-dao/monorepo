@@ -39,7 +39,7 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
   return (
     <div
       className={classNames(
-        'flex flex-col rounded-md justify-center p-4 bg-white shadow-md mx-auto md:min-w-[44rem]',
+        'flex flex-col rounded-md justify-center p-4 bg-white shadow-md mx-auto md:min-w-4xl md:max-w-7xl',
         singleCard ? 'w-fit' : 'w-full',
       )}
     >

@@ -162,7 +162,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
           (account && ready ? (
             <button
               onClick={goToConfirm}
-              className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
+              className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
             >
               {t('sameWalletButton')}
             </button>
@@ -173,7 +173,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
           <button
             disabled={!anotherWalletEnabled || !isAnotherWalletValid}
             onClick={goToConfirm}
-            className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center justify-center"
+            className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
           >
             {t('differentWalletButton')}
           </button>

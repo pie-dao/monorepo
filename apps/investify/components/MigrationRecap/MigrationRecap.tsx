@@ -93,31 +93,49 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         />
       </p>
     ),
-    <p className="text-primary font-normal" key={4}>
-      <Trans
-        i18nKey="willReceive"
-        values={{
-          AUXO: willReceive.AUXO,
-          estimatedOutput: willReceive.estimatedOutput,
-        }}
-        components={{
-          AUXO: <span className="font-bold" />,
-          estimatedOutput: <span className="font-bold" />,
-        }}
-        ns="migration"
-      />
-      {token === 'xAUXO' && (
-        <>
-          {' '}
-          <Trans
-            i18nKey="xAUXOFee"
-            values={{ fee }}
-            components={{ fee: <span className="font-bold" /> }}
-            ns="migration"
-          />
-        </>
-      )}
-    </p>,
+    <div key={4} className="flex items-center justify-between w-full">
+      <p className="text-primary font-normal">
+        <Trans
+          i18nKey="willReceive"
+          values={{
+            AUXO: willReceive.AUXO,
+            estimatedOutput: willReceive.estimatedOutput,
+          }}
+          components={{
+            AUXO: <span className="font-bold" />,
+            estimatedOutput: <span className="font-bold" />,
+          }}
+          ns="migration"
+        />
+        {token === 'xAUXO' && (
+          <>
+            {' '}
+            <Trans
+              i18nKey="xAUXOFee"
+              values={{ fee }}
+              components={{ fee: <span className="font-bold" /> }}
+              ns="migration"
+            />
+          </>
+        )}
+      </p>
+      <Tooltip>
+        <p className="font-medium text-primary">
+          {willReceive?.AUXO} AUXO *{' '}
+          {formatBalance(
+            Number(ethers.utils.formatEther(CONVERSION_CURVE[oldLockDuration])),
+            defaultLocale,
+            4,
+            'standard',
+          )}{' '}
+        </p>
+        <p className="font-normal text-primary">
+          {t('monthMultiplier', {
+            multiplier: oldLockDuration,
+          })}
+        </p>
+      </Tooltip>
+    </div>,
     <p className="text-primary font-normal" key={5}>
       <Trans
         i18nKey="receiver"
@@ -136,24 +154,6 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
             ns="migration"
           />
         </p>
-        <Tooltip>
-          <p className="font-medium text-primary">
-            {willReceive?.AUXO} AUXO *{' '}
-            {formatBalance(
-              Number(
-                ethers.utils.formatEther(CONVERSION_CURVE[oldLockDuration]),
-              ),
-              defaultLocale,
-              4,
-              'standard',
-            )}{' '}
-          </p>
-          <p className="font-normal text-primary">
-            {t('monthMultiplier', {
-              multiplier: oldLockDuration,
-            })}
-          </p>
-        </Tooltip>
       </Fragment>
     ),
   ];

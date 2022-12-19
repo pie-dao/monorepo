@@ -4,8 +4,8 @@ import { ReactElement, useEffect, useMemo } from 'react';
 import { Layout } from '../../../components';
 import { wrapper } from '../../../store';
 import MigrationCardOption from '../../../components/MigrationCardOption/MigrationCardOption';
-import veAUXOIcon from '../../../public/tokens/veAUXO.svg';
-import XAUXOIcon from '../../../public/tokens/xAUXO.svg';
+import veAUXOIcon from '../../../public/tokens/32x32/veAUXO.svg';
+import XAUXOIcon from '../../../public/tokens/32x32/xAUXO.svg';
 import Image from 'next/image';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../../../hooks';
@@ -14,12 +14,17 @@ import MigrationBanner from '../../../components/MigrationBanner/MigrationBanner
 import { ExclamationIcon } from '@heroicons/react/outline';
 import BackBar from '../../../components/BackBar/BackBar';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
+import { setCleanupFlow } from '../../../store/migration/migration.slice';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
+
+  useEffect(() => {
+    dispatch(setCleanupFlow());
+  }, [dispatch]);
 
   useEffect(() => {
     if (account) {
@@ -30,6 +35,7 @@ export default function Migration() {
   const migrationCardsContent = useMemo(() => {
     return [
       {
+        token: 'veAUXO',
         title: t('aggregate', { token: 'veAUXO' }),
         description: t('aggregateDescription'),
         icon: <Image src={veAUXOIcon} alt="veAUXO" width={26} height={26} />,
@@ -89,6 +95,7 @@ export default function Migration() {
         ],
       },
       {
+        token: 'xAUXO',
         title: t('aggregate', { token: 'xAUXO' }),
         description: t('beLiquid'),
         icon: <Image src={XAUXOIcon} alt="xAUXO" width={26} height={26} />,

@@ -17,6 +17,7 @@ import { Disclosure } from '@headlessui/react';
 import classNames from '../../utils/classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
+import { setCleanupFlow } from '../../store/migration/migration.slice';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -72,10 +73,10 @@ export default function Migration() {
             {t('lifecycle')}
           </h3>
         </div>
-        <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-custom-border">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-custom-border">
           {lifecycleColumns.map((column, index) => (
             <div key={index} className="flex flex-col items-center">
-              <div className="flex items-center justify-center rounded-full">
+              <div className="flex items-center justify-center rounded-full max-w-[96px] mx-auto">
                 {column.icon}
               </div>
               <h3 className="mt-4 text-sm font-medium text-primary text-center">
