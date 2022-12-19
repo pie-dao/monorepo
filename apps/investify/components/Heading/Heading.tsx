@@ -129,7 +129,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                       open: { scale: 1 },
                     }}
                     transition={{ duration: 0.3 }}
-                    className="origin-top space-y-3 max-h-48 overflow-y-auto p-4 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full"
+                    className="origin-top space-y-3 max-h-52 overflow-y-auto p-4 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full"
                   >
                     {memoizedLocks &&
                       memoizedLocks.length > 0 &&
@@ -153,13 +153,13 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                             <div
                               key={i}
                               className={classNames(
-                                'w-full flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-primary rounded-sm',
+                                'w-full flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-primary rounded-sm @container',
                               )}
                             >
                               <div className="flex flex-shrink-0 w-5 h-5">
                                 <Lock isCompleted={false} />
                               </div>
-                              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-2 text-xs justify-center flex-1">
+                              <div className="grid grid-cols-1 @md:grid-cols-3 gap-x-2 text-xs justify-center flex-1">
                                 <div>
                                   <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
@@ -197,7 +197,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                   </dl>
                                 </div>
                                 <div className="flex my-auto">
-                                  <dt className="text-sub-dark md:hidden">
+                                  <dt className="text-sub-dark @md:hidden">
                                     {t('Amount')}:
                                   </dt>
                                   <dd className="ml-auto font-medium text-right">

@@ -24,7 +24,12 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
   const { t } = useTranslation('migration');
   return (
     <div className="flex w-full flex-col pt-4 text-center">
-      <div className="flex flex-col gap-y-2 h-64 pr-4 overflow-y-auto p-2 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
+      <div
+        className={classNames(
+          'flex flex-col gap-y-2 pr-4 overflow-y-auto p-2 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full',
+          positions.length >= 4 ? 'h-64' : 'h-fit',
+        )}
+      >
         {positions &&
           positions.length > 0 &&
           !loadingPositions &&
