@@ -6,6 +6,9 @@ import merkleAuth from './merkle-auth/merkleauth.abi.json';
 import tokenLocker from './tokenLocker/tokenLocker.abi.json';
 import xAUXO from './xAUXO/xAUXO.abi.json';
 import stakingManager from './stakingManager/stakingManager.abi.json';
+import sharesTimeLock from './sharesTimeLock/sharesTimeLock.abi.json';
+import upgradoor from './upgradoor/upgradoor.abi.json';
+import AUXO from './AUXO/AUXO.abi.json';
 
 export {
   erc20,
@@ -16,4 +19,7 @@ export {
   tokenLocker,
   xAUXO,
   stakingManager,
+  sharesTimeLock,
+  upgradoor,
+  AUXO,
 };

@@ -17,3 +17,17 @@ export function formatDate(
     day: 'numeric',
   });
 }
+
+export function fromLockedAtToMonths(date: number) {
+  return date / AVG_SECONDS_IN_MONTH;
+}
+
+export function getRemainingMonths(
+  startDate: string | number | Date,
+  endDate: string | number | Date,
+) {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const months = (end.getFullYear() - start.getFullYear()) * 12;
+  return months - start.getMonth() + end.getMonth();
+}

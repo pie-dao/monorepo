@@ -3,7 +3,11 @@ import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
 import Image from 'next/image';
-import { useStakingTokenContract } from '../../../hooks/useContracts';
+import {
+  getSigner,
+  useAUXOTokenContract,
+  useStakingTokenContract,
+} from '../../../hooks/useContracts';
 import { useUserLockDuration } from '../../../hooks/useToken';
 import {
   thunkIncreaseStakeAuxo,
@@ -23,7 +27,7 @@ const imageMap = {
 
 export default function StakeConfirm() {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { hash } = tx;
@@ -31,17 +35,22 @@ export default function StakeConfirm() {
   const [depositLoading, setDepositLoading] = useState(false);
   const stakingContract = useStakingTokenContract(swap.to.token);
   const hasLock = useUserLockDuration(swap.to.token);
+  const AUXOToken = useAUXOTokenContract();
+  const signer = getSigner(library, account);
 
   const makeDeposit = () => {
     setDepositLoading(true);
     dispatch(
       hasLock
         ? thunkIncreaseStakeAuxo({
+            signer,
             deposit: swap?.from?.amount,
             tokenLocker: stakingContract,
-            account,
+            AUXOToken,
           })
         : thunkStakeAuxo({
+            signer,
+            AUXOToken,
             deposit: swap?.from?.amount,
             tokenLocker: stakingContract,
             stakingTime: swap.stakingTime,
@@ -61,10 +70,14 @@ export default function StakeConfirm() {
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
-            {t('stakeTokenModalDescription', {
-              token: swap?.from.token,
-              months: swap?.stakingTime,
-            })}
+            {swap?.stakingTime
+              ? t('stakeTokenModalDescription', {
+                  token: swap?.from.token,
+                  months: swap?.stakingTime,
+                })
+              : t('stakeTokenIncreaseAmountModalDescription', {
+                  token: swap?.from.token,
+                })}
           </p>
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">

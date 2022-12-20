@@ -64,7 +64,7 @@ export default function StakeConfirm() {
                   height={24}
                 />
               </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
                 <Image
                   src={imageMap[swap.to.token]}
                   alt={swap.to.token}

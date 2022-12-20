@@ -5,12 +5,14 @@ export const STEPS = {
   CONFIRM_STAKE_VEAUXO: 'CONFIRM_STAKE_VEAUXO',
   CONFIRM_STAKE_XAUXO: 'CONFIRM_STAKE_XAUXO',
   STAKE_COMPLETED: 'STAKE_COMPLETED',
+  BOOST_STAKE_VEAUXO: 'BOOST_STAKE_VEAUXO',
 } as const;
 
 export type Steps =
   | `${'CONFIRM_STAKE_'}${string}`
   | `${'STAKE_COMPLETED'}`
-  | `${'APPROVE_TOKEN'}`;
+  | `${'APPROVE_TOKEN'}`
+  | `${'BOOST_STAKE_'}${string}`;
 
 export const TX_STATES = {
   PENDING: 'PENDING',

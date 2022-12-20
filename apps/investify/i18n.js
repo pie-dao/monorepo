@@ -3,9 +3,11 @@ module.exports = {
   defaultLocale: 'en',
   localeDetection: false,
   pages: {
-    '*': ['common', 'dashboard'],
-    '/migration': ['migration'],
-    '/migration/veAUXO': ['migration'],
+    '*': ['common', 'dashboard', 'notifications'],
+    '/migration': ['migration', 'notifications'],
+    '/migration/start': ['migration', 'notifications'],
+    '/migration/veAUXO': ['migration', 'notifications'],
+    '/migration/xAUXO': ['migration', 'notifications'],
   },
   interpolation: {
     prefix: '${',

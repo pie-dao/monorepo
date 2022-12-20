@@ -19,7 +19,7 @@ export const RPC_URLS =
         250: 'http://127.0.0.1:8546',
       }
     : {
-        1: 'http://bore.pub:41339',
+        1: 'https://bestnet.alexintosh.com/rpc/8ece3fa70b5a0916409ebdd019de9574b792346e',
         5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'https://rpc.ankr.com/fantom',

@@ -12,10 +12,17 @@ import {
   TokenLockerAbi__factory,
   StakingManagerAbi__factory,
   XAUXOAbi__factory,
+  UpgradoorAbi__factory,
+  AUXOAbi__factory,
+  SharesTimeLockAbi__factory,
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
+import migration from '../config/migration.json';
 
-function getSigner(library: LibraryProvider, account: string): JsonRpcSigner {
+export function getSigner(
+  library: LibraryProvider,
+  account: string,
+): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked();
 }
 
@@ -77,6 +84,21 @@ export function useERC20Contract(address?: string) {
   }, [address, library, account, active]);
 }
 
+export function useAUXOContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return AUXOAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [library, active, account, address]);
+}
+
 export function useXAUXOContract(address?: string) {
   const { library, account, active } = useWeb3React();
   return useMemo(() => {
@@ -122,6 +144,21 @@ export function useStakingContract(address?: string) {
   }, [address, library, account, active]);
 }
 
+export function useUpgradoorContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return UpgradoorAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
 export function useStakingManager(address?: string) {
   const { library, account, active } = useWeb3React();
   return useMemo(() => {
@@ -130,6 +167,21 @@ export function useStakingManager(address?: string) {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
       return StakingManagerAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
+export function useVeDOUGHSharesTimeLockContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return SharesTimeLockAbi__factory.connect(address, providerSigner);
     } catch (error) {
       console.error('Failed to get contract', error);
       return undefined;
@@ -156,7 +208,26 @@ export function useStakingTokenContract(token?: string) {
   );
 }
 
+export function useVeDOUGHStakingContract() {
+  const { chainId } = useWeb3React();
+  return useVeDOUGHSharesTimeLockContract(
+    migration['veDOUGH']?.addresses?.[chainId]?.stakingAddress,
+  );
+}
+
+export function useAUXOTokenContract() {
+  const { chainId } = useWeb3React();
+  return useAUXOContract(tokensConfig['AUXO']?.addresses[chainId]?.address);
+}
+
 export function useXAUXOTokenContract() {
   const { chainId } = useWeb3React();
   return useXAUXOContract(tokensConfig['xAUXO']?.addresses[chainId]?.address);
+}
+
+export function useUpgradoor() {
+  const { chainId } = useWeb3React();
+  return useUpgradoorContract(
+    migration['veDOUGH']?.addresses?.[chainId]?.upgradoorAddress,
+  );
 }

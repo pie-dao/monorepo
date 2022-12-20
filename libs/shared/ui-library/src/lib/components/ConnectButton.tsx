@@ -99,12 +99,14 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
                     as="h3"
                     className="text-lg font-medium text-text border-b-2 border-primary mb-1 pb-2"
                   >
-                    {!connected &&
-                      !connecting &&
-                      !waiting &&
-                      t('connectWallet')}
-                    {connected && !connecting && t('Account')}
-                    {(waiting || connecting) && t('connectingWallet')}
+                    <>
+                      {!connected &&
+                        !connecting &&
+                        !waiting &&
+                        t('connectWallet')}
+                      {connected && !connecting && t('Account')}
+                      {(waiting || connecting) && t('connectingWallet')}
+                    </>
                   </Connect.Title>
                   <div className="mt-4 flex flex-col gap-y-3">
                     {!connected && !connecting && !waiting && (
