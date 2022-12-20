@@ -60,7 +60,7 @@ export default function Migration() {
   ];
 
   return (
-    <div className="flex flex-col h-screen isolate relative">
+    <div className="flex flex-col isolate relative">
       <MigrationBackground />
       <MigrationBanner />
       <Heading

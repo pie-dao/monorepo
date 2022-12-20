@@ -25,7 +25,7 @@ export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
   }, [account, dispatch]);
 
   return (
-    <div className="flex flex-col h-screen isolate relative">
+    <div className="flex flex-col isolate relative">
       <MigrationBackground />
       {getStep}
     </div>
