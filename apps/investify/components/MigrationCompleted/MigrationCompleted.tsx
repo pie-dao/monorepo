@@ -4,6 +4,7 @@ import Heading from '../Heading/Heading';
 import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import Image from 'next/image';
 import { useMemo } from 'react';
+import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -21,6 +22,10 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
     return t(`${lockText}${baseText}Completed`);
   }, [token, isSingleLock, t]);
 
+  const shortenedHash = useMemo(() => {
+    return tx?.hash?.slice(0, 5) + '...' + tx?.hash?.slice(-5);
+  }, [tx]);
+
   return (
     <>
       <Heading
@@ -34,9 +39,24 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
           </h3>
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2">
-              <p className="text-lg text-sub-dark">
+              <p className="text-lg text-sub-dark text-center">
                 {t('migrationCompletedDescription', { token })}
               </p>
+            </div>
+            <div className="h-[150px] w-full rounded-lg overflow-hidden">
+              <RiveComponent
+                src={
+                  token === 'veAUXO'
+                    ? `${process.env.NEXT_PUBLIC_CMS_ENDPOINT}/uploads/ve_DOUGH_ve_AUXO_4dbd6894e9.riv`
+                    : `${process.env.NEXT_PUBLIC_CMS_ENDPOINT}/uploads/ve_DOUGH_x_AUXO_815aeb7a0b.riv`
+                }
+                layout={
+                  new Layout({
+                    fit: Fit.Cover,
+                    alignment: Alignment.Center,
+                  })
+                }
+              />
             </div>
             <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
               <PreviewMigration
@@ -65,7 +85,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       rel="noreferrer"
                       className="text-xl font-medium text-secondary truncate underline max-w-xs"
                     >
-                      {tx?.hash}
+                      {shortenedHash}
                     </a>
                   </div>
                 </div>

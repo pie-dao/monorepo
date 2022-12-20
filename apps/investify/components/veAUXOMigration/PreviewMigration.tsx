@@ -49,7 +49,7 @@ const PreviewMigration: React.FC<Props> = ({
       <div className="grid grid-cols-5 justify-items-center w-full py-2">
         <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start col-span-2">
           <Image src={imageMap.DOUGH} alt="veDOUGH" width={24} height={24} />
-          <span className="text-xl font-medium text-primary">
+          <span className="text-lg font-medium text-primary">
             {DOUGHInput ??
               formatBalance(
                 totalDOUGHConverted,
@@ -65,7 +65,7 @@ const PreviewMigration: React.FC<Props> = ({
         </div>
         <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end col-span-2">
           <Image src={imageMap[token]} alt={token} width={24} height={24} />
-          <span className="text-xl font-medium text-secondary">
+          <span className="text-lg font-medium text-secondary">
             {formatBalance(
               estimatedOutput?.[token]?.[previewType]?.label,
               defaultLocale,
