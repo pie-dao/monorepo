@@ -97,7 +97,7 @@ const MigrationCardOption: React.FC<Props> = ({
             >
               {memoizedPositions.length === 0
                 ? t('nothingToMigrate')
-                : t(button.text)}
+                : button.text}
             </button>
           </Link>
         ) : (

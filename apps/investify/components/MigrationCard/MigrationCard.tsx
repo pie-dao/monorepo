@@ -84,8 +84,8 @@ const MigrationCard: React.FC<Props> = ({
   return (
     <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-4xl">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
-        <h3 className="text-lg font-medium text-secondary">{t(title)}</h3>
-        <p className="text-sm text-primary">{t(subtitle)}</p>
+        <h3 className="text-lg font-medium text-secondary">{title}</h3>
+        <p className="text-sm text-primary">{subtitle}</p>
       </div>
       {!loadingPositions ? (
         <>

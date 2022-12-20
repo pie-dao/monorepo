@@ -43,7 +43,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
         <h1 className="text-4xl font-medium text-secondary text-center">
           {title}
         </h1>
-        <p className="text-base text-center max-w-2xl text-primary font-medium">
+        <p className="text-base text-center max-w-2xl text-primary font-medium mx-auto">
           {subtitle}
         </p>
       </div>
@@ -198,7 +198,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                 </div>
                                 <div className="flex my-auto">
                                   <dt className="text-sub-dark @md:hidden">
-                                    {t('Amount')}:
+                                    {t('amount')}:
                                   </dt>
                                   <dd className="ml-auto font-medium text-right">
                                     <>

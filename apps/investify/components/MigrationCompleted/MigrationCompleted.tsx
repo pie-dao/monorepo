@@ -35,7 +35,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
       <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         <div className="w-full transform overflow-hidden rounded-2xl bg-[url('/images/background/migrationCompleted.png')] p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl bg-cover mx-auto">
           <h3 className="font-bold text-center text-xl text-primary capitalize w-full">
-            {t('completed')}
+            {t('transactionCompleted')}
           </h3>
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2">
