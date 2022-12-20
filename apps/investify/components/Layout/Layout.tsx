@@ -1,15 +1,20 @@
 import { useMediaQuery } from 'usehooks-ts';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useWeb3React } from '@web3-react/core';
 import { Navigation, Header } from '../../components';
 import {
   thunkGetProductsData,
   thunkGetVeAUXOStakingData,
   thunkGetVaultsData,
   thunkGetXAUXOStakingData,
+  thunkGetUserProductsData,
+  thunkGetUserStakingData,
 } from '../../store/products/thunks';
 import { useAppDispatch } from '../../hooks';
 
 export default function Layout({ children }) {
+  const { library, account } = useWeb3React();
+
   const mq = useMediaQuery('(max-width: 1023px)');
   const [open, setOpen] = useState(true);
   const dispatch = useAppDispatch();
@@ -17,12 +22,28 @@ export default function Layout({ children }) {
     setOpen(!mq);
   }, [mq]);
 
-  useEffect(() => {
+  const updateOnBlock = useCallback(() => {
     dispatch(thunkGetProductsData());
     dispatch(thunkGetVeAUXOStakingData());
     dispatch(thunkGetXAUXOStakingData());
-    dispatch(thunkGetVaultsData());
-  }, [dispatch]);
+    // dispatch(thunkGetVaultsData());
+    if (account) {
+      thunkGetUserProductsData({ account });
+      thunkGetUserStakingData({ account });
+    }
+  }, [account, dispatch]);
+
+  useEffect(() => {
+    if (library) {
+      library.getBlockNumber().then(() => {
+        updateOnBlock();
+      });
+      //     library.on('block', updateOnBlock);
+      return () => {
+        library.removeListener('block', updateOnBlock);
+      };
+    }
+  }, [library, updateOnBlock]);
 
   return (
     <>

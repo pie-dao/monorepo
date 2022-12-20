@@ -10,7 +10,7 @@ export const SUPPORTED_CHAINS = {
 type ValueOf<T> = T[keyof T];
 export type SupportedChains = ValueOf<typeof SUPPORTED_CHAINS>;
 
-const RPC_URLS =
+export const RPC_URLS =
   process.env.NEXT_PUBLIC_TESTNET === 'true'
     ? {
         1: 'http://127.0.0.1:8545/',
@@ -19,7 +19,7 @@ const RPC_URLS =
         250: 'http://127.0.0.1:8546',
       }
     : {
-        1: 'https://rpc.ankr.com/eth',
+        1: 'https://bestnet.alexintosh.com/rpc/8ece3fa70b5a0916409ebdd019de9574b792346e',
         5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'https://rpc.ankr.com/fantom',

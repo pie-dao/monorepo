@@ -1,10 +1,26 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "_auxo", "type": "address" },
-      { "internalType": "address", "name": "_veAuxo", "type": "address" },
-      { "internalType": "address", "name": "_tokenLocker", "type": "address" },
-      { "internalType": "address", "name": "_governor", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_auxo",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_veAuxo",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_tokenLocker",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_governor",
+        "type": "address"
+      }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -70,13 +86,23 @@
   {
     "inputs": [],
     "name": "AUXO",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_operator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
     ],
     "name": "addOperator",
     "outputs": [],
@@ -85,7 +111,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
     "name": "approveAuxo",
     "outputs": [],
@@ -101,7 +131,11 @@
   },
   {
     "inputs": [
-      { "internalType": "bytes32[]", "name": "proof", "type": "bytes32[]" }
+      {
+        "internalType": "bytes32[]",
+        "name": "proof",
+        "type": "bytes32[]"
+      }
     ],
     "name": "claim",
     "outputs": [],
@@ -110,7 +144,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "representative", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "representative",
+        "type": "address"
+      }
     ],
     "name": "delegateTo",
     "outputs": [],
@@ -120,7 +158,13 @@
   {
     "inputs": [],
     "name": "governor",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -133,23 +177,49 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_operator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
     ],
     "name": "isOperator",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "operators",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_operator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "operators",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
     ],
     "name": "rmOperator",
     "outputs": [],
@@ -167,7 +237,11 @@
     "inputs": [],
     "name": "tokenLocker",
     "outputs": [
-      { "internalType": "contract ITokenLocker", "name": "", "type": "address" }
+      {
+        "internalType": "contract ITokenLocker",
+        "name": "",
+        "type": "address"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -175,7 +249,13 @@
   {
     "inputs": [],
     "name": "veAUXO",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   }

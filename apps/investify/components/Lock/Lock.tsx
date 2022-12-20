@@ -1,8 +1,9 @@
 type LockProps = {
   isCompleted: boolean;
+  fill?: string;
 };
 
-const Lock: React.FC<LockProps> = ({ isCompleted }) => {
+const Lock: React.FC<LockProps> = ({ isCompleted, fill }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
       {isCompleted ? (
@@ -12,7 +13,7 @@ const Lock: React.FC<LockProps> = ({ isCompleted }) => {
         />
       ) : (
         <path
-          fill="#7378A5"
+          fill={fill ?? '#7378A5'}
           d="M6.72727 20h9.69693c.4017 0 .7273-.3256.7273-.7273v-8.2424c0-.4016-.3256-.7273-.7273-.7273h-.7272V8.12121C15.697 5.84878 13.8482 4 11.5758 4 9.30332 4 7.45455 5.84878 7.45455 8.12121V10.303h-.72728c-.40165 0-.72727.3257-.72727.7273v8.2424c0 .4017.32562.7273.72727.7273ZM8.90909 8.12121c0-1.4704 1.19631-2.66666 2.66671-2.66666 1.4704 0 2.6666 1.19626 2.6666 2.66666V10.303H8.90909V8.12121Z"
         />
       )}

@@ -14,10 +14,10 @@ import {
 } from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
-import { ethers } from 'ethers';
 import StakeSlider from './StakeSlider';
 import { useWeb3React } from '@web3-react/core';
 import { useAppSelector } from '../../hooks';
+import veAUXOConversionCalculator from '../../utils/veAUXOConversionCalculator';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -36,25 +36,8 @@ const Stake: React.FC<Props> = ({ tokenConfig }) => {
   const userLockDuration = useUserLockDurationInSeconds('veAUXO');
 
   const veAuxoEstimationCalc = useCallback(() => {
-    const veAuxoEstimation = () => {
-      if (
-        !Number.isNaN(Number(depositValue.value.toString())) &&
-        commitmentValue
-      ) {
-        const k = 56.0268900276223;
-        const commitmentMultiplier =
-          (commitmentValue / k) * Math.log10(commitmentValue);
-
-        return (
-          Number(ethers.utils.formatUnits(depositValue.value, decimals)) *
-          commitmentMultiplier
-        );
-      } else {
-        return 0;
-      }
-    };
-    return veAuxoEstimation();
-  }, [commitmentValue, decimals, depositValue.value]);
+    return veAUXOConversionCalculator(depositValue, commitmentValue, decimals);
+  }, [commitmentValue, decimals, depositValue]);
 
   const veAUXOEstimation = veAuxoEstimationCalc();
 
@@ -100,7 +83,7 @@ const Stake: React.FC<Props> = ({ tokenConfig }) => {
         <DepositActions
           deposit={depositValue}
           estimation={veAUXOEstimation}
-          stakingTime={commitmentValue}
+          stakingTime={!userLockDuration ? commitmentValue : null}
           tokenConfig={tokenConfig}
           toToken="veAUXO"
         />

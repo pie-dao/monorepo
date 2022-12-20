@@ -4,7 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
 import { useXAUXOTokenContract } from '../../../../hooks/useContracts';
-import { ThunkStakeXAUXO } from '../../../../store/products/thunks';
+import { thunkStakeXAUXO } from '../../../../store/products/thunks';
 import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
@@ -28,7 +28,7 @@ export default function StakeConfirm() {
   const makeDeposit = () => {
     setDepositLoading(true);
     dispatch(
-      ThunkStakeXAUXO({
+      thunkStakeXAUXO({
         deposit: swap?.from?.amount,
         xAUXOContract: TokenContract,
         account,

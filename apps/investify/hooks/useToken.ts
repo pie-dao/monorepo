@@ -9,7 +9,7 @@ import {
   MAX_LOCK_DURATION_IN_SECONDS,
 } from '../utils/constants';
 import { useCallback, useMemo } from 'react';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { toBalance } from '../utils/formatBalance';
 
 export const useCurrentChainAddress = (token: string): string => {
@@ -135,4 +135,15 @@ export function useXAUXOEstimation(
 export const useXAUXOFee = (): BigNumberReference => {
   const fee = useAppSelector((state) => state.dashboard?.tokens?.xAUXO?.fee);
   return fee;
+};
+
+export const useIsFirstTimeMigration = (): boolean => {
+  const veAUXOBalance = useTokenBalance('veAUXO');
+  const xAUXOBalance = useTokenBalance('xAUXO');
+  return useMemo(() => {
+    return (
+      ethers.utils.parseEther(veAUXOBalance.value).isZero() &&
+      ethers.utils.parseEther(xAUXOBalance.value).isZero()
+    );
+  }, [veAUXOBalance, xAUXOBalance]);
 };

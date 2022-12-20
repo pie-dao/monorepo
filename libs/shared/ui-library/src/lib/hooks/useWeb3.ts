@@ -6,36 +6,18 @@ import { UAParser } from 'ua-parser-js';
 import { EthereumProvider } from '../types/types';
 
 export function useEagerConnect() {
-  const IS_IN_IFRAME = window.parent !== window;
   const { activate, active } = useWeb3React();
   const [tried, setTried] = useState(false);
 
   // gnosisSafe.isSafeApp() races a timeout against postMessage, so it delays pageload if we are not in a safe app;
   // if we are not embedded in an iframe, it is not worth checking
-  const [triedSafe, setTriedSafe] = useState(!IS_IN_IFRAME);
-
-  // first, try connecting to a gnosis safe
-  useEffect(() => {
-    const gnosisSafe = new SafeAppConnector();
-    if (!triedSafe) {
-      gnosisSafe.isSafeApp().then((loadedInSafe) => {
-        if (loadedInSafe) {
-          activate(gnosisSafe, undefined, true).catch(() => {
-            setTriedSafe(true);
-          });
-        } else {
-          setTriedSafe(true);
-        }
-      });
-    }
-  }, [activate, setTriedSafe, triedSafe]);
 
   // then, if that fails, try connecting to an injected connector
   useEffect(() => {
     const parser = new UAParser(window.navigator.userAgent);
     const { type } = parser.getDevice();
     const isMobile = type === 'mobile' || type === 'tablet';
-    if (!active && triedSafe && !tried) {
+    if (!active && !tried) {
       injected.isAuthorized().then((isAuthorized) => {
         if (isAuthorized) {
           activate(injected, undefined, true).catch(() => {
@@ -52,7 +34,7 @@ export function useEagerConnect() {
         }
       });
     }
-  }, [activate, active, triedSafe, tried]);
+  }, [activate, active, tried]);
 
   // wait until we get confirmation of a connection to flip the flag
   useEffect(() => {

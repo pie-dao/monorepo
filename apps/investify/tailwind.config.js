@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 const { join } = require('path');
 const { createGlobPatternsForDependencies } = require('@nrwl/next/tailwind');
+const plugin = require('tailwindcss/plugin');
 
 function withOpacityValue(variable) {
   return ({ opacityValue }) => {
@@ -53,9 +54,28 @@ module.exports = {
           rgba(11, 221, 145, 0.6) 100%
         );`,
         'dashboard-card': `url('/credit_card.png')`,
+        'gradient-major-colors': `linear-gradient(
+          90deg,
+          rgb(var(--color-secondary)) 0%,
+          rgb(var(--color-green)) 100%
+        )`,
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('tailwindcss-radix'),
+    require('@tailwindcss/container-queries'),
+    plugin(function ({ addVariant }) {
+      addVariant(
+        'supports-scrollbars',
+        '@supports selector(::-webkit-scrollbar)',
+      );
+      addVariant('scrollbar', '&::-webkit-scrollbar');
+      addVariant('scrollbar-track', '&::-webkit-scrollbar-track');
+      addVariant('scrollbar-thumb', '&::-webkit-scrollbar-thumb');
+    }),
+  ],
   presets: [require('../../tailwind-workspace-preset.js')],
 };

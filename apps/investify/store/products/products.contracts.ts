@@ -11,13 +11,20 @@ import {
   XAUXOAbi__factory,
   StakingManagerAbi__factory,
   VeAUXOAbi__factory,
+  SharesTimeLockAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
 import products from '../../config/products.json';
+import migration from '../../config/migration.json';
 import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
+
+const localRPC =
+  'https://bestnet.alexintosh.com/rpc/8ece3fa70b5a0916409ebdd019de9574b792346e';
+
+const selectedNetwork = 1;
 
 const _config = config as MultiChainWrapperConfig;
 
@@ -28,6 +35,10 @@ const FTMmulticall = new MultiCallWrapper(
 );
 const PolygonMulticall = new MultiCallWrapper(
   _config[SUPPORTED_CHAINS.POLYGON.toString()].provider,
+);
+
+const MAINNETMulticall = new MultiCallWrapper(
+  _config[SUPPORTED_CHAINS.MAINNET.toString()].provider,
 );
 
 export const productContracts = Object.entries(products).map(
@@ -56,39 +67,44 @@ export const underlyingContractsPolygon = Object.entries(Polygon).map(
 
 export const contractWrappers = productContracts.map((addresses) => {
   const contract = Erc20Abi__factory.connect(
-    addresses[5].address,
-    new ethers.providers.JsonRpcProvider(
-      'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
-    ),
+    addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
   );
   return mcw.wrap(contract, addresses);
 });
 
-export const stakingContract = TokenLockerAbi__factory.connect(
-  products['veAUXO'].addresses[5].stakingAddress,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+export const stakingContract = MAINNETMulticall.wrap(
+  TokenLockerAbi__factory.connect(
+    products['veAUXO'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
-export const veAUXOContract = VeAUXOAbi__factory.connect(
-  products['veAUXO'].addresses[5].address,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+export const veAUXOContract = MAINNETMulticall.wrap(
+  VeAUXOAbi__factory.connect(
+    products['veAUXO'].addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
-export const xAUXOContract = XAUXOAbi__factory.connect(
-  products['xAUXO'].addresses[5].address,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+export const xAUXOContract = MAINNETMulticall.wrap(
+  XAUXOAbi__factory.connect(
+    products['xAUXO'].addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
-export const xAUXOStakingManager = StakingManagerAbi__factory.connect(
-  products['xAUXO'].addresses[5].stakingAddress,
-  new ethers.providers.JsonRpcProvider(
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+export const xAUXOStakingManager = MAINNETMulticall.wrap(
+  StakingManagerAbi__factory.connect(
+    products['xAUXO'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
+);
+
+export const veDOUGHSharesTimeLock = MAINNETMulticall.wrap(
+  SharesTimeLockAbi__factory.connect(
+    migration['veDOUGH'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 

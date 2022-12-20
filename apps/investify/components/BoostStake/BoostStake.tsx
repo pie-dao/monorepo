@@ -1,21 +1,39 @@
-import { useWeb3React } from '@web3-react/core';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
 import { addMonths } from '../../utils/dates';
 import boostImage from '../../public/images/icons/boost.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { thunkBoostToMaxVeAUXO } from '../../store/products/thunks';
 import { useStakingTokenContract } from '../../hooks/useContracts';
+import { setIsOpen, setStep, setSwap } from '../../store/modal/modal.slice';
+import { STEPS } from '../../store/modal/modal.types';
+import { useUserLockAmount } from '../../hooks/useToken';
 
 const BoostStake: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const tokenLocker = useStakingTokenContract('veAUXO');
-  const { account } = useWeb3React();
+  const userLockAmount = useUserLockAmount('veAUXO');
 
   const boostToMax = () => {
-    dispatch(thunkBoostToMaxVeAUXO({ account, tokenLocker }));
+    dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
+    dispatch(
+      setSwap({
+        swap: {
+          from: {
+            token: 'AUXO',
+            amount: userLockAmount,
+          },
+          to: {
+            token: 'veAUXO',
+            amount: userLockAmount,
+          },
+          stakingTime: 36,
+          spender: tokenLocker.address,
+        },
+      }),
+    );
+    dispatch(setIsOpen(true));
   };
 
   return (
