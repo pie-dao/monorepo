@@ -17,7 +17,6 @@ import { Disclosure } from '@headlessui/react';
 import classNames from '../../utils/classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
-import { setCleanupFlow } from '../../store/migration/migration.slice';
 
 export default function Migration() {
   const { t } = useTranslation('migration');

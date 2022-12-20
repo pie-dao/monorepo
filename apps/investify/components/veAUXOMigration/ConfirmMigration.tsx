@@ -40,6 +40,12 @@ type Props = {
   token: 'veAUXO' | 'xAUXO';
 };
 
+export function getMigratingTo(token: string, boost: boolean): string {
+  if (token !== 'veAUXO') return 'xAUXO';
+  if (!boost) return 'oneLockOutput';
+  else return 'oneBoostedLockOutput';
+}
+
 const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
@@ -140,12 +146,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     const locks = {
       numberOfLocks: isSingleLock ? 1 : positions.length,
       totalMigrating: totalDOUGH,
-      migratingTo:
-        token === 'veAUXO'
-          ? boost
-            ? t('oneBoostedLockOutput')
-            : t('oneLockOutput')
-          : t('xAUXO'),
+      migratingTo: t(getMigratingTo(token, boost)),
     };
 
     const preview = {
