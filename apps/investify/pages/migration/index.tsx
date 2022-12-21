@@ -35,6 +35,31 @@ export const LinkTo = (href: string, text: string) => (
     {text}
   </a>
 );
+
+export const label = (color: string, label: string) => (
+  <span
+    className={`md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium border hidden`}
+    style={{
+      color: `rgb(var(--color-${color}))`,
+      borderColor: `rgb(var(--color-${color}))`,
+    }}
+  >
+    {label}
+  </span>
+);
+
+export const Blockquote = (
+  <blockquote className="p-4 my-4 bg-gray-50 border-l-4 border-gray-300 text-primary text-sm font-medium block" />
+);
+
+export const Code = <code className="p-1 bg-gray-200 rounded" />;
+
+export const Ul = (
+  <ul className="list-disc list-inside text-sm text-primary font-medium" />
+);
+
+export const Li = <li className="mb-2 last:mb-0" />;
+
 export default function Migration() {
   const { t } = useTranslation('migration');
 
@@ -75,29 +100,34 @@ export default function Migration() {
               'https://piedaoorg.on.fleek.co/#/buyback',
               'https://piedaoorg.on.fleek.co/#/buyback',
             ),
+            Blockquote,
           }}
           ns="migration"
         />
       ),
-      label: t('faq1Label'),
+      label: label('primary', t('faq1Label')),
     },
     {
       question: t('faq2'),
       answer: (
-        <Trans i18nKey="faq2Answer" components={{ Break, p }} ns="migration" />
+        <Trans
+          i18nKey="faq2Answer"
+          components={{ Break, p, Ul, Li }}
+          ns="migration"
+        />
       ),
-      label: t('faq2Label'),
+      label: label('primary', t('faq2Label')),
     },
     {
       question: t('faq3'),
       answer: (
         <Trans
           i18nKey="faq3Answer"
-          components={{ Break, p, b }}
+          components={{ Break, p, b, Blockquote, Ul, Li }}
           ns="migration"
         />
       ),
-      label: t('faq3Label'),
+      label: label('primary', t('faq3Label')),
     },
     {
       question: t('faq4'),
@@ -108,40 +138,40 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: t('faq4Label'),
+      label: label('primary', t('faq4Label')),
     },
     {
       question: t('faq5'),
       answer: (
         <Trans
           i18nKey="faq5Answer"
-          components={{ Break, p, b }}
+          components={{ Break, p, b, Blockquote }}
           ns="migration"
         />
       ),
-      label: t('faq5Label'),
+      label: label('purple', t('faq5Label')),
     },
     {
       question: t('faq6'),
       answer: (
         <Trans
           i18nKey="faq6Answer"
-          components={{ Break, p, b }}
+          components={{ Break, p, b, Blockquote }}
           ns="migration"
         />
       ),
-      label: t('faq6Label'),
+      label: label('purple', t('faq6Label')),
     },
     {
       question: t('faq7'),
       answer: (
         <Trans
           i18nKey="faq7Answer"
-          components={{ Break, p, b }}
+          components={{ Break, p, b, Ul, Li }}
           ns="migration"
         />
       ),
-      label: t('faq7Label'),
+      label: label('purple', t('faq7Label')),
     },
     {
       question: t('faq8'),
@@ -152,18 +182,23 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: t('faq8Label'),
+      label: label('purple', t('faq8Label')),
     },
     {
       question: t('faq9'),
       answer: (
         <Trans
           i18nKey="faq9Answer"
-          components={{ Break, p, b }}
+          components={{
+            Break,
+            p,
+            b,
+            Link: LinkTo('https://discord.gg/CScCqkcBPR', 'Discord'),
+          }}
           ns="migration"
         />
       ),
-      label: t('faq9Label'),
+      label: label('green', t('faq9Label')),
     },
     {
       question: t('faq10'),
@@ -175,12 +210,15 @@ export default function Migration() {
             Break,
             b,
             img: <Image src={stakingTimeImage} alt="DOUGHtoAUXO" />,
-            imgWrapper: <div className="flex max-w-full" />,
+            imgWrapper: <div className="flex max-w-md" />,
+            Code,
+            Ul,
+            Li,
           }}
           ns="migration"
         />
       ),
-      label: t('faq10Label'),
+      label: label('green', t('faq10Label')),
     },
     {
       question: t('faq11'),
@@ -196,18 +234,18 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: t('faq11Label'),
+      label: label('green', t('faq11Label')),
     },
     {
       question: t('faq12'),
       answer: (
         <Trans
           i18nKey="faq12Answer"
-          components={{ Break, p, b }}
+          components={{ Break, p, b, Blockquote }}
           ns="migration"
         />
       ),
-      label: t('faq12Label'),
+      label: label('yellow', t('faq12Label')),
     },
     {
       question: t('faq13'),
@@ -218,7 +256,7 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: t('faq13Label'),
+      label: label('sub-dark', t('faq11Label')),
     },
     {
       question: t('faq14'),
@@ -229,7 +267,7 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: t('faq14Label'),
+      label: label('secondary', t('faq14Label')),
     },
   ];
 
@@ -292,15 +330,13 @@ export default function Migration() {
                         <h3 className="text-primary text-base">
                           {faq.question}
                         </h3>{' '}
-                        <span className="md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium text-green border-green border hidden ">
-                          {faq.label}
-                        </span>
+                        {faq.label}
                       </div>
                       <motion.div
                         initial={{ rotate: 0 }}
                         animate={{ rotate: open ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
-                        className="flex"
+                        className="flex items-center"
                       >
                         <ChevronDownIcon
                           className="h-5 w-5 text-primary"
