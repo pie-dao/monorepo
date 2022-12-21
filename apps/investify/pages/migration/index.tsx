@@ -256,7 +256,7 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: label('sub-dark', t('faq11Label')),
+      label: label('sub-dark', t('faq13Label')),
     },
     {
       question: t('faq14'),
