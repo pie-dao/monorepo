@@ -1,11 +1,11 @@
 {
-  "sourceRoot": "apps/investify",
+  "sourceRoot": "apps/auxo-dao",
   "projectType": "application",
   "targets": {
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["script/typechain", "nx serve-app investify"],
+        "commands": ["script/typechain", "nx serve-app auxo-dao"],
         "parallel": false
       }
     },
@@ -14,8 +14,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "root": "apps/investify",
-        "outputPath": "dist/apps/investify"
+        "root": "apps/auxo-dao",
+        "outputPath": "dist/apps/auxo-dao"
       },
       "configurations": {
         "development": {},
@@ -26,16 +26,16 @@
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "investify:build",
+        "buildTarget": "auxo-dao:build",
         "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "investify:build:development",
+          "buildTarget": "auxo-dao:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "investify:build:production",
+          "buildTarget": "auxo-dao:build:production",
           "dev": false
         }
       }
@@ -43,14 +43,14 @@
     "export": {
       "executor": "@nrwl/next:export",
       "options": {
-        "buildTarget": "investify:build:production"
+        "buildTarget": "auxo-dao:build:production"
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/investify"],
+      "outputs": ["coverage/apps/auxo-dao"],
       "options": {
-        "jestConfig": "apps/investify/jest.config.ts",
+        "jestConfig": "apps/auxo-dao/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -58,7 +58,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/investify/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/auxo-dao/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

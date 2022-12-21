@@ -35,7 +35,7 @@
 }
 
 @layer base {
-  [data-theme='investify'] {
+  [data-theme='auxo-dao'] {
     --color-primary: 31 8 96;
     --color-secondary: 11 120 221;
     --color-tertiary: 68 62 80;

@@ -33,10 +33,10 @@ script/setup
 ```
 
 Next, run patches if any
+
 ```bash
 patch-package
 ```
-
 
 Now you can start making changes.
 
@@ -44,8 +44,8 @@ Now you can start making changes.
 
 This project contains multiple individual packages that can be deployed separately:
 
-- [Investify](/apps/investify/README.md) is the primary investing application
-- [Investify-e2e](/apps/investify-e2e/README.md) lets you run automated e2e tests using Cypress
+- [auxo-dao](/apps/auxo-dao/README.md) is the primary investing application
+- [auxo-dao-e2e](/apps/auxo-dao-e2e/README.md) lets you run automated e2e tests using Cypress
 - [Backend](/apps/backend/README.md) contains the server component of the project.
 - [Landing Page](/apps/landing-page/) the landing page
 - [SDK](/libs/sdk-utils/) contains a collection of utilities that assist with connecting to on-chain data
