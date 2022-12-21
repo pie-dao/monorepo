@@ -44,6 +44,9 @@ module.exports = {
         info: withOpacityValue('--color-info'),
         red: withOpacityValue('--color-red'),
         green: withOpacityValue('--color-green'),
+        purple: withOpacityValue('--color-purple'),
+        violet: withOpacityValue('--color-violet'),
+        yellow: withOpacityValue('--color-yellow'),
       },
       backgroundImage: {
         'gradient-primary': `linear-gradient(90deg, #FFFFFF 0.33%, #F6F7FF 95.86%)`,
