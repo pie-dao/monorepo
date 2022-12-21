@@ -107,7 +107,7 @@
   "faq10Answer": "<p>The migration is about moving your locked DOUGH to AUXO, and then staking AUXO for either veAUXO or xAUXO. During that process, there’re three ratios that apply:</p><Ul><Li><b>DOUGH:AUXO ratio:</b>The DOUGH to AUXO conversion is set at 100:1. This has been set in order to define the AUXO supply and to factor in the DOUGH supply after completing the burning of the Treasury-owned DOUGH.</Li><Li><b>AUXO:veAUXO ratio:</b>The number of veAUXO obtained by staking AUXO is determined by two elements: the locked amount and the time commitment (6 to 36 months), following the curve: <Code>y=x/k*log(x)</Code> — just as veDOUGH did.</Li></Ul><imgWrapper><img/></imgWrapper><Ul><Li><b>AUXO:xAUXO ratio:</b>The number of xAUXO obtained by staking AUXO is determined by this ratio which is subject to a minting fee. This minting fee has not yet been defined, and for testing purposes has been set to <b>zero</b>.</Li></Ul>",
   "faq10Label": "SUPPORT",
   "faq11": "I have questions...a lot. Where can I go?",
-  "faq11Answer": "<p>Join us at Discord and it will be taken care of: <Link>https://discord.gg/CScCqkcBPR</Link></p>",
+  "faq11Answer": "<p>Join us at <Link>Discord</Link> and it will be taken care of</p>",
   "faq11Label": "SUPPORT",
   "faq12": "What happens if I don't migrate on time?",
   "faq12Answer": "<p>Your remaining locked DOUGH will be unlocked, and you will be able to claim it. There won't be future migrations.</p><Blockquote>⚠️ If you don't migrate by April 2023 (<b>to be ratified</b>) you won't be able to migrate at all!</Blockquote>",
