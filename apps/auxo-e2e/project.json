@@ -1,16 +1,16 @@
 {
-  "sourceRoot": "apps/auxo-dao-e2e/src",
+  "sourceRoot": "apps/auxo-e2e/src",
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/auxo-dao-e2e/cypress.json",
-        "devServerTarget": "auxo-dao:serve:development"
+        "cypressConfig": "apps/auxo-e2e/cypress.json",
+        "devServerTarget": "auxo:serve:development"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "auxo-dao:serve:production"
+          "devServerTarget": "auxo:serve:production"
         }
       }
     },
@@ -20,17 +20,17 @@
         "commands": [
           "synpress run -cf cypress.json --config supportFile='src/support/index.ts'"
         ],
-        "cwd": "apps/auxo-dao-e2e"
+        "cwd": "apps/auxo-e2e"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/auxo-dao-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/auxo-e2e/**/*.{js,ts}"]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["auxo-dao"]
+  "implicitDependencies": ["auxo"]
 }

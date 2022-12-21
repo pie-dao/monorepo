@@ -2,7 +2,7 @@ overwrite: true
 schema: 'libs/util-graphql/src/graphql-schemas/**/*.graphql'
 documents: 'libs/util-graphql/src/graphql-documents/**/*.graphql'
 generates:
-  apps/auxo-dao/api/generated/graphql.ts:
+  apps/auxo/api/generated/graphql.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'

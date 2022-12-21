@@ -34,7 +34,7 @@ export default class _Document extends Document {
             crossOrigin=""
           />
         </Head>
-        <body data-theme="auxo-dao" className="h-full">
+        <body data-theme="auxo" className="h-full">
           <Main />
           <NextScript />
         </body>

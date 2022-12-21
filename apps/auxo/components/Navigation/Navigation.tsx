@@ -181,7 +181,7 @@ export default function Navigation({
                 exit="hidden"
                 variants={titleVariants}
               >
-                {open && 'AuxoDAO'}
+                {open && 'Auxo'}
               </motion.h2>
             </div>
             <nav className="mt-10 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">

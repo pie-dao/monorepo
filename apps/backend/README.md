@@ -148,9 +148,9 @@ Once running it locally, you can go to
 http://localhost:3000/playground/
 and test it out.
 
-## PieDAO auxo-dao Token Aggregator (PITA)
+## PieDAO auxo Token Aggregator (PITA)
 
-The _backend_ serves as the backend for the auxo-dao application. These features are implemented as Nest modules and the architecture looks like this:
+The _backend_ serves as the backend for the auxo application. These features are implemented as Nest modules and the architecture looks like this:
 
 ![PITA Architecture](pie_backend_architecture.png)
 

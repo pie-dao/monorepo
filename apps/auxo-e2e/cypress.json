@@ -12,8 +12,8 @@
   "chromeWebSecurity": true,
   "viewportWidth": 1366,
   "viewportHeight": 768,
-  "videosFolder": "../../dist/cypress/apps/auxo-dao-e2e/videos",
-  "screenshotsFolder": "../../dist/cypress/apps/auxo-dao-e2e/screenshots",
+  "videosFolder": "../../dist/cypress/apps/auxo-e2e/videos",
+  "screenshotsFolder": "../../dist/cypress/apps/auxo-e2e/screenshots",
   "env": {
     "ELECTRON_ENABLE_LOGGING": true
   },

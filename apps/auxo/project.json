@@ -1,11 +1,11 @@
 {
-  "sourceRoot": "apps/auxo-dao",
+  "sourceRoot": "apps/auxo",
   "projectType": "application",
   "targets": {
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "commands": ["script/typechain", "nx serve-app auxo-dao"],
+        "commands": ["script/typechain", "nx serve-app auxo"],
         "parallel": false
       }
     },
@@ -14,8 +14,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "root": "apps/auxo-dao",
-        "outputPath": "dist/apps/auxo-dao"
+        "root": "apps/auxo",
+        "outputPath": "dist/apps/auxo"
       },
       "configurations": {
         "development": {},
@@ -26,16 +26,16 @@
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "auxo-dao:build",
+        "buildTarget": "auxo:build",
         "dev": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "auxo-dao:build:development",
+          "buildTarget": "auxo:build:development",
           "dev": true
         },
         "production": {
-          "buildTarget": "auxo-dao:build:production",
+          "buildTarget": "auxo:build:production",
           "dev": false
         }
       }
@@ -43,14 +43,14 @@
     "export": {
       "executor": "@nrwl/next:export",
       "options": {
-        "buildTarget": "auxo-dao:build:production"
+        "buildTarget": "auxo:build:production"
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/auxo-dao"],
+      "outputs": ["coverage/apps/auxo"],
       "options": {
-        "jestConfig": "apps/auxo-dao/jest.config.ts",
+        "jestConfig": "apps/auxo/jest.config.ts",
         "passWithNoTests": true
       }
     },
@@ -58,7 +58,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/auxo-dao/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/auxo/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },
