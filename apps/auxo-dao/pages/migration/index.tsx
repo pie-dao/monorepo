@@ -17,6 +17,48 @@ import { Disclosure } from '@headlessui/react';
 import classNames from '../../utils/classnames';
 import { motion, AnimatePresence } from 'framer-motion';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
+import Trans from 'next-translate/Trans';
+import stakingTimeImage from '../../public/images/migration/stakingTime.png';
+
+export const Break = <span className="block" />;
+export const p = (
+  <p className="text-primary text-sm font-medium block last:mb-0 mb-2" />
+);
+export const b = <span className="font-bold" />;
+export const LinkTo = (href: string, text: string) => (
+  <a
+    className="text-secondary underline"
+    target="_blank"
+    rel="noopener noreferrer"
+    href={href}
+  >
+    {text}
+  </a>
+);
+
+export const label = (color: string, label: string) => (
+  <span
+    className={`md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium border hidden`}
+    style={{
+      color: `rgb(var(--color-${color}))`,
+      borderColor: `rgb(var(--color-${color}))`,
+    }}
+  >
+    {label}
+  </span>
+);
+
+export const Blockquote = (
+  <blockquote className="p-4 my-4 bg-gray-50 border-l-4 border-gray-300 text-primary text-sm font-medium block" />
+);
+
+export const Code = <code className="p-1 bg-gray-200 rounded" />;
+
+export const Ul = (
+  <ul className="list-disc list-inside text-sm text-primary font-medium" />
+);
+
+export const Li = <li className="mb-2 last:mb-0" />;
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -48,13 +90,184 @@ export default function Migration() {
   const faqs = [
     {
       question: t('faq1'),
-      answer: t('faq1Answer'),
-      label: t('faq1Label'),
+      answer: (
+        <Trans
+          i18nKey="faq1Answer"
+          components={{
+            Break,
+            p,
+            Link: LinkTo(
+              'https://piedaoorg.on.fleek.co/#/buyback',
+              'https://piedaoorg.on.fleek.co/#/buyback',
+            ),
+            Blockquote,
+          }}
+          ns="migration"
+        />
+      ),
+      label: label('primary', t('faq1Label')),
     },
     {
       question: t('faq2'),
-      answer: t('faq2Answer'),
-      label: t('faq2Label'),
+      answer: (
+        <Trans
+          i18nKey="faq2Answer"
+          components={{ Break, p, Ul, Li }}
+          ns="migration"
+        />
+      ),
+      label: label('primary', t('faq2Label')),
+    },
+    {
+      question: t('faq3'),
+      answer: (
+        <Trans
+          i18nKey="faq3Answer"
+          components={{ Break, p, b, Blockquote, Ul, Li }}
+          ns="migration"
+        />
+      ),
+      label: label('primary', t('faq3Label')),
+    },
+    {
+      question: t('faq4'),
+      answer: (
+        <Trans
+          i18nKey="faq4Answer"
+          components={{ Break, p, b }}
+          ns="migration"
+        />
+      ),
+      label: label('primary', t('faq4Label')),
+    },
+    {
+      question: t('faq5'),
+      answer: (
+        <Trans
+          i18nKey="faq5Answer"
+          components={{ Break, p, b, Blockquote }}
+          ns="migration"
+        />
+      ),
+      label: label('purple', t('faq5Label')),
+    },
+    {
+      question: t('faq6'),
+      answer: (
+        <Trans
+          i18nKey="faq6Answer"
+          components={{ Break, p, b, Blockquote }}
+          ns="migration"
+        />
+      ),
+      label: label('purple', t('faq6Label')),
+    },
+    {
+      question: t('faq7'),
+      answer: (
+        <Trans
+          i18nKey="faq7Answer"
+          components={{ Break, p, b, Ul, Li }}
+          ns="migration"
+        />
+      ),
+      label: label('purple', t('faq7Label')),
+    },
+    {
+      question: t('faq8'),
+      answer: (
+        <Trans
+          i18nKey="faq8Answer"
+          components={{ Break, p, b }}
+          ns="migration"
+        />
+      ),
+      label: label('purple', t('faq8Label')),
+    },
+    {
+      question: t('faq9'),
+      answer: (
+        <Trans
+          i18nKey="faq9Answer"
+          components={{
+            Break,
+            p,
+            b,
+            Link: LinkTo('https://discord.gg/CScCqkcBPR', 'Discord'),
+          }}
+          ns="migration"
+        />
+      ),
+      label: label('green', t('faq9Label')),
+    },
+    {
+      question: t('faq10'),
+      answer: (
+        <Trans
+          i18nKey="faq10Answer"
+          components={{
+            p,
+            Break,
+            b,
+            img: <Image src={stakingTimeImage} alt="DOUGHtoAUXO" />,
+            imgWrapper: <div className="flex max-w-md" />,
+            Code,
+            Ul,
+            Li,
+          }}
+          ns="migration"
+        />
+      ),
+      label: label('green', t('faq10Label')),
+    },
+    {
+      question: t('faq11'),
+      answer: (
+        <Trans
+          i18nKey="faq11Answer"
+          components={{
+            Break,
+            p,
+            b,
+            Link: LinkTo('https://discord.gg/CScCqkcBPR', 'Discord'),
+          }}
+          ns="migration"
+        />
+      ),
+      label: label('green', t('faq11Label')),
+    },
+    {
+      question: t('faq12'),
+      answer: (
+        <Trans
+          i18nKey="faq12Answer"
+          components={{ Break, p, b, Blockquote }}
+          ns="migration"
+        />
+      ),
+      label: label('yellow', t('faq12Label')),
+    },
+    {
+      question: t('faq13'),
+      answer: (
+        <Trans
+          i18nKey="faq13Answer"
+          components={{ Break, p, b }}
+          ns="migration"
+        />
+      ),
+      label: label('sub-dark', t('faq13Label')),
+    },
+    {
+      question: t('faq14'),
+      answer: (
+        <Trans
+          i18nKey="faq14Answer"
+          components={{ Break, p, b }}
+          ns="migration"
+        />
+      ),
+      label: label('secondary', t('faq14Label')),
     },
   ];
 
@@ -117,15 +330,13 @@ export default function Migration() {
                         <h3 className="text-primary text-base">
                           {faq.question}
                         </h3>{' '}
-                        <span className="inline-flex rounded-full bg-transparent px-2.5 py-0.5 text-xs font-medium text-green border-green border">
-                          {faq.label}
-                        </span>
+                        {faq.label}
                       </div>
                       <motion.div
                         initial={{ rotate: 0 }}
                         animate={{ rotate: open ? 180 : 0 }}
                         transition={{ duration: 0.2 }}
-                        className="flex"
+                        className="flex items-center"
                       >
                         <ChevronDownIcon
                           className="h-5 w-5 text-primary"
@@ -159,9 +370,9 @@ export default function Migration() {
                           transition={{ duration: 0.3 }}
                           className="origin-top-center space-y-3 overflow-y-auto p-4"
                         >
-                          <p className="text-primary text-sm font-medium">
+                          <div className="text-primary text-base font-medium">
                             {faq.answer}
-                          </p>
+                          </div>
                         </motion.div>
                       </Disclosure.Panel>
                     )}

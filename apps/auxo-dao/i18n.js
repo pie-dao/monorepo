@@ -4,10 +4,10 @@ module.exports = {
   localeDetection: false,
   pages: {
     '*': ['common', 'dashboard', 'notifications'],
-    '/migration': ['migration', 'notifications'],
-    '/migration/start': ['migration', 'notifications'],
-    '/migration/veAUXO': ['migration', 'notifications'],
-    '/migration/xAUXO': ['migration', 'notifications'],
+    '/migration': ['migration'],
+    '/migration/start': ['migration'],
+    '/migration/veAUXO': ['migration'],
+    '/migration/xAUXO': ['migration'],
   },
   interpolation: {
     prefix: '${',
