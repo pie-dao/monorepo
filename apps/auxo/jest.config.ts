@@ -1,5 +1,5 @@
 export default {
-  displayName: 'investify',
+  displayName: 'auxo',
   preset: '../../jest.preset.js',
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',
@@ -7,5 +7,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   transformIgnorePatterns: ['node_modules/?!'],
-  coverageDirectory: '../../coverage/apps/investify',
+  coverageDirectory: '../../coverage/apps/auxo',
 };

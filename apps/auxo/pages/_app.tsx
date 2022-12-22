@@ -45,7 +45,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
       <Web3ReactProvider getLibrary={getLibrary}>
         <Provider store={store}>
           <Head>
-            <title>Welcome to investify!</title>
+            <title>Welcome to AUXO</title>
           </Head>
           <GoogleAnalytics />
           <div className="h-full">

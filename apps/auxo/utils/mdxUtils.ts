@@ -13,21 +13,19 @@ interface source {
 
 export const getProductData = (product: string | string[]) => {
   const fullPathDescription = path.join(
-    'apps/investify/public/content/products',
+    'apps/auxo/public/content/products',
     `${product}/description.mdx`,
   );
   const fullPathThesis = path.join(
-    'apps/investify/public/content/products',
+    'apps/auxo/public/content/products',
     `${product}/thesis.mdx`,
   );
   const fullPathInvestmentFocus = path.join(
-    'apps/investify/public/content/products',
+    'apps/auxo/public/content/products',
     `${product}/investmentFocus.mdx`,
   );
 
-  const fullPathFallBack = path.join(
-    'apps/investify/public/content/fallback.mdx',
-  );
+  const fullPathFallBack = path.join('apps/auxo/public/content/fallback.mdx');
 
   let rawDescription: string;
   let rawThesis: string;
@@ -64,13 +62,11 @@ export const getProductData = (product: string | string[]) => {
 
 export const getVaultData = (vault: string | string[]) => {
   const fullPathAbout = path.join(
-    'apps/investify/public/content/vaults',
+    'apps/auxo/public/content/vaults',
     `${vault}.mdx`,
   );
 
-  const fullPathFallBack = path.join(
-    'apps/investify/public/content/fallback.mdx',
-  );
+  const fullPathFallBack = path.join('apps/auxo/public/content/fallback.mdx');
 
   let rawAbout: string;
 

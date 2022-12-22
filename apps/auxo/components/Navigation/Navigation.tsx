@@ -16,6 +16,7 @@ import veAUXOIcon from '../../public/tokens/veAUXO.svg';
 import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
+import AUXOLogo from '../../public/images/auxoIcon.svg';
 
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 
@@ -169,15 +170,18 @@ export default function Navigation({
           )}
         >
           <div className="flex flex-col flex-grow pt-5 h-full">
-            <div className="flex-shrink-0 flex items-center px-4 overflow-hidden">
+            <div className="flex items-center flex-shrink-0 px-4">
+              <div className="flex flex-shrink-0">
+                <Image src={AUXOLogo} alt="AUXO Logo" />
+              </div>
               <motion.h2
-                className="text-2xl font-medium text-primary"
+                className="text-xl font-medium text-primary"
                 animate={open ? 'visible' : 'hidden'}
                 initial="visible"
                 exit="hidden"
                 variants={titleVariants}
               >
-                {open ? t('Investify') : 'In'}
+                {open && 'Auxo'}
               </motion.h2>
             </div>
             <nav className="mt-10 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">

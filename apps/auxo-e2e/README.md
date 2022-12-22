@@ -1,14 +1,14 @@
-# Investify-e2e
+# auxo-e2e
 
-This package contains the e2e test suite logic for the investify app.
+This package contains the e2e test suite logic for the auxo app.
 
 ## Setup
 
-1. Make sure you have a `.env` file set in the root of the investify-e2e directory. You can see an example of the file in `.env.example`
+1. Make sure you have a `.env` file set in the root of the auxo-e2e directory. You can see an example of the file in `.env.example`
 
 _At the time of writing, tests are written with an explicit test account in mind, grab the private key of the account from knxpwr or jordaniza_
 
-2. Serve the investify application on port 4200 with `Nx serve investify`
+2. Serve the auxo application on port 4200 with `Nx serve auxo`
 
 3. Start forks of the blockchain networks you wish to test. We will likely be migrating all config into this repo in the future, but for now:
 
@@ -23,8 +23,8 @@ yarn fork:mainnet
 yarn fork:ftm
 
 # Terminal 3
-yarn run:fork scripts/investify/init.ts
-yarn run:fork:ftm scripts/investify/auxo.ts
+yarn run:fork scripts/auxo/init.ts
+yarn run:fork:ftm scripts/auxo/auxo.ts
 
 ```
 
@@ -35,7 +35,7 @@ e2e tests use [Synpress](https://github.com/Synthetixio/synpress) under the hood
 Run it using the below command from the root directory:
 
 ```sh
-$ nx synpress investify-e2e
+$ nx synpress auxo-e2e
 ```
 
 > Remember to configure your .env file with the correct network informations (local RPC for instance) to test the target chain interactions.
@@ -46,8 +46,8 @@ $ nx synpress investify-e2e
 
 ### Tests not working
 
-- Ensure the investify app is running and on port 4200
-- Ensure all env vars are set correctly, in both the investify and investify e2e package
+- Ensure the auxo app is running and on port 4200
+- Ensure all env vars are set correctly, in both the auxo and auxo e2e package
 - Ensure the forks are running and the initialisation scripts have completed successfully
 - Ensure you are not running niche operating systems for nerds
 
