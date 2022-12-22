@@ -151,5 +151,7 @@
   "blockExplorer": "Block explorer",
   "completed": "Transaction completed",
   "DOUGH": "DOUGH",
-  "amount": "Amount"
+  "amount": "Amount",
+  "notInTestnet": "Welcome to the Auxo Migration Portal",
+  "understood": "I understand"
 }

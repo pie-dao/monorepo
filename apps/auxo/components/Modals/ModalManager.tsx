@@ -13,7 +13,6 @@ import BoostStakeModal from './ModalSteps/BoostStakeModal';
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
-
   const closeModal = () => {
     dispatch(setIsOpen(false));
     dispatch(

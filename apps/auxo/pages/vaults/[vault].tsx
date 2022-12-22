@@ -113,6 +113,7 @@ export const getStaticProps = wrapper.getStaticProps(
 
 export async function getStaticPaths() {
   return {
+    notFound: true,
     paths: Object.values(vaults).map(({ address }) => ({
       params: { vault: address },
     })),

@@ -136,14 +136,3 @@ export const useXAUXOFee = (): BigNumberReference => {
   const fee = useAppSelector((state) => state.dashboard?.tokens?.xAUXO?.fee);
   return fee;
 };
-
-export const useIsFirstTimeMigration = (): boolean => {
-  const veAUXOBalance = useTokenBalance('veAUXO');
-  const xAUXOBalance = useTokenBalance('xAUXO');
-  return useMemo(() => {
-    return (
-      ethers.utils.parseEther(veAUXOBalance.value).isZero() &&
-      ethers.utils.parseEther(xAUXOBalance.value).isZero()
-    );
-  }, [veAUXOBalance, xAUXOBalance]);
-};

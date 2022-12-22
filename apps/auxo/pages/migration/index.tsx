@@ -5,7 +5,7 @@ import { Layout } from '../../components';
 import { wrapper } from '../../store';
 import Image from 'next/image';
 import { useWeb3React } from '@web3-react/core';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thunks';
 import MigrationBanner from '../../components/MigrationBanner/MigrationBanner';
 import AUXOtoVeAUXOxAUXO from '../../public/images/migration/AUXOtoVeAUXOxAUXO.png';
@@ -62,6 +62,7 @@ export const Li = <li className="mb-2 last:mb-0" />;
 
 export default function Migration() {
   const { t } = useTranslation('migration');
+  const { isMigrationDeployed } = useAppSelector((state) => state.migration);
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
@@ -299,7 +300,10 @@ export default function Migration() {
         </div>
         <div className="flex flex-col items-center justify-center mt-12">
           <Link href="/migration/start" passHref>
-            <button className="w-fit flex items-center gap-x-2 px-8 py-2 text-md font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary hover:bg-transparent hover:text-secondary">
+            <button
+              disabled={!isMigrationDeployed}
+              className="w-fit flex items-center gap-x-2 px-8 py-2 text-md font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
+            >
               {t('startMigration')}
               <ChevronRightIcon className="w-5 h-5" />
             </button>
