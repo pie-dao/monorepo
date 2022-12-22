@@ -107,13 +107,13 @@ export const getStaticProps = wrapper.getStaticProps(
           title: 'Vault',
           source,
         },
+        notFound: true,
       };
     },
 );
 
 export async function getStaticPaths() {
   return {
-    notFound: true,
     paths: Object.values(vaults).map(({ address }) => ({
       params: { vault: address },
     })),
