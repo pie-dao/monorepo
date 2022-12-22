@@ -63,6 +63,7 @@ typings/
 .DS_Store
 Thumbs.db
 
+
 # generated typechain code
 libs/shared/util-blockchain/src/
 
