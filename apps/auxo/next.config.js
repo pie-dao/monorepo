@@ -25,7 +25,6 @@ const nextConfig = {
     // DO NOT USE THIS IN PRODUCTION
     ignoreBuildErrors: true,
   },
-  swcMinify: false,
 };
 
 module.exports = withNx(nextTranslate(nextConfig));
