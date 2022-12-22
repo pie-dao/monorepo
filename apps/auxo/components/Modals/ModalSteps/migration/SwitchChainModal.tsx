@@ -15,14 +15,14 @@ export default function SwitchChainModal() {
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
-          <p className="text-lg text-sub-dark">
+          <p className="text-lg text-sub-dark mb-4">
             Hello there! It seems you want to test the Migration Interface,
             nice!. Yet, to do so, you&apos;ll first need to switch your MetaMask
             RPC URL to the Auxo testnet. Once the RPC is setup and your wallet
             is connected to the Testnet you&apos;ll be able to start testing.
-            <span className="block font-bold">
-              How to change the RPC? Follow the steps below:
-            </span>
+          </p>
+          <p className="text-lg text-sub-dark font-bold">
+            How to change the RPC? Follow the steps below:
           </p>
           <ol className="list-decimal pl-5 text-lg text-sub-dark my-2">
             <li>
