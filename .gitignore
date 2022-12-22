@@ -62,7 +62,7 @@ typings/
 *.pem
 .DS_Store
 Thumbs.db
-.package-lock.json
+package-lock.json
 
 # generated typechain code
 libs/shared/util-blockchain/src/
