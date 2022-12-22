@@ -69,7 +69,7 @@
     "@visx/marker": "^2.4.0",
     "@visx/mock-data": "^2.1.2",
     "@visx/responsive": "^2.8.0",
-    "@visx/scale": "^2.2.2",
+    "@visx/scale": "2.2.2",
     "@visx/shape": "^2.4.0",
     "@visx/tooltip": "^2.8.0",
     "@visx/xychart": "^2.11.1",
