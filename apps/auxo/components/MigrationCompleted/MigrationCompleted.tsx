@@ -47,8 +47,8 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
               <RiveComponent
                 src={
                   token === 'veAUXO'
-                    ? `${process.env.NEXT_PUBLIC_CMS_ENDPOINT}/uploads/ve_DOUGH_ve_AUXO_4dbd6894e9.riv`
-                    : `${process.env.NEXT_PUBLIC_CMS_ENDPOINT}/uploads/ve_DOUGH_x_AUXO_815aeb7a0b.riv`
+                    ? `/animations/veDOUGH-veAUXO.riv`
+                    : `/animations/veDOUGH-xAUXO.riv`
                 }
                 layout={
                   new Layout({

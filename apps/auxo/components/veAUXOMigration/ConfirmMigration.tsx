@@ -114,12 +114,12 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
 
   const totalDOUGHConverted = useMemo(() => {
     if (isEmpty(positions)) return 0;
-    if (isSingleLock) return positions[0].amount.label;
-    return positions.reduce(
+    if (isSingleLock) return memoizedPositions[0].amount.label;
+    return memoizedPositions.reduce(
       (acc, position) => addBalances(acc, position.amount),
       toBalance(BigNumber.from(0), 18),
     ).label;
-  }, [isSingleLock, positions]);
+  }, [isSingleLock, memoizedPositions, positions]);
 
   const textForMigrationType = useMemo(() => {
     const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
@@ -129,7 +129,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   }, [token, boost, isSingleLock, t]);
 
   const migrationRecapContent = useMemo<MigrationRecapProps>(() => {
-    if (!positions) return null;
+    if (!memoizedPositions) return null;
     const migrationTypeText = textForMigrationType;
     const totalOutput = `${formatBalance(
       estimatedOutput?.[token]?.[migrationType]?.label,
@@ -144,7 +144,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       'standard',
     );
     const locks = {
-      numberOfLocks: isSingleLock ? 1 : positions.length,
+      numberOfLocks: isSingleLock ? 1 : memoizedPositions.length,
       totalMigrating: totalDOUGH,
       migratingTo: t(getMigratingTo(token, boost)),
     };
@@ -207,7 +207,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       fee,
     };
   }, [
-    positions,
     textForMigrationType,
     estimatedOutput,
     token,
