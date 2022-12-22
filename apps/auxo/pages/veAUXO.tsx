@@ -262,6 +262,5 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
       tokenConfig: veAUXO,
       stakingTokenConfig: AUXO,
     },
-    notFound: true,
   };
 });

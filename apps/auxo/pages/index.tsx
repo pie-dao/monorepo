@@ -34,8 +34,5 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
     // does not seem to work with key `initialState`
     props: { title: 'Home' },
-    redirect: {
-      destination: '/migration',
-    },
   };
 });

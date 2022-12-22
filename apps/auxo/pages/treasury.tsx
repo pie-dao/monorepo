@@ -206,9 +206,3 @@ export default function Treasury(): ReactElement {
 Treasury.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
-
-export const getStaticProps = wrapper.getStaticProps(() => () => {
-  return {
-    notFound: true,
-  };
-});

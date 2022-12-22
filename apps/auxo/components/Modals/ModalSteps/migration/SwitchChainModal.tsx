@@ -1,4 +1,5 @@
 import { Dialog } from '@headlessui/react';
+import CopyToClipboard from '../../../../components/CopyText/CopyText';
 import useTranslation from 'next-translate/useTranslation';
 
 export default function SwitchChainModal() {
@@ -15,12 +16,12 @@ export default function SwitchChainModal() {
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
-            We are currently in testing mode, so, before proceeding, you&apos;ll
-            have to switch your MetaMask RPC url to the Auxo testnet to
-            continue. Until you do so, you will not be able to interact with
-            migration portal.
-            <span className="block">
-              In order to do so, please follow the steps below:
+            Hello there! It seems you want to test the Migration Interface,
+            nice!. Yet, to do so, you&apos;ll first need to switch your MetaMask
+            RPC URL to the Auxo testnet. Once the RPC is setup and your wallet
+            is connected to the Testnet you&apos;ll be able to start testing.
+            <span className="block font-bold">
+              How to change the RPC? Follow the steps below:
             </span>
           </p>
           <ol className="list-decimal pl-5 text-lg text-sub-dark my-2">
@@ -32,8 +33,10 @@ export default function SwitchChainModal() {
             <li>
               Click <span className="font-bold">“Add Network”</span>.
             </li>
-            <li>
-              Add the RPC URL you want to use, with a chainID of{' '}
+            <li className="leading-9">
+              Add as RPC URL{' '}
+              <CopyToClipboard text="https://bestnet.alexintosh.com/rpc/d40e8c469c66ab48bd3f759dc1f815d1f2d49dfa" />
+              <br /> with a chainID of{' '}
               <code className="p-1 bg-gray-200 rounded">1</code> and currency of{' '}
               <code className="p-1 bg-gray-200 rounded">ETH</code>.
             </li>
