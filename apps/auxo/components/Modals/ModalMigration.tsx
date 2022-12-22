@@ -5,7 +5,7 @@ import { Dialog } from '@headlessui/react';
 import useCheckUpgradoorDeployed from '../../hooks/useCheckUpgradoorDeployed';
 import SwitchChainModal from './ModalSteps/migration/SwitchChainModal';
 
-export default function ModalManager() {
+export default function ModalMigration() {
   const { isMigrationDeployed } = useAppSelector((state) => state.migration);
   useCheckUpgradoorDeployed();
 
