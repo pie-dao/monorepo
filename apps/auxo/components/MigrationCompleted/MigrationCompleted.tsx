@@ -5,6 +5,7 @@ import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
+import AddToWallet from '../AddToWallet/AddToWallet';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -35,9 +36,12 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
       <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         <div className="w-full transform overflow-hidden rounded-2xl bg-[url('/images/background/migrationCompleted.png')] p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl bg-cover mx-auto">
           <h3 className="font-bold text-center text-xl text-primary capitalize w-full">
-            {t('transactionCompleted')}
+            {t('common:transactionCompleted')}
           </h3>
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
+            <div className="mt-2">
+              <AddToWallet token={token} />
+            </div>
             <div className="mt-2">
               <p className="text-lg text-sub-dark text-center">
                 {t('migrationCompletedDescription', { token })}
@@ -47,8 +51,8 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
               <RiveComponent
                 src={
                   token === 'veAUXO'
-                    ? `${process.env.NEXT_PUBLIC_CMS_ENDPOINT}/uploads/ve_DOUGH_ve_AUXO_4dbd6894e9.riv`
-                    : `${process.env.NEXT_PUBLIC_CMS_ENDPOINT}/uploads/ve_DOUGH_x_AUXO_815aeb7a0b.riv`
+                    ? `/animations/veDOUGH-veAUXO.riv`
+                    : `/animations/veDOUGH-xAUXO.riv`
                 }
                 layout={
                   new Layout({
@@ -58,7 +62,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                 }
               />
             </div>
-            <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
+            <div className="divide-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
               <PreviewMigration
                 DOUGHInput={DOUGHInput}
                 token={token}
@@ -92,7 +96,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
               )}
             </div>
             <div className="w-full text-center">
-              <p className="uppercase text-secondary font-medium">
+              <p className="uppercase text-secondary font-medium text-lg">
                 {t('common:transactionCompleted')}
               </p>
             </div>

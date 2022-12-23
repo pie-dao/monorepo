@@ -27,7 +27,7 @@ const addToken = async (
   }
 };
 
-type tokenName = keyof typeof products;
+export type tokenName = keyof typeof products;
 
 export const addTokenToWallet = async (
   chainId: number,
