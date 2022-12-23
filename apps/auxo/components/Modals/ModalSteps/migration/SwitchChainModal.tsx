@@ -43,6 +43,19 @@ export default function SwitchChainModal() {
             <li>
               Click <span className="font-bold">“Save”.</span>
             </li>
+            <li>
+              Now you should reset your MetaMask account. No worries this will
+              only reset your MetaMask transaction history and nonce, a{' '}
+              <span className="font-bold">completely safe operation.</span>
+              <a
+                className="text-primary underline inline-block"
+                href="https://metamask.zendesk.com/hc/en-us/articles/360015488891-How-to-reset-an-account#:~:text=On%20Mobile%2C%20tap%20the%20hamburger,down%20and%20click%20Reset%20Account"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Here you can find how to do it.
+              </a>
+            </li>
             <li>Refresh the page and you should be good to go!</li>
           </ol>
         </div>
