@@ -21,9 +21,7 @@ import Trans from 'next-translate/Trans';
 import stakingTimeImage from '../../public/images/migration/stakingTime.png';
 
 export const Break = <span className="block" />;
-export const p = (
-  <p className="text-primary text-sm font-medium block last:mb-0 mb-2" />
-);
+export const p = <p className="text-primary text-base block last:mb-0 mb-2" />;
 export const b = <span className="font-bold" />;
 export const LinkTo = (href: string, text: string) => (
   <a
@@ -49,13 +47,13 @@ export const label = (color: string, label: string) => (
 );
 
 export const Blockquote = (
-  <blockquote className="p-4 my-4 bg-gray-50 border-l-4 border-gray-300 text-primary text-sm font-medium block" />
+  <blockquote className="p-4 my-4 bg-gray-50 border-l-4 border-gray-300 text-primary text-base  block" />
 );
 
-export const Code = <code className="p-1 bg-gray-200 rounded" />;
+export const Code = <code className="p-1 bg-gray-200 text-base rounded" />;
 
 export const Ul = (
-  <ul className="list-disc list-inside text-sm text-primary font-medium" />
+  <ul className="list-disc list-inside text-base text-primary" />
 );
 
 export const Li = <li className="mb-2 last:mb-0" />;
@@ -116,7 +114,7 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: label('primary', t('faq2Label')),
+      label: label('violet', t('faq2Label')),
     },
     {
       question: t('faq3'),
@@ -127,7 +125,7 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: label('primary', t('faq3Label')),
+      label: label('violet', t('faq3Label')),
     },
     {
       question: t('faq4'),
@@ -138,7 +136,7 @@ export default function Migration() {
           ns="migration"
         />
       ),
-      label: label('primary', t('faq4Label')),
+      label: label('secondary', t('faq4Label')),
     },
     {
       question: t('faq5'),
@@ -288,7 +286,7 @@ export default function Migration() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-custom-border">
           {lifecycleColumns.map((column, index) => (
             <div key={index} className="flex flex-col items-center">
-              <div className="flex items-center justify-center rounded-full max-w-[96px] mx-auto">
+              <div className="flex items-center justify-center rounded-full max-w-[126px] mx-auto">
                 {column.icon}
               </div>
               <h3 className="mt-4 text-sm font-medium text-primary text-center">
@@ -316,7 +314,7 @@ export default function Migration() {
           {faqs.map((faq) => (
             <Disclosure
               as="div"
-              className="bg-gradient-primary shadow-md rounded-lg py-2 w-full"
+              className="bg-gradient-primary shadow-md rounded-lg py-4 w-full"
               key={faq.question}
             >
               {({ open }) => (
@@ -327,9 +325,7 @@ export default function Migration() {
                   >
                     <div className="flex">
                       <div className="w-full flex-1 flex items-center gap-x-2 text-primary font-medium text-xl">
-                        <h3 className="text-primary text-base">
-                          {faq.question}
-                        </h3>{' '}
+                        <h3 className="text-primary text-lg">{faq.question}</h3>{' '}
                         {faq.label}
                       </div>
                       <motion.div
@@ -370,7 +366,7 @@ export default function Migration() {
                           transition={{ duration: 0.3 }}
                           className="origin-top-center space-y-3 overflow-y-auto p-4"
                         >
-                          <div className="text-primary text-base font-medium">
+                          <div className="text-primary text-base">
                             {faq.answer}
                           </div>
                         </motion.div>
