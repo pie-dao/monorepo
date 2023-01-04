@@ -2,8 +2,8 @@ import React, { useRef } from 'react';
 import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax';
 import Image from 'next/image';
 import AuxoLogotype from '../../public/images/home/hero/auxo-text.webp';
-import AuxoBg from '../../public/images/home/hero/auxo-bg-super.webp';
-import AuxoFluid from '../../public/images/home/hero/auxo-fluid-super.webp';
+import AuxoBg from '../../public/images/home/hero/auxo-bg.webp';
+import AuxoFluid from '../../public/images/home/hero/auxo-fluid.webp';
 import { motion } from 'framer-motion';
 import RiveComponent, { Fit, Layout, Alignment } from '@rive-app/react-canvas';
 
