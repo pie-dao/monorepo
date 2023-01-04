@@ -43,6 +43,7 @@
     "@radix-ui/react-label": "^2.0.0",
     "@radix-ui/react-slider": "^1.1.0",
     "@radix-ui/react-switch": "^1.0.1",
+    "@react-spring/parallax": "^9.6.1",
     "@react-spring/web": "^9.5.5",
     "@reduxjs/toolkit": "^1.8.1",
     "@rive-app/react-canvas": "^3.0.34",
