@@ -34,8 +34,8 @@ export default function Navigation({
   const navigation = [
     // { name: t('Homepage'), href: '/', icon: diamond },
     // { name: t('Dashboard'), href: '/treasury', icon: diamond },
-    // { name: t('veAUXO'), href: '/veAUXO', icon: veAUXOIcon },
-    // { name: t('xAUXO'), href: '/xAUXO', icon: xAUXOIcon },
+    { name: t('veAUXO'), href: '/veAUXO', icon: veAUXOIcon },
+    { name: t('xAUXO'), href: '/xAUXO', icon: xAUXOIcon },
     { name: t('migration'), href: '/migration', icon: diamond },
   ];
 
