@@ -121,7 +121,6 @@ export function NavBar() {
                 </Popover.Button>
               ))}
             </Popover.Panel>
-            <div className="absolute inset-x-0 bottom-full z-10 h-4 bg-white" />
           </>
         )}
       </Popover>
