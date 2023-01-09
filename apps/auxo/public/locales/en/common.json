@@ -153,5 +153,6 @@
   "xAUXO": "xAUXO",
   "migration": "Migration",
   "todayTo": "Today to",
-  "boostStakeModalDescription": "You are about to restake your ${token}"
+  "boostStakeModalDescription": "You are about to restake your ${token}",
+  "getNow": "Get now!"
 }

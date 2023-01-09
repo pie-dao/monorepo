@@ -210,7 +210,7 @@ const AuxoDAO: React.FC = () => {
       <LeftRightContainer features={auxoFeature} textPosition="left" />
       <Container
         size="lg"
-        className="flex flex-col gap-y-12 scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:py-38"
+        className="flex flex-col gap-y-12 scroll-mt-14 py-8 sm:scroll-mt-38 sm:py-20 lg:py-38"
       >
         <h3 className="text-4xl font-bold text-primary text-center">
           {t('participate')}
@@ -259,9 +259,9 @@ const AuxoDAO: React.FC = () => {
         </Container>
         <Container
           size="xl"
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-24 sm:-translate-y-16 w-full"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-80 sm:-translate-y-16 w-full"
         >
-          <div className="h-[780px] w-full rounded-lg overflow-hidden isolate">
+          <div className="h-[460px] md:h-[780px] w-full rounded-lg overflow-hidden isolate">
             <RiveComponent
               src="/animations/auxo-flow.riv"
               layout={

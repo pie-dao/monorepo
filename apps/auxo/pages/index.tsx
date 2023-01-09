@@ -1,5 +1,5 @@
 import { NavBar } from '../components/NavBar/NavBar';
-import { AuxoDAO, Lend, Support } from '../components/Home';
+import { AuxoDAO, Lend, Support, Footer } from '../components/Home';
 
 import ParallaxSection from '../components/Parallax/ParallaxSection';
 
@@ -13,6 +13,7 @@ export default function Home() {
         <Lend />
         <Support />
       </div>
+      <Footer />
     </>
   );
 }

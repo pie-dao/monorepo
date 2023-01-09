@@ -40,8 +40,8 @@ const Support: React.FC = () => {
   ];
   return (
     <section
-      id="support"
-      className="scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:py-38"
+      id="lend"
+      className="scroll-mt-14 pb-16 sm:scroll-mt-24 sm:pb-20 lg:pb-38"
     >
       <Container size="lg">
         <div className="bg-white px-4 py-5 sm:px-6 mx-auto shadow-md rounded-lg w-full my-12">

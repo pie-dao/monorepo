@@ -5,6 +5,7 @@ import classNames from '../../utils/classnames';
 import AUXOLogotype from '../../public/images/AUXOLogotype.svg';
 import Link from 'next/link';
 import { TemplateIcon } from '@heroicons/react/outline';
+import useTranslation from 'next-translate/useTranslation';
 
 const sections = [
   { id: 'auxodao', title: 'AuxoDAO' },
@@ -31,6 +32,7 @@ function MenuIcon({ open, ...props }) {
 }
 
 export function NavBar() {
+  const { t } = useTranslation();
   const navBarRef = useRef() as MutableRefObject<HTMLDivElement>;
   const [activeIndex, setActiveIndex] = useState(null);
   const mobileActiveIndex = activeIndex === null ? 0 : activeIndex;
@@ -156,10 +158,10 @@ export function NavBar() {
             </li>
           ))}
           <li>
-            <Link passHref href="/dashboard">
+            <Link passHref href="/veAUXO">
               <button className="w-fit px-4 py-0.5 text-base text-white bg-secondary rounded-2xl ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary flex gap-x-2 items-center">
                 <TemplateIcon className="fill-current w-4 h-4" />
-                Dashboard
+                {t('launchApp')}
               </button>
             </Link>
           </li>

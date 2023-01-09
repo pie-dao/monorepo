@@ -67,7 +67,7 @@ const Lend: React.FC = () => {
     >
       <Container
         size="lg"
-        className="py-16 place-items-center flex flex-col bg-primary rounded-lg"
+        className="py-16 place-items-center flex flex-col bg-primary md:rounded-lg"
       >
         <h3 className="text-4xl font-bold text-center text-white">
           {t('lendTitle')}
