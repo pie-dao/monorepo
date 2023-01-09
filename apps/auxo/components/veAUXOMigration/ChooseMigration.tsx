@@ -68,7 +68,7 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           {notVeAuxoOrNoLocks && (
             <MigrationCard
               title={t('migrateMultipleLocks')}
-              subtitle={t('migrateMultipleLocksSubtitle')}
+              subtitle={t('migrateMultipleLocksSubtitle', { token })}
               tokenOut={token}
               isSingleLock={false}
               goToStep={() => nextStep(false)}
@@ -76,7 +76,7 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           )}
           <MigrationCard
             title={t('migrateOneLock')}
-            subtitle={t('migrateOneLockSubtitle')}
+            subtitle={t('migrateOneLockSubtitle', { token })}
             tokenOut={token}
             isSingleLock={true}
             goToStep={() => nextStep(true)}
