@@ -156,5 +156,7 @@
   "understood": "I understand",
   "months": "months",
   "numOfMonths": "${months} months",
-  "veAUXOWarning": "If you stake veAUXO now you would not be able to aggregate any other locks in this wallet (xAUXO excluded)"
+  "veAUXOWarning": "If you stake veAUXO now you would not be able to aggregate any other locks in this wallet (xAUXO excluded)",
+  "selectWallet": "Select wallet",
+  "selectWalletSubtitle": "You can choose to select the current wallet or use a different one"
 }
