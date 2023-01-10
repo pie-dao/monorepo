@@ -21,7 +21,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://bestnet.alexintosh.com/rpc/testing-gab';
+const localRPC = 'https://bestnet.alexintosh.com/rpc/gab-testing';
 
 const selectedNetwork = 1;
 

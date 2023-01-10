@@ -33,7 +33,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
             `${formatBalance(
               auxoBalance.label,
               defaultLocale,
-              0,
+              4,
               'standard',
             )} AUXO`
           ) : (
@@ -47,7 +47,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         title: t('stakedBalance', { token: 'xAUXO' }),
         value: `${
           account && xAUXOBalance
-            ? formatBalance(xAUXOBalance.label, defaultLocale, 0, 'standard')
+            ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
             : '0'
         } xAUXO`,
       },

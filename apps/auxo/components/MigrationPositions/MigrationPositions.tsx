@@ -88,7 +88,7 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
                     </dl>
                   </div>
                   <div className="flex my-auto">
-                    <dt className="text-sub-dark @lg:hidden">{t('Amount')}:</dt>
+                    <dt className="text-sub-dark @lg:hidden">{t('amount')}:</dt>
                     <dd className="ml-auto font-medium text-right">
                       <>
                         {formatBalance(
