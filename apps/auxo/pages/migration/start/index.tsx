@@ -45,35 +45,35 @@ export default function Migration() {
         features: [
           {
             title: 'rewards',
-            description: 'maxPossible',
+            description: t('maxPossible'),
           },
           {
             title: 'governance',
-            description: 'directOnChain',
+            description: t('directOnChain'),
           },
           {
             title: 'transfer',
-            description: 'nonTransferable',
+            description: t('nonTransferable'),
           },
           {
             title: 'lock',
-            description: 'userPreference',
+            description: t('userPreference'),
           },
           {
             title: 'redemption',
-            description: 'atLockExpiration',
+            description: t('atLockExpiration'),
           },
           {
             title: 'bonding',
-            description: 'guaranteedAtNAV',
+            description: t('guaranteedAtNAV'),
           },
           {
             title: 'mintFee',
-            description: 'noFee',
+            description: t('noFee'),
           },
           {
             title: 'exit',
-            description: 'migrateToXAUXO',
+            description: t('migrateToXAUXO'),
           },
         ],
         button: {
@@ -105,35 +105,35 @@ export default function Migration() {
         features: [
           {
             title: 'rewards',
-            description: 'taxed',
+            description: <a href="#taxed">{t('taxed')}</a>,
           },
           {
             title: 'governance',
-            description: 'noVotingRights',
+            description: t('noVotingRights'),
           },
           {
             title: 'transfer',
-            description: 'transferable',
+            description: t('transferable'),
           },
           {
             title: 'lock',
-            description: 'forever',
+            description: t('forever'),
           },
           {
             title: 'redemption',
-            description: 'none',
+            description: t('none'),
           },
           {
             title: 'bonding',
-            description: 'premium',
+            description: t('premium'),
           },
           {
             title: 'mintFee',
-            description: 'yes',
+            description: t('yes'),
           },
           {
             title: 'exit',
-            description: 'none',
+            description: t('none'),
           },
         ],
         button: {

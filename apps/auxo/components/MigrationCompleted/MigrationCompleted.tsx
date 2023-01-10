@@ -43,6 +43,21 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
       />
       <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         <div className="w-full transform overflow-hidden rounded-2xl bg-[url('/images/background/migrationCompleted.png')] p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl bg-cover mx-auto">
+          <div className="h-[150px] w-full rounded-lg overflow-hidden mb-6">
+            <RiveComponent
+              src={
+                token === 'veAUXO'
+                  ? `/animations/veDOUGH-veAUXO.riv`
+                  : `/animations/veDOUGH-xAUXO.riv`
+              }
+              layout={
+                new Layout({
+                  fit: Fit.Cover,
+                  alignment: Alignment.Center,
+                })
+              }
+            />
+          </div>
           <h3 className="font-bold text-center text-xl text-primary capitalize w-full">
             {t('common:transactionCompleted')}
           </h3>
@@ -54,21 +69,6 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
               <p className="text-lg text-sub-dark text-center">
                 {t('migrationCompletedDescription', { token })}
               </p>
-            </div>
-            <div className="h-[150px] w-full rounded-lg overflow-hidden">
-              <RiveComponent
-                src={
-                  token === 'veAUXO'
-                    ? `/animations/veDOUGH-veAUXO.riv`
-                    : `/animations/veDOUGH-xAUXO.riv`
-                }
-                layout={
-                  new Layout({
-                    fit: Fit.Cover,
-                    alignment: Alignment.Center,
-                  })
-                }
-              />
             </div>
             <div className="divide-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
               <PreviewMigration

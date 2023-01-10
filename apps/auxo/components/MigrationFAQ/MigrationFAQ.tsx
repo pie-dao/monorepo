@@ -51,6 +51,7 @@ const MigrationFAQ: React.FC = () => {
   const { t } = useTranslation('migration');
   const faqs = [
     {
+      id: 'taxed',
       question: t('faq1'),
       answer: (
         <Trans
@@ -244,14 +245,17 @@ const MigrationFAQ: React.FC = () => {
         {faqs.map((faq) => (
           <Disclosure
             as="div"
-            className="bg-gradient-primary shadow-md rounded-lg py-2 w-full"
+            id={faq?.id}
+            className="bg-gradient-primary shadow-md rounded-lg py-2 w-full target:ring-4 scroll-mt-10"
             key={faq.question}
           >
             {({ open }) => (
               <>
                 <Disclosure.Button
                   as="div"
-                  className={classNames('cursor-pointer w-full px-2')}
+                  className={classNames(
+                    'cursor-pointer w-full px-2 focus:ring-4',
+                  )}
                 >
                   <div className="flex">
                     <div className="w-full flex-1 flex items-center gap-x-2 text-primary font-medium text-xl">

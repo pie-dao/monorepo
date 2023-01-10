@@ -142,7 +142,16 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
             {token === 'veAUXO' && (
               <>
                 <div className="text-left p-2 border-t border-customBorder mt-2">
-                  <p className="text-red">{t('veAUXOWarning')}</p>
+                  <Banner
+                    bgColor="bg-warning"
+                    content={t('veAUXOWarning')}
+                    icon={
+                      <ExclamationIcon
+                        className="h-5 w-5 text-primary"
+                        aria-hidden="true"
+                      />
+                    }
+                  />
                 </div>
                 <div className="flex items-center w-full p-2">
                   <Checkbox.Root

@@ -31,8 +31,9 @@
   "singleLock": "You have one lock vested",
   "lockAmount": "You have ${locks} locks vested",
   "chooseHowToMigrate": "Choose how to migrate",
-  "chooseHowToMigrateSubtitle": "You have 2 options to Join the new DAO veAUXO allows 1 lock only.",
+  "chooseHowToMigrateSubtitle": "You have 2 options to Join the new DAO.",
   "allOrOneByOne": "Migrate all or one-by-one lock",
+  "oneByOne": "Migrate one-by-one lock",
   "selectToken": "Select veAUXO or xAUXO",
   "timeToMigrate": "Time to migrate",
   "timeToMigrateSubtitle": "Migration is available until XX-WW-YYYY. After that, you will not be able to migrate your DOUGH anymore.",
@@ -160,5 +161,8 @@
   "selectWallet": "Select wallet",
   "selectWalletSubtitle": "You can choose to select the current wallet or use a different one",
   "startAgain": "Start again",
-  "goToToken": "Go to ${token} page"
+  "goToToken": "Go to ${token} page",
+  "chooseWhereToMigrate": "Choose where to migrate",
+  "reviewAndConfirm": "Review and confirm",
+  "reviewAndConfirmSubtitle": "Please review the details of your migration and confirm"
 }

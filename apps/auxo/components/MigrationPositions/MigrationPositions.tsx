@@ -60,13 +60,13 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
                 </div>
                 <div className="grid grid-cols-1 @lg:grid-cols-3 gap-x-2 text-xs justify-center flex-1">
                   <div>
-                    <dl className="flex gap-1 justify-between">
+                    <dl className="flex gap-1 justify-between @lg:justify-start">
                       <dt className="text-sub-dark">{t('lockStart')}:</dt>
                       <dd className="font-medium text-right">
                         {lockedAtFormatted}
                       </dd>
                     </dl>
-                    <dl className="flex gap-1 justify-between">
+                    <dl className="flex gap-1 justify-between @lg:justify-start">
                       <dt className="text-sub-dark">{t('lockEnd')}:</dt>
                       <dd className="font-medium text-right">
                         {lockEndFormatted}
@@ -74,13 +74,13 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
                     </dl>
                   </div>
                   <div>
-                    <dl className="flex gap-1 justify-between">
+                    <dl className="flex gap-1 justify-between @lg:justify-start">
                       <dt className="text-sub-dark">{t('lockedFor')}:</dt>
                       <dd className="font-medium text-right">
                         {t('numOfMonths', { months: lockedFor })}
                       </dd>
                     </dl>
-                    <dl className="flex gap-1 justify-between">
+                    <dl className="flex gap-1 justify-between @lg:justify-start">
                       <dt className="text-sub-dark">{t('remainingTime')}:</dt>
                       <dd className="font-medium text-right">
                         {t('numOfMonths', { months: remainingMonths })}

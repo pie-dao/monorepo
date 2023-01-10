@@ -15,7 +15,7 @@ type Props = {
   description: string;
   features: {
     title: string;
-    description: string;
+    description: string | React.ReactNode;
   }[];
   button: {
     text: string;
@@ -79,7 +79,7 @@ const MigrationCardOption: React.FC<Props> = ({
             key={title}
           >
             <dt className="text-sub-dark flex-shrink-0">{t(title)}</dt>
-            <dd className="text-primary">{t(description)}</dd>
+            <dd className="text-primary">{description}</dd>
           </div>
         ))}
       </div>

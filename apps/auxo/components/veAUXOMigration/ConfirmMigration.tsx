@@ -225,8 +225,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   return (
     <>
       <Heading
-        title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateSubtitle')}
+        title={t('reviewAndConfirm')}
+        subtitle={t('reviewAndConfirmSubtitle')}
       />
       <BackBar
         token={token}

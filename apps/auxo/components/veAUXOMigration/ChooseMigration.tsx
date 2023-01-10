@@ -64,7 +64,10 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
         title={t('chooseHowToMigrate')}
         subtitle={t('chooseHowToMigrateSubtitle')}
       />
-      <BackBar title={t('allOrOneByOne')} singleCard={!notVeAuxoOrNoLocks}>
+      <BackBar
+        title={!notVeAuxoOrNoLocks ? t('oneByOne') : t('allOrOneByOne')}
+        singleCard={!notVeAuxoOrNoLocks}
+      >
         <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
           {notVeAuxoOrNoLocks && (
             <MigrationCard
