@@ -1,7 +1,7 @@
 {
   "aggregate": "Aggregate veDOUGH to ${token}",
   "aggregateDescription": "Enjoy the maximum rewards and voting power",
-  "beLiquid": "Be liquid, delegate voting power and just enjoy your rewards",
+  "beLiquid": "Be liquid, activate on-chain voting power and just enjoy your rewards",
   "maxPossible": "Max possible",
   "rewards": "💰 Rewards",
   "governance": "🏛️ Governance",
@@ -47,7 +47,7 @@
   "migrateOneLock": "Migrate single lock",
   "migrateOneLockSubtitle": "Single veDOUGH position to ${token} (Require multiple transactions)",
   "migrateOneLockDescription": "ℹ️ Locks will be migrated in an order determined by our smart contracts, unfortunately, it is not possible to manually select which locks to migrate first.",
-  "migrateMultipleLocks": "Migrate multiple locks in one transaction",
+  "migrateMultipleLocks": "Migrate all locks",
   "migrateMultipleLocksSubtitle": "Multiple veDOUGH positions to ${token} (suggested)",
   "migrateMultipleLocksDescription": "ℹ️ All your previous vesting entries will be joined in 1 veAUXO lock.",
   "upgradeSingleLock": "Upgrade single lock to ${token}",

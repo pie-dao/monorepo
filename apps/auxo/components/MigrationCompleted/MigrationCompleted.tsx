@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useMemo } from 'react';
 import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 import AddToWallet from '../AddToWallet/AddToWallet';
+import Link from 'next/link';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -99,6 +100,18 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
               <p className="uppercase text-secondary font-medium text-lg">
                 {t('common:transactionCompleted')}
               </p>
+            </div>
+            <div className="w-full gap-x-2 justify-between items-center">
+              <Link href="/migration/start" passHref>
+                <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-secondary bg-secondary hover:bg-transparent hover:text-secondary text-white flex">
+                  {t('startAgain')}
+                </button>
+              </Link>
+              <Link href={`/${token}`} passHref>
+                <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-green bg-green hover:bg-transparent hover:text-green text-white flex">
+                  {t('goTo', { page: token })}
+                </button>
+              </Link>
             </div>
           </div>
         </div>
