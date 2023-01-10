@@ -1,7 +1,7 @@
 {
   "aggregate": "Aggregate veDOUGH to ${token}",
   "aggregateDescription": "Enjoy the maximum rewards and voting power",
-  "beLiquid": "Be liquid, delegate voting power and just enjoy your rewards*",
+  "beLiquid": "Be liquid, delegate voting power and just enjoy your rewards",
   "maxPossible": "Max possible",
   "rewards": "💰 Rewards",
   "governance": "🏛️ Governance",
@@ -40,7 +40,7 @@
   "lockStart": "Start lock",
   "lockEnd": "End lock",
   "lockedFor": "Locked for",
-  "remainingTime": "Remaining time",
+  "remainingTime": "Remaining",
   "vested": "Start",
   "end": "End",
   "veDOUGH": "veDOUGH",
@@ -153,5 +153,8 @@
   "DOUGH": "DOUGH",
   "amount": "Amount",
   "notInTestnet": "Welcome to the Auxo Migration Portal",
-  "understood": "I understand"
+  "understood": "I understand",
+  "months": "months",
+  "numOfMonths": "${months} months",
+  "veAUXOWarning": "If you stake veAUXO now you would not be able to aggregate any other locks in this wallet (xAUXO excluded)"
 }

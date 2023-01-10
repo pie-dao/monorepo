@@ -35,6 +35,7 @@ import Banner from '../Banner/Banner';
 import Trans from 'next-translate/Trans';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { setConvertedDOUGHLabel } from '../../store/migration/migration.slice';
+import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -314,6 +315,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
           </div>
         </section>
       </BackBar>
+      <MigrationFAQ />
     </>
   );
 };

@@ -123,7 +123,13 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         <p className="font-medium text-primary">
           {willReceive?.AUXO} AUXO *{' '}
           {formatBalance(
-            Number(ethers.utils.formatEther(CONVERSION_CURVE[newLockDuration])),
+            Number(
+              ethers.utils.formatEther(
+                CONVERSION_CURVE[
+                  token === 'veAUXO' ? newLockDuration : oldLockDuration
+                ],
+              ),
+            ),
             defaultLocale,
             4,
             'standard',
@@ -131,7 +137,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         </p>
         <p className="font-normal text-primary">
           {t('monthMultiplier', {
-            multiplier: newLockDuration,
+            multiplier: token === 'veAUXO' ? newLockDuration : oldLockDuration,
           })}
         </p>
       </Tooltip>

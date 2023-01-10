@@ -16,21 +16,25 @@ import {
 } from '../../store/migration/migration.slice';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import { ConnectButton } from '@shared/ui-library';
-import { ExclamationIcon } from '@heroicons/react/outline';
+import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import Banner from '../Banner/Banner';
-import { veDOUGHSharesTimeLock } from '../../store/products/products.contracts';
+import * as Checkbox from '@radix-ui/react-checkbox';
+import * as Label from '@radix-ui/react-label';
+import classNames from '../../utils/classnames';
 
 type Props = {
   isCurrentWallet: boolean;
+  token?: 'veAUXO' | 'xAUXO';
 };
 
-const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
+const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
   const ready = useServerHandoffComplete();
   const { currentStep } = useAppSelector((state) => state.migration);
   const [anotherWallet, setAnotherWallet] = useState<string>('');
   const [isAnotherWalletValid, setIsAnotherWalletValid] =
     useState<boolean>(true);
   const [invalidReason, setInvalidReason] = useState<string>('');
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
   const tokenLocker = useStakingTokenContract('veAUXO');
@@ -111,6 +115,14 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
     return ethers.utils.isAddress(anotherWallet);
   }, [anotherWallet]);
 
+  const checkForTerms = useMemo(() => {
+    if (token === 'veAUXO') {
+      return isTermsAccepted;
+    } else {
+      return true;
+    }
+  }, [isTermsAccepted, token]);
+
   return (
     <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full font-medium align-middle transition-all mx-auto">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
@@ -127,6 +139,35 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
             <div className="flex items-center gap-x-2 p-2 text-primary leading-5 text-sm">
               {account ? trimAccount(account, true) : t('walletNotConnected')}
             </div>
+            {token === 'veAUXO' && (
+              <>
+                <div className="text-left p-2 border-t border-customBorder mt-2">
+                  <p className="text-red">{t('veAUXOWarning')}</p>
+                </div>
+                <div className="flex items-center w-full p-2">
+                  <Checkbox.Root
+                    id="c1"
+                    checked={isTermsAccepted}
+                    onCheckedChange={() => setIsTermsAccepted(!isTermsAccepted)}
+                    className={classNames(
+                      'flex h-4 w-4 items-center justify-center rounded-sm pointer',
+                      'radix-state-checked:bg-secondary radix-state-unchecked:bg-light-gray ring-2 ring-offset-2 ring-secondary',
+                      'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
+                    )}
+                  >
+                    <Checkbox.Indicator>
+                      <CheckIcon className="h-4 w-4 self-center text-white" />
+                    </Checkbox.Indicator>
+                  </Checkbox.Root>
+                  <Label.Label
+                    htmlFor="c1"
+                    className="ml-3 select-none text-sm font-medium text-primary cursor-pointer"
+                  >
+                    {t('termsOfMigration')}
+                  </Label.Label>
+                </div>
+              </>
+            )}
           </>
         ) : (
           <>
@@ -156,11 +197,11 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet }) => {
           </>
         )}
       </div>
-      <hr className="w-full border-1 border-custom-border" />
       <div className="flex flex-col w-full text-center pt-4 mt-auto">
         {isCurrentWallet &&
           (account && ready ? (
             <button
+              disabled={!checkForTerms}
               onClick={goToConfirm}
               className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
             >

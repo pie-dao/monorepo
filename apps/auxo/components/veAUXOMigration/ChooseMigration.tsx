@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useWeb3React } from '@web3-react/core';
 import { useTokenBalance } from '../../hooks/useToken';
 import { isZero } from '../../utils/balances';
+import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -83,6 +84,7 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           />
         </section>
       </BackBar>
+      <MigrationFAQ />
     </>
   );
 };

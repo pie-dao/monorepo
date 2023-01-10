@@ -16,6 +16,7 @@ import BackBar from '../../../components/BackBar/BackBar';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import { setCleanupFlow } from '../../../store/migration/migration.slice';
 import { useUpgradoor } from '../../../hooks/useContracts';
+import MigrationFAQ from '../../../components/MigrationFAQ/MigrationFAQ';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -174,6 +175,7 @@ export default function Migration() {
           ))}
         </section>
       </BackBar>
+      <MigrationFAQ />
     </div>
   );
 }
