@@ -8,6 +8,7 @@ import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 import AddToWallet from '../AddToWallet/AddToWallet';
 import Link from 'next/link';
 import classNames from '../../utils/classnames';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -15,8 +16,14 @@ type Props = {
 
 const MigrationCompleted: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
-  const { tx, isSingleLock, migrationType, DOUGHInput, positions } =
-    useAppSelector((state) => state.migration);
+  const {
+    tx,
+    isSingleLock,
+    migrationType,
+    DOUGHInput,
+    positions,
+    loadingPositions,
+  } = useAppSelector((state) => state.migration);
 
   const textForMigrationType = useMemo(() => {
     const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
@@ -109,18 +116,24 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                 memoizedLocksLength === 0 && 'place-items-center',
               )}
             >
-              {memoizedLocksLength > 0 && (
-                <Link href="/migration/start" passHref>
-                  <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-secondary bg-secondary hover:bg-transparent hover:text-secondary text-white flex place-content-center">
-                    {t('startAgain')}
-                  </button>
-                </Link>
+              {loadingPositions ? (
+                <LoadingSpinner className="self-center h-full w-full" />
+              ) : (
+                <>
+                  {memoizedLocksLength > 0 && (
+                    <Link href="/migration/start" passHref>
+                      <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-secondary bg-secondary hover:bg-transparent hover:text-secondary text-white flex place-content-center">
+                        {t('startAgain')}
+                      </button>
+                    </Link>
+                  )}
+                  <Link href={`/${token}`} passHref>
+                    <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-green bg-green hover:bg-transparent hover:text-green text-white flex place-content-center">
+                      {t('goToToken', { token })}
+                    </button>
+                  </Link>
+                </>
               )}
-              <Link href={`/${token}`} passHref>
-                <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-green bg-green hover:bg-transparent hover:text-green text-white flex place-content-center">
-                  {t('goToToken', { token })}
-                </button>
-              </Link>
             </div>
           </div>
         </div>
