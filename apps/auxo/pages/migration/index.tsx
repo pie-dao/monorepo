@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
 import Trans from 'next-translate/Trans';
 import stakingTimeImage from '../../public/images/migration/stakingTime.png';
+import { useUpgradoor } from '../../hooks/useContracts';
 
 export const Break = <span className="block" />;
 export const p = (
@@ -66,12 +67,13 @@ export default function Migration() {
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
+  const upgradoor = useUpgradoor();
 
   useEffect(() => {
-    if (account) {
-      dispatch(ThunkGetVeDOUGHStakingData({ account }));
+    if (account && upgradoor) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account, upgradoor }));
     }
-  }, [account, dispatch]);
+  }, [account, dispatch, upgradoor]);
 
   const lifecycleColumns = [
     {

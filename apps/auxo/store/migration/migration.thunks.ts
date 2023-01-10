@@ -16,13 +16,20 @@ export const THUNKS = {
 
 export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
   THUNKS.GET_VEDOUGH_STAKING_DATA,
-  async ({ account }: { account: string }) => {
-    if (!account) return;
+  async ({
+    account,
+    upgradoor,
+  }: {
+    account: string;
+    upgradoor: UpgradoorAbi;
+  }) => {
+    if (!account || !upgradoor) return;
     const numberOfLocks = promiseObject({
       locksLength: veDOUGHSharesTimeLock.getLocksOfLength(account),
+      latestLock: upgradoor.getNextLongestLock(account),
     });
 
-    const { locksLength } = await numberOfLocks;
+    const { locksLength, latestLock } = await numberOfLocks;
 
     const locks = await Promise.all(
       Array.from(Array(locksLength.toNumber())).map((_, i) => {
@@ -30,19 +37,37 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
       }),
     );
 
-    return locks
-      .sort((a, b) => {
-        if (a.lockDuration === b.lockDuration) return 1;
-        return b.lockDuration - a.lockDuration;
-      })
-      .map((lock) => {
-        const { amount, lockDuration, lockedAt } = lock;
-        return {
-          amount: toBalance(amount, 18),
-          lockDuration,
-          lockedAt,
-        };
-      });
+    const locksFormatted = locks.map((lock) => {
+      const [amount, lockedAt, lockDuration] = lock;
+      return {
+        amount,
+        lockDuration,
+        lockedAt,
+      };
+    });
+
+    const latestLockFormatted = {
+      amount: toBalance(latestLock[0], 18),
+      lockDuration: latestLock[2],
+      lockedAt: latestLock[1],
+    };
+
+    return [latestLockFormatted].concat(
+      locksFormatted
+        .filter((lock) => lock.lockedAt !== latestLock[1])
+        .sort((a, b) => {
+          if (a.lockDuration === b.lockDuration) return 1;
+          return b.lockDuration - a.lockDuration;
+        })
+        .map((lock) => {
+          const { amount, lockDuration, lockedAt } = lock;
+          return {
+            amount: toBalance(amount, 18),
+            lockDuration,
+            lockedAt,
+          };
+        }),
+    );
   },
 );
 
@@ -140,7 +165,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     if (receipt.status === 1) {
       setTxState(TX_STATES.COMPLETE);
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SUCCESS));
-      dispatch(ThunkGetVeDOUGHStakingData({ account: sender }));
+      dispatch(ThunkGetVeDOUGHStakingData({ account: sender, upgradoor }));
     }
 
     if (receipt.status !== 1) {

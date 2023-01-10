@@ -15,22 +15,24 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import BackBar from '../../../components/BackBar/BackBar';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import { setCleanupFlow } from '../../../store/migration/migration.slice';
+import { useUpgradoor } from '../../../hooks/useContracts';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
+  const upgradoor = useUpgradoor();
 
   useEffect(() => {
     dispatch(setCleanupFlow());
   }, [dispatch]);
 
   useEffect(() => {
-    if (account) {
-      dispatch(ThunkGetVeDOUGHStakingData({ account }));
+    if (account && upgradoor) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account, upgradoor }));
     }
-  }, [account, dispatch]);
+  }, [account, dispatch, upgradoor]);
 
   const migrationCardsContent = useMemo(() => {
     return [

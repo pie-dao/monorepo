@@ -26,7 +26,7 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
     <div className="flex w-full flex-col pt-4 text-center">
       <div
         className={classNames(
-          'flex flex-col gap-y-2 pr-4 overflow-y-auto p-2 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full',
+          'flex flex-col gap-y-2 pr-2 overflow-y-auto p-2 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full',
           positions.length >= 4 ? 'h-64' : 'h-fit',
         )}
       >
@@ -51,7 +51,7 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
               <div
                 key={i}
                 className={classNames(
-                  'w-full flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-primary rounded-sm @container',
+                  'w-full flex items-center gap-x-1 p-2 bg-light-gray shadow-md text-primary rounded-sm @container',
                   i !== 0 && isSingleLock && 'opacity-30',
                 )}
               >
@@ -76,12 +76,14 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
                   <div>
                     <dl className="flex gap-1 justify-between">
                       <dt className="text-sub-dark">{t('lockedFor')}:</dt>
-                      <dd className="font-medium text-right">{lockedFor}</dd>
+                      <dd className="font-medium text-right">
+                        {t('numOfMonths', { months: lockedFor })}
+                      </dd>
                     </dl>
                     <dl className="flex gap-1 justify-between">
                       <dt className="text-sub-dark">{t('remainingTime')}:</dt>
                       <dd className="font-medium text-right">
-                        {remainingMonths}
+                        {t('numOfMonths', { months: remainingMonths })}
                       </dd>
                     </dl>
                   </div>
