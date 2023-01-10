@@ -25,6 +25,7 @@ const nextConfig = {
     // DO NOT USE THIS IN PRODUCTION
     ignoreBuildErrors: true,
   },
+  optimizeFonts: false,
   redirects: async () => {
     return [
       {
