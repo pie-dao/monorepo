@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 import AddToWallet from '../AddToWallet/AddToWallet';
 import Link from 'next/link';
+import classNames from '../../utils/classnames';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -14,9 +15,8 @@ type Props = {
 
 const MigrationCompleted: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
-  const { tx, isSingleLock, migrationType, DOUGHInput } = useAppSelector(
-    (state) => state.migration,
-  );
+  const { tx, isSingleLock, migrationType, DOUGHInput, positions } =
+    useAppSelector((state) => state.migration);
 
   const textForMigrationType = useMemo(() => {
     const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
@@ -27,6 +27,13 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
   const shortenedHash = useMemo(() => {
     return tx?.hash?.slice(0, 5) + '...' + tx?.hash?.slice(-5);
   }, [tx]);
+
+  const memoizedLocksLength = useMemo(() => {
+    if (!positions) return 0;
+    return (
+      positions?.filter((position) => position?.lockDuration !== 0).length ?? 0
+    );
+  }, [positions]);
 
   return (
     <>
@@ -96,20 +103,22 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                 </div>
               )}
             </div>
-            <div className="w-full text-center">
-              <p className="uppercase text-secondary font-medium text-lg">
-                {t('common:transactionCompleted')}
-              </p>
-            </div>
-            <div className="w-full gap-x-2 justify-between items-center">
-              <Link href="/migration/start" passHref>
-                <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-secondary bg-secondary hover:bg-transparent hover:text-secondary text-white flex">
-                  {t('startAgain')}
-                </button>
-              </Link>
+            <div
+              className={classNames(
+                'w-full gap-x-2 justify-between items-center flex',
+                memoizedLocksLength === 0 && 'place-items-center',
+              )}
+            >
+              {memoizedLocksLength > 0 && (
+                <Link href="/migration/start" passHref>
+                  <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-secondary bg-secondary hover:bg-transparent hover:text-secondary text-white flex place-content-center">
+                    {t('startAgain')}
+                  </button>
+                </Link>
+              )}
               <Link href={`/${token}`} passHref>
-                <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-green bg-green hover:bg-transparent hover:text-green text-white flex">
-                  {t('goTo', { page: token })}
+                <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-green bg-green hover:bg-transparent hover:text-green text-white flex place-content-center">
+                  {t('goToToken', { token })}
                 </button>
               </Link>
             </div>
