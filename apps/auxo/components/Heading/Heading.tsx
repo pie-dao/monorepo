@@ -184,7 +184,9 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                       {t('lockedFor')}:
                                     </dt>
                                     <dd className="font-medium text-right">
-                                      {lockedFor}
+                                      {t('numOfMonths', {
+                                        months: lockedFor,
+                                      })}
                                     </dd>
                                   </dl>
                                   <dl className="flex gap-1 justify-between @md:justify-start">
@@ -192,7 +194,9 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                       {t('remainingTime')}:
                                     </dt>
                                     <dd className="font-medium text-right">
-                                      {remainingMonths}
+                                      {t('numOfMonths', {
+                                        months: remainingMonths,
+                                      })}
                                     </dd>
                                   </dl>
                                 </div>

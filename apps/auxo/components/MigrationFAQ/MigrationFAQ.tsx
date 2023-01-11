@@ -51,7 +51,6 @@ const MigrationFAQ: React.FC = () => {
   const { t } = useTranslation('migration');
   const faqs = [
     {
-      id: 'taxed',
       question: t('faq1'),
       answer: (
         <Trans
@@ -101,7 +100,7 @@ const MigrationFAQ: React.FC = () => {
           ns="migration"
         />
       ),
-      label: label('primary', t('faq4Label')),
+      label: label('secondary', t('faq4Label')),
     },
     {
       question: t('faq5'),
@@ -232,6 +231,52 @@ const MigrationFAQ: React.FC = () => {
       ),
       label: label('secondary', t('faq14Label')),
     },
+    {
+      id: 'rewards',
+      question: t('faq15'),
+      answer: <Trans i18nKey="faq15Answer" components={{ p }} ns="migration" />,
+      label: label('tertiary', t('comparison')),
+    },
+    {
+      id: 'governance',
+      question: t('faq16'),
+      answer: <Trans i18nKey="faq16Answer" components={{ p }} ns="migration" />,
+      label: label('tertiary', t('comparison')),
+    },
+    {
+      id: 'transfer',
+      question: t('faq17'),
+      answer: <Trans i18nKey="faq17Answer" components={{ p }} ns="migration" />,
+      label: label('tertiary', t('comparison')),
+    },
+    {
+      id: 'lock',
+      question: t('faq18'),
+      answer: (
+        <Trans i18nKey="faq18Answer" components={{ Break, p }} ns="migration" />
+      ),
+      label: label('tertiary', t('comparison')),
+    },
+    {
+      id: 'bonding',
+      question: t('faq19'),
+      answer: <Trans i18nKey="faq19Answer" components={{ p }} ns="migration" />,
+      label: label('tertiary', t('comparison')),
+    },
+    {
+      id: 'mintFee',
+      question: t('faq20'),
+      answer: (
+        <Trans i18nKey="faq20Answer" components={{ p, b }} ns="migration" />
+      ),
+      label: label('tertiary', t('comparison')),
+    },
+    {
+      id: 'exit',
+      question: t('faq21'),
+      answer: <Trans i18nKey="faq21Answer" components={{ p }} ns="migration" />,
+      label: label('tertiary', t('comparison')),
+    },
   ];
 
   return (
@@ -246,16 +291,15 @@ const MigrationFAQ: React.FC = () => {
           <Disclosure
             as="div"
             id={faq?.id}
-            className="bg-gradient-primary shadow-md rounded-lg py-2 w-full target:ring-4 scroll-mt-10"
+            className="bg-gradient-primary shadow-md rounded-lg py-2 w-full focus:ring-4 scroll-mt-10"
             key={faq.question}
+            tabIndex={0}
           >
             {({ open }) => (
               <>
                 <Disclosure.Button
-                  as="div"
-                  className={classNames(
-                    'cursor-pointer w-full px-2 focus:ring-4',
-                  )}
+                  as="button"
+                  className={classNames('cursor-pointer w-full px-2')}
                 >
                   <div className="flex">
                     <div className="w-full flex-1 flex items-center gap-x-2 text-primary font-medium text-xl">

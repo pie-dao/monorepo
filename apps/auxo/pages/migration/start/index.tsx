@@ -35,6 +35,21 @@ export default function Migration() {
     }
   }, [account, dispatch, upgradoor]);
 
+  const goToElement = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = e.currentTarget.getAttribute('href');
+    if (target) {
+      const element = document.querySelector(target) as HTMLElement | null;
+      const button = element?.querySelector('button');
+      if (element) {
+        element.focus();
+        if (button.getAttribute('aria-expanded') === 'false') {
+          button.click();
+        }
+      }
+    }
+  };
+
   const migrationCardsContent = useMemo(() => {
     return [
       {
@@ -44,36 +59,68 @@ export default function Migration() {
         icon: <Image src={veAUXOIcon} alt="veAUXO" width={26} height={26} />,
         features: [
           {
-            title: 'rewards',
-            description: t('maxPossible'),
+            title: (
+              <a href="#rewards" onClick={goToElement}>
+                {t('rewards')}
+              </a>
+            ),
+            description: 'maxPossible',
           },
           {
-            title: 'governance',
-            description: t('directOnChain'),
+            title: (
+              <a href="#governance" onClick={goToElement}>
+                {t('governance')}
+              </a>
+            ),
+            description: 'directOnChain',
           },
           {
-            title: 'transfer',
-            description: t('nonTransferable'),
+            title: (
+              <a href="#transfer" onClick={goToElement}>
+                {t('transfer')}
+              </a>
+            ),
+            description: 'nonTransferable',
           },
           {
-            title: 'lock',
-            description: t('userPreference'),
+            title: (
+              <a href="#lock" onClick={goToElement}>
+                {t('lock')}
+              </a>
+            ),
+            description: 'userPreference',
           },
           {
-            title: 'redemption',
-            description: t('atLockExpiration'),
+            title: (
+              <a href="#lock" onClick={goToElement}>
+                {t('redemption')}
+              </a>
+            ),
+            description: 'atLockExpiration',
           },
           {
-            title: 'bonding',
-            description: t('guaranteedAtNAV'),
+            title: (
+              <a href="#bonding" onClick={goToElement}>
+                {t('bonding')}
+              </a>
+            ),
+            description: 'guaranteedAtNAV',
           },
           {
-            title: 'mintFee',
-            description: t('noFee'),
+            title: (
+              <a href="#mintFee" onClick={goToElement}>
+                {t('mintFee')}
+              </a>
+            ),
+            description: 'noFee',
           },
           {
-            title: 'exit',
-            description: t('migrateToXAUXO'),
+            title: (
+              <a href="#exit" onClick={goToElement}>
+                {t('exit')}
+              </a>
+            ),
+            description: 'migrateToXAUXO',
           },
         ],
         button: {
@@ -104,36 +151,72 @@ export default function Migration() {
         icon: <Image src={XAUXOIcon} alt="xAUXO" width={26} height={26} />,
         features: [
           {
-            title: 'rewards',
-            description: <a href="#taxed">{t('taxed')}</a>,
+            title: (
+              <a href="#rewards" onClick={goToElement}>
+                {t('rewards')}
+              </a>
+            ),
+            description: 'taxed',
           },
           {
-            title: 'governance',
-            description: t('noVotingRights'),
+            title: (
+              <a href="#governance" onClick={goToElement}>
+                {t('governance')}
+              </a>
+            ),
+            description: 'noVotingRights',
           },
           {
-            title: 'transfer',
-            description: t('transferable'),
+            title: (
+              <a
+                href="#transfer"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
+                {t('transfer')}
+              </a>
+            ),
+            description: 'transferable',
           },
           {
-            title: 'lock',
-            description: t('forever'),
+            title: (
+              <a href="#lock" onClick={goToElement}>
+                {t('lock')}
+              </a>
+            ),
+            description: 'forever',
           },
           {
-            title: 'redemption',
-            description: t('none'),
+            title: (
+              <a href="#lock" onClick={goToElement}>
+                {t('redemption')}
+              </a>
+            ),
+            description: 'none',
           },
           {
-            title: 'bonding',
-            description: t('premium'),
+            title: (
+              <a href="#bonding" onClick={goToElement}>
+                {t('bonding')}
+              </a>
+            ),
+            description: 'premium',
           },
           {
-            title: 'mintFee',
-            description: t('yes'),
+            title: (
+              <a href="#mintFee" onClick={goToElement}>
+                {t('mintFee')}
+              </a>
+            ),
+            description: 'yes',
           },
           {
-            title: 'exit',
-            description: t('none'),
+            title: (
+              <a href="#exit" onClick={goToElement}>
+                {t('exit')}
+              </a>
+            ),
+            description: 'none',
           },
         ],
         button: {
