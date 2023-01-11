@@ -60,7 +60,11 @@ export default function Migration() {
         features: [
           {
             title: (
-              <a href="#rewards" onClick={goToElement}>
+              <a
+                href="#rewards"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('rewards')}
               </a>
             ),
@@ -68,7 +72,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#governance" onClick={goToElement}>
+              <a
+                href="#governance"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('governance')}
               </a>
             ),
@@ -76,7 +84,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#transfer" onClick={goToElement}>
+              <a
+                href="#transfer"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('transfer')}
               </a>
             ),
@@ -84,7 +96,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#lock" onClick={goToElement}>
+              <a
+                href="#lock"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('lock')}
               </a>
             ),
@@ -92,7 +108,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#lock" onClick={goToElement}>
+              <a
+                href="#lock"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('redemption')}
               </a>
             ),
@@ -100,7 +120,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#bonding" onClick={goToElement}>
+              <a
+                href="#bonding"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('bonding')}
               </a>
             ),
@@ -108,7 +132,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#mintFee" onClick={goToElement}>
+              <a
+                href="#mintFee"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('mintFee')}
               </a>
             ),
@@ -116,7 +144,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#exit" onClick={goToElement}>
+              <a
+                href="#exit"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('exit')}
               </a>
             ),
@@ -152,7 +184,11 @@ export default function Migration() {
         features: [
           {
             title: (
-              <a href="#rewards" onClick={goToElement}>
+              <a
+                href="#rewards"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('rewards')}
               </a>
             ),
@@ -160,7 +196,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#governance" onClick={goToElement}>
+              <a
+                href="#governance"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('governance')}
               </a>
             ),
@@ -180,7 +220,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#lock" onClick={goToElement}>
+              <a
+                href="#lock"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('lock')}
               </a>
             ),
@@ -188,7 +232,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#lock" onClick={goToElement}>
+              <a
+                href="#lock"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('redemption')}
               </a>
             ),
@@ -196,7 +244,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#bonding" onClick={goToElement}>
+              <a
+                href="#bonding"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('bonding')}
               </a>
             ),
@@ -204,7 +256,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#mintFee" onClick={goToElement}>
+              <a
+                href="#mintFee"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('mintFee')}
               </a>
             ),
@@ -212,7 +268,11 @@ export default function Migration() {
           },
           {
             title: (
-              <a href="#exit" onClick={goToElement}>
+              <a
+                href="#exit"
+                onClick={goToElement}
+                className="hover:text-secondary"
+              >
                 {t('exit')}
               </a>
             ),
