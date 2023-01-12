@@ -15,22 +15,58 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import BackBar from '../../../components/BackBar/BackBar';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import { setCleanupFlow } from '../../../store/migration/migration.slice';
+import { useUpgradoor } from '../../../hooks/useContracts';
+import MigrationFAQ from '../../../components/MigrationFAQ/MigrationFAQ';
+
+//extract title component
+type TitleProps = {
+  a: string;
+};
+
+const goToElement = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  const target = e.currentTarget.getAttribute('href');
+  if (target) {
+    const element = document.querySelector(target) as HTMLElement | null;
+    const button = element?.querySelector('button');
+    if (element) {
+      element.focus();
+      if (button.getAttribute('aria-expanded') === 'false') {
+        button.click();
+      }
+    }
+  }
+};
+
+export const Title: React.FC<TitleProps> = ({ a }) => {
+  const { t } = useTranslation('migration');
+  return (
+    <a
+      href={`#${a}`}
+      onClick={goToElement}
+      className="text-secondary/80 hover:text-secondary/100"
+    >
+      {t(a)}
+    </a>
+  );
+};
 
 export default function Migration() {
   const { t } = useTranslation('migration');
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
+  const upgradoor = useUpgradoor();
 
   useEffect(() => {
     dispatch(setCleanupFlow());
   }, [dispatch]);
 
   useEffect(() => {
-    if (account) {
-      dispatch(ThunkGetVeDOUGHStakingData({ account }));
+    if (account && upgradoor) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account, upgradoor }));
     }
-  }, [account, dispatch]);
+  }, [account, dispatch, upgradoor]);
 
   const migrationCardsContent = useMemo(() => {
     return [
@@ -41,35 +77,43 @@ export default function Migration() {
         icon: <Image src={veAUXOIcon} alt="veAUXO" width={26} height={26} />,
         features: [
           {
-            title: 'rewards',
+            title: <Title a="rewards" />,
             description: 'maxPossible',
           },
           {
-            title: 'governance',
+            title: <Title a="governance" />,
             description: 'directOnChain',
           },
           {
-            title: 'transfer',
+            title: <Title a="transfer" />,
             description: 'nonTransferable',
           },
           {
-            title: 'lock',
+            title: <Title a="lock" />,
             description: 'userPreference',
           },
           {
-            title: 'redemption',
+            title: (
+              <a
+                href="#lock"
+                onClick={goToElement}
+                className="text-secondary/80 hover:text-secondary/100"
+              >
+                {t('redemption')}
+              </a>
+            ),
             description: 'atLockExpiration',
           },
           {
-            title: 'bonding',
+            title: <Title a="bonding" />,
             description: 'guaranteedAtNAV',
           },
           {
-            title: 'mintFee',
+            title: <Title a="mintFee" />,
             description: 'noFee',
           },
           {
-            title: 'exit',
+            title: <Title a="exit" />,
             description: 'migrateToXAUXO',
           },
         ],
@@ -101,35 +145,43 @@ export default function Migration() {
         icon: <Image src={XAUXOIcon} alt="xAUXO" width={26} height={26} />,
         features: [
           {
-            title: 'rewards',
+            title: <Title a="rewards" />,
             description: 'taxed',
           },
           {
-            title: 'governance',
+            title: <Title a="governance" />,
             description: 'noVotingRights',
           },
           {
-            title: 'transfer',
+            title: <Title a="transfer" />,
             description: 'transferable',
           },
           {
-            title: 'lock',
+            title: <Title a="lock" />,
             description: 'forever',
           },
           {
-            title: 'redemption',
+            title: (
+              <a
+                href="#lock"
+                onClick={goToElement}
+                className="text-secondary/80 hover:text-secondary/100"
+              >
+                {t('redemption')}
+              </a>
+            ),
             description: 'none',
           },
           {
-            title: 'bonding',
+            title: <Title a="bonding" />,
             description: 'premium',
           },
           {
-            title: 'mintFee',
+            title: <Title a="mintFee" />,
             description: 'yes',
           },
           {
-            title: 'exit',
+            title: <Title a="exit" />,
             description: 'none',
           },
         ],
@@ -172,6 +224,7 @@ export default function Migration() {
           ))}
         </section>
       </BackBar>
+      <MigrationFAQ />
     </div>
   );
 }

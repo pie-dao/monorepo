@@ -4,9 +4,10 @@ import BackBar from '../BackBar/BackBar';
 import Heading from '../Heading/Heading';
 import AddressCard from '../MigrationCard/AddressCard';
 import { isZero } from '../../utils/balances';
+import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 
 type Props = {
-  token: string;
+  token: 'veAUXO' | 'xAUXO';
 };
 const SelectWalletMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
@@ -22,10 +23,13 @@ const SelectWalletMigration: React.FC<Props> = ({ token }) => {
         singleCard={!notVeAuxoOrNoLocks}
       >
         <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
-          {notVeAuxoOrNoLocks && <AddressCard isCurrentWallet={true} />}
+          {notVeAuxoOrNoLocks && (
+            <AddressCard isCurrentWallet={true} token={token} />
+          )}
           <AddressCard isCurrentWallet={false} />
         </section>
       </BackBar>
+      <MigrationFAQ />
     </>
   );
 };

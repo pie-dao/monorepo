@@ -27,7 +27,7 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
       currentStep === STEPS_LIST.CHOOSE_MIGRATION_TYPE ||
       currentStep === STEPS_LIST.MIGRATE_SUCCESS
     ) {
-      router.push('/migration');
+      router.push('/migration/start');
       dispatch(setCurrentStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE));
       dispatch(setPreviousStep(null));
     } else {

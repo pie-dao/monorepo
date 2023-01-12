@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { useAppSelector } from '../../hooks';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import Banner from '../Banner/Banner';
+import { isEmpty } from 'lodash';
 
 type Props = {
   token: string;
@@ -14,7 +15,7 @@ type Props = {
   icon: React.ReactNode;
   description: string;
   features: {
-    title: string;
+    title: string | React.ReactNode;
     description: string;
   }[];
   button: {
@@ -42,7 +43,7 @@ const MigrationCardOption: React.FC<Props> = ({
   const ready = useServerHandoffComplete();
   const { positions } = useAppSelector((state) => state.migration);
   const memoizedPositions = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 
@@ -73,12 +74,12 @@ const MigrationCardOption: React.FC<Props> = ({
         <p className="text-sm text-sub-dark">{description}</p>
       </div>
       <div className="flex w-full flex-col pt-4 @container gap-y-1">
-        {features.map(({ title, description }) => (
+        {features.map(({ title, description }, i) => (
           <div
             className="flex justify-between text-base w-full flex-col @md:flex-row text-left"
-            key={title}
+            key={i}
           >
-            <dt className="text-sub-dark flex-shrink-0">{t(title)}</dt>
+            <dt className="text-sub-dark flex-shrink-0">{title}</dt>
             <dd className="text-primary">{t(description)}</dd>
           </div>
         ))}

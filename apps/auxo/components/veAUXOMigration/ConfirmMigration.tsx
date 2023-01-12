@@ -35,6 +35,7 @@ import Banner from '../Banner/Banner';
 import Trans from 'next-translate/Trans';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { setConvertedDOUGHLabel } from '../../store/migration/migration.slice';
+import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -68,7 +69,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
   const memoizedPositions = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 
@@ -224,8 +225,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   return (
     <>
       <Heading
-        title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateSubtitle')}
+        title={t('reviewAndConfirm')}
+        subtitle={t('reviewAndConfirmSubtitle')}
       />
       <BackBar
         token={token}
@@ -314,6 +315,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
           </div>
         </section>
       </BackBar>
+      <MigrationFAQ />
     </>
   );
 };

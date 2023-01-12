@@ -2,9 +2,9 @@ import { Web3Provider } from '@ethersproject/providers';
 import { SUPPORTED_CHAINS } from '../utils/networks';
 
 export const RPC_URLS: Record<number, string> = {
-  [SUPPORTED_CHAINS.MAINNET]: 'https://rpc.ankr.com/eth',
-  [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ankr.com/fantom',
-  [SUPPORTED_CHAINS.POLYGON]: 'https://rpc.ankr.com/polygon',
+  [SUPPORTED_CHAINS.MAINNET]: 'https://eth.llamarpc.com',
+  [SUPPORTED_CHAINS.FANTOM]: 'https://1rpc.io/ftm',
+  [SUPPORTED_CHAINS.POLYGON]: 'https://polygon.llamarpc.com',
 };
 
 export default function getLibrary(provider): Web3Provider {

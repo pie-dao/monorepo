@@ -13,7 +13,12 @@ export default function useCheckUpgradoorDeployed(): boolean | null {
 
   useEffect(() => {
     const checkIfDeployed = async () => {
-      if (!upgradoor || !account || !library) return;
+      if (!account || !library) return;
+      if (!upgradoor) {
+        dispatch(setIsOpen(true));
+        dispatch(setIsMigrationDeployed(false));
+        return;
+      }
       const signer = getSigner(library, account);
       const isDeployed =
         (await signer.provider.getCode(upgradoor.address)) !== '0x';
