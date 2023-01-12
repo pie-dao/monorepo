@@ -16,6 +16,7 @@ import {
 import classNames from '../../utils/classnames';
 import { formatBalance } from '../../utils/formatBalance';
 import { usePopper } from 'react-popper';
+import { isEmpty } from 'lodash';
 
 type Props = {
   title: string;
@@ -33,7 +34,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
   const memoizedLocks = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 

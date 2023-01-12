@@ -35,7 +35,7 @@ export default function SwitchChainModal() {
             </li>
             <li className="leading-9">
               Add as RPC URL{' '}
-              <CopyToClipboard text="https://bestnet.alexintosh.com/rpc/d40e8c469c66ab48bd3f759dc1f815d1f2d49dfa" />
+              <CopyToClipboard text="https://bestnet.alexintosh.com/rpc/gab-testing" />
               <br /> with a chainID of{' '}
               <code className="p-1 bg-gray-200 rounded">1</code> and currency of{' '}
               <code className="p-1 bg-gray-200 rounded">ETH</code>.

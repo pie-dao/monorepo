@@ -18,6 +18,39 @@ import { setCleanupFlow } from '../../../store/migration/migration.slice';
 import { useUpgradoor } from '../../../hooks/useContracts';
 import MigrationFAQ from '../../../components/MigrationFAQ/MigrationFAQ';
 
+//extract title component
+type TitleProps = {
+  a: string;
+};
+
+const goToElement = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  const target = e.currentTarget.getAttribute('href');
+  if (target) {
+    const element = document.querySelector(target) as HTMLElement | null;
+    const button = element?.querySelector('button');
+    if (element) {
+      element.focus();
+      if (button.getAttribute('aria-expanded') === 'false') {
+        button.click();
+      }
+    }
+  }
+};
+
+export const Title: React.FC<TitleProps> = ({ a }) => {
+  const { t } = useTranslation('migration');
+  return (
+    <a
+      href={`#${a}`}
+      onClick={goToElement}
+      className="text-secondary/80 hover:text-secondary/100"
+    >
+      {t(a)}
+    </a>
+  );
+};
+
 export default function Migration() {
   const { t } = useTranslation('migration');
 
@@ -35,21 +68,6 @@ export default function Migration() {
     }
   }, [account, dispatch, upgradoor]);
 
-  const goToElement = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const target = e.currentTarget.getAttribute('href');
-    if (target) {
-      const element = document.querySelector(target) as HTMLElement | null;
-      const button = element?.querySelector('button');
-      if (element) {
-        element.focus();
-        if (button.getAttribute('aria-expanded') === 'false') {
-          button.click();
-        }
-      }
-    }
-  };
-
   const migrationCardsContent = useMemo(() => {
     return [
       {
@@ -59,51 +77,19 @@ export default function Migration() {
         icon: <Image src={veAUXOIcon} alt="veAUXO" width={26} height={26} />,
         features: [
           {
-            title: (
-              <a
-                href="#rewards"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('rewards')}
-              </a>
-            ),
+            title: <Title a="rewards" />,
             description: 'maxPossible',
           },
           {
-            title: (
-              <a
-                href="#governance"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('governance')}
-              </a>
-            ),
+            title: <Title a="governance" />,
             description: 'directOnChain',
           },
           {
-            title: (
-              <a
-                href="#transfer"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('transfer')}
-              </a>
-            ),
+            title: <Title a="transfer" />,
             description: 'nonTransferable',
           },
           {
-            title: (
-              <a
-                href="#lock"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('lock')}
-              </a>
-            ),
+            title: <Title a="lock" />,
             description: 'userPreference',
           },
           {
@@ -119,39 +105,15 @@ export default function Migration() {
             description: 'atLockExpiration',
           },
           {
-            title: (
-              <a
-                href="#bonding"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('bonding')}
-              </a>
-            ),
+            title: <Title a="bonding" />,
             description: 'guaranteedAtNAV',
           },
           {
-            title: (
-              <a
-                href="#mintFee"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('mintFee')}
-              </a>
-            ),
+            title: <Title a="mintFee" />,
             description: 'noFee',
           },
           {
-            title: (
-              <a
-                href="#exit"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('exit')}
-              </a>
-            ),
+            title: <Title a="exit" />,
             description: 'migrateToXAUXO',
           },
         ],
@@ -183,51 +145,19 @@ export default function Migration() {
         icon: <Image src={XAUXOIcon} alt="xAUXO" width={26} height={26} />,
         features: [
           {
-            title: (
-              <a
-                href="#rewards"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('rewards')}
-              </a>
-            ),
+            title: <Title a="rewards" />,
             description: 'taxed',
           },
           {
-            title: (
-              <a
-                href="#governance"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('governance')}
-              </a>
-            ),
+            title: <Title a="governance" />,
             description: 'noVotingRights',
           },
           {
-            title: (
-              <a
-                href="#transfer"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('transfer')}
-              </a>
-            ),
+            title: <Title a="transfer" />,
             description: 'transferable',
           },
           {
-            title: (
-              <a
-                href="#lock"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('lock')}
-              </a>
-            ),
+            title: <Title a="lock" />,
             description: 'forever',
           },
           {
@@ -243,39 +173,15 @@ export default function Migration() {
             description: 'none',
           },
           {
-            title: (
-              <a
-                href="#bonding"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('bonding')}
-              </a>
-            ),
+            title: <Title a="bonding" />,
             description: 'premium',
           },
           {
-            title: (
-              <a
-                href="#mintFee"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('mintFee')}
-              </a>
-            ),
+            title: <Title a="mintFee" />,
             description: 'yes',
           },
           {
-            title: (
-              <a
-                href="#exit"
-                onClick={goToElement}
-                className="text-secondary/80 hover:text-secondary/100"
-              >
-                {t('exit')}
-              </a>
-            ),
+            title: <Title a="exit" />,
             description: 'none',
           },
         ],

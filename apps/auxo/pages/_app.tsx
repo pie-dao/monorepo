@@ -52,7 +52,6 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
           <div className="h-full">
             <NotificationDisplay />
             <ModalManager />
-            <ModalMigration />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>

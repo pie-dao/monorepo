@@ -57,6 +57,8 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
   };
 
   const notVeAuxoOrNoLocks = token !== 'veAUXO' || noLocks;
+  console.log('notVeAuxoOrNoLocks', notVeAuxoOrNoLocks);
+  console.log('noLocks', noLocks);
 
   return (
     <>

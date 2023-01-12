@@ -69,7 +69,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
   const memoizedPositions = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 

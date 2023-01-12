@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { useAppSelector } from '../../hooks';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import Banner from '../Banner/Banner';
+import { isEmpty } from 'lodash';
 
 type Props = {
   token: string;
@@ -42,7 +43,7 @@ const MigrationCardOption: React.FC<Props> = ({
   const ready = useServerHandoffComplete();
   const { positions } = useAppSelector((state) => state.migration);
   const memoizedPositions = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 

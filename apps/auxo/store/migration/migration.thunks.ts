@@ -124,6 +124,10 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     if (token === 'veAUXO') {
       if (isSingleLock) {
         tx = await upgradeSingleLockVeAuxo(destinationWallet);
+        pendingNotification({
+          title: `aggregateveDOUGHPending`,
+          id: 'aggregateVeDOUGH',
+        });
       } else if (boost) {
         tx = await aggregateAndBoost();
         pendingNotification({
@@ -200,6 +204,8 @@ export const ThunkPreviewMigration = createAsyncThunk(
         'Missing Contract, Boost, Destination Wallet, Token to migrate to or single lock definition',
       );
     }
+
+    console.log(sender);
 
     const previews = promiseObject({
       veAUXOAggregateAndBoost: upgradoor.previewAggregateAndBoost(sender),
