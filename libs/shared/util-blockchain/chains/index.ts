@@ -3,6 +3,15 @@ import chains from './chains.json';
 export const getChain = (chainId: number) =>
   chains.find((c) => c.chainId === chainId);
 
+export const getExplorer = (chainId: number) =>
+  chains.find((c) => c.chainId === chainId)?.explorers as Explorer[];
+
+export type Explorer = {
+  name: string;
+  url: string;
+  standard: string;
+};
+
 // Not all chains are relevant for PieDAO products, you can define the priority ones here
 export const SUPPORTED_CHAINS = {
   ETHEREUM: 1,

@@ -15,6 +15,7 @@ import {
   UpgradoorAbi__factory,
   AUXOAbi__factory,
   SharesTimeLockAbi__factory,
+  RollStakerAbi__factory,
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
 import migration from '../config/migration.json';
@@ -107,6 +108,21 @@ export function useXAUXOContract(address?: string) {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
       return XAUXOAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
+export function useRollStakerContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return RollStakerAbi__factory.connect(address, providerSigner);
     } catch (error) {
       console.error('Failed to get contract', error);
       return undefined;
@@ -223,6 +239,13 @@ export function useAUXOTokenContract() {
 export function useXAUXOTokenContract() {
   const { chainId } = useWeb3React();
   return useXAUXOContract(tokensConfig['xAUXO']?.addresses[chainId]?.address);
+}
+
+export function useRollStakerXAUXOContract() {
+  const { chainId } = useWeb3React();
+  return useRollStakerContract(
+    tokensConfig['xAUXO']?.addresses[chainId]?.rollStakerAddress,
+  );
 }
 
 export function useUpgradoor() {

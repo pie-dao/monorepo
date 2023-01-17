@@ -19,7 +19,7 @@ export const RPC_URLS =
         250: 'http://127.0.0.1:8546',
       }
     : {
-        1: 'https://bestnet.alexintosh.com/rpc/d40e8c469c66ab48bd3f759dc1f815d1f2d49dfa',
+        1: 'https://bestnet.alexintosh.com/rpc/x-auxo-staking',
         5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'https://rpc.ankr.com/fantom',

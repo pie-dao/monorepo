@@ -11,7 +11,7 @@ import {
   thunkConfirmWithdrawal,
   thunkAuthorizeDepositor,
   thunkStakeAuxo,
-  thunkStakeXAUXO,
+  thunkConvertXAUXO,
   thunkGetVeAUXOStakingData,
   thunkGetUserStakingData,
   thunkGetXAUXOStakingData,
@@ -184,7 +184,7 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkConfirmWithdrawal, 'confirmWithdrawal');
     addTxNotifications(builder, thunkAuthorizeDepositor, 'authorizeDepositor');
     addTxNotifications(builder, thunkStakeAuxo, 'stakeAuxo');
-    addTxNotifications(builder, thunkStakeXAUXO, 'stakeXAUXO');
+    addTxNotifications(builder, thunkConvertXAUXO, 'convertXAUXO');
     addTxNotifications(builder, thunkIncreaseStakeAuxo, 'increaseStakeAuxo');
     addTxNotifications(builder, thunkIncreaseLockVeAUXO, 'increaseLockVeAuxo');
     addTxNotifications(builder, thunkBoostToMaxVeAUXO, 'boostToMaxVeAuxo');

@@ -3,37 +3,58 @@ import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
-import { useXAUXOTokenContract } from '../../../../hooks/useContracts';
-import { thunkConvertXAUXO } from '../../../../store/products/thunks';
-import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
+import {
+  getSigner,
+  useRollStakerXAUXOContract,
+} from '../../../../hooks/useContracts';
+import {
+  thunkStakeXAUXO,
+  thunkUnstakeXAUXO,
+} from '../../../../store/products/thunks';
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
+import xAUXOImage from '../../../../public/tokens/xAUXO.svg';
+import { xAUXOContract } from '../../../../store/products/products.contracts';
 
 const imageMap = {
-  AUXO: '/tokens/AUXO.svg',
-  xAUXO: '/tokens/xAUXO.svg',
+  xAUXO: xAUXOImage,
 };
 
-export default function StakeConfirm() {
+const StakeConfirm: React.FC<{
+  action?: 'stake' | 'unstake';
+}> = ({ action = 'stake' }) => {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { hash } = tx;
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
-  const TokenContract = useXAUXOTokenContract();
+  const rollStaker = useRollStakerXAUXOContract();
+  const signer = getSigner(library, account);
 
   const makeDeposit = () => {
     setDepositLoading(true);
-    dispatch(
-      thunkConvertXAUXO({
-        deposit: swap?.from?.amount,
-        xAUXOContract: TokenContract,
-        account,
-      }),
-    ).finally(() => setDepositLoading(false));
+    action === 'stake' &&
+      dispatch(
+        thunkStakeXAUXO({
+          xAUXO: xAUXOContract,
+          deposit: swap?.from?.amount,
+          account,
+          rollStaker,
+          signer,
+        }),
+      ).finally(() => setDepositLoading(false));
+    action === 'unstake' &&
+      dispatch(
+        thunkUnstakeXAUXO({
+          amount: swap?.from?.amount,
+          account,
+          rollStaker,
+          shouldRevertDeposit: true,
+        }),
+      ).finally(() => setDepositLoading(false));
   };
 
   return (
@@ -42,20 +63,26 @@ export default function StakeConfirm() {
         as="h3"
         className="font-bold text-center text-xl text-primary capitalize w-full"
       >
-        {t('Stake')}
+        {t(action)}
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
-            {t('convertConfirmModalDescription', {
-              token: swap?.to.token,
+            {t('stakeConfirmModalDescription', {
+              action: t(action),
+              token: swap?.from.token,
             })}
           </p>
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="grid grid-cols-3 justify-items-center w-full py-2">
+            <div className="grid grid-cols-2 justify-items-center w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
+                <span className="text-xl font-medium text-primary">
+                  {t('amount')}:
+                </span>
+              </div>
+              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
                 <Image
                   src={imageMap[swap.from.token]}
                   alt={swap.from.token}
@@ -70,46 +97,6 @@ export default function StakeConfirm() {
                     'standard',
                   )}{' '}
                   {swap.from.token}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <Image
-                  src={ArrowRight}
-                  alt={'transfer'}
-                  width={24}
-                  height={24}
-                />
-              </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
-                <Image
-                  src={imageMap[swap.to.token]}
-                  alt={swap.to.token}
-                  width={24}
-                  height={24}
-                />
-                <span className="text-xl font-medium text-secondary">
-                  {formatBalance(
-                    swap.to.amount.label,
-                    defaultLocale,
-                    2,
-                    'standard',
-                  )}{' '}
-                  {swap.to.token}
-                </span>
-              </div>
-            </div>
-          )}
-          {swap?.stakingTime && (
-            <div className="flex items-center self-center justify-between w-full py-2">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                <span className="text-xl font-medium text-primary">
-                  {t('stakeTime')}
-                </span>
-              </div>
-
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                <span className="text-xl font-medium text-secondary">
-                  {t('monthsAmount', { count: swap.stakingTime })}
                 </span>
               </div>
             </div>
@@ -147,7 +134,10 @@ export default function StakeConfirm() {
               className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={makeDeposit}
             >
-              {t('stakeToken', { token: swap?.from.token })}
+              {t('confirmModal', {
+                token: swap?.from.token,
+                action: t(action),
+              })}
             </button>
           ) : (
             <LoadingSpinner />
@@ -156,4 +146,6 @@ export default function StakeConfirm() {
       </div>
     </>
   );
-}
+};
+
+export default StakeConfirm;

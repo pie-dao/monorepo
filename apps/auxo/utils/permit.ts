@@ -1,11 +1,11 @@
 import { BigNumberish, constants, Signature } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { JsonRpcSigner } from '@ethersproject/providers';
-import { AUXOAbi } from '@shared/util-blockchain';
+import { AUXOAbi, XAUXOAbi } from '@shared/util-blockchain';
 
 export async function getPermitSignature(
   signer: JsonRpcSigner,
-  token: AUXOAbi,
+  token: AUXOAbi | XAUXOAbi,
   spender: string,
   value: BigNumberish = constants.MaxUint256,
   deadline: BigNumberish = constants.MaxUint256,

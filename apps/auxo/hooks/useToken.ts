@@ -1,4 +1,5 @@
 import { Erc20Abi } from '@shared/util-blockchain';
+import { getExplorer, Explorer } from '@shared/util-blockchain/abis';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumberReference } from '../store/products/products.types';
 import { zeroBalance } from '../utils/balances';
@@ -81,6 +82,13 @@ export const useUserVotingPower = (token: string): BigNumberReference => {
   );
 };
 
+export const useUserStakedXAUXO = (): BigNumberReference => {
+  return useAppSelector(
+    (state) =>
+      state.dashboard?.tokens?.xAUXO?.userStakingData?.amount ?? zeroBalance,
+  );
+};
+
 export const useDelegatorAddress = (token: string): string => {
   return useAppSelector(
     (state) => state.dashboard?.tokens?.[token]?.userStakingData?.delegator,
@@ -146,4 +154,9 @@ export const useIsFirstTimeMigration = (): boolean => {
       ethers.utils.parseEther(xAUXOBalance.value).isZero()
     );
   }, [veAUXOBalance, xAUXOBalance]);
+};
+
+export const useChainExplorer = () => {
+  const { chainId } = useWeb3React();
+  return getExplorer(chainId)?.[0];
 };
