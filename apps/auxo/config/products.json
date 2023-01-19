@@ -6,7 +6,7 @@
     "addresses": {
       "1": { "address": "0xF596863cAB57376497D83C32115762F9F4a60ef0" },
       "5": {
-        "address": "0x75b75d0D1df5d4fc97901E983006cc6f4ec22D56"
+        "address": "0xAB3c5c69ABA8Db739665742763FDf5701c508B8a"
       },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }
@@ -23,8 +23,8 @@
         "stakingAddress": "0x8788Fd68f8C9E1370D7092D229424bc539Db8c57"
       },
       "5": {
-        "address": "0xdE5F653cC17dC817E7f1c9Da778126d8B1d94eb9",
-        "stakingAddress": "0xdfA09F28cB101b4FA67c98851A4074f5084D5223"
+        "address": "0x25d46ef3229F16846Da3F6ff616946564164Cc06",
+        "stakingAddress": "0xe0a7e931e2595E69D995462aD4D3DC676030168B"
       },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }
@@ -42,8 +42,9 @@
         "rollStakerAddress": "0x4d74AD9d324e4229de1619aED776d2684804fd2D"
       },
       "5": {
-        "address": "0xcba82bbb092813783c7a83d8217ae91a487ca309",
-        "stakingAddress": "0xB641bCb969e5B15D47ede28ac6b6dEFe499335B6"
+        "address": "0x8D9d6bd460712Ea491A06619A04743e0eF9d8278",
+        "stakingAddress": "0xF17634aBF9e946B7dF3ef8a925dcE69D6Ab27D60",
+        "rollStakerAddress": "0x0CE5E343f88DEB5970F724e597A762dFe8c6f397"
       },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }
