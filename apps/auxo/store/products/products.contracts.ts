@@ -22,7 +22,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://bestnet.alexintosh.com/rpc/x-auxo-unstake';
+const localRPC = 'https://bestnet.alexintosh.com/rpc/x-auxo-permit';
 
 const selectedNetwork = 1;
 

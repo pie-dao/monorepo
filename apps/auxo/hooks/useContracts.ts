@@ -254,3 +254,10 @@ export function useUpgradoor() {
     migration['veDOUGH']?.addresses?.[chainId]?.upgradoorAddress,
   );
 }
+
+export function useXAUXOStakingManager() {
+  const { chainId } = useWeb3React();
+  return useStakingManager(
+    tokensConfig['xAUXO']?.addresses[chainId]?.stakingAddress,
+  );
+}

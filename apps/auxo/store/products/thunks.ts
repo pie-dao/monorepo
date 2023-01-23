@@ -15,6 +15,7 @@ import {
   VeAUXOAbi,
   AUXOAbi,
   RollStakerAbi,
+  StakingManagerAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -70,6 +71,7 @@ export const THUNKS = {
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
 const sumBalance = (x: number, y: number) => x + y;
+const deadline = Math.floor(Date.now() / 1000 + ONE_HOUR_DEADLINE).toString();
 
 export const thunkGetProductsData = createAsyncThunk(
   THUNKS.GET_PRODUCTS_DATA,
@@ -921,11 +923,6 @@ export const thunkStakeAuxo = createAsyncThunk(
     if (!tokenLocker || !account || !stakingTime || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
-
-    const deadline = Math.floor(
-      Date.now() / 1000 + ONE_HOUR_DEADLINE,
-    ).toString();
-
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -1000,10 +997,6 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     if (!tokenLocker || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
-
-    const deadline = Math.floor(
-      Date.now() / 1000 + ONE_HOUR_DEADLINE,
-    ).toString();
 
     let tx: ContractTransaction;
     let r: string;
@@ -1200,20 +1193,61 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 
 export type ThunkConvertXAUXOProps = {
   deposit: BigNumberReference;
+  auxoContract: AUXOAbi | undefined;
   xAUXOContract: XAUXOAbi | undefined;
   account: string;
+  signer: JsonRpcSigner;
+  stakingManager: StakingManagerAbi;
 };
 
 export const thunkConvertXAUXO = createAsyncThunk(
   THUNKS.CONVERT_X_AUXO,
   async (
-    { account, deposit, xAUXOContract }: ThunkConvertXAUXOProps,
+    {
+      signer,
+      account,
+      deposit,
+      auxoContract,
+      xAUXOContract,
+    }: ThunkConvertXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !xAUXOContract || !account)
+    if (!deposit || !auxoContract || !xAUXOContract || !account)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
-    const tx = await xAUXOContract.depositFor(account, deposit.value);
+    // const tx = await xAUXOContract.depositFor(account, deposit.value);
+
+    let tx: ContractTransaction;
+    let r: string;
+    let v: number;
+    let s: string;
+
+    try {
+      ({ r, v, s } = await getPermitSignature(
+        signer,
+        auxoContract,
+        xAUXOContract.address,
+        deposit.value,
+        deadline,
+      ));
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Permit Signature Failed');
+    }
+
+    try {
+      tx = await xAUXOContract.depositForWithSignature(
+        account,
+        deposit.value,
+        deadline,
+        v,
+        r,
+        s,
+      );
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Deposit Failed');
+    }
 
     // set block explorer transaction hash
 
@@ -1263,10 +1297,6 @@ export const thunkStakeXAUXO = createAsyncThunk(
       return rejectWithValue(
         'Missing Contract, Account Details, Deposit, xAUXO or Signer',
       );
-
-    const deadline = Math.floor(
-      Date.now() / 1000 + ONE_HOUR_DEADLINE,
-    ).toString();
 
     let tx: ContractTransaction;
     let r: string;

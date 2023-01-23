@@ -3,7 +3,12 @@ import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
-import { useXAUXOTokenContract } from '../../../../hooks/useContracts';
+import {
+  getSigner,
+  useAUXOTokenContract,
+  useXAUXOStakingManager,
+  useXAUXOTokenContract,
+} from '../../../../hooks/useContracts';
 import { thunkConvertXAUXO } from '../../../../store/products/thunks';
 import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
@@ -18,21 +23,28 @@ const imageMap = {
 
 export default function StakeConfirm() {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
-  const TokenContract = useXAUXOTokenContract();
+  const auxoContract = useAUXOTokenContract();
+  const xAUXOContract = useXAUXOTokenContract();
   const chainExplorer = useChainExplorer();
+  const signer = getSigner(library, account);
+  const stakingManager = useXAUXOStakingManager();
+  console.log(stakingManager.address);
 
   const makeDeposit = () => {
     setDepositLoading(true);
     dispatch(
       thunkConvertXAUXO({
         deposit: swap?.from?.amount,
-        xAUXOContract: TokenContract,
+        auxoContract,
+        xAUXOContract,
         account,
+        signer,
+        stakingManager,
       }),
     ).finally(() => setDepositLoading(false));
   };
