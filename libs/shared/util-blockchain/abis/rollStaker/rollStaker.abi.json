@@ -91,7 +91,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "depositor",
         "type": "address"
       },
       {
@@ -116,7 +116,13 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "depositor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "receiver",
         "type": "address"
       },
       {
@@ -141,7 +147,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "depositor",
         "type": "address"
       },
       {
@@ -192,7 +198,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "depositor",
         "type": "address"
       },
       {
@@ -299,7 +305,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "user",
+        "name": "depositor",
         "type": "address"
       },
       {
@@ -373,6 +379,62 @@
       }
     ],
     "name": "deposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_receiver",
+        "type": "address"
+      }
+    ],
+    "name": "depositFor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_receiver",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "depositForWithSignature",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -720,8 +782,27 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
     "name": "revertDeposit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "revertDepositAndWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

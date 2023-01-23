@@ -17,14 +17,16 @@ function DepositActions({
   estimation,
   tokenConfig,
   toToken,
-  isConvertAndStake,
-}: {
+  children,
+}: // isConvertAndStake,
+{
   deposit: BigNumberReference;
   estimation: BigNumberReference;
   tokenConfig: TokenConfig;
   stakingTime?: number;
   toToken: string;
-  isConvertAndStake?: boolean;
+  children?: React.ReactNode;
+  // isConvertAndStake?: boolean;
 }) {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -79,7 +81,7 @@ function DepositActions({
             disabled={disabledStake}
             className="px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
-            {t('Stake')}
+            {children}
           </button>
         </>
       ) : (

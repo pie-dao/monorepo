@@ -15,7 +15,17 @@ const imageMap = {
   xAUXO: xAUXOImage,
 };
 
-export default function StakeConfirm() {
+const actionMap = {
+  stake: 'staked',
+  unstake: 'unstaked',
+  convert: 'converted',
+};
+
+export default function StakeComplete({
+  action,
+}: {
+  action?: 'stake' | 'unstake' | 'convert';
+}) {
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -32,8 +42,9 @@ export default function StakeConfirm() {
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
-            {t('stakeCompletedModalDescription', {
+            {t('convertCompletedModalDescription', {
               token: swap?.from.token,
+              action: actionMap[action],
             })}
           </p>
         </div>

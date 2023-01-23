@@ -6,7 +6,6 @@ import StakeInput from './StakeInput';
 import { compareBalances, zeroBalance } from '../../utils/balances';
 import DepositActions from './ApproveDepositButton';
 import StakeButton from './StakeButton';
-import { BalanceWarning } from './Alerts';
 import useTranslation from 'next-translate/useTranslation';
 import {
   useChainExplorer,
@@ -20,7 +19,6 @@ import { useWeb3React } from '@web3-react/core';
 import { useAppSelector } from '../../hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Listbox, Tab } from '@headlessui/react';
-import * as Switch from '@radix-ui/react-switch';
 import classNames from '../../utils/classnames';
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import Trans from 'next-translate/Trans';
@@ -108,7 +106,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
             ))}
           </Tab.List>
           <AnimatePresence initial={false}>
-            <Tab.Panels className="mt-4 min-h-[17rem]">
+            <Tab.Panels className="mt-4 min-h-[15rem]">
               <Tab.Panel>
                 <ModalBox className="flex flex-col gap-y-4">
                   <div className="flex items-center justify-between w-full">
@@ -181,7 +179,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           max={balance}
                         />
                         {account && (
-                          <BalanceWarning
+                          <Alert
                             open={compareBalances(
                               balance,
                               'lt',
@@ -189,7 +187,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             )}
                           >
                             You can only deposit {balance.label} {originToken}
-                          </BalanceWarning>
+                          </Alert>
                         )}
                         <div className="flex place-items-center justify-between w-full">
                           <p className="text-base text-primary font-medium">
@@ -210,8 +208,10 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           estimation={xAUXOEstimation}
                           tokenConfig={stakingTokenConfig}
                           toToken="xAUXO"
-                        />
-                        <div className="flex flex-col w-full justify-between gap-y-3">
+                        >
+                          {t('convert')}
+                        </DepositActions>
+                        {/* <div className="flex flex-col w-full justify-between gap-y-3">
                           <div className="flex w-full justify-between py-2">
                             <label
                               className="pr-2 text-primary font-bold text-base"
@@ -243,7 +243,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                               </Switch.Root>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
                       </>
                     )}
                     {tab.value === 'convertAndStake' && (

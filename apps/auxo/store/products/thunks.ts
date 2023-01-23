@@ -318,6 +318,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
 
     const xAUXOResults = promiseObject({
       balance: rollStakerContract.getProjectedBalanceForUser(account),
+      currentEpochBalance: rollStakerContract.getCurrentBalanceForUser(account),
       decimals: xAUXOContract.decimals(),
     });
 
@@ -341,6 +342,10 @@ export const thunkGetUserStakingData = createAsyncThunk(
       ['xAUXO']: {
         userStakingData: {
           amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
+          currentEpochBalance: toBalance(
+            xAUXOData.currentEpochBalance,
+            xAUXOData.decimals,
+          ),
         },
       },
     };
@@ -861,8 +866,8 @@ export const thunkApproveToken = createAsyncThunk(
     const tx = await token.approve(spender, deposit.value);
 
     pendingNotification({
-      title: `approveDepositPending`,
-      id: 'approveDeposit',
+      title: `approveTokenPending`,
+      id: 'approveToken',
     });
 
     dispatch(
@@ -1208,7 +1213,6 @@ export const thunkConvertXAUXO = createAsyncThunk(
     if (!deposit || !xAUXOContract || !account)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
-    dispatch(setTxHash(null));
     const tx = await xAUXOContract.depositFor(account, deposit.value);
 
     // set block explorer transaction hash
@@ -1218,13 +1222,13 @@ export const thunkConvertXAUXO = createAsyncThunk(
 
     pendingNotification({
       title: `convertXAUXOPending`,
-      id: 'convertXAUXODeposit',
+      id: 'convertXAUXO',
     });
 
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setStep(STEPS.CONVERT_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
@@ -1255,7 +1259,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
     { account, deposit, signer, xAUXO, rollStaker }: ThunkStakeXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !account || !xAUXO || !signer)
+    if (!deposit || !account || !xAUXO || !signer || !rollStaker)
       return rejectWithValue(
         'Missing Contract, Account Details, Deposit, xAUXO or Signer',
       );
@@ -1345,12 +1349,13 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details and Amount');
 
     dispatch(setTxHash(null));
+    let tx: ContractTransaction;
 
-    // if (shouldRevertDeposit) {
-    //  tx = await rollStaker.revertDepositAndWithdraw(amount.value);
-    // } else {
-    const tx = await rollStaker.withdraw(amount.value);
-    // }
+    if (shouldRevertDeposit) {
+      tx = await rollStaker.revertDepositAndWithdraw(amount.value);
+    } else {
+      tx = await rollStaker.withdraw(amount.value);
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
@@ -1363,7 +1368,7 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setStep(STEPS.UNSTAKE_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
     }

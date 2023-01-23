@@ -52,7 +52,15 @@ export default function ModalManager() {
                   {step === STEPS.CONFIRM_UNSTAKE_XAUXO && (
                     <StakeXAUXOConfirm action="unstake" />
                   )}
-                  {step === STEPS.STAKE_COMPLETED && <StakeComplete />}
+                  {step === STEPS.STAKE_COMPLETED && (
+                    <StakeComplete action="stake" />
+                  )}
+                  {step === STEPS.UNSTAKE_COMPLETED && (
+                    <StakeComplete action="unstake" />
+                  )}
+                  {step === STEPS.CONVERT_COMPLETED && (
+                    <StakeComplete action="convert" />
+                  )}
                 </ModalBox>
               </>
             </Dialog.Panel>

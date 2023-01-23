@@ -134,12 +134,12 @@
   "approveToken": "Approve ${token}",
   "stakeToken": "Stake ${token}",
   "unstakeToken": "Unstake ${token}",
-  "approveTokenModalDescription": "You need to approve ${token} to be able to stake it",
+  "approveTokenModalDescription": "You need to approve ${token} first",
   "stakeTokenModalDescription": "You are about to stake ${token} for ${months} months",
   "stakeTokenIncreaseAmountModalDescription": "You are about to stake more ${token}",
   "convertConfirmModalDescription": "You are about to convert your AUXO to ${token}",
   "stakeConfirmModalDescription": "You are about to ${action} ${token}",
-  "stakeCompletedModalDescription": "You have successfully staked ${token}",
+  "convertCompletedModalDescription": "You have successfully ${action} ${token}",
   "stakeVeAUXOCompletedModalDescription": "You have successfully staked ${token} for ${months} months",
   "confirmModal": "${action} ${token}",
   "monthsAmount": "${count} months",
@@ -166,6 +166,7 @@
   "convertAndStakeAmount": "Convert and stake amount",
   "convertAmount": "Convert amount",
   "stakeAmount": "Stake amount",
+  "convert": "Convert",
   "convertToken": "Convert ${token}",
   "convertAndStake": "Convert and stake",
   "yes": "Yes",
@@ -175,5 +176,8 @@
   "auxoContract": "AUXO contract",
   "veAuxoContract": "veAUXO contract",
   "xAuxoContract": "xAUXO contract",
-  "stakingContract": "Staking contract"
+  "stakingContract": "Staking contract",
+  "xAUXOFee": "xAUXO bond fee",
+  "staked": "staked",
+  "unstaked": "unstaked"
 }

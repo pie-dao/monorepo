@@ -14,10 +14,14 @@ import {
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
+import AUXOImage from '../../../../public/tokens/AUXO.svg';
 import xAUXOImage from '../../../../public/tokens/xAUXO.svg';
 import { xAUXOContract } from '../../../../store/products/products.contracts';
+import { compareBalances } from '../../../../utils/balances';
+import { useUserCurrentEpochStakedXAUXO } from '../../../../hooks/useToken';
 
 const imageMap = {
+  AUXO: AUXOImage,
   xAUXO: xAUXOImage,
 };
 
@@ -33,6 +37,11 @@ const StakeConfirm: React.FC<{
   const [depositLoading, setDepositLoading] = useState(false);
   const rollStaker = useRollStakerXAUXOContract();
   const signer = getSigner(library, account);
+  const shouldRevertDeposit = compareBalances(
+    swap?.from?.amount,
+    'gt',
+    useUserCurrentEpochStakedXAUXO(),
+  );
 
   const makeDeposit = () => {
     setDepositLoading(true);
@@ -52,7 +61,7 @@ const StakeConfirm: React.FC<{
           amount: swap?.from?.amount,
           account,
           rollStaker,
-          shouldRevertDeposit: true,
+          shouldRevertDeposit,
         }),
       ).finally(() => setDepositLoading(false));
   };

@@ -19,5 +19,17 @@
   "aggregateAndBoostVeDOUGHError": "There was an error while aggregating and boosting veDOUGH",
   "aggregateVeDOUGHPending": "Aggregate veDOUGH pending",
   "aggregateVeDOUGHSuccess": "Aggregate veDOUGH successfully",
-  "aggregateVeDOUGHError": "There was an error while aggregating veDOUGH"
+  "aggregateVeDOUGHError": "There was an error while aggregating veDOUGH",
+  "stakeXAUXOPending": "Staking xAUXO",
+  "stakeXAUXOSuccess": "Staked XAUXO successfully",
+  "stakeXAUXOError": "There was an error while staking xAUXO",
+  "unstakeXAUXOPending": "Unstaking xAUXO",
+  "unstakeXAUXOSuccess": "Unstaked xAUXO successfully",
+  "unstakeXAUXOError": "There was an error while unstaking xAUXO",
+  "convertXAUXOPending": "Converting to xAUXO",
+  "convertXAUXOSuccess": "Converted to xAUXO successfully",
+  "convertXAUXOError": "There was an error while converting to xAUXO",
+  "approveTokenPending": "Approving token",
+  "approveTokenSuccess": "Approved token successfully",
+  "approveTokenError": "There was an error while approving this token"
 }

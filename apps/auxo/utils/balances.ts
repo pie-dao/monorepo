@@ -71,3 +71,22 @@ export const isZero = (b: BigNumberReference, decimals: number): boolean => {
   const value = ethers.utils.parseUnits(b.value, decimals ?? 18);
   return value.isZero();
 };
+
+export const subPercentageToBalance = (
+  b1: BigNumberReference,
+  percentage: BigNumberReference,
+  decimals: number,
+): BigNumberReference => {
+  const value = BigNumber.from(b1.value)
+    .mul(BigNumber.from(100).sub(percentage.value))
+    .div(BigNumber.from(100));
+
+  const stringLabel = ethers.utils.formatUnits(value, decimals);
+
+  const label = Math.round(parseFloat(stringLabel));
+
+  return {
+    value: value.toString(),
+    label,
+  };
+};

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
@@ -9,6 +9,7 @@ import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
+import { useChainExplorer } from '../../../../hooks/useToken';
 
 const imageMap = {
   AUXO: '/tokens/AUXO.svg',
@@ -20,10 +21,10 @@ export default function StakeConfirm() {
   const { account } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const TokenContract = useXAUXOTokenContract();
+  const chainExplorer = useChainExplorer();
 
   const makeDeposit = () => {
     setDepositLoading(true);
@@ -42,13 +43,13 @@ export default function StakeConfirm() {
         as="h3"
         className="font-bold text-center text-xl text-primary capitalize w-full"
       >
-        {t('Stake')}
+        {t('convertToken', { token: swap?.to?.token })}
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
             {t('convertConfirmModalDescription', {
-              token: swap?.to.token,
+              token: swap?.to?.token,
             })}
           </p>
         </div>
@@ -114,7 +115,7 @@ export default function StakeConfirm() {
               </div>
             </div>
           )}
-          {hash && (
+          {tx?.hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <Image
@@ -129,12 +130,12 @@ export default function StakeConfirm() {
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${hash}`}
+                  href={`${chainExplorer?.url}/tx/${tx?.hash}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-xl font-medium text-secondary truncate underline max-w-xs"
                 >
-                  {hash}
+                  {tx?.hash}
                 </a>
               </div>
             </div>
@@ -147,7 +148,7 @@ export default function StakeConfirm() {
               className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={makeDeposit}
             >
-              {t('stakeToken', { token: swap?.from.token })}
+              {t('convertToken', { token: swap?.from.token })}
             </button>
           ) : (
             <LoadingSpinner />
