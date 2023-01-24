@@ -68,10 +68,9 @@ const MigrationCard: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (!account || !upgradoor || typeof hasLock !== 'boolean') return;
+    if (!account || typeof hasLock !== 'boolean') return;
     dispatch(
       ThunkPreviewMigration({
-        upgradoor,
         destinationWallet: hasLock ? Wallet.createRandom().address : account,
         boost,
         token: tokenOut,

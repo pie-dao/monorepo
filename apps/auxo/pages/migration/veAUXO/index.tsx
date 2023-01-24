@@ -10,21 +10,19 @@ import {
 } from '../../../store/products/thunks';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import useMigrationSteps from '../../../hooks/migrationSteps';
-import { useUpgradoor } from '../../../hooks/useContracts';
 
 export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const getStep = useMigrationSteps(token);
-  const upgradoor = useUpgradoor();
 
   useEffect(() => {
-    if (account && upgradoor) {
-      dispatch(ThunkGetVeDOUGHStakingData({ account, upgradoor }));
+    if (account) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account }));
       dispatch(thunkGetUserProductsData({ account }));
       dispatch(thunkGetUserStakingData({ account }));
     }
-  }, [account, dispatch, upgradoor]);
+  }, [account, dispatch]);
 
   return (
     <div className="flex flex-col isolate relative">

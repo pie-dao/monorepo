@@ -56,17 +56,16 @@ export default function Migration() {
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
-  const upgradoor = useUpgradoor();
 
   useEffect(() => {
     dispatch(setCleanupFlow());
   }, [dispatch]);
 
   useEffect(() => {
-    if (account && upgradoor) {
-      dispatch(ThunkGetVeDOUGHStakingData({ account, upgradoor }));
+    if (account) {
+      dispatch(ThunkGetVeDOUGHStakingData({ account }));
     }
-  }, [account, dispatch, upgradoor]);
+  }, [account, dispatch]);
 
   const migrationCardsContent = useMemo(() => {
     return [

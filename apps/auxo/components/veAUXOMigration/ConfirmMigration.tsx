@@ -92,10 +92,9 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   };
 
   useEffect(() => {
-    if (!upgradoor || !destinationWallet || !account) return;
+    if (!destinationWallet || !account) return;
     dispatch(
       ThunkPreviewMigration({
-        upgradoor,
         destinationWallet,
         boost,
         token,

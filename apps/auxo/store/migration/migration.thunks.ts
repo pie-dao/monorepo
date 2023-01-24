@@ -1,6 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { promiseObject } from '../../utils/promiseObject';
-import { veDOUGHSharesTimeLock } from '../../store/products/products.contracts';
+import {
+  veDOUGHSharesTimeLock,
+  Upgradoor,
+} from '../../store/products/products.contracts';
 import { toBalance } from '../../utils/formatBalance';
 import { UpgradoorAbi } from '@shared/util-blockchain';
 import { pendingNotification } from '../../components/Notifications/Notifications';
@@ -16,17 +19,11 @@ export const THUNKS = {
 
 export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
   THUNKS.GET_VEDOUGH_STAKING_DATA,
-  async ({
-    account,
-    upgradoor,
-  }: {
-    account: string;
-    upgradoor: UpgradoorAbi;
-  }) => {
-    if (!account || !upgradoor) return;
+  async ({ account }: { account: string }) => {
+    if (!account) return;
     const numberOfLocks = promiseObject({
       locksLength: veDOUGHSharesTimeLock.getLocksOfLength(account),
-      latestLock: upgradoor.getNextLongestLock(account),
+      latestLock: Upgradoor.getNextLongestLock(account),
     });
 
     const { locksLength, latestLock } = await numberOfLocks;
@@ -169,7 +166,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     if (receipt.status === 1) {
       setTxState(TX_STATES.COMPLETE);
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SUCCESS));
-      dispatch(ThunkGetVeDOUGHStakingData({ account: sender, upgradoor }));
+      dispatch(ThunkGetVeDOUGHStakingData({ account: sender }));
     }
 
     if (receipt.status !== 1) {
@@ -179,21 +176,27 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
   },
 );
 
+type ThunkPreviewMigrationProps = {
+  boost: boolean;
+  token: 'veAUXO' | 'xAUXO';
+  isSingleLock: boolean;
+  sender: string;
+  destinationWallet: string;
+};
+
 export const ThunkPreviewMigration = createAsyncThunk(
   THUNKS.GET_MIGRATION_PREVIEW,
   async (
     {
-      upgradoor,
       boost,
       token,
       isSingleLock,
       sender,
       destinationWallet,
-    }: ThunkMigrateVeDOUGHProps,
+    }: ThunkPreviewMigrationProps,
     { rejectWithValue },
   ) => {
     if (
-      !upgradoor ||
       typeof boost !== 'boolean' ||
       !token ||
       typeof isSingleLock !== 'boolean' ||
@@ -205,17 +208,15 @@ export const ThunkPreviewMigration = createAsyncThunk(
       );
     }
 
-    console.log(sender);
-
     const previews = promiseObject({
-      veAUXOAggregateAndBoost: upgradoor.previewAggregateAndBoost(sender),
-      veAUXOAggregate: upgradoor.previewAggregateVeAUXO(sender),
-      veAUXOSingleLock: upgradoor.previewUpgradeSingleLockVeAuxo(
+      veAUXOAggregateAndBoost: Upgradoor.previewAggregateAndBoost(sender),
+      veAUXOAggregate: Upgradoor.previewAggregateVeAUXO(sender),
+      veAUXOSingleLock: Upgradoor.previewUpgradeSingleLockVeAuxo(
         sender,
         destinationWallet,
       ),
-      xAUXOAggregate: upgradoor.previewAggregateToXAUXO(sender),
-      xAUXOSingleLock: upgradoor.previewUpgradeSingleLockXAUXO(sender),
+      xAUXOAggregate: Upgradoor.previewAggregateToXAUXO(sender),
+      xAUXOSingleLock: Upgradoor.previewUpgradeSingleLockXAUXO(sender),
     });
 
     const {

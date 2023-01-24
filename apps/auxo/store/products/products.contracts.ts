@@ -12,6 +12,7 @@ import {
   StakingManagerAbi__factory,
   VeAUXOAbi__factory,
   SharesTimeLockAbi__factory,
+  UpgradoorAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -22,7 +23,7 @@ import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
 const localRPC =
-  'https://bestnet.alexintosh.com/rpc/d40e8c469c66ab48bd3f759dc1f815d1f2d49dfa';
+  'https://bestnet.alexintosh.com/rpc/migration-test-round-three';
 
 const selectedNetwork = 1;
 
@@ -104,6 +105,13 @@ export const xAUXOStakingManager = MAINNETMulticall.wrap(
 export const veDOUGHSharesTimeLock = MAINNETMulticall.wrap(
   SharesTimeLockAbi__factory.connect(
     migration['veDOUGH'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
+);
+
+export const Upgradoor = MAINNETMulticall.wrap(
+  UpgradoorAbi__factory.connect(
+    migration['veDOUGH'].addresses[selectedNetwork].upgradoorAddress,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
