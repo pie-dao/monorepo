@@ -3,15 +3,23 @@ import { BigNumberReference } from '../products/products.types';
 export const STEPS = {
   APPROVE_TOKEN: 'APPROVE_TOKEN',
   CONFIRM_STAKE_VEAUXO: 'CONFIRM_STAKE_VEAUXO',
+  CONFIRM_CONVERT_XAUXO: 'CONFIRM_CONVERT_XAUXO',
   CONFIRM_STAKE_XAUXO: 'CONFIRM_STAKE_XAUXO',
+  CONFIRM_UNSTAKE_XAUXO: 'CONFIRM_UNSTAKE_XAUXO',
   STAKE_COMPLETED: 'STAKE_COMPLETED',
+  UNSTAKE_COMPLETED: 'UNSTAKE_COMPLETED',
   BOOST_STAKE_VEAUXO: 'BOOST_STAKE_VEAUXO',
+  CONVERT_COMPLETED: 'CONVERT_COMPLETED',
 } as const;
 
 export type Steps =
   | `${'CONFIRM_STAKE_'}${string}`
+  | `${'CONFIRM_UNSTAKE_'}${string}`
+  | `${'CONFIRM_CONVERT_'}${string}`
+  | `${'UNSTAKE_COMPLETED'}`
   | `${'STAKE_COMPLETED'}`
   | `${'APPROVE_TOKEN'}`
+  | `${'CONVERT_COMPLETED'}`
   | `${'BOOST_STAKE_'}${string}`;
 
 export const TX_STATES = {
@@ -38,7 +46,7 @@ export type SliceState = {
       amount: BigNumberReference;
       token: string;
     };
-    spender: string;
+    spender?: string;
     stakingTime?: number;
   };
 };

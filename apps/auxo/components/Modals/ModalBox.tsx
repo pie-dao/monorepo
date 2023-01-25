@@ -18,7 +18,13 @@ const variants = {
   },
 };
 
-export default function ModalBox({ children, ...props }, key: Key) {
+export type Props = {
+  children: React.ReactNode;
+  className?: string;
+  key?: Key;
+};
+
+const ModalBox = ({ children, key, className }: Props) => {
   return (
     <motion.div
       variants={variants}
@@ -26,9 +32,11 @@ export default function ModalBox({ children, ...props }, key: Key) {
       animate="center"
       exit="exit"
       key={key}
-      {...props}
+      className={className}
     >
       {children}
     </motion.div>
   );
-}
+};
+
+export default ModalBox;

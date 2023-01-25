@@ -29,7 +29,10 @@ export default function Approve() {
 
   const approveDeposit = () => {
     setApproving(true);
-    const nextStep = `CONFIRM_STAKE_${swap.to.token.toUpperCase()}` as const;
+    const nextStep =
+      swap?.to?.token === 'xAUXO'
+        ? (`CONFIRM_CONVERT_${swap.to.token.toUpperCase()}` as const)
+        : (`CONFIRM_STAKE_${swap.to.token.toUpperCase()}` as const);
     dispatch(
       thunkApproveToken({
         deposit: swap?.from?.amount,

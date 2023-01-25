@@ -170,9 +170,9 @@ export default function Navigation({
           )}
         >
           <div className="flex flex-col flex-grow pt-5 h-full">
-            <div className="flex items-center flex-shrink-0 px-4">
+            <div className="flex items-center flex-shrink-0 px-4 gap-x-2">
               <div className="flex flex-shrink-0">
-                <Image src={AUXOLogo} alt="AUXO Logo" />
+                <Image src={AUXOLogo} alt="AUXO Logo" priority />
               </div>
               <motion.h2
                 className="text-xl font-medium text-primary"
@@ -214,7 +214,7 @@ export default function Navigation({
                             active
                               ? 'text-primary cursor-default bg-white'
                               : 'text-gray-400 cursor-pointer hover:text-primary',
-                            'group flex items-center p-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm',
+                            'group flex items-center p-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm gap-x-2',
                           )}
                           onClick={() => {
                             if (!isDesktop) {
@@ -228,6 +228,7 @@ export default function Navigation({
                               alt={item.name}
                               width={24}
                               height={24}
+                              priority
                             />
                           </div>
                           <motion.span

@@ -20,6 +20,7 @@ export type Token = {
   fee?: BigNumberReference;
   userStakingData?: {
     amount: BigNumberReference;
+    currentEpochBalance?: BigNumberReference;
     lockedAt: number;
     lockDuration: number;
     votingPower?: BigNumberReference;
