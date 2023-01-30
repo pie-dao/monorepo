@@ -47,6 +47,15 @@ export function getMigratingTo(token: string, boost: boolean): string {
   else return 'oneBoostedLockOutput';
 }
 
+export function getLevel(input: number): number {
+  if (input < 6) return 0;
+  return input - 6;
+}
+const tokenName = {
+  veAUXO: 'ARV',
+  xAUXO: 'PRV',
+};
+
 const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
@@ -125,8 +134,18 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
     const boostText = token === 'veAUXO' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
-    return t(`${lockText}${baseText}${boostText}`);
-  }, [token, boost, isSingleLock, t]);
+    return t(`${lockText}${baseText}${boostText}`, {
+      boostLevel: getLevel(
+        getRemainingMonths(
+          new Date(),
+          new Date(
+            memoizedPositions[0].lockedAt * 1000 +
+              memoizedPositions[0].lockDuration * 1000,
+          ),
+        ),
+      ),
+    });
+  }, [token, boost, isSingleLock, t, memoizedPositions]);
 
   const migrationRecapContent = useMemo<MigrationRecapProps>(() => {
     if (!memoizedPositions) return null;
@@ -136,7 +155,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       defaultLocale,
       4,
       'standard',
-    )}${' '} ${token}`;
+    )}${' '} ${tokenName[token]}`;
     const totalDOUGH = formatBalance(
       totalDOUGHConverted,
       defaultLocale,
@@ -237,7 +256,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
         title={t('confirmToUpgrade')}
         singleCard={true}
       >
-        <section className="grid grid-cols-1 items-center gap-4 text-base md:text-inherit sm:max-w-3xl w-full">
+        <section className="grid grid-cols-1 items-center gap-4 text-base md:text-inherit sm:max-w-7xl w-full">
           <div className="align-middle flex flex-col gap-y-3 items-center font-medium">
             <div className="flex flex-col items-center gap-y-1">
               <h3 className="text-lg font-medium text-secondary">

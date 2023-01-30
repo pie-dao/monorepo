@@ -33,6 +33,11 @@ const PreviewMigration: React.FC<Props> = ({
     (state) => state.migration,
   );
 
+  const tokenName = {
+    veAUXO: 'ARV',
+    xAUXO: 'PRV',
+  };
+
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
   const totalDOUGHConverted = useMemo(() => {
@@ -72,7 +77,7 @@ const PreviewMigration: React.FC<Props> = ({
               4,
               'standard',
             )}{' '}
-            {token}
+            {tokenName[token]}
           </span>
         </div>
       </div>

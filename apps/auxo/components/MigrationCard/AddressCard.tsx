@@ -141,13 +141,14 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
             </div>
             {token === 'veAUXO' && (
               <>
-                <div className="text-left p-2 border-t border-customBorder mt-2">
+                <div className="text-left p-2 border-t border-customBorder mt-2 text-white">
                   <Banner
-                    bgColor="bg-warning"
+                    bgColor="bg-red"
+                    textColor="text-white"
                     content={t('veAUXOWarning')}
                     icon={
                       <ExclamationIcon
-                        className="h-5 w-5 text-primary"
+                        className="h-5 w-5 text-white"
                         aria-hidden="true"
                       />
                     }
@@ -172,7 +173,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
                     htmlFor="c1"
                     className="ml-3 select-none text-sm font-medium text-primary cursor-pointer"
                   >
-                    {t('termsOfMigration')}
+                    {t('termsOfAddress')}
                   </Label.Label>
                 </div>
               </>

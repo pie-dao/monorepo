@@ -43,7 +43,7 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
         singleCard ? 'w-fit' : 'w-full',
       )}
     >
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center gap-x-4">
         <button className="w-fit flex items-center" onClick={goBack}>
           <ChevronLeftIcon
             className="h-7 w-7 text-sub-dark"
@@ -51,7 +51,9 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
           />
           <span className="text-sub-dark">{t('back')}</span>
         </button>
-        <h2 className="text-base font-medium text-primary">{title}</h2>
+        <h2 className="text-base font-medium text-primary text-right">
+          {title}
+        </h2>
       </div>
       <hr className="my-4 border-sub-light" />
       {children}

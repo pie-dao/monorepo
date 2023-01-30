@@ -21,6 +21,7 @@ import { useUserLockDuration } from '../../hooks/useToken';
 type Props = {
   title: string;
   subtitle: string;
+  description: string;
   tokenOut: 'veAUXO' | 'xAUXO';
   isSingleLock: boolean;
   goToStep: () => void;
@@ -29,6 +30,7 @@ type Props = {
 const MigrationCard: React.FC<Props> = ({
   title,
   subtitle,
+  description,
   tokenOut,
   isSingleLock,
   goToStep,
@@ -84,7 +86,9 @@ const MigrationCard: React.FC<Props> = ({
     <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-4xl">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">{title}</h3>
-        <p className="text-sm text-primary">{subtitle}</p>
+        <p className="text-sm text-primary min-h-[2rem] place-items-center text-center flex">
+          {subtitle}
+        </p>
       </div>
       {!loadingPositions ? (
         <>
@@ -93,6 +97,9 @@ const MigrationCard: React.FC<Props> = ({
             positions={memoizedPositions}
             isSingleLock={isSingleLock}
           />
+          <div className="flex flex-col w-full text-center text-sm text-primary min-h-[3rem] place-content-center">
+            {description}
+          </div>
           <PreviewMigration
             token={tokenOut}
             previewType={
@@ -108,10 +115,14 @@ const MigrationCard: React.FC<Props> = ({
             <div className="flex flex-col w-full justify-between gap-y-3">
               <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
                 <label
-                  className="pr-2 text-sub-dark font-medium"
+                  className="pr-2 text-sub-dark font-medium text-base"
                   htmlFor="boost"
                 >
-                  {t('boostToMax')}
+                  {boost ? (
+                    <span className="text-primary">{t('boostOn')}</span>
+                  ) : (
+                    t('boostOff')
+                  )}
                 </label>
                 <Switch.Root
                   className={classNames(
@@ -134,6 +145,20 @@ const MigrationCard: React.FC<Props> = ({
               </div>
             </div>
           )}
+          {!isSingleLock && tokenOut === 'veAUXO' && (
+            <div className="flex flex-col w-full">
+              <Banner
+                bgColor="bg-warning"
+                content={t('withoutBoost')}
+                icon={
+                  <ExclamationIcon
+                    className="h-5 w-5 text-primary"
+                    aria-hidden="true"
+                  />
+                }
+              />
+            </div>
+          )}
           {!isEmpty(memoizedPositions) && tokenOut === 'veAUXO' && (
             <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md text-primary">
               <p>
@@ -152,20 +177,6 @@ const MigrationCard: React.FC<Props> = ({
                 <span className="text-primary font-medium">{t('months')}:</span>{' '}
                 {remainingMonthsOnLongestPosition(isSingleLock ? false : boost)}
               </p>
-            </div>
-          )}
-          {!isSingleLock && tokenOut === 'veAUXO' && (
-            <div className="flex flex-col w-full">
-              <Banner
-                bgColor="bg-warning"
-                content={t('withoutBoost')}
-                icon={
-                  <ExclamationIcon
-                    className="h-5 w-5 text-primary"
-                    aria-hidden="true"
-                  />
-                }
-              />
             </div>
           )}
           <div className="flex flex-col w-full text-center mt-auto">

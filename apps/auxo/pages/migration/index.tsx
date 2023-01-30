@@ -14,7 +14,6 @@ import veDOUGHtoDOUGH from '../../public/images/migration/veDOUGHtoDOUGH.png';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
-import { useUpgradoor } from '../../hooks/useContracts';
 import MigrationFAQ from '../../components/MigrationFAQ/MigrationFAQ';
 
 export default function Migration() {

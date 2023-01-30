@@ -13,7 +13,6 @@ type Props = {
   token: string;
   title: string;
   icon: React.ReactNode;
-  description: string;
   features: {
     title: string | React.ReactNode;
     description: string;
@@ -33,7 +32,6 @@ const MigrationCardOption: React.FC<Props> = ({
   token,
   title,
   icon,
-  description,
   features,
   button,
   banners,
@@ -48,30 +46,17 @@ const MigrationCardOption: React.FC<Props> = ({
   }, [positions]);
 
   return (
-    <div
-      className={classNames(
-        `flex flex-col px-4 py-4 rounded-md shadow-md bg gap-y-3 items-center divide-y w-full font-medium align-middle transition-all mx-auto max-w-4xl bg-left bg-no-repeat`,
-        token === 'veAUXO'
-          ? "bg-[url('/images/migration/veAUXO-bg.png')]"
-          : "bg-[url('/images/migration/xAUXO-bg.png')]",
-      )}
-    >
+    <div className="flex flex-col px-4 py-4 rounded-md shadow-md gap-y-3 items-start w-full font-medium transition-all mx-auto max-w-4xl bg-left bg-no-repeat">
       <div className="flex gap-x-2 items-center">
-        <div className="rounded-full bg-light-gray flex p-4 shadow-sm">
-          {icon}
-        </div>
-        <h3
-          className={classNames(
-            'text-2xl font-bold',
-            token !== 'veAUXO' ? 'text-sub-dark' : 'text-secondary',
-          )}
-        >
-          {token}
-        </h3>
+        <div className="flex">{icon}</div>
+        <h3 className="text-2xl font-bold text-primary">{token}</h3>
       </div>
       <div className="flex flex-col items-center w-full border-hidden">
-        <h3 className="text-lg font-bold text-primary">{title}</h3>
-        <p className="text-sm text-sub-dark">{description}</p>
+        <h3 className="text-base text-primary">{title}</h3>
+      </div>
+      <div className="flex w-full gap-x-4 items-center">
+        <p className="text-secondary text-base">{t('topFeatures')}</p>
+        <hr className="flex-grow border-t border-sub-light" />
       </div>
       <div className="flex w-full flex-col pt-4 @container gap-y-1">
         {features.map(({ title, description }, i) => (
@@ -79,17 +64,17 @@ const MigrationCardOption: React.FC<Props> = ({
             className="flex justify-between text-base w-full flex-col @md:flex-row text-left"
             key={i}
           >
-            <dt className="text-sub-dark flex-shrink-0">{title}</dt>
-            <dd className="text-primary">{t(description)}</dd>
+            <dt className="text-primary flex-shrink-0">{title}</dt>
+            <dd className="text-secondary font-bold">{t(description)}</dd>
           </div>
         ))}
       </div>
-      <div className="flex flex-col w-full pt-4 gap-y-2">
+      <div className="flex flex-col w-full pt-4 gap-y-2 mt-auto border-t border-sub-link">
         {banners.map((props, i) => (
           <Banner {...props} key={i} />
         ))}
       </div>
-      <div className="flex flex-col w-full text-center pt-4 mt-auto">
+      <div className="flex flex-col w-full text-center pt-2">
         {account && ready ? (
           <Link href={button.url} passHref>
             <button
