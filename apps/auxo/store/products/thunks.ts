@@ -308,8 +308,8 @@ export const thunkGetUserStakingData = createAsyncThunk(
       lock: stakingContract.lockOf(account),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
-      votes: veAUXOContract.getVotes(account),
-      delegation: veAUXOContract.delegates(account),
+      // votes: veAUXOContract.getVotes(account),
+      // delegation: veAUXOContract.delegates(account),
     });
 
     const userStakingData = await results;
@@ -322,12 +322,12 @@ export const thunkGetUserStakingData = createAsyncThunk(
           ),
           lockedAt: userStakingData.lock.lockedAt,
           lockDuration: userStakingData.lock.lockDuration,
-          votingPower: percentageBetween(
-            userStakingData.votes,
-            userStakingData.totalSupply,
-            userStakingData.decimals,
-          ),
-          delegator: userStakingData.delegation,
+          // votingPower: percentageBetween(
+          //   userStakingData.votes,
+          //   userStakingData.totalSupply,
+          //   userStakingData.decimals,
+          // ),
+          // delegator: userStakingData.delegation,
         },
       },
     };

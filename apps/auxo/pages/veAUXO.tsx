@@ -96,13 +96,13 @@ export default function VeAUXO({
             </h2>
             <button
               className="flex ml-auto pr-2"
-              onClick={async () => await addTokenToWallet(chainId, 'veAUXO')}
+              onClick={async () => await addTokenToWallet(chainId, 'ARV')}
             >
               <div className="flex gap-x-2 items-center">
                 <div className="hidden lg:flex gap-x-1">
                   <span className="text-sub-dark underline text-sm hover:text-sub-light">
                     {t('addTokenToWallet', {
-                      token: `veAUXO`,
+                      token: `ARV`,
                     })}
                   </span>
                 </div>

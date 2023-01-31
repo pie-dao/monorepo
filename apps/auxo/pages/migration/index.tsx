@@ -61,7 +61,7 @@ export default function Migration() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 pt-6 border-t border-custom-border">
           {lifecycleColumns.map((column, index) => (
             <div key={index} className="flex flex-col items-center">
-              <div className="flex items-center justify-center rounded-full max-w-[96px] mx-auto">
+              <div className="flex items-center justify-center rounded-full max-w-[140px] mx-auto">
                 {column.icon}
               </div>
               <h3 className="mt-4 text-sm font-medium text-primary text-center">

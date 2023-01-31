@@ -141,7 +141,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
             </div>
             {token === 'veAUXO' && (
               <>
-                <div className="text-left p-2 border-t border-customBorder mt-2 text-white">
+                <div className="text-left pt-2 border-t border-customBorder mt-2 text-white">
                   <Banner
                     bgColor="bg-red"
                     textColor="text-white"

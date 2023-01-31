@@ -36,6 +36,7 @@ import Trans from 'next-translate/Trans';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { setConvertedDOUGHLabel } from '../../store/migration/migration.slice';
 import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
+import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -51,10 +52,6 @@ export function getLevel(input: number): number {
   if (input < 6) return 0;
   return input - 6;
 }
-const tokenName = {
-  veAUXO: 'ARV',
-  xAUXO: 'PRV',
-};
 
 const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
@@ -155,7 +152,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       defaultLocale,
       4,
       'standard',
-    )}${' '} ${tokenName[token]}`;
+    )}${' '} ${TOKEN_NAMES[token]}`;
     const totalDOUGH = formatBalance(
       totalDOUGHConverted,
       defaultLocale,

@@ -55,7 +55,6 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_CONFIRM));
     }
   };
-
   const notVeAuxoOrNoLocks = token !== 'veAUXO' || noLocks;
 
   return (

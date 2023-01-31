@@ -1,13 +1,14 @@
 import { MetamaskIcon } from '@shared/ui-library';
 import { useWeb3React } from '@web3-react/core';
 import useTranslation from 'next-translate/useTranslation';
-import { addTokenToWallet, tokenName } from '../../utils/addTokenToWallet';
+import { addTokenToWallet } from '../../utils/addTokenToWallet';
 
 type AddToWalletProps = {
-  token: tokenName;
+  token: string;
+  displayName?: string;
 };
 
-const AddToWallet: React.FC<AddToWalletProps> = ({ token }) => {
+const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
   const { t } = useTranslation();
   const { chainId } = useWeb3React();
   return (
@@ -19,7 +20,7 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token }) => {
         <div className="flex gap-x-1">
           <span className="text-sub-dark underline text-sm hover:text-sub-light">
             {t('addTokenToWallet', {
-              token,
+              token: displayName ?? token,
             })}
           </span>
         </div>

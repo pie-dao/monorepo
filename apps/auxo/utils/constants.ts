@@ -42,3 +42,8 @@ export const CONVERSION_CURVE = [
   '964579356905500000', // 35
   '1000000000000000000', // 36
 ];
+
+export const TOKEN_NAMES = {
+  veAUXO: 'ARV',
+  xAUXO: 'PRV',
+};

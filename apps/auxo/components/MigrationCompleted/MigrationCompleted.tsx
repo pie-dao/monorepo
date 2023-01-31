@@ -9,6 +9,7 @@ import AddToWallet from '../AddToWallet/AddToWallet';
 import Link from 'next/link';
 import classNames from '../../utils/classnames';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -70,7 +71,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
           </h3>
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2">
-              <AddToWallet token={token} />
+              <AddToWallet token={token} displayName={TOKEN_NAMES[token]} />
             </div>
             <div className="mt-2">
               <p className="text-lg text-sub-dark text-center">
@@ -129,7 +130,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                   )}
                   <Link href={`/${token}`} passHref>
                     <button className="w-full px-4 py-2 text-base rounded-full ring-inset ring-1 ring-green bg-green hover:bg-transparent hover:text-green text-white flex place-content-center">
-                      {t('goToToken', { token })}
+                      {t('goToToken', { token: TOKEN_NAMES[token] })}
                     </button>
                   </Link>
                 </>
