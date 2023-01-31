@@ -168,7 +168,7 @@ export default function Migration() {
           </div>
         ))}
       </section>
-      <BackBar title={t('selectToken')} singleCard={false}>
+      <BackBar title={t('selectToken')} singleCard={false} hideBack>
         <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
           {migrationCardsContent.map((card) => (
             <MigrationCardOption key={card.title} {...card} />

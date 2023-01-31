@@ -169,7 +169,7 @@
   "confirmAndUpgrade": "Confirm and upgrade now!",
   "monthMultiplier": "${multiplier}-Month-Multiplier",
   "confirmToUpgrade": "Confirm to upgrade",
-  "migrationXAUXOIrriversible": "<firstLine>This conversion is irreversible.</firstLine> You can buy and sell xAUXO tokens but you cannot convert them back to AUXO",
+  "migrationXAUXOIrriversible": "<firstLine>This conversion is irreversible.</firstLine> You can buy and sell PRV tokens but you cannot convert them back to AUXO",
   "nothingToMigrate": "Nothing to migrate",
   "benefitsOfMigrating": "Now you can enjoy the benefits of ${token}",
   "migrationCompletedDescription": "Your migration is completed, you can now enjoy the benefits of ${token}",

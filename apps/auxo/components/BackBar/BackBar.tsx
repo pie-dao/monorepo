@@ -15,9 +15,16 @@ type Props = {
   children?: React.ReactNode;
   title: string;
   singleCard?: boolean;
+  hideBack?: boolean;
 };
 
-const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
+const BackBar: React.FC<Props> = ({
+  goTo,
+  children,
+  title,
+  singleCard,
+  hideBack = false,
+}) => {
   const { t } = useTranslation();
   const { currentStep } = useAppSelector((state) => state.migration);
   const dispatch = useAppDispatch();
@@ -44,14 +51,16 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
       )}
     >
       <div className="flex justify-between items-center gap-x-4">
-        <button className="w-fit flex items-center" onClick={goBack}>
-          <ChevronLeftIcon
-            className="h-7 w-7 text-sub-dark"
-            aria-hidden="true"
-          />
-          <span className="text-sub-dark">{t('back')}</span>
-        </button>
-        <h2 className="text-base font-medium text-primary text-right">
+        {!hideBack && (
+          <button className="w-fit flex items-center" onClick={goBack}>
+            <ChevronLeftIcon
+              className="h-7 w-7 text-sub-dark"
+              aria-hidden="true"
+            />
+            <span className="text-sub-dark">{t('back')}</span>
+          </button>
+        )}
+        <h2 className="text-base font-medium text-primary text-right ml-auto">
           {title}
         </h2>
       </div>

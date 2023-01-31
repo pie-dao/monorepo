@@ -43,7 +43,7 @@ type Props = {
 };
 
 export function getMigratingTo(token: string, boost: boolean): string {
-  if (token !== 'veAUXO') return 'xAUXO';
+  if (token !== 'veAUXO') return 'PRV';
   if (!boost) return 'oneLockOutput';
   else return 'oneBoostedLockOutput';
 }
