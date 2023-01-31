@@ -19,6 +19,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useTokenBalance } from '../../hooks/useToken';
 import { isZero } from '../../utils/balances';
 import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
+import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -71,7 +72,9 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           {notVeAuxoOrNoLocks && (
             <MigrationCard
               title={t('migrateMultipleLocks')}
-              subtitle={t('migrateMultipleLocksSubtitle', { token })}
+              subtitle={t('migrateMultipleLocksSubtitle', {
+                token: TOKEN_NAMES[token],
+              })}
               description={t('migrateMultipleLocksDescription')}
               tokenOut={token}
               isSingleLock={false}
@@ -80,7 +83,9 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           )}
           <MigrationCard
             title={t('migrateOneLock')}
-            subtitle={t('migrateOneLockSubtitle', { token })}
+            subtitle={t('migrateOneLockSubtitle', {
+              token: TOKEN_NAMES[token],
+            })}
             description={t('migrateSingleLockDescription')}
             tokenOut={token}
             isSingleLock={true}

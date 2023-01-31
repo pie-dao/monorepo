@@ -47,7 +47,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
     <>
       <Heading
         title={textForMigrationType}
-        subtitle={t('benefitsOfMigrating', { token })}
+        subtitle={t('benefitsOfMigrating', { token: TOKEN_NAMES[token] })}
       />
       <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         <div className="w-full transform overflow-hidden rounded-2xl bg-[url('/images/background/migrationCompleted.png')] p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl bg-cover mx-auto">
@@ -75,7 +75,9 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
             </div>
             <div className="mt-2">
               <p className="text-lg text-sub-dark text-center">
-                {t('migrationCompletedDescription', { token })}
+                {t('migrationCompletedDescription', {
+                  token: TOKEN_NAMES[token],
+                })}
               </p>
             </div>
             <div className="divide-y flex flex-col items-center gap-x-2 self-center justify-between w-full">

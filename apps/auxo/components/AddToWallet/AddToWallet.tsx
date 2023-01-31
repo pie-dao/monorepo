@@ -14,13 +14,13 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
   return (
     <button
       className="flex ml-auto pr-2"
-      onClick={async () => await addTokenToWallet(chainId, token)}
+      onClick={async () => await addTokenToWallet(chainId, token, displayName)}
     >
       <div className="flex gap-x-2 items-center">
         <div className="flex gap-x-1">
           <span className="text-sub-dark underline text-sm hover:text-sub-light">
             {t('addTokenToWallet', {
-              token: displayName ?? token,
+              token: displayName,
             })}
           </span>
         </div>
