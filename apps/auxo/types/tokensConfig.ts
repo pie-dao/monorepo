@@ -6,6 +6,7 @@ export type TokenConfig = {
     [chainString: string]: {
       address?: string;
       stakingAddress?: string;
+      rollStakerAddress?: string;
       exclude?: boolean;
     };
   };

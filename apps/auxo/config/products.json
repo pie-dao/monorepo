@@ -38,11 +38,13 @@
     "addresses": {
       "1": {
         "address": "0x7d7662c38E1443119d5F7BF3B039e12AD44Cd212",
-        "stakingAddress": "0xC7c64bc8C3266Ac74443E455d01c48C8cd21B900"
+        "stakingAddress": "0xC7c64bc8C3266Ac74443E455d01c48C8cd21B900",
+        "rollStakerAddress": "0x4d74AD9d324e4229de1619aED776d2684804fd2D"
       },
       "5": {
         "address": "0xcba82bbb092813783c7a83d8217ae91a487ca309",
-        "stakingAddress": "0xB641bCb969e5B15D47ede28ac6b6dEFe499335B6"
+        "stakingAddress": "0xB641bCb969e5B15D47ede28ac6b6dEFe499335B6",
+        "rollStakerAddress": "0x4d74AD9d324e4229de1619aED776d2684804fd2D"
       },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }

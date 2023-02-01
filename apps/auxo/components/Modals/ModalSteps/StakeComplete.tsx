@@ -7,6 +7,7 @@ import { formatBalance } from '../../../utils/formatBalance';
 import AUXOImage from '../../../public/tokens/AUXO.svg';
 import veAUXOImage from '../../../public/tokens/veAUXO.svg';
 import xAUXOImage from '../../../public/tokens/xAUXO.svg';
+import classNames from '../../../utils/classnames';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -14,7 +15,17 @@ const imageMap = {
   xAUXO: xAUXOImage,
 };
 
-export default function StakeConfirm() {
+const actionMap = {
+  stake: 'staked',
+  unstake: 'unstaked',
+  convert: 'converted',
+};
+
+export default function StakeComplete({
+  action,
+}: {
+  action?: 'stake' | 'unstake' | 'convert';
+}) {
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -31,56 +42,91 @@ export default function StakeConfirm() {
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
           <p className="text-lg text-sub-dark">
-            {t('stakeCompletedModalDescription', {
+            {t('convertCompletedModalDescription', {
               token: swap?.from.token,
+              action: actionMap[action],
             })}
           </p>
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="grid grid-cols-3 justify-items-center w-full py-2">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                <Image
-                  src={imageMap[swap.from.token]}
-                  alt={swap.from.token}
-                  width={24}
-                  height={24}
-                />
-                <span className="text-xl font-medium text-primary">
-                  {formatBalance(
-                    swap.from.amount.label,
-                    defaultLocale,
-                    2,
-                    'standard',
-                  )}{' '}
-                  {swap.from.token}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <Image
-                  src={ArrowRight}
-                  alt={'transfer'}
-                  width={24}
-                  height={24}
-                />
-              </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
-                <Image
-                  src={imageMap[swap.to.token]}
-                  alt={swap.to.token}
-                  width={24}
-                  height={24}
-                />
-                <span className="text-xl font-medium text-secondary">
-                  {formatBalance(
-                    swap.to.amount.label,
-                    defaultLocale,
-                    2,
-                    'standard',
-                  )}{' '}
-                  {swap.to.token}
-                </span>
-              </div>
+            <div
+              className={classNames(
+                'grid justify-items-center w-full py-2',
+                swap.to.token ? 'grid-cols-3' : 'grid-cols-2',
+              )}
+            >
+              {swap?.to?.token ? (
+                <>
+                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
+                    <Image
+                      src={imageMap[swap.from.token]}
+                      alt={swap.from.token}
+                      width={24}
+                      height={24}
+                    />
+                    <span className="text-xl font-medium text-primary">
+                      {formatBalance(
+                        swap.from.amount.label,
+                        defaultLocale,
+                        2,
+                        'standard',
+                      )}{' '}
+                      {swap.from.token}
+                    </span>
+                  </div>
+                  <div className="flex items-center">
+                    <Image
+                      src={ArrowRight}
+                      alt={'transfer'}
+                      width={24}
+                      height={24}
+                    />
+                  </div>
+                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
+                    <Image
+                      src={imageMap[swap.to.token]}
+                      alt={swap.to.token}
+                      width={24}
+                      height={24}
+                    />
+                    <span className="text-xl font-medium text-secondary">
+                      {formatBalance(
+                        swap.to.amount.label,
+                        defaultLocale,
+                        2,
+                        'standard',
+                      )}{' '}
+                      {swap.to.token}
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
+                    <span className="text-xl font-medium text-primary">
+                      {t('amount')}:
+                    </span>
+                  </div>
+                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
+                    <Image
+                      src={imageMap[swap.from.token]}
+                      alt={swap.from.token}
+                      width={24}
+                      height={24}
+                    />
+                    <span className="text-xl font-medium text-primary">
+                      {formatBalance(
+                        swap.from.amount.label,
+                        defaultLocale,
+                        2,
+                        'standard',
+                      )}{' '}
+                      {swap.from.token}
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
           )}
           {swap?.stakingTime && (
@@ -107,7 +153,7 @@ export default function StakeConfirm() {
                   height={24}
                 />
                 <span className="text-xl font-medium text-primary">
-                  {t('tx')}
+                  {t('tx')}:
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">

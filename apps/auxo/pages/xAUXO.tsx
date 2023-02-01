@@ -108,7 +108,7 @@ export default function XAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark sm:text-xl">
+                  <p className="font-bold text-sub-dark text-base sm:text-xl">
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
@@ -116,7 +116,7 @@ export default function XAUXO({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
                     {t('totalStaked', { token: 'AUXO' })}
                     <Tooltip>
                       {t('totalStakedTooltip', { token: 'AUXO' })}
@@ -133,7 +133,7 @@ export default function XAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark sm:text-xl">
+                  <p className="font-bold text-base text-sub-dark sm:text-xl">
                     <span>
                       {formatBalance(
                         totalSupply.label,
@@ -143,7 +143,7 @@ export default function XAUXO({
                       )}
                     </span>
                   </p>
-                  <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
                     {t('total', { token: 'xAUXO' })}
                     <Tooltip>{t('totalTooltip', { token: 'xAUXO' })}</Tooltip>
                   </div>
@@ -185,7 +185,10 @@ export default function XAUXO({
         </section>
         {/* Section for Staking and Summary */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
-          <Swap tokenConfig={stakingTokenConfig} />
+          <Swap
+            stakingTokenConfig={stakingTokenConfig}
+            tokenConfig={tokenConfig}
+          />
           <Summary tokenConfig={tokenConfig} />
         </section>
       </div>

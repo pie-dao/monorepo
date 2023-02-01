@@ -2,9 +2,14 @@ import { useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
-import xAUXOIcon from '../../public/tokens/xAUXO.svg';
+import xAUXOIcon from '../../public/tokens/32x32/xAUXO.svg';
+import xAUXOIconCircle from '../../public/tokens/xAUXO.svg';
 import useTranslation from 'next-translate/useTranslation';
-import { useTokenBalance, useXAUXOFee } from '../../hooks/useToken';
+import {
+  useTokenBalance,
+  useUserStakedXAUXO,
+  useXAUXOFee,
+} from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
@@ -21,6 +26,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   const { t } = useTranslation();
   const auxoBalance = useTokenBalance('AUXO');
   const xAUXOBalance = useTokenBalance(name);
+  const stakedXAUXO = useUserStakedXAUXO();
   const fee = useXAUXOFee();
 
   const summaryData = useMemo(() => {
@@ -44,7 +50,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
       },
       {
         icon: <Image src={xAUXOIcon} alt="xAUXO" width={24} height={24} />,
-        title: t('stakedBalance', { token: 'xAUXO' }),
+        title: t('tokenBalance', { token: 'xAUXO' }),
         value: `${
           account && xAUXOBalance
             ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
@@ -52,12 +58,26 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         } xAUXO`,
       },
       {
+        icon: (
+          <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
+        ),
+        title: t('stakedBalance', { token: 'xAUXO' }),
+        value: `
+          ${
+            account
+              ? formatBalance(stakedXAUXO.label, defaultLocale, 4, 'standard')
+              : '0'
+          }
+          xAUXO
+        `,
+      },
+      {
         icon: null,
         title: t('xAUXOFee'),
         value: formatAsPercent(fee?.label ?? 0),
       },
     ];
-  }, [account, auxoBalance, defaultLocale, fee, t, xAUXOBalance]);
+  }, [account, auxoBalance, defaultLocale, fee, t, xAUXOBalance, stakedXAUXO]);
 
   return (
     <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-white gap-y-4">
@@ -71,7 +91,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         >
           <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
             {icon && icon}
-            {t(title)}:
+            {title}:
           </dt>
           <dd className="flex ml-auto pr-2 font-medium text-base text-primary">
             {value}

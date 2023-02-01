@@ -7,8 +7,10 @@ import { setIsOpen, setTx } from '../../store/modal/modal.slice';
 import StakeComplete from './ModalSteps/StakeComplete';
 import StakeConfirm from './ModalSteps/StakeConfirm';
 import SwapConfirm from './ModalSteps/xAUXO/SwapConfirm';
+import StakeXAUXOConfirm from './ModalSteps/xAUXO/StakeConfirm';
 import { XIcon } from '@heroicons/react/solid';
 import BoostStakeModal from './ModalSteps/BoostStakeModal';
+import Approve from './ModalSteps/Approve';
 
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
@@ -41,10 +43,23 @@ export default function ModalManager() {
                   onClick={closeModal}
                 />
                 <ModalBox>
+                  {step === STEPS.APPROVE_TOKEN && <Approve />}
                   {step === STEPS.CONFIRM_STAKE_VEAUXO && <StakeConfirm />}
                   {step === STEPS.BOOST_STAKE_VEAUXO && <BoostStakeModal />}
-                  {step === STEPS.CONFIRM_STAKE_XAUXO && <SwapConfirm />}
-                  {step === STEPS.STAKE_COMPLETED && <StakeComplete />}
+                  {step === STEPS.CONFIRM_CONVERT_XAUXO && <SwapConfirm />}
+                  {step === STEPS.CONFIRM_STAKE_XAUXO && <StakeXAUXOConfirm />}
+                  {step === STEPS.CONFIRM_UNSTAKE_XAUXO && (
+                    <StakeXAUXOConfirm action="unstake" />
+                  )}
+                  {step === STEPS.STAKE_COMPLETED && (
+                    <StakeComplete action="stake" />
+                  )}
+                  {step === STEPS.UNSTAKE_COMPLETED && (
+                    <StakeComplete action="unstake" />
+                  )}
+                  {step === STEPS.CONVERT_COMPLETED && (
+                    <StakeComplete action="convert" />
+                  )}
                 </ModalBox>
               </>
             </Dialog.Panel>

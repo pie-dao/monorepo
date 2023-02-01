@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../../hooks';
-import { useApprovalLimit, useTokenBalance } from '../../hooks/useToken';
+import { useTokenBalance } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
 import { compareBalances } from '../../utils/balances';
-import useTranslation from 'next-translate/useTranslation';
 import { TokenConfig } from '../../types/tokensConfig';
 import { ConnectButton } from '@shared/ui-library';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
@@ -17,26 +16,22 @@ function DepositActions({
   estimation,
   tokenConfig,
   toToken,
-}: {
+  children,
+}: // isConvertAndStake,
+{
   deposit: BigNumberReference;
   estimation: BigNumberReference;
   tokenConfig: TokenConfig;
   stakingTime?: number;
   toToken: string;
+  children?: React.ReactNode;
+  // isConvertAndStake?: boolean;
 }) {
-  const { t } = useTranslation();
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
   const xAUXOContract = useXAUXOTokenContract();
-  const { limit } = useApprovalLimit('AUXO', xAUXOContract?.address);
   const tokens = useTokenBalance(tokenConfig.name);
-
-  const sufficientApproval = useMemo(() => {
-    const limitCheck = compareBalances(limit, 'gte', deposit);
-    const tokenCheck = compareBalances(tokens, 'gte', deposit);
-    return limitCheck && tokenCheck;
-  }, [deposit, limit, tokens]);
 
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;
@@ -45,11 +40,7 @@ function DepositActions({
   }, [deposit, tokens]);
 
   const openModal = () => {
-    dispatch(
-      setStep(
-        sufficientApproval ? STEPS.CONFIRM_STAKE_XAUXO : STEPS.APPROVE_TOKEN,
-      ),
-    );
+    dispatch(setStep(STEPS.CONFIRM_CONVERT_XAUXO));
     dispatch(
       setSwap({
         swap: {
@@ -77,7 +68,7 @@ function DepositActions({
             disabled={disabledStake}
             className="px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
-            {t('Stake')}
+            {children}
           </button>
         </>
       ) : (

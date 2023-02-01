@@ -13,6 +13,7 @@ import {
   VeAUXOAbi__factory,
   SharesTimeLockAbi__factory,
   UpgradoorAbi__factory,
+  RollStakerAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -98,6 +99,13 @@ export const xAUXOContract = MAINNETMulticall.wrap(
 export const xAUXOStakingManager = MAINNETMulticall.wrap(
   StakingManagerAbi__factory.connect(
     products['xAUXO'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
+);
+
+export const rollStakerContract = MAINNETMulticall.wrap(
+  RollStakerAbi__factory.connect(
+    products['xAUXO'].addresses[selectedNetwork].rollStakerAddress,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
