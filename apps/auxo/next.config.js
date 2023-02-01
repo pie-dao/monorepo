@@ -33,16 +33,6 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: '/xAUXO',
-        destination: '/migration',
-        permanent: false,
-      },
-      {
-        source: '/veAUXO',
-        destination: '/migration',
-        permanent: false,
-      },
-      {
         source: '/vaults/:slug',
         destination: '/migration',
         permanent: false,
