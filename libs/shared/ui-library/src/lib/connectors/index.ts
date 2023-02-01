@@ -6,7 +6,8 @@ import { SUPPORTED_CHAINS, SUPPORTED_CHAIN_ID } from '../types/types';
 import { chainMap, isChainSupported } from '../utils/network';
 
 export const RPC_URLS: Record<number, string> = {
-  [SUPPORTED_CHAINS.MAINNET]: 'https://rpc.ankr.com/eth',
+  [SUPPORTED_CHAINS.MAINNET]:
+    'https://bestnet.alexintosh.com/rpc/migration-test-round-three',
   [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ftm.tools/',
   [SUPPORTED_CHAINS.POLYGON]:
     'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',

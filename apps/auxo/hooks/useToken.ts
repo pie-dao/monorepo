@@ -89,6 +89,14 @@ export const useUserStakedXAUXO = (): BigNumberReference => {
   );
 };
 
+export const useUserCurrentEpochStakedXAUXO = (): BigNumberReference => {
+  return useAppSelector(
+    (state) =>
+      state.dashboard?.tokens?.xAUXO?.userStakingData?.currentEpochBalance ??
+      zeroBalance,
+  );
+};
+
 export const useDelegatorAddress = (token: string): string => {
   return useAppSelector(
     (state) => state.dashboard?.tokens?.[token]?.userStakingData?.delegator,

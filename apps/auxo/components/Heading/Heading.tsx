@@ -16,6 +16,7 @@ import {
 import classNames from '../../utils/classnames';
 import { formatBalance } from '../../utils/formatBalance';
 import { usePopper } from 'react-popper';
+import { isEmpty } from 'lodash';
 
 type Props = {
   title: string;
@@ -33,7 +34,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
   const memoizedLocks = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 
@@ -121,7 +122,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                   transition={{
                     duration: 0.2,
                   }}
-                  className="bg-white rounded-b-lg overflow-hidden absolute z-10 w-full p-2"
+                  className="bg-white rounded-b-lg overflow-hidden absolute z-10 w-full p-2 shadow-xl"
                 >
                   <motion.div
                     variants={{
@@ -129,7 +130,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                       open: { scale: 1 },
                     }}
                     transition={{ duration: 0.3 }}
-                    className="origin-top space-y-3 max-h-52 overflow-y-auto p-4 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full"
+                    className="origin-top space-y-3 max-h-96 overflow-y-auto p-4 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full"
                   >
                     {memoizedLocks &&
                       memoizedLocks.length > 0 &&
@@ -161,7 +162,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                               </div>
                               <div className="grid grid-cols-1 @md:grid-cols-3 gap-x-2 text-xs justify-center flex-1">
                                 <div>
-                                  <dl className="flex gap-1 justify-between">
+                                  <dl className="flex gap-1 justify-between @md:justify-start">
                                     <dt className="text-sub-dark">
                                       {t('lockStart')}:
                                     </dt>
@@ -169,30 +170,34 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                       {lockedAtFormatted}
                                     </dd>
                                   </dl>
-                                  <dl className="flex gap-1 justify-between">
+                                  <dl className="flex gap-1 justify-between @md:justify-start">
                                     <dt className="text-sub-dark">
                                       {t('lockEnd')}:
                                     </dt>
-                                    <dd className="font-medium text-right">
+                                    <dd className="font-medium text-right @md:justify-start">
                                       {lockEndFormatted}
                                     </dd>
                                   </dl>
                                 </div>
                                 <div>
-                                  <dl className="flex gap-1 justify-between">
+                                  <dl className="flex gap-1 justify-between @md:justify-start">
                                     <dt className="text-sub-dark">
                                       {t('lockedFor')}:
                                     </dt>
                                     <dd className="font-medium text-right">
-                                      {lockedFor}
+                                      {t('numOfMonths', {
+                                        months: lockedFor,
+                                      })}
                                     </dd>
                                   </dl>
-                                  <dl className="flex gap-1 justify-between">
+                                  <dl className="flex gap-1 justify-between @md:justify-start">
                                     <dt className="text-sub-dark">
                                       {t('remainingTime')}:
                                     </dt>
                                     <dd className="font-medium text-right">
-                                      {remainingMonths}
+                                      {t('numOfMonths', {
+                                        months: remainingMonths,
+                                      })}
                                     </dd>
                                   </dl>
                                 </div>

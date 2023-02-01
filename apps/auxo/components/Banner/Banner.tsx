@@ -4,8 +4,9 @@ export type Props = {
   content: string | React.ReactNode;
   icon?: React.ReactNode;
   bgColor?: string;
+  textColor?: string;
 };
-const Banner: React.FC<Props> = ({ icon, content, bgColor }) => {
+const Banner: React.FC<Props> = ({ icon, content, bgColor, textColor }) => {
   return (
     <div
       className={classNames(
@@ -16,7 +17,14 @@ const Banner: React.FC<Props> = ({ icon, content, bgColor }) => {
       <div className="flex w-full items-center gap-x-3 mx-auto px-2">
         {icon ? <div className="flex-shrink-0">{icon}</div> : null}
         <div>
-          <p className="text-sm text-primary font-medium">{content}</p>
+          <p
+            className={classNames(
+              `text-sm  font-medium`,
+              textColor ?? 'text-primary',
+            )}
+          >
+            {content}
+          </p>
         </div>
       </div>
     </div>

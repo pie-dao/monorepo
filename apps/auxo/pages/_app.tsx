@@ -10,6 +10,7 @@ import { Web3ContextProvider } from '../components/MultichainProvider/Multichain
 import { wrapper } from '../store';
 import { NotificationDisplay } from '../components/Notifications/Notifications';
 import ModalManager from '../components/Modals/ModalManager';
+import ModalMigration from '../components/Modals/ModalMigration';
 import './styles.css';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -51,6 +52,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
           <div className="h-full">
             <NotificationDisplay />
             <ModalManager />
+            <ModalMigration />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>

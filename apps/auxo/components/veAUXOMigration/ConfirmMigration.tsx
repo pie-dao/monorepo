@@ -35,15 +35,22 @@ import Banner from '../Banner/Banner';
 import Trans from 'next-translate/Trans';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { setConvertedDOUGHLabel } from '../../store/migration/migration.slice';
+import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
+import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
 };
 
 export function getMigratingTo(token: string, boost: boolean): string {
-  if (token !== 'veAUXO') return 'xAUXO';
+  if (token !== 'veAUXO') return 'PRV';
   if (!boost) return 'oneLockOutput';
   else return 'oneBoostedLockOutput';
+}
+
+export function getLevel(input: number): number {
+  if (input < 6) return 0;
+  return input - 6;
 }
 
 const ConfirmMigration: React.FC<Props> = ({ token }) => {
@@ -68,7 +75,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
   const memoizedPositions = useMemo(() => {
-    if (!positions) return [];
+    if (isEmpty(positions)) return [];
     return positions?.filter((position) => position?.lockDuration !== 0) ?? [];
   }, [positions]);
 
@@ -91,10 +98,9 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   };
 
   useEffect(() => {
-    if (!upgradoor || !destinationWallet || !account) return;
+    if (!destinationWallet || !account) return;
     dispatch(
       ThunkPreviewMigration({
-        upgradoor,
         destinationWallet,
         boost,
         token,
@@ -125,8 +131,18 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
     const boostText = token === 'veAUXO' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
-    return t(`${lockText}${baseText}${boostText}`);
-  }, [token, boost, isSingleLock, t]);
+    return t(`${lockText}${baseText}${boostText}`, {
+      boostLevel: getLevel(
+        getRemainingMonths(
+          new Date(),
+          new Date(
+            memoizedPositions[0].lockedAt * 1000 +
+              memoizedPositions[0].lockDuration * 1000,
+          ),
+        ),
+      ),
+    });
+  }, [token, boost, isSingleLock, t, memoizedPositions]);
 
   const migrationRecapContent = useMemo<MigrationRecapProps>(() => {
     if (!memoizedPositions) return null;
@@ -136,7 +152,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       defaultLocale,
       4,
       'standard',
-    )}${' '} ${token}`;
+    )}${' '} ${TOKEN_NAMES[token]}`;
     const totalDOUGH = formatBalance(
       totalDOUGHConverted,
       defaultLocale,
@@ -224,8 +240,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   return (
     <>
       <Heading
-        title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateSubtitle')}
+        title={t('reviewAndConfirm')}
+        subtitle={t('reviewAndConfirmSubtitle')}
       />
       <BackBar
         token={token}
@@ -237,7 +253,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
         title={t('confirmToUpgrade')}
         singleCard={true}
       >
-        <section className="grid grid-cols-1 items-center gap-4 text-base md:text-inherit sm:max-w-3xl w-full">
+        <section className="grid grid-cols-1 items-center gap-4 text-base md:text-inherit sm:max-w-7xl w-full">
           <div className="align-middle flex flex-col gap-y-3 items-center font-medium">
             <div className="flex flex-col items-center gap-y-1">
               <h3 className="text-lg font-medium text-secondary">
@@ -314,6 +330,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
           </div>
         </section>
       </BackBar>
+      <MigrationFAQ />
     </>
   );
 };

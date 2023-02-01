@@ -12,6 +12,7 @@ import {
   StakingManagerAbi__factory,
   VeAUXOAbi__factory,
   SharesTimeLockAbi__factory,
+  UpgradoorAbi__factory,
   RollStakerAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
@@ -22,7 +23,8 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://eth-goerli.public.blastapi.io';
+const localRPC =
+  'https://bestnet.alexintosh.com/rpc/migration-test-round-three';
 
 const selectedNetwork = 5;
 
@@ -111,6 +113,13 @@ export const rollStakerContract = MAINNETMulticall.wrap(
 export const veDOUGHSharesTimeLock = MAINNETMulticall.wrap(
   SharesTimeLockAbi__factory.connect(
     migration['veDOUGH'].addresses[selectedNetwork].stakingAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
+);
+
+export const Upgradoor = MAINNETMulticall.wrap(
+  UpgradoorAbi__factory.connect(
+    migration['veDOUGH'].addresses[selectedNetwork].upgradoorAddress,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );

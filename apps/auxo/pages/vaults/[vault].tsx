@@ -107,6 +107,7 @@ export const getStaticProps = wrapper.getStaticProps(
           title: 'Vault',
           source,
         },
+        notFound: true,
       };
     },
 );

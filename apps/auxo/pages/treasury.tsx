@@ -21,6 +21,7 @@ import {
 } from '../components/Skeleton';
 import PositionsTabs from '../components/Positions';
 import { useWeb3React } from '@web3-react/core';
+import { wrapper } from '../store';
 
 export default function Treasury(): ReactElement {
   const { defaultCurrency, defaultLocale } = useAppSelector(

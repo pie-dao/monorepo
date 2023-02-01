@@ -1,6 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { promiseObject } from '../../utils/promiseObject';
-import { veDOUGHSharesTimeLock } from '../../store/products/products.contracts';
+import {
+  veDOUGHSharesTimeLock,
+  Upgradoor,
+} from '../../store/products/products.contracts';
 import { toBalance } from '../../utils/formatBalance';
 import { UpgradoorAbi } from '@shared/util-blockchain';
 import { pendingNotification } from '../../components/Notifications/Notifications';
@@ -20,9 +23,10 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
     if (!account) return;
     const numberOfLocks = promiseObject({
       locksLength: veDOUGHSharesTimeLock.getLocksOfLength(account),
+      latestLock: Upgradoor.getNextLongestLock(account),
     });
 
-    const { locksLength } = await numberOfLocks;
+    const { locksLength, latestLock } = await numberOfLocks;
 
     const locks = await Promise.all(
       Array.from(Array(locksLength.toNumber())).map((_, i) => {
@@ -30,19 +34,37 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
       }),
     );
 
-    return locks
-      .sort((a, b) => {
-        if (a.lockDuration === b.lockDuration) return 1;
-        return b.lockDuration - a.lockDuration;
-      })
-      .map((lock) => {
-        const { amount, lockDuration, lockedAt } = lock;
-        return {
-          amount: toBalance(amount, 18),
-          lockDuration,
-          lockedAt,
-        };
-      });
+    const locksFormatted = locks.map((lock) => {
+      const [amount, lockedAt, lockDuration] = lock;
+      return {
+        amount,
+        lockDuration,
+        lockedAt,
+      };
+    });
+
+    const latestLockFormatted = {
+      amount: toBalance(latestLock[0], 18),
+      lockDuration: latestLock[2],
+      lockedAt: latestLock[1],
+    };
+
+    return [latestLockFormatted].concat(
+      locksFormatted
+        .filter((lock) => lock.lockedAt !== latestLock[1])
+        .sort((a, b) => {
+          if (a.lockDuration === b.lockDuration) return 1;
+          return b.lockDuration - a.lockDuration;
+        })
+        .map((lock) => {
+          const { amount, lockDuration, lockedAt } = lock;
+          return {
+            amount: toBalance(amount, 18),
+            lockDuration,
+            lockedAt,
+          };
+        }),
+    );
   },
 );
 
@@ -99,6 +121,10 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     if (token === 'veAUXO') {
       if (isSingleLock) {
         tx = await upgradeSingleLockVeAuxo(destinationWallet);
+        pendingNotification({
+          title: `aggregateveDOUGHPending`,
+          id: 'aggregateVeDOUGH',
+        });
       } else if (boost) {
         tx = await aggregateAndBoost();
         pendingNotification({
@@ -150,21 +176,27 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
   },
 );
 
+type ThunkPreviewMigrationProps = {
+  boost: boolean;
+  token: 'veAUXO' | 'xAUXO';
+  isSingleLock: boolean;
+  sender: string;
+  destinationWallet: string;
+};
+
 export const ThunkPreviewMigration = createAsyncThunk(
   THUNKS.GET_MIGRATION_PREVIEW,
   async (
     {
-      upgradoor,
       boost,
       token,
       isSingleLock,
       sender,
       destinationWallet,
-    }: ThunkMigrateVeDOUGHProps,
+    }: ThunkPreviewMigrationProps,
     { rejectWithValue },
   ) => {
     if (
-      !upgradoor ||
       typeof boost !== 'boolean' ||
       !token ||
       typeof isSingleLock !== 'boolean' ||
@@ -177,14 +209,14 @@ export const ThunkPreviewMigration = createAsyncThunk(
     }
 
     const previews = promiseObject({
-      veAUXOAggregateAndBoost: upgradoor.previewAggregateAndBoost(sender),
-      veAUXOAggregate: upgradoor.previewAggregateVeAUXO(sender),
-      veAUXOSingleLock: upgradoor.previewUpgradeSingleLockVeAuxo(
+      veAUXOAggregateAndBoost: Upgradoor.previewAggregateAndBoost(sender),
+      veAUXOAggregate: Upgradoor.previewAggregateVeAUXO(sender),
+      veAUXOSingleLock: Upgradoor.previewUpgradeSingleLockVeAuxo(
         sender,
         destinationWallet,
       ),
-      xAUXOAggregate: upgradoor.previewAggregateToXAUXO(sender),
-      xAUXOSingleLock: upgradoor.previewUpgradeSingleLockXAUXO(sender),
+      xAUXOAggregate: Upgradoor.previewAggregateToXAUXO(sender),
+      xAUXOSingleLock: Upgradoor.previewUpgradeSingleLockXAUXO(sender),
     });
 
     const {

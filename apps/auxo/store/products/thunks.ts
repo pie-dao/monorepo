@@ -15,6 +15,7 @@ import {
   VeAUXOAbi,
   AUXOAbi,
   RollStakerAbi,
+  StakingManagerAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -70,6 +71,7 @@ export const THUNKS = {
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
 const sumBalance = (x: number, y: number) => x + y;
+const deadline = Math.floor(Date.now() / 1000 + ONE_HOUR_DEADLINE).toString();
 
 export const thunkGetProductsData = createAsyncThunk(
   THUNKS.GET_PRODUCTS_DATA,
@@ -238,31 +240,31 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
       stakingToken: stakingContract.depositToken(),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
-      tokensDeposited: stakingContract.queryFilter(depositedFilter),
+      // tokensDeposited: stakingContract.queryFilter(depositedFilter),
     });
 
     const stakingData = await results;
 
-    const uniqueAddresses = new Set<string>();
-    stakingData.tokensDeposited.map(({ args }) => {
-      uniqueAddresses.add(args.owner);
-    });
+    // const uniqueAddresses = new Set<string>();
+    // stakingData.tokensDeposited.map(({ args }) => {
+    //   uniqueAddresses.add(args.owner);
+    // });
 
-    const checkForCurrentVotingPower = async () => {
-      let totalVotingAdresses = 0;
-      const currentVotingPower = [...uniqueAddresses].map(async (address) => {
-        await veAUXOContract.getVotes(address).then((votePower) => {
-          if (!votePower.isZero()) {
-            totalVotingAdresses++;
-          }
-        });
-        return totalVotingAdresses;
-      });
-      await Promise.all(currentVotingPower);
-      return totalVotingAdresses;
-    };
+    // const checkForCurrentVotingPower = async () => {
+    //   let totalVotingAdresses = 0;
+    //   const currentVotingPower = [...uniqueAddresses].map(async (address) => {
+    //     await veAUXOContract.getVotes(address).then((votePower) => {
+    //       if (!votePower.isZero()) {
+    //         totalVotingAdresses++;
+    //       }
+    //     });
+    //     return totalVotingAdresses;
+    //   });
+    //   await Promise.all(currentVotingPower);
+    //   return totalVotingAdresses;
+    // };
 
-    const currentVotingPower = await checkForCurrentVotingPower();
+    // const currentVotingPower = await checkForCurrentVotingPower();
 
     return {
       ['veAUXO']: {
@@ -272,7 +274,7 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
         ),
         stakingToken: stakingData.stakingToken,
         totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
-        votingAddresses: currentVotingPower,
+        // votingAddresses: currentVotingPower,
       },
     };
   },
@@ -312,12 +314,13 @@ export const thunkGetUserStakingData = createAsyncThunk(
       lock: stakingContract.lockOf(account),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
-      votes: veAUXOContract.getVotes(account),
-      delegation: veAUXOContract.delegates(account),
+      // votes: veAUXOContract.getVotes(account),
+      // delegation: veAUXOContract.delegates(account),
     });
 
     const xAUXOResults = promiseObject({
       balance: rollStakerContract.getProjectedBalanceForUser(account),
+      currentEpochBalance: rollStakerContract.getCurrentBalanceForUser(account),
       decimals: xAUXOContract.decimals(),
     });
 
@@ -330,17 +333,21 @@ export const thunkGetUserStakingData = createAsyncThunk(
           amount: toBalance(veAUXOData.lock.amount, veAUXOData.decimals),
           lockedAt: veAUXOData.lock.lockedAt,
           lockDuration: veAUXOData.lock.lockDuration,
-          votingPower: percentageBetween(
-            veAUXOData.votes,
-            veAUXOData.totalSupply,
-            veAUXOData.decimals,
-          ),
-          delegator: veAUXOData.delegation,
+          // votingPower: percentageBetween(
+          //   veAUXOData.votes,
+          //   veAUXOData.totalSupply,
+          //   veAUXOData.decimals,
+          // ),
+          // delegator: veAUXOData.delegation,
         },
       },
       ['xAUXO']: {
         userStakingData: {
           amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
+          currentEpochBalance: toBalance(
+            xAUXOData.currentEpochBalance,
+            xAUXOData.decimals,
+          ),
         },
       },
     };
@@ -861,8 +868,8 @@ export const thunkApproveToken = createAsyncThunk(
     const tx = await token.approve(spender, deposit.value);
 
     pendingNotification({
-      title: `approveDepositPending`,
-      id: 'approveDeposit',
+      title: `approveTokenPending`,
+      id: 'approveToken',
     });
 
     dispatch(
@@ -916,11 +923,6 @@ export const thunkStakeAuxo = createAsyncThunk(
     if (!tokenLocker || !account || !stakingTime || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
-
-    const deadline = Math.floor(
-      Date.now() / 1000 + ONE_HOUR_DEADLINE,
-    ).toString();
-
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -995,10 +997,6 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     if (!tokenLocker || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTxHash(null));
-
-    const deadline = Math.floor(
-      Date.now() / 1000 + ONE_HOUR_DEADLINE,
-    ).toString();
 
     let tx: ContractTransaction;
     let r: string;
@@ -1195,21 +1193,61 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 
 export type ThunkConvertXAUXOProps = {
   deposit: BigNumberReference;
+  auxoContract: AUXOAbi | undefined;
   xAUXOContract: XAUXOAbi | undefined;
   account: string;
+  signer: JsonRpcSigner;
+  stakingManager: StakingManagerAbi;
 };
 
 export const thunkConvertXAUXO = createAsyncThunk(
   THUNKS.CONVERT_X_AUXO,
   async (
-    { account, deposit, xAUXOContract }: ThunkConvertXAUXOProps,
+    {
+      signer,
+      account,
+      deposit,
+      auxoContract,
+      xAUXOContract,
+    }: ThunkConvertXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !xAUXOContract || !account)
+    if (!deposit || !auxoContract || !xAUXOContract || !account)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
-    dispatch(setTxHash(null));
-    const tx = await xAUXOContract.depositFor(account, deposit.value);
+    // const tx = await xAUXOContract.depositFor(account, deposit.value);
+
+    let tx: ContractTransaction;
+    let r: string;
+    let v: number;
+    let s: string;
+
+    try {
+      ({ r, v, s } = await getPermitSignature(
+        signer,
+        auxoContract,
+        xAUXOContract.address,
+        deposit.value,
+        deadline,
+      ));
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Permit Signature Failed');
+    }
+
+    try {
+      tx = await xAUXOContract.depositForWithSignature(
+        account,
+        deposit.value,
+        deadline,
+        v,
+        r,
+        s,
+      );
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Deposit Failed');
+    }
 
     // set block explorer transaction hash
 
@@ -1218,13 +1256,13 @@ export const thunkConvertXAUXO = createAsyncThunk(
 
     pendingNotification({
       title: `convertXAUXOPending`,
-      id: 'convertXAUXODeposit',
+      id: 'convertXAUXO',
     });
 
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setStep(STEPS.CONVERT_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
@@ -1255,14 +1293,10 @@ export const thunkStakeXAUXO = createAsyncThunk(
     { account, deposit, signer, xAUXO, rollStaker }: ThunkStakeXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !account || !xAUXO || !signer)
+    if (!deposit || !account || !xAUXO || !signer || !rollStaker)
       return rejectWithValue(
         'Missing Contract, Account Details, Deposit, xAUXO or Signer',
       );
-
-    const deadline = Math.floor(
-      Date.now() / 1000 + ONE_HOUR_DEADLINE,
-    ).toString();
 
     let tx: ContractTransaction;
     let r: string;
@@ -1345,12 +1379,13 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details and Amount');
 
     dispatch(setTxHash(null));
+    let tx: ContractTransaction;
 
-    // if (shouldRevertDeposit) {
-    //  tx = await rollStaker.revertDepositAndWithdraw(amount.value);
-    // } else {
-    const tx = await rollStaker.withdraw(amount.value);
-    // }
+    if (shouldRevertDeposit) {
+      tx = await rollStaker.revertDepositAndWithdraw(amount.value);
+    } else {
+      tx = await rollStaker.withdraw(amount.value);
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
@@ -1363,7 +1398,7 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setStep(STEPS.UNSTAKE_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
     }

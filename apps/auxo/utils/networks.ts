@@ -19,10 +19,10 @@ export const RPC_URLS =
         250: 'http://127.0.0.1:8546',
       }
     : {
-        1: 'https://bestnet.alexintosh.com/rpc/x-auxo-staking',
-        5: 'https://rpc.ankr.com/eth_goerli',
+        1: 'https://bestnet.alexintosh.com/rpc/migration-test-round-three',
+        5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
-        250: 'https://rpc.ankr.com/fantom',
+        250: 'https://1rpc.io/ftm',
       };
 
 export const config = Object.entries(RPC_URLS).reduce((obj, [chain, url]) => {

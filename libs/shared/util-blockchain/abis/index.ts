@@ -9,7 +9,7 @@ import stakingManager from './stakingManager/stakingManager.abi.json';
 import sharesTimeLock from './sharesTimeLock/sharesTimeLock.abi.json';
 import upgradoor from './upgradoor/upgradoor.abi.json';
 import AUXO from './AUXO/AUXO.abi.json';
-import rollstaker from './rollStaker/rollStaker.abi.json';
+import rollStaker from './rollstaker/rollstaker.abi.json';
 import { getExplorer, Explorer } from '../chains';
 
 export {
@@ -24,7 +24,7 @@ export {
   sharesTimeLock,
   upgradoor,
   AUXO,
-  rollstaker,
+  rollStaker,
   getExplorer,
   Explorer,
 };
