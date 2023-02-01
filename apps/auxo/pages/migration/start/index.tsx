@@ -4,8 +4,8 @@ import { ReactElement, useEffect, useMemo } from 'react';
 import { Layout } from '../../../components';
 import { wrapper } from '../../../store';
 import MigrationCardOption from '../../../components/MigrationCardOption/MigrationCardOption';
-import veAUXOIcon from '../../../public/tokens/32x32/veAUXO.svg';
-import XAUXOIcon from '../../../public/tokens/32x32/xAUXO.svg';
+import ARV from '../../../public/tokens/32x32/ARV.svg';
+import PRV from '../../../public/tokens/32x32/PRV.svg';
 import Image from 'next/image';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../../../hooks';
@@ -15,6 +15,44 @@ import { ExclamationIcon } from '@heroicons/react/outline';
 import BackBar from '../../../components/BackBar/BackBar';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import { setCleanupFlow } from '../../../store/migration/migration.slice';
+import MigrationFAQ from '../../../components/MigrationFAQ/MigrationFAQ';
+import Trans from 'next-translate/Trans';
+
+//extract title component
+type TitleProps = {
+  a: string;
+};
+
+const goToElement = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault();
+  const target = e.currentTarget.getAttribute('href');
+  if (target) {
+    const element = document.querySelector(target) as HTMLElement | null;
+    const button = element?.querySelector('button');
+    if (element) {
+      element.focus();
+      if (button.getAttribute('aria-expanded') === 'false') {
+        button.click();
+      }
+    }
+  }
+};
+
+export const Title: React.FC<TitleProps> = ({ a }) => {
+  const { t } = useTranslation('migration');
+  return <>{t(a)}</>;
+};
+
+const migrationHeadings = [
+  {
+    title: 'whatToExpectARV',
+    description: 'whatToExpectARVDescription',
+  },
+  {
+    title: 'whatToExpectPRV',
+    description: 'whatToExpectPRVDescription',
+  },
+];
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -35,122 +73,73 @@ export default function Migration() {
   const migrationCardsContent = useMemo(() => {
     return [
       {
-        token: 'veAUXO',
-        title: t('aggregate', { token: 'veAUXO' }),
-        description: t('aggregateDescription'),
-        icon: <Image src={veAUXOIcon} alt="veAUXO" width={26} height={26} />,
+        token: t('activeRewardVault'),
+        title: t('activeRewardVaultDescription'),
+        icon: <Image src={ARV} alt="veAUXO" width={32} height={32} />,
         features: [
           {
-            title: 'rewards',
-            description: 'maxPossible',
+            title: <Title a="governance" />,
+            description: 'onChainOffChain',
           },
           {
-            title: 'governance',
-            description: 'directOnChain',
+            title: <Title a="reward" />,
+            description: 'maxAtThirty',
           },
+
           {
-            title: 'transfer',
-            description: 'nonTransferable',
-          },
-          {
-            title: 'lock',
-            description: 'userPreference',
-          },
-          {
-            title: 'redemption',
+            title: <Title a="redemption" />,
             description: 'atLockExpiration',
           },
           {
-            title: 'bonding',
-            description: 'guaranteedAtNAV',
-          },
-          {
-            title: 'mintFee',
-            description: 'noFee',
-          },
-          {
-            title: 'exit',
-            description: 'migrateToXAUXO',
+            title: <Title a="switchToPRV" />,
+            description: 'available',
           },
         ],
         button: {
-          text: t('upgradeTo', { token: 'veAUXO' }),
+          text: t('upgrade'),
           url: '/migration/veAUXO',
         },
         banners: [
           {
-            content: t('veAUXOConversionBanner'),
-            bgColor: 'bg-info',
+            content: t('earlyTerminationFee'),
+            bgColor: 'bg-transparent',
           },
           {
-            icon: (
-              <ExclamationIcon
-                className="h-5 w-5 text-primary"
-                aria-hidden="true"
-              />
-            ),
-            content: t('veAUXODisclaimerBanner'),
-            bgColor: 'bg-warning',
+            content: t('veAUXOConversionBanner'),
+            bgColor: 'bg-info',
           },
         ],
       },
       {
-        token: 'xAUXO',
-        title: t('aggregate', { token: 'xAUXO' }),
-        description: t('beLiquid'),
-        icon: <Image src={XAUXOIcon} alt="xAUXO" width={26} height={26} />,
+        token: t('passiveRewardVault'),
+        title: t('passiveRewardVaultDescription'),
+        icon: <Image src={PRV} alt="xAUXO" width={32} height={32} />,
         features: [
           {
-            title: 'rewards',
-            description: 'taxed',
+            title: <Title a="worryFree" />,
+            description: 'noAction',
           },
           {
-            title: 'governance',
-            description: 'noVotingRights',
+            title: <Title a="transferability" />,
+            description: 'enabled',
           },
           {
-            title: 'transfer',
-            description: 'transferable',
-          },
-          {
-            title: 'lock',
-            description: 'forever',
-          },
-          {
-            title: 'redemption',
-            description: 'none',
-          },
-          {
-            title: 'bonding',
-            description: 'premium',
-          },
-          {
-            title: 'mintFee',
-            description: 'yes',
-          },
-          {
-            title: 'exit',
-            description: 'none',
+            title: <Title a="unstakeAnyTime" />,
+            description: 'noLock',
           },
         ],
         button: {
-          text: t('upgradeTo', { token: 'xAUXO' }),
+          text: t('upgrade'),
           url: '/migration/xAUXO',
         },
         banners: [
           {
-            content: t('xAUXOConversionBanner'),
-            bgColor: 'bg-info',
+            content: t('conversionIrreversible'),
+            bgColor: 'bg-transparent',
           },
           {
-            icon: (
-              <ExclamationIcon
-                className="h-5 w-5 text-primary"
-                aria-hidden="true"
-              />
-            ),
-            content: t('xAUXODisclaimerBanner'),
-            bgColor: 'bg-warning',
+            content: t('xAUXOConversionBanner'),
+            bgColor: 'bg-info',
           },
         ],
       },
@@ -161,17 +150,32 @@ export default function Migration() {
     <div className="flex flex-col isolate relative">
       <MigrationBackground />
       <MigrationBanner />
-      <Heading
-        title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateArrived')}
-      />
-      <BackBar title={t('selectToken')} singleCard={true}>
+      <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit md:min-w-4xl md:max-w-7xl w-fit my-12 mx-auto">
+        {migrationHeadings.map((heading, i) => (
+          <div
+            key={i}
+            className="flex flex-col px-4 py-4 rounded-md shadow-md items-center w-full align-middle bg-gradient-primary"
+          >
+            <h2 className="text-xl font-bold text-primary mb-3 pb-3 border-b border-sub-light w-full">
+              <Trans
+                i18nKey={`migration:${heading.title}`}
+                components={{ b: <span className="font-bold" /> }}
+              />
+            </h2>
+            <p className="text-base text-primary mt-2">
+              {t(heading.description)}
+            </p>
+          </div>
+        ))}
+      </section>
+      <BackBar title={t('selectToken')} singleCard={false} hideBack>
         <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
           {migrationCardsContent.map((card) => (
             <MigrationCardOption key={card.title} {...card} />
           ))}
         </section>
       </BackBar>
+      <MigrationFAQ />
     </div>
   );
 }

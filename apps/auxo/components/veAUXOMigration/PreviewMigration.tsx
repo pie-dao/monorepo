@@ -10,12 +10,14 @@ import { addBalances } from '../../utils/balances';
 import { BigNumber } from 'ethers';
 import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import { isEmpty } from 'lodash';
+import { TOKEN_NAMES } from '../../utils/constants';
 
 const imageMap = {
   veAUXO: veAUXOImage,
   xAUXO: xAUXOImage,
   DOUGH: DOUGHImage,
 };
+
 type Props = {
   token: 'veAUXO' | 'xAUXO';
   previewType: typeof MIGRATION_TYPE[keyof typeof MIGRATION_TYPE];
@@ -72,7 +74,7 @@ const PreviewMigration: React.FC<Props> = ({
               4,
               'standard',
             )}{' '}
-            {token}
+            {TOKEN_NAMES[token]}
           </span>
         </div>
       </div>

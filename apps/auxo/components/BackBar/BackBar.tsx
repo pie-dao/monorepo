@@ -15,9 +15,16 @@ type Props = {
   children?: React.ReactNode;
   title: string;
   singleCard?: boolean;
+  hideBack?: boolean;
 };
 
-const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
+const BackBar: React.FC<Props> = ({
+  goTo,
+  children,
+  title,
+  singleCard,
+  hideBack = false,
+}) => {
   const { t } = useTranslation();
   const { currentStep } = useAppSelector((state) => state.migration);
   const dispatch = useAppDispatch();
@@ -27,7 +34,7 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
       currentStep === STEPS_LIST.CHOOSE_MIGRATION_TYPE ||
       currentStep === STEPS_LIST.MIGRATE_SUCCESS
     ) {
-      router.push('/migration');
+      router.push('/migration/start');
       dispatch(setCurrentStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE));
       dispatch(setPreviousStep(null));
     } else {
@@ -43,15 +50,19 @@ const BackBar: React.FC<Props> = ({ goTo, children, title, singleCard }) => {
         singleCard ? 'w-fit' : 'w-full',
       )}
     >
-      <div className="flex justify-between items-center">
-        <button className="w-fit flex items-center" onClick={goBack}>
-          <ChevronLeftIcon
-            className="h-7 w-7 text-sub-dark"
-            aria-hidden="true"
-          />
-          <span className="text-sub-dark">{t('back')}</span>
-        </button>
-        <h2 className="text-base font-medium text-primary">{title}</h2>
+      <div className="flex justify-between items-center gap-x-4">
+        {!hideBack && (
+          <button className="w-fit flex items-center" onClick={goBack}>
+            <ChevronLeftIcon
+              className="h-7 w-7 text-sub-dark"
+              aria-hidden="true"
+            />
+            <span className="text-sub-dark">{t('back')}</span>
+          </button>
+        )}
+        <h2 className="text-base font-medium text-primary text-right ml-auto">
+          {title}
+        </h2>
       </div>
       <hr className="my-4 border-sub-light" />
       {children}

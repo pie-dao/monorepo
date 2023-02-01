@@ -43,7 +43,8 @@
       },
       "5": {
         "address": "0xcba82bbb092813783c7a83d8217ae91a487ca309",
-        "stakingAddress": "0xB641bCb969e5B15D47ede28ac6b6dEFe499335B6"
+        "stakingAddress": "0xB641bCb969e5B15D47ede28ac6b6dEFe499335B6",
+        "rollStakerAddress": "0x4d74AD9d324e4229de1619aED776d2684804fd2D"
       },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }

@@ -39,7 +39,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
             `${formatBalance(
               auxoBalance.label,
               defaultLocale,
-              0,
+              4,
               'standard',
             )} AUXO`
           ) : (

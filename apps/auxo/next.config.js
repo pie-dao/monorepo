@@ -25,6 +25,30 @@ const nextConfig = {
     // DO NOT USE THIS IN PRODUCTION
     ignoreBuildErrors: true,
   },
+  redirects: async () => {
+    return [
+      {
+        source: '/',
+        destination: '/migration',
+        permanent: false,
+      },
+      {
+        source: '/xAUXO',
+        destination: '/migration',
+        permanent: false,
+      },
+      {
+        source: '/veAUXO',
+        destination: '/migration',
+        permanent: false,
+      },
+      {
+        source: '/vaults/:slug',
+        destination: '/migration',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 module.exports = withNx(nextTranslate(nextConfig));

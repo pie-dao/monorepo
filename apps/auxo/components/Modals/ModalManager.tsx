@@ -15,7 +15,6 @@ import Approve from './ModalSteps/Approve';
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
-
   const closeModal = () => {
     dispatch(setIsOpen(false));
     dispatch(

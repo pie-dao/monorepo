@@ -240,31 +240,31 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
       stakingToken: stakingContract.depositToken(),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
-      tokensDeposited: stakingContract.queryFilter(depositedFilter),
+      // tokensDeposited: stakingContract.queryFilter(depositedFilter),
     });
 
     const stakingData = await results;
 
-    const uniqueAddresses = new Set<string>();
-    stakingData.tokensDeposited.map(({ args }) => {
-      uniqueAddresses.add(args.owner);
-    });
+    // const uniqueAddresses = new Set<string>();
+    // stakingData.tokensDeposited.map(({ args }) => {
+    //   uniqueAddresses.add(args.owner);
+    // });
 
-    const checkForCurrentVotingPower = async () => {
-      let totalVotingAdresses = 0;
-      const currentVotingPower = [...uniqueAddresses].map(async (address) => {
-        await veAUXOContract.getVotes(address).then((votePower) => {
-          if (!votePower.isZero()) {
-            totalVotingAdresses++;
-          }
-        });
-        return totalVotingAdresses;
-      });
-      await Promise.all(currentVotingPower);
-      return totalVotingAdresses;
-    };
+    // const checkForCurrentVotingPower = async () => {
+    //   let totalVotingAdresses = 0;
+    //   const currentVotingPower = [...uniqueAddresses].map(async (address) => {
+    //     await veAUXOContract.getVotes(address).then((votePower) => {
+    //       if (!votePower.isZero()) {
+    //         totalVotingAdresses++;
+    //       }
+    //     });
+    //     return totalVotingAdresses;
+    //   });
+    //   await Promise.all(currentVotingPower);
+    //   return totalVotingAdresses;
+    // };
 
-    const currentVotingPower = await checkForCurrentVotingPower();
+    // const currentVotingPower = await checkForCurrentVotingPower();
 
     return {
       ['veAUXO']: {
@@ -274,7 +274,7 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
         ),
         stakingToken: stakingData.stakingToken,
         totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
-        votingAddresses: currentVotingPower,
+        // votingAddresses: currentVotingPower,
       },
     };
   },
@@ -314,8 +314,8 @@ export const thunkGetUserStakingData = createAsyncThunk(
       lock: stakingContract.lockOf(account),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
-      votes: veAUXOContract.getVotes(account),
-      delegation: veAUXOContract.delegates(account),
+      // votes: veAUXOContract.getVotes(account),
+      // delegation: veAUXOContract.delegates(account),
     });
 
     const xAUXOResults = promiseObject({
@@ -333,12 +333,12 @@ export const thunkGetUserStakingData = createAsyncThunk(
           amount: toBalance(veAUXOData.lock.amount, veAUXOData.decimals),
           lockedAt: veAUXOData.lock.lockedAt,
           lockDuration: veAUXOData.lock.lockDuration,
-          votingPower: percentageBetween(
-            veAUXOData.votes,
-            veAUXOData.totalSupply,
-            veAUXOData.decimals,
-          ),
-          delegator: veAUXOData.delegation,
+          // votingPower: percentageBetween(
+          //   veAUXOData.votes,
+          //   veAUXOData.totalSupply,
+          //   veAUXOData.decimals,
+          // ),
+          // delegator: veAUXOData.delegation,
         },
       },
       ['xAUXO']: {

@@ -8,7 +8,7 @@ import {
 import { SliceState, STEPS_LIST } from './migration.types';
 
 const initialState: SliceState = {
-  isFirstTimeMigration: true,
+  isMigrationDeployed: null,
   currentStep: STEPS_LIST.CHOOSE_MIGRATION_TYPE,
   previousStep: null,
   isSingleLock: false,
@@ -65,9 +65,6 @@ export const migrationSlice = createSlice({
   },
 
   reducers: {
-    setFirstTimeMigration: (state, action: PayloadAction<boolean>) => {
-      state.isFirstTimeMigration = action.payload;
-    },
     setCurrentStep: (
       state,
       action: PayloadAction<SliceState['currentStep']>,
@@ -130,11 +127,14 @@ export const migrationSlice = createSlice({
         status: null,
       };
     },
+    setIsMigrationDeployed: (state, action: PayloadAction<boolean>) => {
+      state.isMigrationDeployed = action.payload;
+    },
   },
 });
 
 export const {
-  setFirstTimeMigration,
+  setIsMigrationDeployed,
   setCurrentStep,
   setPreviousStep,
   setDestinationWallet,

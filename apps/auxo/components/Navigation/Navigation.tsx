@@ -32,8 +32,8 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    { name: t('Homepage'), href: '/', icon: diamond },
-    { name: t('Dashboard'), href: '/treasury', icon: diamond },
+    // { name: t('Homepage'), href: '/', icon: diamond },
+    // { name: t('Dashboard'), href: '/treasury', icon: diamond },
     { name: t('veAUXO'), href: '/veAUXO', icon: veAUXOIcon },
     { name: t('xAUXO'), href: '/xAUXO', icon: xAUXOIcon },
     { name: t('migration'), href: '/migration', icon: diamond },
@@ -145,6 +145,9 @@ export default function Navigation({
   };
 
   const { pathname } = useRouter();
+  const splitPath = pathname.split('/');
+  const path = `/${splitPath[1]}`;
+
   if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
   return (
     <>
@@ -192,7 +195,7 @@ export default function Navigation({
                 className="space-y-2"
               >
                 {navigation.map((item) => {
-                  const active = pathname === item.href;
+                  const active = path === item.href;
                   return (
                     <motion.li
                       key={item.name}

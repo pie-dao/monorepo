@@ -27,15 +27,14 @@ const addToken = async (
   }
 };
 
-export type tokenName = keyof typeof products;
-
 export const addTokenToWallet = async (
   chainId: number,
-  tokenName: tokenName,
+  tokenName: string,
+  displayName?: string,
 ) => {
   await addToken(
     products?.[tokenName]?.addresses?.[chainId]?.address,
-    tokenName,
+    displayName ?? tokenName,
     `${window.location.origin}/tokens/${tokenName}.svg`,
   );
 };

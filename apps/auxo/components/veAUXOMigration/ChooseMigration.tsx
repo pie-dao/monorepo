@@ -18,6 +18,8 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useWeb3React } from '@web3-react/core';
 import { useTokenBalance } from '../../hooks/useToken';
 import { isZero } from '../../utils/balances';
+import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
+import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
   token: 'veAUXO' | 'xAUXO';
@@ -54,7 +56,6 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_CONFIRM));
     }
   };
-
   const notVeAuxoOrNoLocks = token !== 'veAUXO' || noLocks;
 
   return (
@@ -63,12 +64,18 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
         title={t('chooseHowToMigrate')}
         subtitle={t('chooseHowToMigrateSubtitle')}
       />
-      <BackBar title={t('allOrOneByOne')} singleCard={!notVeAuxoOrNoLocks}>
+      <BackBar
+        title={!notVeAuxoOrNoLocks ? t('oneByOne') : t('allOrOneByOne')}
+        singleCard={!notVeAuxoOrNoLocks}
+      >
         <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
           {notVeAuxoOrNoLocks && (
             <MigrationCard
               title={t('migrateMultipleLocks')}
-              subtitle={t('migrateMultipleLocksSubtitle')}
+              subtitle={t('migrateMultipleLocksSubtitle', {
+                token: TOKEN_NAMES[token],
+              })}
+              description={t('migrateMultipleLocksDescription')}
               tokenOut={token}
               isSingleLock={false}
               goToStep={() => nextStep(false)}
@@ -76,13 +83,17 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
           )}
           <MigrationCard
             title={t('migrateOneLock')}
-            subtitle={t('migrateOneLockSubtitle')}
+            subtitle={t('migrateOneLockSubtitle', {
+              token: TOKEN_NAMES[token],
+            })}
+            description={t('migrateSingleLockDescription')}
             tokenOut={token}
             isSingleLock={true}
             goToStep={() => nextStep(true)}
           />
         </section>
       </BackBar>
+      <MigrationFAQ />
     </>
   );
 };
