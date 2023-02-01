@@ -26,7 +26,7 @@ import { Polygon } from '../../config/auxoVaults/POLYGON';
 const localRPC =
   'https://bestnet.alexintosh.com/rpc/migration-test-round-three';
 
-const selectedNetwork = 1;
+const selectedNetwork = 5;
 
 const _config = config as MultiChainWrapperConfig;
 
@@ -40,7 +40,7 @@ const PolygonMulticall = new MultiCallWrapper(
 );
 
 const MAINNETMulticall = new MultiCallWrapper(
-  _config[SUPPORTED_CHAINS.MAINNET.toString()].provider,
+  _config[SUPPORTED_CHAINS.GOERLI.toString()].provider,
 );
 
 export const productContracts = Object.entries(products).map(

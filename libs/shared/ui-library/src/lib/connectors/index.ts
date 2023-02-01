@@ -11,8 +11,7 @@ export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.FANTOM]: 'https://rpc.ftm.tools/',
   [SUPPORTED_CHAINS.POLYGON]:
     'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
-  [SUPPORTED_CHAINS.GOERLI]:
-    'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
+  [SUPPORTED_CHAINS.GOERLI]: 'https://rpc.ankr.com/eth_goerli',
 };
 
 export const network = (chainId = 1) => {
