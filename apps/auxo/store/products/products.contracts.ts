@@ -26,7 +26,7 @@ import { Polygon } from '../../config/auxoVaults/POLYGON';
 const localRPC =
   'https://bestnet.alexintosh.com/rpc/migration-test-round-three';
 
-const selectedNetwork = 5;
+const selectedNetwork = 1;
 
 const _config = config as MultiChainWrapperConfig;
 
