@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SliceState, STEPS, Steps } from './modal.types';
+import { SliceState, Steps } from './modal.types';
 
 const initialState: SliceState = {
-  step: STEPS.APPROVE_TOKEN,
+  step: null,
   isOpen: false,
   tx: {
     hash: null,
