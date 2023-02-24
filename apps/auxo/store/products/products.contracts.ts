@@ -40,7 +40,7 @@ const PolygonMulticall = new MultiCallWrapper(
 );
 
 const MAINNETMulticall = new MultiCallWrapper(
-  _config[SUPPORTED_CHAINS.GOERLI.toString()].provider,
+  _config[SUPPORTED_CHAINS.MAINNET.toString()].provider,
 );
 
 export const productContracts = Object.entries(products).map(
