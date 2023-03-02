@@ -19,13 +19,9 @@ const StakeSlider: React.FC<Props> = ({
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center justify-center gap-x-2 w-full">
-        <div className="flex flex-shrink-0 w-5 h-5">
-          <Lock isCompleted={false} />
-        </div>
-        <p className="flex-shrink-0">{t('stakeTime')}</p>
-        <div className="flex items-center justify-start gap-x-2">
+        <div className="flex items-center justify-between gap-x-4 w-full">
           <Slider.Root
-            className="relative flex items-center select-none touch-none w-48 h-6"
+            className="relative flex items-center select-none touch-none w-[85%] h-6"
             defaultValue={[1]}
             max={maxLock}
             min={1}
@@ -40,7 +36,7 @@ const StakeSlider: React.FC<Props> = ({
             </Slider.Track>
             <Slider.Thumb className="block w-[20px] h-[20px] bg-secondary shadow-sm rounded-xl" />
           </Slider.Root>
-          <p className="text-secondary font-medium text-md">
+          <p className="text-primary font-bold text-sm w-[15%] shrink-0 text-right">
             {commitmentValue} {commitmentValue === 1 ? t('month') : t('months')}
           </p>
         </div>

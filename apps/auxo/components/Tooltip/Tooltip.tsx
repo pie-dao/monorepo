@@ -6,6 +6,7 @@ import { InformationCircleIcon } from '@heroicons/react/solid';
 
 type Props = {
   children: React.ReactNode;
+  icon?: React.ReactNode;
 };
 
 const variants = {
@@ -23,10 +24,29 @@ const variants = {
   },
 };
 
-const Tooltip: React.FC<Props> = ({ children }) => {
+const Tooltip: React.FC<Props> = ({
+  children,
+  icon = <InformationCircleIcon />,
+}) => {
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement);
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    modifiers: [
+      {
+        name: 'preventOverflow',
+        options: {
+          altAxis: true,
+          padding: 10,
+        },
+      },
+      {
+        name: 'offset',
+        options: {
+          offset: [10, 10],
+        },
+      },
+    ],
+  });
 
   return (
     <Popover>
@@ -39,7 +59,7 @@ const Tooltip: React.FC<Props> = ({ children }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <InformationCircleIcon />
+            {icon}
           </Popover.Button>
           <AnimatePresence>
             {open && (
@@ -53,7 +73,7 @@ const Tooltip: React.FC<Props> = ({ children }) => {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="p-3 mx-3 bg-gradient-primary rounded-md shadow-md z-50 max-w-xs"
+                  className="bg-white rounded-md shadow-md px-2 py-1.5"
                   {...attributes.popper}
                 >
                   {children}

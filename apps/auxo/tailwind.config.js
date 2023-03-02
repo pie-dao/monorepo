@@ -62,6 +62,7 @@ module.exports = {
           rgb(var(--color-secondary)) 0%,
           rgb(var(--color-green)) 100%
         )`,
+        'gradient-major-secondary-predominant': `linear-gradient(90deg, #0B78DD 53.18%, #0BDD91 129.01%)`,
       },
     },
   },

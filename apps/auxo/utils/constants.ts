@@ -1,3 +1,5 @@
+import chroma from 'chroma-js';
+
 export const AVG_SECONDS_IN_MONTH = 2628000;
 export const MAX_LOCK_DURATION_IN_SECONDS = 94608000;
 // JS to Solidity one hour
@@ -43,7 +45,70 @@ export const CONVERSION_CURVE = [
   '1000000000000000000', // 36
 ];
 
+export const LEVELS_REWARDS = [
+  [0, 0.0833],
+  [1, 0.1056],
+  [2, 0.129],
+  [3, 0.1533],
+  [4, 0.1785],
+  [5, 0.2045],
+  [6, 0.2311],
+  [7, 0.2585],
+  [8, 0.2864],
+  [9, 0.3149],
+  [10, 0.3439],
+  [11, 0.3733],
+  [12, 0.4033],
+  [13, 0.4337],
+  [14, 0.4644],
+  [15, 0.4956],
+  [16, 0.5271],
+  [17, 0.559],
+  [18, 0.5912],
+  [19, 0.6238],
+  [20, 0.6566],
+  [21, 0.6898],
+  [22, 0.7232],
+  [23, 0.7569],
+  [24, 0.7909],
+  [25, 0.8252],
+  [26, 0.8597],
+  [27, 0.8944],
+  [28, 0.9294],
+  [29, 0.9646],
+  [30, 1],
+];
+
 export const TOKEN_NAMES = {
   veAUXO: 'ARV',
   xAUXO: 'PRV',
 };
+
+// This output is used to generate the chart data
+// e.g. [0, 10], [1, 13], ..., [30, 100]
+
+export const LEVEL_CHART_DATA: [number, number][] = Array.from(
+  { length: 31 },
+  (_, i) => [i, i * 3 + 10],
+);
+
+export const GRADIENTS = ['rgba(11, 120, 221, 1)', 'rgba(11, 221, 145, 1)'];
+
+function generateEnrichedData(
+  data: [number, number][],
+): [number, number, string, string][] {
+  // Using chroma-js to generate the gradient
+  // we want to have a smooth chart made by all the bars matching the GREADIENTS
+  // so we don't see any white space between the bars
+  const gradient = chroma.scale(GRADIENTS).mode('lab');
+  // split the gradient into 30 parts * 2 (one for each side of the bar)
+  const gradientSteps = gradient.colors(31 * 2);
+  // now we can assing to each bar the color from the gradient, left and right
+  return data.map(([level, value], i) => {
+    const leftColor = gradientSteps[i * 2];
+    const rightColor = gradientSteps[i * 2 + 1];
+    return [level, value, leftColor, rightColor];
+  });
+}
+
+export const COLORED_CHART_DATA = generateEnrichedData(LEVEL_CHART_DATA);

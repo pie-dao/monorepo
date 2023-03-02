@@ -20,8 +20,8 @@ export function formatBalanceCurrency(
 export function formatBalance(
   balanceAmount: number,
   defaultLocale?: string,
-  fixed?: number,
-  notation?: 'compact' | 'standard' | 'scientific' | 'engineering',
+  fixed = 2,
+  notation: 'compact' | 'standard' | 'scientific' | 'engineering' = 'compact',
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'decimal',

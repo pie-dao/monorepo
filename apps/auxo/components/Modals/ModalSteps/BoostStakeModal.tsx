@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
@@ -12,6 +12,16 @@ import { useWeb3React } from '@web3-react/core';
 import AUXOImage from '../../../public/tokens/AUXO.svg';
 import veAUXOImage from '../../../public/tokens/veAUXO.svg';
 import { addMonths } from '../../../utils/dates';
+import {
+  useDecimals,
+  useUserLevel,
+  useUserLevelPercetageReward,
+  useUserLockAmount,
+  useUserLockDuration,
+} from '../../../hooks/useToken';
+import { ParentSize } from '@visx/responsive';
+import LevelChart from '../../LevelChart/LevelChart';
+import veAUXOConversionCalculator from '../../../utils/veAUXOConversionCalculator';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -27,6 +37,11 @@ export default function BoostStakeModal() {
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const stakingContract = useStakingTokenContract(swap.to.token);
+  const actualLock = useUserLockDuration('veAUXO');
+  const userLevel = useUserLevel(actualLock);
+  const userLevelPercetageReward = useUserLevelPercetageReward(userLevel);
+  const stakedAUXOBalance = useUserLockAmount('veAUXO');
+  const decimals = useDecimals('veAUXO');
 
   const boostToMax = () => {
     setDepositLoading(true);
@@ -35,17 +50,26 @@ export default function BoostStakeModal() {
     ).finally(() => setDepositLoading(false));
   };
 
+  const userProjectedTotalStakingAmount = useMemo(() => {
+    const convertNewAmount = veAUXOConversionCalculator(
+      stakedAUXOBalance,
+      36,
+      decimals,
+    );
+    return convertNewAmount;
+  }, [stakedAUXOBalance, decimals]);
+
   return (
     <>
       <Dialog.Title
         as="h3"
         className="font-bold text-center text-xl text-primary capitalize w-full"
       >
-        {t('Stake')}
+        {t('restakeToMax')}
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
-          <p className="text-lg text-sub-dark">
+          <p className="text-lg text-sub-dark font-medium">
             {t('boostStakeModalDescription', {
               token: swap.from.token,
             })}
@@ -53,84 +77,78 @@ export default function BoostStakeModal() {
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="grid grid-cols-3 justify-items-center w-full py-2">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                <Image
-                  src={imageMap[swap.from.token]}
-                  alt={swap.from.token}
-                  width={24}
-                  height={24}
-                />
-                <span className="text-xl font-medium text-primary">
-                  {formatBalance(
-                    swap.from.amount.label,
-                    defaultLocale,
-                    2,
-                    'standard',
-                  )}{' '}
-                  {swap.from.token}
-                </span>
+            <div className="w-full flex flex-col">
+              <div className="grid grid-cols-[1fr_max-content_1fr] place-content-center py-6 gap-x-2">
+                <div className="text-xl text-primary font-medium flex items-center gap-x-2 justify-self-end">
+                  <span className="text-xl font-medium text-primary">
+                    {t('levelAndReward', {
+                      level: userLevel,
+                      reward: userLevelPercetageReward,
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center">
+                  <Image
+                    src={ArrowRight}
+                    alt={'transfer'}
+                    width={24}
+                    height={24}
+                  />
+                </div>
+                <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg justify-self-start">
+                  <span>
+                    {t('levelAndReward', {
+                      level: 30,
+                      reward: '100%',
+                    })}{' '}
+                    🔥
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center">
-                <Image
-                  src={ArrowRight}
-                  alt={'transfer'}
-                  width={24}
-                  height={24}
-                />
-              </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
-                <Image
-                  src={imageMap[swap.to.token]}
-                  alt={swap.to.token}
-                  width={24}
-                  height={24}
-                />
-                <span className="text-xl font-medium text-secondary">
-                  {formatBalance(
-                    swap.to.amount.label,
-                    defaultLocale,
-                    2,
-                    'standard',
-                  )}{' '}
-                  {swap.to.token}
-                </span>
-              </div>
+              {userLevel && (
+                <ParentSize className="w-full h-40 relative -top-6">
+                  {({ width }) => (
+                    <LevelChart width={width} height={160} level={30} />
+                  )}
+                </ParentSize>
+              )}
             </div>
           )}
           {swap?.stakingTime && (
-            <>
-              <div className="flex items-center self-center justify-between w-full py-2">
+            <div className="w-full flex flex-col py-2">
+              <div className="flex items-center self-center justify-between w-full">
                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                   <span className="text-xl font-medium text-primary">
-                    {t('stakeTime')}
+                    {t('youAreRestaking')}:
                   </span>
                 </div>
                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-xl font-medium text-secondary">
-                    {t('monthsAmount', { count: swap.stakingTime })}
+                  <span className="text-xl font-medium text-primary">
+                    {formatBalance(
+                      userProjectedTotalStakingAmount,
+                      defaultLocale,
+                    )}{' '}
+                    ARV
                   </span>
                 </div>
               </div>
-
-              <div className="flex items-center self-center justify-between w-full py-2">
+              <div className="flex items-center self-center justify-between w-full">
                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-xl font-medium text-primary">
-                    {t('newStakingDates')}
+                  <span className="text-sm font-medium text-primary">
+                    {t('unlock')}
                   </span>
                 </div>
                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-xl font-medium text-secondary">
-                    {t('todayTo')}{' '}
+                  <span className="text-sm font-medium text-primary">
                     {addMonths(36).toLocaleDateString(defaultLocale, {
                       year: 'numeric',
-                      month: 'short',
+                      month: '2-digit',
                       day: 'numeric',
                     })}
                   </span>
                 </div>
               </div>
-            </>
+            </div>
           )}
           {hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
@@ -150,7 +168,7 @@ export default function BoostStakeModal() {
                   href={`https://goerli.etherscan.io/tx/${hash}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                  className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
                   {hash}
                 </a>
@@ -165,10 +183,14 @@ export default function BoostStakeModal() {
               className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={boostToMax}
             >
-              {t('stakeToken', { token: swap?.from.token })}
+              {t('restakeToken', { token: swap?.to?.token })}
             </button>
           ) : (
-            <LoadingSpinner />
+            <div className="w-full flex justify-center">
+              <p className="bg-clip-text bg-gradient-major-colors text-transparent ">
+                {t('confirmInWallet')}
+              </p>
+            </div>
           )}
         </div>
       </div>

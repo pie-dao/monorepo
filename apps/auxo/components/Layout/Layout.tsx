@@ -5,7 +5,6 @@ import { Navigation, Header } from '../../components';
 import {
   thunkGetProductsData,
   thunkGetVeAUXOStakingData,
-  thunkGetVaultsData,
   thunkGetXAUXOStakingData,
   thunkGetUserProductsData,
   thunkGetUserStakingData,
@@ -26,7 +25,6 @@ export default function Layout({ children }) {
     dispatch(thunkGetProductsData());
     dispatch(thunkGetVeAUXOStakingData());
     dispatch(thunkGetXAUXOStakingData());
-    // dispatch(thunkGetVaultsData());
     if (account) {
       thunkGetUserProductsData({ account });
       thunkGetUserStakingData({ account });

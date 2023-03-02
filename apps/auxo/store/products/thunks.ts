@@ -318,14 +318,14 @@ export const thunkGetUserStakingData = createAsyncThunk(
       // delegation: veAUXOContract.delegates(account),
     });
 
-    const xAUXOResults = promiseObject({
-      balance: rollStakerContract.getProjectedBalanceForUser(account),
-      currentEpochBalance: rollStakerContract.getCurrentBalanceForUser(account),
-      decimals: xAUXOContract.decimals(),
-    });
+    // const xAUXOResults = promiseObject({
+    //   balance: rollStakerContract.getTotalBalanceForUser(account),
+    //   currentEpochBalance: rollStakerContract.getActiveBalanceForUser(account),
+    //   decimals: xAUXOContract.decimals(),
+    // });
 
     const veAUXOData = await veAUXOresults;
-    const xAUXOData = await xAUXOResults;
+    // const xAUXOData = await xAUXOResults;
 
     return {
       ['veAUXO']: {
@@ -341,15 +341,15 @@ export const thunkGetUserStakingData = createAsyncThunk(
           // delegator: veAUXOData.delegation,
         },
       },
-      ['xAUXO']: {
-        userStakingData: {
-          amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
-          currentEpochBalance: toBalance(
-            xAUXOData.currentEpochBalance,
-            xAUXOData.decimals,
-          ),
-        },
-      },
+      // ['xAUXO']: {
+      //   userStakingData: {
+      //     amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
+      //     currentEpochBalance: toBalance(
+      //       xAUXOData.currentEpochBalance,
+      //       xAUXOData.decimals,
+      //     ),
+      //   },
+      // },
     };
   },
 );
@@ -1131,6 +1131,7 @@ export const thunkWithdrawFromVeAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setStep(STEPS.UNSTAKE_VEAUXO_COMPLETED));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
@@ -1379,13 +1380,7 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details and Amount');
 
     dispatch(setTxHash(null));
-    let tx: ContractTransaction;
-
-    if (shouldRevertDeposit) {
-      tx = await rollStaker.revertDepositAndWithdraw(amount.value);
-    } else {
-      tx = await rollStaker.withdraw(amount.value);
-    }
+    const tx = await rollStaker.withdraw(amount.value);
 
     const { hash } = tx;
     dispatch(setTxHash(hash));

@@ -90,3 +90,22 @@ export const subPercentageToBalance = (
     label,
   };
 };
+
+export const addNumberToBnReference = (
+  b1: BigNumberReference,
+  number: number,
+  decimals: number,
+): BigNumberReference => {
+  const value = BigNumber.from(b1.value).add(
+    BigNumber.from(ethers.utils.parseUnits(number.toString(), decimals)),
+  );
+
+  const stringLabel = ethers.utils.formatUnits(value, decimals);
+
+  const label = parseFloat(stringLabel);
+
+  return {
+    value: value.toString(),
+    label,
+  };
+};

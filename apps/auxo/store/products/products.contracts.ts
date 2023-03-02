@@ -23,8 +23,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC =
-  'https://bestnet.alexintosh.com/rpc/migration-test-round-three';
+const localRPC = 'https://bestnet.alexintosh.com/rpc/staking-rework';
 
 const selectedNetwork = 1;
 
@@ -40,7 +39,7 @@ const PolygonMulticall = new MultiCallWrapper(
 );
 
 const MAINNETMulticall = new MultiCallWrapper(
-  _config[SUPPORTED_CHAINS.GOERLI.toString()].provider,
+  _config[SUPPORTED_CHAINS.MAINNET.toString()].provider,
 );
 
 export const productContracts = Object.entries(products).map(

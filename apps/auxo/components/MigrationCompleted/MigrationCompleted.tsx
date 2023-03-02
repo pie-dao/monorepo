@@ -105,7 +105,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       href={`https://goerli.etherscan.io/tx/${tx?.hash}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                      className="text-sm font-medium text-primary truncate underline max-w-xs"
                     >
                       {shortenedHash}
                     </a>

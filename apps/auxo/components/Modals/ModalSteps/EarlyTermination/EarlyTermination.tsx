@@ -1,31 +1,31 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
-import { useAppSelector, useAppDispatch } from '../../../hooks';
+import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
 import {
   getSigner,
   useAUXOTokenContract,
   useStakingTokenContract,
-} from '../../../hooks/useContracts';
+} from '../../../../hooks/useContracts';
 import {
   useChainExplorer,
   useUserLevel,
   useUserLockDuration,
   useUserNewEndDateFromToday,
-} from '../../../hooks/useToken';
+} from '../../../../hooks/useToken';
 import {
   thunkIncreaseStakeAuxo,
   thunkStakeAuxo,
-} from '../../../store/products/thunks';
-import ArrowRight from '../../../public/images/icons/arrow-right.svg';
-import { formatBalance } from '../../../utils/formatBalance';
-import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
+} from '../../../../store/products/thunks';
+import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
+import { formatBalance } from '../../../../utils/formatBalance';
+import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
-import AUXOImage from '../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../public/tokens/24x24/ARV.svg';
-import AUXOBig from '../../../public/images/AUXOBig.svg';
-import PendingTransaction from '../../PendingTransaction/PendingTransaction';
+import AUXOImage from '../../../../public/tokens/AUXO.svg';
+import veAUXOImage from '../../../../public/tokens/24x24/ARV.svg';
+import AUXOBig from '../../../../public/images/AUXOBig.svg';
+import PendingTransaction from '../../../PendingTransaction/PendingTransaction';
 
 const imageMap = {
   AUXO: AUXOImage,

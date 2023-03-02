@@ -51,7 +51,7 @@ function InputSlider({
     <div
       className={classNames(
         disabled && 'pointer-events-none cursor-not-allowed',
-        'flex flex-col items-center w-full',
+        'flex flex-col items-center w-full mb-2',
       )}
     >
       <div className="w-full">

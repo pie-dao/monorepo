@@ -76,7 +76,7 @@ const StakeConfirm: React.FC<{
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
-          <p className="text-lg text-sub-dark">
+          <p className="text-lg text-sub-dark font-medium">
             {t('stakeConfirmModalDescription', {
               action: t(action),
               token: swap?.from.token,
@@ -128,7 +128,7 @@ const StakeConfirm: React.FC<{
                   href={`https://goerli.etherscan.io/tx/${hash}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                  className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
                   {hash}
                 </a>

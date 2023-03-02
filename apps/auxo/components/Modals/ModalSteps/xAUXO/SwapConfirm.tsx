@@ -33,7 +33,6 @@ export default function StakeConfirm() {
   const chainExplorer = useChainExplorer();
   const signer = getSigner(library, account);
   const stakingManager = useXAUXOStakingManager();
-  console.log(stakingManager.address);
 
   const makeDeposit = () => {
     setDepositLoading(true);
@@ -59,7 +58,7 @@ export default function StakeConfirm() {
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
-          <p className="text-lg text-sub-dark">
+          <p className="text-lg text-sub-dark font-medium">
             {t('convertConfirmModalDescription', {
               token: swap?.to?.token,
             })}
@@ -67,7 +66,7 @@ export default function StakeConfirm() {
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="grid grid-cols-3 justify-items-center w-full py-2">
+            <div className="flex place-content-center w-full py-6 gap-x-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
                 <Image
                   src={imageMap[swap.from.token]}
@@ -93,14 +92,14 @@ export default function StakeConfirm() {
                   height={24}
                 />
               </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
+              <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg">
                 <Image
                   src={imageMap[swap.to.token]}
                   alt={swap.to.token}
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-secondary">
+                <span>
                   {formatBalance(
                     swap.to.amount.label,
                     defaultLocale,
@@ -145,7 +144,7 @@ export default function StakeConfirm() {
                   href={`${chainExplorer?.url}/tx/${tx?.hash}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                  className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
                   {tx?.hash}
                 </a>
