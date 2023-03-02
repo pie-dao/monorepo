@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable prefer-const */
+// Ignore all eslint errors for this file
+
 import { Provider } from '@ethersproject/providers';
 import { HttpService } from '@nestjs/axios';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -380,11 +385,27 @@ export class StakingService {
     return new Promise(async (resolve, reject) => {
       try {
         // fetching all votes from snapshot in the last month...
-        let from = moment({ year: year, month: month - 1, day: 1 });
-        let to = from.clone().endOf('month');
+        const fromTimestamp = Math.floor(
+          moment()
+            .utc()
+            .year(year)
+            .month(month - 1)
+            .startOf('month')
+            .valueOf() / 1000,
+        );
+
+        const toTimestamp = Math.floor(
+          moment()
+            .utc()
+            .year(year)
+            .month(month - 1)
+            .endOf('month')
+            .valueOf() / 1000,
+        );
+
         let votes: Vote[] = await this.getSnapshotVotes(
-          from.unix(),
-          to.unix(),
+          fromTimestamp,
+          toTimestamp,
           proposalsIds,
           'not_in',
         );
@@ -419,8 +440,8 @@ export class StakingService {
           merkleTree,
           votes,
           rewards,
-          from.unix(),
-          to.unix(),
+          fromTimestamp,
+          toTimestamp,
           blockNumber,
           dryRun,
         );
