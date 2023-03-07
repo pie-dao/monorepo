@@ -144,8 +144,8 @@ export default function XAUXO({
                     </span>
                   </p>
                   <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                    {t('total', { token: 'xAUXO' })}
-                    <Tooltip>{t('totalTooltip', { token: 'xAUXO' })}</Tooltip>
+                    {t('total', { token: 'PRV' })}
+                    <Tooltip>{t('totalTooltip', { token: 'PRV' })}</Tooltip>
                   </div>
                 </>
               )}
@@ -176,8 +176,8 @@ export default function XAUXO({
                       )}
                 </p>
                 <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                  {t('apr', { token: 'xAUXO' })}
-                  <Tooltip>{t('aprTooltip', { token: 'xAUXO' })}</Tooltip>
+                  {t('apr', { token: 'PRV' })}
+                  <Tooltip>{t('aprTooltip', { token: 'PRV' })}</Tooltip>
                 </div>
               </div>
             </div>
@@ -201,7 +201,7 @@ XAUXO.getLayout = function getLayout(page: ReactElement) {
 };
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
-  const xAUXO = TokensConfig['xAUXO'] as TokenConfig;
+  const xAUXO = TokensConfig['PRV'] as TokenConfig;
   const AUXO = TokensConfig['AUXO'] as TokenConfig;
   return {
     // does not seem to work with key `initialState`

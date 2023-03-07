@@ -56,7 +56,7 @@ const AuxoDAO: React.FC = () => {
       },
       button: {
         image: veAUXOIcon,
-        text: 'veAUXO',
+        text: 'ARV',
         link: '/',
       },
     },
@@ -240,7 +240,7 @@ const AuxoDAO: React.FC = () => {
               <p className="flex font-bold text-5xl bg-background/20 rounded-full h-24 w-24 place-items-center">
                 <span className="w-full">32</span>
               </p>
-              <p className="font-bold mt-3">{t('common:veAUXO')}</p>
+              <p className="font-bold mt-3">{t('common:ARV')}</p>
               <p>{t('maxRewards')}</p>
             </div>
             <div className="flex flex-col items-center mb-2 text-base">

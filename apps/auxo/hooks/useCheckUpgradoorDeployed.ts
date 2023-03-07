@@ -26,6 +26,6 @@ export default function useCheckUpgradoorDeployed(): boolean | null {
       !isDeployed && dispatch(setIsOpen(true));
     };
     checkIfDeployed();
-  }, [upgradoor, account, library, dispatch]);
+  }, [upgradoor, account, library, dispatch, isMigrationDeployed]);
   return isMigrationDeployed;
 }

@@ -20,7 +20,7 @@ import {
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import { promiseObject } from '../../utils/promiseObject';
-import { percentageBetween, toBalance } from '../../utils/formatBalance';
+import { toBalance } from '../../utils/formatBalance';
 import {
   contractWrappers,
   FTMAuthContractWrapper,
@@ -33,13 +33,18 @@ import {
   xAUXOStakingManager,
   xAUXOContract,
   veAUXOContract,
-  rollStakerContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
 import { calculateSharesAvailable } from '../../utils/sharesAvailable';
 import { pendingNotification } from '../../components/Notifications/Notifications';
-import { setStep, setTx, setTxHash, setTxState } from '../modal/modal.slice';
+import {
+  setStep,
+  setTx,
+  setTxHash,
+  setTxState,
+  setShowCompleteModal,
+} from '../modal/modal.slice';
 import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
 import { JsonRpcSigner } from '@ethersproject/providers';
@@ -58,15 +63,16 @@ export const THUNKS = {
   VAULT_MAKE_DEPOSIT: 'vault/makeDeposit',
   VAULT_CONFIRM_WITHDRAWAL: 'vault/confirmWithdrawal',
   AUTHORIZE_DEPOSITOR: 'vault/authorizrDepositor',
-  APPROVE_STAKE_AUXO: 'veAUXO/approveStakeAUXO',
-  STAKE_AUXO: 'veAUXO/stakeAUXO',
-  INCREASE_STAKE_AUXO: 'veAUXO/increaseStakeAUXO',
-  CONVERT_X_AUXO: 'xAUXO/convertXAUXO',
-  STAKE_X_AUXO: 'xAUXO/stakeXAUXO',
-  UNSTAKE_X_AUXO: 'xAUXO/unstakeXAUXO',
-  BOOST_VE_AUXO: 'veAUXO/boostVeAUXO',
-  INCREASE_LOCK_VE_AUXO: 'veAUXO/increaseLockVeAUXO',
-  WITHDRAW_VE_AUXO: 'veAUXO/withdrawVeAUXO',
+  APPROVE_STAKE_AUXO: 'ARV/approveStakeAUXO',
+  STAKE_AUXO: 'ARV/stakeAUXO',
+  INCREASE_STAKE_AUXO: 'ARV/increaseStakeAUXO',
+  CONVERT_X_AUXO: 'PRV/convertXAUXO',
+  STAKE_X_AUXO: 'PRV/stakeXAUXO',
+  UNSTAKE_X_AUXO: 'PRV/unstakeXAUXO',
+  BOOST_VE_AUXO: 'PRV/boostVeAUXO',
+  INCREASE_LOCK_VE_AUXO: 'ARV/increaseLockVeAUXO',
+  WITHDRAW_VE_AUXO: 'ARV/withdrawVeAUXO',
+  EARLY_TERMINATION: 'ARV/earlyTermination',
 };
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
@@ -233,13 +239,14 @@ export const thunkGetUserProductsData = createAsyncThunk(
 export const thunkGetVeAUXOStakingData = createAsyncThunk(
   THUNKS.GET_VE_AUXO_STAKING_DATA,
   async () => {
-    const depositedFilter = stakingContract.filters.Deposited();
+    // const depositedFilter = stakingContract.filters.Deposited();
 
     const results = promiseObject({
       stakingAmount: contractWrappers[0].balanceOf(stakingContract.address),
       stakingToken: stakingContract.depositToken(),
       decimals: veAUXOContract.decimals(),
       totalSupply: veAUXOContract.totalSupply(),
+      earlyTerminationFee: stakingContract.earlyExitFee(),
       // tokensDeposited: stakingContract.queryFilter(depositedFilter),
     });
 
@@ -267,13 +274,17 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
     // const currentVotingPower = await checkForCurrentVotingPower();
 
     return {
-      ['veAUXO']: {
+      ['ARV']: {
         stakingAmount: toBalance(
           stakingData.stakingAmount,
           stakingData.decimals,
         ),
         stakingToken: stakingData.stakingToken,
         totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
+        earlyTerminationFee: toBalance(
+          stakingData.earlyTerminationFee,
+          stakingData.decimals,
+        ),
         // votingAddresses: currentVotingPower,
       },
     };
@@ -293,7 +304,7 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
     const stakingData = await results;
 
     return {
-      ['xAUXO']: {
+      ['PRV']: {
         stakingAmount: toBalance(
           stakingData.stakingAmount,
           stakingData.decimals,
@@ -328,7 +339,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
     // const xAUXOData = await xAUXOResults;
 
     return {
-      ['veAUXO']: {
+      ['ARV']: {
         userStakingData: {
           amount: toBalance(veAUXOData.lock.amount, veAUXOData.decimals),
           lockedAt: veAUXOData.lock.lockedAt,
@@ -341,7 +352,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
           // delegator: veAUXOData.delegation,
         },
       },
-      // ['xAUXO']: {
+      // ['PRV']: {
       //   userStakingData: {
       //     amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
       //     currentEpochBalance: toBalance(
@@ -967,7 +978,7 @@ export const thunkStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
@@ -1040,7 +1051,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account: signer._address }));
       dispatch(
@@ -1087,6 +1098,7 @@ export const thunkBoostToMaxVeAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
@@ -1401,5 +1413,51 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
     return receipt.status === 1
       ? { amount }
       : rejectWithValue('Withdraw Failed');
+  },
+);
+
+export type ThunkEarlyTerminationProps = {
+  tokenLocker: TokenLockerAbi | undefined;
+  account: string | null | undefined;
+};
+export const thunkEarlyTermination = createAsyncThunk(
+  THUNKS.EARLY_TERMINATION,
+  async (
+    { tokenLocker, account }: ThunkEarlyTerminationProps,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!tokenLocker || !account)
+      return rejectWithValue('Missing Contract, Account Details or Deposit');
+    dispatch(setTxHash(null));
+    let tx: ContractTransaction;
+
+    try {
+      tx = await tokenLocker.terminateEarly();
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Terminate Early Failed');
+    }
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `earlyTerminationPending`,
+      id: 'earlyTermination',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(setStep(STEPS.EARLY_TERMINATION_COMPLETED));
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+      dispatch(
+        thunkGetUserProductsData({ account, spender: tokenLocker.address }),
+      );
+    }
+
+    return receipt.status !== 1 && rejectWithValue('Terminate Early Failed');
   },
 );

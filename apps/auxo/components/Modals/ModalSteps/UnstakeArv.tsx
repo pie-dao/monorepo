@@ -21,11 +21,11 @@ const UnstakeArv = ({ closeModal }: Props) => {
   const { t } = useTranslation();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { account } = useWeb3React();
-  const tokenLocker = useStakingTokenContract('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
   const dispatch = useAppDispatch();
   const [withdrawLoading, setWithdrawLoading] = useState(false);
-  const ARVBalance = useTokenBalance('veAUXO');
-  const AuxoInARV = useUserLockAmount('veAUXO');
+  const ARVBalance = useTokenBalance('ARV');
+  const AuxoInARV = useUserLockAmount('ARV');
   const { tx } = useAppSelector((state) => state.modal);
 
   const withdraw = () => {
@@ -36,7 +36,7 @@ const UnstakeArv = ({ closeModal }: Props) => {
     setSwap({
       swap: {
         from: {
-          token: 'veAUXO',
+          token: 'ARV',
           amount: ARVBalance,
         },
         to: {

@@ -17,9 +17,9 @@ const WithdrawLock = () => {
   const dispatch = useAppDispatch();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { account } = useWeb3React();
-  const tokenLocker = useStakingTokenContract('veAUXO');
-  const stakedAUXO = useUserLockAmount('veAUXO');
-  const userLockStart = useUserLockStartingTime('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
+  const stakedAUXO = useUserLockAmount('ARV');
+  const userLockStart = useUserLockStartingTime('ARV');
 
   const timeSinceStake = useMemo(() => {
     if (!userLockStart) return 0;
@@ -31,7 +31,7 @@ const WithdrawLock = () => {
     dispatch(setIsOpen(true));
   };
 
-  const userLockAmount = useUserLockAmount('veAUXO');
+  const userLockAmount = useUserLockAmount('ARV');
 
   const boostToMax = () => {
     dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
@@ -43,7 +43,7 @@ const WithdrawLock = () => {
             amount: userLockAmount,
           },
           to: {
-            token: 'veAUXO',
+            token: 'ARV',
             amount: userLockAmount,
           },
           stakingTime: 36,

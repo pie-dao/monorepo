@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import veAUXOicon from '../public/tokens/veAUXO.svg';
 import xAUXOIcon from '../public/tokens/xAUXO.svg';
@@ -26,9 +26,23 @@ import { TokenConfig } from '../types/tokensConfig';
 import Summary from '../components/Summary/VeAUXOSummary';
 import ARVNotificationBar from '../components/ARVNotificationBar/ARVNotificationBar';
 import { STEPS } from '../store/modal/modal.types';
-import { setIsOpen, setStep } from '../store/modal/modal.slice';
+import { setIsOpen, setStep, setSwap } from '../store/modal/modal.slice';
+import {
+  useDecimals,
+  useEarlyTerminationFee,
+  useTokenBalance,
+  useUserLockAmount,
+  useUserLockDuration,
+} from '../hooks/useToken';
+import {
+  isZero,
+  subBalances,
+  subPercentageToBalance,
+  zeroBalance,
+} from '../utils/balances';
+import { BigNumberReference } from '../store/products/products.types';
 
-export default function VeAUXO({
+export default function ARV({
   tokenConfig,
   stakingTokenConfig,
 }: {
@@ -45,7 +59,11 @@ export default function VeAUXO({
   const votingAddresses = useAppSelector(
     (state) => state.dashboard?.tokens?.[tokenConfig.name]?.votingAddresses,
   );
-
+  const ARVBalance = useTokenBalance(tokenConfig.name);
+  const decimals = useDecimals(tokenConfig.name);
+  const AuxoBalance = useUserLockAmount(tokenConfig.name);
+  const earlyTerminationFee = useEarlyTerminationFee();
+  const hasLock = !!useUserLockDuration(tokenConfig.name);
   const [commitmentValue, setCommitmentValue] = useState(36);
   const { account, chainId } = useWeb3React<Web3Provider>();
   const dispatch = useAppDispatch();
@@ -64,7 +82,30 @@ export default function VeAUXO({
     );
   }, [account, dispatch, stakingTokenConfig.addresses, chainId]);
 
+  const AuxoMinusFee: BigNumberReference = useMemo(() => {
+    return subPercentageToBalance(AuxoBalance, earlyTerminationFee, decimals);
+  }, [AuxoBalance, earlyTerminationFee, decimals]);
+
+  const losingAmount = useMemo(() => {
+    return subBalances(AuxoBalance, AuxoMinusFee);
+  }, [AuxoBalance, AuxoMinusFee]);
+
   const openEarlyTermination = () => {
+    dispatch(
+      setSwap({
+        swap: {
+          from: {
+            token: tokenConfig.name,
+            amount: ARVBalance,
+          },
+          to: {
+            token: 'PRV',
+            amount: AuxoMinusFee,
+          },
+          losingAmount,
+        },
+      }),
+    );
     dispatch(setStep(STEPS.EARLY_TERMINATION));
     dispatch(setIsOpen(true));
   };
@@ -114,31 +155,38 @@ export default function VeAUXO({
                 <span>{t('governanceEnabled')}</span>
               </div>
             </div>
-            <div className="flex order-2 sm:order-3 ml-auto md:ml-0">
-              <Tooltip
-                icon={
-                  <Image
-                    src={ThreeDots}
-                    width={18}
-                    height={18}
-                    priority
-                    alt="three dots"
-                  />
-                }
-              >
-                <div className="flex bg-white rounded-md">
-                  <button
-                    className="flex items-center gap-x-2"
-                    onClick={openEarlyTermination}
-                  >
-                    <Image src={xAUXOIcon} width={16} height={16} alt="xAUXO" />
-                    <span className="text-primary font-medium text-sm">
-                      {t('earlyTermination')}
-                    </span>
-                  </button>
-                </div>
-              </Tooltip>
-            </div>
+            {account && hasLock && (
+              <div className="flex order-2 sm:order-3 ml-auto md:ml-0">
+                <Tooltip
+                  icon={
+                    <Image
+                      src={ThreeDots}
+                      width={18}
+                      height={18}
+                      priority
+                      alt="three dots"
+                    />
+                  }
+                >
+                  <div className="flex bg-white rounded-md">
+                    <button
+                      className="flex items-center gap-x-2"
+                      onClick={openEarlyTermination}
+                    >
+                      <Image
+                        src={xAUXOIcon}
+                        width={16}
+                        height={16}
+                        alt="xAUXO"
+                      />
+                      <span className="text-primary font-medium text-sm">
+                        {t('earlyTermination')}
+                      </span>
+                    </button>
+                  </div>
+                </Tooltip>
+              </div>
+            )}
           </div>
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
@@ -213,8 +261,8 @@ export default function VeAUXO({
                       )}
                 </p>
                 <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                  {t('apr', { token: 'veAUXO' })}
-                  <Tooltip>{t('aprTooltip', { token: 'veAUXO' })}</Tooltip>
+                  {t('apr', { token: 'ARV' })}
+                  <Tooltip>{t('aprTooltip', { token: 'ARV' })}</Tooltip>
                 </div>
               </div>
             </div>
@@ -263,18 +311,18 @@ export default function VeAUXO({
   );
 }
 
-VeAUXO.getLayout = function getLayout(page: ReactElement) {
+ARV.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
-  const veAUXO = TokensConfig['veAUXO'] as TokenConfig;
+  const ARV = TokensConfig['ARV'] as TokenConfig;
   const AUXO = TokensConfig['AUXO'] as TokenConfig;
   return {
     // does not seem to work with key `initialState`
     props: {
       title: 'AuxoToArv',
-      tokenConfig: veAUXO,
+      tokenConfig: ARV,
       stakingTokenConfig: AUXO,
     },
   };

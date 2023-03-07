@@ -59,5 +59,7 @@ export type SliceState = {
     };
     spender?: string;
     stakingTime?: number;
+    losingAmount?: BigNumberReference;
   };
+  showCompleteModal?: boolean;
 };

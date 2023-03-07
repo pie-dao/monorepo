@@ -17,7 +17,7 @@ const UnstakeConfirm = () => {
   const dispatch = useAppDispatch();
   const goToUnstake = () => dispatch(setStep(STEPS.UNSTAKE_VEAUXO));
 
-  const ARVBalance = useTokenBalance('veAUXO');
+  const ARVBalance = useTokenBalance('ARV');
 
   return (
     <>

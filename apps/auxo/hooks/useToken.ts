@@ -18,6 +18,7 @@ import { useCallback, useMemo } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import { formatAsPercent, toBalance } from '../utils/formatBalance';
 import {
+  addMonths,
   formatDate,
   fromLockedAtToMonths,
   getRemainingMonths,
@@ -151,7 +152,7 @@ export const useApprovalLimit = (
 export function useXAUXOEstimation(
   amount: BigNumberReference,
 ): BigNumberReference {
-  const decimals = useDecimals('xAUXO');
+  const decimals = useDecimals('PRV');
   const fee = useXAUXOFee();
   const estimation = useCallback(() => {
     if (!amount) return zeroBalance;
@@ -170,8 +171,8 @@ export const useXAUXOFee = (): BigNumberReference => {
 };
 
 export const useIsFirstTimeMigration = (): boolean => {
-  const veAUXOBalance = useTokenBalance('veAUXO');
-  const xAUXOBalance = useTokenBalance('xAUXO');
+  const veAUXOBalance = useTokenBalance('ARV');
+  const xAUXOBalance = useTokenBalance('PRV');
   return useMemo(() => {
     return (
       ethers.utils.parseEther(veAUXOBalance.value).isZero() &&
@@ -186,8 +187,8 @@ export const useChainExplorer = () => {
 };
 
 export const useUserRemainingStakingTimeInMonths = () => {
-  const lockDuration = useUserLockDurationInSeconds('veAUXO');
-  const lockStartingTime = useUserLockStartingTime('veAUXO');
+  const lockDuration = useUserLockDurationInSeconds('ARV');
+  const lockStartingTime = useUserLockStartingTime('ARV');
   const remainingTime = useMemo(() => {
     if (!lockDuration || !lockStartingTime) return null;
     const remainingMonths = getRemainingTimeInMonths(
@@ -200,8 +201,8 @@ export const useUserRemainingStakingTimeInMonths = () => {
 };
 
 export const useUserEndDate = () => {
-  const userLockStartingTime = useUserLockStartingTime('veAUXO');
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   return useMemo(() => {
     if (!userLockStartingTime || !userLockDuration) {
@@ -217,12 +218,19 @@ export const useUserEndDate = () => {
   }, [userLockStartingTime, userLockDuration, defaultLocale]);
 };
 
-export const useUserNewEndDateFromToday = () => {
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
+export const useUserNewEndDateFromToday = (stakingTime?: number) => {
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   return useMemo(() => {
-    if (!userLockDuration) {
-      return;
+    if (!userLockDuration && stakingTime) {
+      return addMonths(stakingTime, new Date()).toLocaleDateString(
+        defaultLocale,
+        {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        },
+      );
     }
     return new Date(
       (Date.now() / 1000 + userLockDuration) * 1000,
@@ -231,12 +239,12 @@ export const useUserNewEndDateFromToday = () => {
       month: '2-digit',
       day: '2-digit',
     });
-  }, [userLockDuration, defaultLocale]);
+  }, [userLockDuration, stakingTime, defaultLocale]);
 };
 
 export const useUserLevel = (input: number) => {
   const remainingMonths = useUserRemainingStakingTimeInMonths();
-  const hasLock = !!useUserLockDuration('veAUXO');
+  const hasLock = !!useUserLockDuration('ARV');
   const userLevel = useMemo(() => {
     if (!hasLock) return input - 6;
     if (remainingMonths <= 6) return 0;
@@ -276,8 +284,8 @@ export const useIsUserLockExpired = () => {
 };
 
 export const useUserPassedMonthsLock = () => {
-  const monthsAtLock = useUserLockDuration('veAUXO');
-  const startingAtLock = useUserLockStartingTime('veAUXO');
+  const monthsAtLock = useUserLockDuration('ARV');
+  const startingAtLock = useUserLockStartingTime('ARV');
   const passedMonths = useMemo(() => {
     if (!monthsAtLock || !startingAtLock) return null;
     return getPassedMonths(monthsAtLock, startingAtLock);
@@ -290,4 +298,10 @@ const getPassedMonths = (monthsAtLock: number, startingAtLock: number) => {
     (Date.now() / 1000 - startingAtLock) / monthsAtLock,
   );
   return passedMonths;
+};
+
+export const useEarlyTerminationFee = () => {
+  return useAppSelector(
+    (state) => state.dashboard?.tokens?.ARV?.earlyTerminationFee ?? zeroBalance,
+  );
 };

@@ -158,7 +158,7 @@ export function NavBar() {
             </li>
           ))}
           <li>
-            <Link passHref href="/veAUXO">
+            <Link passHref href="/ARV">
               <button className="w-fit px-4 py-0.5 text-base text-white bg-secondary rounded-2xl ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary flex gap-x-2 items-center">
                 <TemplateIcon className="fill-current w-4 h-4" />
                 {t('launchApp')}

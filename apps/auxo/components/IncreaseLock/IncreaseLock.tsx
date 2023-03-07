@@ -25,19 +25,19 @@ const IncreaseLock: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const tokenLocker = useStakingTokenContract('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
   const { account } = useWeb3React();
   const [commitmentValue, setCommitmentValue] = useState(1);
-  const actualLock = useUserLockDuration('veAUXO');
-  const userStartingLock = useUserLockStartingTime('veAUXO');
-  const userLockStartingTime = useUserLockStartingTime('veAUXO');
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
+  const actualLock = useUserLockDuration('ARV');
+  const userStartingLock = useUserLockStartingTime('ARV');
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
   const userLevel = useUserLevel(actualLock);
   const newLevel = useUserIncreasedLevel(commitmentValue);
-  const veAUXOBalance = useTokenBalance('veAUXO');
-  const stakedAUXOBalance = useUserLockAmount('veAUXO');
+  const veAUXOBalance = useTokenBalance('ARV');
+  const stakedAUXOBalance = useUserLockAmount('ARV');
   const remainingCommitment = useUserRemainingStakingTimeInMonths();
-  const decimals = useDecimals('veAUXO');
+  const decimals = useDecimals('ARV');
   const sumCommitment = useMemo(() => {
     return commitmentValue + remainingCommitment;
   }, [commitmentValue, remainingCommitment]);

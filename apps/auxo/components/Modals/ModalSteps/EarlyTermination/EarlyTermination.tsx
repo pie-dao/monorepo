@@ -6,15 +6,18 @@ import Image from 'next/image';
 import {
   getSigner,
   useAUXOTokenContract,
+  useStakingContract,
   useStakingTokenContract,
 } from '../../../../hooks/useContracts';
 import {
   useChainExplorer,
+  useEarlyTerminationFee,
   useUserLevel,
   useUserLockDuration,
   useUserNewEndDateFromToday,
 } from '../../../../hooks/useToken';
 import {
+  thunkEarlyTermination,
   thunkIncreaseStakeAuxo,
   thunkStakeAuxo,
 } from '../../../../store/products/thunks';
@@ -22,58 +25,43 @@ import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
-import AUXOImage from '../../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../../public/tokens/24x24/ARV.svg';
-import AUXOBig from '../../../../public/images/AUXOBig.svg';
+import AUXOImage from '../../../../public/tokens/32x32/AUXO.svg';
+import veAUXOImage from '../../../../public/tokens/32x32/ARV.svg';
+import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import PendingTransaction from '../../../PendingTransaction/PendingTransaction';
+import { ExclamationIcon } from '@heroicons/react/solid';
 
 const imageMap = {
   AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
+  ARV: veAUXOImage,
+  PRV: xAUXOImage,
 };
 
 export default function StakeConfirm() {
   const { t } = useTranslation();
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
-  const stakingContract = useStakingTokenContract(swap.to.token);
-  const hasLock = useUserLockDuration(swap.to.token);
-  const AUXOToken = useAUXOTokenContract();
-  const signer = getSigner(library, account);
-  const userLevel = useUserLevel(!hasLock ? swap.stakingTime : hasLock);
-  const userNewEndDate = useUserNewEndDateFromToday();
   const chainExplorer = useChainExplorer();
+  const tokenLocker = useStakingTokenContract(swap.from.token);
+  const earlyTerminationFee = useEarlyTerminationFee();
+  const feeInNumber = useMemo(() => {
+    return `${
+      Number(
+        formatBalance(earlyTerminationFee.label, defaultLocale, 4, 'standard'),
+      ) * 100
+    }%`;
+  }, [earlyTerminationFee, defaultLocale]);
 
-  const fireEmoji = useMemo(() => {
-    if (userLevel !== 30) return null;
-    return (
-      <span role="img" aria-label="fire">
-        MAX 🔥
-      </span>
-    );
-  }, [userLevel]);
-
-  const makeDeposit = () => {
+  const terminateEarly = () => {
     setDepositLoading(true);
     dispatch(
-      hasLock
-        ? thunkIncreaseStakeAuxo({
-            signer,
-            deposit: swap?.from?.amount,
-            tokenLocker: stakingContract,
-            AUXOToken,
-          })
-        : thunkStakeAuxo({
-            signer,
-            AUXOToken,
-            deposit: swap?.from?.amount,
-            tokenLocker: stakingContract,
-            stakingTime: swap.stakingTime,
-            account,
-          }),
+      thunkEarlyTermination({
+        account,
+        tokenLocker,
+      }),
     ).finally(() => setDepositLoading(false));
   };
 
@@ -85,19 +73,12 @@ export default function StakeConfirm() {
             as="h3"
             className="font-bold text-center text-xl text-primary capitalize w-full"
           >
-            {t('Stake')}
+            {t('earlyTerminationModalTitle')}
           </Dialog.Title>
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2 text-center">
               <p className="text-lg text-sub-dark font-medium">
-                {!hasLock
-                  ? t('stakeTokenModalDescription', {
-                      token: swap?.from.token,
-                      months: swap?.stakingTime,
-                    })
-                  : t('stakeTokenIncreaseAmountModalDescription', {
-                      token: swap?.from.token,
-                    })}
+                {t('earlyTerminationModalDescription')}
               </p>
             </div>
             <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
@@ -107,8 +88,8 @@ export default function StakeConfirm() {
                     <Image
                       src={imageMap[swap.from.token]}
                       alt={swap.from.token}
-                      width={24}
-                      height={24}
+                      width={32}
+                      height={32}
                     />
                     <span>
                       {formatBalance(
@@ -147,21 +128,36 @@ export default function StakeConfirm() {
                   </div>
                 </div>
               )}
-
-              <div className="flex items-center self-center justify-between w-full py-4">
-                <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-sm font-medium text-primary">
-                    {t('rewardLevel')}:{' '}
-                    <span className="font-bold">
-                      {userLevel} {fireEmoji}
+              <div className="flex items-center self-center justify-center w-full py-4">
+                <div className="text-sm flex-col text-primary font-medium flex items-center gap-y-2">
+                  <p className="flex gap-x-2">
+                    <ExclamationIcon
+                      className="h-5 w-5 text-primary"
+                      aria-hidden="true"
+                    />
+                    <span>{t('irreversible')}</span>
+                  </p>
+                  <p className="flex flex-col">
+                    {t('earlyTerminationFee')}: {feeInNumber}
+                  </p>
+                  <div className="text-xl text-white font-medium flex items-center gap-x-2 bg-red px-4 py-2 rounded-lg">
+                    <Image
+                      src={imageMap['AUXO']}
+                      alt={swap.from.token}
+                      width={24}
+                      height={24}
+                    />
+                    <span>
+                      {t('losing')}:{' '}
+                      {formatBalance(
+                        swap.losingAmount.label,
+                        defaultLocale,
+                        4,
+                        'standard',
+                      )}{' '}
+                      AUXO
                     </span>
-                  </span>
-                </div>
-                <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-sm font-medium text-primary">
-                    {t('unlock')}{' '}
-                    <span className="font-bold">{userNewEndDate}</span>
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -170,9 +166,9 @@ export default function StakeConfirm() {
                 <button
                   type="button"
                   className="w-full px-16 py-2.5 text-lg font-medium uppercase text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
-                  onClick={makeDeposit}
+                  onClick={terminateEarly}
                 >
-                  {t('confirmArvStaking')}
+                  {t('confirmEarlyTermination')}
                 </button>
               ) : (
                 <div className="w-full flex justify-center">

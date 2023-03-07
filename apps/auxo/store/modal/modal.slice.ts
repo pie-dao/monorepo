@@ -19,6 +19,7 @@ const initialState: SliceState = {
     },
     spender: null,
   },
+  showCompleteModal: false,
 };
 
 export const sidebarSlice = createSlice({
@@ -43,9 +44,19 @@ export const sidebarSlice = createSlice({
     setTxState: (state, action: PayloadAction<SliceState['tx']['status']>) => {
       state.tx.status = action.payload;
     },
+    setShowCompleteModal: (state, action: PayloadAction<boolean>) => {
+      state.showCompleteModal = action.payload;
+    },
   },
 });
 
-export const { setStep, setIsOpen, setSwap, setTx, setTxHash, setTxState } =
-  sidebarSlice.actions;
+export const {
+  setStep,
+  setIsOpen,
+  setSwap,
+  setTx,
+  setTxHash,
+  setTxState,
+  setShowCompleteModal,
+} = sidebarSlice.actions;
 export default sidebarSlice.reducer;

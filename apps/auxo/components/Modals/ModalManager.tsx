@@ -14,6 +14,8 @@ import Approve from './ModalSteps/Approve';
 import UnstakeConfirm from './ModalSteps/UnstakeConfirm';
 import UnstakeArv from './ModalSteps/UnstakeArv';
 import UnstakeCompleted from './ModalSteps/UnstakeCompleted';
+import EarlyTermination from './ModalSteps/EarlyTermination/EarlyTermination';
+import EarlyTerminationComplete from './ModalSteps/EarlyTermination/EarlyTerminationComplete';
 
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
@@ -27,23 +29,6 @@ export default function ModalManager() {
       }),
     );
   };
-
-  const stepsMap = {
-    [STEPS.APPROVE_TOKEN]: <Approve />,
-    [STEPS.CONFIRM_STAKE_VEAUXO]: <StakeConfirm />,
-    [STEPS.BOOST_STAKE_VEAUXO]: <BoostStakeModal />,
-    [STEPS.CONFIRM_CONVERT_XAUXO]: <SwapConfirm />,
-    [STEPS.CONFIRM_STAKE_XAUXO]: <StakeXAUXOConfirm />,
-    [STEPS.CONFIRM_UNSTAKE_XAUXO]: <StakeXAUXOConfirm action="unstake" />,
-    [STEPS.CONFIRM_UNSTAKE_VEAUXO]: <UnstakeConfirm />,
-    [STEPS.UNSTAKE_VEAUXO]: <UnstakeArv closeModal={closeModal} />,
-    [STEPS.UNSTAKE_VEAUXO_COMPLETED]: <UnstakeCompleted />,
-    [STEPS.STAKE_COMPLETED]: <StakeComplete action="stake" />,
-    [STEPS.UNSTAKE_COMPLETED]: <StakeComplete action="unstake" />,
-    [STEPS.CONVERT_COMPLETED]: <StakeComplete action="convert" />,
-  };
-
-  const ComponentToRender = stepsMap[step];
 
   return (
     <AnimatePresence initial={false}>
@@ -87,13 +72,10 @@ export default function ModalManager() {
                   {step === STEPS.CONVERT_COMPLETED && (
                     <StakeComplete action="convert" />
                   )}
-                  {/* {step === STEPS.EARLY_TERMINATION && <EarlyTermination />}
-                  {step === STEPS.CONFIRM_EARLY_TERMINATION && (
-                    <EarlyTerminationConfirm />
-                  )}
+                  {step === STEPS.EARLY_TERMINATION && <EarlyTermination />}
                   {step === STEPS.EARLY_TERMINATION_COMPLETED && (
-                    <EarlyTerminationCompleted />
-                  )} */}
+                    <EarlyTerminationComplete />
+                  )}
                 </ModalBox>
               </>
             </Dialog.Panel>

@@ -25,7 +25,7 @@ export type MigrationRecapProps = {
   };
   receiver: string;
   newLockEnd?: string;
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
   oldLockDuration: number;
   fee: string;
 };
@@ -83,7 +83,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         ns="migration"
       />
     </p>,
-    token === 'veAUXO' && (
+    token === 'ARV' && (
       <p className="text-primary font-normal" key={3}>
         <Trans
           i18nKey="newLockDuration"
@@ -107,7 +107,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
           }}
           ns="migration"
         />
-        {token === 'xAUXO' && (
+        {token === 'PRV' && (
           <>
             {' '}
             <Trans
@@ -126,7 +126,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
             Number(
               ethers.utils.formatEther(
                 CONVERSION_CURVE[
-                  token === 'veAUXO' ? newLockDuration : oldLockDuration
+                  token === 'ARV' ? newLockDuration : oldLockDuration
                 ],
               ),
             ),
@@ -137,7 +137,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         </p>
         <p className="font-normal text-primary">
           {t('monthMultiplier', {
-            multiplier: token === 'veAUXO' ? newLockDuration : oldLockDuration,
+            multiplier: token === 'ARV' ? newLockDuration : oldLockDuration,
           })}
         </p>
       </Tooltip>
@@ -150,7 +150,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         ns="migration"
       />
     </p>,
-    token === 'veAUXO' && oldLockDuration && (
+    token === 'ARV' && oldLockDuration && (
       <Fragment key={6}>
         <p className="text-primary font-normal">
           <Trans

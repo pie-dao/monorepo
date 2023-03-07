@@ -12,8 +12,8 @@ const BoostStake: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const tokenLocker = useStakingTokenContract('veAUXO');
-  const userLockAmount = useUserLockAmount('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
+  const userLockAmount = useUserLockAmount('ARV');
 
   const boostToMax = () => {
     dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
@@ -25,7 +25,7 @@ const BoostStake: React.FC = () => {
             amount: userLockAmount,
           },
           to: {
-            token: 'veAUXO',
+            token: 'ARV',
             amount: userLockAmount,
           },
           stakingTime: 36,

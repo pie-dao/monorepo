@@ -17,11 +17,11 @@ const ARVNotificationBar = () => {
   const { t } = useTranslation();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const auxoBalance = useTokenBalance('AUXO');
-  const arvBalance = useTokenBalance('veAUXO');
-  const isMaxxed = useIsUserMaxLockDuration('veAUXO');
+  const arvBalance = useTokenBalance('ARV');
+  const isMaxxed = useIsUserMaxLockDuration('ARV');
 
-  const userLockAmount = useUserLockAmount('veAUXO');
-  const tokenLocker = useStakingTokenContract('veAUXO');
+  const userLockAmount = useUserLockAmount('ARV');
+  const tokenLocker = useStakingTokenContract('ARV');
   const dispatch = useAppDispatch();
 
   const boostToMax = () => {
@@ -34,7 +34,7 @@ const ARVNotificationBar = () => {
             amount: userLockAmount,
           },
           to: {
-            token: 'veAUXO',
+            token: 'ARV',
             amount: userLockAmount,
           },
           stakingTime: 36,
@@ -79,7 +79,7 @@ const ARVNotificationBar = () => {
         </div>
       </div>
     );
-  if (!isMaxxed)
+  if (isMaxxed)
     return (
       <div className="flex gap-x-2 flex-wrap gap-y-4">
         <div className="flex md:flex-1 p-[1px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full">

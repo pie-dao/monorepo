@@ -7,10 +7,7 @@ import { useStakingTokenContract } from '../../../hooks/useContracts';
 import { thunkBoostToMaxVeAUXO } from '../../../store/products/thunks';
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
-import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
-import AUXOImage from '../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../public/tokens/veAUXO.svg';
 import { addMonths } from '../../../utils/dates';
 import {
   useDecimals,
@@ -23,11 +20,6 @@ import { ParentSize } from '@visx/responsive';
 import LevelChart from '../../LevelChart/LevelChart';
 import veAUXOConversionCalculator from '../../../utils/veAUXOConversionCalculator';
 
-const imageMap = {
-  AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
-};
-
 export default function BoostStakeModal() {
   const { t } = useTranslation();
   const { account } = useWeb3React();
@@ -37,11 +29,11 @@ export default function BoostStakeModal() {
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const stakingContract = useStakingTokenContract(swap.to.token);
-  const actualLock = useUserLockDuration('veAUXO');
+  const actualLock = useUserLockDuration('ARV');
   const userLevel = useUserLevel(actualLock);
   const userLevelPercetageReward = useUserLevelPercetageReward(userLevel);
-  const stakedAUXOBalance = useUserLockAmount('veAUXO');
-  const decimals = useDecimals('veAUXO');
+  const stakedAUXOBalance = useUserLockAmount('ARV');
+  const decimals = useDecimals('ARV');
 
   const boostToMax = () => {
     setDepositLoading(true);

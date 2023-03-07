@@ -31,7 +31,7 @@ export default function StakeComplete({
   const actionMap = useMemo(() => {
     switch (action) {
       case 'stake':
-        if (swap?.to?.token === 'veAUXO') {
+        if (swap?.to?.token === 'ARV') {
           return t('stakedArv');
         }
         return t('staked', { token: swap?.to?.token });

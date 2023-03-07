@@ -29,7 +29,7 @@ import PendingTransaction from '../../PendingTransaction/PendingTransaction';
 
 const imageMap = {
   AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
+  ARV: veAUXOImage,
 };
 
 export default function StakeConfirm() {
@@ -44,7 +44,7 @@ export default function StakeConfirm() {
   const AUXOToken = useAUXOTokenContract();
   const signer = getSigner(library, account);
   const userLevel = useUserLevel(!hasLock ? swap.stakingTime : hasLock);
-  const userNewEndDate = useUserNewEndDateFromToday();
+  const userNewEndDate = useUserNewEndDateFromToday(swap.stakingTime);
   const chainExplorer = useChainExplorer();
 
   const fireEmoji = useMemo(() => {

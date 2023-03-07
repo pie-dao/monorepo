@@ -32,12 +32,12 @@ type Props = {
 
 const tokenOptions = [
   {
-    title: <Trans i18nKey="convertToken" values={{ token: 'xAUXO' }} />,
+    title: <Trans i18nKey="convertToken" values={{ token: 'PRV' }} />,
     value: 'convert',
     image: <Image src={AuxoIcon} alt={'AUXO Icon'} width={24} height={24} />,
   },
   {
-    title: <Trans i18nKey="stakeToken" values={{ token: 'xAUXO' }} />,
+    title: <Trans i18nKey="stakeToken" values={{ token: 'PRV' }} />,
     value: 'convertAndStake',
     image: <Image src={xAuxoIcon} alt={'xAUXO Icon'} width={24} height={24} />,
   },
@@ -207,7 +207,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           deposit={originDepositValue}
                           estimation={xAUXOEstimation}
                           tokenConfig={stakingTokenConfig}
-                          toToken="xAUXO"
+                          toToken="PRV"
                         >
                           {t('convert')}
                         </DepositActions>

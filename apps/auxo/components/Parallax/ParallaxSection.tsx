@@ -15,7 +15,7 @@ import classNames from '../../utils/classnames';
 
 const tokens = [
   {
-    name: 'veAUXO',
+    name: 'ARV',
     image: (
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32">
         <rect
@@ -34,7 +34,7 @@ const tokens = [
     description: 'maxRewards',
     button: {
       text: 'common:stake',
-      link: '/veAUXO',
+      link: '/ARV',
     },
     bg: 'bg-secondary/30',
   },
@@ -57,7 +57,7 @@ const tokens = [
     bg: 'bg-primary/30',
   },
   {
-    name: 'xAUXO',
+    name: 'PRV',
     image: (
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32">
         <rect
@@ -76,7 +76,7 @@ const tokens = [
     description: 'keepLiquidity',
     button: {
       text: 'common:stake',
-      link: '/xAUXO',
+      link: '/PRV',
     },
     bg: 'bg-sub-dark/30',
   },

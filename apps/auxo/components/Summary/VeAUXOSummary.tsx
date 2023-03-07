@@ -156,8 +156,8 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         </h4>
       </div>
       <ParentSize className="w-full h-40 relative -top-8">
-        {({ width, height }) => (
-          <LevelChart width={width} height={height} level={userLevel} />
+        {({ width }) => (
+          <LevelChart width={width} height={180} level={userLevel} />
         )}
       </ParentSize>
       {summaryData.map(({ icon, title, value }, index) => (

@@ -12,7 +12,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
 };
 
 const MigrationCompleted: React.FC<Props> = ({ token }) => {
@@ -27,7 +27,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
   } = useAppSelector((state) => state.migration);
 
   const textForMigrationType = useMemo(() => {
-    const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const baseText = token === 'ARV' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     return t(`${lockText}${baseText}Completed`);
   }, [token, isSingleLock, t]);
@@ -54,7 +54,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
           <div className="h-[150px] w-full rounded-lg overflow-hidden mb-6">
             <RiveComponent
               src={
-                token === 'veAUXO'
+                token === 'ARV'
                   ? `/animations/veDOUGH-veAUXO.riv`
                   : `/animations/veDOUGH-xAUXO.riv`
               }

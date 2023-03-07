@@ -24,7 +24,7 @@ import classNames from '../../utils/classnames';
 
 type Props = {
   isCurrentWallet: boolean;
-  token?: 'veAUXO' | 'xAUXO';
+  token?: 'ARV' | 'PRV';
 };
 
 const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
@@ -37,7 +37,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
-  const tokenLocker = useStakingTokenContract('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
   const eDOUGHTokenLocker = useVeDOUGHStakingContract();
   const dispatch = useAppDispatch();
 
@@ -116,7 +116,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
   }, [anotherWallet]);
 
   const checkForTerms = useMemo(() => {
-    if (token === 'veAUXO') {
+    if (token === 'ARV') {
       return isTermsAccepted;
     } else {
       return true;
@@ -139,7 +139,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
             <div className="flex items-center gap-x-2 p-2 text-primary leading-5 text-sm">
               {account ? trimAccount(account, true) : t('walletNotConnected')}
             </div>
-            {token === 'veAUXO' && (
+            {token === 'ARV' && (
               <>
                 <div className="text-left pt-2 border-t border-customBorder mt-2 text-white">
                   <Banner

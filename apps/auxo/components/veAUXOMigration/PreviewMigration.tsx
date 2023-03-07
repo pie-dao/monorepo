@@ -19,7 +19,7 @@ const imageMap = {
 };
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
   previewType: typeof MIGRATION_TYPE[keyof typeof MIGRATION_TYPE];
   isSingleLock: boolean;
   DOUGHInput?: string;

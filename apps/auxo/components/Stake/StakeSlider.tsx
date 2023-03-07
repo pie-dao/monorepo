@@ -17,7 +17,7 @@ const StakeSlider: React.FC<Props> = ({
   setCommitmentValue,
 }) => {
   const { t } = useTranslation();
-  const minLock = useUserLockDuration('veAUXO');
+  const minLock = useUserLockDuration('ARV');
 
   return (
     <div className="flex flex-col items-center justify-between w-full gap-y-2">

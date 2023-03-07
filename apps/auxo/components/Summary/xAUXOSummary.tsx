@@ -50,7 +50,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
       },
       {
         icon: <Image src={xAUXOIcon} alt="xAUXO" width={24} height={24} />,
-        title: t('tokenBalance', { token: 'xAUXO' }),
+        title: t('tokenBalance', { token: 'PRV' }),
         value: `${
           account && xAUXOBalance
             ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
@@ -61,7 +61,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         icon: (
           <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
         ),
-        title: t('stakedBalance', { token: 'xAUXO' }),
+        title: t('stakedBalance', { token: 'PRV' }),
         value: `
           ${
             account

@@ -11,6 +11,7 @@ import { wrapper } from '../store';
 import { NotificationDisplay } from '../components/Notifications/Notifications';
 import ModalManager from '../components/Modals/ModalManager';
 import ModalMigration from '../components/Modals/ModalMigration';
+import ModalStakingSuccess from '../components/Modals/ModalSuccess';
 import './styles.css';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -53,6 +54,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
             <NotificationDisplay />
             <ModalManager />
             <ModalMigration />
+            <ModalStakingSuccess />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>

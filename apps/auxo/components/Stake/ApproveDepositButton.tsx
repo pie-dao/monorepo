@@ -29,7 +29,7 @@ function DepositActions({
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
-  const stakingContract = useStakingTokenContract('veAUXO');
+  const stakingContract = useStakingTokenContract('ARV');
   const tokens = useTokenBalance(tokenConfig.name);
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;

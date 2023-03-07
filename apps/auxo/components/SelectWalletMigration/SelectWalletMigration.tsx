@@ -7,7 +7,7 @@ import { isZero } from '../../utils/balances';
 import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
 };
 const SelectWalletMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');

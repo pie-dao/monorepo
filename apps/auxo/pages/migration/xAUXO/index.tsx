@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import useMigrationSteps from '../../../hooks/migrationSteps';
 
-export default function Migration({ token }: { token: 'xAUXO' | 'veAUXO' }) {
+export default function Migration({ token }: { token: 'PRV' | 'ARV' }) {
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
 
@@ -35,7 +35,7 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
     props: {
       title: 'migration',
-      token: 'xAUXO',
+      token: 'PRV',
     },
   };
 });

@@ -238,13 +238,13 @@ export function useAUXOTokenContract() {
 
 export function useXAUXOTokenContract() {
   const { chainId } = useWeb3React();
-  return useXAUXOContract(tokensConfig['xAUXO']?.addresses[chainId]?.address);
+  return useXAUXOContract(tokensConfig['PRV']?.addresses[chainId]?.address);
 }
 
 export function useRollStakerXAUXOContract() {
   const { chainId } = useWeb3React();
   return useRollStakerContract(
-    tokensConfig['xAUXO']?.addresses[chainId]?.rollStakerAddress,
+    tokensConfig['PRV']?.addresses[chainId]?.rollStakerAddress,
   );
 }
 
@@ -258,6 +258,6 @@ export function useUpgradoor() {
 export function useXAUXOStakingManager() {
   const { chainId } = useWeb3React();
   return useStakingManager(
-    tokensConfig['xAUXO']?.addresses[chainId]?.stakingAddress,
+    tokensConfig['PRV']?.addresses[chainId]?.stakingAddress,
   );
 }

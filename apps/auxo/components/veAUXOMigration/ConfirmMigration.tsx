@@ -39,11 +39,11 @@ import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
 };
 
 export function getMigratingTo(token: string, boost: boolean): string {
-  if (token !== 'veAUXO') return 'PRV';
+  if (token !== 'ARV') return 'PRV';
   if (!boost) return 'oneLockOutput';
   else return 'oneBoostedLockOutput';
 }
@@ -67,7 +67,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   } = useAppSelector((state) => state.migration);
 
   const entryFee = useAppSelector(
-    (state) => state.dashboard?.tokens['xAUXO']?.fee?.label,
+    (state) => state.dashboard?.tokens['PRV']?.fee?.label,
   );
 
   const dispatch = useAppDispatch();
@@ -128,8 +128,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   }, [isSingleLock, memoizedPositions, positions]);
 
   const textForMigrationType = useMemo(() => {
-    const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
-    const boostText = token === 'veAUXO' && boost ? 'Boost' : '';
+    const baseText = token === 'ARV' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const boostText = token === 'ARV' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     return t(`${lockText}${baseText}${boostText}`, {
       boostLevel: getLevel(
@@ -176,7 +176,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     };
 
     const newLockDuration =
-      token === 'veAUXO'
+      token === 'ARV'
         ? boost
           ? 36
           : getRemainingMonths(
@@ -200,7 +200,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
 
     const receiver = trimAccount(destinationWallet, true);
     const newLockEnd =
-      token === 'veAUXO'
+      token === 'ARV'
         ? formatDate(addMonths(newLockDuration), defaultLocale)
         : null;
 

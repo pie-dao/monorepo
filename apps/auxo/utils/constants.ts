@@ -80,8 +80,8 @@ export const LEVELS_REWARDS = [
 ];
 
 export const TOKEN_NAMES = {
-  veAUXO: 'ARV',
-  xAUXO: 'PRV',
+  ARV: 'ARV',
+  PRV: 'PRV',
 };
 
 // This output is used to generate the chart data

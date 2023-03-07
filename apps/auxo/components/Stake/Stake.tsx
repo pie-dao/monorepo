@@ -12,6 +12,7 @@ import useTranslation from 'next-translate/useTranslation';
 import {
   useDecimals,
   useIsUserLockExpired,
+  useIsUserMaxLockDuration,
   useTokenBalance,
   useUserEndDate,
   useUserLockAmount,
@@ -54,25 +55,27 @@ const Stake: React.FC<Props> = ({
   const [depositValue, setDepositValue] = useState(zeroBalance);
   const balance = useTokenBalance(name);
   const decimals = useDecimals(name);
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
-  const veAUXOBalance = useTokenBalance('veAUXO');
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
+  const veAUXOBalance = useTokenBalance('ARV');
   const remainingCommitment = useUserRemainingStakingTimeInMonths();
   const endDate = useUserEndDate();
   const newEndDate = useUserNewEndDateFromToday();
-  const hasLock = !!useUserLockDurationInSeconds('veAUXO');
-  const userLockStart = useUserLockStartingTime('veAUXO');
+  const hasLock = !!useUserLockDurationInSeconds('ARV');
+  const userLockStart = useUserLockStartingTime('ARV');
   const isUserLockExpired = useIsUserLockExpired();
-  const stakedAUXO = useUserLockAmount('veAUXO');
+  const stakedAUXO = useUserLockAmount('ARV');
+  const isMaxxed = useIsUserMaxLockDuration('ARV');
 
   const timeSinceStake = useMemo(() => {
     if (!userLockStart) return 0;
     return getMonthsSinceStake(userLockStart);
   }, [userLockStart]);
-
   const veAuxoEstimationCalc = useCallback(() => {
     return veAUXOConversionCalculator(
       depositValue,
-      remainingCommitment !== 0 ? remainingCommitment : commitmentValue,
+      remainingCommitment !== 0 && remainingCommitment !== null
+        ? remainingCommitment
+        : commitmentValue,
       decimals,
     );
   }, [commitmentValue, decimals, depositValue, remainingCommitment]);
@@ -221,14 +224,14 @@ const Stake: React.FC<Props> = ({
                     estimation={veAUXOEstimation}
                     stakingTime={!userLockDuration ? commitmentValue : null}
                     tokenConfig={tokenConfig}
-                    toToken="veAUXO"
+                    toToken="ARV"
                   />
                 </ModalBox>
               </Tab.Panel>
               {hasLock && (
                 <Tab.Panel className="h-full">
                   <ModalBox className="flex flex-col gap-y-1 h-full">
-                    {!isUserLockExpired ? (
+                    {isUserLockExpired ? (
                       <WithdrawLock />
                     ) : (
                       <>
@@ -253,7 +256,7 @@ const Stake: React.FC<Props> = ({
                             </dd>
                           </dl>
                         </div>
-                        <IncreaseLock />
+                        {isMaxxed && <IncreaseLock />}
                       </>
                     )}
                   </ModalBox>

@@ -18,10 +18,10 @@ import { stakingContract } from '../../store/products/products.contracts';
 const StakingHistory: React.FC = () => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
-  const tokenLocker = useStakingTokenContract('veAUXO');
-  const userLockStartingTime = useUserLockStartingTime('veAUXO');
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
-  const userLockAmount = useUserLockAmount('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
+  const userLockAmount = useUserLockAmount('ARV');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
 
@@ -82,7 +82,7 @@ const StakingHistory: React.FC = () => {
             amount: userLockAmount,
           },
           to: {
-            token: 'veAUXO',
+            token: 'ARV',
             amount: userLockAmount,
           },
           stakingTime: 36,

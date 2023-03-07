@@ -221,5 +221,14 @@
   "sureToUnstake": "Are you sure you want to unstake?",
   "cancel": "Cancel",
   "sorryToSeeYouGo": "We are sorry to see you to go, join our discord to stay with our community and stay updated on the last updates.",
-  "YouUnstaked": "You unstaked"
+  "YouUnstaked": "You unstaked",
+  "journeyStarted": "The journey has just started",
+  "goToPage": "Go back to page",
+  "earlyTerminationModalTitle": "Early termination - From ARV to PRV",
+  "earlyTerminationModalDescription": "You are about to convert your ARV to PRV",
+  "irreversible": "Action is irreversible",
+  "earlyTerminationFee": "Early termination fee",
+  "losing": "Losing",
+  "movedPosition": "You moved your ARV position to PRV",
+  "confirmEarlyTermination": "Confirm early termination"
 }
