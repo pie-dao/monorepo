@@ -1,12 +1,8 @@
 import { Erc20Abi } from '@shared/util-blockchain';
-import { getExplorer, Explorer } from '@shared/util-blockchain/abis';
+import { getExplorer } from '@shared/util-blockchain/abis';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumberReference } from '../store/products/products.types';
-import {
-  addBalances,
-  addNumberToBnReference,
-  zeroBalance,
-} from '../utils/balances';
+import { zeroBalance } from '../utils/balances';
 import { useAppSelector } from './index';
 import { useTokenContract } from './useContracts';
 import {
@@ -17,14 +13,7 @@ import {
 import { useCallback, useMemo } from 'react';
 import { BigNumber, ethers } from 'ethers';
 import { formatAsPercent, toBalance } from '../utils/formatBalance';
-import {
-  addMonths,
-  formatDate,
-  fromLockedAtToMonths,
-  getRemainingMonths,
-  getRemainingTimeInMonths,
-} from '../utils/dates';
-import veAUXOConversionCalculator from '../utils/veAUXOConversionCalculator';
+import { addMonths, getRemainingTimeInMonths } from '../utils/dates';
 
 export const useCurrentChainAddress = (token: string): string => {
   const { chainId } = useWeb3React();
