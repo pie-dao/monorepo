@@ -34,12 +34,7 @@ import {
   useUserLockAmount,
   useUserLockDuration,
 } from '../hooks/useToken';
-import {
-  isZero,
-  subBalances,
-  subPercentageToBalance,
-  zeroBalance,
-} from '../utils/balances';
+import { subBalances, subPercentageToBalance } from '../utils/balances';
 import { BigNumberReference } from '../store/products/products.types';
 
 export default function ARV({

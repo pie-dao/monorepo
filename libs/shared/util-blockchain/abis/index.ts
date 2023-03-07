@@ -10,7 +10,7 @@ import sharesTimeLock from './sharesTimeLock/sharesTimeLock.abi.json';
 import upgradoor from './upgradoor/upgradoor.abi.json';
 import AUXO from './AUXO/AUXO.abi.json';
 import rollStaker from './rollStaker/rollStaker.abi.json';
-import { getExplorer, Explorer } from '../chains';
+import { getExplorer } from '../chains';
 
 export {
   erc20,
@@ -26,5 +26,4 @@ export {
   AUXO,
   rollStaker,
   getExplorer,
-  Explorer,
 };
