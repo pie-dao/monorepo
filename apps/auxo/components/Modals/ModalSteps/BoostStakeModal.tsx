@@ -17,7 +17,6 @@ import {
   useUserLockDuration,
 } from '../../../hooks/useToken';
 import { ParentSize } from '@visx/responsive';
-import LevelChart from '../../LevelChart/LevelChart';
 import veAUXOConversionCalculator from '../../../utils/veAUXOConversionCalculator';
 
 export default function BoostStakeModal() {
@@ -97,13 +96,13 @@ export default function BoostStakeModal() {
                   </span>
                 </div>
               </div>
-              {userLevel && (
+              {/* {userLevel && (
                 <ParentSize className="w-full h-40 relative -top-6">
                   {({ width }) => (
                     <LevelChart width={width} height={160} level={30} />
                   )}
                 </ParentSize>
-              )}
+              )} */}
             </div>
           )}
           {swap?.stakingTime && (

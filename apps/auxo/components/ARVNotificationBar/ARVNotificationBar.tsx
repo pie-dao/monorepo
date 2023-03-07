@@ -79,7 +79,7 @@ const ARVNotificationBar = () => {
         </div>
       </div>
     );
-  if (isMaxxed)
+  if (!isMaxxed)
     return (
       <div className="flex gap-x-2 flex-wrap gap-y-4">
         <div className="flex md:flex-1 p-[1px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full">
