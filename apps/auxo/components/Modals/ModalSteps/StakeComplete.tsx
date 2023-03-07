@@ -13,8 +13,8 @@ import { useChainExplorer } from '../../../hooks/useToken';
 
 const imageMap = {
   AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
-  xAUXO: xAUXOImage,
+  ARV: veAUXOImage,
+  PRV: xAUXOImage,
 };
 
 export default function StakeComplete({

@@ -13,8 +13,8 @@ import { isEmpty } from 'lodash';
 import { TOKEN_NAMES } from '../../utils/constants';
 
 const imageMap = {
-  veAUXO: veAUXOImage,
-  xAUXO: xAUXOImage,
+  ARV: veAUXOImage,
+  PRV: xAUXOImage,
   DOUGH: DOUGHImage,
 };
 

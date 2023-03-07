@@ -22,7 +22,7 @@ import { useUserCurrentEpochStakedXAUXO } from '../../../../hooks/useToken';
 
 const imageMap = {
   AUXO: AUXOImage,
-  xAUXO: xAUXOImage,
+  PRV: xAUXOImage,
 };
 
 const StakeConfirm: React.FC<{

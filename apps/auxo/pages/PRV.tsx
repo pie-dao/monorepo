@@ -78,7 +78,7 @@ export default function XAUXO({
               className="text-lg font-medium text-primary w-fit"
               data-cy="product-name"
             >
-              xAUXO
+              PRV
             </h2>
             <button
               className="flex ml-auto pr-2"

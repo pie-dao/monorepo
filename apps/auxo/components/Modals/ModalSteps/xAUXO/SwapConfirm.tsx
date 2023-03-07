@@ -18,7 +18,7 @@ import { useChainExplorer } from '../../../../hooks/useToken';
 
 const imageMap = {
   AUXO: '/tokens/AUXO.svg',
-  xAUXO: '/tokens/xAUXO.svg',
+  PRV: '/tokens/xAUXO.svg',
 };
 
 export default function StakeConfirm() {

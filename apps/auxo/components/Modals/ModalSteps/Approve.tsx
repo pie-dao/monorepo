@@ -14,8 +14,8 @@ import xAUXOImage from '../../../public/tokens/xAUXO.svg';
 
 const imageMap = {
   AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
-  xAUXO: xAUXOImage,
+  ARV: veAUXOImage,
+  PRV: xAUXOImage,
 };
 
 export default function Approve() {
