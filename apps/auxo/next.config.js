@@ -28,11 +28,6 @@ const nextConfig = {
   redirects: async () => {
     return [
       {
-        source: '/',
-        destination: '/migration',
-        permanent: false,
-      },
-      {
         source: '/vaults/:slug',
         destination: '/migration',
         permanent: false,
