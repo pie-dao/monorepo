@@ -69,7 +69,7 @@ export default function Approve() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {formatBalance(
                     swap.from.amount.label,
                     defaultLocale,
@@ -115,7 +115,7 @@ export default function Approve() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('blockExplorer')}
                 </span>
               </div>
@@ -132,11 +132,11 @@ export default function Approve() {
             </div>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full flex justify-center">
           {!approving ? (
             <button
               type="button"
-              className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={approveDeposit}
             >
               {t('approveToken', { token: swap?.from.token })}

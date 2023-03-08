@@ -87,7 +87,7 @@ const StakeConfirm: React.FC<{
           {swap && (
             <div className="grid grid-cols-2 justify-items-center w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('amount')}:
                 </span>
               </div>
@@ -98,7 +98,7 @@ const StakeConfirm: React.FC<{
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {formatBalance(
                     swap.from.amount.label,
                     defaultLocale,
@@ -119,7 +119,7 @@ const StakeConfirm: React.FC<{
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('blockExplorer')}
                 </span>
               </div>
@@ -136,11 +136,11 @@ const StakeConfirm: React.FC<{
             </div>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full flex justify-center">
           {!depositLoading ? (
             <button
               type="button"
-              className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={makeDeposit}
             >
               {t('confirmModal', {

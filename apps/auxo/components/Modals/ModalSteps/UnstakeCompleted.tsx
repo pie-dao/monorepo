@@ -35,7 +35,7 @@ export default function UnstakeCompleted() {
   //                     width={24}
   //                     height={24}
   //                   />
-  //                   <span className="text-xl font-medium text-primary">
+  //                   <span className="text-xl font-semibold text-primary">
   //                     {formatBalance(
   //                       swap.from.amount.label,
   //                       defaultLocale,
@@ -74,7 +74,7 @@ export default function UnstakeCompleted() {
   //             ) : (
   //               <>
   //                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-  //                   <span className="text-xl font-medium text-primary">
+  //                   <span className="text-xl font-semibold text-primary">
   //                     {t('amount')}:
   //                   </span>
   //                 </div>
@@ -85,7 +85,7 @@ export default function UnstakeCompleted() {
   //                     width={24}
   //                     height={24}
   //                   />
-  //                   <span className="text-xl font-medium text-primary">
+  //                   <span className="text-xl font-semibold text-primary">
   //                     {formatBalance(
   //                       swap.from.amount.label,
   //                       defaultLocale,
@@ -102,7 +102,7 @@ export default function UnstakeCompleted() {
   //         {swap?.stakingTime && (
   //           <div className="flex items-center self-center justify-between w-full py-2 justify-self-end">
   //             <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-  //               <span className="text-xl font-medium text-primary">
+  //               <span className="text-xl font-semibold text-primary">
   //                 {t('stakeTime')}
   //               </span>
   //             </div>

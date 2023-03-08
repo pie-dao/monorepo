@@ -9,9 +9,11 @@ import {
 import { useStakingTokenContract } from '../../hooks/useContracts';
 import { setStep, setSwap, setIsOpen } from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
+import { useWeb3React } from '@web3-react/core';
 
 const ARVNotificationBar = () => {
   const { t } = useTranslation();
+  const { account } = useWeb3React();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const isMaxxed = useIsUserMaxLockDuration('ARV');
 
@@ -40,7 +42,7 @@ const ARVNotificationBar = () => {
     dispatch(setIsOpen(true));
   };
 
-  if (!isMaxxed)
+  if (!isMaxxed && account)
     return (
       <div className="flex gap-x-2 flex-wrap gap-y-4">
         <div className="flex md:flex-1 p-[1px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full">

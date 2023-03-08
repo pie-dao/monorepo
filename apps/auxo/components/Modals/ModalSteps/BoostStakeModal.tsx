@@ -71,7 +71,7 @@ export default function BoostStakeModal() {
             <div className="w-full flex flex-col">
               <div className="flex place-content-center w-full py-6 gap-x-2">
                 <div className="text-xl text-primary font-medium flex items-center gap-x-2 justify-self-end">
-                  <span className="text-xl font-medium text-primary">
+                  <span className="text-xl font-semibold text-primary">
                     {t('levelAndReward', {
                       level: userLevel,
                       reward: userLevelPercetageReward,
@@ -109,12 +109,12 @@ export default function BoostStakeModal() {
             <div className="w-full flex flex-col py-2">
               <div className="flex items-center self-center justify-between w-full">
                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-xl font-medium text-primary">
+                  <span className="text-xl font-semibold text-primary">
                     {t('youAreRestaking')}:
                   </span>
                 </div>
                 <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                  <span className="text-xl font-medium text-primary">
+                  <span className="text-xl font-semibold text-primary">
                     {formatBalance(
                       userProjectedTotalStakingAmount,
                       defaultLocale,
@@ -150,7 +150,7 @@ export default function BoostStakeModal() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('blockExplorer')}
                 </span>
               </div>
@@ -167,11 +167,11 @@ export default function BoostStakeModal() {
             </div>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full flex justify-center">
           {!depositLoading ? (
             <button
               type="button"
-              className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={boostToMax}
             >
               {t('restakeToken', { token: swap?.to?.token })}

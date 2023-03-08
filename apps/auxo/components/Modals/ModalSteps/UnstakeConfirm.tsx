@@ -44,7 +44,7 @@ const UnstakeConfirm = () => {
         <div className="w-full flex justify-center">
           <button
             onClick={goToUnstake}
-            className="w-fit px-36 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
             {t('unstake')}
           </button>

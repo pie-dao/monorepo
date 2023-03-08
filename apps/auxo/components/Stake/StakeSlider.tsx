@@ -20,10 +20,10 @@ const StakeSlider: React.FC<Props> = ({
   const minLock = useUserLockDuration('ARV');
 
   return (
-    <div className="flex flex-col items-center justify-between w-full gap-y-2">
+    <div className="flex flex-col items-center justify-between w-full">
       <div className="flex items-center justify-between w-full gap-x-2">
-        <div className="flex gap-x-1 items-center mt-4">
-          <div className="shrink-0">
+        <div className="flex gap-x-1 items-center">
+          <div className="flex flex-shrink-0">
             <Image src={Lock} alt="lock" width={12} height={12} />
           </div>
           <p className="text-sm font-medium text-primary">{t('stakeTime')}</p>

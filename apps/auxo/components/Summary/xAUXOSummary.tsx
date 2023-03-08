@@ -80,7 +80,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   }, [account, auxoBalance, defaultLocale, fee, t, xAUXOBalance, stakedXAUXO]);
 
   return (
-    <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-white gap-y-4">
+    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-4">
       <div className="flex items-center justify-between w-full">
         <h3 className="text-xl font-medium text-primary">{t('summary')}</h3>
       </div>

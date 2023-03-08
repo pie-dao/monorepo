@@ -96,7 +96,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       width={24}
                       height={24}
                     />
-                    <span className="text-xl font-medium text-primary">
+                    <span className="text-xl font-semibold text-primary">
                       {t('blockExplorer')}
                     </span>
                   </div>

@@ -79,7 +79,7 @@ export default function StakeConfirm() {
                       width={24}
                       height={24}
                     />
-                    <span className="text-xl font-medium text-primary">
+                    <span className="text-xl font-semibold text-primary">
                       {formatBalance(
                         swap.from.amount.label,
                         defaultLocale,
@@ -119,7 +119,7 @@ export default function StakeConfirm() {
               {swap?.stakingTime && (
                 <div className="flex items-center self-center justify-between w-full py-2">
                   <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                    <span className="text-xl font-medium text-primary">
+                    <span className="text-xl font-semibold text-primary">
                       {t('stakeTime')}
                     </span>
                   </div>
@@ -140,7 +140,7 @@ export default function StakeConfirm() {
                       width={24}
                       height={24}
                     />
-                    <span className="text-xl font-medium text-primary">
+                    <span className="text-xl font-semibold text-primary">
                       {t('blockExplorer')}
                     </span>
                   </div>
@@ -196,7 +196,7 @@ export default function StakeConfirm() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('blockExplorer')}
                 </span>
               </div>

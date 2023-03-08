@@ -49,12 +49,7 @@ const UnstakeArv = ({ closeModal }: Props) => {
 
   return (
     <>
-      <div className="flex-shrink-0 justify-center w-full flex">
-        <ExclamationIcon
-          className="h-5 w-5 text-yellow-400"
-          aria-hidden="true"
-        />
-      </div>
+      <div className="flex-shrink-0 justify-center w-full flex">⚠️</div>
       <Dialog.Title
         as="h3"
         className="font-bold text-center text-xl text-primary capitalize w-full"

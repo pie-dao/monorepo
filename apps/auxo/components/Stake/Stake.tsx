@@ -164,7 +164,7 @@ const Stake: React.FC<Props> = ({
                       setCommitmentValue={setCommitmentValue}
                     />
                   ) : null}
-                  <div className="flex items-center justify-between w-full mt-2">
+                  <div className="flex items-center justify-between w-full">
                     <p className="text-base font-medium text-primary">
                       {!userLockDuration
                         ? t('vaultBalance')
