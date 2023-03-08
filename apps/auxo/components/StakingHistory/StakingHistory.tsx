@@ -100,7 +100,7 @@ const StakingHistory: React.FC = () => {
           <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
             {t('stakingDate')}:
           </dt>
-          <dd className="flex ml-auto font-medium text-base text-primary">
+          <dd className="flex ml-auto font-semibold text-base text-primary">
             {userStartStakingDate}
           </dd>
         </div>

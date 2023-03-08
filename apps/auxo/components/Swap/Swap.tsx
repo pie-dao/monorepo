@@ -80,14 +80,14 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/xAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden">
+      <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/xAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden">
         <Tab.Group>
           <Tab.List className="flex gap-x-4 rounded-xl p-1">
             {['convertStake', 'unstake', 'info'].map((tab) => (
               <Tab
                 className={({ selected }) =>
                   classNames(
-                    'py-2.5 text-base font-medium focus:outline-none relative',
+                    'text-base font-semibold focus:outline-none relative',
                     selected ? ' text-secondary' : ' text-sub-light',
                     'disabled:opacity-20',
                   )

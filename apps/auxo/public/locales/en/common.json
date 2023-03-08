@@ -194,7 +194,6 @@
   "restakeBefore": "Restake before ${date} and keep your level and rewards maximized",
   "levelOf": "Level ${level} of 30",
   "level": "Level ${level}",
-  "rewardBoost": "Rewards boost:",
   "vaultBalance": "Vault balance:",
   "manageLock": "Manage lock",
   "AUXOStaked": "AUXO staked:",

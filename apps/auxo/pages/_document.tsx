@@ -33,6 +33,13 @@ export default class _Document extends Document {
             type="font/woff2"
             crossOrigin=""
           />
+          <link
+            rel="preload"
+            href="/fonts/Silka/silka-semibold.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
         </Head>
         <body data-theme="auxo" className="h-full">
           <Main />

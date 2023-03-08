@@ -102,7 +102,7 @@ const IncreaseLock: React.FC = () => {
             />
           </div>
           <div className="flex flex-col gap-y-2 p-2 rounded-xl bg-background">
-            <h4 className="text-base font-bold text-secondary">
+            <h4 className="text-base font-semibold text-secondary">
               {t('afterIncrease')}
             </h4>
             <div className="flex">
@@ -113,7 +113,7 @@ const IncreaseLock: React.FC = () => {
                 <span className="text-sub-light line-through text-sm">
                   {actualLock} {actualLock > 1 ? t('months') : t('month')}
                 </span>{' '}
-                <span className="font-bold text-primary text-base">
+                <span className="font-semibold text-primary text-base">
                   {sumCommitment} {t('months')}
                 </span>
               </dd>
@@ -126,20 +126,20 @@ const IncreaseLock: React.FC = () => {
                 <span className="text-sub-light line-through text-sm">
                   {start}
                 </span>{' '}
-                <span className="font-bold text-primary text-base">
+                <span className="font-semibold text-primary text-base">
                   {newEnd}
                 </span>
               </dd>
             </div>
             <div className="flex">
               <dt className="text-base text-primary font-medium flex items-center gap-x-2">
-                {t('rewardBoost')}
+                {t('rewardLevel')}:
               </dt>
               <dd className="flex ml-auto pr-2 font-medium text-base text-primary items-end gap-x-2">
                 <span className="text-sub-light line-through text-sm">
                   {t('level', { level: userLevel })}
                 </span>{' '}
-                <span className="font-bold text-secondary text-base">
+                <span className="font-semibold text-secondary text-base">
                   {t('levelOf', { level: newLevel })}
                 </span>
               </dd>
@@ -152,7 +152,7 @@ const IncreaseLock: React.FC = () => {
                 <span className="text-sub-light line-through text-sm">
                   {formatBalance(veAUXOBalance.label, defaultLocale, 4)} ARV
                 </span>{' '}
-                <span className="font-bold text-primary text-base">
+                <span className="font-semibold text-primary text-base">
                   {formatBalance(
                     userProjectedTotalStakingAmount.label,
                     defaultLocale,

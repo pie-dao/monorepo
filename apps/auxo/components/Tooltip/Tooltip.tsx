@@ -31,6 +31,7 @@ const Tooltip: React.FC<Props> = ({
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
+    placement: 'bottom-start',
     modifiers: [
       {
         name: 'preventOverflow',
@@ -42,7 +43,7 @@ const Tooltip: React.FC<Props> = ({
       {
         name: 'offset',
         options: {
-          offset: [10, 10],
+          offset: [10, 1],
         },
       },
     ],
@@ -54,7 +55,7 @@ const Tooltip: React.FC<Props> = ({
         <>
           <Popover.Button
             ref={setReferenceElement}
-            className="focus:outline-none w-4 h-4 text-primary"
+            className="flex focus:outline-none w-4 h-4 text-primary"
             as={motion.button}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -73,7 +74,7 @@ const Tooltip: React.FC<Props> = ({
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="bg-white rounded-md shadow-md px-2 py-1.5"
+                  className="bg-white rounded-md shadow-md px-4 py-3"
                   {...attributes.popper}
                 >
                   {children}

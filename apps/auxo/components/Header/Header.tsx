@@ -13,7 +13,7 @@ export default function Header({ title }: { title: string }) {
     <header className="flex-shrink-0 z-10 w-full px-7">
       <div className="flex items-center justify-between py-5">
         <div className="w-full flex items-center gap-x-3 flex-wrap">
-          <h1 className="hidden sm:flex text-2xl font-bold text-primary w-auto">
+          <h1 className="hidden sm:flex text-2xl font-semibold text-primary w-auto">
             {t(title)}
           </h1>
           <div className="ml-auto flex gap-x-3 items-center">

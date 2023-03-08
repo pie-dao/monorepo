@@ -93,39 +93,44 @@ const Stake: React.FC<Props> = ({
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/veAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full">
+      <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/arv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full overflow-hidden">
         <Tab.Group>
-          <Tab.List className="flex gap-x-4 rounded-xl p-1">
-            {['stake', 'manageLock'].map((tab) => {
-              if (!hasLock && tab === 'manageLock') return null;
-              return (
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'py-2.5 text-base font-medium focus:outline-none relative',
-                      selected ? ' text-secondary' : ' text-sub-light',
-                      'disabled:opacity-20',
-                    )
-                  }
-                  key={tab}
-                >
-                  {({ selected }) => (
-                    <>
-                      {t(tab)}
-                      {selected && (
-                        <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
-                      )}
-                    </>
-                  )}
-                </Tab>
-              );
-            })}
-          </Tab.List>
+          <div className="flex justify-between items-center gap-x-4">
+            <Tab.List className="flex gap-x-4 rounded-xl p-1">
+              {['stake', 'manageLock'].map((tab) => {
+                if (!hasLock && tab === 'manageLock') return null;
+                return (
+                  <Tab
+                    className={({ selected }) =>
+                      classNames(
+                        'text-base font-semibold focus:outline-none relative',
+                        selected ? ' text-secondary' : ' text-sub-light',
+                        'disabled:opacity-20',
+                      )
+                    }
+                    key={tab}
+                  >
+                    {({ selected }) => (
+                      <>
+                        {t(tab)}
+                        {selected && (
+                          <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+                        )}
+                      </>
+                    )}
+                  </Tab>
+                );
+              })}
+            </Tab.List>
+            <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
+              {t('getAUXO')}
+            </button>
+          </div>
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
               <Tab.Panel>
-                <ModalBox className="flex flex-col gap-y-1">
-                  <div className="flex items-center justify-between w-full">
+                <ModalBox className="flex flex-col">
+                  <div className="flex items-center justify-between w-full mb-2">
                     <p className="font-medium text-base text-primary">
                       {t('amountToStake')}
                     </p>
@@ -136,11 +141,8 @@ const Stake: React.FC<Props> = ({
                         width={24}
                         height={24}
                       />
-                      <h2
-                        className="text-lg font-bold text-primary"
-                        data-cy="product-name"
-                      >
-                        AUXO
+                      <h2 className="text-lg font-semibold text-primary">
+                        {t('AUXO')}
                       </h2>
                     </div>
                   </div>
@@ -179,7 +181,7 @@ const Stake: React.FC<Props> = ({
                         ARV
                       </p>
                     ) : (
-                      <p className="flex gap-x-2 items-end">
+                      <p className="flex gap-x-2 items-center">
                         {depositValue.label !== 0 && (
                           <span className="line-through text-sub-light text-sm">
                             {formatBalance(
@@ -204,12 +206,12 @@ const Stake: React.FC<Props> = ({
                     )}
                   </div>
                   {userLockDuration && (
-                    <div className="flex items-center justify-between w-full mt-1">
+                    <div className="flex items-center justify-between w-full">
                       <p className="text-base font-medium text-primary">
                         {t('newLockDuration')}
                       </p>
                       <div className="text-primary font-bold text-base">
-                        <p className="flex gap-x-2 items-end">
+                        <p className="flex gap-x-2 items-center">
                           <span className="line-through text-sub-light text-sm">
                             {endDate}
                           </span>
@@ -232,7 +234,7 @@ const Stake: React.FC<Props> = ({
               {hasLock && (
                 <Tab.Panel className="h-full">
                   <ModalBox className="flex flex-col gap-y-1 h-full">
-                    {isUserLockExpired ? (
+                    {!isUserLockExpired ? (
                       <WithdrawLock />
                     ) : (
                       <>
@@ -241,7 +243,7 @@ const Stake: React.FC<Props> = ({
                             <dt className="text-base text-primary font-medium flex items-center gap-x-2">
                               {t('AUXOStaked')}
                             </dt>
-                            <dd className="flex ml-auto font-medium text-base text-primary">
+                            <dd className="flex ml-auto font-semibold text-base text-primary">
                               {formatBalance(stakedAUXO.label, defaultLocale)}{' '}
                               AUXO
                             </dd>
@@ -250,7 +252,7 @@ const Stake: React.FC<Props> = ({
                             <dt className="text-base text-primary font-medium flex items-center gap-x-2">
                               {t('timeSinceStake')}
                             </dt>
-                            <dd className="flex ml-auto font-medium text-base text-primary">
+                            <dd className="flex ml-auto font-semibold text-base text-primary">
                               {timeSinceStake === 1
                                 ? `${timeSinceStake} ${t('month')}`
                                 : `${timeSinceStake} ${t('months')}`}

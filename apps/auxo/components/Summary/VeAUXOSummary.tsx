@@ -143,9 +143,11 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   ]);
 
   return (
-    <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-white gap-y-2">
+    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2">
       <div className="flex flex-col gap-y-2 w-full items-start">
-        <h3 className="text-base font-bold text-primary">{t('rewardLevel')}</h3>
+        <h3 className="text-base font-bold text-primary">
+          {t('rewardLevel')}:
+        </h3>
         <h4 className="text-base font-bold text-white uppercase bg-gradient-major-secondary-predominant rounded-xl py-1 px-4">
           {t('levelAndReward', {
             level: userLevel,
@@ -161,14 +163,14 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
       </ParentSize> */}
       {summaryData.map(({ icon, title, value }, index) => (
         <div
-          className="bg-sidebar flex items-center gap-x-2 rounded-md shadow-card self-center w-full p-2"
+          className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"
           key={index}
         >
           <dt className="text-base text-primary font-medium flex items-center gap-x-2">
             {icon && icon}
             {t(title)}
           </dt>
-          <dd className="flex ml-auto font-medium text-base text-primary">
+          <dd className="flex ml-auto font-semibold text-base text-primary">
             {value}
           </dd>
         </div>

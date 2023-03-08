@@ -83,7 +83,7 @@ export default function StakeConfirm() {
             </div>
             <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
               {swap && (
-                <div className="grid grid-cols-[1fr_max-content_1fr] place-content-center py-6 gap-x-2">
+                <div className="flex place-content-center w-full py-6 gap-x-2">
                   <div className="text-xl text-primary font-medium flex items-center gap-x-2 justify-self-end">
                     <Image
                       src={imageMap[swap.from.token]}

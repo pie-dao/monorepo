@@ -56,7 +56,9 @@ const StakeSlider: React.FC<Props> = ({
         </p>
       </div>
       <div className="flex items-center justify-between gap-x-4 w-full">
-        <p className="text-base font-medium text-primary">{t('rewardBoost')}</p>
+        <p className="text-base font-medium text-primary">
+          {t('rewardLevel')}:
+        </p>
         <p className="text-secondary font-bold text-base shrink-0 text-right">
           {t('levelOf', { level: commitmentValue - 6 })}
         </p>
