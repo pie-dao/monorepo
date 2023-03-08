@@ -17,6 +17,7 @@ import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
 import AUXOLogo from '../../public/images/auxoIcon.svg';
+import MenuIcon from '../Header/MenuIcon';
 
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 
@@ -150,7 +151,7 @@ export default function Navigation({
 
   if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
   return (
-    <>
+    <div className="fixed h-full z-20">
       <AnimatePresence initial={false}>
         <motion.aside
           animate={open ? 'visible' : 'hidden'}
@@ -256,11 +257,18 @@ export default function Navigation({
       {!isDesktop && open && (
         <>
           <div
-            className="absolute inset z-40 fixed inset-0 backdrop-blur-sm"
+            className="absolute inset z-40 inset-0 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
         </>
       )}
-    </>
+      <motion.button
+        type="button"
+        className="focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0 -right-3"
+        onClick={() => setOpen(!open)}
+      >
+        <MenuIcon open={open} />
+      </motion.button>
+    </div>
   );
 }

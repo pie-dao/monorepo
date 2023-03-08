@@ -200,7 +200,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                               2,
                               'standard',
                             )}{' '}
-                            xAUXO
+                            PRV
                           </p>
                         </div>
                         <DepositActions
@@ -277,7 +277,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                               2,
                               'standard',
                             )}{' '}
-                            xAUXO
+                            PRV
                           </p>
                         </div>
                         <StakeButton
@@ -325,7 +325,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           2,
                           'standard',
                         )}{' '}
-                        xAUXO
+                        PRV
                       </p>
                     </div>
                     <StakeButton

@@ -176,6 +176,7 @@ const Stake: React.FC<Props> = ({
                           4,
                           'standard',
                         )}{' '}
+                        ARV
                       </p>
                     ) : (
                       <p className="flex gap-x-2 items-end">

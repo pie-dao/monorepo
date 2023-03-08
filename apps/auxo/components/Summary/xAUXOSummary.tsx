@@ -55,7 +55,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           account && xAUXOBalance
             ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
             : '0'
-        } xAUXO`,
+        } PRV`,
       },
       {
         icon: (
@@ -68,12 +68,12 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
               ? formatBalance(stakedXAUXO.label, defaultLocale, 4, 'standard')
               : '0'
           }
-          xAUXO
+          PRV
         `,
       },
       {
         icon: null,
-        title: t('xAUXOFee'),
+        title: t('PRVFee'),
         value: formatAsPercent(fee?.label ?? 0),
       },
     ];

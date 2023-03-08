@@ -1,35 +1,18 @@
 import { ChainSwitcher, ConnectButton } from '@shared/ui-library';
 import useTranslation from 'next-translate/useTranslation';
-import { Dispatch, SetStateAction } from 'react';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import { useMediaQuery } from 'usehooks-ts';
 import GasPrice from '../GasPrice/GasPrice';
-import MenuIcon from './MenuIcon';
 
-export default function Header({
-  open,
-  setOpen,
-  title,
-}: {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  title: string;
-}) {
+export default function Header({ title }: { title: string }) {
   const { t } = useTranslation();
   const ready = useServerHandoffComplete();
   const mqXl = useMediaQuery('(min-width: 1280px)');
 
   return (
-    <header className="flex-shrink-0 sticky z-10 w-full">
-      <div className="flex items-center justify-between pr-7 py-5">
+    <header className="flex-shrink-0 z-10 w-full px-7">
+      <div className="flex items-center justify-between py-5">
         <div className="w-full flex items-center gap-x-3 flex-wrap">
-          <button
-            type="button"
-            className="focus:outline-none p-2 relative z-10"
-            onClick={() => setOpen(!open)}
-          >
-            <MenuIcon open={open} />
-          </button>
           <h1 className="hidden sm:flex text-2xl font-bold text-primary w-auto">
             {t(title)}
           </h1>

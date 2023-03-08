@@ -111,7 +111,7 @@ export default function ARV({
   return (
     <>
       <div className="flex flex-col">
-        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap px-4 md:pl-10 md:pr-8">
+        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
           <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-card self-center w-full xl:w-auto p-2 md:p-0">
             <div className="flex gap-x-2 order-1 items-center">
               <Image
@@ -122,7 +122,7 @@ export default function ARV({
                 priority
               />
               <h2
-                className="text-sm sm:text-base lg:text-lg font-medium text-primary w-fit"
+                className="text-sm sm:text-base lg:text-lg font-bold text-primary w-fit"
                 data-cy="product-name"
               >
                 {t('ActiveRewardVault')}
@@ -185,7 +185,7 @@ export default function ARV({
           </div>
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
-        <section className="flex flex-wrap justify-between gap-4 px-4 md:px-10 text-sm md:text-inherit mt-6">
+        <section className="flex flex-wrap justify-between gap-4  text-sm md:text-inherit mt-6">
           <div className="flex gap-x-4 items-center w-full sm:w-fit">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
@@ -263,11 +263,11 @@ export default function ARV({
             </div>
           </div>
         </section>
-        <section className="px-4 md:px-10 mt-6">
+        <section className=" mt-6">
           <ARVNotificationBar />
         </section>
         {/* Section for Staking and Summary */}
-        <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+        <section className="grid grid-cols-1 xl:grid-cols-2 gap-4  text-xs md:text-inherit mt-6">
           <Stake
             tokenConfig={stakingTokenConfig}
             commitmentValue={commitmentValue}

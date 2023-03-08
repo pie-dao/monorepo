@@ -30,7 +30,7 @@ export default function Approve() {
   const approveDeposit = () => {
     setApproving(true);
     const nextStep =
-      swap?.to?.token === 'xAUXO'
+      swap?.to?.token === 'PRV'
         ? (`CONFIRM_CONVERT_${swap.to.token.toUpperCase()}` as const)
         : (`CONFIRM_STAKE_${swap.to.token.toUpperCase()}` as const);
     dispatch(

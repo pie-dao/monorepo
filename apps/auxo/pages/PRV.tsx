@@ -71,7 +71,7 @@ export default function XAUXO({
   return (
     <>
       <div className="flex flex-col">
-        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap px-4 md:pl-10 md:pr-8">
+        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
           <div className="flex flex-1 items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full xl:w-auto p-2 md:p-0">
             <Image src={xAUXOIcon} alt={'xAUXO Icon'} width={32} height={32} />
             <h2
@@ -98,7 +98,7 @@ export default function XAUXO({
           </div>
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
-        <section className="flex flex-wrap justify-between gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+        <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
           <div className="flex gap-x-4 items-center w-full sm:w-fit">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
@@ -184,7 +184,7 @@ export default function XAUXO({
           </div>
         </section>
         {/* Section for Staking and Summary */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4  text-xs md:text-inherit mt-6">
           <Swap
             stakingTokenConfig={stakingTokenConfig}
             tokenConfig={tokenConfig}
