@@ -112,10 +112,9 @@
   "amountToStake": "Amount to stake",
   "amountToUnstake": "Amount to unstake",
   "increaseStake": "Increase stake",
-  "tokenBalance": "${token} balance",
-  "stakedBalance": "Staked ${token} balance",
+  "tokenBalance": "Your ${token} balance",
+  "stakedBalance": "Your staked ${token} balance",
   "governancePower": "Governance power:",
-  "youGet": "You get",
   "stakeTime": "Stake time",
   "youAreRestaking": "You are restaking",
   "whyLocked": "Why are my AUXO locked?",
@@ -186,6 +185,7 @@
   "unstaked": "unstaked",
   "AuxoToArv": "Stake AUXO to Active Reward Vault",
   "ActiveRewardVault": "Active Reward Vault",
+  "PassiveRewardVault": "Passive Reward Vault",
   "upToRewards": "Up to 100% rewards",
   "governanceEnabled": "Governance enabled",
   "earlyTermination": "Early termination",
@@ -229,5 +229,9 @@
   "earlyTerminationFee": "Early termination fee",
   "losing": "Losing",
   "movedPosition": "You moved your ARV position to PRV",
-  "confirmEarlyTermination": "Confirm early termination"
+  "confirmEarlyTermination": "Confirm early termination",
+  "worryFreeStaking": "Worry free staking",
+  "unstakeAnyTime": "Unstake any time",
+  "fixedRewards": "Fixed rewards",
+  "irreversibleAction": "Conversion AUXO to Passive Reward Vault is irreversible. You can participate to the Passive Reward Vault and get rewards but you cannot convert them back to AUXO."
 }

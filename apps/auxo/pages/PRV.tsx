@@ -3,8 +3,7 @@ import Image from 'next/image';
 import xAUXOIcon from '../public/tokens/xAUXO.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import addTokenToWallet from '../utils/addTokenToWallet';
-import { MetamaskIcon } from '@shared/ui-library';
+import DoubleCheckmark from '../public/images/icons/double-checkmark.svg';
 import useTranslation from 'next-translate/useTranslation';
 import Tooltip from '../components/Tooltip/Tooltip';
 import {
@@ -72,29 +71,56 @@ export default function XAUXO({
     <>
       <div className="flex flex-col">
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
-          <div className="flex flex-1 items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full xl:w-auto p-2 md:p-0">
-            <Image src={xAUXOIcon} alt={'xAUXO Icon'} width={32} height={32} />
-            <h2
-              className="text-lg font-medium text-primary w-fit"
-              data-cy="product-name"
-            >
-              PRV
-            </h2>
-            <button
-              className="flex ml-auto pr-2"
-              onClick={async () => await addTokenToWallet(chainId, 'PRV')}
-            >
-              <div className="flex gap-x-2 items-center">
-                <div className="hidden lg:flex gap-x-1">
-                  <span className="text-sub-dark underline text-sm hover:text-sub-light">
-                    {t('addTokenToWallet', {
-                      token: `PRV`,
-                    })}
-                  </span>
-                </div>
-                <MetamaskIcon className="h-5 w-5" />
+          <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:p-0">
+            <div className="flex gap-x-2 order-1 items-center">
+              <div className="flex flex-shrink-0">
+                <Image
+                  src={xAUXOIcon}
+                  alt={'xAUXO Icon'}
+                  width={32}
+                  height={32}
+                  priority
+                />
               </div>
-            </button>
+              <h2
+                className="text-base lg:text-lg font-bold text-primary w-fit"
+                data-cy="product-name"
+              >
+                {t('PassiveRewardVault')}
+              </h2>
+            </div>
+            <div className="flex items-center sm:ml-auto order-3 sm:order-2 gap-x-2 w-full sm:w-fit">
+              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                <Image
+                  src={DoubleCheckmark}
+                  alt="double checkmark"
+                  width={18}
+                  height={18}
+                  priority
+                />
+                <span>{t('worryFreeStaking')}</span>
+              </div>
+              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                <Image
+                  src={DoubleCheckmark}
+                  alt="double checkmark"
+                  width={18}
+                  height={18}
+                  priority
+                />
+                <span>{t('unstakeAnyTime')}</span>
+              </div>
+              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                <Image
+                  src={DoubleCheckmark}
+                  alt="double checkmark"
+                  width={18}
+                  height={18}
+                  priority
+                />
+                <span>{t('fixedRewards')}</span>
+              </div>
+            </div>
           </div>
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}

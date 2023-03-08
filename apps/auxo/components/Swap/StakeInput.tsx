@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import Image from 'next/image';
 import { formatBalance, smallToBalance } from '../../utils/formatBalance';
 import { useDecimals } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
@@ -6,6 +7,7 @@ import { SetStateType } from '../../types/utilities';
 import { zeroBalance } from '../../utils/balances';
 import classNames from '../../utils/classnames';
 import { useAppSelector } from '../../hooks';
+import wallet from '../../public/images/icons/wallet.svg';
 
 function InputSlider({
   value,
@@ -67,16 +69,17 @@ function InputSlider({
           <button
             onClick={() => setValue(max)}
             disabled={max.value === '0'}
-            className="text-secondary text-xs font-medium leading-3 px-3 pt-1 pb-3"
+            className="flex text-secondary text-xs font-medium leading-3 px-3 pt-1 pb-3 gap-x-1"
             data-cy="max-button"
           >
+            <Image src={wallet} alt="wallet" width={12} height={12} priority />
             <span className="text-sub-dark">{`${formatBalance(
               max.label,
               defaultLocale,
               2,
               'standard',
-            )} ${label} `}</span>
-            MAX
+            )} ${label}`}</span>
+            <span>MAX</span>
           </button>
         </div>
       </div>

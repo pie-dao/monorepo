@@ -80,7 +80,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/xAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden">
+      <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
         <Tab.Group>
           <Tab.List className="flex gap-x-4 rounded-xl p-1">
             {['convertStake', 'unstake', 'info'].map((tab) => (
@@ -113,7 +113,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     <p className="text-base text-primary font-medium">
                       {t('amountToStake')}
                     </p>
-                    <div className="flex w-56 justify-end">
+                    <div className="flex w-48 justify-end">
                       <Listbox value={tab} onChange={setTab}>
                         {({ open }) => (
                           <div className="relative mt-1 w-full">
@@ -191,7 +191,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         )}
                         <div className="flex place-items-center justify-between w-full">
                           <p className="text-base text-primary font-medium">
-                            {t('youGet')}
+                            {t('vaultBalance')}
                           </p>
                           <p className="text-secondary font-bold text-lg">
                             {formatBalance(
@@ -211,6 +211,11 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         >
                           {t('convert')}
                         </DepositActions>
+                        <div className="w-full flex justify-center items-center">
+                          <p className="text-sub-dark text-sm font-medium">
+                            ⚠️ {t('irreversible')}
+                          </p>
+                        </div>
                         {/* <div className="flex flex-col w-full justify-between gap-y-3">
                           <div className="flex w-full justify-between py-2">
                             <label

@@ -80,20 +80,26 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   }, [account, auxoBalance, defaultLocale, fee, t, xAUXOBalance, stakedXAUXO]);
 
   return (
-    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-4">
-      <div className="flex items-center justify-between w-full">
-        <h3 className="text-xl font-medium text-primary">{t('summary')}</h3>
+    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-5">
+      <div className="flex flex-col w-full gap-y-4">
+        <h3 className="text-xl font-semibold text-primary">{t('summary')}</h3>
+        <div>
+          <p className="text-primary font-medium text-base">
+            {t('irreversibleAction')}
+          </p>
+        </div>
       </div>
+
       {summaryData.map(({ icon, title, value }, index) => (
         <div
-          className="bg-sidebar flex items-center gap-x-2 rounded-md shadow-card self-center w-full p-2"
+          className="bg-sidebar flex items-center gap-x-4 rounded-md shadow-card self-center w-full p-2"
           key={index}
         >
-          <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
+          <dt className="text-base text-primary font-medium flex items-center gap-x-2">
             {icon && icon}
             {title}:
           </dt>
-          <dd className="flex ml-auto pr-2 font-medium text-base text-primary">
+          <dd className="flex ml-auto pr-2 font-semibold text-base text-primary">
             {value}
           </dd>
         </div>
