@@ -139,7 +139,7 @@ export default function StakeConfirm() {
                       {formatBalance(
                         swap.to.amount.label,
                         defaultLocale,
-                        2,
+                        4,
                         'standard',
                       )}{' '}
                       {swap.to.token}

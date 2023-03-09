@@ -100,7 +100,7 @@ const StakeConfirm: React.FC<{
                 {formatBalance(
                   swap.from.amount.label,
                   defaultLocale,
-                  2,
+                  4,
                   'standard',
                 )}{' '}
                 {swap.from.token}

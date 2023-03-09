@@ -43,6 +43,14 @@ function InputSlider({
       setDisplayValue(undefined);
       return;
     }
+
+    if (value.startsWith('.')) {
+      setDisplayValue('0.');
+      const maximizedBNValue = smallToBalance('0', decimals);
+      setValue(maximizedBNValue);
+      return;
+    }
+
     if (value.endsWith('.')) {
       setDisplayValue(value);
       const maximizedBNValue = smallToBalance(value.slice(0, -1), decimals);
@@ -69,7 +77,6 @@ function InputSlider({
             value={displayValue}
             onChange={(e) => enforcer(e.target.value.replace(/,/g, '.'))}
             disabled={disabled}
-            data-cy="vault-input"
             // universal input options
             inputMode="decimal"
             autoComplete="off"
@@ -83,7 +90,10 @@ function InputSlider({
             spellCheck="false"
           />
           <button
-            onClick={() => setValue(max)}
+            onClick={() => {
+              setValue(max);
+              setDisplayValue(max.label.toString());
+            }}
             disabled={max.value === '0'}
             className="flex text-secondary text-xs font-medium leading-3 px-3 pt-1 pb-3 gap-x-1"
             data-cy="max-button"
