@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
 import { formatBalance, smallToBalance } from '../../utils/formatBalance';
 import { useDecimals } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
@@ -8,6 +8,7 @@ import { zeroBalance } from '../../utils/balances';
 import classNames from '../../utils/classnames';
 import { useAppSelector } from '../../hooks';
 import wallet from '../../public/images/icons/wallet.svg';
+import { escapeRegExp, inputRegex } from '../../utils/sanitizeInput';
 
 function InputSlider({
   value,
@@ -25,28 +26,33 @@ function InputSlider({
   const decimals = useDecimals(label);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
-  const cleanupOverflow = useCallback(
-    (value: string) => {
-      const [, valueDecimals] = value.split('.');
-      if (valueDecimals && valueDecimals.length > decimals) {
-        return Number(value.slice(0, value.length - 1));
-      }
-      return Number(value);
-    },
-    [decimals],
+  const [displayValue, setDisplayValue] = useState<string | undefined>(
+    undefined,
   );
+
+  const enforcer = (nextUserInput: string) => {
+    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      handleChange(nextUserInput);
+    }
+  };
 
   const handleChange = (value: string | undefined) => {
     if (!decimals) return;
-    if (!value) setValue(zeroBalance);
-
-    if (Number(value) < 1) {
-      setValue(smallToBalance(1, decimals));
+    if (!value) {
+      setValue(zeroBalance);
+      setDisplayValue(undefined);
+      return;
+    }
+    if (value.endsWith('.')) {
+      setDisplayValue(value);
+      const maximizedBNValue = smallToBalance(value.slice(0, -1), decimals);
+      setValue(maximizedBNValue);
       return;
     }
 
-    const maximizedBNValue = smallToBalance(cleanupOverflow(value), decimals);
+    const maximizedBNValue = smallToBalance(value, decimals);
     setValue(maximizedBNValue);
+    setDisplayValue(value);
   };
 
   return (
@@ -59,12 +65,22 @@ function InputSlider({
       <div className="w-full">
         <div className="flex flex-col items-start focus-within:ring-2 ring-secondary rounded-xl border border-custom-border bg-white">
           <input
-            type="number"
             className="border-none leading-5 font-medium text-3xl text-primary rounded-xl focus:outline-none focus:ring-0 block w-full [appearance:textfield]"
-            value={value.label.toString()}
-            onChange={(e) => handleChange(e.target.value)}
+            value={displayValue}
+            onChange={(e) => enforcer(e.target.value.replace(/,/g, '.'))}
             disabled={disabled}
             data-cy="vault-input"
+            // universal input options
+            inputMode="decimal"
+            autoComplete="off"
+            autoCorrect="off"
+            // text-specific options
+            type="text"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder={'0'}
+            minLength={1}
+            maxLength={79}
+            spellCheck="false"
           />
           <button
             onClick={() => setValue(max)}

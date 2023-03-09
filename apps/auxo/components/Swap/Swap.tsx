@@ -197,7 +197,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             {formatBalance(
                               xAUXOEstimation.label,
                               defaultLocale,
-                              2,
+                              4,
                               'standard',
                             )}{' '}
                             PRV
@@ -279,7 +279,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             {formatBalance(
                               stakingDepositValue.label,
                               defaultLocale,
-                              2,
+                              4,
                               'standard',
                             )}{' '}
                             PRV
@@ -327,7 +327,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         {formatBalance(
                           unstakingDepositValue.label,
                           defaultLocale,
-                          2,
+                          4,
                           'standard',
                         )}{' '}
                         PRV

@@ -10,6 +10,7 @@ import {
   thunkGetUserStakingData,
 } from '../../store/products/thunks';
 import { useAppDispatch } from '../../hooks';
+import classNames from '../../utils/classnames';
 
 export default function Layout({ children }) {
   const { library, account } = useWeb3React();
@@ -47,7 +48,12 @@ export default function Layout({ children }) {
     <>
       <div className="flex bg-background min-h-full">
         <Navigation open={open} setOpen={setOpen} />
-        <div className="flex-1 flex flex-row w-full xl:container mx-auto ">
+        <div
+          className={classNames(
+            'flex-1 flex flex-row w-full min-[1920px]:container min-[1920px]:mx-auto transition-all duration-300 ease-in-out',
+            open ? 'ml-44' : 'ml-16',
+          )}
+        >
           <div className="flex flex-col flex-1">
             <Header title={children.props.title} />
             <main className="flex-1  px-7 w-full pb-10 min-h-full">

@@ -45,6 +45,7 @@ export default function Navigation({
   }, []);
 
   const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const isLargeDesktop = useMediaQuery('(min-width: 1920px)');
 
   const sidebarVariants = useMemo(
     (): Variants =>
@@ -59,7 +60,7 @@ export default function Navigation({
               width: 0,
               x: -180,
               opacity: 0,
-              transition: { duration: 0.5 },
+              transition: { duration: 0.3 },
             },
           }
         : {
@@ -70,7 +71,7 @@ export default function Navigation({
             hidden: {
               width: 60,
               x: 0,
-              transition: { duration: 0.5 },
+              transition: { duration: 0.3 },
             },
           },
     [isDesktop],
@@ -170,7 +171,7 @@ export default function Navigation({
           onDrag={handleDrag}
           onDragEnd={handleDragEnd}
           className={classNames(
-            'h-full w-[180px] fixed z-50 lg:z-0 lg:static bg-sidebar',
+            'h-full w-[180px] fixed z-50 lg:z-0 bg-sidebar',
           )}
         >
           <div className="flex flex-col flex-grow pt-5 h-full">
@@ -262,13 +263,15 @@ export default function Navigation({
           />
         </>
       )}
-      <motion.button
-        type="button"
-        className="focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0 -right-3"
-        onClick={() => setOpen(!open)}
-      >
-        <MenuIcon open={open} />
-      </motion.button>
+      {!isLargeDesktop && (
+        <motion.button
+          type="button"
+          className="focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0 -right-3"
+          onClick={() => setOpen(!open)}
+        >
+          <MenuIcon open={open} />
+        </motion.button>
+      )}
     </div>
   );
 }

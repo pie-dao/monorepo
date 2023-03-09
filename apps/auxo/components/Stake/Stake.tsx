@@ -5,6 +5,7 @@ import StakeInput from './StakeInput';
 import {
   addNumberToBnReference,
   compareBalances,
+  isZero,
   zeroBalance,
 } from '../../utils/balances';
 import DepositActions from './ApproveDepositButton';
@@ -164,48 +165,50 @@ const Stake: React.FC<Props> = ({
                       setCommitmentValue={setCommitmentValue}
                     />
                   ) : null}
-                  <div className="flex items-center justify-between w-full">
-                    <p className="text-base font-medium text-primary">
-                      {!userLockDuration
-                        ? t('vaultBalance')
-                        : t('newVaultBalance')}
-                    </p>
-                    {!userLockDuration ? (
-                      <p className="text-primary font-bold text-base">
-                        {formatBalance(
-                          veAUXOEstimation,
-                          defaultLocale,
-                          4,
-                          'standard',
-                        )}{' '}
-                        ARV
+                  {!isZero(depositValue, decimals) && (
+                    <div className="flex items-center justify-between w-full">
+                      <p className="text-base font-medium text-primary">
+                        {!userLockDuration
+                          ? t('vaultBalance')
+                          : t('newVaultBalance')}
                       </p>
-                    ) : (
-                      <p className="flex gap-x-2 items-center">
-                        {depositValue.label !== 0 && (
-                          <span className="line-through text-sub-light text-sm">
+                      {!userLockDuration ? (
+                        <p className="text-primary font-bold text-base">
+                          {formatBalance(
+                            veAUXOEstimation,
+                            defaultLocale,
+                            4,
+                            'standard',
+                          )}{' '}
+                          ARV
+                        </p>
+                      ) : (
+                        <p className="flex gap-x-2 items-center">
+                          {depositValue.label !== 0 && (
+                            <span className="line-through text-sub-light text-sm">
+                              {formatBalance(
+                                veAUXOBalance.label,
+                                defaultLocale,
+                                4,
+                                'standard',
+                              )}{' '}
+                              ARV
+                            </span>
+                          )}
+                          <span className="text-primary text-base font-bold">
                             {formatBalance(
-                              veAUXOBalance.label,
+                              userProjectedTotalStakingAmount.label,
                               defaultLocale,
                               4,
                               'standard',
                             )}{' '}
                             ARV
                           </span>
-                        )}
-                        <span className="text-primary text-base font-bold">
-                          {formatBalance(
-                            userProjectedTotalStakingAmount.label,
-                            defaultLocale,
-                            4,
-                            'standard',
-                          )}{' '}
-                          ARV
-                        </span>
-                      </p>
-                    )}
-                  </div>
-                  {userLockDuration && (
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {userLockDuration && !isZero(depositValue, decimals) && (
                     <div className="flex items-center justify-between w-full">
                       <p className="text-base font-medium text-primary">
                         {t('newLockDuration')}
@@ -259,7 +262,7 @@ const Stake: React.FC<Props> = ({
                             </dd>
                           </dl>
                         </div>
-                        {isMaxxed && <IncreaseLock />}
+                        {!isMaxxed && <IncreaseLock />}
                       </>
                     )}
                   </ModalBox>

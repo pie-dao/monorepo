@@ -43,14 +43,14 @@ export function formatAsPercent(
 }
 
 export const smallToBalance = (
-  n: number,
+  n: string,
   decimals: number,
 ): BigNumberReference => ({
   /**
    * Convert a standard number to a balance object
    */
   value: ethers.utils.parseUnits(n.toString(), decimals).toString(),
-  label: n,
+  label: Number(n),
 });
 
 export const fromScale = (
