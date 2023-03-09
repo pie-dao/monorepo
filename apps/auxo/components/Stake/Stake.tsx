@@ -234,7 +234,7 @@ const Stake: React.FC<Props> = ({
               {hasLock && (
                 <Tab.Panel className="h-full">
                   <ModalBox className="flex flex-col gap-y-1 h-full">
-                    {!isUserLockExpired ? (
+                    {isUserLockExpired ? (
                       <WithdrawLock />
                     ) : (
                       <>
