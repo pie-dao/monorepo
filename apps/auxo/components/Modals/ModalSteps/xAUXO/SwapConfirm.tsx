@@ -71,51 +71,59 @@ export default function StakeConfirm() {
             </div>
             <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
               {swap && (
-                <div className="flex place-content-center w-full py-6 gap-x-2">
-                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                    <Image
-                      src={imageMap[swap.from.token]}
-                      alt={swap.from.token}
-                      width={24}
-                      height={24}
-                    />
-                    <span className="text-xl font-semibold text-primary">
-                      {formatBalance(
-                        swap.from.amount.label,
-                        defaultLocale,
-                        2,
-                        'standard',
-                      )}{' '}
-                      {swap.from.token}
-                    </span>
+                <div className="flex flex-col gap-y-2 items-center justify-center py-4">
+                  <div className="flex place-content-center w-full gap-x-2">
+                    <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
+                      <Image
+                        src={imageMap[swap.from.token]}
+                        alt={swap.from.token}
+                        width={24}
+                        height={24}
+                      />
+                      <span className="text-xl font-semibold text-primary">
+                        {formatBalance(
+                          swap.from.amount.label,
+                          defaultLocale,
+                          2,
+                          'standard',
+                        )}{' '}
+                        {swap.from.token}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Image
+                        src={ArrowRight}
+                        alt={'transfer'}
+                        width={24}
+                        height={24}
+                      />
+                    </div>
+                    <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg">
+                      <Image
+                        src={imageMap[swap.to.token]}
+                        alt={swap.to.token}
+                        width={24}
+                        height={24}
+                      />
+                      <span>
+                        {formatBalance(
+                          swap.to.amount.label,
+                          defaultLocale,
+                          2,
+                          'standard',
+                        )}{' '}
+                        {swap.to.token}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    <Image
-                      src={ArrowRight}
-                      alt={'transfer'}
-                      width={24}
-                      height={24}
-                    />
-                  </div>
-                  <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg">
-                    <Image
-                      src={imageMap[swap.to.token]}
-                      alt={swap.to.token}
-                      width={24}
-                      height={24}
-                    />
-                    <span>
-                      {formatBalance(
-                        swap.to.amount.label,
-                        defaultLocale,
-                        2,
-                        'standard',
-                      )}{' '}
-                      {swap.to.token}
-                    </span>
+                  <div className="w-full flex justify-center items-center">
+                    <p className="text-sub-dark text-sm font-medium text-center max-w-sm">
+                      {t('irreversibleModal')}
+                    </p>
                   </div>
                 </div>
               )}
+
               {swap?.stakingTime && (
                 <div className="flex items-center self-center justify-between w-full py-2">
                   <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
@@ -161,17 +169,19 @@ export default function StakeConfirm() {
               {!depositLoading ? (
                 <button
                   type="button"
-                  className="w-full px-16 py-2.5 text-lg font-medium uppercase text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+                  className="w-full px-16 py-2.5 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                   onClick={makeDeposit}
                 >
-                  {t('convertToken', { token: swap?.from.token })}
+                  {t('iAmIn')}
                 </button>
-              ) : (
+              ) : !tx?.hash ? (
                 <div className="w-full flex justify-center">
                   <p className="bg-clip-text bg-gradient-major-colors text-transparent ">
                     {t('confirmInWallet')}
                   </p>
                 </div>
+              ) : (
+                <LoadingSpinner />
               )}
             </div>
           </div>

@@ -1354,7 +1354,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.STAKE_COMPLETED));
+      dispatch(setShowCompleteModal(true));
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
     }

@@ -233,5 +233,8 @@
   "worryFreeStaking": "Worry free staking",
   "unstakeAnyTime": "Unstake any time",
   "fixedRewards": "Fixed rewards",
-  "irreversibleAction": "Conversion AUXO to Passive Reward Vault is irreversible. You can participate to the Passive Reward Vault and get rewards but you cannot convert them back to AUXO."
+  "irreversibleAction": "Conversion AUXO to Passive Reward Vault is irreversible. You can participate to the Passive Reward Vault and get rewards but you cannot convert them back to AUXO.",
+  "irreversibleModal": "⚠️  You will enjoy the PRV ecosystem and rewards, but you cannot convert back to AUXO!",
+  "iAmIn": "Yes I'm in",
+  "converted": "Converted"
 }

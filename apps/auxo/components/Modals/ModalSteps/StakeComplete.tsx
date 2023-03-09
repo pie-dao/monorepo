@@ -10,6 +10,7 @@ import AUXOImage from '../../../public/tokens/AUXO.svg';
 import veAUXOImage from '../../../public/tokens/24x24/ARV.svg';
 import xAUXOImage from '../../../public/tokens/24x24/PRV.svg';
 import { useChainExplorer } from '../../../hooks/useToken';
+import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -43,7 +44,6 @@ export default function StakeComplete({
         return null;
     }
   }, [action, swap.to.token, t]);
-  //   <>
   //     <div className="flex flex-col items-center justify-center w-full gap-y-6">
   //       <div className="mt-2">
   //         <p className="text-lg text-sub-dark font-medium">{actionMap}</p>
@@ -176,20 +176,23 @@ export default function StakeComplete({
 
   return (
     <>
-      {action === 'stake' && (
+      {action === 'convert' && (
         <div className="flex flex-col items-center justify-center w-full gap-y-4">
-          <div className="w-full p-2 m-2 rounded-lg h-30 bg-gray-900 flex place-items-center">
-            <p className="text-white">space for animation</p>
-          </div>
-          <div>
-            <p className="text-lg text-sub-dark font-medium text-center">
-              {actionMap}
-            </p>
+          <div className="h-[180px] w-full rounded-lg overflow-hidden">
+            <RiveComponent
+              src={'/animations/AUXO-PRV.riv'}
+              layout={
+                new Layout({
+                  fit: Fit.ScaleDown,
+                  alignment: Alignment.Center,
+                })
+              }
+            />
           </div>
           <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
             <div className="absolute inset-0 bg-white opacity-30 z-0" />
             <p className="bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold text-xl z-10">
-              {t('staked')}
+              {t('converted')}
             </p>
             <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
               <Image
@@ -202,7 +205,7 @@ export default function StakeComplete({
                 {formatBalance(
                   swap.to.amount.label,
                   defaultLocale,
-                  2,
+                  4,
                   'standard',
                 )}{' '}
                 {swap.to.token}

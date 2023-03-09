@@ -23,7 +23,6 @@ export default function UnstakeCompleted() {
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const chainExplorer = useChainExplorer();
   return (
     <div className="flex flex-col items-center justify-center w-full gap-y-4">
@@ -85,7 +84,7 @@ export default function UnstakeCompleted() {
           </div>
         )}
       </div>
-      {hash && (
+      {tx?.hash && (
         <div className="flex items-center self-center justify-between w-full py-2">
           <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
             <Image

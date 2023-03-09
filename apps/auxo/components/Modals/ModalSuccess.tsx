@@ -171,7 +171,11 @@ export default function ModalSuccess() {
           <div className="flex min-h-full justify-center p-2 text-center">
             <Dialog.Panel className="flex flex-col items-center w-full transform overflow-hidden bg-transparent p-6 text-center transition-all gap-y-4 h-full pt-36">
               <div className="w-[120px]">
-                <AnimatedArvLogo />
+                {swap?.from?.token === 'ARV' ? (
+                  <AnimatedArvLogo />
+                ) : (
+                  <AnimatedPrvLogo />
+                )}
               </div>
               <motion.ul
                 variants={variants}
@@ -190,19 +194,24 @@ export default function ModalSuccess() {
                   className="text-4xl sm:text-7xl font-medium text-white"
                 >
                   <AnimatedNumberFramerMotion value={swap?.to?.amount?.label} />{' '}
-                  ARV
+                  <span className="uppercase">{swap?.from?.token}</span>
                 </motion.li>
-                <Box className="mt-8">
-                  {t('staked')}:{' '}
-                  {formatBalance(swap?.from?.amount?.label, defaultLocale)} AUXO{' '}
-                  <Image src={AuxoLogo} width={32} height={32} alt="AUXO" />
-                </Box>
-                <Box>
-                  {t('unlock')} {endDate}
-                </Box>
-                <Box>
-                  {t('rewardLevel')} {userLevel} <span>{fireEmojis}</span>
-                </Box>
+                {swap?.from?.token === 'ARV' && (
+                  <>
+                    <Box className="mt-8">
+                      {t('staked')}:{' '}
+                      {formatBalance(swap?.from?.amount?.label, defaultLocale)}{' '}
+                      AUXO{' '}
+                      <Image src={AuxoLogo} width={32} height={32} alt="AUXO" />
+                    </Box>
+                    <Box>
+                      {t('unlock')} {endDate}
+                    </Box>
+                    <Box>
+                      {t('rewardLevel')} {userLevel} <span>{fireEmojis}</span>
+                    </Box>
+                  </>
+                )}
               </motion.ul>
             </Dialog.Panel>
           </div>
@@ -282,6 +291,24 @@ function AnimatedNumberFramerMotion({ value }: { value: number }) {
 }
 
 function AnimatedArvLogo() {
+  return (
+    <motion.svg
+      variants={scaleSVGVariant}
+      initial="hidden"
+      animate="visible"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 120 120"
+    >
+      <path
+        fill="#fff"
+        d="m79.2 1.3-38.4.1L1.5 85.5 29 102.3l28.4 16.4h.1V88.1h-.2l-20-12.6 20-50h5.4l20 50-20 12.6h-.1v30.6h.1l28.4-16.5 27.4-16.7z"
+      />
+    </motion.svg>
+  );
+}
+
+function AnimatedPrvLogo() {
   return (
     <motion.svg
       variants={scaleSVGVariant}

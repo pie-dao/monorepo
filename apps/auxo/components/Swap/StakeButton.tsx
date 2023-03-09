@@ -48,8 +48,8 @@ const StakeActions: React.FC<{
             amount: deposit,
           },
           to: {
-            token: null,
-            amount: null,
+            token: tokenConfig.name,
+            amount: deposit,
           },
           spender: null,
         },

@@ -151,7 +151,7 @@ export default function Navigation({
 
   if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
   return (
-    <div className="static h-full z-20">
+    <div className="fixed h-full z-20">
       <AnimatePresence initial={false}>
         <motion.aside
           animate={open ? 'visible' : 'hidden'}
