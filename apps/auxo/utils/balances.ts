@@ -110,9 +110,19 @@ export const addNumberToBnReference = (
   number: number,
   decimals: number,
 ): BigNumberReference => {
-  const value = BigNumber.from(b1.value).add(
-    BigNumber.from(ethers.utils.parseUnits(number.toString(), decimals)),
-  );
+  let value: BigNumber;
+  try {
+    value = BigNumber.from(b1.value).add(
+      BigNumber.from(ethers.utils.parseUnits(number.toString(), decimals)),
+    );
+  } catch (e) {
+    if (e.code === 'INVALID_ARGUMENT') {
+      console.debug('Number too large to be converted to a BigNumber');
+      value = BigNumber.from(b1.value);
+    } else {
+      throw e;
+    }
+  }
 
   const stringLabel = ethers.utils.formatUnits(value, decimals);
 

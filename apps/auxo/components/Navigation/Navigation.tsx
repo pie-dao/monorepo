@@ -152,7 +152,12 @@ export default function Navigation({
 
   if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
   return (
-    <div className="fixed h-full z-20">
+    <div
+      className={classNames(
+        'fixed h-full z-20 transition-all duration-300',
+        open ? 'w-[180px]' : 'w-[40px]',
+      )}
+    >
       <AnimatePresence initial={false}>
         <motion.aside
           animate={open ? 'visible' : 'hidden'}
@@ -266,7 +271,20 @@ export default function Navigation({
       {!isLargeDesktop && (
         <motion.button
           type="button"
-          className="focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0 -right-3"
+          animate={open ? 'visible' : 'hidden'}
+          variants={{
+            hidden: {
+              x: 40,
+            },
+            visible: {
+              x: 0,
+              transition: { duration: 0.4 },
+            },
+          }}
+          className={classNames(
+            'focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0',
+            open ? '-right-3' : 'right-2',
+          )}
           onClick={() => setOpen(!open)}
         >
           <MenuIcon open={open} />

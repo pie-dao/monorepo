@@ -55,7 +55,6 @@ function InputSlider({
       setValue(maximizedBNValue);
       return;
     }
-
     const maximizedBNValue = smallToBalance(value, decimals);
     setValue(maximizedBNValue);
     setDisplayValue(value);
