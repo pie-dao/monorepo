@@ -3,7 +3,7 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 export default class _Document extends Document {
   render() {
     return (
-      <Html className="h-full scroll-smooth antialiased">
+      <Html className="h-full scroll-smooth subpixel-antialiased">
         <Head>
           <link
             rel="preload"
