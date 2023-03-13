@@ -14,7 +14,8 @@ export default function MigrationBanner() {
         </div>
         <div>
           <p className="text-lg text-primary font-medium">
-            {t('timeToMigrateSubtitle')}
+            <span className="font-bold">{t('timeToMigrateSubtitle1')}</span>{' '}
+            {t('timeToMigrateSubtitle2')}
           </p>
         </div>
       </div>

@@ -25,7 +25,7 @@ export const LinkTo = (href: string, text: string) => (
 
 export const label = (color: string, label: string) => (
   <span
-    className={`md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium border hidden`}
+    className={`md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium border hidden capitalize`}
     style={{
       color: `rgb(var(--color-${color}))`,
       borderColor: `rgb(var(--color-${color}))`,
@@ -280,13 +280,13 @@ const MigrationFAQ: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-md rounded-lg w-full my-12">
+    <div className="bg-white divide-y px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-sm rounded-lg w-full my-12">
       <div className="flex">
-        <h3 className="w-full text-lg font-medium leading-6 text-primary">
+        <h3 className="w-full text-lg font-semibold text-primary">
           {t('faq')}
         </h3>
       </div>
-      <div className="flex flex-col mt-6 gap-y-4 w-full">
+      <div className="flex flex-col mt-4 gap-y-4 w-full pt-4">
         {faqs.map((faq) => (
           <Disclosure
             as="div"

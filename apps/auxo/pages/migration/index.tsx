@@ -53,9 +53,9 @@ export default function Migration() {
         title={t('timeToMigrate')}
         subtitle={t('timeToMigrateArrived')}
       />
-      <div className="bg-white px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-md rounded-lg w-full">
+      <div className="bg-white px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-sm rounded-lg w-full">
         <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
-          <h3 className="w-full text-lg font-medium leading-6 text-primary text-center">
+          <h3 className="w-full text-2xl font-semibold text-primary text-center">
             {t('lifecycle')}
           </h3>
         </div>
@@ -65,7 +65,7 @@ export default function Migration() {
               <div className="flex items-center justify-center rounded-full max-w-[140px] mx-auto">
                 {column.icon}
               </div>
-              <h3 className="mt-4 text-sm font-medium text-primary text-center">
+              <h3 className="mt-4 text-sm font-semibold text-primary text-center">
                 {column.title}
               </h3>
             </div>
@@ -75,7 +75,7 @@ export default function Migration() {
           <Link href="/migration/start" passHref>
             <button
               disabled={!isMigrationDeployed}
-              className="w-fit flex items-center gap-x-2 px-8 py-2 text-md font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
+              className="w-fit flex items-center gap-x-2 px-12 py-2 text-md font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
             >
               {t('startMigration')}
               <ChevronRightIcon className="w-5 h-5" />
