@@ -31,3 +31,18 @@ export function getRemainingMonths(
   const months = (end.getFullYear() - start.getFullYear()) * 12;
   return months - start.getMonth() + end.getMonth();
 }
+
+// get remaining time in months, start is expressed in timestamp, duration is expressed in seconds
+
+export function getRemainingTimeInMonths(start: number, duration: number) {
+  const now = new Date().getTime() / 1000;
+  const end = start + duration;
+  const remainingTime = end - now;
+  return Math.ceil(remainingTime / AVG_SECONDS_IN_MONTH);
+}
+
+export function getMonthsSinceStake(lockedAt: number) {
+  const now = new Date().getTime() / 1000;
+  const remainingTime = now - lockedAt;
+  return Math.round(remainingTime / AVG_SECONDS_IN_MONTH);
+}

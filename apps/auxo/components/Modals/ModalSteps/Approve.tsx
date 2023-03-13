@@ -9,20 +9,19 @@ import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
 import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 import AUXOImage from '../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../public/tokens/veAUXO.svg';
-import xAUXOImage from '../../../public/tokens/xAUXO.svg';
+import ARVImage from '../../../public/tokens/32x32/ARV.svg';
+import xAUXOImage from '../../../public/tokens/32x32/PRV.svg';
 
 const imageMap = {
   AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
-  xAUXO: xAUXOImage,
+  ARV: ARVImage,
+  PRV: xAUXOImage,
 };
 
 export default function Approve() {
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const dispatch = useAppDispatch();
   const [approving, setApproving] = useState(false);
   const tokenContract = useCurrentTokenContract(swap?.from?.token);
@@ -30,7 +29,7 @@ export default function Approve() {
   const approveDeposit = () => {
     setApproving(true);
     const nextStep =
-      swap?.to?.token === 'xAUXO'
+      swap?.to?.token === 'PRV'
         ? (`CONFIRM_CONVERT_${swap.to.token.toUpperCase()}` as const)
         : (`CONFIRM_STAKE_${swap.to.token.toUpperCase()}` as const);
     dispatch(
@@ -49,11 +48,11 @@ export default function Approve() {
         as="h3"
         className="font-bold text-center text-xl text-primary capitalize w-full"
       >
-        {t('approve')}
+        {t('approveTokenForStaking', { token: swap?.from.token })}
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
-          <p className="text-lg text-sub-dark">
+          <p className="text-lg text-sub-dark font-medium">
             {t('approveTokenModalDescription', {
               token: swap?.from.token,
             })}
@@ -61,7 +60,7 @@ export default function Approve() {
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="grid grid-cols-3 justify-items-center w-full py-2">
+            <div className="flex place-content-center w-full py-6 gap-x-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
                 <Image
                   src={imageMap[swap.from.token]}
@@ -69,7 +68,7 @@ export default function Approve() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {formatBalance(
                     swap.from.amount.label,
                     defaultLocale,
@@ -87,14 +86,14 @@ export default function Approve() {
                   height={24}
                 />
               </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
+              <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg">
                 <Image
                   src={imageMap[swap.to.token]}
                   alt={swap.to.token}
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-secondary">
+                <span>
                   {formatBalance(
                     swap.to.amount.label,
                     defaultLocale,
@@ -106,7 +105,7 @@ export default function Approve() {
               </div>
             </div>
           )}
-          {hash && (
+          {tx?.hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <Image
@@ -115,34 +114,38 @@ export default function Approve() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('blockExplorer')}
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${hash}`}
+                  href={`https://goerli.etherscan.io/tx/${tx.hash}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                  className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {hash}
+                  {tx.hash}
                 </a>
               </div>
             </div>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full flex justify-center">
           {!approving ? (
             <button
               type="button"
-              className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={approveDeposit}
             >
               {t('approveToken', { token: swap?.from.token })}
             </button>
           ) : (
-            <LoadingSpinner />
+            <div className="w-full flex justify-center">
+              <p className="bg-clip-text bg-gradient-major-colors text-transparent ">
+                {t('confirmInWallet')}
+              </p>
+            </div>
           )}
         </div>
       </div>

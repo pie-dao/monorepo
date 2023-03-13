@@ -23,8 +23,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC =
-  'https://bestnet.alexintosh.com/rpc/migration-test-round-three';
+const localRPC = 'https://bestnet.alexintosh.com/rpc/coccobello';
 
 const selectedNetwork = 1;
 
@@ -77,35 +76,35 @@ export const contractWrappers = productContracts.map((addresses) => {
 
 export const stakingContract = MAINNETMulticall.wrap(
   TokenLockerAbi__factory.connect(
-    products['veAUXO'].addresses[selectedNetwork].stakingAddress,
+    products['ARV'].addresses[selectedNetwork].stakingAddress,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
 export const veAUXOContract = MAINNETMulticall.wrap(
   VeAUXOAbi__factory.connect(
-    products['veAUXO'].addresses[selectedNetwork].address,
+    products['ARV'].addresses[selectedNetwork].address,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
 export const xAUXOContract = MAINNETMulticall.wrap(
   XAUXOAbi__factory.connect(
-    products['xAUXO'].addresses[selectedNetwork].address,
+    products['PRV'].addresses[selectedNetwork].address,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
 export const xAUXOStakingManager = MAINNETMulticall.wrap(
   StakingManagerAbi__factory.connect(
-    products['xAUXO'].addresses[selectedNetwork].stakingAddress,
+    products['PRV'].addresses[selectedNetwork].stakingAddress,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
 
 export const rollStakerContract = MAINNETMulticall.wrap(
   RollStakerAbi__factory.connect(
-    products['xAUXO'].addresses[selectedNetwork].rollStakerAddress,
+    products['PRV'].addresses[selectedNetwork].rollStakerAddress,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );

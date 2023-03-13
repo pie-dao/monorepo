@@ -3,7 +3,7 @@ import Document, { Head, Html, Main, NextScript } from 'next/document';
 export default class _Document extends Document {
   render() {
     return (
-      <Html className="h-full scroll-smooth antialiased">
+      <Html className="h-full scroll-smooth subpixel-antialiased">
         <Head>
           <link
             rel="preload"
@@ -29,6 +29,13 @@ export default class _Document extends Document {
           <link
             rel="preload"
             href="/fonts/Silka/silka-bold.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin=""
+          />
+          <link
+            rel="preload"
+            href="/fonts/Silka/silka-semibold.woff2"
             as="font"
             type="font/woff2"
             crossOrigin=""

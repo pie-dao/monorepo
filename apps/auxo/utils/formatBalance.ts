@@ -1,5 +1,6 @@
 import { BigNumber, ethers } from 'ethers';
 import { BigNumberReference } from '../store/products/products.types';
+import { zeroBalance } from './balances';
 
 export function formatBalanceCurrency(
   balanceAmount: number,
@@ -20,8 +21,8 @@ export function formatBalanceCurrency(
 export function formatBalance(
   balanceAmount: number,
   defaultLocale?: string,
-  fixed?: number,
-  notation?: 'compact' | 'standard' | 'scientific' | 'engineering',
+  fixed = 2,
+  notation: 'compact' | 'standard' | 'scientific' | 'engineering' = 'compact',
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'decimal',
@@ -43,15 +44,28 @@ export function formatAsPercent(
 }
 
 export const smallToBalance = (
-  n: number,
+  n: string,
   decimals: number,
-): BigNumberReference => ({
-  /**
-   * Convert a standard number to a balance object
-   */
-  value: ethers.utils.parseUnits(n.toString(), decimals).toString(),
-  label: n,
-});
+): BigNumberReference => {
+  let value: string;
+  let label: number;
+  try {
+    value = ethers.utils.parseUnits(n.toString(), decimals).toString();
+    label = Number(n);
+    return {
+      value,
+      label,
+    };
+  } catch (e) {
+    if (e.code === 'NUMERIC_FAULT') {
+      console.debug(
+        'Error parsing balance, decimals exceeded the specified ones',
+      );
+      return zeroBalance;
+    }
+    throw e;
+  }
+};
 
 export const fromScale = (
   n: number | BigNumber | undefined,

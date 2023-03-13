@@ -22,7 +22,7 @@ import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
 import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
 };
 
 const ChooseMigration: React.FC<Props> = ({ token }) => {
@@ -41,7 +41,7 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SELECT_WALLET));
       dispatch(setBoost(false));
     } else {
-      if (token === 'veAUXO') {
+      if (token === 'ARV') {
         dispatch(
           setMigrationType(
             boost
@@ -56,7 +56,7 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_CONFIRM));
     }
   };
-  const notVeAuxoOrNoLocks = token !== 'veAUXO' || noLocks;
+  const notVeAuxoOrNoLocks = token !== 'ARV' || noLocks;
 
   return (
     <>

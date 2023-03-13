@@ -15,14 +15,14 @@ import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
 import AUXOImage from '../../../../public/tokens/AUXO.svg';
-import xAUXOImage from '../../../../public/tokens/xAUXO.svg';
+import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import { xAUXOContract } from '../../../../store/products/products.contracts';
 import { compareBalances } from '../../../../utils/balances';
 import { useUserCurrentEpochStakedXAUXO } from '../../../../hooks/useToken';
 
 const imageMap = {
   AUXO: AUXOImage,
-  xAUXO: xAUXOImage,
+  PRV: xAUXOImage,
 };
 
 const StakeConfirm: React.FC<{
@@ -32,7 +32,6 @@ const StakeConfirm: React.FC<{
   const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const rollStaker = useRollStakerXAUXOContract();
@@ -76,7 +75,7 @@ const StakeConfirm: React.FC<{
       </Dialog.Title>
       <div className="flex flex-col items-center justify-center w-full gap-y-6">
         <div className="mt-2">
-          <p className="text-lg text-sub-dark">
+          <p className="text-lg text-sub-dark font-medium">
             {t('stakeConfirmModalDescription', {
               action: t(action),
               token: swap?.from.token,
@@ -85,32 +84,30 @@ const StakeConfirm: React.FC<{
         </div>
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
-            <div className="grid grid-cols-2 justify-items-center w-full py-2">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                <span className="text-xl font-medium text-primary">
-                  {t('amount')}:
-                </span>
+            <div className="flex place-content-center w-full py-6 gap-x-2 items-center">
+              <div>
+                <p className="font-medium text-primary text-xl">
+                  {t('staking')}:
+                </p>
               </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
+              <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg">
                 <Image
                   src={imageMap[swap.from.token]}
                   alt={swap.from.token}
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
-                  {formatBalance(
-                    swap.from.amount.label,
-                    defaultLocale,
-                    2,
-                    'standard',
-                  )}{' '}
-                  {swap.from.token}
-                </span>
+                {formatBalance(
+                  swap.from.amount.label,
+                  defaultLocale,
+                  4,
+                  'standard',
+                )}{' '}
+                {swap.from.token}
               </div>
             </div>
           )}
-          {hash && (
+          {tx?.hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <Image
@@ -119,28 +116,28 @@ const StakeConfirm: React.FC<{
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-xl font-semibold text-primary">
                   {t('blockExplorer')}
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${hash}`}
+                  href={`https://goerli.etherscan.io/tx/${tx?.hash}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                  className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {hash}
+                  {tx?.hash}
                 </a>
               </div>
             </div>
           )}
         </div>
-        <div className="w-full">
+        <div className="w-full flex justify-center">
           {!depositLoading ? (
             <button
               type="button"
-              className="w-full px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={makeDeposit}
             >
               {t('confirmModal', {
@@ -148,6 +145,12 @@ const StakeConfirm: React.FC<{
                 action: t(action),
               })}
             </button>
+          ) : !tx?.hash ? (
+            <div className="w-full flex justify-center">
+              <p className="bg-clip-text bg-gradient-major-colors text-transparent ">
+                {t('confirmInWallet')}
+              </p>
+            </div>
           ) : (
             <LoadingSpinner />
           )}

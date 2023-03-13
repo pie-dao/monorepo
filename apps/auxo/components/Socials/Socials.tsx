@@ -49,3 +49,22 @@ export default function Socials({ open }: { open: boolean }) {
     </div>
   );
 }
+
+export const Discord = () => (
+  <a
+    href={SocialIcons.find(({ path }) => path === discord)?.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex items-center justify-center gap-2 group"
+  >
+    <span className=" group-hover:underline text-primary">AUXO Discord</span>
+    <svg
+      className="h-5 w-5 text-sub-dark group-hover:text-primary"
+      aria-hidden="true"
+      fill="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path d={discord} />
+    </svg>
+  </a>
+);

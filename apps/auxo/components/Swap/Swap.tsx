@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
-import xAuxoIcon from '../../public/tokens/xAUXO.svg';
+import PRVIcon from '../../public/tokens/32x32/PRV.svg';
 import StakeInput from './StakeInput';
 import { compareBalances, zeroBalance } from '../../utils/balances';
 import DepositActions from './ApproveDepositButton';
@@ -32,14 +32,14 @@ type Props = {
 
 const tokenOptions = [
   {
-    title: <Trans i18nKey="convertToken" values={{ token: 'xAUXO' }} />,
+    title: <Trans i18nKey="convertToken" values={{ token: 'PRV' }} />,
     value: 'convert',
     image: <Image src={AuxoIcon} alt={'AUXO Icon'} width={24} height={24} />,
   },
   {
-    title: <Trans i18nKey="stakeToken" values={{ token: 'xAUXO' }} />,
+    title: <Trans i18nKey="stakeToken" values={{ token: 'PRV' }} />,
     value: 'convertAndStake',
-    image: <Image src={xAuxoIcon} alt={'xAUXO Icon'} width={24} height={24} />,
+    image: <Image src={PRVIcon} alt={'PRV'} width={24} height={24} />,
   },
 ];
 
@@ -80,14 +80,14 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-[url('/images/background/xAUXO.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden">
+      <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
         <Tab.Group>
           <Tab.List className="flex gap-x-4 rounded-xl p-1">
             {['convertStake', 'unstake', 'info'].map((tab) => (
               <Tab
                 className={({ selected }) =>
                   classNames(
-                    'py-2.5 text-base font-medium focus:outline-none relative',
+                    'text-base font-semibold focus:outline-none relative',
                     selected ? ' text-secondary' : ' text-sub-light',
                     'disabled:opacity-20',
                   )
@@ -113,7 +113,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     <p className="text-base text-primary font-medium">
                       {t('amountToStake')}
                     </p>
-                    <div className="flex w-56 justify-end">
+                    <div className="flex w-48 justify-end">
                       <Listbox value={tab} onChange={setTab}>
                         {({ open }) => (
                           <div className="relative mt-1 w-full">
@@ -191,26 +191,31 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         )}
                         <div className="flex place-items-center justify-between w-full">
                           <p className="text-base text-primary font-medium">
-                            {t('youGet')}
+                            {t('vaultBalance')}
                           </p>
                           <p className="text-secondary font-bold text-lg">
                             {formatBalance(
                               xAUXOEstimation.label,
                               defaultLocale,
-                              2,
+                              4,
                               'standard',
                             )}{' '}
-                            xAUXO
+                            PRV
                           </p>
                         </div>
                         <DepositActions
                           deposit={originDepositValue}
                           estimation={xAUXOEstimation}
                           tokenConfig={stakingTokenConfig}
-                          toToken="xAUXO"
+                          toToken="PRV"
                         >
                           {t('convert')}
                         </DepositActions>
+                        <div className="w-full flex justify-center items-center">
+                          <p className="text-sub-dark text-sm font-medium">
+                            ⚠️ {t('irreversible')}
+                          </p>
+                        </div>
                         {/* <div className="flex flex-col w-full justify-between gap-y-3">
                           <div className="flex w-full justify-between py-2">
                             <label
@@ -274,10 +279,10 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             {formatBalance(
                               stakingDepositValue.label,
                               defaultLocale,
-                              2,
+                              4,
                               'standard',
                             )}{' '}
-                            xAUXO
+                            PRV
                           </p>
                         </div>
                         <StakeButton
@@ -322,10 +327,10 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         {formatBalance(
                           unstakingDepositValue.label,
                           defaultLocale,
-                          2,
+                          4,
                           'standard',
                         )}{' '}
-                        xAUXO
+                        PRV
                       </p>
                     </div>
                     <StakeButton

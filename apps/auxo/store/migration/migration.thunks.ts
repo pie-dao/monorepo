@@ -72,7 +72,7 @@ export type ThunkMigrateVeDOUGHProps = {
   upgradoor: UpgradoorAbi;
   boost: boolean;
   destinationWallet: string;
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
   isSingleLock: boolean;
   sender: string;
 };
@@ -111,16 +111,16 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
 
     const {
       aggregateAndBoost,
-      aggregateToVeAuxo,
-      upgradeSingleLockVeAuxo,
-      aggregateToXAuxo,
-      upgradeSingleLockXAuxo,
+      aggregateToARV,
+      upgradeSingleLockARV,
+      aggregateToPRV,
+      upgradeSingleLockPRV,
     } = upgradoor;
 
     let tx: ContractTransaction;
-    if (token === 'veAUXO') {
+    if (token === 'ARV') {
       if (isSingleLock) {
-        tx = await upgradeSingleLockVeAuxo(destinationWallet);
+        tx = await upgradeSingleLockARV(destinationWallet);
         pendingNotification({
           title: `aggregateveDOUGHPending`,
           id: 'aggregateVeDOUGH',
@@ -132,7 +132,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
           id: 'aggregateVeDOUGH',
         });
       } else {
-        tx = await aggregateToVeAuxo();
+        tx = await aggregateToARV();
         pendingNotification({
           title: `aggregateVeDOUGHPending`,
           id: 'aggregateVeDOUGH',
@@ -140,13 +140,13 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       }
     } else {
       if (isSingleLock) {
-        tx = await upgradeSingleLockXAuxo(destinationWallet);
+        tx = await upgradeSingleLockPRV(destinationWallet);
         pendingNotification({
           title: `aggregateVeDOUGHPending`,
           id: 'aggregateVeDOUGH',
         });
       } else {
-        tx = await aggregateToXAuxo();
+        tx = await aggregateToPRV();
         pendingNotification({
           title: `aggregateveDOUGHPending`,
           id: 'aggregateVeDOUGH',
@@ -178,7 +178,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
 
 type ThunkPreviewMigrationProps = {
   boost: boolean;
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
   isSingleLock: boolean;
   sender: string;
   destinationWallet: string;
@@ -210,13 +210,13 @@ export const ThunkPreviewMigration = createAsyncThunk(
 
     const previews = promiseObject({
       veAUXOAggregateAndBoost: Upgradoor.previewAggregateAndBoost(sender),
-      veAUXOAggregate: Upgradoor.previewAggregateVeAUXO(sender),
-      veAUXOSingleLock: Upgradoor.previewUpgradeSingleLockVeAuxo(
+      veAUXOAggregate: Upgradoor.previewAggregateARV(sender),
+      veAUXOSingleLock: Upgradoor.previewUpgradeSingleLockARV(
         sender,
         destinationWallet,
       ),
-      xAUXOAggregate: Upgradoor.previewAggregateToXAUXO(sender),
-      xAUXOSingleLock: Upgradoor.previewUpgradeSingleLockXAUXO(sender),
+      xAUXOAggregate: Upgradoor.previewAggregateToPRV(sender),
+      xAUXOSingleLock: Upgradoor.previewUpgradeSingleLockPRV(sender),
     });
 
     const {
@@ -228,12 +228,12 @@ export const ThunkPreviewMigration = createAsyncThunk(
     } = await previews;
 
     return {
-      veAUXO: {
+      ARV: {
         aggregateAndBoost: toBalance(veAUXOAggregateAndBoost, 18),
         aggregate: toBalance(veAUXOAggregate, 18),
         singleLock: toBalance(veAUXOSingleLock, 18),
       },
-      xAUXO: {
+      PRV: {
         aggregate: toBalance(xAUXOAggregate, 18),
         singleLock: toBalance(xAUXOSingleLock, 18),
       },

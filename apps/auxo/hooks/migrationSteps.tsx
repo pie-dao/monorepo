@@ -6,7 +6,7 @@ import ChooseMigration from '../components/veAUXOMigration/ChooseMigration';
 import ConfirmMigration from '../components/veAUXOMigration/ConfirmMigration';
 import { STEPS_LIST } from '../store/migration/migration.types';
 
-const useMigrationSteps = (token: 'xAUXO' | 'veAUXO') => {
+const useMigrationSteps = (token: 'ARV' | 'PRV') => {
   const { currentStep } = useAppSelector((state) => state.migration);
 
   const getStep = useMemo(() => {

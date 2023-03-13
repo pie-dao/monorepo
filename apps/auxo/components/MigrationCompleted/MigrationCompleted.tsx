@@ -12,7 +12,7 @@ import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { TOKEN_NAMES } from '../../utils/constants';
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
 };
 
 const MigrationCompleted: React.FC<Props> = ({ token }) => {
@@ -27,7 +27,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
   } = useAppSelector((state) => state.migration);
 
   const textForMigrationType = useMemo(() => {
-    const baseText = token === 'veAUXO' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const baseText = token === 'ARV' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     return t(`${lockText}${baseText}Completed`);
   }, [token, isSingleLock, t]);
@@ -54,7 +54,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
           <div className="h-[150px] w-full rounded-lg overflow-hidden mb-6">
             <RiveComponent
               src={
-                token === 'veAUXO'
+                token === 'ARV'
                   ? `/animations/veDOUGH-veAUXO.riv`
                   : `/animations/veDOUGH-xAUXO.riv`
               }
@@ -96,7 +96,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       width={24}
                       height={24}
                     />
-                    <span className="text-xl font-medium text-primary">
+                    <span className="text-xl font-semibold text-primary">
                       {t('blockExplorer')}
                     </span>
                   </div>
@@ -105,7 +105,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       href={`https://goerli.etherscan.io/tx/${tx?.hash}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                      className="text-sm font-medium text-primary truncate underline max-w-xs"
                     >
                       {shortenedHash}
                     </a>

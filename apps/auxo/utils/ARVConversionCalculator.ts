@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { BigNumberReference } from '../store/products/products.types';
 
-const veAUXOConversionCalculator = (
+const ARVConversionCalculator = (
   depositValue: BigNumberReference,
   commitmentValue: number,
   decimals: number,
@@ -20,4 +20,4 @@ const veAUXOConversionCalculator = (
   }
 };
 
-export default veAUXOConversionCalculator;
+export default ARVConversionCalculator;

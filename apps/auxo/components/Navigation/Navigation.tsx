@@ -11,12 +11,13 @@ import {
   Variants,
 } from 'framer-motion';
 import diamond from '../../public/images/icons/diamond.svg';
-import xAUXOIcon from '../../public/tokens/xAUXO.svg';
-import veAUXOIcon from '../../public/tokens/veAUXO.svg';
+import xAUXOIcon from '../../public/tokens/32x32/PRV.svg';
+import veAUXOIcon from '../../public/tokens/32x32/ARV.svg';
 import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
 import AUXOLogo from '../../public/images/auxoIcon.svg';
+import MenuIcon from '../Header/MenuIcon';
 
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 
@@ -34,8 +35,8 @@ export default function Navigation({
   const navigation = [
     // { name: t('Homepage'), href: '/', icon: diamond },
     // { name: t('Dashboard'), href: '/treasury', icon: diamond },
-    { name: t('veAUXO'), href: '/veAUXO', icon: veAUXOIcon },
-    { name: t('xAUXO'), href: '/xAUXO', icon: xAUXOIcon },
+    { name: t('ARV'), href: '/ARV', icon: veAUXOIcon },
+    { name: t('PRV'), href: '/PRV', icon: xAUXOIcon },
     { name: t('migration'), href: '/migration', icon: diamond },
   ];
 
@@ -44,6 +45,7 @@ export default function Navigation({
   }, []);
 
   const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const isLargeDesktop = useMediaQuery('(min-width: 1920px)');
 
   const sidebarVariants = useMemo(
     (): Variants =>
@@ -58,7 +60,7 @@ export default function Navigation({
               width: 0,
               x: -180,
               opacity: 0,
-              transition: { duration: 0.5 },
+              transition: { duration: 0.3 },
             },
           }
         : {
@@ -69,7 +71,7 @@ export default function Navigation({
             hidden: {
               width: 60,
               x: 0,
-              transition: { duration: 0.5 },
+              transition: { duration: 0.3 },
             },
           },
     [isDesktop],
@@ -150,7 +152,12 @@ export default function Navigation({
 
   if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
   return (
-    <>
+    <div
+      className={classNames(
+        'fixed h-full z-10 transition-all duration-300',
+        open ? 'w-[180px]' : 'w-[40px]',
+      )}
+    >
       <AnimatePresence initial={false}>
         <motion.aside
           animate={open ? 'visible' : 'hidden'}
@@ -169,7 +176,7 @@ export default function Navigation({
           onDrag={handleDrag}
           onDragEnd={handleDragEnd}
           className={classNames(
-            'h-full w-[180px] fixed z-50 lg:z-0 lg:static bg-sidebar',
+            'h-full w-[180px] fixed z-50 lg:z-0 bg-sidebar',
           )}
         >
           <div className="flex flex-col flex-grow pt-5 h-full">
@@ -256,11 +263,33 @@ export default function Navigation({
       {!isDesktop && open && (
         <>
           <div
-            className="absolute inset z-40 fixed inset-0 backdrop-blur-sm"
+            className="absolute inset z-40 inset-0 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
         </>
       )}
-    </>
+      {!isLargeDesktop && (
+        <motion.button
+          type="button"
+          animate={open ? 'visible' : 'hidden'}
+          variants={{
+            hidden: {
+              x: 40,
+            },
+            visible: {
+              x: 0,
+              transition: { duration: 0.4 },
+            },
+          }}
+          className={classNames(
+            'focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0',
+            open ? '-right-3' : 'right-2',
+          )}
+          onClick={() => setOpen(!open)}
+        >
+          <MenuIcon open={open} />
+        </motion.button>
+      )}
+    </div>
   );
 }

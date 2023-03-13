@@ -32,7 +32,10 @@
       "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"],
       "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"],
       "@shared/util-blockchain/abis": ["libs/shared/util-blockchain/abis"],
-      "@shared/util-types": ["libs/shared/util-types/src/index.ts"]
+      "@shared/util-types": ["libs/shared/util-types/src/index.ts"],
+      "@auxo/components/*": ["apps/auxo/components/*"],
+      "@auxo/public/*": ["apps/auxo/public/*"],
+      "@auxo/hooks/*": ["apps/auxo/hooks/*"]
     },
     "types": ["jest", "node"]
   },

@@ -1,5 +1,6 @@
 import { ethers, BigNumber } from 'ethers';
 import { BigNumberReference } from '../store/products/products.types';
+import { toBalance } from './formatBalance';
 
 /**
  * To avoid storing complex objects in redux (BigNumber)
@@ -24,10 +25,27 @@ export const addBalances = (
 export const subBalances = (
   b1: BigNumberReference,
   b2: BigNumberReference,
+  decimals = 18,
 ): BigNumberReference => {
-  const label = b1.label - b2.label;
   const value = BigNumber.from(b1.value)
     .sub(BigNumber.from(b2.value))
+    .toString();
+  const formatted = ethers.utils.formatUnits(value, decimals);
+
+  return {
+    label: Number(formatted),
+    value,
+  };
+};
+
+export const mulBalances = (
+  b1: BigNumberReference,
+  b2: BigNumberReference,
+): BigNumberReference => {
+  const label = b1.label * b2.label;
+  const value = BigNumber.from(b1.value)
+
+    .mul(BigNumber.from(b2.value))
     .toString();
   return {
     label,
@@ -77,13 +95,38 @@ export const subPercentageToBalance = (
   percentage: BigNumberReference,
   decimals: number,
 ): BigNumberReference => {
-  const value = BigNumber.from(b1.value)
-    .mul(BigNumber.from(100).sub(percentage.value))
-    .div(BigNumber.from(100));
+  const b1Value = BigNumber.from(b1.value);
+  const percentageOfB1 = BigNumber.from(b1.value)
+    .mul(percentage.value)
+    .div(BigNumber.from(10).pow(decimals));
+
+  const subtractedValue = b1Value.sub(percentageOfB1);
+
+  return toBalance(subtractedValue, decimals);
+};
+
+export const addNumberToBnReference = (
+  b1: BigNumberReference,
+  number: number,
+  decimals: number,
+): BigNumberReference => {
+  let value: BigNumber;
+  try {
+    value = BigNumber.from(b1.value).add(
+      BigNumber.from(ethers.utils.parseUnits(number.toString(), decimals)),
+    );
+  } catch (e) {
+    if (e.code === 'INVALID_ARGUMENT') {
+      console.debug('Number too large to be converted to a BigNumber');
+      value = BigNumber.from(b1.value);
+    } else {
+      throw e;
+    }
+  }
 
   const stringLabel = ethers.utils.formatUnits(value, decimals);
 
-  const label = Math.round(parseFloat(stringLabel));
+  const label = parseFloat(stringLabel);
 
   return {
     value: value.toString(),

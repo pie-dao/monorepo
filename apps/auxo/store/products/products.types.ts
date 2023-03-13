@@ -18,6 +18,7 @@ export type Token = {
   stakingToken?: string;
   votingAddresses?: number;
   fee?: BigNumberReference;
+  earlyTerminationFee?: BigNumberReference;
   userStakingData?: {
     amount: BigNumberReference;
     currentEpochBalance?: BigNumberReference;

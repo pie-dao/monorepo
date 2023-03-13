@@ -34,6 +34,14 @@
   src: url('../public/fonts/Silka/silka-light.woff2') format('woff2');
 }
 
+@font-face {
+  font-family: 'Silka';
+  font-style: semi-bold;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../public/fonts/Silka/silka-semibold.woff2') format('woff2');
+}
+
 @layer base {
   [data-theme='auxo'] {
     --color-primary: 31 8 96;

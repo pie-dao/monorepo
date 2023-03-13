@@ -4,21 +4,18 @@ import { useAppSelector } from '../../../hooks';
 import Image from 'next/image';
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
-import AUXOImage from '../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../public/tokens/veAUXO.svg';
-import xAUXOImage from '../../../public/tokens/xAUXO.svg';
 import classNames from '../../../utils/classnames';
+import { useMemo } from 'react';
+import AUXOImage from '../../../public/tokens/AUXO.svg';
+import ARVImage from '../../../public/tokens/24x24/ARV.svg';
+import xAUXOImage from '../../../public/tokens/24x24/PRV.svg';
+import { useChainExplorer } from '../../../hooks/useToken';
+import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 
 const imageMap = {
   AUXO: AUXOImage,
-  veAUXO: veAUXOImage,
-  xAUXO: xAUXOImage,
-};
-
-const actionMap = {
-  stake: 'staked',
-  unstake: 'unstaked',
-  convert: 'converted',
+  ARV: ARVImage,
+  PRV: xAUXOImage,
 };
 
 export default function StakeComplete({
@@ -29,121 +26,47 @@ export default function StakeComplete({
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
+  const chainExplorer = useChainExplorer();
 
   return (
     <>
-      <Dialog.Title
-        as="h3"
-        className="font-bold text-center text-xl text-primary capitalize w-full"
-      >
-        {t('completed')}
-      </Dialog.Title>
-      <div className="flex flex-col items-center justify-center w-full gap-y-6">
-        <div className="mt-2">
-          <p className="text-lg text-sub-dark">
-            {t('convertCompletedModalDescription', {
-              token: swap?.from.token,
-              action: actionMap[action],
-            })}
-          </p>
-        </div>
-        <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
-          {swap && (
-            <div
-              className={classNames(
-                'grid justify-items-center w-full py-2',
-                swap.to.token ? 'grid-cols-3' : 'grid-cols-2',
-              )}
-            >
-              {swap?.to?.token ? (
-                <>
-                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                    <Image
-                      src={imageMap[swap.from.token]}
-                      alt={swap.from.token}
-                      width={24}
-                      height={24}
-                    />
-                    <span className="text-xl font-medium text-primary">
-                      {formatBalance(
-                        swap.from.amount.label,
-                        defaultLocale,
-                        2,
-                        'standard',
-                      )}{' '}
-                      {swap.from.token}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <Image
-                      src={ArrowRight}
-                      alt={'transfer'}
-                      width={24}
-                      height={24}
-                    />
-                  </div>
-                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
-                    <Image
-                      src={imageMap[swap.to.token]}
-                      alt={swap.to.token}
-                      width={24}
-                      height={24}
-                    />
-                    <span className="text-xl font-medium text-secondary">
-                      {formatBalance(
-                        swap.to.amount.label,
-                        defaultLocale,
-                        2,
-                        'standard',
-                      )}{' '}
-                      {swap.to.token}
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start">
-                    <span className="text-xl font-medium text-primary">
-                      {t('amount')}:
-                    </span>
-                  </div>
-                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end">
-                    <Image
-                      src={imageMap[swap.from.token]}
-                      alt={swap.from.token}
-                      width={24}
-                      height={24}
-                    />
-                    <span className="text-xl font-medium text-primary">
-                      {formatBalance(
-                        swap.from.amount.label,
-                        defaultLocale,
-                        2,
-                        'standard',
-                      )}{' '}
-                      {swap.from.token}
-                    </span>
-                  </div>
-                </>
-              )}
+      {action === 'convert' && (
+        <div className="flex flex-col items-center justify-center w-full gap-y-4">
+          <div className="h-[180px] w-full rounded-lg overflow-hidden">
+            <RiveComponent
+              src={'/animations/AUXO-PRV.riv'}
+              layout={
+                new Layout({
+                  fit: Fit.ScaleDown,
+                  alignment: Alignment.Center,
+                })
+              }
+            />
+          </div>
+          <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
+            <div className="absolute inset-0 bg-white opacity-30 z-0" />
+            <p className="bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold text-xl z-10">
+              {t('converted')}
+            </p>
+            <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
+              <Image
+                src={imageMap[swap.to.token]}
+                alt={swap.to.token}
+                width={24}
+                height={24}
+              />
+              <span>
+                {formatBalance(
+                  swap.to.amount.label,
+                  defaultLocale,
+                  4,
+                  'standard',
+                )}{' '}
+                {swap.to.token}
+              </span>
             </div>
-          )}
-          {swap?.stakingTime && (
-            <div className="flex items-center self-center justify-between w-full py-2 justify-self-end">
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                <span className="text-xl font-medium text-primary">
-                  {t('stakeTime')}
-                </span>
-              </div>
-              <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
-                <span className="text-xl font-medium text-secondary">
-                  {t('monthsAmount', { count: swap.stakingTime })}
-                </span>
-              </div>
-            </div>
-          )}
-          {hash && (
+          </div>
+          {tx?.hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <Image
@@ -152,29 +75,28 @@ export default function StakeComplete({
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-medium text-primary">
+                <span className="text-sm text-sub-dark font-medium">
                   {t('tx')}:
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xl font-medium text-secondary truncate underline max-w-xs"
+                  className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {hash}
+                  {tx?.hash}
                 </a>
               </div>
             </div>
           )}
         </div>
-        <div className="w-full text-center">
-          <p className="uppercase text-secondary font-medium">
-            {t('transactionCompleted')}
-          </p>
-        </div>
-      </div>
+      )}
     </>
   );
 }

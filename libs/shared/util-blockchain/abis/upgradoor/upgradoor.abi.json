@@ -23,7 +23,17 @@
       },
       {
         "internalType": "address",
-        "name": "_xAuxo",
+        "name": "_prv",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_veDOUGH",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_router",
         "type": "address"
       }
     ],
@@ -46,7 +56,26 @@
         "type": "uint256"
       }
     ],
-    "name": "AggregateToXAuxo",
+    "name": "AggregateToPRV",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountMigratedAndStaker",
+        "type": "uint256"
+      }
+    ],
+    "name": "AggregateToPRVAndStake",
     "type": "event"
   },
   {
@@ -84,7 +113,7 @@
         "type": "uint256"
       }
     ],
-    "name": "AggregatedToVeAuxo",
+    "name": "AggregatedToARV",
     "type": "event"
   },
   {
@@ -98,9 +127,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint32",
+        "internalType": "uint256",
         "name": "idx",
-        "type": "uint32"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -109,7 +138,7 @@
         "type": "uint256"
       }
     ],
-    "name": "LockUpgradedVeAUXO",
+    "name": "LockUpgradedARV",
     "type": "event"
   },
   {
@@ -123,9 +152,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint32",
+        "internalType": "uint256",
         "name": "idx",
-        "type": "uint32"
+        "type": "uint256"
       },
       {
         "indexed": false,
@@ -134,7 +163,32 @@
         "type": "uint256"
       }
     ],
-    "name": "LockUpgradedXAuxo",
+    "name": "LockUpgradedPRV",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "idx",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountMigratedAndStaker",
+        "type": "uint256"
+      }
+    ],
+    "name": "LockUpgradedPRVAndStake",
     "type": "event"
   },
   {
@@ -178,6 +232,19 @@
   },
   {
     "inputs": [],
+    "name": "PRV",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "aggregateAndBoost",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -185,14 +252,21 @@
   },
   {
     "inputs": [],
-    "name": "aggregateToVeAuxo",
+    "name": "aggregateToARV",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "aggregateToXAuxo",
+    "name": "aggregateToPRV",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "aggregateToPRVAndStake",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -218,9 +292,9 @@
         "type": "uint256"
       },
       {
-        "internalType": "uint32",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint32"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -276,9 +350,9 @@
         "type": "uint32"
       },
       {
-        "internalType": "uint32",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint32"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -338,6 +412,38 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "oldLock",
+    "outputs": [
+      {
+        "internalType": "contract ISharesTimelocker",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "previewAggregateARV",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -364,26 +470,7 @@
         "type": "address"
       }
     ],
-    "name": "previewAggregateToXAUXO",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "receiver",
-        "type": "address"
-      }
-    ],
-    "name": "previewAggregateVeAUXO",
+    "name": "previewAggregateToPRV",
     "outputs": [
       {
         "internalType": "uint256",
@@ -407,7 +494,7 @@
         "type": "address"
       }
     ],
-    "name": "previewUpgradeSingleLockVeAuxo",
+    "name": "previewUpgradeSingleLockARV",
     "outputs": [
       {
         "internalType": "uint256",
@@ -426,12 +513,25 @@
         "type": "address"
       }
     ],
-    "name": "previewUpgradeSingleLockXAUXO",
+    "name": "previewUpgradeSingleLockPRV",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "prvRouter",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -458,7 +558,7 @@
         "type": "address"
       }
     ],
-    "name": "upgradeSingleLockVeAuxo",
+    "name": "upgradeSingleLockARV",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -471,14 +571,27 @@
         "type": "address"
       }
     ],
-    "name": "upgradeSingleLockXAuxo",
+    "name": "upgradeSingleLockPRV",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "upgradeSingleLockPRVAndStake",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "xAUXO",
+    "name": "veDOUGH",
     "outputs": [
       {
         "internalType": "address",

@@ -29,7 +29,7 @@ function DepositActions({
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
-  const stakingContract = useStakingTokenContract('veAUXO');
+  const stakingContract = useStakingTokenContract('ARV');
   const tokens = useTokenBalance(tokenConfig.name);
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;
@@ -38,7 +38,7 @@ function DepositActions({
   }, [deposit, tokens]);
 
   const openModal = () => {
-    dispatch(setStep(STEPS.CONFIRM_STAKE_VEAUXO));
+    dispatch(setStep(STEPS.CONFIRM_STAKE_ARV));
     dispatch(
       setSwap({
         swap: {
@@ -62,15 +62,15 @@ function DepositActions({
   };
 
   return (
-    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4">
+    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4 mt-2">
       {account ? (
         <>
           <button
             onClick={openModal}
             disabled={disabledStake}
-            className="px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
-            {t('Stake')}
+            {t('stakeAUXO')}
           </button>
         </>
       ) : (

@@ -16,13 +16,13 @@ import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { Wallet } from 'ethers';
-import { useUserLockDuration } from '../../hooks/useToken';
+import { useUserHasLock, useUserLockDuration } from '../../hooks/useToken';
 
 type Props = {
   title: string;
   subtitle: string;
   description: string;
-  tokenOut: 'veAUXO' | 'xAUXO';
+  tokenOut: 'ARV' | 'PRV';
   isSingleLock: boolean;
   goToStep: () => void;
 };
@@ -43,7 +43,7 @@ const MigrationCard: React.FC<Props> = ({
   const { account } = useWeb3React();
   const dispatch = useAppDispatch();
   const upgradoor = useUpgradoor();
-  const hasLock = !!useUserLockDuration('veAUXO');
+  const hasLock = useUserHasLock('ARV');
 
   const memoizedPositions = useMemo(() => {
     if (isEmpty(positions)) return [];
@@ -105,13 +105,13 @@ const MigrationCard: React.FC<Props> = ({
             previewType={
               isSingleLock
                 ? MIGRATION_TYPE.SINGLE_LOCK
-                : boost && tokenOut === 'veAUXO'
+                : boost && tokenOut === 'ARV'
                 ? MIGRATION_TYPE.AGGREGATE_AND_BOOST
                 : MIGRATION_TYPE.AGGREGATE
             }
             isSingleLock={isSingleLock}
           />
-          {!isSingleLock && tokenOut === 'veAUXO' && (
+          {!isSingleLock && tokenOut === 'ARV' && (
             <div className="flex flex-col w-full justify-between gap-y-3">
               <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
                 <label
@@ -145,7 +145,7 @@ const MigrationCard: React.FC<Props> = ({
               </div>
             </div>
           )}
-          {!isSingleLock && tokenOut === 'veAUXO' && (
+          {!isSingleLock && tokenOut === 'ARV' && (
             <div className="flex flex-col w-full">
               <Banner
                 bgColor="bg-warning"
@@ -159,7 +159,7 @@ const MigrationCard: React.FC<Props> = ({
               />
             </div>
           )}
-          {!isEmpty(memoizedPositions) && tokenOut === 'veAUXO' && (
+          {!isEmpty(memoizedPositions) && tokenOut === 'ARV' && (
             <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md text-primary">
               <p>
                 <span className="font-medium">{t('newLockTime')}:</span>{' '}

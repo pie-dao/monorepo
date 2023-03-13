@@ -36,8 +36,8 @@ const StakeActions: React.FC<{
     dispatch(
       setStep(
         action === 'stake'
-          ? STEPS.CONFIRM_STAKE_XAUXO
-          : STEPS.CONFIRM_UNSTAKE_XAUXO,
+          ? STEPS.CONFIRM_STAKE_PRV
+          : STEPS.CONFIRM_UNSTAKE_PRV,
       ),
     );
     dispatch(
@@ -48,8 +48,8 @@ const StakeActions: React.FC<{
             amount: deposit,
           },
           to: {
-            token: null,
-            amount: null,
+            token: tokenConfig.name,
+            amount: deposit,
           },
           spender: null,
         },
@@ -65,7 +65,7 @@ const StakeActions: React.FC<{
           <button
             onClick={openModal}
             disabled={disabledStake}
-            className="px-8 py-1 text-lg font-medium text-white bg-secondary rounded-2xl ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
             {t(action)}
           </button>

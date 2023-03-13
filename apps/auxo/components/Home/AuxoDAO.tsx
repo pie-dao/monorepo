@@ -5,8 +5,8 @@ import LeftRightContainer from '../LeftRightContainer/LeftRightContainer';
 import Feature1Image from '../../public/images/home/features/feature1.svg';
 import Feature2Image from '../../public/images/home/features/feature2.svg';
 import AUXO from '../../public/tokens/AUXO.svg';
-import veAUXOIcon from '../../public/tokens/veAUXO.svg';
-import xAUXOIcon from '../../public/tokens/xAUXO.svg';
+import ARVIcon from '../../public/tokens/32x32/ARV.svg';
+import PRVIcon from '../../public/tokens/32x32/PRV.svg';
 import Link from 'next/link';
 import RiveComponent, { Fit, Layout, Alignment } from '@rive-app/react-canvas';
 
@@ -55,8 +55,8 @@ const AuxoDAO: React.FC = () => {
         src: Feature1Image,
       },
       button: {
-        image: veAUXOIcon,
-        text: 'veAUXO',
+        image: ARVIcon,
+        text: 'ARV',
         link: '/',
       },
     },
@@ -68,8 +68,8 @@ const AuxoDAO: React.FC = () => {
         src: Feature2Image,
       },
       button: {
-        image: xAUXOIcon,
-        text: 'xAUXO',
+        image: PRVIcon,
+        text: 'PRV',
         link: '/',
       },
     },
@@ -240,7 +240,7 @@ const AuxoDAO: React.FC = () => {
               <p className="flex font-bold text-5xl bg-background/20 rounded-full h-24 w-24 place-items-center">
                 <span className="w-full">32</span>
               </p>
-              <p className="font-bold mt-3">{t('common:veAUXO')}</p>
+              <p className="font-bold mt-3">{t('common:ARV')}</p>
               <p>{t('maxRewards')}</p>
             </div>
             <div className="flex flex-col items-center mb-2 text-base">

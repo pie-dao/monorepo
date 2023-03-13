@@ -1,14 +1,13 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_stakingToken",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "Deprecated",
+    "type": "error"
   },
   {
     "inputs": [
@@ -18,12 +17,12 @@
         "type": "address"
       },
       {
-        "internalType": "uint8",
-        "name": "epoch",
-        "type": "uint8"
+        "internalType": "uint256",
+        "name": "withdrawAmount",
+        "type": "uint256"
       }
     ],
-    "name": "Inactive",
+    "name": "InvalidEmptyBalance",
     "type": "error"
   },
   {
@@ -40,44 +39,6 @@
       }
     ],
     "name": "InvalidWithdrawalAmount",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "epoch",
-        "type": "uint8"
-      }
-    ],
-    "name": "InvalidWithdrawalEpoch",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "NothingToWithdraw",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "user",
-        "type": "address"
-      }
-    ],
-    "name": "UserWithinGracePeriod",
     "type": "error"
   },
   {
@@ -147,6 +108,25 @@
       {
         "indexed": true,
         "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "EmergencyWithdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "depositor",
         "type": "address"
       },
@@ -158,6 +138,19 @@
       }
     ],
     "name": "Exited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
     "type": "event"
   },
   {
@@ -190,25 +183,6 @@
       }
     ],
     "name": "Paused",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "depositor",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint8",
-        "name": "epoch",
-        "type": "uint8"
-      }
-    ],
-    "name": "Quit",
     "type": "event"
   },
   {
@@ -473,6 +447,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "emergencyWithdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -481,6 +462,19 @@
       }
     ],
     "name": "epochBalances",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "epochPendingBalance",
     "outputs": [
       {
         "internalType": "uint256",
@@ -525,11 +519,11 @@
         "type": "address"
       }
     ],
-    "name": "getCurrentBalanceForUser",
+    "name": "getActiveBalanceForUser",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "balance",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -587,37 +581,13 @@
         "internalType": "address",
         "name": "_user",
         "type": "address"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_epoch",
-        "type": "uint8"
       }
     ],
-    "name": "getHistoricalBalanceForUser",
+    "name": "getPendingBalanceForUser",
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_user",
-        "type": "address"
-      }
-    ],
-    "name": "getProjectedBalanceForUser",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -664,12 +634,60 @@
         "type": "address"
       }
     ],
-    "name": "getUserBalances",
+    "name": "getTotalBalanceForUser",
     "outputs": [
       {
-        "internalType": "uint256[]",
+        "internalType": "uint256",
         "name": "",
-        "type": "uint256[]"
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      }
+    ],
+    "name": "getUserStakingData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "_value",
+                "type": "uint256"
+              }
+            ],
+            "internalType": "struct Bitfields.Bitfield",
+            "name": "activations",
+            "type": "tuple"
+          },
+          {
+            "internalType": "uint8",
+            "name": "epochWritten",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint120",
+            "name": "pending",
+            "type": "uint120"
+          },
+          {
+            "internalType": "uint120",
+            "name": "active",
+            "type": "uint120"
+          }
+        ],
+        "internalType": "struct IRollStaker.UserStake",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -715,6 +733,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_stakingToken",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -784,32 +815,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "revertDeposit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "revertDepositAndWithdraw",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "bytes32",
         "name": "role",
         "type": "bytes32"
@@ -830,7 +835,7 @@
     "name": "stakingToken",
     "outputs": [
       {
-        "internalType": "contract IERC20",
+        "internalType": "contract IERC20Upgradeable",
         "name": "",
         "type": "address"
       }
@@ -930,9 +935,19 @@
         "type": "tuple"
       },
       {
-        "internalType": "uint256",
-        "name": "totalLocked",
-        "type": "uint256"
+        "internalType": "uint8",
+        "name": "epochWritten",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint120",
+        "name": "pending",
+        "type": "uint120"
+      },
+      {
+        "internalType": "uint120",
+        "name": "active",
+        "type": "uint120"
       }
     ],
     "stateMutability": "view",

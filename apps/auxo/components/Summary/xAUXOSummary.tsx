@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
 import xAUXOIcon from '../../public/tokens/32x32/PRV.svg';
-import xAUXOIconCircle from '../../public/tokens/xAUXO.svg';
+import xAUXOIconCircle from '../../public/tokens/32x32/PRV.svg';
 import useTranslation from 'next-translate/useTranslation';
 import {
   useTokenBalance,
@@ -50,50 +50,56 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
       },
       {
         icon: <Image src={xAUXOIcon} alt="xAUXO" width={24} height={24} />,
-        title: t('tokenBalance', { token: 'xAUXO' }),
+        title: t('tokenBalance', { token: 'PRV' }),
         value: `${
           account && xAUXOBalance
             ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
             : '0'
-        } xAUXO`,
+        } PRV`,
       },
       {
         icon: (
           <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
         ),
-        title: t('stakedBalance', { token: 'xAUXO' }),
+        title: t('stakedBalance', { token: 'PRV' }),
         value: `
           ${
             account
               ? formatBalance(stakedXAUXO.label, defaultLocale, 4, 'standard')
               : '0'
           }
-          xAUXO
+          PRV
         `,
       },
       {
         icon: null,
-        title: t('xAUXOFee'),
+        title: t('PRVFee'),
         value: formatAsPercent(fee?.label ?? 0),
       },
     ];
   }, [account, auxoBalance, defaultLocale, fee, t, xAUXOBalance, stakedXAUXO]);
 
   return (
-    <div className="flex flex-col px-4 py-3 rounded-md shadow-md bg-white gap-y-4">
-      <div className="flex items-center justify-between w-full">
-        <h3 className="text-xl font-medium text-primary">{t('summary')}</h3>
+    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-5">
+      <div className="flex flex-col w-full gap-y-4">
+        <h3 className="text-xl font-semibold text-primary">{t('summary')}</h3>
+        <div>
+          <p className="text-primary font-medium text-base">
+            {t('irreversibleAction')}
+          </p>
+        </div>
       </div>
+
       {summaryData.map(({ icon, title, value }, index) => (
         <div
-          className="bg-sidebar flex items-center gap-x-2 rounded-md shadow-card self-center w-full p-2"
+          className="bg-sidebar flex items-center gap-x-4 rounded-md shadow-card self-center w-full p-2"
           key={index}
         >
-          <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
+          <dt className="text-base text-primary font-medium flex items-center gap-x-2">
             {icon && icon}
             {title}:
           </dt>
-          <dd className="flex ml-auto pr-2 font-medium text-base text-primary">
+          <dd className="flex ml-auto pr-2 font-semibold text-base text-primary">
             {value}
           </dd>
         </div>

@@ -38,12 +38,12 @@ export type SliceState = {
   migrationType: typeof MIGRATION_TYPE[keyof typeof MIGRATION_TYPE] | null;
   DOUGHInput: string;
   estimatedOutput: {
-    veAUXO: {
+    ARV: {
       aggregateAndBoost: BigNumberReference;
       aggregate: BigNumberReference;
       singleLock: BigNumberReference;
     };
-    xAUXO: {
+    PRV: {
       aggregate: BigNumberReference;
       singleLock: BigNumberReference;
     };

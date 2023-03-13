@@ -18,10 +18,10 @@ import { stakingContract } from '../../store/products/products.contracts';
 const StakingHistory: React.FC = () => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
-  const tokenLocker = useStakingTokenContract('veAUXO');
-  const userLockStartingTime = useUserLockStartingTime('veAUXO');
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
-  const userLockAmount = useUserLockAmount('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
+  const userLockAmount = useUserLockAmount('ARV');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
 
@@ -73,7 +73,7 @@ const StakingHistory: React.FC = () => {
     dispatch(thunkWithdrawFromVeAUXO({ account, tokenLocker }));
 
   const boostToMax = () => {
-    dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
+    dispatch(setStep(STEPS.BOOST_STAKE_ARV));
     dispatch(
       setSwap({
         swap: {
@@ -82,7 +82,7 @@ const StakingHistory: React.FC = () => {
             amount: userLockAmount,
           },
           to: {
-            token: 'veAUXO',
+            token: 'ARV',
             amount: userLockAmount,
           },
           stakingTime: 36,
@@ -100,7 +100,7 @@ const StakingHistory: React.FC = () => {
           <dt className="text-base text-sub-dark font-medium flex items-center gap-x-2">
             {t('stakingDate')}:
           </dt>
-          <dd className="flex ml-auto font-medium text-base text-primary">
+          <dd className="flex ml-auto font-semibold text-base text-primary">
             {userStartStakingDate}
           </dd>
         </div>

@@ -1,30 +1,59 @@
 import { useWeb3React } from '@web3-react/core';
-import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
 import { addMonths } from '../../utils/dates';
-import updateImage from '../../public/images/icons/update.svg';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { thunkIncreaseLockVeAUXO } from '../../store/products/thunks';
 import { useStakingTokenContract } from '../../hooks/useContracts';
 import IncreaseSlider from './IncreaseSlider';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
+  useDecimals,
+  useTokenBalance,
+  useUserIncreasedLevel,
+  useUserLevel,
+  useUserLockAmount,
   useUserLockDuration,
   useUserLockDurationInSeconds,
   useUserLockStartingTime,
+  useUserRemainingStakingTimeInMonths,
 } from '../../hooks/useToken';
+import ARVConversionCalculator from '../../utils/ARVConversionCalculator';
+import { addNumberToBnReference, zeroBalance } from '../../utils/balances';
+import { formatBalance } from '../../utils/formatBalance';
 
 const IncreaseLock: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const tokenLocker = useStakingTokenContract('veAUXO');
+  const tokenLocker = useStakingTokenContract('ARV');
   const { account } = useWeb3React();
   const [commitmentValue, setCommitmentValue] = useState(1);
-  const maxLock = 36 - useUserLockDuration('veAUXO');
-  const userStartingLock = useUserLockStartingTime('veAUXO');
-  const userLockStartingTime = useUserLockStartingTime('veAUXO');
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
+  const actualLock = useUserLockDuration('ARV');
+  const userStartingLock = useUserLockStartingTime('ARV');
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const userLockDuration = useUserLockDurationInSeconds('ARV');
+  const userLevel = useUserLevel(actualLock);
+  const newLevel = useUserIncreasedLevel(commitmentValue);
+  const veAUXOBalance = useTokenBalance('ARV');
+  const stakedAUXOBalance = useUserLockAmount('ARV');
+  const remainingCommitment = useUserRemainingStakingTimeInMonths();
+  const decimals = useDecimals('ARV');
+  const sumCommitment = useMemo(() => {
+    return commitmentValue + remainingCommitment;
+  }, [commitmentValue, remainingCommitment]);
+
+  const maxLock = useMemo(() => {
+    return 36 - actualLock;
+  }, [actualLock]);
+
+  const userProjectedTotalStakingAmount = useMemo(() => {
+    const convertNewAmount = ARVConversionCalculator(
+      stakedAUXOBalance,
+      sumCommitment,
+      decimals,
+    );
+    return addNumberToBnReference(zeroBalance, convertNewAmount, decimals);
+  }, [stakedAUXOBalance, sumCommitment, decimals]);
 
   const start = new Date(userStartingLock * 1000).toLocaleDateString(
     defaultLocale,
@@ -55,22 +84,16 @@ const IncreaseLock: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-4 rounded-md shadow-md bg-white space-y-3 divide-y border-custom-border">
+    <div className="flex flex-col items-center justify-center py-4">
       <div className="flex items-center justify-between w-full">
-        <div className="flex-shrink-0">
-          <Image src={updateImage} alt="update" width={64} height={64} />
-        </div>
         <div className="w-full flex flex-col">
-          <h3 className="text-lg font-medium text-secondary">
-            {t('updatePosition')}
+          <h3 className="text-base font-bold text-primary">
+            {t('increaseTime')}
           </h3>
-          <p className="text-base text-sub-dark">
-            {t('updatePositionDescription')}
-          </p>
         </div>
       </div>
-      <div className="flex flex-col items-center gap-y-2 w-full pt-4">
-        <div className="w-full flex justify-between flex-col gap-y-6">
+      <div className="flex flex-col items-center gap-y-2 w-full pt-2">
+        <div className="w-full flex justify-between flex-col gap-y-4">
           <div className="w-full text-center items-center">
             <IncreaseSlider
               commitmentValue={commitmentValue}
@@ -78,20 +101,74 @@ const IncreaseLock: React.FC = () => {
               maxLock={maxLock}
             />
           </div>
-          <div className="flex">
-            <dt className="text-base text-sub-dark flex items-center gap-x-2">
-              {t('newStakingDates')}
-            </dt>
-            <dd className="flex ml-auto pr-2 font-medium text-base text-primary">
-              {start} to {newEnd}
-            </dd>
+          <div className="flex flex-col gap-y-2 p-2 rounded-xl bg-background">
+            <h4 className="text-base font-semibold text-secondary">
+              {t('afterIncrease')}
+            </h4>
+            <div className="flex">
+              <dt className="text-base text-primary font-medium flex items-center gap-x-2">
+                {t('stakingTime')}:
+              </dt>
+              <dd className="flex ml-auto pr-2 font-medium text-base text-primary items-end gap-x-2">
+                <span className="text-sub-light line-through text-sm">
+                  {actualLock} {actualLock > 1 ? t('months') : t('month')}
+                </span>{' '}
+                <span className="font-semibold text-primary text-base">
+                  {sumCommitment} {t('months')}
+                </span>
+              </dd>
+            </div>
+            <div className="flex">
+              <dt className="text-base text-primary font-medium flex items-center gap-x-2">
+                {t('unlock')}
+              </dt>
+              <dd className="flex ml-auto pr-2 font-medium text-base text-primary items-end gap-x-2">
+                <span className="text-sub-light line-through text-sm">
+                  {start}
+                </span>{' '}
+                <span className="font-semibold text-primary text-base">
+                  {newEnd}
+                </span>
+              </dd>
+            </div>
+            <div className="flex">
+              <dt className="text-base text-primary font-medium flex items-center gap-x-2">
+                {t('rewardLevel')}:
+              </dt>
+              <dd className="flex ml-auto pr-2 font-medium text-base text-primary items-end gap-x-2">
+                <span className="text-sub-light line-through text-sm">
+                  {t('level', { level: userLevel })}
+                </span>{' '}
+                <span className="font-semibold text-secondary text-base">
+                  {t('levelOf', { level: newLevel })}
+                </span>
+              </dd>
+            </div>
+            <div className="flex">
+              <dt className="text-base text-primary font-medium flex items-center gap-x-2">
+                {t('newVaultBalance')}
+              </dt>
+              <dd className="flex ml-auto pr-2 font-medium text-base text-primary items-end gap-x-2">
+                <span className="text-sub-light line-through text-sm">
+                  {formatBalance(veAUXOBalance.label, defaultLocale, 4)} ARV
+                </span>{' '}
+                <span className="font-semibold text-primary text-base">
+                  {formatBalance(
+                    userProjectedTotalStakingAmount.label,
+                    defaultLocale,
+                    4,
+                  )}{' '}
+                  ARV
+                </span>
+              </dd>
+            </div>
           </div>
         </div>
       </div>
       <div className="flex w-full items-center justify-center pt-4">
         <button
           onClick={increaseLock}
-          className="w-fit px-4 py-0.5 text-base text-secondary bg-transparent rounded-2xl ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center"
+          className="px-4 py-0.5 text-base text-secondary bg-transparent rounded-2xl ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import veAUXOImage from '../../public/tokens/veAUXO.svg';
-import xAUXOImage from '../../public/tokens/xAUXO.svg';
+import ARVImage from '../../public/tokens/32x32/ARV.svg';
+import xAUXOImage from '../../public/tokens/32x32/PRV.svg';
 import DOUGHImage from '../../public/tokens/DOUGH.png';
 import ArrowRight from '../../public/images/icons/arrow-right.svg';
 import { useAppSelector } from '../../hooks';
@@ -13,13 +13,13 @@ import { isEmpty } from 'lodash';
 import { TOKEN_NAMES } from '../../utils/constants';
 
 const imageMap = {
-  veAUXO: veAUXOImage,
-  xAUXO: xAUXOImage,
+  ARV: ARVImage,
+  PRV: xAUXOImage,
   DOUGH: DOUGHImage,
 };
 
 type Props = {
-  token: 'veAUXO' | 'xAUXO';
+  token: 'ARV' | 'PRV';
   previewType: typeof MIGRATION_TYPE[keyof typeof MIGRATION_TYPE];
   isSingleLock: boolean;
   DOUGHInput?: string;

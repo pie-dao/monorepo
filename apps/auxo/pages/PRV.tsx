@@ -1,11 +1,9 @@
 import { ReactElement, useEffect } from 'react';
 import Image from 'next/image';
-import veAUXOicon from '../public/tokens/veAUXO.svg';
-import diamond from '../public/images/icons/diamond.svg';
+import PRVIcon from '../public/tokens/32x32/PRV.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
-import addTokenToWallet from '../utils/addTokenToWallet';
-import { MetamaskIcon } from '@shared/ui-library';
+import DoubleCheckmark from '../public/images/icons/double-checkmark.svg';
 import useTranslation from 'next-translate/useTranslation';
 import Tooltip from '../components/Tooltip/Tooltip';
 import {
@@ -14,7 +12,7 @@ import {
 } from '../components/Skeleton';
 import { formatBalance, formatAsPercent } from '../utils/formatBalance';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import Stake from '../components/Stake/Stake';
+import Swap from '../components/Swap/Swap';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import {
@@ -23,16 +21,9 @@ import {
 } from '../store/products/thunks';
 import TokensConfig from '../config/products.json';
 import { TokenConfig } from '../types/tokensConfig';
-import Summary from '../components/Summary/VeAUXOSummary';
-import ContentBanner from '../components/ContentBanner/ContentBanner';
-import {
-  useIsUserMaxLockDuration,
-  useUserLockDurationInSeconds,
-} from '../hooks/useToken';
-import BoostStake from '../components/BoostStake/BoostStake';
-import IncreaseLock from '../components/IncreaseLock/IncreaseLock';
+import Summary from '../components/Summary/xAUXOSummary';
 
-export default function VeAUXO({
+export default function XAUXO({
   tokenConfig,
   stakingTokenConfig,
 }: {
@@ -43,19 +34,12 @@ export default function VeAUXO({
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
   const stakingAmount = useAppSelector(
-    (state) => state.dashboard?.tokens?.[tokenConfig.name]?.stakingAmount,
+    (state) => state.dashboard?.tokens[tokenConfig.name]?.stakingAmount,
   );
 
   const totalSupply = useAppSelector(
-    (state) => state.dashboard?.tokens?.[tokenConfig.name]?.totalSupply,
+    (state) => state.dashboard?.tokens[tokenConfig.name]?.totalSupply,
   );
-
-  const votingAddresses = useAppSelector(
-    (state) => state.dashboard?.tokens?.[tokenConfig.name]?.votingAddresses,
-  );
-
-  const userLockDuration = useUserLockDurationInSeconds('veAUXO');
-  const isMaxxed = useIsUserMaxLockDuration('veAUXO');
 
   const { account, chainId } = useWeb3React<Web3Provider>();
   const dispatch = useAppDispatch();
@@ -64,7 +48,7 @@ export default function VeAUXO({
     dispatch(
       thunkGetUserProductsData({
         account,
-        spender: stakingTokenConfig.addresses[chainId]?.stakingAddress,
+        spender: tokenConfig.addresses[chainId]?.address,
       }),
     );
     dispatch(
@@ -72,7 +56,13 @@ export default function VeAUXO({
         account,
       }),
     );
-  }, [account, dispatch, stakingTokenConfig.addresses, chainId]);
+  }, [
+    account,
+    dispatch,
+    stakingTokenConfig.addresses,
+    chainId,
+    tokenConfig.addresses,
+  ]);
 
   const data = null;
   const isError = false;
@@ -80,39 +70,61 @@ export default function VeAUXO({
   return (
     <>
       <div className="flex flex-col">
-        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap px-4 md:pl-10 md:pr-8">
-          <div className="flex flex-1 items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full xl:w-auto p-2 md:p-0">
-            <Image
-              src={veAUXOicon}
-              alt={'veAUXO Icon'}
-              width={32}
-              height={32}
-            />
-            <h2
-              className="text-lg font-medium text-primary w-fit"
-              data-cy="product-name"
-            >
-              veAUXO
-            </h2>
-            <button
-              className="flex ml-auto pr-2"
-              onClick={async () => await addTokenToWallet(chainId, 'ARV')}
-            >
-              <div className="flex gap-x-2 items-center">
-                <div className="hidden lg:flex gap-x-1">
-                  <span className="text-sub-dark underline text-sm hover:text-sub-light">
-                    {t('addTokenToWallet', {
-                      token: `ARV`,
-                    })}
-                  </span>
-                </div>
-                <MetamaskIcon className="h-5 w-5" />
+        <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
+          <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:p-0">
+            <div className="flex gap-x-2 order-1 items-center">
+              <div className="flex flex-shrink-0">
+                <Image
+                  src={PRVIcon}
+                  alt={'PRV'}
+                  width={32}
+                  height={32}
+                  priority
+                />
               </div>
-            </button>
+              <h2
+                className="text-base lg:text-lg font-bold text-primary w-fit"
+                data-cy="product-name"
+              >
+                {t('PassiveRewardVault')}
+              </h2>
+            </div>
+            <div className="flex items-center sm:ml-auto order-3 sm:order-2 gap-x-2 w-full sm:w-fit">
+              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                <Image
+                  src={DoubleCheckmark}
+                  alt="double checkmark"
+                  width={18}
+                  height={18}
+                  priority
+                />
+                <span>{t('worryFreeStaking')}</span>
+              </div>
+              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                <Image
+                  src={DoubleCheckmark}
+                  alt="double checkmark"
+                  width={18}
+                  height={18}
+                  priority
+                />
+                <span>{t('unstakeAnyTime')}</span>
+              </div>
+              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                <Image
+                  src={DoubleCheckmark}
+                  alt="double checkmark"
+                  width={18}
+                  height={18}
+                  priority
+                />
+                <span>{t('fixedRewards')}</span>
+              </div>
+            </div>
           </div>
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
-        <section className="flex flex-wrap justify-between gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
+        <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
           <div className="flex gap-x-4 items-center w-full sm:w-fit">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
@@ -122,7 +134,7 @@ export default function VeAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark sm:text-xl">
+                  <p className="font-bold text-sub-dark text-base sm:text-xl">
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
@@ -130,7 +142,7 @@ export default function VeAUXO({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
                     {t('totalStaked', { token: 'AUXO' })}
                     <Tooltip>
                       {t('totalStakedTooltip', { token: 'AUXO' })}
@@ -147,7 +159,7 @@ export default function VeAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark sm:text-xl">
+                  <p className="font-bold text-base text-sub-dark sm:text-xl">
                     <span>
                       {formatBalance(
                         totalSupply.label,
@@ -157,28 +169,9 @@ export default function VeAUXO({
                       )}
                     </span>
                   </p>
-                  <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
-                    {t('total', { token: 'veAUXO' })}
-                    <Tooltip>{t('totalTooltip', { token: 'veAUXO' })}</Tooltip>
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div className="flex flex-col py-1">
-              {!votingAddresses ? (
-                <>
-                  <BaseSubDarkTextSkeleton />
-                  <BoldSubDarkTextSkeleton />
-                </>
-              ) : (
-                <>
-                  <p className="font-bold text-sub-dark sm:text-xl">
-                    {!votingAddresses ? 'N/A' : votingAddresses}
-                  </p>
-                  <div className="flex text-[10px] sm:text-base text-sub-dark font-medium gap-x-1">
-                    {t('votingAddresses')}
-                    <Tooltip>{t('votingAddressesTooltip')}</Tooltip>
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                    {t('total', { token: 'PRV' })}
+                    <Tooltip>{t('totalTooltip', { token: 'PRV' })}</Tooltip>
                   </div>
                 </>
               )}
@@ -209,57 +202,38 @@ export default function VeAUXO({
                       )}
                 </p>
                 <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                  {t('apr', { token: 'veAUXO' })}
-                  <Tooltip>{t('aprTooltip', { token: 'veAUXO' })}</Tooltip>
+                  {t('apr', { token: 'PRV' })}
+                  <Tooltip>{t('aprTooltip', { token: 'PRV' })}</Tooltip>
                 </div>
               </div>
             </div>
           </div>
         </section>
         {/* Section for Staking and Summary */}
-        <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
-          <Stake tokenConfig={stakingTokenConfig} />
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-4  text-xs md:text-inherit mt-6">
+          <Swap
+            stakingTokenConfig={stakingTokenConfig}
+            tokenConfig={tokenConfig}
+          />
           <Summary tokenConfig={tokenConfig} />
         </section>
-        {/* Non connected wallet content */}
-        {!account ||
-          (!userLockDuration && (
-            <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
-              <ContentBanner
-                title="stakeAUXO"
-                icon={<Image src={diamond} alt="diamond" />}
-                description="stakeAUXODescription"
-              />
-              <ContentBanner
-                title="earnRewards"
-                icon={<Image src={diamond} alt="diamond" />}
-                description="earnRewardsDescription"
-              />
-            </section>
-          ))}
-        {account && userLockDuration && (
-          <section className="grid grid-cols-1 xl:grid-cols-2 gap-4 px-4 md:px-10 text-xs md:text-inherit mt-6">
-            <BoostStake />
-            {!isMaxxed && <IncreaseLock />}
-          </section>
-        )}
       </div>
     </>
   );
 }
 
-VeAUXO.getLayout = function getLayout(page: ReactElement) {
+XAUXO.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
-  const veAUXO = TokensConfig['veAUXO'] as TokenConfig;
+  const xAUXO = TokensConfig['PRV'] as TokenConfig;
   const AUXO = TokensConfig['AUXO'] as TokenConfig;
   return {
     // does not seem to work with key `initialState`
     props: {
       title: 'Stake',
-      tokenConfig: veAUXO,
+      tokenConfig: xAUXO,
       stakingTokenConfig: AUXO,
     },
   };
