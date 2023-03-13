@@ -73,7 +73,7 @@ const StakingHistory: React.FC = () => {
     dispatch(thunkWithdrawFromVeAUXO({ account, tokenLocker }));
 
   const boostToMax = () => {
-    dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
+    dispatch(setStep(STEPS.BOOST_STAKE_ARV));
     dispatch(
       setSwap({
         swap: {

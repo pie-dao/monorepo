@@ -17,14 +17,13 @@ import {
   useUserLockDuration,
 } from '../../../hooks/useToken';
 import { ParentSize } from '@visx/responsive';
-import veAUXOConversionCalculator from '../../../utils/veAUXOConversionCalculator';
+import ARVConversionCalculator from '../../../utils/ARVConversionCalculator';
 
 export default function BoostStakeModal() {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const stakingContract = useStakingTokenContract(swap.to.token);
@@ -42,7 +41,7 @@ export default function BoostStakeModal() {
   };
 
   const userProjectedTotalStakingAmount = useMemo(() => {
-    const convertNewAmount = veAUXOConversionCalculator(
+    const convertNewAmount = ARVConversionCalculator(
       stakedAUXOBalance,
       36,
       decimals,
@@ -141,7 +140,7 @@ export default function BoostStakeModal() {
               </div>
             </div>
           )}
-          {hash && (
+          {tx?.hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <Image
@@ -156,12 +155,12 @@ export default function BoostStakeModal() {
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${hash}`}
+                  href={`https://goerli.etherscan.io/tx/${tx.hash}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {hash}
+                  {tx.hash}
                 </a>
               </div>
             </div>

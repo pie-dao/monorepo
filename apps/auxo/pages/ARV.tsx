@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
-import veAUXOicon from '../public/tokens/veAUXO.svg';
-import xAUXOIcon from '../public/tokens/xAUXO.svg';
+import veAUXOicon from '../public/tokens/32x32/ARV.svg';
+import xAUXOIcon from '../public/tokens/32x32/PRV.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
 import DoubleCheckmark from '../public/images/icons/double-checkmark.svg';
@@ -31,6 +31,7 @@ import {
   useDecimals,
   useEarlyTerminationFee,
   useTokenBalance,
+  useUserHasLock,
   useUserLockAmount,
   useUserLockDuration,
 } from '../hooks/useToken';
@@ -58,7 +59,7 @@ export default function ARV({
   const decimals = useDecimals(tokenConfig.name);
   const AuxoBalance = useUserLockAmount(tokenConfig.name);
   const earlyTerminationFee = useEarlyTerminationFee();
-  const hasLock = !!useUserLockDuration(tokenConfig.name);
+  const hasLock = useUserHasLock(tokenConfig.name);
   const [commitmentValue, setCommitmentValue] = useState(36);
   const { account, chainId } = useWeb3React<Web3Provider>();
   const dispatch = useAppDispatch();

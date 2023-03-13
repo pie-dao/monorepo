@@ -14,7 +14,7 @@
     "coingeckoId": "auxo-token"
   },
   "ARV": {
-    "image": "/tokens/veAUXO.svg",
+    "image": "/tokens/32x32/ARV.svg",
     "name": "ARV",
     "description": "veAUXO Token",
     "addresses": {
@@ -32,7 +32,7 @@
     "coingeckoId": "veAuxo-token"
   },
   "PRV": {
-    "image": "/tokens/xAUXO.svg",
+    "image": "/tokens/32x32/PRV.svg",
     "name": "PRV",
     "description": "xAUXO Token",
     "addresses": {

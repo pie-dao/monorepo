@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
-import xAuxoIcon from '../../public/tokens/xAUXO.svg';
+import PRVIcon from '../../public/tokens/32x32/PRV.svg';
 import StakeInput from './StakeInput';
 import { compareBalances, zeroBalance } from '../../utils/balances';
 import DepositActions from './ApproveDepositButton';
@@ -39,7 +39,7 @@ const tokenOptions = [
   {
     title: <Trans i18nKey="stakeToken" values={{ token: 'PRV' }} />,
     value: 'convertAndStake',
-    image: <Image src={xAuxoIcon} alt={'xAUXO Icon'} width={24} height={24} />,
+    image: <Image src={PRVIcon} alt={'PRV'} width={24} height={24} />,
   },
 ];
 

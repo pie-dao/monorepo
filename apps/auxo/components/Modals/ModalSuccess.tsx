@@ -109,7 +109,6 @@ export default function ModalSuccess() {
     return 0;
   }, [userLevel]);
 
-  // generate an array of fire emoji elements using useMemo
   const fireEmojis = useMemo(
     () =>
       Array.from({ length: numEmojis }, (_, index) => (
@@ -135,7 +134,7 @@ export default function ModalSuccess() {
     <AnimatePresence initial={true}>
       <Dialog
         as="div"
-        className="relative z-10"
+        className="relative z-30"
         open={showCompleteModal}
         onClose={closeAllModals}
       >
@@ -244,7 +243,11 @@ export default function ModalSuccess() {
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 truncate max-w-xs">
                 <a
-                  href={`${chainExplorer?.url}/tx/${tx?.hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer noopener"
                   className="text-sm text-white hover:text-white hover:underline truncate"

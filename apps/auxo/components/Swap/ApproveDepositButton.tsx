@@ -40,7 +40,7 @@ function DepositActions({
   }, [deposit, tokens]);
 
   const openModal = () => {
-    dispatch(setStep(STEPS.CONFIRM_CONVERT_XAUXO));
+    dispatch(setStep(STEPS.CONFIRM_CONVERT_PRV));
     dispatch(
       setSwap({
         swap: {

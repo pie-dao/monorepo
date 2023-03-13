@@ -26,14 +26,14 @@ import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
 import AUXOImage from '../../../../public/tokens/32x32/AUXO.svg';
-import veAUXOImage from '../../../../public/tokens/32x32/ARV.svg';
+import ARVImage from '../../../../public/tokens/32x32/ARV.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import PendingTransaction from '../../../PendingTransaction/PendingTransaction';
 import { ExclamationIcon } from '@heroicons/react/solid';
 
 const imageMap = {
   AUXO: AUXOImage,
-  ARV: veAUXOImage,
+  ARV: ARVImage,
   PRV: xAUXOImage,
 };
 
@@ -206,7 +206,11 @@ export default function StakeConfirm() {
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`${chainExplorer?.url}/tx/${tx?.hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"

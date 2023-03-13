@@ -11,8 +11,8 @@ import {
   Variants,
 } from 'framer-motion';
 import diamond from '../../public/images/icons/diamond.svg';
-import xAUXOIcon from '../../public/tokens/xAUXO.svg';
-import veAUXOIcon from '../../public/tokens/veAUXO.svg';
+import xAUXOIcon from '../../public/tokens/32x32/PRV.svg';
+import veAUXOIcon from '../../public/tokens/32x32/ARV.svg';
 import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
@@ -154,7 +154,7 @@ export default function Navigation({
   return (
     <div
       className={classNames(
-        'fixed h-full z-20 transition-all duration-300',
+        'fixed h-full z-10 transition-all duration-300',
         open ? 'w-[180px]' : 'w-[40px]',
       )}
     >

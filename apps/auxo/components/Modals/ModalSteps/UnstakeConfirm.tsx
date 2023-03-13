@@ -15,7 +15,7 @@ const UnstakeConfirm = () => {
   const { t } = useTranslation();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
-  const goToUnstake = () => dispatch(setStep(STEPS.UNSTAKE_VEAUXO));
+  const goToUnstake = () => dispatch(setStep(STEPS.WITHDRAW_ARV));
 
   const ARVBalance = useTokenBalance('ARV');
 

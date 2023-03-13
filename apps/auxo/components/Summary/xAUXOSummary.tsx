@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
 import xAUXOIcon from '../../public/tokens/32x32/PRV.svg';
-import xAUXOIconCircle from '../../public/tokens/xAUXO.svg';
+import xAUXOIconCircle from '../../public/tokens/32x32/PRV.svg';
 import useTranslation from 'next-translate/useTranslation';
 import {
   useTokenBalance,

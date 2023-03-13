@@ -10,12 +10,12 @@ import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import RiveComponent, { Alignment, Fit, Layout } from '@rive-app/react-canvas';
 
 import AUXOImage from '../../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../../public/tokens/24x24/ARV.svg';
+import ARVImage from '../../../../public/tokens/24x24/ARV.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 
 const imageMap = {
   AUXO: AUXOImage,
-  ARV: veAUXOImage,
+  ARV: ARVImage,
   PRV: xAUXOImage,
 };
 
@@ -99,7 +99,11 @@ export default function UnstakeCompleted() {
           </div>
           <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
             <a
-              href={`${chainExplorer?.url}/tx/${tx?.hash}`}
+              href={
+                chainExplorer?.url
+                  ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                  : '#'
+              }
               target="_blank"
               rel="noreferrer"
               className="text-sm font-medium text-primary truncate underline max-w-xs"

@@ -34,7 +34,7 @@ export default function ModalManager() {
     <AnimatePresence initial={false}>
       <Dialog
         as="div"
-        className="relative z-10"
+        className="relative z-30"
         onClose={closeModal}
         open={isOpen}
       >
@@ -49,18 +49,18 @@ export default function ModalManager() {
               <>
                 <ModalBox>
                   {step === STEPS.APPROVE_TOKEN && <Approve />}
-                  {step === STEPS.CONFIRM_STAKE_VEAUXO && <StakeConfirm />}
-                  {step === STEPS.BOOST_STAKE_VEAUXO && <BoostStakeModal />}
-                  {step === STEPS.CONFIRM_CONVERT_XAUXO && <SwapConfirm />}
-                  {step === STEPS.CONFIRM_STAKE_XAUXO && <StakeXAUXOConfirm />}
-                  {step === STEPS.CONFIRM_UNSTAKE_XAUXO && (
+                  {step === STEPS.CONFIRM_STAKE_ARV && <StakeConfirm />}
+                  {step === STEPS.BOOST_STAKE_ARV && <BoostStakeModal />}
+                  {step === STEPS.CONFIRM_CONVERT_PRV && <SwapConfirm />}
+                  {step === STEPS.CONFIRM_STAKE_PRV && <StakeXAUXOConfirm />}
+                  {step === STEPS.CONFIRM_UNSTAKE_PRV && (
                     <StakeXAUXOConfirm action="unstake" />
                   )}
-                  {step === STEPS.CONFIRM_UNSTAKE_VEAUXO && <UnstakeConfirm />}
-                  {step === STEPS.UNSTAKE_VEAUXO && (
+                  {step === STEPS.CONFIRM_WITHDRAW_ARV && <UnstakeConfirm />}
+                  {step === STEPS.WITHDRAW_ARV && (
                     <UnstakeArv closeModal={closeModal} />
                   )}
-                  {step === STEPS.UNSTAKE_VEAUXO_COMPLETED && (
+                  {step === STEPS.WITHDRAW_ARV_COMPLETED && (
                     <UnstakeCompleted />
                   )}
                   {step === STEPS.STAKE_COMPLETED && (

@@ -38,7 +38,7 @@ function DepositActions({
   }, [deposit, tokens]);
 
   const openModal = () => {
-    dispatch(setStep(STEPS.CONFIRM_STAKE_VEAUXO));
+    dispatch(setStep(STEPS.CONFIRM_STAKE_ARV));
     dispatch(
       setSwap({
         swap: {

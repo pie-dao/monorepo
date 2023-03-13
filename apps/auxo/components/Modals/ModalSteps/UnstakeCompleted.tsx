@@ -11,7 +11,6 @@ export default function UnstakeCompleted() {
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const chainExplorer = useChainExplorer();
   //     <div className="flex flex-col items-center justify-center w-full gap-y-6">
   //       <div className="mt-2">
@@ -162,7 +161,7 @@ export default function UnstakeCompleted() {
           {t('sorryToSeeYouGo')}
         </p>
         <Discord />
-        {hash && (
+        {tx?.hash && (
           <div className="flex items-center self-center justify-between w-full pt-4 pb-2 mt-2 border-t border-custom-border">
             <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
               <Image
@@ -177,7 +176,11 @@ export default function UnstakeCompleted() {
             </div>
             <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
               <a
-                href={`${chainExplorer?.url}/tx/${tx?.hash}`}
+                href={
+                  chainExplorer?.url
+                    ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                    : '#'
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="text-sm font-medium text-primary truncate underline max-w-xs"

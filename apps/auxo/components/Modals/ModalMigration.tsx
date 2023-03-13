@@ -13,7 +13,7 @@ export default function ModalMigration() {
     <AnimatePresence initial={false}>
       <Dialog
         as="div"
-        className="relative z-10"
+        className="relative z-30"
         open={typeof isMigrationDeployed === 'boolean' && !isMigrationDeployed}
         onClose={() => null}
       >

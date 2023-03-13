@@ -16,7 +16,7 @@ import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { Wallet } from 'ethers';
-import { useUserLockDuration } from '../../hooks/useToken';
+import { useUserHasLock, useUserLockDuration } from '../../hooks/useToken';
 
 type Props = {
   title: string;
@@ -43,7 +43,7 @@ const MigrationCard: React.FC<Props> = ({
   const { account } = useWeb3React();
   const dispatch = useAppDispatch();
   const upgradoor = useUpgradoor();
-  const hasLock = !!useUserLockDuration('ARV');
+  const hasLock = useUserHasLock('ARV');
 
   const memoizedPositions = useMemo(() => {
     if (isEmpty(positions)) return [];

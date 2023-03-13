@@ -36,8 +36,8 @@ const StakeActions: React.FC<{
     dispatch(
       setStep(
         action === 'stake'
-          ? STEPS.CONFIRM_STAKE_XAUXO
-          : STEPS.CONFIRM_UNSTAKE_XAUXO,
+          ? STEPS.CONFIRM_STAKE_PRV
+          : STEPS.CONFIRM_UNSTAKE_PRV,
       ),
     );
     dispatch(

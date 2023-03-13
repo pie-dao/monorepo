@@ -154,7 +154,11 @@ export default function StakeConfirm() {
                   </div>
                   <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                     <a
-                      href={`${chainExplorer?.url}/tx/${tx?.hash}`}
+                      href={
+                        chainExplorer?.url
+                          ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                          : '#'
+                      }
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm font-medium text-primary truncate underline max-w-xs"
@@ -212,7 +216,11 @@ export default function StakeConfirm() {
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`${chainExplorer?.url}/tx/${tx?.hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"

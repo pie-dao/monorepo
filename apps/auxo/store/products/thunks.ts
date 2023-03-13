@@ -1143,7 +1143,7 @@ export const thunkWithdrawFromVeAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setStep(STEPS.UNSTAKE_VEAUXO_COMPLETED));
+      dispatch(setStep(STEPS.WITHDRAW_ARV_COMPLETED));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
