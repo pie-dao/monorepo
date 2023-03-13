@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
 import MigrationFAQ from '../../components/MigrationFAQ/MigrationFAQ';
+import DOUGHIcon from '../../public/tokens/DOUGH.png';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -95,6 +96,12 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
     props: {
       title: 'migration',
+      icon: {
+        src: DOUGHIcon,
+        alt: 'DOUGH',
+        width: 32,
+        height: 32,
+      },
     },
   };
 });

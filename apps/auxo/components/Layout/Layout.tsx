@@ -55,7 +55,7 @@ export default function Layout({ children }) {
           )}
         >
           <div className="flex flex-col flex-1">
-            <Header title={children.props.title} />
+            <Header title={children.props.title} icon={children.props.icon} />
             <main className="flex-1  px-7 w-full pb-10 min-h-full">
               {children}
             </main>
