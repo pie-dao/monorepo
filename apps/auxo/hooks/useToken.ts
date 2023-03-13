@@ -46,6 +46,19 @@ export const useUserLockDuration = (token: string): number => {
   return lockFromContract ? lockFromContract / AVG_SECONDS_IN_MONTH : null;
 };
 
+export const useUserHasLock = (token: string): boolean | null => {
+  const lockFromContract = useAppSelector(
+    (state) => state?.dashboard?.tokens?.[token]?.userStakingData?.lockDuration,
+  );
+
+  return useMemo(() => {
+    if (!lockFromContract) {
+      return null;
+    }
+    return lockFromContract > 0;
+  }, [lockFromContract]);
+};
+
 export const useIsUserMaxLockDuration = (token: string): boolean | null => {
   const lockFromContract = useAppSelector(
     (state) => state?.dashboard?.tokens?.[token]?.userStakingData?.lockDuration,
@@ -233,7 +246,7 @@ export const useUserNewEndDateFromToday = (stakingTime?: number) => {
 
 export const useUserLevel = (input: number) => {
   const remainingMonths = useUserRemainingStakingTimeInMonths();
-  const hasLock = !!useUserLockDuration('ARV');
+  const hasLock = useUserHasLock('ARV');
   const userLevel = useMemo(() => {
     if (!hasLock) return input - 6;
     if (remainingMonths <= 6) return 0;

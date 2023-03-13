@@ -7,6 +7,7 @@ import {
   useDelegatorAddress,
   useTokenBalance,
   useUserEndDate,
+  useUserHasLock,
   useUserLevel,
   useUserLevelPercetageReward,
   useUserLockAmount,
@@ -36,7 +37,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   const veAUXOBalance = useTokenBalance(name);
   const votingPower = useUserVotingPower(name);
   const stakedAuxo = useUserLockAmount(name);
-  const hasLock = !!useUserLockDuration(name);
+  const hasLock = useUserHasLock(name);
   const delegator = useDelegatorAddress(name);
   const endDate = useUserEndDate();
   const userLevel = useUserLevel(commitmentValue);
@@ -49,7 +50,6 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
     return 0;
   }, [userLevel]);
 
-  // generate an array of fire emoji elements using useMemo
   const fireEmojis = useMemo(
     () =>
       Array.from({ length: numEmojis }, (_, index) => (

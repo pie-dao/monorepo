@@ -9,12 +9,12 @@ import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
 import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 import AUXOImage from '../../../public/tokens/AUXO.svg';
-import veAUXOImage from '../../../public/tokens/veAUXO.svg';
-import xAUXOImage from '../../../public/tokens/xAUXO.svg';
+import ARVImage from '../../../public/tokens/32x32/ARV.svg';
+import xAUXOImage from '../../../public/tokens/32x32/PRV.svg';
 
 const imageMap = {
   AUXO: AUXOImage,
-  ARV: veAUXOImage,
+  ARV: ARVImage,
   PRV: xAUXOImage,
 };
 
@@ -22,7 +22,6 @@ export default function Approve() {
   const { t } = useTranslation();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { hash } = tx;
   const dispatch = useAppDispatch();
   const [approving, setApproving] = useState(false);
   const tokenContract = useCurrentTokenContract(swap?.from?.token);
@@ -106,7 +105,7 @@ export default function Approve() {
               </div>
             </div>
           )}
-          {hash && (
+          {tx?.hash && (
             <div className="flex items-center self-center justify-between w-full py-2">
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <Image
@@ -121,12 +120,12 @@ export default function Approve() {
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${hash}`}
+                  href={`https://goerli.etherscan.io/tx/${tx.hash}`}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {hash}
+                  {tx.hash}
                 </a>
               </div>
             </div>

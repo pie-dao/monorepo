@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from 'react';
 import Image from 'next/image';
-import xAUXOIcon from '../public/tokens/xAUXO.svg';
+import PRVIcon from '../public/tokens/32x32/PRV.svg';
 import { Layout } from '../components';
 import { wrapper } from '../store';
 import DoubleCheckmark from '../public/images/icons/double-checkmark.svg';
@@ -75,8 +75,8 @@ export default function XAUXO({
             <div className="flex gap-x-2 order-1 items-center">
               <div className="flex flex-shrink-0">
                 <Image
-                  src={xAUXOIcon}
-                  alt={'xAUXO Icon'}
+                  src={PRVIcon}
+                  alt={'PRV'}
                   width={32}
                   height={32}
                   priority

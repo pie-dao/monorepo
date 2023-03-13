@@ -7,8 +7,8 @@ module.exports = {
     '*': ['common', 'dashboard', 'notifications'],
     '/migration': ['migration'],
     '/migration/start': ['migration'],
-    '/migration/veAUXO': ['migration'],
-    '/migration/xAUXO': ['migration'],
+    '/migration/ARV': ['migration'],
+    '/migration/PRV': ['migration'],
   },
   interpolation: {
     prefix: '${',

@@ -13,7 +13,7 @@ const SelectWalletMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
 
   const noLocks = isZero(useTokenBalance(token), 18);
-  const notVeAuxoOrNoLocks = token !== 'veAUXO' || noLocks;
+  const notVeAuxoOrNoLocks = token !== 'ARV' || noLocks;
 
   return (
     <>

@@ -97,7 +97,7 @@ export default function Migration() {
         ],
         button: {
           text: t('upgrade'),
-          url: '/migration/veAUXO',
+          url: '/migration/ARV',
         },
         banners: [
           {
@@ -113,7 +113,7 @@ export default function Migration() {
       {
         token: t('passiveRewardVault'),
         title: t('passiveRewardVaultDescription'),
-        icon: <Image src={PRV} alt="xAUXO" width={32} height={32} />,
+        icon: <Image src={PRV} alt="PRV" width={32} height={32} />,
         features: [
           {
             title: <Title a="worryFree" />,

@@ -17,7 +17,7 @@ import {
   useUserLockStartingTime,
   useUserRemainingStakingTimeInMonths,
 } from '../../hooks/useToken';
-import veAUXOConversionCalculator from '../../utils/veAUXOConversionCalculator';
+import ARVConversionCalculator from '../../utils/ARVConversionCalculator';
 import { addNumberToBnReference, zeroBalance } from '../../utils/balances';
 import { formatBalance } from '../../utils/formatBalance';
 
@@ -47,7 +47,7 @@ const IncreaseLock: React.FC = () => {
   }, [actualLock]);
 
   const userProjectedTotalStakingAmount = useMemo(() => {
-    const convertNewAmount = veAUXOConversionCalculator(
+    const convertNewAmount = ARVConversionCalculator(
       stakedAUXOBalance,
       sumCommitment,
       decimals,

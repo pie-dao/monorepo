@@ -27,14 +27,14 @@ const WithdrawLock = () => {
   }, [userLockStart]);
 
   const withdraw = () => {
-    dispatch(setStep(STEPS.CONFIRM_UNSTAKE_VEAUXO));
+    dispatch(setStep(STEPS.CONFIRM_WITHDRAW_ARV));
     dispatch(setIsOpen(true));
   };
 
   const userLockAmount = useUserLockAmount('ARV');
 
   const boostToMax = () => {
-    dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
+    dispatch(setStep(STEPS.BOOST_STAKE_ARV));
     dispatch(
       setSwap({
         swap: {

@@ -27,7 +27,7 @@ import { formatBalance } from '../../utils/formatBalance';
 import StakeSlider from './StakeSlider';
 import { useWeb3React } from '@web3-react/core';
 import { useAppSelector } from '../../hooks';
-import veAUXOConversionCalculator from '../../utils/veAUXOConversionCalculator';
+import ARVConversionCalculator from '../../utils/ARVConversionCalculator';
 import { Tab } from '@headlessui/react';
 import classNames from '../../utils/classnames';
 import { AnimatePresence } from 'framer-motion';
@@ -71,8 +71,8 @@ const Stake: React.FC<Props> = ({
     if (!userLockStart) return 0;
     return getMonthsSinceStake(userLockStart);
   }, [userLockStart]);
-  const veAuxoEstimationCalc = useCallback(() => {
-    return veAUXOConversionCalculator(
+  const ARVEstimationCalc = useCallback(() => {
+    return ARVConversionCalculator(
       depositValue,
       remainingCommitment !== 0 && remainingCommitment !== null
         ? remainingCommitment
@@ -81,10 +81,10 @@ const Stake: React.FC<Props> = ({
     );
   }, [commitmentValue, decimals, depositValue, remainingCommitment]);
 
-  const veAUXOEstimation = veAuxoEstimationCalc();
+  const ARVEstimation = ARVEstimationCalc();
 
   const userProjectedTotalStakingAmount = useMemo(() => {
-    const convertNewAmount = veAUXOConversionCalculator(
+    const convertNewAmount = ARVConversionCalculator(
       depositValue,
       remainingCommitment,
       decimals,
@@ -175,7 +175,7 @@ const Stake: React.FC<Props> = ({
                       {!userLockDuration ? (
                         <p className="text-primary font-bold text-base">
                           {formatBalance(
-                            veAUXOEstimation,
+                            ARVEstimation,
                             defaultLocale,
                             4,
                             'standard',
@@ -227,7 +227,7 @@ const Stake: React.FC<Props> = ({
                   )}
                   <DepositActions
                     deposit={depositValue}
-                    estimation={veAUXOEstimation}
+                    estimation={ARVEstimation}
                     stakingTime={!userLockDuration ? commitmentValue : null}
                     tokenConfig={tokenConfig}
                     toToken="ARV"

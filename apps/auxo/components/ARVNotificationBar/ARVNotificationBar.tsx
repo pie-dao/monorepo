@@ -22,7 +22,7 @@ const ARVNotificationBar = () => {
   const dispatch = useAppDispatch();
 
   const boostToMax = () => {
-    dispatch(setStep(STEPS.BOOST_STAKE_VEAUXO));
+    dispatch(setStep(STEPS.BOOST_STAKE_ARV));
     dispatch(
       setSwap({
         swap: {
