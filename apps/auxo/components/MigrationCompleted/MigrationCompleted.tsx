@@ -10,6 +10,7 @@ import Link from 'next/link';
 import classNames from '../../utils/classnames';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
 import { TOKEN_NAMES } from '../../utils/constants';
+import { useChainExplorer } from '../../hooks/useToken';
 
 type Props = {
   token: 'ARV' | 'PRV';
@@ -25,15 +26,16 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
     positions,
     loadingPositions,
   } = useAppSelector((state) => state.migration);
+  const chainExplorer = useChainExplorer();
 
   const textForMigrationType = useMemo(() => {
-    const baseText = token === 'ARV' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const baseText = token === 'ARV' ? 'MigrationARV' : 'MigrationPRV';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     return t(`${lockText}${baseText}Completed`);
   }, [token, isSingleLock, t]);
 
   const shortenedHash = useMemo(() => {
-    return tx?.hash?.slice(0, 5) + '...' + tx?.hash?.slice(-5);
+    return tx?.hash?.slice(0, 16) + '...';
   }, [tx]);
 
   const memoizedLocksLength = useMemo(() => {
@@ -47,7 +49,8 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
     <>
       <Heading
         title={textForMigrationType}
-        subtitle={t('benefitsOfMigrating', { token: TOKEN_NAMES[token] })}
+        subtitle="benefitsOfMigrating"
+        token={TOKEN_NAMES[token]}
       />
       <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
         <div className="w-full transform overflow-hidden rounded-2xl bg-[url('/images/background/migrationCompleted.png')] p-6 text-left align-middle shadow-xl transition-all sm:max-w-2xl bg-cover mx-auto">
@@ -55,8 +58,8 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
             <RiveComponent
               src={
                 token === 'ARV'
-                  ? `/animations/veDOUGH-veAUXO.riv`
-                  : `/animations/veDOUGH-xAUXO.riv`
+                  ? `/animations/veDOUGH-ARV.riv`
+                  : `/animations/veDOUGH-PRV.riv`
               }
               layout={
                 new Layout({
@@ -72,13 +75,6 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2">
               <AddToWallet token={token} displayName={TOKEN_NAMES[token]} />
-            </div>
-            <div className="mt-2">
-              <p className="text-lg text-sub-dark text-center">
-                {t('migrationCompletedDescription', {
-                  token: TOKEN_NAMES[token],
-                })}
-              </p>
             </div>
             <div className="divide-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
               <PreviewMigration
@@ -96,13 +92,17 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       width={24}
                       height={24}
                     />
-                    <span className="text-xl font-semibold text-primary">
+                    <span className="text-sm font-medium text-primary">
                       {t('blockExplorer')}
                     </span>
                   </div>
                   <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                     <a
-                      href={`https://goerli.etherscan.io/tx/${tx?.hash}`}
+                      href={
+                        chainExplorer?.url
+                          ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                          : '#'
+                      }
                       target="_blank"
                       rel="noreferrer"
                       className="text-sm font-medium text-primary truncate underline max-w-xs"

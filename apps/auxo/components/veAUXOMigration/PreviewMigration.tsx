@@ -48,10 +48,10 @@ const PreviewMigration: React.FC<Props> = ({
 
   return estimatedOutput?.[token]?.[previewType] ? (
     <div className="flex flex-col w-full text-center min-h-[3rem] border-y py-0.5">
-      <div className="grid grid-cols-5 justify-items-center w-full py-2">
+      <div className="flex items-center flex-col sm:grid sm:grid-cols-5 sm:flex-row justify-items-center w-full py-2">
         <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-start col-span-2">
           <Image src={imageMap.DOUGH} alt="veDOUGH" width={24} height={24} />
-          <span className="text-lg font-medium text-primary">
+          <span className="text-base lg:text-lg font-medium text-primary">
             {DOUGHInput ??
               formatBalance(
                 totalDOUGHConverted,
@@ -62,7 +62,7 @@ const PreviewMigration: React.FC<Props> = ({
             {'DOUGH'}
           </span>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center rotate-90 sm:rotate-0">
           <Image src={ArrowRight} alt={'transfer'} width={24} height={24} />
         </div>
         <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2 justify-self-end col-span-2">

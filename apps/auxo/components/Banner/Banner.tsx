@@ -19,7 +19,7 @@ const Banner: React.FC<Props> = ({ icon, content, bgColor, textColor }) => {
         <div>
           <p
             className={classNames(
-              `text-sm  font-medium`,
+              `text-sm text-primary font-medium`,
               textColor ?? 'text-primary',
             )}
           >

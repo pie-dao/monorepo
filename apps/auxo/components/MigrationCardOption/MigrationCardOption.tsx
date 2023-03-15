@@ -46,19 +46,19 @@ const MigrationCardOption: React.FC<Props> = ({
   }, [positions]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md shadow-md gap-y-3 items-start w-full font-medium transition-all mx-auto max-w-4xl bg-left bg-no-repeat">
+    <div className="flex flex-col px-4 py-4 rounded-md shadow-md gap-y-3 items-start w-full font-medium transition-all mx-auto max-w-5xl bg-left bg-no-repeat">
       <div className="flex gap-x-2 items-center">
         <div className="flex">{icon}</div>
         <h3 className="text-2xl font-bold text-primary">{token}</h3>
       </div>
       <div className="flex flex-col items-center w-full border-hidden">
-        <h3 className="text-base text-primary">{title}</h3>
+        <h3 className="text-base font-medium text-primary">{title}</h3>
       </div>
       <div className="flex w-full gap-x-4 items-center">
         <p className="text-secondary text-base">{t('topFeatures')}</p>
-        <hr className="flex-grow border-t border-sub-light" />
+        <hr className="flex-grow border-t border-custom-border" />
       </div>
-      <div className="flex w-full flex-col pt-4 @container gap-y-1">
+      <div className="flex w-full flex-col @container gap-y-1">
         {features.map(({ title, description }, i) => (
           <div
             className="flex justify-between text-base w-full flex-col @md:flex-row text-left"

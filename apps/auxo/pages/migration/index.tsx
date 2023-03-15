@@ -41,7 +41,7 @@ export default function Migration() {
     },
     {
       icon: <Image src={AUXOtoVeAUXOxAUXO} alt="AUXOtoVeAUXOxAUXO" />,
-      title: t('AUXOtoVeAUXOxAUXO'),
+      title: t('AUXOtoArvPrv'),
     },
   ];
 
@@ -49,11 +49,8 @@ export default function Migration() {
     <div className="flex flex-col isolate relative">
       <MigrationBackground />
       <MigrationBanner />
-      <Heading
-        title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateArrived')}
-      />
-      <div className="bg-white px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-sm rounded-lg w-full">
+      <Heading title={t('timeToMigrate')} subtitle="timeToMigrateArrived" />
+      <div className="bg-white px-4 py-5 sm:px-6 max-w-5xl mx-auto shadow-sm rounded-lg w-full">
         <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
           <h3 className="w-full text-2xl font-semibold text-primary text-center">
             {t('lifecycle')}

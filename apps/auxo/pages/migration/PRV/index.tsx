@@ -6,6 +6,7 @@ import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.t
 import { useWeb3React } from '@web3-react/core';
 import MigrationBackground from '../../../components/MigrationBackground/MigrationBackground';
 import useMigrationSteps from '../../../hooks/migrationSteps';
+import MigrationBanner from '../../../components/MigrationBanner/MigrationBanner';
 
 export default function Migration({ token }: { token: 'PRV' | 'ARV' }) {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ export default function Migration({ token }: { token: 'PRV' | 'ARV' }) {
   return (
     <div className="flex flex-col isolate relative">
       <MigrationBackground />
+      <MigrationBanner />
       {getStep}
     </div>
   );

@@ -280,7 +280,7 @@ const MigrationFAQ: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white divide-y px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-sm rounded-lg w-full my-12">
+    <div className="bg-white divide-y px-4 py-5 sm:px-6 max-w-5xl mx-auto shadow-sm rounded-lg w-full my-12">
       <div className="flex">
         <h3 className="w-full text-lg font-semibold text-primary">
           {t('faq')}

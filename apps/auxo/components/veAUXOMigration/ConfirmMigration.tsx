@@ -128,7 +128,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   }, [isSingleLock, memoizedPositions, positions]);
 
   const textForMigrationType = useMemo(() => {
-    const baseText = token === 'ARV' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const baseText = token === 'ARV' ? 'MigrationARV' : 'MigrationPRV';
     const boostText = token === 'ARV' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     return t(`${lockText}${baseText}${boostText}`, {
@@ -241,7 +241,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     <>
       <Heading
         title={t('reviewAndConfirm')}
-        subtitle={t('reviewAndConfirmSubtitle')}
+        subtitle="reviewAndConfirmSubtitle"
       />
       <BackBar
         token={token}
@@ -272,30 +272,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
               />
             </div>
             <MigrationRecap {...migrationRecapContent} />
-            {token === 'xAUXO' && (
-              <div className="flex flex-col gap-y-2 w-full text-center">
-                <Banner
-                  bgColor="bg-warning"
-                  content={
-                    <Trans
-                      i18nKey="migrationXAUXOIrriversible"
-                      components={{
-                        firstLine: (
-                          <span className="w-full flex justify-self-auto" />
-                        ),
-                      }}
-                      ns="migration"
-                    />
-                  }
-                  icon={
-                    <ExclamationIcon
-                      className="h-5 w-5 text-primary"
-                      aria-hidden="true"
-                    />
-                  }
-                />
-              </div>
-            )}
             <div className="flex items-center justify-center w-full text-center pt-4">
               <Checkbox.Root
                 id="c1"

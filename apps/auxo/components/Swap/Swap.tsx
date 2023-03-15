@@ -10,8 +10,8 @@ import useTranslation from 'next-translate/useTranslation';
 import {
   useChainExplorer,
   useTokenBalance,
-  useUserStakedXAUXO,
-  useXAUXOEstimation,
+  useUserStakedPRV,
+  usePRVEstimation,
 } from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
@@ -57,8 +57,8 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
     useState(zeroBalance);
   const balance = useTokenBalance(originToken);
   const stakingBalance = useTokenBalance(stakingToken);
-  const xAUXOEstimation = useXAUXOEstimation(originDepositValue);
-  const stakedXAUXO = useUserStakedXAUXO();
+  const xAUXOEstimation = usePRVEstimation(originDepositValue);
+  const stakedXAUXO = useUserStakedPRV();
   const chainExplorer = useChainExplorer();
 
   const addressList = useMemo(() => {

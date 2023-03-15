@@ -1,13 +1,13 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import useTranslation from 'next-translate/useTranslation';
 import { ChevronLeftIcon } from '@heroicons/react/solid';
-import router from 'next/router';
 import {
   setCurrentStep,
   setPreviousStep,
 } from '../../store/migration/migration.slice';
 import { STEPS_LIST } from '../../store/migration/migration.types';
 import classNames from '../../utils/classnames';
+import { useRouter } from 'next/router';
 
 type Props = {
   token?: string;
@@ -28,13 +28,18 @@ const BackBar: React.FC<Props> = ({
   const { t } = useTranslation();
   const { currentStep } = useAppSelector((state) => state.migration);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const goBack = () => {
     if (
       currentStep === STEPS_LIST.CHOOSE_MIGRATION_TYPE ||
       currentStep === STEPS_LIST.MIGRATE_SUCCESS
     ) {
-      router.push('/migration/start');
+      if (router.pathname === '/migration/start') {
+        router.push('/migration');
+      } else {
+        router.push('/migration/start');
+      }
       dispatch(setCurrentStep(STEPS_LIST.CHOOSE_MIGRATION_TYPE));
       dispatch(setPreviousStep(null));
     } else {
@@ -46,26 +51,33 @@ const BackBar: React.FC<Props> = ({
   return (
     <div
       className={classNames(
-        'flex flex-col rounded-md justify-center p-4 bg-white shadow-md mx-auto md:min-w-4xl md:max-w-7xl',
-        singleCard ? 'w-fit' : 'w-full',
+        'flex flex-col rounded-md justify-center p-4 bg-white shadow-md mx-auto',
+        singleCard &&
+          !router.pathname.startsWith('/migration/start') &&
+          'w-full md:max-w-5xl',
+        !singleCard &&
+          !router.pathname.startsWith('/migration/start') &&
+          'w-full md:max-w-7xl',
       )}
     >
-      <div className="flex justify-between items-center gap-x-4">
-        {!hideBack && (
-          <button className="w-fit flex items-center" onClick={goBack}>
-            <ChevronLeftIcon
-              className="h-7 w-7 text-sub-dark"
-              aria-hidden="true"
-            />
-            <span className="text-sub-dark">{t('back')}</span>
-          </button>
-        )}
-        <h2 className="text-base font-medium text-primary text-right ml-auto">
-          {title}
-        </h2>
+      <div className="w-full">
+        <div className="flex justify-between items-center gap-x-4">
+          {!hideBack && (
+            <button className="w-fit flex items-center" onClick={goBack}>
+              <ChevronLeftIcon
+                className="h-7 w-7 text-sub-dark"
+                aria-hidden="true"
+              />
+              <span className="text-sub-dark">{t('back')}</span>
+            </button>
+          )}
+          <h2 className="text-base font-medium text-primary text-right ml-auto">
+            {title}
+          </h2>
+        </div>
+        <hr className="my-4 border-custom-border" />
+        {children}
       </div>
-      <hr className="my-4 border-sub-light" />
-      {children}
     </div>
   );
 };

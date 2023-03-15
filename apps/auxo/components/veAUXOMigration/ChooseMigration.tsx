@@ -62,7 +62,7 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
     <>
       <Heading
         title={t('chooseHowToMigrate')}
-        subtitle={t('chooseHowToMigrateSubtitle')}
+        subtitle="chooseHowToMigrateSubtitle"
       />
       <BackBar
         title={!notVeAuxoOrNoLocks ? t('oneByOne') : t('allOrOneByOne')}

@@ -7,8 +7,8 @@ import xAUXOIconCircle from '../../public/tokens/32x32/PRV.svg';
 import useTranslation from 'next-translate/useTranslation';
 import {
   useTokenBalance,
-  useUserStakedXAUXO,
-  useXAUXOFee,
+  useUserStakedPRV,
+  usePRVFee,
 } from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
@@ -26,8 +26,8 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   const { t } = useTranslation();
   const auxoBalance = useTokenBalance('AUXO');
   const xAUXOBalance = useTokenBalance(name);
-  const stakedXAUXO = useUserStakedXAUXO();
-  const fee = useXAUXOFee();
+  const stakedXAUXO = useUserStakedPRV();
+  const fee = usePRVFee();
 
   const summaryData = useMemo(() => {
     return [

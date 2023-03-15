@@ -102,10 +102,10 @@ export default function Migration() {
         banners: [
           {
             content: t('earlyTerminationFee'),
-            bgColor: 'bg-transparent',
+            bgColor: 'bg-transparent -mx-4',
           },
           {
-            content: t('veAUXOConversionBanner'),
+            content: t('ARVConversionBanner'),
             bgColor: 'bg-info',
           },
         ],
@@ -130,15 +130,15 @@ export default function Migration() {
         ],
         button: {
           text: t('upgrade'),
-          url: '/migration/xAUXO',
+          url: '/migration/PRV',
         },
         banners: [
           {
             content: t('conversionIrreversible'),
-            bgColor: 'bg-transparent',
+            bgColor: 'bg-transparent -mx-4',
           },
           {
-            content: t('xAUXOConversionBanner'),
+            content: t('PRVConversionBanner'),
             bgColor: 'bg-info',
           },
         ],
@@ -150,16 +150,16 @@ export default function Migration() {
     <div className="flex flex-col isolate relative">
       <MigrationBackground />
       <MigrationBanner />
-      <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit md:min-w-4xl md:max-w-7xl w-fit my-12 mx-auto">
+      <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit md:max-w-5xl w-fit my-12 mx-auto">
         {migrationHeadings.map((heading, i) => (
           <div
             key={i}
             className="flex flex-col px-4 py-4 rounded-md shadow-md items-center w-full align-middle bg-gradient-primary"
           >
-            <h2 className="text-xl font-bold text-primary mb-3 pb-3 border-b border-sub-light w-full">
+            <h2 className="text-xl text-primary mb-3 pb-3 border-b border-custom-border w-full">
               <Trans
                 i18nKey={`migration:${heading.title}`}
-                components={{ b: <span className="font-bold" /> }}
+                components={{ b: <span className="font-semibold" /> }}
               />
             </h2>
             <p className="text-base text-primary mt-2">
@@ -168,8 +168,8 @@ export default function Migration() {
           </div>
         ))}
       </section>
-      <BackBar title={t('selectToken')} singleCard={false} hideBack>
-        <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6">
+      <BackBar title={t('selectToken')} singleCard={false}>
+        <section className="grid grid-cols-1 xl:grid-flow-col xl:auto-cols-fr gap-4 text-xs md:text-inherit mt-6 max-w-5xl">
           {migrationCardsContent.map((card) => (
             <MigrationCardOption key={card.title} {...card} />
           ))}

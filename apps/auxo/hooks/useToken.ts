@@ -101,17 +101,17 @@ export const useUserVotingPower = (token: string): BigNumberReference => {
   );
 };
 
-export const useUserStakedXAUXO = (): BigNumberReference => {
+export const useUserStakedPRV = (): BigNumberReference => {
   return useAppSelector(
     (state) =>
-      state.dashboard?.tokens?.xAUXO?.userStakingData?.amount ?? zeroBalance,
+      state.dashboard?.tokens?.PRV?.userStakingData?.amount ?? zeroBalance,
   );
 };
 
-export const useUserCurrentEpochStakedXAUXO = (): BigNumberReference => {
+export const useUserCurrentEpochStakedPRV = (): BigNumberReference => {
   return useAppSelector(
     (state) =>
-      state.dashboard?.tokens?.xAUXO?.userStakingData?.currentEpochBalance ??
+      state.dashboard?.tokens?.PRV?.userStakingData?.currentEpochBalance ??
       zeroBalance,
   );
 };
@@ -151,11 +151,11 @@ export const useApprovalLimit = (
   return { limit };
 };
 
-export function useXAUXOEstimation(
+export function usePRVEstimation(
   amount: BigNumberReference,
 ): BigNumberReference {
   const decimals = useDecimals('PRV');
-  const fee = useXAUXOFee();
+  const fee = usePRVFee();
   const estimation = useCallback(() => {
     if (!amount) return zeroBalance;
     if (!fee) return amount;
@@ -167,20 +167,20 @@ export function useXAUXOEstimation(
   return estimation();
 }
 
-export const useXAUXOFee = (): BigNumberReference => {
-  const fee = useAppSelector((state) => state.dashboard?.tokens?.xAUXO?.fee);
+export const usePRVFee = (): BigNumberReference => {
+  const fee = useAppSelector((state) => state.dashboard?.tokens?.PRV?.fee);
   return fee;
 };
 
 export const useIsFirstTimeMigration = (): boolean => {
-  const veAUXOBalance = useTokenBalance('ARV');
-  const xAUXOBalance = useTokenBalance('PRV');
+  const ARVBalance = useTokenBalance('ARV');
+  const PRVBalance = useTokenBalance('PRV');
   return useMemo(() => {
     return (
-      ethers.utils.parseEther(veAUXOBalance.value).isZero() &&
-      ethers.utils.parseEther(xAUXOBalance.value).isZero()
+      ethers.utils.parseEther(ARVBalance.value).isZero() &&
+      ethers.utils.parseEther(PRVBalance.value).isZero()
     );
-  }, [veAUXOBalance, xAUXOBalance]);
+  }, [ARVBalance, PRVBalance]);
 };
 
 export const useChainExplorer = () => {
