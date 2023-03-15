@@ -62,7 +62,7 @@ export default function Migration() {
               <div className="flex items-center justify-center rounded-full max-w-[140px] mx-auto">
                 {column.icon}
               </div>
-              <h3 className="mt-4 text-sm font-semibold text-primary text-center">
+              <h3 className="mt-4 text-base font-semibold text-primary text-center">
                 {column.title}
               </h3>
             </div>
@@ -72,7 +72,7 @@ export default function Migration() {
           <Link href="/migration/start" passHref>
             <button
               disabled={!isMigrationDeployed}
-              className="w-fit flex items-center gap-x-2 px-12 py-2 text-md font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
+              className="w-fit flex items-center gap-x-2 px-12 py-2 text-base font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
             >
               {t('startMigration')}
               <ChevronRightIcon className="w-5 h-5" />

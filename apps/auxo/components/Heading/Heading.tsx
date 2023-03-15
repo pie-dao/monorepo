@@ -44,7 +44,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-10 mt-16 mb-20">
-      <div className="flex flex-col gap-y-1">
+      <div className="flex flex-col gap-y-3">
         <h1 className="text-2xl sm:text-4xl font-medium text-secondary text-center">
           {title}
         </h1>
