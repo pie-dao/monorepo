@@ -171,7 +171,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
                               <div className="flex flex-shrink-0 w-5 h-5">
                                 <Lock isCompleted={false} />
                               </div>
-                              <div className="grid grid-cols-1 @md:grid-cols-[minmax(100px,_200px)_minmax(100px,_200px)_minmax(100px,_1fr)] gap-x-2 text-xs justify-center flex-1">
+                              <div className="grid grid-cols-1 @md:grid-cols-[minmax(100px,_150px)_minmax(100px,_150px)_minmax(100px,_1fr)] gap-x-2 text-xs justify-center flex-1">
                                 <div>
                                   <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">

@@ -17,6 +17,7 @@ import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { Wallet } from 'ethers';
 import { useUserHasLock, useUserLockDuration } from '../../hooks/useToken';
+import Trans from 'next-translate/Trans';
 
 type Props = {
   title: string;
@@ -83,11 +84,15 @@ const MigrationCard: React.FC<Props> = ({
   }, [dispatch, upgradoor, boost, isSingleLock, account, tokenOut, hasLock]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-5xl @container">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-sm bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-2xl @container">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">{title}</h3>
         <p className="text-sm text-primary min-h-[2rem] place-items-center text-center flex">
-          {subtitle}
+          <Trans
+            i18nKey={`${subtitle}`}
+            components={{ b: <span className="font-bold" /> }}
+            ns="migration"
+          />
         </p>
       </div>
       {!loadingPositions ? (
@@ -96,6 +101,7 @@ const MigrationCard: React.FC<Props> = ({
           <MigratingPositions
             positions={memoizedPositions}
             isSingleLock={isSingleLock}
+            className="mt-4"
           />
           <div className="flex flex-col w-full text-center text-sm text-primary min-h-[3rem] place-content-center">
             {description}
@@ -113,7 +119,7 @@ const MigrationCard: React.FC<Props> = ({
           />
           {!isSingleLock && tokenOut === 'ARV' && (
             <div className="flex flex-col w-full justify-between gap-y-3">
-              <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
+              <div className="flex w-full justify-between px-4 py-2 bg-background rounded-md">
                 <label
                   className="pr-2 text-sub-dark font-medium text-base"
                   htmlFor="boost"
@@ -160,7 +166,7 @@ const MigrationCard: React.FC<Props> = ({
             </div>
           )}
           {!isEmpty(memoizedPositions) && tokenOut === 'ARV' && (
-            <div className="flex w-full flex-col sm:flex-row justify-between px-4 py-2 bg-background shadow-md rounded-md text-primary gap-y-2">
+            <div className="flex w-full flex-col sm:flex-row justify-between px-4 py-2 bg-gradient-primary rounded-md text-primary gap-y-2">
               <p className="flex flex-col sm:flex-row">
                 <span className="font-medium">{t('newLockTime')}:</span>{' '}
                 {t('today')} -{' '}

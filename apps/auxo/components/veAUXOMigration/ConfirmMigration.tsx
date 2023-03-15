@@ -263,6 +263,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
             <MigratingPositions
               positions={memoizedPositions}
               isSingleLock={isSingleLock}
+              showOnlyFirst={isSingleLock}
             />
             <div className="flex w-full">
               <PreviewMigration
@@ -298,7 +299,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
               <button
                 disabled={!isTermsAccepted}
                 onClick={handleConfirm}
-                className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
+                className=" mx-auto w-fit px-20 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
               >
                 {t('confirmAndUpgrade')}
               </button>

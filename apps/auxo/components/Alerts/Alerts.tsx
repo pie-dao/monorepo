@@ -24,16 +24,20 @@ const variants = {
 export function Alert({
   open,
   children,
+  style = 'warning',
 }: {
   open?: boolean;
   children: React.ReactNode;
+  style?: 'error' | 'warning';
 }) {
   return (
     <AnimatePresence>
       {open && (
         <motion.div
           className={classNames(
-            'rounded-lg items-center py-1 justify-center bg-warning',
+            'rounded-lg items-center py-1 justify-center',
+            style === 'warning' && 'bg-warning text-primary',
+            style === 'error' && 'bg-red text-white',
           )}
           variants={variants}
           initial="hidden"
@@ -42,12 +46,9 @@ export function Alert({
         >
           <div className="flex w-full items-center gap-x-3 mx-auto px-2">
             <div className="flex-shrink-0">
-              <ExclamationIcon
-                className="h-5 w-5 text-primary"
-                aria-hidden="true"
-              />
+              <ExclamationIcon className="h-5 w-5 " aria-hidden="true" />
             </div>
-            <p className="text-sm text-primary font-medium">{children}</p>
+            <p className="text-sm font-medium">{children}</p>
           </div>
         </motion.div>
       )}

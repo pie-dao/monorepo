@@ -46,7 +46,7 @@ const MigrationCardOption: React.FC<Props> = ({
   }, [positions]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md shadow-md gap-y-3 items-start w-full font-medium transition-all mx-auto max-w-5xl bg-left bg-no-repeat">
+    <div className="flex flex-col px-4 py-4 rounded-md shadow-sm gap-y-3 items-start w-full font-medium transition-all mx-auto max-w-5xl bg-left bg-no-repeat">
       <div className="flex gap-x-2 items-center">
         <div className="flex">{icon}</div>
         <h3 className="text-2xl font-bold text-primary">{token}</h3>

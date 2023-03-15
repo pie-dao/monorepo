@@ -85,7 +85,6 @@ export default function Migration() {
             title: <Title a="reward" />,
             description: 'maxAtThirty',
           },
-
           {
             title: <Title a="redemption" />,
             description: 'atLockExpiration',
@@ -102,7 +101,7 @@ export default function Migration() {
         banners: [
           {
             content: t('earlyTerminationFee'),
-            bgColor: 'bg-transparent -mx-4',
+            bgColor: 'bg-transparent -mx-2',
           },
           {
             content: t('ARVConversionBanner'),
@@ -124,6 +123,10 @@ export default function Migration() {
             description: 'enabled',
           },
           {
+            title: <Title a="redemption" />,
+            description: 'anyTime',
+          },
+          {
             title: <Title a="unstakeAnyTime" />,
             description: 'noLock',
           },
@@ -135,7 +138,7 @@ export default function Migration() {
         banners: [
           {
             content: t('conversionIrreversible'),
-            bgColor: 'bg-transparent -mx-4',
+            bgColor: 'bg-transparent -mx-2',
           },
           {
             content: t('PRVConversionBanner'),
@@ -156,15 +159,16 @@ export default function Migration() {
             key={i}
             className="flex flex-col px-4 py-4 rounded-md shadow-md items-center w-full align-middle bg-gradient-primary"
           >
-            <h2 className="text-xl text-primary mb-3 pb-3 border-b border-custom-border w-full">
+            <h2 className="text-xl text-primary mb-1.5 pb-1.5 border-b border-custom-border w-full">
               <Trans
                 i18nKey={`migration:${heading.title}`}
-                components={{ b: <span className="font-semibold" /> }}
+                components={{
+                  b: <span className="font-semibold" />,
+                  br: <br />,
+                }}
               />
             </h2>
-            <p className="text-base text-primary mt-2">
-              {t(heading.description)}
-            </p>
+            <p className="text-base text-primary">{t(heading.description)}</p>
           </div>
         ))}
       </section>

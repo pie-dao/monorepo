@@ -51,12 +51,13 @@ const BackBar: React.FC<Props> = ({
   return (
     <div
       className={classNames(
-        'flex flex-col rounded-md justify-center p-4 bg-white shadow-md mx-auto',
-        singleCard &&
-          !router.pathname.startsWith('/migration/start') &&
+        'flex flex-col rounded-md justify-center p-4 bg-white shadow-sm mx-auto',
+        ((singleCard && !router.pathname.startsWith('/migration/start')) ||
+          currentStep === STEPS_LIST.MIGRATE_SELECT_WALLET) &&
           'w-full md:max-w-5xl',
         !singleCard &&
           !router.pathname.startsWith('/migration/start') &&
+          currentStep !== STEPS_LIST.MIGRATE_SELECT_WALLET &&
           'w-full md:max-w-7xl',
       )}
     >

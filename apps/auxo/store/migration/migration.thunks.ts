@@ -122,7 +122,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       if (isSingleLock) {
         tx = await upgradeSingleLockARV(destinationWallet);
         pendingNotification({
-          title: `aggregateveDOUGHPending`,
+          title: `aggregateVeDOUGHPending`,
           id: 'aggregateVeDOUGH',
         });
       } else if (boost) {
@@ -148,7 +148,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       } else {
         tx = await aggregateToPRV();
         pendingNotification({
-          title: `aggregateveDOUGHPending`,
+          title: `aggregateVeDOUGHPending`,
           id: 'aggregateVeDOUGH',
         });
       }

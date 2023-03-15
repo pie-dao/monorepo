@@ -8,9 +8,9 @@ import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thunks';
 import MigrationBanner from '../../components/MigrationBanner/MigrationBanner';
-import AUXOtoVeAUXOxAUXO from '../../public/images/migration/AUXOtoVeAUXOxAUXO.png';
-import DOUGHtoAUXO from '../../public/images/migration/DOUGHtoAUXO.png';
-import veDOUGHtoDOUGH from '../../public/images/migration/veDOUGHtoDOUGH.png';
+import AuxoToArvPrv from '../../public/images/migration/AuxoToArvPrv.svg';
+import DoughToAuxo from '../../public/images/migration/DoughToAuxo.svg';
+import VeDoughToDough from '../../public/images/migration/VeDoughToDough.svg';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
@@ -32,15 +32,15 @@ export default function Migration() {
 
   const lifecycleColumns = [
     {
-      icon: <Image src={veDOUGHtoDOUGH} alt="veDOUGHtoDOUGH" />,
+      icon: <Image src={VeDoughToDough} alt="veDOUGHtoDOUGH" />,
       title: t('veDOUGHtoDOUGH'),
     },
     {
-      icon: <Image src={DOUGHtoAUXO} alt="DOUGHtoAUXO" />,
+      icon: <Image src={DoughToAuxo} alt="DOUGHtoAUXO" />,
       title: t('DOUGHtoAUXO'),
     },
     {
-      icon: <Image src={AUXOtoVeAUXOxAUXO} alt="AUXOtoVeAUXOxAUXO" />,
+      icon: <Image src={AuxoToArvPrv} alt="AuxoToArvPrv" />,
       title: t('AUXOtoArvPrv'),
     },
   ];

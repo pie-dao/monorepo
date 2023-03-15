@@ -92,11 +92,11 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       width={24}
                       height={24}
                     />
-                    <span className="text-sm font-medium text-primary">
+                    <span className="text-base font-medium text-primary">
                       {t('blockExplorer')}
                     </span>
                   </div>
-                  <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
+                  <div className="flex items-center gap-x-2">
                     <a
                       href={
                         chainExplorer?.url
@@ -105,7 +105,7 @@ const MigrationCompleted: React.FC<Props> = ({ token }) => {
                       }
                       target="_blank"
                       rel="noreferrer"
-                      className="text-sm font-medium text-primary truncate underline max-w-xs"
+                      className="text-base font-medium text-primary truncate underline max-w-xs"
                     >
                       {shortenedHash}
                     </a>

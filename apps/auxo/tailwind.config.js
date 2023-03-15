@@ -22,6 +22,7 @@ module.exports = {
     extend: {
       fontSize: {
         xs: ['.75rem', '1rem'],
+        base: ['1rem', '1.25rem'],
       },
       fontFamily: {
         sans: ['Silka'],
