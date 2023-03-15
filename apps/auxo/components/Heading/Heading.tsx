@@ -48,7 +48,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
         <h1 className="text-2xl sm:text-4xl font-medium text-secondary text-center">
           {title}
         </h1>
-        <p className="text-base text-center max-w-2xl text-primary font-medium mx-auto leading-5">
+        <p className="text-base text-center max-w-2xl text-primary font-semibold mx-auto leading-5">
           <Trans
             i18nKey={subtitle}
             components={{ b, br: <br /> }}
@@ -173,7 +173,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
                               </div>
                               <div className="grid grid-cols-1 @md:grid-cols-[minmax(100px,_200px)_minmax(100px,_200px)_minmax(100px,_1fr)] gap-x-2 text-xs justify-center flex-1">
                                 <div>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('lockStart')}:
                                     </dt>
@@ -181,7 +181,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
                                       {lockedAtFormatted}
                                     </dd>
                                   </dl>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('lockEnd')}:
                                     </dt>
@@ -191,7 +191,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
                                   </dl>
                                 </div>
                                 <div>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('lockedFor')}:
                                     </dt>
@@ -201,7 +201,7 @@ const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
                                       })}
                                     </dd>
                                   </dl>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('remainingTime')}:
                                     </dt>
