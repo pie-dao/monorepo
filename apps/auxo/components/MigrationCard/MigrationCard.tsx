@@ -17,6 +17,7 @@ import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { Wallet } from 'ethers';
 import { useUserHasLock, useUserLockDuration } from '../../hooks/useToken';
+import Trans from 'next-translate/Trans';
 
 type Props = {
   title: string;
@@ -83,11 +84,15 @@ const MigrationCard: React.FC<Props> = ({
   }, [dispatch, upgradoor, boost, isSingleLock, account, tokenOut, hasLock]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-4xl">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-sm bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-2xl @container">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">{title}</h3>
         <p className="text-sm text-primary min-h-[2rem] place-items-center text-center flex">
-          {subtitle}
+          <Trans
+            i18nKey={`${subtitle}`}
+            components={{ b: <span className="font-bold" /> }}
+            ns="migration"
+          />
         </p>
       </div>
       {!loadingPositions ? (
@@ -96,6 +101,7 @@ const MigrationCard: React.FC<Props> = ({
           <MigratingPositions
             positions={memoizedPositions}
             isSingleLock={isSingleLock}
+            className="mt-4"
           />
           <div className="flex flex-col w-full text-center text-sm text-primary min-h-[3rem] place-content-center">
             {description}
@@ -113,7 +119,7 @@ const MigrationCard: React.FC<Props> = ({
           />
           {!isSingleLock && tokenOut === 'ARV' && (
             <div className="flex flex-col w-full justify-between gap-y-3">
-              <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md">
+              <div className="flex w-full justify-between px-4 py-2 bg-background rounded-md">
                 <label
                   className="pr-2 text-sub-dark font-medium text-base"
                   htmlFor="boost"
@@ -160,8 +166,8 @@ const MigrationCard: React.FC<Props> = ({
             </div>
           )}
           {!isEmpty(memoizedPositions) && tokenOut === 'ARV' && (
-            <div className="flex w-full justify-between px-4 py-2 bg-background shadow-md rounded-md text-primary">
-              <p>
+            <div className="flex w-full flex-col sm:flex-row justify-between px-4 py-2 bg-gradient-primary rounded-md text-primary gap-y-2">
+              <p className="flex flex-col sm:flex-row">
                 <span className="font-medium">{t('newLockTime')}:</span>{' '}
                 {t('today')} -{' '}
                 {formatDate(
@@ -173,7 +179,7 @@ const MigrationCard: React.FC<Props> = ({
                   defaultLocale,
                 )}
               </p>
-              <p>
+              <p className="flex flex-col sm:flex-row">
                 <span className="text-primary font-medium">{t('months')}:</span>{' '}
                 {remainingMonthsOnLongestPosition(isSingleLock ? false : boost)}
               </p>
@@ -183,13 +189,13 @@ const MigrationCard: React.FC<Props> = ({
             <button
               disabled={memoizedPositions.length === 0}
               onClick={goToStep}
-              className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
+              className="w-full @2xl:w-fit px-20 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center mx-auto"
             >
               {isSingleLock
                 ? t('upgradeSingleLock', { token: tokenOut })
                 : t('upgradeMultipleLocks', { token: tokenOut })}
             </button>
-          </div>{' '}
+          </div>
         </>
       ) : (
         <div className="h-96 w-full">

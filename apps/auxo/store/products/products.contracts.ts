@@ -23,7 +23,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://bestnet.alexintosh.com/rpc/coccobello';
+const localRPC = 'https://bestnet.alexintosh.com/rpc/test-upgradooor';
 
 const selectedNetwork = 1;
 

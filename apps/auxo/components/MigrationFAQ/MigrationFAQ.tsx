@@ -25,7 +25,7 @@ export const LinkTo = (href: string, text: string) => (
 
 export const label = (color: string, label: string) => (
   <span
-    className={`md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium border hidden`}
+    className={`md:inline-flex rounded-full flex-shrink-0 bg-transparent px-2.5 py-0.5 text-xs font-medium border hidden capitalize`}
     style={{
       color: `rgb(var(--color-${color}))`,
       borderColor: `rgb(var(--color-${color}))`,
@@ -172,7 +172,7 @@ const MigrationFAQ: React.FC = () => {
             Break,
             b,
             img: <Image src={stakingTimeImage} alt="DOUGHtoAUXO" />,
-            imgWrapper: <div className="flex max-w-md" />,
+            imgWrapper: <div className="flex max-w-md my-4" />,
             Code,
             Ul,
             Li,
@@ -280,18 +280,18 @@ const MigrationFAQ: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-md rounded-lg w-full my-12">
+    <div className="bg-white divide-y px-4 py-5 sm:px-6 max-w-5xl mx-auto shadow-sm rounded-lg w-full my-12">
       <div className="flex">
-        <h3 className="w-full text-lg font-medium leading-6 text-primary">
+        <h3 className="w-full text-lg font-semibold text-primary">
           {t('faq')}
         </h3>
       </div>
-      <div className="flex flex-col mt-6 gap-y-4 w-full">
+      <div className="flex flex-col mt-4 gap-y-4 w-full pt-4">
         {faqs.map((faq) => (
           <Disclosure
             as="div"
             id={faq?.id}
-            className="bg-gradient-primary shadow-md rounded-lg py-2 w-full focus:ring-4 scroll-mt-10"
+            className="bg-gradient-primary shadow-sm rounded-lg py-2 w-full focus:ring-4 scroll-mt-10"
             key={faq.question}
             tabIndex={0}
           >
@@ -299,7 +299,7 @@ const MigrationFAQ: React.FC = () => {
               <>
                 <Disclosure.Button
                   as="button"
-                  className={classNames('cursor-pointer w-full px-2')}
+                  className={classNames('cursor-pointer w-full px-4')}
                 >
                   <div className="flex">
                     <div className="w-full flex-1 flex items-center gap-x-2 text-primary font-medium text-xl">
@@ -344,6 +344,7 @@ const MigrationFAQ: React.FC = () => {
                         transition={{ duration: 0.3 }}
                         className="origin-top-center space-y-3 overflow-y-auto p-4"
                       >
+                        <hr className="border-custom-border" />
                         <div className="text-primary text-base font-medium">
                           {faq.answer}
                         </div>

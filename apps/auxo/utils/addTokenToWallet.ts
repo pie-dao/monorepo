@@ -35,7 +35,7 @@ export const addTokenToWallet = async (
   await addToken(
     products?.[tokenName]?.addresses?.[chainId]?.address,
     displayName ?? tokenName,
-    `${window.location.origin}/tokens/${tokenName}.svg`,
+    `${window.location.origin}/tokens/32x32/${tokenName}.svg`,
   );
 };
 

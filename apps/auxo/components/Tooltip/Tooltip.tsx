@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Popover } from '@headlessui/react';
 import { usePopper } from 'react-popper';
 import { AnimatePresence, motion } from 'framer-motion';
-import { InformationCircleIcon } from '@heroicons/react/solid';
+import { InformationCircleIcon } from '@heroicons/react/outline';
 
 type Props = {
   children: React.ReactNode;
@@ -31,7 +31,7 @@ const Tooltip: React.FC<Props> = ({
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: 'bottom-start',
+    placement: 'bottom-end',
     modifiers: [
       {
         name: 'preventOverflow',

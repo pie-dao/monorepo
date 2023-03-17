@@ -17,13 +17,17 @@ import classNames from '../../utils/classnames';
 import { formatBalance } from '../../utils/formatBalance';
 import { usePopper } from 'react-popper';
 import { isEmpty } from 'lodash';
+import Trans from 'next-translate/Trans';
+
+export const b = <span className="font-bold" />;
 
 type Props = {
   title: string;
   subtitle?: string;
+  token?: 'ARV' | 'PRV';
 };
 
-const Heading: React.FC<Props> = ({ title, subtitle }) => {
+const Heading: React.FC<Props> = ({ title, subtitle, token }) => {
   const [referenceElement, setReferenceElement] = useState(null);
   const [popperElement, setPopperElement] = useState(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement);
@@ -40,18 +44,25 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-10 mt-16 mb-20">
-      <div className="flex flex-col gap-y-1">
-        <h1 className="text-4xl font-medium text-secondary text-center">
+      <div className="flex flex-col gap-y-3">
+        <h1 className="text-2xl sm:text-4xl font-medium text-secondary text-center">
           {title}
         </h1>
-        <p className="text-base text-center max-w-2xl text-primary font-medium mx-auto">
-          {subtitle}
+        <p className="text-base text-center max-w-2xl text-primary font-semibold mx-auto leading-5">
+          <Trans
+            i18nKey={subtitle}
+            components={{ b, br: <br /> }}
+            ns="migration"
+            values={{
+              token,
+            }}
+          />
         </p>
       </div>
 
       <Popover
         as="div"
-        className="bg-white shadow-md rounded-lg py-2 w-full max-w-xl relative"
+        className="bg-white shadow-sm rounded-lg py-4 w-full max-w-xl relative"
       >
         {({ open }) => (
           <>
@@ -64,7 +75,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
               ref={setReferenceElement}
             >
               <div className="flex items-center">
-                <div className="w-full flex-1 flex items-start justify-center gap-x-2 text-primary font-medium text-lg">
+                <div className="w-full flex-1 flex items-start justify-center gap-x-2 text-primary font-semibold text-lg">
                   {!loadingPositions && (
                     <div className="flex flex-shrink-0 self-center">
                       <Image
@@ -160,9 +171,9 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                               <div className="flex flex-shrink-0 w-5 h-5">
                                 <Lock isCompleted={false} />
                               </div>
-                              <div className="grid grid-cols-1 @md:grid-cols-3 gap-x-2 text-xs justify-center flex-1">
+                              <div className="grid grid-cols-1 @md:grid-cols-[minmax(100px,_150px)_minmax(100px,_150px)_minmax(100px,_1fr)] gap-x-2 text-xs justify-center flex-1">
                                 <div>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('lockStart')}:
                                     </dt>
@@ -170,7 +181,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                       {lockedAtFormatted}
                                     </dd>
                                   </dl>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('lockEnd')}:
                                     </dt>
@@ -180,7 +191,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                   </dl>
                                 </div>
                                 <div>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('lockedFor')}:
                                     </dt>
@@ -190,7 +201,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                       })}
                                     </dd>
                                   </dl>
-                                  <dl className="flex gap-1 justify-between @md:justify-start">
+                                  <dl className="flex gap-1 justify-between">
                                     <dt className="text-sub-dark">
                                       {t('remainingTime')}:
                                     </dt>
@@ -205,7 +216,7 @@ const Heading: React.FC<Props> = ({ title, subtitle }) => {
                                   <dt className="text-sub-dark @md:hidden">
                                     {t('amount')}:
                                   </dt>
-                                  <dd className="ml-auto font-medium text-right">
+                                  <dd className="ml-auto font-semibold text-right">
                                     <>
                                       {formatBalance(
                                         amount.label,

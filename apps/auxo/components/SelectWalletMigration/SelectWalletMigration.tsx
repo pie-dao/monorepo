@@ -17,7 +17,7 @@ const SelectWalletMigration: React.FC<Props> = ({ token }) => {
 
   return (
     <>
-      <Heading title={t('selectWallet')} subtitle={t('selectWalletSubtitle')} />
+      <Heading title={t('selectWallet')} subtitle="selectWalletSubtitle" />
       <BackBar
         title={t('chooseWhereToMigrate')}
         singleCard={!notVeAuxoOrNoLocks}

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch } from '../../hooks';
-import { useTokenBalance, useUserStakedXAUXO } from '../../hooks/useToken';
+import { useTokenBalance, useUserStakedPRV } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
 import { compareBalances } from '../../utils/balances';
 import useTranslation from 'next-translate/useTranslation';
@@ -21,7 +21,7 @@ const StakeActions: React.FC<{
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
   const tokens = useTokenBalance(tokenConfig.name);
-  const stakedXAUXO = useUserStakedXAUXO();
+  const stakedXAUXO = useUserStakedPRV();
 
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;

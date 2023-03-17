@@ -82,7 +82,7 @@ export const LEVELS_REWARDS = [
 export const TOKEN_NAMES = {
   ARV: 'ARV',
   PRV: 'PRV',
-};
+} as const;
 
 // This output is used to generate the chart data
 // e.g. [0, 10], [1, 13], ..., [30, 100]

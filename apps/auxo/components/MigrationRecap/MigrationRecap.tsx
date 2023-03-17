@@ -50,7 +50,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         key={0}
         i18nKey="recap"
         values={{ migrationType }}
-        components={{ migrationType: <span className="font-bold" /> }}
+        components={{ migrationType: <span className="font-semibold" /> }}
         ns="migration"
       />
     </p>,
@@ -64,9 +64,9 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
           migratingTo: locks.migratingTo,
         }}
         components={{
-          numberOfLocks: <span className="font-bold" />,
-          totalMigrating: <span className="font-bold" />,
-          migratingTo: <span className="font-bold" />,
+          numberOfLocks: <span className="font-semibold" />,
+          totalMigrating: <span className="font-semibold" />,
+          migratingTo: <span className="font-semibold" />,
         }}
         ns="migration"
       />
@@ -77,8 +77,8 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         i18nKey="preview"
         values={{ from: preview.from, to: preview.to }}
         components={{
-          from: <span className="font-bold" />,
-          to: <span className="font-bold" />,
+          from: <span className="font-semibold" />,
+          to: <span className="font-semibold" />,
         }}
         ns="migration"
       />
@@ -88,7 +88,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
         <Trans
           i18nKey="newLockDuration"
           values={{ newLockDuration }}
-          components={{ newLockDuration: <span className="font-bold" /> }}
+          components={{ newLockDuration: <span className="font-semibold" /> }}
           ns="migration"
         />
       </p>
@@ -102,8 +102,8 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
             estimatedOutput: willReceive.estimatedOutput,
           }}
           components={{
-            AUXO: <span className="font-bold" />,
-            estimatedOutput: <span className="font-bold" />,
+            AUXO: <span className="font-semibold" />,
+            estimatedOutput: <span className="font-semibold" />,
           }}
           ns="migration"
         />
@@ -111,16 +111,16 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
           <>
             {' '}
             <Trans
-              i18nKey="xAUXOFee"
+              i18nKey="PRVFee"
               values={{ fee }}
-              components={{ fee: <span className="font-bold" /> }}
+              components={{ fee: <span className="font-semibold" /> }}
               ns="migration"
             />
           </>
         )}
       </p>
       <Tooltip>
-        <p className="font-medium text-primary">
+        <p className="font-medium text-primary text-base">
           {willReceive?.AUXO} AUXO *{' '}
           {formatBalance(
             Number(
@@ -135,7 +135,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
             'standard',
           )}{' '}
         </p>
-        <p className="font-normal text-primary">
+        <p className="font-normal text-primary text-base">
           {t('monthMultiplier', {
             multiplier: token === 'ARV' ? newLockDuration : oldLockDuration,
           })}
@@ -146,7 +146,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
       <Trans
         i18nKey="receiver"
         values={{ receiver }}
-        components={{ receiver: <span className="font-bold" /> }}
+        components={{ receiver: <span className="font-semibold" /> }}
         ns="migration"
       />
     </p>,
@@ -156,7 +156,7 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
           <Trans
             i18nKey="newLockEnd"
             values={{ newLockEnd }}
-            components={{ newLockEnd: <span className="font-bold" /> }}
+            components={{ newLockEnd: <span className="font-semibold" /> }}
             ns="migration"
           />
         </p>

@@ -128,7 +128,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
   }, [isSingleLock, memoizedPositions, positions]);
 
   const textForMigrationType = useMemo(() => {
-    const baseText = token === 'ARV' ? 'MigrationVeAUXO' : 'MigrationXAUXO';
+    const baseText = token === 'ARV' ? 'MigrationARV' : 'MigrationPRV';
     const boostText = token === 'ARV' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     return t(`${lockText}${baseText}${boostText}`, {
@@ -241,7 +241,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     <>
       <Heading
         title={t('reviewAndConfirm')}
-        subtitle={t('reviewAndConfirmSubtitle')}
+        subtitle="reviewAndConfirmSubtitle"
       />
       <BackBar
         token={token}
@@ -263,6 +263,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
             <MigratingPositions
               positions={memoizedPositions}
               isSingleLock={isSingleLock}
+              showOnlyFirst={isSingleLock}
             />
             <div className="flex w-full">
               <PreviewMigration
@@ -272,30 +273,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
               />
             </div>
             <MigrationRecap {...migrationRecapContent} />
-            {token === 'xAUXO' && (
-              <div className="flex flex-col gap-y-2 w-full text-center">
-                <Banner
-                  bgColor="bg-warning"
-                  content={
-                    <Trans
-                      i18nKey="migrationXAUXOIrriversible"
-                      components={{
-                        firstLine: (
-                          <span className="w-full flex justify-self-auto" />
-                        ),
-                      }}
-                      ns="migration"
-                    />
-                  }
-                  icon={
-                    <ExclamationIcon
-                      className="h-5 w-5 text-primary"
-                      aria-hidden="true"
-                    />
-                  }
-                />
-              </div>
-            )}
             <div className="flex items-center justify-center w-full text-center pt-4">
               <Checkbox.Root
                 id="c1"
@@ -322,7 +299,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
               <button
                 disabled={!isTermsAccepted}
                 onClick={handleConfirm}
-                className="w-full px-4 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
+                className=" mx-auto w-fit px-20 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light flex gap-x-2 items-center justify-center"
               >
                 {t('confirmAndUpgrade')}
               </button>

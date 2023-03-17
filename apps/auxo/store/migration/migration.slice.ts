@@ -17,7 +17,7 @@ const initialState: SliceState = {
   loadingPreview: false,
   positions: [],
   estimatedOutput: null,
-  boost: false,
+  boost: true,
   migrationType: null,
   DOUGHInput: '',
   tx: {

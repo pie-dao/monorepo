@@ -9,31 +9,44 @@ import {
 import { formatBalance } from '../../utils/formatBalance';
 import useTranslation from 'next-translate/useTranslation';
 import Lock from '../Lock/Lock';
+import { useMemo } from 'react';
 
 export type MigratingPositionsProps = {
   positions: Position[];
   isSingleLock?: boolean;
+  showOnlyFirst?: boolean;
+  className?: string;
 };
 
 const MigratingPositions: React.FC<MigratingPositionsProps> = ({
   positions,
   isSingleLock,
+  showOnlyFirst,
+  className,
 }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { loadingPositions } = useAppSelector((state) => state.migration);
   const { t } = useTranslation('migration');
+
+  const positionsToShow = useMemo(() => {
+    if (showOnlyFirst) {
+      return positions.slice(0, 1);
+    }
+    return positions;
+  }, [positions, showOnlyFirst]);
+
   return (
-    <div className="flex w-full flex-col pt-4 text-center">
+    <div className={classNames('flex w-full flex-col text-center', className)}>
       <div
         className={classNames(
-          'flex flex-col gap-y-2 pr-2 overflow-y-auto p-2 scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full',
-          positions.length >= 4 ? 'h-64' : 'h-fit',
+          'flex flex-col gap-y-2 pr-2 overflow-y-auto  scrollbar:w-[8px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full',
+          positionsToShow.length >= 4 ? 'h-64 p-2' : 'h-fit',
         )}
       >
-        {positions &&
-          positions.length > 0 &&
+        {positionsToShow &&
+          positionsToShow.length > 0 &&
           !loadingPositions &&
-          positions.map(({ amount, lockDuration, lockedAt }, i) => {
+          positionsToShow.map(({ amount, lockDuration, lockedAt }, i) => {
             const lockedAtFormatted = formatDate(
               lockedAt * 1000,
               defaultLocale,
@@ -58,15 +71,15 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
                 <div className="flex flex-shrink-0 w-5 h-5">
                   <Lock isCompleted={false} />
                 </div>
-                <div className="grid grid-cols-1 @lg:grid-cols-3 gap-x-2 text-xs justify-center flex-1">
+                <div className="grid grid-cols-1 @lg:grid-cols-[minmax(100px,_150px)_minmax(100px,_150px)_minmax(100px,_1fr)] gap-x-5 text-xs justify-center flex-1">
                   <div>
-                    <dl className="flex gap-1 justify-between @lg:justify-start">
+                    <dl className="flex gap-1 justify-between">
                       <dt className="text-sub-dark">{t('lockStart')}:</dt>
                       <dd className="font-medium text-right">
                         {lockedAtFormatted}
                       </dd>
                     </dl>
-                    <dl className="flex gap-1 justify-between @lg:justify-start">
+                    <dl className="flex gap-1 justify-between">
                       <dt className="text-sub-dark">{t('lockEnd')}:</dt>
                       <dd className="font-medium text-right">
                         {lockEndFormatted}
@@ -74,13 +87,13 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
                     </dl>
                   </div>
                   <div>
-                    <dl className="flex gap-1 justify-between @lg:justify-start">
+                    <dl className="flex gap-1 justify-between">
                       <dt className="text-sub-dark">{t('lockedFor')}:</dt>
                       <dd className="font-medium text-right">
                         {t('numOfMonths', { months: lockedFor })}
                       </dd>
                     </dl>
-                    <dl className="flex gap-1 justify-between @lg:justify-start">
+                    <dl className="flex gap-1 justify-between">
                       <dt className="text-sub-dark">{t('remainingTime')}:</dt>
                       <dd className="font-medium text-right">
                         {t('numOfMonths', { months: remainingMonths })}
@@ -105,7 +118,7 @@ const MigratingPositions: React.FC<MigratingPositionsProps> = ({
               </div>
             );
           })}
-        {!loadingPositions && positions.length === 0 && (
+        {!loadingPositions && positionsToShow.length === 0 && (
           <p className="text-center text-primary">{t('noMorePositions')}</p>
         )}
       </div>

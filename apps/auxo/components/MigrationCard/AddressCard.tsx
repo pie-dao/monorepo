@@ -4,7 +4,9 @@ import trimAccount from '../../utils/trimAccount';
 import { useCallback, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
 import {
+  getSigner,
   useStakingTokenContract,
+  useUpgradoor,
   useVeDOUGHStakingContract,
 } from '../../hooks/useContracts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -38,6 +40,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
   const { t } = useTranslation('migration');
   const { account } = useWeb3React();
   const tokenLocker = useStakingTokenContract('ARV');
+  const upgradoor = useUpgradoor();
   const eDOUGHTokenLocker = useVeDOUGHStakingContract();
   const dispatch = useAppDispatch();
 
@@ -69,11 +72,16 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
         });
         return;
       }
-      if (!isAddress) {
+      if (
+        !isAddress ||
+        e.target.value.toLowerCase() ===
+          ethers.constants.AddressZero.toLowerCase()
+      ) {
         handleInvalidAddress({
           isValid: false,
           reason: t('invalidAddress'),
         });
+        return;
       }
 
       if (isAddress && e.target.value.toLowerCase() === account.toLowerCase()) {
@@ -106,9 +114,23 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
         } catch (error) {
           console.error(error);
         }
+
+        try {
+          await upgradoor.callStatic.upgradeSingleLockARV(e.target.value);
+        } catch (error) {
+          if (error.reason === 'Invalid receiver') {
+            handleInvalidAddress({
+              isValid: false,
+              reason: t('notEOAorWL'),
+            });
+            console.debug('Address is not EOA or not whitelisted');
+          } else {
+            console.error(error);
+          }
+        }
       }
     },
-    [account, eDOUGHTokenLocker, t, tokenLocker],
+    [account, eDOUGHTokenLocker, t, tokenLocker, upgradoor],
   );
 
   const anotherWalletEnabled = useMemo(() => {
@@ -124,28 +146,28 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
   }, [isTermsAccepted, token]);
 
   return (
-    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-md bg gap-y-3 items-center w-full font-medium align-middle transition-all mx-auto">
+    <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-sm bg gap-y-3 items-center w-full font-medium align-middle transition-all mx-auto max-w-2xl">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
-        <h3 className="text-lg font-medium text-secondary">
+        <h3 className="text-lg font-semibold text-secondary">
           {isCurrentWallet ? t('sameWallet') : t('differentWallet')}
         </h3>
       </div>
-      <div className="flex w-full flex-col pt-4 text-center gap-y-2 pb-1">
+      <div className="flex w-full flex-col text-center border-t border-custom-border pt-2">
         {isCurrentWallet ? (
           <>
-            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm text-base">
+            <div className="flex items-center gap-x-2 p-2 text-sub-dark rounded-sm text-base font-medium">
               {t('sameWalletAddress')}
             </div>
-            <div className="flex items-center gap-x-2 p-2 text-primary leading-5 text-sm">
-              {account ? trimAccount(account, true) : t('walletNotConnected')}
+            <div className="flex items-center gap-x-2 p-2 text-primary leading-5 font-medium text-sm mb-[2px]">
+              {account ?? t('walletNotConnected')}
             </div>
             {token === 'ARV' && (
               <>
-                <div className="text-left pt-2 border-t border-customBorder mt-2 text-white">
+                <div className="text-left pt-4 border-t border-custom-border mt-4 text-white">
                   <Banner
                     bgColor="bg-red"
                     textColor="text-white"
-                    content={t('veAUXOWarning')}
+                    content={t('ARVWarning')}
                     icon={
                       <ExclamationIcon
                         className="h-5 w-5 text-white"
@@ -154,7 +176,7 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
                     }
                   />
                 </div>
-                <div className="flex items-center w-full p-2">
+                <div className="flex items-center w-full px-2 pt-4">
                   <Checkbox.Root
                     id="c1"
                     checked={isTermsAccepted}
@@ -181,33 +203,42 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
           </>
         ) : (
           <>
-            <div className="flex items-center gap-x-2 p-2 bg-light-gray shadow-md text-sub-dark rounded-sm text-base">
+            <div className="flex items-center gap-x-2 p-2 text-sub-dark rounded-sm text-base font-medium">
               {t('differentWalletAddress')}
             </div>
             <div className="flex flex-col items-start focus-within:ring-2 ring-secondary rounded-lg border border-custom-border bg-white">
               <input
                 placeholder="0x..."
                 type="text"
-                className="bg-white shadow-md border-none leading-5 font-medium text-sm text-primary rounded-lg focus:outline-none focus:ring-0 block w-full [appearance:textfield]"
+                className="bg-white shadow-sm border-none leading-5 font-medium text-sm text-primary rounded-lg focus:outline-none focus:ring-0 block w-full [appearance:textfield]"
                 value={anotherWallet}
                 onChange={async (e) => await handleChange(e)}
               />
             </div>
-            <Alert open={!isAnotherWalletValid}>{invalidReason}</Alert>
-            <Banner
-              bgColor="bg-warning"
-              content={t('smartContractAddressNotAllowed')}
-              icon={
-                <ExclamationIcon
-                  className="h-5 w-5 text-primary"
-                  aria-hidden="true"
-                />
-              }
-            />
+            <div
+              className={classNames(
+                'flex w-full flex-col gap-y-2 mt-4 pt-4 border-t border-custom-border',
+              )}
+            >
+              <Alert style="error" open={!isAnotherWalletValid}>
+                {invalidReason}
+              </Alert>
+              <Banner
+                bgColor="bg-warning"
+                content={t('smartContractAddressNotAllowed')}
+                icon={
+                  <ExclamationIcon
+                    className="h-5 w-5 text-primary"
+                    aria-hidden="true"
+                  />
+                }
+              />
+            </div>
           </>
         )}
       </div>
-      <div className="flex flex-col w-full text-center pt-4 mt-auto">
+
+      <div className="flex flex-col w-full text-center mt-auto">
         {isCurrentWallet &&
           (account && ready ? (
             <button

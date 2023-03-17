@@ -18,7 +18,7 @@ import AUXOImage from '../../../../public/tokens/AUXO.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import { xAUXOContract } from '../../../../store/products/products.contracts';
 import { compareBalances } from '../../../../utils/balances';
-import { useUserCurrentEpochStakedXAUXO } from '../../../../hooks/useToken';
+import { useUserCurrentEpochStakedPRV } from '../../../../hooks/useToken';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -39,7 +39,7 @@ const StakeConfirm: React.FC<{
   const shouldRevertDeposit = compareBalances(
     swap?.from?.amount,
     'gt',
-    useUserCurrentEpochStakedXAUXO(),
+    useUserCurrentEpochStakedPRV(),
   );
 
   const makeDeposit = () => {

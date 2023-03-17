@@ -8,13 +8,14 @@ import { useWeb3React } from '@web3-react/core';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thunks';
 import MigrationBanner from '../../components/MigrationBanner/MigrationBanner';
-import AUXOtoVeAUXOxAUXO from '../../public/images/migration/AUXOtoVeAUXOxAUXO.png';
-import DOUGHtoAUXO from '../../public/images/migration/DOUGHtoAUXO.png';
-import veDOUGHtoDOUGH from '../../public/images/migration/veDOUGHtoDOUGH.png';
+import AuxoToArvPrv from '../../public/images/migration/AuxoToArvPrv.svg';
+import DoughToAuxo from '../../public/images/migration/DoughToAuxo.svg';
+import VeDoughToDough from '../../public/images/migration/VeDoughToDough.svg';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
 import MigrationFAQ from '../../components/MigrationFAQ/MigrationFAQ';
+import DOUGHIcon from '../../public/tokens/DOUGH.png';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -31,16 +32,16 @@ export default function Migration() {
 
   const lifecycleColumns = [
     {
-      icon: <Image src={veDOUGHtoDOUGH} alt="veDOUGHtoDOUGH" />,
+      icon: <Image src={VeDoughToDough} alt="veDOUGHtoDOUGH" />,
       title: t('veDOUGHtoDOUGH'),
     },
     {
-      icon: <Image src={DOUGHtoAUXO} alt="DOUGHtoAUXO" />,
+      icon: <Image src={DoughToAuxo} alt="DOUGHtoAUXO" />,
       title: t('DOUGHtoAUXO'),
     },
     {
-      icon: <Image src={AUXOtoVeAUXOxAUXO} alt="AUXOtoVeAUXOxAUXO" />,
-      title: t('AUXOtoVeAUXOxAUXO'),
+      icon: <Image src={AuxoToArvPrv} alt="AuxoToArvPrv" />,
+      title: t('AUXOtoArvPrv'),
     },
   ];
 
@@ -48,13 +49,10 @@ export default function Migration() {
     <div className="flex flex-col isolate relative">
       <MigrationBackground />
       <MigrationBanner />
-      <Heading
-        title={t('timeToMigrate')}
-        subtitle={t('timeToMigrateArrived')}
-      />
-      <div className="bg-white px-4 py-5 sm:px-6 max-w-4xl mx-auto shadow-md rounded-lg w-full">
+      <Heading title={t('timeToMigrate')} subtitle="timeToMigrateArrived" />
+      <div className="bg-white px-4 py-5 sm:px-6 max-w-5xl mx-auto shadow-sm rounded-lg w-full">
         <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
-          <h3 className="w-full text-lg font-medium leading-6 text-primary text-center">
+          <h3 className="w-full text-2xl font-semibold text-primary text-center">
             {t('lifecycle')}
           </h3>
         </div>
@@ -64,7 +62,7 @@ export default function Migration() {
               <div className="flex items-center justify-center rounded-full max-w-[140px] mx-auto">
                 {column.icon}
               </div>
-              <h3 className="mt-4 text-sm font-medium text-primary text-center">
+              <h3 className="mt-4 text-base font-semibold text-primary text-center">
                 {column.title}
               </h3>
             </div>
@@ -74,7 +72,7 @@ export default function Migration() {
           <Link href="/migration/start" passHref>
             <button
               disabled={!isMigrationDeployed}
-              className="w-fit flex items-center gap-x-2 px-8 py-2 text-md font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
+              className="w-fit flex items-center gap-x-2 px-12 py-2 text-base font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
             >
               {t('startMigration')}
               <ChevronRightIcon className="w-5 h-5" />
@@ -95,6 +93,12 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
     props: {
       title: 'migration',
+      icon: {
+        src: DOUGHIcon,
+        alt: 'DOUGH',
+        width: 32,
+        height: 32,
+      },
     },
   };
 });
