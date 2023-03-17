@@ -9,21 +9,6 @@ import {
 } from '../../utils/social-icons';
 import { motion } from 'framer-motion';
 
-const footerLinks = [
-  {
-    title: 'About',
-    link: '/about',
-  },
-  {
-    title: 'FAQ',
-    link: '/faq',
-  },
-  {
-    title: 'Contact',
-    link: '/contact',
-  },
-];
-
 const SocialIcons = [
   { path: discord, href: 'https://discord.gg/VjYCxQVF' },
   { path: twitter, href: 'https://twitter.com/PieDAO_DeFi' },
@@ -38,19 +23,7 @@ const Footer: React.FC = () => (
       size="lg"
       className="flex justify-between py-2 flex-wrap gap-x-12 gap-y-2"
     >
-      <div>
-        <ul className="flex items-center justify-center gap-6 my-2">
-          {footerLinks.map((el, i) => (
-            <li
-              key={i}
-              className="font-medium text-sub-dark hover:text-secondary"
-            >
-              <Link href={el.link}>{el.title}</Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
+      <div className="flex w-full justify-center md:justify-end">
         <ul className="flex items-center justify-center gap-4 my-2">
           {SocialIcons.map(({ path, href }) => (
             <motion.li
