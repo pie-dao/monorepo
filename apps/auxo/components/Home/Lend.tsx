@@ -11,7 +11,7 @@ const lendFeatures = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 27 24"
-        className="w-6 h-6"
+        className="w-8 h-8"
       >
         <path
           fill="currentColor"
@@ -28,7 +28,7 @@ const lendFeatures = [
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 23 25"
-        className="w-6 h-6"
+        className="w-8 h-8"
       >
         <path
           fill="currentColor"
@@ -47,7 +47,7 @@ const lendFeatures = [
         viewBox="0 0 25 30"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
+        className="w-8 h-8"
       >
         <path
           d="M23.3267 5.63933L18.62 0.932664C18.1189 0.428611 17.4374 0.145434 16.7267 0.145997H8.27333C7.56261 0.145434 6.88106 0.428611 6.38 0.932664L1.67333 5.63933C0.922974 6.38876 0.500934 7.40549 0.5 8.466V16.266C0.502469 19.5557 2.02276 22.6603 4.62 24.6793L10.06 28.9193C10.5291 29.2834 11.1062 29.4804 11.7 29.4793H13.3C13.8938 29.4804 14.4709 29.2834 14.94 28.9193L20.38 24.6793C22.9772 22.6603 24.4975 19.5557 24.5 16.266V8.466C24.4991 7.40549 24.077 6.38876 23.3267 5.63933ZM21.8333 16.306C21.8439 18.776 20.6996 21.109 18.74 22.6127L13.3 26.8127H11.7L6.26 22.5727C4.3004 21.069 3.15608 18.736 3.16667 16.266V8.466C3.16814 8.11621 3.30701 7.78101 3.55333 7.53266L8.27333 2.81266H16.7267L21.4467 7.53266C21.693 7.78101 21.8319 8.11621 21.8333 8.466V16.306ZM17.94 11.1593L14.4733 10.8927L13.14 7.65266C13.0353 7.40683 12.7939 7.24728 12.5267 7.24728C12.2595 7.24728 12.0181 7.40683 11.9133 7.65266L10.58 10.8927L7.11333 11.1593C6.84954 11.1893 6.62731 11.37 6.54421 11.6222C6.46112 11.8743 6.53237 12.1518 6.72667 12.3327L9.39333 14.5993L8.5 17.986C8.43577 18.2467 8.53415 18.5204 8.74962 18.6806C8.96509 18.8407 9.25559 18.856 9.48667 18.7193L12.5 16.8927L15.5 18.7193C15.7311 18.856 16.0216 18.8407 16.237 18.6806C16.4525 18.5204 16.5509 18.2467 16.4867 17.986L15.6733 14.5993L18.34 12.3327C18.5352 12.15 18.6052 11.8699 18.5189 11.6168C18.4326 11.3638 18.2061 11.1848 17.94 11.1593Z"
@@ -59,46 +59,49 @@ const lendFeatures = [
 ];
 
 const Lend: React.FC = () => {
-  const { t } = useTranslation('home');
+  const { t } = useTranslation();
   return (
     <section
       id="lend"
       className="scroll-mt-14 pb-16 sm:scroll-mt-24 sm:pb-20 lg:pb-38"
     >
       <Container
-        size="lg"
-        className="py-16 place-items-center flex flex-col bg-primary md:rounded-lg"
+        size="wide"
+        className="py-16 place-items-center flex flex-col bg-cover mix-blend-multiply md:rounded-lg bg-[url('/images/background/lend.jpeg')] relative isolate overflow-hidden"
       >
-        <h3 className="text-4xl font-bold text-center text-white">
-          {t('lendTitle')}
-        </h3>
-        <h5 className="text-base text-sub-light text-center font-medium">
-          {t('lendDescription')}
-        </h5>
-        <Container size="sm">
-          <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
-            {lendFeatures.map((feature, index) => (
-              <div
-                key={index}
-                className="flex gap-y-4 relative isolate place-items-center"
-              >
-                <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background/10 shadow-md text-secondary">
-                  {feature.icon}
+        <div className="inset-0 absolute bg-gradient-to-b bg-primary mix-blend-multiply opacity-90" />
+        <div className="flex flex-col z-10">
+          <h3 className="text-4xl font-bold text-center text-white">
+            {t('lendTitle')}
+          </h3>
+          <h5 className="text-base text-sub-light text-center font-medium">
+            {t('lendDescription')}
+          </h5>
+          <Container size="sm">
+            <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
+              {lendFeatures.map((feature, index) => (
+                <div
+                  key={index}
+                  className="flex gap-y-4 relative isolate place-items-center"
+                >
+                  <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background/10 shadow-md text-secondary">
+                    {feature.icon}
+                  </div>
+                  <div className="relative w-full pl-8 pr-4 py-3 rounded-lg text-left">
+                    <p className="text-white font-bold">
+                      {t(feature.description)}
+                    </p>
+                  </div>
                 </div>
-                <div className="relative w-full pl-8 pr-4 py-3 rounded-lg text-left">
-                  <p className="text-white font-bold">
-                    {t(feature.description)}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Container>
-        <Link passHref href="/farms">
-          <button className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 mt-8">
-            {t('lendNow')}
-          </button>
-        </Link>
+              ))}
+            </div>
+          </Container>
+          <Link passHref href="/farms">
+            <button className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 mt-8">
+              {t('lendNow')}
+            </button>
+          </Link>
+        </div>
       </Container>
     </section>
   );

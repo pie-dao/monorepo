@@ -126,6 +126,7 @@ export function NavBar() {
           </>
         )}
       </Popover>
+
       <div className="hidden sm:h-20 sm:flex sm:items-center sm:justify-between sm:[@supports(backdrop-filter:blur(0))]:bg-white/80 sm:[@supports(backdrop-filter:blur(0))]:backdrop-blur">
         <div className="flex gap-x-2 items-center flex-shrink-0">
           <svg
@@ -159,7 +160,7 @@ export function NavBar() {
           ))}
           <li>
             <Link passHref href="/ARV">
-              <button className="w-fit px-4 py-0.5 text-base text-white bg-secondary rounded-2xl ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary flex gap-x-2 items-center">
+              <button className="w-fit px-8 py-2 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary flex gap-x-2 items-center font-medium">
                 <TemplateIcon className="fill-current w-4 h-4" />
                 {t('launchApp')}
               </button>

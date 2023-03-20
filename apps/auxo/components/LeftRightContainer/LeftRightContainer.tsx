@@ -64,7 +64,7 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               <rect width="32" height="4" fill="#0B78DD" rx="2" />
             </svg>
             <div className="flex flex-col xl:ml-4">
-              <h3 className="text-4xl font-bold text-primary">
+              <h3 className="text-4xl font-semibold text-primary">
                 {feature.title}
               </h3>
               <p className="mt-2 text-base text-primary">
@@ -72,21 +72,21 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               </p>
               <Link passHref href={feature?.button?.link}>
                 <div className="flex items-center mt-8">
-                  <div className="flex items-center rounded-l-[50px] rounded-r-[20px] bg-gradient-primary w-fit">
-                    <div className="rounded-full bg-background flex p-4 shadow-sm">
+                  <div className="flex items-center rounded-l-[50px] rounded-r-[20px] bg-gradient-primary w-fit shadow-sm">
+                    <div className="rounded-full bg-background flex p-3 shadow-sm">
                       <Image
                         src={feature?.button?.image}
                         alt={feature?.button?.text}
+                        width={42}
+                        height={42}
                       />
                     </div>
-                    <div>
-                      <p className="text-primary font-bold text-lg px-2 min-w-[14rem]">
+                    <div className="flex items-center gap-x-2 px-4">
+                      <p className="text-primary font-semibold text-lg min-w-[14rem]">
                         {feature?.button?.text}
                       </p>
+                      <ChevronRightIcon className="w-5 h-5" />
                     </div>
-                  </div>
-                  <div>
-                    <ChevronRightIcon className="w-5 h-5" />
                   </div>
                 </div>
               </Link>

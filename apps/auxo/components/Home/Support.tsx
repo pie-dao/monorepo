@@ -19,7 +19,7 @@ export const label = (color: string, label: string) => (
 );
 
 const Support: React.FC = () => {
-  const { t } = useTranslation('home');
+  const { t } = useTranslation();
 
   const faqs = [
     {
@@ -40,11 +40,11 @@ const Support: React.FC = () => {
   ];
   return (
     <section
-      id="lend"
+      id="support"
       className="scroll-mt-14 pb-16 sm:scroll-mt-24 sm:pb-20 lg:pb-38"
     >
-      <Container size="lg">
-        <div className="bg-white px-4 py-5 sm:px-6 mx-auto shadow-md rounded-lg w-full my-12">
+      <Container size="xl">
+        <div className="bg-white px-4 py-5 sm:px-6 mx-auto shadow-sm rounded-lg w-full my-12">
           <div className="flex">
             <h3 className="w-full text-lg font-medium leading-6 text-primary">
               {t('faq')}
@@ -54,7 +54,7 @@ const Support: React.FC = () => {
             {faqs.map((faq) => (
               <Disclosure
                 as="div"
-                className="bg-gradient-primary shadow-md rounded-lg py-4 w-full"
+                className="bg-gradient-primary shadow-sm rounded-lg py-4 w-full"
                 key={faq.question}
               >
                 {({ open }) => (

@@ -7,13 +7,14 @@ export function formatBalanceCurrency(
   defaultLocale?: string,
   defaultCurrency?: string,
   compact?: boolean,
+  maximumFractionDigits?: number,
 ): string | null {
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'currency',
     currency: defaultCurrency ?? 'USD',
     notation: compact ? 'compact' : 'standard',
     compactDisplay: 'short',
-    maximumFractionDigits: 2,
+    maximumFractionDigits: maximumFractionDigits ?? 2,
   }).format(balanceAmount ?? 0);
   return balance;
 }
