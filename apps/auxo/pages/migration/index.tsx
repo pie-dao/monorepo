@@ -10,7 +10,7 @@ import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thun
 import MigrationBanner from '../../components/MigrationBanner/MigrationBanner';
 import AuxoToArvPrv from '../../public/images/migration/AuxoToArvPrv.svg';
 import DoughToAuxo from '../../public/images/migration/DoughToAuxo.svg';
-import VeDoughToDough from '../../public/images/migration/VeDoughToDough.svg';
+import VeDoughToDough from '../../public/images/migration/veDoughToDough.svg';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
