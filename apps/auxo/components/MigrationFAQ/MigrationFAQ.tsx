@@ -47,10 +47,13 @@ export const Ul = (
 
 export const Li = <li className="mb-2 last:mb-0" />;
 
+export const br = <br />;
+
 const MigrationFAQ: React.FC = () => {
   const { t } = useTranslation('migration');
   const faqs = [
     {
+      id: 'faq1',
       question: t('faq1'),
       answer: (
         <Trans
@@ -70,6 +73,7 @@ const MigrationFAQ: React.FC = () => {
       label: label('primary', t('faq1Label')),
     },
     {
+      id: 'faq2',
       question: t('faq2'),
       answer: (
         <Trans
@@ -78,9 +82,10 @@ const MigrationFAQ: React.FC = () => {
           ns="migration"
         />
       ),
-      label: label('primary', t('faq2Label')),
+      label: label('violet', t('faq2Label')),
     },
     {
+      id: 'faq3',
       question: t('faq3'),
       answer: (
         <Trans
@@ -89,9 +94,10 @@ const MigrationFAQ: React.FC = () => {
           ns="migration"
         />
       ),
-      label: label('primary', t('faq3Label')),
+      label: label('violet', t('faq3Label')),
     },
     {
+      id: 'faq4',
       question: t('faq4'),
       answer: (
         <Trans
@@ -103,6 +109,7 @@ const MigrationFAQ: React.FC = () => {
       label: label('secondary', t('faq4Label')),
     },
     {
+      id: 'faq5',
       question: t('faq5'),
       answer: (
         <Trans
@@ -114,6 +121,7 @@ const MigrationFAQ: React.FC = () => {
       label: label('purple', t('faq5Label')),
     },
     {
+      id: 'faq6',
       question: t('faq6'),
       answer: (
         <Trans
@@ -125,48 +133,58 @@ const MigrationFAQ: React.FC = () => {
       label: label('purple', t('faq6Label')),
     },
     {
+      id: 'faq7',
       question: t('faq7'),
       answer: (
-        <Trans
-          i18nKey="faq7Answer"
-          components={{ Break, p, b, Ul, Li }}
-          ns="migration"
-        />
+        <Trans i18nKey="faq7Answer" components={{ p, br }} ns="migration" />
       ),
       label: label('purple', t('faq7Label')),
     },
     {
+      id: 'faq8',
       question: t('faq8'),
       answer: (
-        <Trans
-          i18nKey="faq8Answer"
-          components={{ Break, p, b }}
-          ns="migration"
-        />
+        <Trans i18nKey="faq8Answer" components={{ Ul, Li }} ns="migration" />
       ),
       label: label('purple', t('faq8Label')),
     },
     {
+      id: 'faq9',
       question: t('faq9'),
       answer: (
         <Trans
           i18nKey="faq9Answer"
           components={{
-            Break,
             p,
-            b,
-            Link: LinkTo('https://discord.gg/CScCqkcBPR', 'Discord'),
           }}
           ns="migration"
         />
       ),
-      label: label('green', t('faq9Label')),
+      label: label('purple', t('faq9Label')),
     },
     {
+      id: 'faq10',
       question: t('faq10'),
       answer: (
         <Trans
           i18nKey="faq10Answer"
+          components={{
+            Break,
+            p,
+            b,
+            Link: LinkTo('https://discord.gg/vqM6Ys8urQ', 'Discord'),
+          }}
+          ns="migration"
+        />
+      ),
+      label: label('green', t('faq10Label')),
+    },
+    {
+      id: 'faq11',
+      question: t('faq11'),
+      answer: (
+        <Trans
+          i18nKey="faq11Answer"
           components={{
             p,
             Break,
@@ -180,47 +198,40 @@ const MigrationFAQ: React.FC = () => {
           ns="migration"
         />
       ),
-      label: label('green', t('faq10Label')),
-    },
-    {
-      question: t('faq11'),
-      answer: (
-        <Trans
-          i18nKey="faq11Answer"
-          components={{
-            Break,
-            p,
-            b,
-            Link: LinkTo('https://discord.gg/CScCqkcBPR', 'Discord'),
-          }}
-          ns="migration"
-        />
-      ),
       label: label('green', t('faq11Label')),
     },
     {
+      id: 'faq12',
       question: t('faq12'),
       answer: (
         <Trans
           i18nKey="faq12Answer"
-          components={{ Break, p, b, Blockquote }}
+          components={{
+            Break,
+            p,
+            b,
+            Link: LinkTo('https://discord.gg/vqM6Ys8urQ', 'Discord'),
+            Code,
+          }}
           ns="migration"
         />
       ),
-      label: label('yellow', t('faq12Label')),
+      label: label('green', t('faq12Label')),
     },
     {
+      id: 'faq13',
       question: t('faq13'),
       answer: (
         <Trans
           i18nKey="faq13Answer"
-          components={{ Break, p, b }}
+          components={{ Break, p, b, Blockquote }}
           ns="migration"
         />
       ),
-      label: label('sub-dark', t('faq13Label')),
+      label: label('yellow', t('faq13Label')),
     },
     {
+      id: 'faq14',
       question: t('faq14'),
       answer: (
         <Trans
@@ -229,53 +240,75 @@ const MigrationFAQ: React.FC = () => {
           ns="migration"
         />
       ),
-      label: label('secondary', t('faq14Label')),
+      label: label('sub-dark', t('faq14Label')),
     },
     {
-      id: 'rewards',
+      id: 'faq15',
       question: t('faq15'),
-      answer: <Trans i18nKey="faq15Answer" components={{ p }} ns="migration" />,
-      label: label('tertiary', t('comparison')),
+      answer: (
+        <Trans
+          i18nKey="faq15Answer"
+          components={{ Break, p, b, Blockquote }}
+          ns="migration"
+        />
+      ),
+      label: label('azure', t('faq15Label')),
     },
     {
-      id: 'governance',
+      id: 'faq16',
       question: t('faq16'),
       answer: <Trans i18nKey="faq16Answer" components={{ p }} ns="migration" />,
-      label: label('tertiary', t('comparison')),
+      label: label('light-red', t('faq16Label')),
     },
     {
-      id: 'transfer',
+      id: 'faq17',
       question: t('faq17'),
       answer: <Trans i18nKey="faq17Answer" components={{ p }} ns="migration" />,
-      label: label('tertiary', t('comparison')),
+      label: label('light-red', t('faq17Label')),
     },
     {
-      id: 'lock',
+      id: 'faq18',
       question: t('faq18'),
-      answer: (
-        <Trans i18nKey="faq18Answer" components={{ Break, p }} ns="migration" />
-      ),
-      label: label('tertiary', t('comparison')),
+      answer: <Trans i18nKey="faq18Answer" components={{ p }} ns="migration" />,
+      label: label('light-red', t('faq18Label')),
     },
     {
-      id: 'bonding',
+      id: 'faq19',
       question: t('faq19'),
-      answer: <Trans i18nKey="faq19Answer" components={{ p }} ns="migration" />,
-      label: label('tertiary', t('comparison')),
+      answer: (
+        <Trans
+          i18nKey="faq19Answer"
+          components={{ Break, p, Blockquote }}
+          ns="migration"
+        />
+      ),
+      label: label('light-red', t('faq19Label')),
     },
     {
-      id: 'mintFee',
+      id: 'faq20',
       question: t('faq20'),
       answer: (
         <Trans i18nKey="faq20Answer" components={{ p, b }} ns="migration" />
       ),
-      label: label('tertiary', t('comparison')),
+      label: label('light-red', t('faq20Label')),
     },
     {
-      id: 'exit',
+      id: 'faq21',
       question: t('faq21'),
-      answer: <Trans i18nKey="faq21Answer" components={{ p }} ns="migration" />,
-      label: label('tertiary', t('comparison')),
+      answer: (
+        <Trans
+          i18nKey="faq21Answer"
+          components={{ p, Ul, Li }}
+          ns="migration"
+        />
+      ),
+      label: label('light-red', t('faq21Label')),
+    },
+    {
+      id: 'faq22',
+      question: t('faq22'),
+      answer: <Trans i18nKey="faq22Answer" components={{ p }} ns="migration" />,
+      label: label('light-red', t('faq22Label')),
     },
   ];
 
