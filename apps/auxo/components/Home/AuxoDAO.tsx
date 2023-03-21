@@ -166,7 +166,7 @@ const AuxoDAO: React.FC = () => {
             }}
           />
         </p>
-        <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center -ml-2 md:ml-0 xl:-mx-10">
+        <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
           {yieldFeatures.map((feature, index) => (
             <div key={index} className="flex gap-y-4 relative isolate">
               <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background shadow-md relative z-10 left-6 -top-2">
