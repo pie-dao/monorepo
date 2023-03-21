@@ -4,7 +4,7 @@ import Link from 'next/link';
 const HomeHeader: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <header className="absolute w-full py-5 bg-transparent z-30 overflow-auto">
+    <header className="absolute w-full py-5 bg-transparent z-30 overflow-hidden">
       <div className="flex justify-between items-center">
         <div>
           <svg
