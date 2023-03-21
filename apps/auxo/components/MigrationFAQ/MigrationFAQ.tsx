@@ -59,13 +59,7 @@ const MigrationFAQ: React.FC = () => {
         <Trans
           i18nKey="faq1Answer"
           components={{
-            Break,
             p,
-            Link: LinkTo(
-              'https://piedaoorg.on.fleek.co/#/buyback',
-              'https://piedaoorg.on.fleek.co/#/buyback',
-            ),
-            Blockquote,
           }}
           ns="migration"
         />
