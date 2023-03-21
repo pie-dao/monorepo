@@ -87,7 +87,7 @@
   "AUXOtoArvPrv": "You choose whether to receive ARV or PRV",
   "startMigration": "Let’s start the migration",
   "faq1": "What is the migration about",
-  "faq1Answer": "<p>We're migrating locked DOUGH to locked AUXO. You will be able to choose to lock AUXO as ARV or PRV. Only veDOUGH holders will be able to migrate their DOUGH locks to ARV (Active Reward Vault) or PRV (Passive Reward Vault).</p>",
+  "faq1Answer": "<p>We're migrating locked DOUGH to locked AUXO. You will be able to choose to lock AUXO as ARV (Active Reward Vault) or PRV (Passive Reward Vault). Only veDOUGH holders will be able to migrate their DOUGH locks to ARV or PRV.</p>",
   "faq1Label": "General",
   "faq2": "What are the differences between veDOUGH and ARV staking?",
   "faq2Answer": "<p>The main difference is that, with veDOUGH, users can have multiple locks in the same wallet. A lock is created when somebody stakes DOUGH for veDOUGH, and expires at a certain point in time. Staking multiple times creates multiple locks, with separate expiration dates. ARV has a single-lock mechanism. All ARV locked by the user will expire at the same time. Additional locked AUXO can be added, but this will extend the lock of the existing ARV.</p>",
