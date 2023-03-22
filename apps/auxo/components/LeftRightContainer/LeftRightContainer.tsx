@@ -38,32 +38,31 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               textPosition === 'left'
                 ? 'lg:col-start-1'
                 : textPosition === 'right'
-                ? 'lg:col-start-5 xl:col-start-6'
+                ? 'lg:col-start-7'
                 : featureIdx % 2 === 0
-                ? 'lg:col-start-5 xl:col-start-6'
+                ? 'lg:col-start-7'
                 : 'lg:col-start-1',
-              'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-7 xl:col-span-8 flex items-start gap-x-10',
+              'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-6 flex items-start gap-x-10',
             )}
           >
-            {(featureIdx % 2 !== 0 || textPosition === 'left') && (
+            <div
+              className={classNames(
+                (featureIdx % 2 === 0 || textPosition !== 'left') &&
+                  'md:hidden',
+                'flex flex-shrink-0',
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 32 4"
-                className="w-8 h-1 fill-current mt-4 absolute -left-4 sm:-left-3 xl:block xl:[position:initial]"
+                className="w-7 h-1 fill-current mt-4"
               >
                 <rect width="32" height="4" fill="#0B78DD" rx="2" />
               </svg>
-            )}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 32 4"
-              className="w-8 h-1 fill-current mt-4 absolute -left-4 sm:-left-3 xl:[position:initial] lg:hidden"
-            >
-              <rect width="32" height="4" fill="#0B78DD" rx="2" />
-            </svg>
-            <div className="flex flex-col xl:ml-4">
+            </div>
+
+            <div className="flex flex-col">
               <h3 className="text-4xl font-semibold text-primary">
                 {feature.title}
               </h3>
@@ -95,16 +94,16 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
           <div
             className={classNames(
               textPosition === 'left'
-                ? 'lg:col-start-8 xl:col-start-9'
+                ? 'lg:col-start-7'
                 : textPosition === 'right'
                 ? 'lg:col-start-1'
                 : featureIdx % 2 === 0
                 ? 'lg:col-start-1'
-                : 'lg:col-start-8 xl:col-start-9',
-              'flex-auto lg:row-start-1 lg:col-span-4 xl:col-span-5',
+                : 'lg:col-start-7',
+              'flex-auto lg:row-start-1 lg:col-span-6',
             )}
           >
-            <div className="overflow-hidden rounded-lg">
+            <div className="overflow-hidden rounded-lg flex place-content-center">
               <Image
                 src={feature.image.src}
                 alt={feature.image.alt}

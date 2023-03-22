@@ -169,7 +169,7 @@ const AuxoDAO: React.FC = () => {
             }}
           />
         </h2>
-        <p className="text-base text-center text-primary">
+        <p className="text-base text-center text-primary max-w-3xl mx-auto">
           <Trans
             i18nKey="organicYieldDescription"
             ns="common"
@@ -178,15 +178,15 @@ const AuxoDAO: React.FC = () => {
             }}
           />
         </p>
-        <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
+        <div className="mt-16 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
           {yieldFeatures.map((feature, index) => (
             <div key={index} className="flex gap-y-4 relative isolate">
-              <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background shadow-md relative z-10 left-6 -top-2">
+              <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background shadow-md absolute z-10 -top-2">
                 {feature.icon}
               </div>
               <div
                 className={classNames(
-                  'relative w-full pl-8 pr-4 py-3 bg-bottom bg-no-repeat rounded-lg text-left',
+                  'relative w-full pl-10 pr-4 py-3 bg-bottom bg-no-repeat rounded-lg text-left ml-8',
                   feature.background,
                 )}
               >
@@ -212,7 +212,7 @@ const AuxoDAO: React.FC = () => {
         </p>
       </Container> */}
       <LeftRightContainer features={features} />
-      <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:py-38 my-48">
+      <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:pt-38 lg:pb-46 my-48">
         <div className="absolute inset-0 bg-primary opacity-70" />
         <Container
           size="xl"
@@ -255,7 +255,7 @@ const AuxoDAO: React.FC = () => {
         </Container>
         <Container
           size="xl"
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-80 sm:-translate-y-16 w-full"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-24 md:-translate-y-10 lg:translate-y-0 lg:mb-20 w-full"
         >
           <div className="h-[460px] md:h-[780px] w-full rounded-lg overflow-hidden isolate">
             <RiveComponent
