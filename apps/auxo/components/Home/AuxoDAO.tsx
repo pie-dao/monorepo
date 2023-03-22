@@ -25,7 +25,7 @@ const AuxoDAO: React.FC = () => {
       title: (
         <Trans
           i18nKey="AUXOFeatureTitle"
-          components={{ treasury: <span className="text-secondary" /> }}
+          components={{ secondary: <span className="text-secondary" /> }}
           ns="common"
         />
       ),
@@ -56,7 +56,13 @@ const AuxoDAO: React.FC = () => {
 
   const features = [
     {
-      title: t('ARVFeatureTitle'),
+      title: (
+        <Trans
+          i18nKey="ARVFeatureTitle"
+          components={{ secondary: <span className="text-secondary" /> }}
+          ns="common"
+        />
+      ),
       description: t('ARVFeatureDescription'),
       image: {
         alt: 'ARVFeatureTitle',
@@ -64,12 +70,18 @@ const AuxoDAO: React.FC = () => {
       },
       button: {
         image: ARVIcon,
-        text: 'ARV',
+        text: t('learnArv'),
         link: '/',
       },
     },
     {
-      title: t('PRVFeatureTitle'),
+      title: (
+        <Trans
+          i18nKey="PRVFeatureTitle"
+          components={{ secondary: <span className="text-secondary" /> }}
+          ns="common"
+        />
+      ),
       description: t('PRVFeatureDescription'),
       image: {
         alt: 'PRVFeatureTitle',
@@ -77,7 +89,7 @@ const AuxoDAO: React.FC = () => {
       },
       button: {
         image: PRVIcon,
-        text: 'PRV',
+        text: t('learnPrv'),
         link: '/',
       },
     },
@@ -188,7 +200,7 @@ const AuxoDAO: React.FC = () => {
         </div>
       </Container>
       <LeftRightContainer features={auxoFeature} textPosition="left" />
-      <Container
+      {/* <Container
         size="wide"
         className="flex flex-col gap-y-12 scroll-mt-14 py-8 sm:scroll-mt-38 sm:py-20 lg:py-38 bg-gradient-major-secondary-predominant md:rounded-lg my-24 lg:mx-24"
       >
@@ -198,7 +210,7 @@ const AuxoDAO: React.FC = () => {
         <p className="lg:max-w-2xl text-white text-base">
           {t('participateDescription')}
         </p>
-      </Container>
+      </Container> */}
       <LeftRightContainer features={features} />
       <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:py-38 my-48">
         <div className="absolute inset-0 bg-primary opacity-70" />
@@ -217,28 +229,28 @@ const AuxoDAO: React.FC = () => {
               {t('farmNow')}
             </button>
           </Link>
-          <div className="grid grid-cols-1 gap-y-10 gap-x-3 sm:grid-cols-3 lg:text-center -ml-2 md:ml-0 xl:-mx-10 mt-20">
-            <div className="md:mt-8 flex flex-col items-center text-base">
+          <div className="flex items-center justify-center w-full lg:text-center mt-20">
+            {/* <div className="md:mt-8 flex flex-col items-center text-base">
               <p className="flex font-bold text-5xl bg-background/20 rounded-full h-24 w-24 place-items-center">
                 <span className="w-full">32</span>
               </p>
               <p className="font-bold text-lg mt-3">{t('common:ARV')}</p>
               <p className="text-sm mt-2">{t('maxRewards')}</p>
-            </div>
+            </div> */}
             <div className="flex flex-col items-center mb-2 text-base">
               <p className="font-bold text-5xl">
-                <AnimatedAmount value={4_000_000} />
+                + <AnimatedAmount value={3_000_000} />
               </p>
               <p className="font-bold text-lg mt-5">{t('common:AUXO')}</p>
               <p className="text-sm mt-2">{t('intrinsicValue')}</p>
             </div>
-            <div className="md:mt-8 flex flex-col items-center text-base">
+            {/* <div className="md:mt-8 flex flex-col items-center text-base">
               <p className="flex font-bold text-5xl bg-background/20 rounded-full h-24 w-24 place-items-center">
                 <span className="w-full">12</span>
               </p>
               <p className="font-bold text-lg mt-3">{t('common:PRV')}</p>
               <p className="text-sm mt-2">{t('keepLiquidity')}</p>
-            </div>
+            </div> */}
           </div>
         </Container>
         <Container
