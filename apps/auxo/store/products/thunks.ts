@@ -11,7 +11,7 @@ import {
   Erc20Abi,
   MerkleauthAbi,
   TokenLockerAbi,
-  XAUXOAbi,
+  PRVAbi,
   VeAUXOAbi,
   AUXOAbi,
   RollStakerAbi,
@@ -33,6 +33,8 @@ import {
   xAUXOStakingManager,
   xAUXOContract,
   veAUXOContract,
+  rollStakerContract,
+  merkleDistributorContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
@@ -49,6 +51,7 @@ import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { ONE_HOUR_DEADLINE } from '../../utils/constants';
+import { type UserMerkleTree } from '../../types/merkleTree';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -72,6 +75,7 @@ export const THUNKS = {
   BOOST_VE_AUXO: 'PRV/boostVeAUXO',
   INCREASE_LOCK_VE_AUXO: 'ARV/increaseLockVeAUXO',
   WITHDRAW_VE_AUXO: 'ARV/withdrawVeAUXO',
+  GET_USER_REWARDS: 'app/getUserRewards',
   EARLY_TERMINATION: 'ARV/earlyTermination',
 };
 
@@ -298,11 +302,10 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
       stakingAmount: veAUXOContract.balanceOf(xAUXOStakingManager.address),
       decimals: xAUXOContract.decimals(),
       totalSupply: xAUXOContract.totalSupply(),
-      fee: xAUXOContract.entryFee(),
+      fee: xAUXOContract.fee(),
     });
 
     const stakingData = await results;
-
     return {
       ['PRV']: {
         stakingAmount: toBalance(
@@ -864,7 +867,7 @@ export const thunkAuthorizeDepositor = createAsyncThunk(
 
 export type ThunkApproveTokenProps = {
   deposit: BigNumberReference;
-  token: Erc20Abi | XAUXOAbi | VeAUXOAbi | undefined;
+  token: Erc20Abi | PRVAbi | VeAUXOAbi | undefined;
   spender: string;
   nextStep: Steps;
 };
@@ -1207,7 +1210,7 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 export type ThunkConvertXAUXOProps = {
   deposit: BigNumberReference;
   auxoContract: AUXOAbi | undefined;
-  xAUXOContract: XAUXOAbi | undefined;
+  xAUXOContract: PRVAbi | undefined;
   account: string;
   signer: JsonRpcSigner;
   stakingManager: StakingManagerAbi;
@@ -1296,7 +1299,7 @@ export type ThunkStakeXAUXOProps = {
   deposit: BigNumberReference;
   account: string;
   signer: JsonRpcSigner;
-  xAUXO: XAUXOAbi | undefined;
+  xAUXO: PRVAbi | undefined;
   rollStaker: RollStakerAbi | undefined;
 };
 

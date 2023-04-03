@@ -474,7 +474,7 @@ export const SingleTokenPosition = () => {
                   transition={{ duration: 0.3 }}
                   className="origin-top space-y-1 border-t"
                 >
-                  <div className="gap-y- w-full flex flex-col space-between ">
+                  <div className="w-full flex flex-col space-between ">
                     <div className="hidden items-center sm:flex mt-4">
                       <div className="min-w-0 flex-1 flex items-start">
                         <div className="flex-shrink-0 w-[40px]"></div>

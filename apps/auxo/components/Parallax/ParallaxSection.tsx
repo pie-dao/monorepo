@@ -57,8 +57,7 @@ const ParallaxSection: React.FC = () => {
     <>
       <div
         style={{
-          width: '100vw',
-          height: '100vh',
+          minHeight: '100svh',
         }}
       >
         <Parallax ref={parallax} pages={2}>

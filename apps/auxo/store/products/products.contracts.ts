@@ -8,12 +8,13 @@ import {
   YieldvaultAbi__factory,
   MerkleauthAbi__factory,
   TokenLockerAbi__factory,
-  XAUXOAbi__factory,
   StakingManagerAbi__factory,
   VeAUXOAbi__factory,
   SharesTimeLockAbi__factory,
   UpgradoorAbi__factory,
   RollStakerAbi__factory,
+  MerkleDistributorAbi__factory,
+  PRVAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -23,7 +24,7 @@ import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://bestnet.alexintosh.com/rpc/test-upgradooor';
+const localRPC = 'https://bestnet.alexintosh.com/rpc/jordan-gab-testing';
 
 const selectedNetwork = 1;
 
@@ -89,7 +90,7 @@ export const veAUXOContract = MAINNETMulticall.wrap(
 );
 
 export const xAUXOContract = MAINNETMulticall.wrap(
-  XAUXOAbi__factory.connect(
+  PRVAbi__factory.connect(
     products['PRV'].addresses[selectedNetwork].address,
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
@@ -122,6 +123,14 @@ export const Upgradoor = MAINNETMulticall.wrap(
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
+
+export const merkleDistributorContract = (token: string) =>
+  MAINNETMulticall.wrap(
+    MerkleDistributorAbi__factory.connect(
+      products[token].addresses[selectedNetwork].merkleDistributorAddress,
+      new ethers.providers.JsonRpcProvider(localRPC),
+    ),
+  );
 
 export const FTMContractWrappers = FTMContracts.map((address) => {
   const contract = YieldvaultAbi__factory.connect(

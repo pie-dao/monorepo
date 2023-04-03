@@ -4,7 +4,7 @@
     "name": "AUXO",
     "description": "AUXO Token",
     "addresses": {
-      "1": { "address": "0xc5B524357934e45B26a01A37CC0525C5a3939D08" },
+      "1": { "address": "0xbC0AC2d9739E81a332f36e62d046e4c48268880F" },
       "5": {
         "address": "0xAB3c5c69ABA8Db739665742763FDf5701c508B8a"
       },
@@ -19,8 +19,10 @@
     "description": "veAUXO Token",
     "addresses": {
       "1": {
-        "address": "0x3373B031fcEE1CdA3fdb3187f5661A02f02261d9",
-        "stakingAddress": "0x71F622F26F3c8A45C003056f89C55bEBD8d4eA58"
+        "address": "0xb3DdFCB12865a9Fff5187d851A13Fa8389078c08",
+        "stakingAddress": "0x7E68A30B2Bab534D9512d023c14aC9A6373d50E5",
+        "merkleDistributorAddress": "0xb119605E8820fC554b90245a2E32AA354b2e0538",
+        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
       },
       "5": {
         "address": "0x25d46ef3229F16846Da3F6ff616946564164Cc06",
@@ -37,9 +39,11 @@
     "description": "xAUXO Token",
     "addresses": {
       "1": {
-        "address": "0xeB56bCEcd0a48D952d3e975a682FA59880321dc8",
+        "address": "0x715e34fa1b8cEDb5309F569be616506882A846A9",
         "stakingAddress": "0xD8d3c9804bb9c8647fdE591dB78ab7a9aeb4C09D",
-        "rollStakerAddress": "0x8f2BAbF8b745Bb3D5B7eA9364B03B05D6fDE85F0"
+        "rollStakerAddress": "0xe5a879E7DF3012A6Fcc50a9bD6Fca336E6802C09",
+        "merkleDistributorAddress": "0x19c3a98D71727fdAe4ffF4fFFFD6AEe64d24fE9c",
+        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
       },
       "5": {
         "address": "0x8D9d6bd460712Ea491A06619A04743e0eF9d8278",
