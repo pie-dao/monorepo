@@ -33,7 +33,7 @@ export default function ClaimRewards() {
 
   const claimSingleReward = () => {
     setClaimRewardLoading(true);
-    setTotalClaiming(claim.rewards);
+    dispatch(setTotalClaiming(claim.rewards));
     dispatch(
       thunkClaimRewards({
         claim: {

@@ -39,7 +39,7 @@ export default function ClaimRewards() {
 
   const claimRewards = () => {
     setClaimRewardLoading(true);
-    setTotalClaiming(unclaimedRewardsTotal);
+    dispatch(setTotalClaiming(unclaimedRewardsTotal));
     dispatch(
       thunkClaimRewards({
         claim: unclaimedRewards.map((reward) => ({
