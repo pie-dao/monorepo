@@ -9,7 +9,7 @@ import ARVImage from '../../../public/tokens/32x32/ARV.svg';
 import PRVImage from '../../../public/tokens/32x32/PRV.svg';
 import {
   useActiveRewards,
-  useSingleRewardList,
+  useUnclaimedRewards,
 } from '../../../hooks/useRewards';
 import { Month, STEPS } from '../../../store/rewards/rewards.types';
 import { findMonthsByProof } from '../../../utils/findClaims';
@@ -31,7 +31,7 @@ export default function ListRewards() {
   const { account } = useWeb3React();
 
   const totalActiveRewards = useActiveRewards(name);
-  const totalActiveRewardsList = useSingleRewardList(name);
+  const totalActiveRewardsList = useUnclaimedRewards(name);
 
   const claimSingleReward = (singleClaim: Month) => {
     const { proof } = singleClaim;

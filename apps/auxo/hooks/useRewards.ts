@@ -35,8 +35,8 @@ export const useClaimedRewards = () => {
 
   return Object.assign(
     {},
-    ...data.rewardPositions.ARV.filter((r) => r.monthClaimed),
-    ...data.rewardPositions.PRV.filter((r) => r.monthClaimed),
+    { ARV: data.rewardPositions.ARV.filter((r) => r.monthClaimed) },
+    { PRV: data.rewardPositions.PRV.filter((r) => r.monthClaimed) },
   );
 };
 
