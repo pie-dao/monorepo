@@ -152,7 +152,7 @@ export default function ClaimSuccess() {
               >
                 <motion.li
                   variants={childrenVariants}
-                  className="text-2xl sm:text-4xl font-bold bg-clip-text bg-gradient-major-colors text-transparent"
+                  className="text-2xl sm:text-4xl font-bold bg-clip-text bg-gradient-major-colors text-transparent uppercase"
                 >
                   {t('youGotYourRewards')}
                 </motion.li>

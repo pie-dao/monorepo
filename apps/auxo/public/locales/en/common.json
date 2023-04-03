@@ -305,5 +305,6 @@
   "claimingRewardsFor": "Claiming your rewards for ${token}",
   "distributedOn": "Distributed on ${date}",
   "claimRewards": "Claim Rewards",
-  "allTimeTotal": "Total earnings ever"
+  "allTimeTotal": "Total earnings ever",
+  "youGotYourRewards": "You got your rewards!"
 }
