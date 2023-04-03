@@ -74,23 +74,21 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 };
 
 const RewardsHistoryChart = () => {
-  const rewardClaimed = useClaimedRewards() as {
-    ARV: Month[];
-    PRV: Month[];
-  };
+  const { rewardPositions } = useAppSelector((state) => state?.rewards.data);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { t } = useTranslation();
 
   const data = useMemo(() => {
-    const ArvMonths = rewardClaimed.ARV.map((reward) => reward.month);
-    const PrvMonths = rewardClaimed.PRV.map((reward) => reward.month);
+    const ArvMonths = rewardPositions?.ARV?.map((reward) => reward.month);
+    const PrvMonths = rewardPositions?.PRV?.map((reward) => reward.month);
+    if (!ArvMonths && !PrvMonths) return null;
     const months = [...new Set([...ArvMonths, ...PrvMonths])];
 
     return months.map((month) => {
-      const ArvReward = rewardClaimed.ARV.find(
+      const ArvReward = rewardPositions.ARV.find(
         (reward) => reward.month === month,
       )?.rewards?.label;
-      const PrvReward = rewardClaimed.PRV.find(
+      const PrvReward = rewardPositions.PRV.find(
         (reward) => reward.month === month,
       )?.rewards?.label;
       return {
@@ -102,10 +100,9 @@ const RewardsHistoryChart = () => {
         PRV: PrvReward || 0,
       };
     });
-  }, [defaultLocale, rewardClaimed.ARV, rewardClaimed.PRV]);
+  }, [defaultLocale, rewardPositions?.ARV, rewardPositions?.PRV]);
 
-  if (rewardClaimed.ARV.length === 0 && rewardClaimed.PRV.length === 0)
-    return null;
+  if (!data) return null;
 
   return (
     <div className="mt-8">

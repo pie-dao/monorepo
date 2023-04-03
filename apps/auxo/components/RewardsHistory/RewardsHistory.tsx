@@ -204,8 +204,7 @@ const RewardsHistory = () => {
     }
   }, [data, defaultLocale]);
 
-  if (claimedRewards.ARV.length === 0 && claimedRewards.PRV.length === 0)
-    return null;
+  if (isEmpty(claimedRewards?.ARV) && isEmpty(claimedRewards?.PRV)) return null;
 
   return (
     <div className="mt-4">

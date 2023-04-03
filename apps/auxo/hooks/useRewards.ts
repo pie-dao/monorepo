@@ -1,6 +1,7 @@
 import { useAppSelector } from '.';
 import { Month } from '../store/rewards/rewards.types';
 import { WritableDraft } from 'immer/dist/internal';
+import { isEmpty } from 'lodash';
 
 type Token = 'PRV' | 'ARV';
 
@@ -23,22 +24,20 @@ export const useSingleRewardList = (token: Token): WritableDraft<Month>[] => {
   return rewardPosition;
 };
 
-export const useClaimedRewards = (token?: Token | Token[]) => {
+export const useClaimedRewards = () => {
   const { data } = useAppSelector((state) => state?.rewards);
-  if (!token) {
+  if (
+    isEmpty(data?.rewardPositions?.ARV) &&
+    isEmpty(data?.rewardPositions?.PRV)
+  ) {
     return data?.rewardPositions;
   }
-  if (Array.isArray(token)) {
-    return token.map((t) => {
-      const rewardPosition = data?.rewardPositions?.[t];
-      if (!rewardPosition) {
-        throw new Error(`No reward position for token ${t}`);
-      }
-      return rewardPosition.filter((r) => r.monthClaimed);
-    });
-  }
 
-  return data?.rewardPositions?.[token].filter((r) => r.monthClaimed);
+  return Object.assign(
+    {},
+    ...data.rewardPositions.ARV.filter((r) => r.monthClaimed),
+    ...data.rewardPositions.PRV.filter((r) => r.monthClaimed),
+  );
 };
 
 export const useUnclaimedRewards = (token: Token) => {
