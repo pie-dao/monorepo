@@ -160,7 +160,7 @@ export default function Rewards() {
           </GradientBox>
         </div>
       </section>
-      <TotalRewardsBar />
+      {/* <TotalRewardsBar /> */}
       <TotalRewards />
       <RewardsHistory />
       <RewardsHistoryChart />
