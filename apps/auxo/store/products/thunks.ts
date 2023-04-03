@@ -46,6 +46,8 @@ import {
   setTxHash,
   setTxState,
   setShowCompleteModal,
+  setState,
+  initialState,
 } from '../modal/modal.slice';
 import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
@@ -936,7 +938,7 @@ export const thunkStakeAuxo = createAsyncThunk(
   ) => {
     if (!tokenLocker || !account || !stakingTime || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
-    dispatch(setTxHash(null));
+    dispatch(setTx({ status: null, hash: null }));
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -971,7 +973,7 @@ export const thunkStakeAuxo = createAsyncThunk(
     }
 
     const { hash } = tx;
-    dispatch(setTxHash(hash));
+    dispatch(setTx({ status: TX_STATES.PENDING, hash }));
 
     pendingNotification({
       title: `stakeAuxoPending`,
@@ -986,6 +988,12 @@ export const thunkStakeAuxo = createAsyncThunk(
       dispatch(thunkGetUserStakingData({ account }));
       dispatch(
         thunkGetUserProductsData({ account, spender: tokenLocker.address }),
+      );
+      dispatch(
+        setTx({
+          hash,
+          status: TX_STATES.COMPLETE,
+        }),
       );
     }
 
@@ -1010,7 +1018,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
   ) => {
     if (!tokenLocker || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
-    dispatch(setTxHash(null));
+    dispatch(setTx({ status: null, hash: null }));
 
     let tx: ContractTransaction;
     let r: string;
@@ -1044,7 +1052,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     }
 
     const { hash } = tx;
-    dispatch(setTxHash(hash));
+    dispatch(setTx({ status: TX_STATES.PENDING, hash }));
 
     pendingNotification({
       title: `increaseStakeAuxoPending`,
@@ -1061,6 +1069,12 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
         thunkGetUserProductsData({
           account: signer._address,
           spender: tokenLocker.address,
+        }),
+      );
+      dispatch(
+        setTx({
+          hash,
+          status: TX_STATES.COMPLETE,
         }),
       );
     }
@@ -1175,16 +1189,14 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
   ) => {
     if (!tokenLocker || !months || !account)
       return rejectWithValue('Missing Contract, Account Details or months');
-
-    dispatch(setTxHash(null));
+    dispatch(setTx({ status: null, hash: null }));
 
     const tx = await tokenLocker.increaseByMonths(months);
 
     // set block explorer transaction hash
 
     const { hash } = tx;
-    dispatch(setTxHash(hash));
-
+    dispatch(setTx({ status: TX_STATES.PENDING, hash }));
     pendingNotification({
       title: `increaseLockVeAuxoPending`,
       id: 'increaseLockVeAuxo',
@@ -1201,6 +1213,7 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
           spender: tokenLocker.address,
         }),
       );
+      dispatch(setState(initialState));
     }
 
     if (receipt.status !== 1) return rejectWithValue('Withdraw Failed');

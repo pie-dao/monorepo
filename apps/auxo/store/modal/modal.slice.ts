@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SliceState, Steps } from './modal.types';
 
-const initialState: SliceState = {
+export const initialState: SliceState = {
   step: null,
   isOpen: false,
   tx: {
@@ -47,6 +47,13 @@ export const sidebarSlice = createSlice({
     setShowCompleteModal: (state, action: PayloadAction<boolean>) => {
       state.showCompleteModal = action.payload;
     },
+    setState: (state, action: PayloadAction<SliceState>) => {
+      state.isOpen = action.payload.isOpen;
+      state.step = action.payload.step;
+      state.tx = action.payload.tx;
+      state.swap = action.payload.swap;
+      state.showCompleteModal = action.payload.showCompleteModal;
+    },
   },
 });
 
@@ -58,5 +65,6 @@ export const {
   setTxHash,
   setTxState,
   setShowCompleteModal,
+  setState,
 } = sidebarSlice.actions;
 export default sidebarSlice.reducer;

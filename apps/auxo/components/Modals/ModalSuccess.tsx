@@ -21,12 +21,7 @@ import {
   useUserLockDuration,
 } from '../../hooks/useToken';
 import Coin from '../../public/images/animations/coin.svg';
-import {
-  setIsOpen,
-  setShowCompleteModal,
-  setSwap,
-  setTx,
-} from '../../store/modal/modal.slice';
+import { initialState, setState } from '../../store/modal/modal.slice';
 
 const transition = (delay: number): Transition => ({
   duration: 5,
@@ -120,14 +115,7 @@ export default function ModalSuccess() {
   );
 
   const closeAllModals = () => {
-    dispatch(setShowCompleteModal(false));
-    dispatch(setIsOpen(false));
-    dispatch(setTx(null));
-    dispatch(
-      setSwap({
-        swap: null,
-      }),
-    );
+    dispatch(setState(initialState));
   };
 
   return (
