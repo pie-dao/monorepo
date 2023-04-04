@@ -53,7 +53,6 @@ import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { ONE_HOUR_DEADLINE } from '../../utils/constants';
-import { type UserMerkleTree } from '../../types/merkleTree';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',

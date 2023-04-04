@@ -43,7 +43,8 @@
         "stakingAddress": "0xD8d3c9804bb9c8647fdE591dB78ab7a9aeb4C09D",
         "rollStakerAddress": "0xe5a879E7DF3012A6Fcc50a9bD6Fca336E6802C09",
         "merkleDistributorAddress": "0x19c3a98D71727fdAe4ffF4fFFFD6AEe64d24fE9c",
-        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
+        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4",
+        "PRVMerkleVerifierAddress": "0x85fF730427A2EF1AFEBd5B530516a09C0836CA8b"
       },
       "5": {
         "address": "0x8D9d6bd460712Ea491A06619A04743e0eF9d8278",

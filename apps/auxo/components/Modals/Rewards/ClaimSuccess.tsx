@@ -86,10 +86,9 @@ const footerVariants: Variants = {
 
 export default function ClaimSuccess() {
   const { t } = useTranslation();
-  const { claim, tx, showCompleteModal, totalClaiming } = useAppSelector(
+  const { tx, showCompleteModal, totalClaiming } = useAppSelector(
     (state) => state.rewards.claimFlow,
   );
-  const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
 
   const chainExplorer = useChainExplorer();

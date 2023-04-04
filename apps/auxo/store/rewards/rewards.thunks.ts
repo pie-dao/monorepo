@@ -95,17 +95,14 @@ export const thunkGetUserRewards = createAsyncThunk(
 
       const allMonthsPromisify = async () => {
         const results: Month[][] = await Promise.all(
-          Object.entries(rewards).map(async ([token, recipient]) => {
+          Object.entries(rewards).map(([token, recipient]) => {
             return Promise.all(
               Object.entries(recipient).map(async ([month, reward]) => {
                 const { windowIndex, accountIndex, rewards, proof } = reward;
                 const monthClaimed = await merkleDistributorContract(
                   token,
                 ).isClaimed(windowIndex, accountIndex);
-                console.log(
-                  merkleDistributorContract(token).address,
-                  monthClaimed,
-                );
+
                 return {
                   month,
                   monthClaimed,

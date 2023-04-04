@@ -115,9 +115,6 @@ export default function ClaimRewards() {
             </div>
           </div>
           <div className="w-full flex flex-col gap-y-4 items-center mt-4">
-            {/* <p className="font-semibold text-primary text-base">
-              {name}: {unclaimedRewards.length} {t('epochs')}
-            </p> */}
             {!claimRewardLoading ? (
               <button
                 type="button"
