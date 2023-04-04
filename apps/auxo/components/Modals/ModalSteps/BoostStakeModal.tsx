@@ -18,6 +18,7 @@ import {
 } from '../../../hooks/useToken';
 import { ParentSize } from '@visx/responsive';
 import ARVConversionCalculator from '../../../utils/ARVConversionCalculator';
+import LevelChart from '../../LevelChart/LevelChart';
 
 export default function BoostStakeModal() {
   const { t } = useTranslation();
@@ -95,13 +96,13 @@ export default function BoostStakeModal() {
                   </span>
                 </div>
               </div>
-              {/* {userLevel && (
+              {userLevel && (
                 <ParentSize className="w-full h-40 relative -top-6">
                   {({ width }) => (
                     <LevelChart width={width} height={160} level={30} />
                   )}
                 </ParentSize>
-              )} */}
+              )}
             </div>
           )}
           {swap?.stakingTime && (

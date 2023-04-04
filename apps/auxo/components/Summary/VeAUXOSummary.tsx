@@ -22,6 +22,7 @@ import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
 import { useAppSelector } from '../../hooks';
 import trimAccount from '../../utils/trimAccount';
 import { ParentSize } from '@visx/responsive';
+import LevelChart from '../LevelChart/LevelChart';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -156,11 +157,11 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           {fireEmojis?.length > 0 && <span className="ml-2">{fireEmojis}</span>}
         </h4>
       </div>
-      {/* <ParentSize className="w-full h-40 relative -top-8">
+      <ParentSize className="w-full h-40 relative -top-8">
         {({ width }) => (
           <LevelChart width={width} height={180} level={userLevel} />
         )}
-      </ParentSize> */}
+      </ParentSize>
       {summaryData.map(({ icon, title, value }, index) => (
         <div
           className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"
