@@ -3,7 +3,7 @@ import ModalBox from './ModalBox';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Dialog } from '@headlessui/react';
 import { STEPS } from '../../store/modal/modal.types';
-import { setIsOpen, setTx } from '../../store/modal/modal.slice';
+import { initialState, setState } from '../../store/modal/modal.slice';
 import StakeComplete from './ModalSteps/StakeComplete';
 import StakeConfirm from './ModalSteps/StakeConfirm';
 import SwapConfirm from './ModalSteps/xAUXO/SwapConfirm';
@@ -21,13 +21,7 @@ export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
   const dispatch = useAppDispatch();
   const closeModal = () => {
-    dispatch(setIsOpen(false));
-    dispatch(
-      setTx({
-        hash: '',
-        status: null,
-      }),
-    );
+    dispatch(setState(initialState));
   };
 
   return (

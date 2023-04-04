@@ -4,12 +4,13 @@ import smartPool from './smart-pool/smartpool.abi.json';
 import yieldVault from './yield-vault/yieldvault.abi.json';
 import merkleAuth from './merkle-auth/merkleauth.abi.json';
 import tokenLocker from './tokenLocker/tokenLocker.abi.json';
-import xAUXO from './xAUXO/xAUXO.abi.json';
+import PRV from './PRV/PRV.abi.json';
 import stakingManager from './stakingManager/stakingManager.abi.json';
 import sharesTimeLock from './sharesTimeLock/sharesTimeLock.abi.json';
 import upgradoor from './upgradoor/upgradoor.abi.json';
 import AUXO from './AUXO/AUXO.abi.json';
 import rollStaker from './rollStaker/rollStaker.abi.json';
+import merkleDistributor from './merkleDistributor/merkleDistributor.abi.json';
 import { getExplorer } from '../chains';
 
 export {
@@ -19,11 +20,12 @@ export {
   yieldVault,
   merkleAuth,
   tokenLocker,
-  xAUXO,
+  PRV,
   stakingManager,
   sharesTimeLock,
   upgradoor,
   AUXO,
   rollStaker,
+  merkleDistributor,
   getExplorer,
 };

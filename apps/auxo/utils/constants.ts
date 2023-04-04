@@ -112,3 +112,11 @@ function generateEnrichedData(
 }
 
 export const COLORED_CHART_DATA = generateEnrichedData(LEVEL_CHART_DATA);
+
+export const MERKLE_TREES_BY_USER_URL =
+  'https://raw.githubusercontent.com/gbonumore/pie-reporter/e13ba605971c230b8804965a36c01a07f9dc3be9/reports/merkle-trees-by-user.json';
+
+export const LATEST_MERKLE_TREE_URL =
+  'https://bafybeiaosmmppyrn3eqidyhnc36iu7woop257ofpkwupvkze4pk2zzlnuq.ipfs.w3s.link/merkle-tree-veAUXO.json';
+
+export const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';

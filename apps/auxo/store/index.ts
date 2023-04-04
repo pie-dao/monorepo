@@ -11,6 +11,7 @@ import preferencesReducer from './preferences/preferences.slice';
 import productsReducer from './products/products.slice';
 import notificationsReducer from './notifications/notifications.slice';
 import migrationReducer from './migration/migration.slice';
+import rewardsReducer from './rewards/rewards.slice';
 import { api } from '../api/generated/graphql';
 import { merge } from 'lodash';
 import memoize from 'proxy-memoize';
@@ -23,6 +24,7 @@ export const rootReducer = combineReducers({
   dashboard: productsReducer,
   notifications: notificationsReducer,
   migration: migrationReducer,
+  rewards: rewardsReducer,
   [api.reducerPath]: api.reducer,
 });
 

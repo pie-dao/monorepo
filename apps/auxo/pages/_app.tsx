@@ -15,6 +15,8 @@ import ModalStakingSuccess from '../components/Modals/ModalSuccess';
 import './styles.css';
 import './app.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
+import RewardsModalManager from '../components/Modals/Rewards/RewardsModalManager';
+import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
 
 export function reportWebVitals({
   id,
@@ -55,6 +57,8 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
             <ModalManager />
             <ModalMigration />
             <ModalStakingSuccess />
+            <RewardsModalManager />
+            <ClaimSuccess />
             {getLayout(<Component {...props.pageProps} />)}
           </div>
         </Provider>

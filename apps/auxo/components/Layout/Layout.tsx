@@ -51,7 +51,7 @@ export default function Layout({ children }) {
         <div
           className={classNames(
             'flex-1 flex flex-row w-full min-[1920px]:container min-[1920px]:mx-auto transition-all duration-300 ease-in-out',
-            open ? 'ml-44' : 'ml-16',
+            open ? 'sm:ml-44' : 'sm:ml-16',
           )}
         >
           <div className="flex flex-col flex-1">

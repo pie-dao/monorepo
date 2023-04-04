@@ -28,9 +28,9 @@ export default function Treasury(): ReactElement {
     (state) => state.preferences,
   );
 
-  const { data, isLoading, isError } = useGetTreasuryQuery({
-    currency: defaultCurrency,
-  });
+  // const { data, isLoading, isError } = useGetTreasuryQuery({
+  //   currency: defaultCurrency,
+  // });
 
   const { t } = useTranslation();
   const { chainId } = useWeb3React();
@@ -66,7 +66,7 @@ export default function Treasury(): ReactElement {
         </section>
 
         {/* Section for TVL, Capital Utilization, and APY */}
-        <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
+        {/* <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
           <div className="grid grid-cols-3 gap-x-4">
             <div className="flex flex-col py-1">
               {isLoading ? (
@@ -195,8 +195,8 @@ export default function Treasury(): ReactElement {
               </div>
             </div>
           </div>
-        </section>
-        {isLoading ? <></> : <TreasuryTabs {...data.getTreasury.content} />}
+        </section> */}
+        {/* {isLoading ? <></> : <TreasuryTabs {...data.getTreasury.content} />} */}
         <PositionsTabs />
       </div>
     </>

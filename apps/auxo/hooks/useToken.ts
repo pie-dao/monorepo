@@ -161,8 +161,11 @@ export function usePRVEstimation(
     if (!fee) return amount;
     const amountBN = BigNumber.from(amount.value);
     if (!amountBN) return zeroBalance;
-
-    return toBalance(amountBN.mul(fee.value).div(100).add(amountBN), decimals);
+    const feeBN = BigNumber.from(fee.value);
+    const result = amountBN.sub(
+      amountBN.mul(feeBN).div(BigNumber.from('10').pow(18)),
+    );
+    return toBalance(result, decimals);
   }, [amount, fee, decimals]);
   return estimation();
 }

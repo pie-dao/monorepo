@@ -38,6 +38,7 @@ export default function Navigation({
     { name: t('ARV'), href: '/ARV', icon: veAUXOIcon },
     { name: t('PRV'), href: '/PRV', icon: xAUXOIcon },
     { name: t('migration'), href: '/migration', icon: diamond },
+    { name: t('rewards'), href: '/rewards', icon: diamond },
   ];
 
   useEffect(() => {

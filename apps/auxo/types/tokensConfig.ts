@@ -7,6 +7,7 @@ export type TokenConfig = {
       address?: string;
       stakingAddress?: string;
       rollStakerAddress?: string;
+      merkleDistributorAddress?: string;
       exclude?: boolean;
     };
   };

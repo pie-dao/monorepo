@@ -1,32 +1,6 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_auxo",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_stakingManager",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_governor",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_entryFee",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_feeBeneficiary",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },
@@ -59,13 +33,13 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "fee",
-        "type": "uint256"
+        "indexed": true,
+        "internalType": "address",
+        "name": "feeBeneficiary",
+        "type": "address"
       }
     ],
-    "name": "EntryFeeSet",
+    "name": "FeeBeneficiarySet",
     "type": "event"
   },
   {
@@ -73,12 +47,38 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "fee",
+        "type": "uint256"
+      }
+    ],
+    "name": "FeeSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
-        "name": "feeBeneficiary",
+        "name": "governor",
         "type": "address"
       }
     ],
-    "name": "FeeBeneficiarySet",
+    "name": "GovernorSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
     "type": "event"
   },
   {
@@ -104,6 +104,38 @@
       }
     ],
     "name": "Transfer",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdrawal",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "withdrawalManager",
+        "type": "address"
+      }
+    ],
+    "name": "WithdrawalManagerSet",
     "type": "event"
   },
   {
@@ -134,7 +166,7 @@
   },
   {
     "inputs": [],
-    "name": "MAX_ENTRY_FEE",
+    "name": "MAX_FEE",
     "outputs": [
       {
         "internalType": "uint256",
@@ -253,12 +285,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "account",
+        "name": "_account",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
@@ -307,7 +339,7 @@
   },
   {
     "inputs": [],
-    "name": "entryFee",
+    "name": "fee",
     "outputs": [
       {
         "internalType": "uint256",
@@ -365,6 +397,39 @@
         "type": "bool"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_auxo",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_fee",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_feeBeneficiary",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_governor",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_withdrawalManager",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -447,11 +512,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
-    "name": "previewDeposit",
+    "name": "previewWithdraw",
     "outputs": [
       {
         "internalType": "uint256",
@@ -470,7 +535,7 @@
         "type": "uint256"
       }
     ],
-    "name": "setEntryFee",
+    "name": "setFee",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -507,23 +572,29 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "setup",
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_governor",
+        "type": "address"
+      }
+    ],
+    "name": "setGovernor",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "stakingManager",
-    "outputs": [
+    "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "_withdrawalManager",
         "type": "address"
       }
     ],
-    "stateMutability": "view",
+    "name": "setWithdrawalManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -603,6 +674,37 @@
       }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "withdrawalManager",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   }
 ]
