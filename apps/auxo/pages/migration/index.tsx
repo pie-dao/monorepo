@@ -16,6 +16,8 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import MigrationBackground from '../../components/MigrationBackground/MigrationBackground';
 import MigrationFAQ from '../../components/MigrationFAQ/MigrationFAQ';
 import DOUGHIcon from '../../public/tokens/DOUGH.png';
+import LiteYouTubeEmbed from 'react-lite-youtube-embed';
+import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
@@ -50,6 +52,15 @@ export default function Migration() {
       <MigrationBackground />
       <MigrationBanner />
       <Heading title={t('timeToMigrate')} subtitle="timeToMigrateArrived" />
+      <div className="max-w-5xl mx-auto shadow-sm rounded-lg w-full overflow-hidden mb-8">
+        <LiteYouTubeEmbed
+          id="dQw4w9WgXcQ"
+          title=";)"
+          noCookie
+          aspectHeight={9}
+          aspectWidth={16}
+        />
+      </div>
       <div className="bg-white px-4 py-5 sm:px-6 max-w-5xl mx-auto shadow-sm rounded-lg w-full">
         <div className="flex flex-wrap items-center justify-between sm:flex-nowrap">
           <h3 className="w-full text-2xl font-semibold text-primary text-center">
