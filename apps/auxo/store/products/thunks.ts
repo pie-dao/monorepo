@@ -333,14 +333,14 @@ export const thunkGetUserStakingData = createAsyncThunk(
       // delegation: veAUXOContract.delegates(account),
     });
 
-    // const xAUXOResults = promiseObject({
-    //   balance: rollStakerContract.getTotalBalanceForUser(account),
-    //   currentEpochBalance: rollStakerContract.getActiveBalanceForUser(account),
-    //   decimals: xAUXOContract.decimals(),
-    // });
+    const xAUXOResults = promiseObject({
+      balance: rollStakerContract.getTotalBalanceForUser(account),
+      currentEpochBalance: rollStakerContract.getActiveBalanceForUser(account),
+      decimals: xAUXOContract.decimals(),
+    });
 
     const veAUXOData = await veAUXOresults;
-    // const xAUXOData = await xAUXOResults;
+    const xAUXOData = await xAUXOResults;
 
     return {
       ['ARV']: {
@@ -356,15 +356,15 @@ export const thunkGetUserStakingData = createAsyncThunk(
           // delegator: veAUXOData.delegation,
         },
       },
-      // ['PRV']: {
-      //   userStakingData: {
-      //     amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
-      //     currentEpochBalance: toBalance(
-      //       xAUXOData.currentEpochBalance,
-      //       xAUXOData.decimals,
-      //     ),
-      //   },
-      // },
+      ['PRV']: {
+        userStakingData: {
+          amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
+          currentEpochBalance: toBalance(
+            xAUXOData.currentEpochBalance,
+            xAUXOData.decimals,
+          ),
+        },
+      },
     };
   },
 );
