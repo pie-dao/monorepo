@@ -103,6 +103,8 @@
     "decimal.js": "^10.3.1",
     "discord.js": "^13.6.0",
     "dotenv": "^12.0.3",
+    "embla-carousel-autoplay": "^7.1.0",
+    "embla-carousel-react": "^7.1.0",
     "eslint-config-react-app": "^7.0.0",
     "ether-swr": "^2.0.1",
     "ethereum-block-by-date": "^1.4.2",

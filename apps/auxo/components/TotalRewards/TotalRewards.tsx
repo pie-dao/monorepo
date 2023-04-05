@@ -51,8 +51,6 @@ const TotalRewards: React.FC = () => {
           </div>
           {hasARVRewards ? (
             <ActionsBar token="ARV" />
-          ) : hasArvPositions ? (
-            <p>All good! You have no rewards to claim.</p>
           ) : (
             <NoRewards token="ARV" />
           )}

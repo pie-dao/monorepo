@@ -37,6 +37,7 @@ import {
 } from '../hooks/useToken';
 import { subBalances, subPercentageToBalance } from '../utils/balances';
 import { BigNumberReference } from '../store/products/products.types';
+import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
 
 export default function ARV({
   tokenConfig,
@@ -268,6 +269,106 @@ export default function ARV({
         </section>
         <section className=" mt-6">
           <ARVNotificationBar />
+        </section>
+        <section className="mt-6">
+          <TokenCarousel>
+            <div className="relative h-[482px] flex-[0_0_100%]">
+              <div className="overflow-hidden rounded-lg shadow-sm items-start w-full font-medium transition-all mx-auto bg-center bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_1.png')] bg-cover h-full relative">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full flex flex-col place-items-center">
+                  <div className="flex flex-shrink-0 mb-12">
+                    <svg
+                      width="40"
+                      height="40"
+                      viewBox="0 0 40 40"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-10 h-10"
+                    >
+                      <path
+                        d="M26.4581 0.3125H20.9785H20.9002H19.0998H19.0215H13.5419L0.3125 28.65L9.54958 34.2862L19.0998 39.8441H19.1389V29.5111H19.0998L12.3677 25.2839L19.0998 8.45365H20.9002L27.6323 25.2839L20.9002 29.5111H20.8611V39.8441H20.9002L30.4504 34.2862L39.6875 28.65L26.4581 0.3125Z"
+                        fill="#0B78DD"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold">
+                    STAKE AUXO TO
+                  </p>
+                  <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold">
+                    ACTIVE REWARD VAULT
+                  </p>
+                  <p className=" max-w-sm text-primary font-semibold text-xl mt-2 mx-auto">
+                    Be at the driving seat.
+                    <br /> Lock AUXO in the ARV to get the max amount of
+                    rewards.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative h-[482px] flex-[0_0_100%]">
+              <div className="overflow-hidden rounded-lg relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_2.png')] bg-cover h-full">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
+                    What is Active Reward Vault.
+                  </h2>
+                  <p className="font-medium text-base text-white">
+                    Active Rewards vault is...... Earn monthly rewards with an
+                    ARV, a non-transferable asset that grants you governing
+                    rights for the DAO; stake for 36 months to obtain the
+                    maximum Reward Level and profit. You can redeem them for
+                    AUXO when the lock period ends.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative h-[482px] flex-[0_0_100%]">
+              <div className="overflow-hidden rounded-lg relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_3.png')] bg-cover h-full">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
+                    What is Active Reward Vault.
+                  </h2>
+                  <p className="font-medium text-base text-white">
+                    Active Rewards vault is...... Earn monthly rewards with an
+                    ARV, a non-transferable asset that grants you governing
+                    rights for the DAO; stake for 36 months to obtain the
+                    maximum Reward Level and profit. You can redeem them for
+                    AUXO when the lock period ends.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative h-[482px] flex-[0_0_100%]">
+              <div className="overflow-hidden rounded-lg relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_4.png')] bg-cover h-full">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
+                    What is Active Reward Vault.
+                  </h2>
+                  <p className="font-medium text-base text-white">
+                    Active Rewards vault is...... Earn monthly rewards with an
+                    ARV, a non-transferable asset that grants you governing
+                    rights for the DAO; stake for 36 months to obtain the
+                    maximum Reward Level and profit. You can redeem them for
+                    AUXO when the lock period ends.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative h-[482px] flex-[0_0_100%]">
+              <div className="overflow-hidden rounded-lg relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_5.png')] bg-cover h-full">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
+                    What is Active Reward Vault.
+                  </h2>
+                  <p className="font-medium text-base text-white">
+                    Active Rewards vault is...... Earn monthly rewards with an
+                    ARV, a non-transferable asset that grants you governing
+                    rights for the DAO; stake for 36 months to obtain the
+                    maximum Reward Level and profit. You can redeem them for
+                    AUXO when the lock period ends.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </TokenCarousel>
         </section>
         {/* Section for Staking and Summary */}
         <section className="grid grid-cols-1 xl:grid-cols-2 gap-4  text-xs md:text-inherit mt-6">
