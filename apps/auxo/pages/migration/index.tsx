@@ -54,9 +54,8 @@ export default function Migration() {
       <Heading title={t('timeToMigrate')} subtitle="timeToMigrateArrived" />
       <div className="max-w-5xl mx-auto shadow-sm rounded-lg w-full overflow-hidden mb-8">
         <LiteYouTubeEmbed
-          id="dQw4w9WgXcQ"
-          title=";)"
-          noCookie
+          id="NLQhfWcohDQ"
+          title="Migration Video"
           aspectHeight={9}
           aspectWidth={16}
         />
