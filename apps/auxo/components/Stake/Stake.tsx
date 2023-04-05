@@ -129,8 +129,8 @@ const Stake: React.FC<Props> = ({
           </div>
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
-              <Tab.Panel>
-                <ModalBox className="flex flex-col">
+              <Tab.Panel className="h-full">
+                <ModalBox className="flex flex-col h-full">
                   <div className="flex items-center justify-between w-full mb-2">
                     <p className="font-medium text-base text-primary">
                       {t('amountToStake')}

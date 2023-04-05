@@ -16,6 +16,7 @@
   "dependencies": {
     "@0xsequence/multicall": "^0.37.1",
     "@discord-nestjs/core": "^3.0.2",
+    "@ethersproject/abi": "^5.7.0",
     "@gnosis.pm/safe-apps-web3-react": "^1.3.0",
     "@graphql-codegen/typescript-msw": "^1.1.6",
     "@graphql-codegen/typescript-rtk-query": "^2.2.13",
@@ -64,7 +65,7 @@
     "@types/recharts": "^1.8.24",
     "@uma/merkle-distributor": "^1.3.11",
     "@uniswap/v3-core": "^1.0.0",
-    "@visx/axis": "^3.1.0",
+    "@visx/axis": "^2.18.0",
     "@visx/brush": "^2.12.1",
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.6.0",
