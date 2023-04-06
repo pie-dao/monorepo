@@ -1245,7 +1245,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
     }: ThunkConvertXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !auxoContract || !xAUXOContract || !account)
+    if (!deposit || !auxoContract || !account)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
     // const tx = await xAUXOContract.depositFor(account, deposit.value);
@@ -1272,7 +1272,6 @@ export const thunkConvertXAUXO = createAsyncThunk(
       try {
         tx = await PRVRouterContract.convertAndStakeWithSignature(
           deposit.value,
-
           account,
           deadline,
           v,
