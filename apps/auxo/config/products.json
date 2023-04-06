@@ -20,7 +20,7 @@
     "addresses": {
       "1": {
         "address": "0x3373B031fcEE1CdA3fdb3187f5661A02f02261d9",
-        "stakingAddress": "0x7E68A30B2Bab534D9512d023c14aC9A6373d50E5",
+        "stakingAddress": "0x71F622F26F3c8A45C003056f89C55bEBD8d4eA58",
         "merkleDistributorAddress": "0x24f8cea0F451ac4D1364244E319ccA6709faC7BB",
         "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
       },
