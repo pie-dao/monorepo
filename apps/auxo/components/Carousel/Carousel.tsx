@@ -10,6 +10,8 @@ import {
 } from 'react';
 import CarouselControls from './CarouselControls';
 import Dots from './Dots';
+import { useToggle } from 'usehooks-ts';
+import { PauseIcon, PlayIcon } from '@heroicons/react/outline';
 
 type Props = PropsWithChildren & EmblaOptionsType;
 
@@ -17,7 +19,6 @@ const Carousel: FC<Props> = ({ children, ...options }: Props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [
     Autoplay({
       delay: 2000,
-      stopOnLastSnap: true,
     }),
   ]);
 
@@ -25,11 +26,16 @@ const Carousel: FC<Props> = ({ children, ...options }: Props) => {
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  const [toggle, setToggle] = useToggle(true);
+
   const onScroll = useCallback(() => {
     if (!emblaApi) return;
     const progress = Math.max(0, Math.min(1, emblaApi.scrollProgress()));
     setScrollProgress(progress * 100);
-  }, [emblaApi, setScrollProgress]);
+    toggle
+      ? emblaApi?.plugins().autoplay.play()
+      : emblaApi?.plugins().autoplay.stop();
+  }, [emblaApi, toggle]);
 
   useEffect(() => {
     function selectHandler() {
@@ -42,14 +48,6 @@ const Carousel: FC<Props> = ({ children, ...options }: Props) => {
     emblaApi?.on('reInit', onScroll);
 
     emblaApi?.on('select', selectHandler);
-
-    emblaApi?.on('pointerDown', () => {
-      emblaApi?.plugins().autoplay.stop();
-    });
-    emblaApi?.on('pointerUp', () => {
-      emblaApi?.plugins().autoplay.play();
-    });
-
     // cleanup
     return () => {
       emblaApi?.off('select', selectHandler);
@@ -75,9 +73,24 @@ const Carousel: FC<Props> = ({ children, ...options }: Props) => {
         onNext={() => emblaApi?.scrollNext()}
         position="right"
       />
-      <div className="flex gap-x-2 items-center bottom-5 absolute w-full">
+      <div className="flex gap-x-2 bottom-0 absolute w-full max-w-[90%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center">
+        <button
+          className="group group-hover:shadow-lg bg-secondary rounded-full"
+          onClick={() => {
+            setToggle();
+            toggle
+              ? emblaApi?.plugins().autoplay.play()
+              : emblaApi?.plugins().autoplay.stop();
+          }}
+        >
+          {toggle ? (
+            <PauseIcon className="w-8 h-8 text-white" />
+          ) : (
+            <PlayIcon className="w-8 h-8 text-white" />
+          )}
+        </button>
         <div className="relative w-full">
-          <div className="absolute z-10 bg-sub-light h-0.5 rounded-md left-0 right-0 bottom-2 mx-auto pointer-events-none w-full max-w-[90%] overflow-hidden">
+          <div className="absolute z-10 bg-sub-light h-0.5 rounded-md left-0 right-0 pointer-events-none w-full  overflow-hidden">
             <div
               className="bg-secondary absolute w-full top-0 bottom-0 -left-full"
               style={{ transform: `translateX(${scrollProgress}%)` }}
