@@ -281,7 +281,7 @@
   "lastMonthEarningsTooltip": "Last month earnings",
   "totalClaimableRewards": "Total claimable rewards:",
   "totalRewards": "Total rewards from ${token}:",
-  "noRewardsAvailable": "You have still no rewards",
+  "noRewardsAvailable": "You have no rewards to claim",
   "buyAUXOToEarnRewards": "Get started now, buy AUXO and stake",
   "getAUXOandStake": "Get AUXO and stake to <b>${token}</b>",
   "compoundRewards": "Compound ${token} rewards",
