@@ -2,19 +2,17 @@ import { Dispatch, SetStateAction } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import Lock from '../Lock/Lock';
 import * as Slider from '@radix-ui/react-slider';
+import { setIncreasedStakingValue } from '../../store/products/products.slice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 type Props = {
-  commitmentValue: number;
-  setCommitmentValue: Dispatch<SetStateAction<number>>;
   maxLock: number;
 };
 
-const StakeSlider: React.FC<Props> = ({
-  maxLock,
-  commitmentValue,
-  setCommitmentValue,
-}) => {
+const StakeSlider: React.FC<Props> = ({ maxLock }) => {
   const { t } = useTranslation();
+  const { increasedStakingValue } = useAppSelector((state) => state.dashboard);
+  const dispatch = useAppDispatch();
 
   return (
     <div className="flex items-center justify-between">
@@ -22,13 +20,13 @@ const StakeSlider: React.FC<Props> = ({
         <div className="flex items-center justify-between gap-x-4 w-full">
           <Slider.Root
             className="relative flex items-center select-none touch-none w-[85%] h-6"
-            defaultValue={[1]}
+            defaultValue={[0]}
             max={maxLock}
-            min={1}
+            min={0}
             step={1}
             aria-label="Volume"
             onValueChange={(value) => {
-              setCommitmentValue(value[0]);
+              dispatch(setIncreasedStakingValue(value[0]));
             }}
           >
             <Slider.Track className="relative rounded-full flex-grow bg-sub-light h-2">
@@ -37,7 +35,8 @@ const StakeSlider: React.FC<Props> = ({
             <Slider.Thumb className="block w-[20px] h-[20px] bg-secondary shadow-sm rounded-xl" />
           </Slider.Root>
           <p className="text-primary font-bold text-sm w-[15%] shrink-0 text-right">
-            {commitmentValue} {commitmentValue === 1 ? t('month') : t('months')}
+            {increasedStakingValue}{' '}
+            {increasedStakingValue === 1 ? t('month') : t('months')}
           </p>
         </div>
       </div>
