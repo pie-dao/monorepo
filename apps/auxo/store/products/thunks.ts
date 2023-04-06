@@ -1392,6 +1392,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserProductsData({ account }));
       dispatch(thunkGetUserStakingData({ account }));
     }
 
@@ -1443,6 +1444,7 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.UNSTAKE_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserProductsData({ account }));
       dispatch(thunkGetUserStakingData({ account }));
     }
 
