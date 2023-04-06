@@ -100,16 +100,19 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
               isValid: false,
               reason: t('alreadyLocked'),
             });
+            return;
           } else if (!hasVeDOUGH.isZero()) {
             handleInvalidAddress({
               isValid: false,
               reason: t('alreadyLockedVeDOUGH'),
             });
+            return;
           } else {
             handleInvalidAddress({
               isValid: true,
               reason: '',
             });
+            return;
           }
         } catch (error) {
           console.error(error);
