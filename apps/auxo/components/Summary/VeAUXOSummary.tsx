@@ -155,7 +155,6 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         <h4 className="text-base font-bold text-white uppercase bg-gradient-major-secondary-predominant rounded-xl py-1 px-4">
           {t('levelAndReward', {
             level: hasLock ? increasedLevel : userLevel,
-            reward: userLevelPercetageReward,
           })}
           {fireEmojis?.length > 0 && <span className="ml-2">{fireEmojis}</span>}
         </h4>

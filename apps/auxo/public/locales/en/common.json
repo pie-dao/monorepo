@@ -202,7 +202,7 @@
   "unlock": "Unlock:",
   "newVaultBalance": "New vault balance:",
   "newLockDuration": "New lock duration:",
-  "levelAndReward": "Level ${level} / ${reward}",
+  "levelAndReward": "Level ${level}",
   "rewardLevel": "Reward level",
   "rewardLevelRecap": "Reward level: ${level}",
   "increaseTime": "Increase your staking time",
