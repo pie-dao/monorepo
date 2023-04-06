@@ -24,6 +24,7 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import Trans from 'next-translate/Trans';
 import { Alert } from '../Alerts/Alerts';
 import ModalBox from '../Modals/ModalBox';
+import * as Switch from '@radix-ui/react-switch';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -216,7 +217,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             ⚠️ {t('irreversible')}
                           </p>
                         </div>
-                        {/* <div className="flex flex-col w-full justify-between gap-y-3">
+                        <div className="flex flex-col w-full justify-between gap-y-3">
                           <div className="flex w-full justify-between py-2">
                             <label
                               className="pr-2 text-primary font-bold text-base"
@@ -248,7 +249,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                               </Switch.Root>
                             </div>
                           </div>
-                        </div> */}
+                        </div>
                       </>
                     )}
                     {tab.value === 'convertAndStake' && (

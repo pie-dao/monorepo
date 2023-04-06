@@ -19,6 +19,7 @@ export const initialState: SliceState = {
     },
     spender: null,
   },
+  isConvertAndStake: false,
   showCompleteModal: false,
 };
 
@@ -54,6 +55,9 @@ export const sidebarSlice = createSlice({
       state.swap = action.payload.swap;
       state.showCompleteModal = action.payload.showCompleteModal;
     },
+    setIsConvertAndStake: (state, action: PayloadAction<boolean>) => {
+      state.isConvertAndStake = action.payload;
+    },
   },
 });
 
@@ -66,5 +70,6 @@ export const {
   setTxState,
   setShowCompleteModal,
   setState,
+  setIsConvertAndStake,
 } = sidebarSlice.actions;
 export default sidebarSlice.reducer;

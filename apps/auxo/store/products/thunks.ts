@@ -16,6 +16,7 @@ import {
   AUXOAbi,
   RollStakerAbi,
   StakingManagerAbi,
+  PRVRouterAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -1222,10 +1223,12 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 export type ThunkConvertXAUXOProps = {
   deposit: BigNumberReference;
   auxoContract: AUXOAbi | undefined;
-  xAUXOContract: PRVAbi | undefined;
+  xAUXOContract?: PRVAbi | undefined;
   account: string;
   signer: JsonRpcSigner;
   stakingManager: StakingManagerAbi;
+  isConvertAndStake: boolean;
+  PRVRouterContract?: PRVRouterAbi;
 };
 
 export const thunkConvertXAUXO = createAsyncThunk(
@@ -1237,6 +1240,8 @@ export const thunkConvertXAUXO = createAsyncThunk(
       deposit,
       auxoContract,
       xAUXOContract,
+      isConvertAndStake,
+      PRVRouterContract,
     }: ThunkConvertXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
@@ -1254,7 +1259,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
       ({ r, v, s } = await getPermitSignature(
         signer,
         auxoContract,
-        xAUXOContract.address,
+        isConvertAndStake ? PRVRouterContract.address : xAUXOContract.address,
         deposit.value,
         deadline,
       ));
@@ -1263,18 +1268,35 @@ export const thunkConvertXAUXO = createAsyncThunk(
       return rejectWithValue('Permit Signature Failed');
     }
 
-    try {
-      tx = await xAUXOContract.depositForWithSignature(
-        account,
-        deposit.value,
-        deadline,
-        v,
-        r,
-        s,
-      );
-    } catch (e) {
-      console.error(e);
-      return rejectWithValue('Deposit Failed');
+    if (isConvertAndStake) {
+      try {
+        tx = await PRVRouterContract.convertAndStakeWithSignature(
+          deposit.value,
+
+          account,
+          deadline,
+          v,
+          r,
+          s,
+        );
+      } catch (e) {
+        console.error(e);
+        return rejectWithValue('Convert and Stake Failed');
+      }
+    } else {
+      try {
+        tx = await xAUXOContract.depositForWithSignature(
+          account,
+          deposit.value,
+          deadline,
+          v,
+          r,
+          s,
+        );
+      } catch (e) {
+        console.error(e);
+        return rejectWithValue('Convert Failed');
+      }
     }
 
     // set block explorer transaction hash

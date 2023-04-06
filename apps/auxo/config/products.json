@@ -4,7 +4,7 @@
     "name": "AUXO",
     "description": "AUXO Token",
     "addresses": {
-      "1": { "address": "0xbC0AC2d9739E81a332f36e62d046e4c48268880F" },
+      "1": { "address": "0xc5B524357934e45B26a01A37CC0525C5a3939D08" },
       "5": {
         "address": "0xAB3c5c69ABA8Db739665742763FDf5701c508B8a"
       },
@@ -19,9 +19,9 @@
     "description": "veAUXO Token",
     "addresses": {
       "1": {
-        "address": "0xb3DdFCB12865a9Fff5187d851A13Fa8389078c08",
+        "address": "0x3373B031fcEE1CdA3fdb3187f5661A02f02261d9",
         "stakingAddress": "0x7E68A30B2Bab534D9512d023c14aC9A6373d50E5",
-        "merkleDistributorAddress": "0xb119605E8820fC554b90245a2E32AA354b2e0538",
+        "merkleDistributorAddress": "0x24f8cea0F451ac4D1364244E319ccA6709faC7BB",
         "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
       },
       "5": {
@@ -39,12 +39,13 @@
     "description": "xAUXO Token",
     "addresses": {
       "1": {
-        "address": "0x715e34fa1b8cEDb5309F569be616506882A846A9",
+        "address": "0x958D554885484e75DCaC4132dbbBaBE8bD9Ea90F",
         "stakingAddress": "0xD8d3c9804bb9c8647fdE591dB78ab7a9aeb4C09D",
-        "rollStakerAddress": "0xe5a879E7DF3012A6Fcc50a9bD6Fca336E6802C09",
-        "merkleDistributorAddress": "0x19c3a98D71727fdAe4ffF4fFFFD6AEe64d24fE9c",
+        "rollStakerAddress": "0x547171540E1642d55C3454FB5031b27D7C5eC59e",
+        "merkleDistributorAddress": "0xa87BCE5DEEad429bC4d5FE49f355382f083817a2",
         "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4",
-        "PRVMerkleVerifierAddress": "0x85fF730427A2EF1AFEBd5B530516a09C0836CA8b"
+        "PRVMerkleVerifierAddress": "0x3bf93d1A744A53b4A2663EbdD63bedd4f49194e6",
+        "PRVRouterAddress": "0x06bFd90343d569d0A9420010861e9BA87Cc3fB6a"
       },
       "5": {
         "address": "0x8D9d6bd460712Ea491A06619A04743e0eF9d8278",

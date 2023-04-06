@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
@@ -6,6 +6,7 @@ import Image from 'next/image';
 import {
   getSigner,
   useAUXOTokenContract,
+  usePRVRouterContract,
   useXAUXOStakingManager,
   useXAUXOTokenContract,
 } from '../../../../hooks/useContracts';
@@ -27,7 +28,9 @@ const imageMap = {
 export default function StakeConfirm() {
   const { t } = useTranslation();
   const { account, library } = useWeb3React();
-  const { tx, swap } = useAppSelector((state) => state.modal);
+  const { tx, swap, isConvertAndStake } = useAppSelector(
+    (state) => state.modal,
+  );
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
@@ -36,6 +39,7 @@ export default function StakeConfirm() {
   const chainExplorer = useChainExplorer();
   const signer = getSigner(library, account);
   const stakingManager = useXAUXOStakingManager();
+  const PRVRouterContract = usePRVRouterContract();
 
   const makeDeposit = () => {
     setDepositLoading(true);
@@ -47,6 +51,8 @@ export default function StakeConfirm() {
         account,
         signer,
         stakingManager,
+        PRVRouterContract,
+        isConvertAndStake,
       }),
     ).finally(() => setDepositLoading(false));
   };
