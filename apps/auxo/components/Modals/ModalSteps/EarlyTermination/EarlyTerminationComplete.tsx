@@ -43,7 +43,7 @@ export default function UnstakeCompleted() {
           {t('movedPosition')}
         </p>
         {swap && (
-          <div className="grid grid-cols-[1fr_max-content_1fr] place-content-center gap-x-2">
+          <div className="grid grid-cols-[1fr_max-content_1fr] place-content-center gap-x-2 z-10">
             <div className="text-xl text-primary font-medium flex items-center gap-x-2 justify-self-end">
               <Image
                 src={imageMap[swap.from.token]}
