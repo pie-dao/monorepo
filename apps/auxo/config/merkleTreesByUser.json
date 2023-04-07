@@ -1,52 +1,7 @@
 {
-  "0x1A1087Bf077f74fb21fD838a8a25Cf9Fe0818450": {
-    "ARV": {
-      "2022-01": {
-        "windowIndex": 0,
-        "accountIndex": 2,
-        "rewards": "15000000000000000000",
-        "proof": [
-          "0x2495664c018a0768aeac9104d4219cc7f6b77217763b87085de6f54365024913",
-          "0x2dde5e4f8b9c967f79cadbb545a71c174c5625530af97acfb3679bf74f98a7bf",
-          "0xcf9c05c977c32644246b116161217ef6c51293f57e8faf1fab94501e1e62a1af"
-        ]
-      },
-      "2022-02": {
-        "windowIndex": 1,
-        "accountIndex": 2,
-        "rewards": "15000000000000000000",
-        "proof": [
-          "0x94add59edf52d9bc0cdd9b16fa42f59422ef6238629f19f3c17d0bb06b535890",
-          "0xfd2c16324f11faae919ba244696db8b75a9bda186f7d80ac6b24eba4b36bbb73",
-          "0xb7e31b16ffa727e5c6828221317ea5054441cc753c31144d2ac2341d28ec582f"
-        ]
-      }
-    },
-    "PRV": {
-      "2022-01": {
-        "windowIndex": 0,
-        "accountIndex": 2,
-        "rewards": "5000000000000000000",
-        "proof": [
-          "0x151fe5d7c9c33271daa34fef5de8d3f74e8f39db1e7503f60f7ff58871e816ab",
-          "0xf34c1377140f501d5d2300ae2d90f0f7fe6b2d827425cda9a4bf65a32354e821",
-          "0x26b1b70c1ed295ac520aa6994276b5f501079f9ee58ee30c590c27cc28bf66df"
-        ]
-      },
-      "2022-02": {
-        "windowIndex": 1,
-        "accountIndex": 2,
-        "rewards": "5000000000000000000",
-        "proof": [
-          "0xd6da24340f21282792147c0ff0954246033b2207da1ec3ab7d0c368d87ce76f8",
-          "0x5c093f593abca660f732a52a683e273a98728405de76c6a7959da571f2043dab"
-        ]
-      }
-    }
-  },
   "0x00BA3CA0B6Df1486c912893d9f288311A60ED753": {
     "ARV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 0,
         "rewards": "10000000000000000000",
@@ -55,19 +10,19 @@
           "0xff4384c46e2c854de399876a6a0a07b5e8f369186ba8f5d92f0bf6cdc42a4341"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 0,
         "rewards": "10000000000000000000",
         "proof": [
-          "0x154ab253c8fc9cd702bece34c145db5218971297324d2b7e2757506972e107b0",
-          "0x5d6d596d257a06debe65e2c33b634a788799588cdb1aa8b819abff8f495d8918",
-          "0xb7e31b16ffa727e5c6828221317ea5054441cc753c31144d2ac2341d28ec582f"
+          "0x94add59edf52d9bc0cdd9b16fa42f59422ef6238629f19f3c17d0bb06b535890",
+          "0x4178f81396bde7b6618208a2672ba74974bfb4dc3ac6dddfc70f5a170ef06319",
+          "0x68a791febe6d2a7e6535ac4a92d18137f609bc1968dc148e34abc5ea42ceee4a"
         ]
       }
     },
     "PRV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 0,
         "rewards": "5000000000000000000",
@@ -77,7 +32,7 @@
           "0x26b1b70c1ed295ac520aa6994276b5f501079f9ee58ee30c590c27cc28bf66df"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 0,
         "rewards": "5000000000000000000",
@@ -91,7 +46,7 @@
   },
   "0xd18a54f89603Fe4301b29EF6a8ab11b9Ba24f139": {
     "ARV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 1,
         "rewards": "15000000000000000000",
@@ -101,18 +56,18 @@
           "0xcf9c05c977c32644246b116161217ef6c51293f57e8faf1fab94501e1e62a1af"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
-        "accountIndex": 1,
+        "accountIndex": 2,
         "rewards": "15000000000000000000",
         "proof": [
           "0xb78f1e5e57ede2d425ece9a598252215f6c21d8ccad19b9c03fba9cd80457644",
-          "0x59bcea71b3f4255da7aa36daa67a4f2dfa4f6915ded582615f3dab3f5a3bc311"
+          "0x1a689473deeddae92da19ede03c89f2c78025a5714ccefc1e5f7ffb8ef84210f"
         ]
       }
     },
     "PRV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 1,
         "rewards": "10000000000000000000",
@@ -121,7 +76,7 @@
           "0xb6146c0d8503b14aa65ee0097d481eca4ec5f58bd00b28ea6da767d634d907a7"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 1,
         "rewards": "10000000000000000000",
@@ -133,9 +88,54 @@
       }
     }
   },
+  "0x1A1087Bf077f74fb21fD838a8a25Cf9Fe0818450": {
+    "ARV": {
+      "2023-1": {
+        "windowIndex": 0,
+        "accountIndex": 2,
+        "rewards": "15000000000000000000",
+        "proof": [
+          "0x2495664c018a0768aeac9104d4219cc7f6b77217763b87085de6f54365024913",
+          "0x2dde5e4f8b9c967f79cadbb545a71c174c5625530af97acfb3679bf74f98a7bf",
+          "0xcf9c05c977c32644246b116161217ef6c51293f57e8faf1fab94501e1e62a1af"
+        ]
+      },
+      "2023-2": {
+        "windowIndex": 1,
+        "accountIndex": 1,
+        "rewards": "15000000000000000000",
+        "proof": [
+          "0x154ab253c8fc9cd702bece34c145db5218971297324d2b7e2757506972e107b0",
+          "0x16e11677bde91d74a319710e3f5e94fd7d39d22981a482944d4adb1be691a579",
+          "0x68a791febe6d2a7e6535ac4a92d18137f609bc1968dc148e34abc5ea42ceee4a"
+        ]
+      }
+    },
+    "PRV": {
+      "2023-1": {
+        "windowIndex": 0,
+        "accountIndex": 2,
+        "rewards": "5000000000000000000",
+        "proof": [
+          "0x151fe5d7c9c33271daa34fef5de8d3f74e8f39db1e7503f60f7ff58871e816ab",
+          "0xf34c1377140f501d5d2300ae2d90f0f7fe6b2d827425cda9a4bf65a32354e821",
+          "0x26b1b70c1ed295ac520aa6994276b5f501079f9ee58ee30c590c27cc28bf66df"
+        ]
+      },
+      "2023-2": {
+        "windowIndex": 1,
+        "accountIndex": 2,
+        "rewards": "5000000000000000000",
+        "proof": [
+          "0xd6da24340f21282792147c0ff0954246033b2207da1ec3ab7d0c368d87ce76f8",
+          "0x5c093f593abca660f732a52a683e273a98728405de76c6a7959da571f2043dab"
+        ]
+      }
+    }
+  },
   "0x63BCe354DBA7d6270Cb34dAA46B869892AbB3A79": {
     "ARV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 3,
         "rewards": "20000000000000000000",
@@ -145,19 +145,19 @@
           "0xcf9c05c977c32644246b116161217ef6c51293f57e8faf1fab94501e1e62a1af"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 3,
         "rewards": "20000000000000000000",
         "proof": [
-          "0x737201c3ade6d0bffc0b57f56ba06620cbf1ab0c36470942feba066e93a54a88",
-          "0x5d6d596d257a06debe65e2c33b634a788799588cdb1aa8b819abff8f495d8918",
-          "0xb7e31b16ffa727e5c6828221317ea5054441cc753c31144d2ac2341d28ec582f"
+          "0x44788623daab5694b45f5b7a9d345b3260e81290bd883e92ca523464e190a0f4",
+          "0x16e11677bde91d74a319710e3f5e94fd7d39d22981a482944d4adb1be691a579",
+          "0x68a791febe6d2a7e6535ac4a92d18137f609bc1968dc148e34abc5ea42ceee4a"
         ]
       }
     },
     "PRV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 3,
         "rewards": "10000000000000000000",
@@ -167,7 +167,7 @@
           "0x26b1b70c1ed295ac520aa6994276b5f501079f9ee58ee30c590c27cc28bf66df"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 3,
         "rewards": "10000000000000000000",
@@ -181,7 +181,7 @@
   },
   "0x43079513eBD84AFb15BE79021C420Fe8055Bc635": {
     "ARV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 4,
         "rewards": "25000000000000000000",
@@ -191,19 +191,19 @@
           "0xcf9c05c977c32644246b116161217ef6c51293f57e8faf1fab94501e1e62a1af"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 4,
         "rewards": "25000000000000000000",
         "proof": [
-          "0x77a7196ea407020b28014a8d41c11a503fcccd57a63a48af8d41f52db7ba5725",
-          "0xfd2c16324f11faae919ba244696db8b75a9bda186f7d80ac6b24eba4b36bbb73",
-          "0xb7e31b16ffa727e5c6828221317ea5054441cc753c31144d2ac2341d28ec582f"
+          "0x737201c3ade6d0bffc0b57f56ba06620cbf1ab0c36470942feba066e93a54a88",
+          "0x4178f81396bde7b6618208a2672ba74974bfb4dc3ac6dddfc70f5a170ef06319",
+          "0x68a791febe6d2a7e6535ac4a92d18137f609bc1968dc148e34abc5ea42ceee4a"
         ]
       }
     },
     "PRV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 4,
         "rewards": "10000000000000000000",
@@ -213,7 +213,7 @@
           "0x26b1b70c1ed295ac520aa6994276b5f501079f9ee58ee30c590c27cc28bf66df"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 4,
         "rewards": "10000000000000000000",
@@ -227,7 +227,7 @@
   },
   "0x0810C422E4abD05c752618B403d26cf60bB50B5C": {
     "ARV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 5,
         "rewards": "15000000000000000000",
@@ -236,18 +236,18 @@
           "0xff4384c46e2c854de399876a6a0a07b5e8f369186ba8f5d92f0bf6cdc42a4341"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 5,
         "rewards": "15000000000000000000",
         "proof": [
-          "0xc2156f30cb3ed2d3bd1eac97ace7c88eac95e2b82e98e4cc0f388489e515111b",
-          "0x59bcea71b3f4255da7aa36daa67a4f2dfa4f6915ded582615f3dab3f5a3bc311"
+          "0xe28c6dedddf7873a453fc838201651dd5ebd49ca3b79f9adce5d1fa1b8f3f002",
+          "0x1a689473deeddae92da19ede03c89f2c78025a5714ccefc1e5f7ffb8ef84210f"
         ]
       }
     },
     "PRV": {
-      "2022-01": {
+      "2023-1": {
         "windowIndex": 0,
         "accountIndex": 5,
         "rewards": "10000000000000000000",
@@ -256,7 +256,7 @@
           "0xb6146c0d8503b14aa65ee0097d481eca4ec5f58bd00b28ea6da767d634d907a7"
         ]
       },
-      "2022-02": {
+      "2023-2": {
         "windowIndex": 1,
         "accountIndex": 5,
         "rewards": "10000000000000000000",
