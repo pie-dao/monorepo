@@ -983,7 +983,6 @@ export const thunkStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
@@ -1063,7 +1062,6 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account: signer._address }));
@@ -1117,7 +1115,6 @@ export const thunkBoostToMaxVeAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
