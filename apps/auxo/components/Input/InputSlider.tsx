@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { formatBalance, smallToBalance } from '../../utils/formatBalance';
 import { useDecimals } from '../../hooks/useToken';
@@ -9,13 +9,16 @@ import classNames from '../../utils/classnames';
 import { useAppSelector } from '../../hooks';
 import wallet from '../../public/images/icons/wallet.svg';
 import { escapeRegExp, inputRegex } from '../../utils/sanitizeInput';
+import { Steps } from '../../store/modal/modal.types';
 
 function InputSlider({
+  resetOnSteps,
   setValue,
   max,
   label,
   disabled = false,
 }: {
+  resetOnSteps: Steps[] /* Steps to reset the input */;
   setValue: SetStateType<BigNumberReference>;
   max: BigNumberReference;
   label: string;
@@ -23,7 +26,17 @@ function InputSlider({
 }): JSX.Element {
   const decimals = useDecimals(label);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
+  const { step, showCompleteModal } = useAppSelector((state) => state.modal);
   const [displayValue, setDisplayValue] = useState<string>('');
+
+  // if any of the passed reset steps match the current step
+  // reset the input state
+  useEffect(() => {
+    if (showCompleteModal || resetOnSteps?.includes(step)) {
+      setDisplayValue('');
+      setValue(zeroBalance);
+    }
+  }, [step, showCompleteModal, setDisplayValue, setValue]);
 
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {

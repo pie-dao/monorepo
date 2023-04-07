@@ -1249,7 +1249,6 @@ export const thunkConvertXAUXO = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
     // const tx = await xAUXOContract.depositFor(account, deposit.value);
-
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -1394,6 +1393,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserProductsData({ account }));
       dispatch(thunkGetUserStakingData({ account }));
+      dispatch(thunkGetUserProductsData({ account }));
     }
 
     return receipt.status === 1
