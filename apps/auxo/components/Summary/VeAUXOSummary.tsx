@@ -124,27 +124,18 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           </>
         ),
       },
-      {
-        icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
-        title: t('governancePower'),
-        value: votingPowerValue,
-      },
+      // {
+      //   icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
+      //   title: t('governancePower'),
+      //   value: votingPowerValue,
+      // },
       {
         icon: <Image src={unlock} alt="triangle" width={24} height={24} />,
         title: t('unlock'),
         value: hasLock ? endDate : '--/--/----',
       },
     ];
-  }, [
-    account,
-    defaultLocale,
-    stakedAuxo,
-    t,
-    veAUXOBalance,
-    votingPowerValue,
-    hasLock,
-    endDate,
-  ]);
+  }, [account, defaultLocale, stakedAuxo, t, veAUXOBalance, hasLock, endDate]);
 
   return (
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2">

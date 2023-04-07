@@ -20,13 +20,15 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Listbox, Tab } from '@headlessui/react';
 import classNames from '../../utils/classnames';
-import { ChevronDownIcon } from '@heroicons/react/outline';
+import { ChevronDownIcon, ExclamationIcon } from '@heroicons/react/outline';
 import Trans from 'next-translate/Trans';
 import { Alert } from '../Alerts/Alerts';
 import ModalBox from '../Modals/ModalBox';
 import * as Switch from '@radix-ui/react-switch';
 import { STEPS } from '../../store/modal/modal.types';
 import { setIsConvertAndStake } from '../../store/modal/modal.slice';
+import Banner from '../Banner/Banner';
+import Link from 'next/link';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -216,9 +218,32 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           {t('convert')}
                         </DepositActions>
                         <div className="w-full flex justify-center items-center">
-                          <p className="text-sub-dark text-sm font-medium">
-                            ⚠️ {t('irreversible')}
-                          </p>
+                          <Banner
+                            bgColor="bg-warning"
+                            content={
+                              <Trans
+                                i18nKey="withdrawalMechanism"
+                                components={{
+                                  a: (
+                                    <a
+                                      href={
+                                        'https://auxodaos-organization.gitbook.io/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
+                                      }
+                                      className="text-primary underline"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    />
+                                  ),
+                                }}
+                              />
+                            }
+                            icon={
+                              <ExclamationIcon
+                                className="h-5 w-5 text-primary"
+                                aria-hidden="true"
+                              />
+                            }
+                          />
                         </div>
                         <div className="flex flex-col w-full justify-between gap-y-3">
                           <div className="flex w-full justify-between py-2">

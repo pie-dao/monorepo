@@ -91,7 +91,7 @@ export const errorNotificationUpdate = (toastId: Id, message: string) => {
     <>
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={message} ns={'notifications'} />
+          <Trans i18nKey={message || 'defaultError'} ns={'notifications'} />
         </p>
       </div>
     </>,
