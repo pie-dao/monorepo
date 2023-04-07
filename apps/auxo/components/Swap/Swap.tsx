@@ -28,7 +28,6 @@ import * as Switch from '@radix-ui/react-switch';
 import { STEPS } from '../../store/modal/modal.types';
 import { setIsConvertAndStake } from '../../store/modal/modal.slice';
 import Banner from '../Banner/Banner';
-import Link from 'next/link';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -37,21 +36,24 @@ type Props = {
 
 const tokenOptions = [
   {
+    title: <Trans i18nKey="stakeAndConvertToken" values={{ token: 'PRV' }} />,
+    value: 'convertAndStake',
+    image: <Image src={PRVIcon} alt={'PRV'} width={24} height={24} />,
+  },
+  {
     title: <Trans i18nKey="convertToken" values={{ token: 'PRV' }} />,
     value: 'convert',
     image: <Image src={AuxoIcon} alt={'AUXO Icon'} width={24} height={24} />,
   },
   {
     title: <Trans i18nKey="stakeToken" values={{ token: 'PRV' }} />,
-    value: 'convertAndStake',
+    value: 'stake',
     image: <Image src={PRVIcon} alt={'PRV'} width={24} height={24} />,
   },
 ];
 
 const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
   const [tab, setTab] = useState(tokenOptions[0]);
-  const { isConvertAndStake } = useAppSelector((state) => state.modal);
-  const dispatch = useAppDispatch();
   const { account, chainId } = useWeb3React();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { name: originToken } = stakingTokenConfig;
@@ -119,7 +121,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     <p className="text-base text-primary font-medium">
                       {t('amountToStake')}
                     </p>
-                    <div className="flex w-48 justify-end">
+                    <div className="flex w-72 justify-end">
                       <Listbox value={tab} onChange={setTab}>
                         {({ open }) => (
                           <div className="relative mt-1 w-full">
@@ -245,41 +247,47 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             }
                           />
                         </div>
-                        <div className="flex flex-col w-full justify-between gap-y-3">
-                          <div className="flex w-full justify-between py-2">
-                            <label
-                              className="pr-2 text-primary font-bold text-base"
-                              htmlFor="convertAndStake"
-                            >
-                              {t('convertAndStake')}
-                            </label>
-                            <div className="flex gap-x-4 place-items-center">
-                              <p className="text-base text-primary font-medium">
-                                {isConvertAndStake ? t('yes') : t('no')}
-                              </p>
-                              <Switch.Root
-                                className={classNames(
-                                  'group',
-                                  'flex bg-sub-dark relative items-center h-[15px] w-[36px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out',
-                                  'focus:outline-none focus-visible:ring focus-visible:ring-sub-dark focus-visible:ring-opacity-75',
-                                )}
-                                id="convertAndStake"
-                                onCheckedChange={(to) =>
-                                  dispatch(setIsConvertAndStake(to))
-                                }
-                                checked={isConvertAndStake}
-                              >
-                                <Switch.Thumb
-                                  className={classNames(
-                                    'group-radix-state-checked:translate-x-4 group-radix-state-checked:bg-secondary',
-                                    'group-radix-state-unchecked:-translate-x-1 group-radix-state-unchecked:bg-sub-light',
-                                    'pointer-events-none flex h-[23px] w-[23px] transform rounded-full shadow-lg ring-0 transition duration-200 ease-in-out',
-                                  )}
-                                />
-                              </Switch.Root>
-                            </div>
-                          </div>
+                      </>
+                    )}
+                    {tab.value === 'stake' && (
+                      <>
+                        <StakeInput
+                          resetOnSteps={[STEPS.CONVERT_COMPLETED]}
+                          label={stakingToken}
+                          setValue={setStakingDepositValue}
+                          max={stakingBalance}
+                        />
+                        {account && (
+                          <Alert
+                            open={compareBalances(
+                              stakingBalance,
+                              'lt',
+                              stakingDepositValue,
+                            )}
+                          >
+                            You can only deposit {stakingBalance.label}{' '}
+                            {stakingToken}
+                          </Alert>
+                        )}
+                        <div className="flex place-items-center justify-between w-full">
+                          <p className="text-base text-primary font-medium">
+                            {t('staking')}:
+                          </p>
+                          <p className="text-secondary font-bold text-lg">
+                            {formatBalance(
+                              stakingDepositValue.label,
+                              defaultLocale,
+                              4,
+                              'standard',
+                            )}{' '}
+                            PRV
+                          </p>
                         </div>
+                        <StakeButton
+                          deposit={stakingDepositValue}
+                          tokenConfig={tokenConfig}
+                          isConvertAndStake={false}
+                        />
                       </>
                     )}
                     {tab.value === 'convertAndStake' && (
@@ -319,6 +327,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         <StakeButton
                           deposit={stakingDepositValue}
                           tokenConfig={tokenConfig}
+                          isConvertAndStake={true}
                         />
                       </>
                     )}
