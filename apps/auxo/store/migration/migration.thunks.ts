@@ -118,40 +118,44 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     } = upgradoor;
 
     let tx: ContractTransaction;
-    if (token === 'ARV') {
-      if (isSingleLock) {
-        tx = await upgradeSingleLockARV(destinationWallet);
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      } else if (boost) {
-        tx = await aggregateAndBoost();
-        pendingNotification({
-          title: `aggregateAndBoostVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
+    try {
+      if (token === 'ARV') {
+        if (isSingleLock) {
+          tx = await upgradeSingleLockARV(destinationWallet);
+          pendingNotification({
+            title: `aggregateVeDOUGHPending`,
+            id: 'aggregateVeDOUGH',
+          });
+        } else if (boost) {
+          tx = await aggregateAndBoost();
+          pendingNotification({
+            title: `aggregateAndBoostVeDOUGHPending`,
+            id: 'aggregateVeDOUGH',
+          });
+        } else {
+          tx = await aggregateToARV();
+          pendingNotification({
+            title: `aggregateVeDOUGHPending`,
+            id: 'aggregateVeDOUGH',
+          });
+        }
       } else {
-        tx = await aggregateToARV();
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
+        if (isSingleLock) {
+          tx = await upgradeSingleLockPRV(destinationWallet);
+          pendingNotification({
+            title: `aggregateVeDOUGHPending`,
+            id: 'aggregateVeDOUGH',
+          });
+        } else {
+          tx = await aggregateToPRV();
+          pendingNotification({
+            title: `aggregateVeDOUGHPending`,
+            id: 'aggregateVeDOUGH',
+          });
+        }
       }
-    } else {
-      if (isSingleLock) {
-        tx = await upgradeSingleLockPRV(destinationWallet);
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      } else {
-        tx = await aggregateToPRV();
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      }
+    } catch (e) {
+      return rejectWithValue(e.message);
     }
 
     dispatch(
