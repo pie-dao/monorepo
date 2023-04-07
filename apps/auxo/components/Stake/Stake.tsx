@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
-import StakeInput from './StakeInput';
+import StakeInput from '../Input/InputSlider';
 import {
   addNumberToBnReference,
   compareBalances,
@@ -153,7 +153,7 @@ const Stake: React.FC<Props> = ({
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
               <Tab.Panel className="h-full">
-                <ModalBox className="flex flex-col h-full">
+                <ModalBox className="flex flex-col h-full gap-y-2">
                   <div className="flex items-center justify-between w-full mb-2">
                     <p className="font-medium text-base text-primary">
                       {t('amountToStake')}
@@ -172,7 +172,6 @@ const Stake: React.FC<Props> = ({
                   </div>
                   <StakeInput
                     label={name}
-                    value={depositValue}
                     setValue={setDepositValue}
                     max={balance}
                   />

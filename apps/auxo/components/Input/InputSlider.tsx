@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { useState } from 'react';
+import Image from 'next/image';
 import { formatBalance, smallToBalance } from '../../utils/formatBalance';
 import { useDecimals } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
@@ -11,21 +11,18 @@ import wallet from '../../public/images/icons/wallet.svg';
 import { escapeRegExp, inputRegex } from '../../utils/sanitizeInput';
 
 function InputSlider({
-  value,
   setValue,
   max,
   label,
   disabled = false,
 }: {
   setValue: SetStateType<BigNumberReference>;
-  value: BigNumberReference;
   max: BigNumberReference;
   label: string;
   disabled?: boolean;
 }): JSX.Element {
   const decimals = useDecimals(label);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-
   const [displayValue, setDisplayValue] = useState<string>('');
 
   const enforcer = (nextUserInput: string) => {
@@ -55,6 +52,7 @@ function InputSlider({
       setValue(maximizedBNValue);
       return;
     }
+
     const maximizedBNValue = smallToBalance(value, decimals);
     setValue(maximizedBNValue);
     setDisplayValue(value);
@@ -64,7 +62,7 @@ function InputSlider({
     <div
       className={classNames(
         disabled && 'pointer-events-none cursor-not-allowed',
-        'flex flex-col items-center w-full mb-2',
+        'flex flex-col items-center w-full',
       )}
     >
       <div className="w-full">
