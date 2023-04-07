@@ -25,9 +25,7 @@ function InputSlider({
 }): JSX.Element {
   const decimals = useDecimals(label);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const [displayValue, setDisplayValue] = useState<string | undefined>(
-    undefined,
-  );
+  const [displayValue, setDisplayValue] = useState<string>('');
 
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
@@ -39,7 +37,7 @@ function InputSlider({
     if (!decimals) return;
     if (!value) {
       setValue(zeroBalance);
-      setDisplayValue(undefined);
+      setDisplayValue('');
       return;
     }
 
