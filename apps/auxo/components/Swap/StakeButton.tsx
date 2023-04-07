@@ -20,7 +20,7 @@ const StakeActions: React.FC<{
   deposit: BigNumberReference;
   tokenConfig: TokenConfig;
   action?: 'stake' | 'unstake';
-  isConvertAndStake: boolean;
+  isConvertAndStake?: boolean;
 }> = ({ deposit, tokenConfig, action = 'stake', isConvertAndStake }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();

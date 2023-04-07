@@ -16,7 +16,7 @@ import {
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Listbox, Tab } from '@headlessui/react';
 import classNames from '../../utils/classnames';
@@ -24,9 +24,7 @@ import { ChevronDownIcon, ExclamationIcon } from '@heroicons/react/outline';
 import Trans from 'next-translate/Trans';
 import { Alert } from '../Alerts/Alerts';
 import ModalBox from '../Modals/ModalBox';
-import * as Switch from '@radix-ui/react-switch';
 import { STEPS } from '../../store/modal/modal.types';
-import { setIsConvertAndStake } from '../../store/modal/modal.slice';
 import Banner from '../Banner/Banner';
 
 type Props = {
