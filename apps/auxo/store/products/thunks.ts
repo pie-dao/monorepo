@@ -983,6 +983,7 @@ export const thunkStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
@@ -1062,6 +1063,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account: signer._address }));
@@ -1115,6 +1117,7 @@ export const thunkBoostToMaxVeAUXO = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
@@ -1249,7 +1252,6 @@ export const thunkConvertXAUXO = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
     // const tx = await xAUXOContract.depositFor(account, deposit.value);
-
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -1393,6 +1395,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetXAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account }));
+      dispatch(thunkGetUserProductsData({ account }));
     }
 
     return receipt.status === 1

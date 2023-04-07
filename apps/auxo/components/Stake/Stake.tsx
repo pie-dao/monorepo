@@ -36,6 +36,7 @@ import { Alert } from '../Alerts/Alerts';
 import { getMonthsSinceStake } from '../../utils/dates';
 import IncreaseLock from '../IncreaseLock/IncreaseLock';
 import WithdrawLock from '../WithdrawLock/WithdrawLock';
+import { STEPS } from '../../store/modal/modal.types';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -171,6 +172,7 @@ const Stake: React.FC<Props> = ({
                     </div>
                   </div>
                   <StakeInput
+                    resetOnSteps={[STEPS.STAKE_COMPLETED]}
                     label={name}
                     setValue={setDepositValue}
                     max={balance}

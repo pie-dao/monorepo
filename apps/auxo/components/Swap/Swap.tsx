@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
 import PRVIcon from '../../public/tokens/32x32/PRV.svg';
@@ -16,7 +16,7 @@ import {
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Listbox, Tab } from '@headlessui/react';
 import classNames from '../../utils/classnames';
@@ -25,6 +25,8 @@ import Trans from 'next-translate/Trans';
 import { Alert } from '../Alerts/Alerts';
 import ModalBox from '../Modals/ModalBox';
 import * as Switch from '@radix-ui/react-switch';
+import { STEPS } from '../../store/modal/modal.types';
+import { setIsConvertAndStake } from '../../store/modal/modal.slice';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -46,7 +48,8 @@ const tokenOptions = [
 
 const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
   const [tab, setTab] = useState(tokenOptions[0]);
-  const [isConvertAndStake, setIsConvertAndStake] = useState(false);
+  const { isConvertAndStake } = useAppSelector((state) => state.modal);
+  const dispatch = useAppDispatch();
   const { account, chainId } = useWeb3React();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { name: originToken } = stakingTokenConfig;
@@ -174,6 +177,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     {tab.value === 'convert' && (
                       <>
                         <StakeInput
+                          resetOnSteps={[STEPS.CONVERT_COMPLETED]}
                           label={originToken}
                           setValue={setOriginDepositValue}
                           max={balance}
@@ -235,7 +239,9 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                                   'focus:outline-none focus-visible:ring focus-visible:ring-sub-dark focus-visible:ring-opacity-75',
                                 )}
                                 id="convertAndStake"
-                                onCheckedChange={setIsConvertAndStake}
+                                onCheckedChange={(to) =>
+                                  dispatch(setIsConvertAndStake(to))
+                                }
                                 checked={isConvertAndStake}
                               >
                                 <Switch.Thumb
@@ -254,6 +260,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     {tab.value === 'convertAndStake' && (
                       <>
                         <StakeInput
+                          resetOnSteps={[STEPS.CONVERT_COMPLETED]}
                           label={stakingToken}
                           setValue={setStakingDepositValue}
                           max={stakingBalance}
@@ -302,6 +309,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                   </div>
                   <div className="flex flex-col gap-y-2">
                     <StakeInput
+                      resetOnSteps={[STEPS.UNSTAKE_COMPLETED]}
                       label={stakingToken}
                       setValue={setUnstakingDepositValue}
                       max={stakedXAUXO}

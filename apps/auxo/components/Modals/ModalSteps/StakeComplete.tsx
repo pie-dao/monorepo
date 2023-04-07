@@ -5,7 +5,7 @@ import Image from 'next/image';
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
 import classNames from '../../../utils/classnames';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import AUXOImage from '../../../public/tokens/AUXO.svg';
 import ARVImage from '../../../public/tokens/24x24/ARV.svg';
 import xAUXOImage from '../../../public/tokens/24x24/PRV.svg';
