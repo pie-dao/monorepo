@@ -34,5 +34,6 @@
   "approveTokenError": "There was an error while approving this token",
   "claimRewardsPending": "Claiming rewards",
   "claimRewardsSuccess": "Claimed rewards successfully",
-  "claimRewardsError": "There was an error while claiming rewards"
+  "claimRewardsError": "There was an error while claiming rewards",
+  "defaultError": "There was an error"
 }
