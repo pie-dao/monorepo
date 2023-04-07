@@ -315,7 +315,10 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
           stakingData.decimals,
         ),
         totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
-        fee: toBalance(stakingData.fee, stakingData.decimals),
+        fee: toBalance(
+          stakingData.fee.mul(BigNumber.from(100)),
+          stakingData.decimals,
+        ),
       },
     };
   },
