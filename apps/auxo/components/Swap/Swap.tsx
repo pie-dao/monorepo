@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
 import PRVIcon from '../../public/tokens/32x32/PRV.svg';
-import StakeInput from './StakeInput';
+import StakeInput from '../Input/InputSlider';
 import { compareBalances, zeroBalance } from '../../utils/balances';
 import DepositActions from './ApproveDepositButton';
 import StakeButton from './StakeButton';
@@ -175,7 +175,6 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                       <>
                         <StakeInput
                           label={originToken}
-                          value={originDepositValue}
                           setValue={setOriginDepositValue}
                           max={balance}
                         />
@@ -256,7 +255,6 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                       <>
                         <StakeInput
                           label={stakingToken}
-                          value={stakingDepositValue}
                           setValue={setStakingDepositValue}
                           max={stakingBalance}
                         />
@@ -305,7 +303,6 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                   <div className="flex flex-col gap-y-2">
                     <StakeInput
                       label={stakingToken}
-                      value={unstakingDepositValue}
                       setValue={setUnstakingDepositValue}
                       max={stakedXAUXO}
                     />
