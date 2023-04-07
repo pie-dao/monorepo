@@ -14,6 +14,7 @@
   "authorizeDepositorPending": "Your Opt In request is pending",
   "authorizeDepositorSuccess": "Your Opt In request was successful",
   "authorizeDepositorError": "Your Opt In request failed",
+  "updateSingleLockARVPending": "Migrating your veDOUGH",
   "aggregateAndBoostVeDOUGHPending": "Aggregating and boosting veDOUGH pending",
   "aggregateAndBoostVeDOUGHSuccess": "Aggregated and boosted veDOUGH successfully",
   "aggregateAndBoostVeDOUGHError": "There was an error while aggregating and boosting veDOUGH",
