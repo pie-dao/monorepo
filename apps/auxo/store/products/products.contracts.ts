@@ -82,6 +82,13 @@ export const stakingContract = MAINNETMulticall.wrap(
   ),
 );
 
+export const auxoContract = MAINNETMulticall.wrap(
+  Erc20Abi__factory.connect(
+    products['AUXO'].addresses[selectedNetwork].address,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
+);
+
 export const veAUXOContract = MAINNETMulticall.wrap(
   VeAUXOAbi__factory.connect(
     products['ARV'].addresses[selectedNetwork].address,

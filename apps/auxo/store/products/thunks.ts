@@ -31,11 +31,11 @@ import {
   underlyingContractsFTMWrappers,
   underlyingContractsPolygonWrappers,
   stakingContract,
-  xAUXOStakingManager,
   xAUXOContract,
   veAUXOContract,
   rollStakerContract,
   merkleDistributorContract,
+  auxoContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
@@ -263,7 +263,7 @@ export const thunkGetVeAUXOStakingData = createAsyncThunk(
     try {
       // const depositedFilter = stakingContract.filters.Deposited();
       const results = promiseObject({
-        stakingAmount: contractWrappers[0].balanceOf(stakingContract.address),
+        stakingAmount: auxoContract.balanceOf(stakingContract.address),
         stakingToken: stakingContract.depositToken(),
         decimals: veAUXOContract.decimals(),
         totalSupply: veAUXOContract.totalSupply(),
@@ -318,7 +318,8 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const results = promiseObject({
-        stakingAmount: veAUXOContract.balanceOf(xAUXOStakingManager.address),
+        // PRV is minted 1:1 for Auxo
+        stakingAmount: xAUXOContract.totalSupply(),
         decimals: xAUXOContract.decimals(),
         totalSupply: xAUXOContract.totalSupply(),
         fee: xAUXOContract.fee(),
