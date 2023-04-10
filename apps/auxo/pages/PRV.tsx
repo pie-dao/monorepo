@@ -144,9 +144,9 @@ export default function XAUXO({
                     )}
                   </p>
                   <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                    {t('totalStaked', { token: 'AUXO' })}
+                    {t('totalStaked', { token: 'PRV' })}
                     <Tooltip>
-                      {t('totalStakedTooltip', { token: 'AUXO' })}
+                      {t('totalStakedTooltip', { token: 'PRV' })}
                     </Tooltip>
                   </div>
                 </>

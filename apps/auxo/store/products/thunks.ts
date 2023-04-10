@@ -318,8 +318,8 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const results = promiseObject({
-        // PRV is minted 1:1 for Auxo
-        stakingAmount: xAUXOContract.totalSupply(),
+        // includes pending stakes
+        stakingAmount: rollStakerContract.getProjectedNextEpochBalance(),
         decimals: xAUXOContract.decimals(),
         totalSupply: xAUXOContract.totalSupply(),
         fee: xAUXOContract.fee(),
