@@ -17,14 +17,14 @@ import {
   PRVAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
-import { config, SUPPORTED_CHAINS } from '../../utils/networks';
+import { config, MAINNET_RPC, SUPPORTED_CHAINS } from '../../utils/networks';
 import products from '../../config/products.json';
 import migration from '../../config/migration.json';
 import { vaults } from '../../config/auxoVaults';
 import { FTM } from '../../config/auxoVaults/FTM';
 import { Polygon } from '../../config/auxoVaults/POLYGON';
 
-const localRPC = 'https://bestnet.alexintosh.com/rpc/team-testing';
+const localRPC = MAINNET_RPC;
 
 const selectedNetwork = 1;
 
