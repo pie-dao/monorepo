@@ -20,7 +20,7 @@ const StakeSlider: React.FC<Props> = ({
   const minLock = useUserLockDuration('ARV');
 
   return (
-    <div className="flex flex-col items-center justify-between w-full">
+    <div className="flex flex-col items-center justify-between w-full gap-y-2">
       <div className="flex items-center justify-between w-full gap-x-2">
         <div className="flex gap-x-1 items-center">
           <div className="flex flex-shrink-0">
@@ -30,7 +30,13 @@ const StakeSlider: React.FC<Props> = ({
         </div>
         <div>
           <p className="underline text-sub-dark text-xs">
-            <Link href="#">{t('whyLocked')}</Link>
+            <a
+              href="https://docs.auxo.fi/auxo-docs/rewards-vaults/arv-active-rewards-vault"
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              {t('whyLocked')}
+            </a>
           </p>
         </div>
       </div>

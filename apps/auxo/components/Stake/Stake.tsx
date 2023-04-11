@@ -147,9 +147,9 @@ const Stake: React.FC<Props> = ({
                 </Tab>
               )}
             </Tab.List>
-            <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
+            {/* <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
               {t('getAUXO')}
-            </button>
+            </button> */}
           </div>
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">

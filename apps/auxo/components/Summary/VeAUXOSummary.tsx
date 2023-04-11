@@ -23,6 +23,8 @@ import { useAppSelector } from '../../hooks';
 import trimAccount from '../../utils/trimAccount';
 import { ParentSize } from '@visx/responsive';
 import LevelChart from '../LevelChart/LevelChart';
+import { ExclamationIcon } from '@heroicons/react/solid';
+import Banner from '../Banner/Banner';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -159,6 +161,24 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           />
         )}
       </ParentSize>
+      <a
+        href={process.env.NEXT_PUBLIC_TALLY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group group-hover:text-underline"
+      >
+        <Banner
+          bgColor="bg-warning"
+          content={t('rememberToDelegate')}
+          icon={
+            <ExclamationIcon
+              className="h-5 w-5 text-primary"
+              aria-hidden="true"
+            />
+          }
+          className="group-hover:text-underline"
+        />
+      </a>
       {summaryData.map(({ icon, title, value }, index) => (
         <div
           className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"

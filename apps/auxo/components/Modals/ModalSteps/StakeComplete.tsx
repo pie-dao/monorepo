@@ -20,7 +20,9 @@ export default function StakeComplete({
   action?: 'stake' | 'unstake' | 'convert';
 }) {
   const { t } = useTranslation();
-  const { tx, swap } = useAppSelector((state) => state.modal);
+  const { tx, swap, isConvertAndStake } = useAppSelector(
+    (state) => state.modal,
+  );
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const chainExplorer = useChainExplorer();
 
@@ -42,7 +44,7 @@ export default function StakeComplete({
           <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
             <div className="absolute inset-0 bg-white opacity-30 z-0" />
             <p className="bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold text-xl z-10">
-              {t('converted')}
+              {isConvertAndStake ? t('convertedAndStaked') : t('converted')}
             </p>
             <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
               <Image

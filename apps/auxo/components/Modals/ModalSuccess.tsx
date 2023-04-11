@@ -85,7 +85,7 @@ const footerVariants: Variants = {
 
 export default function ModalSuccess() {
   const { t } = useTranslation();
-  const { swap, tx, showCompleteModal } = useAppSelector(
+  const { swap, tx, showCompleteModal, isIncreasedValue } = useAppSelector(
     (state) => state.modal,
   );
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -174,7 +174,9 @@ export default function ModalSuccess() {
                   variants={childrenVariants}
                   className="text-2xl sm:text-4xl font-bold bg-clip-text bg-gradient-major-colors text-transparent"
                 >
-                  {t('journeyStarted')}
+                  {isIncreasedValue
+                    ? t('journeyContinues')
+                    : t('journeyStarted')}
                 </motion.li>
                 <motion.li
                   variants={childrenVariants}

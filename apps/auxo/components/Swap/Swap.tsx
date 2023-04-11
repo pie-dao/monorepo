@@ -63,7 +63,6 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
     useState(zeroBalance);
   const balance = useTokenBalance(originToken);
   const stakingBalance = useTokenBalance(stakingToken);
-  const xAUXOEstimation = usePRVEstimation(originDepositValue);
   const stakedXAUXO = useUserStakedPRV();
   const chainExplorer = useChainExplorer();
 
@@ -119,7 +118,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     <p className="text-base text-primary font-medium">
                       {t('amountToStake')}
                     </p>
-                    <div className="flex w-72 justify-end">
+                    <div className="flex w-68 justify-end">
                       <Listbox value={tab} onChange={setTab}>
                         {({ open }) => (
                           <div className="relative mt-1 w-full">
@@ -201,7 +200,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           </p>
                           <p className="text-secondary font-bold text-lg">
                             {formatBalance(
-                              xAUXOEstimation.label,
+                              originDepositValue.label,
                               defaultLocale,
                               4,
                               'standard',
@@ -211,9 +210,10 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                         </div>
                         <DepositActions
                           deposit={originDepositValue}
-                          estimation={xAUXOEstimation}
+                          estimation={originDepositValue}
                           tokenConfig={stakingTokenConfig}
                           toToken="PRV"
+                          isConvertAndStake={false}
                         >
                           {t('convert')}
                         </DepositActions>
@@ -285,6 +285,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           deposit={stakingDepositValue}
                           tokenConfig={tokenConfig}
                           isConvertAndStake={false}
+                          action="convert"
                         />
                       </>
                     )}
@@ -292,20 +293,20 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                       <>
                         <StakeInput
                           resetOnSteps={[STEPS.CONVERT_COMPLETED]}
-                          label={stakingToken}
-                          setValue={setStakingDepositValue}
-                          max={stakingBalance}
+                          label={originToken}
+                          setValue={setOriginDepositValue}
+                          max={balance}
                         />
+
                         {account && (
                           <Alert
                             open={compareBalances(
-                              stakingBalance,
+                              balance,
                               'lt',
-                              stakingDepositValue,
+                              originDepositValue,
                             )}
                           >
-                            You can only deposit {stakingBalance.label}{' '}
-                            {stakingToken}
+                            You can only deposit {balance.label} {originToken}
                           </Alert>
                         )}
                         <div className="flex place-items-center justify-between w-full">
@@ -314,7 +315,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                           </p>
                           <p className="text-secondary font-bold text-lg">
                             {formatBalance(
-                              stakingDepositValue.label,
+                              originDepositValue.label,
                               defaultLocale,
                               4,
                               'standard',
@@ -322,11 +323,43 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                             PRV
                           </p>
                         </div>
-                        <StakeButton
-                          deposit={stakingDepositValue}
-                          tokenConfig={tokenConfig}
+                        <DepositActions
+                          deposit={originDepositValue}
+                          estimation={originDepositValue}
+                          tokenConfig={stakingTokenConfig}
+                          toToken="PRV"
                           isConvertAndStake={true}
-                        />
+                        >
+                          {t('convertAndStake')}
+                        </DepositActions>
+                        <div className="w-full flex justify-center items-center">
+                          <Banner
+                            bgColor="bg-warning"
+                            content={
+                              <Trans
+                                i18nKey="withdrawalMechanism"
+                                components={{
+                                  a: (
+                                    <a
+                                      href={
+                                        'https://auxodaos-organization.gitbook.io/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
+                                      }
+                                      className="text-primary underline"
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    />
+                                  ),
+                                }}
+                              />
+                            }
+                            icon={
+                              <ExclamationIcon
+                                className="h-5 w-5 text-primary"
+                                aria-hidden="true"
+                              />
+                            }
+                          />
+                        </div>
                       </>
                     )}
                   </div>
