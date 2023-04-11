@@ -64,6 +64,7 @@ export const SUPPORTED_CHAINS = {
   POLYGON: 137,
   GOERLI: 5,
   MAINNET: 1,
+  AVAX_FUJI: 43113,
 } as const;
 
 export type SUPPORTED_CHAIN_NAMES = keyof typeof SUPPORTED_CHAINS;

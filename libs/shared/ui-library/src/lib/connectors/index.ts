@@ -11,6 +11,7 @@ export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.POLYGON]:
     'https://polygon-mainnet.infura.io/v3/2ce335a6c916456097e41f062748a6d8',
   [SUPPORTED_CHAINS.GOERLI]: 'https://rpc.ankr.com/eth_goerli',
+  [SUPPORTED_CHAINS.AVAX_FUJI]: 'https://api.avax-test.network/ext/bc/C/rpc',
 };
 
 export const network = (chainId = 1) => {
@@ -28,6 +29,7 @@ export const injected = new InjectedConnector({
     SUPPORTED_CHAINS.FANTOM,
     SUPPORTED_CHAINS.POLYGON,
     SUPPORTED_CHAINS.GOERLI,
+    SUPPORTED_CHAINS.AVAX_FUJI,
   ],
 });
 

@@ -63,6 +63,17 @@ export const chainMap: ChainMap = {
     rpcUrls: ['https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e'],
     blockExplorerUrls: ['https://goerli.etherscan.io'],
   },
+  [SUPPORTED_CHAINS.AVAX_FUJI]: {
+    chainId: `0x${Number(SUPPORTED_CHAINS.AVAX_FUJI).toString(16)}`,
+    chainName: 'Fuji',
+    nativeCurrency: {
+      name: 'Fuji C-Chain Ether',
+      symbol: 'F-ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://testnet.snowtrace.io/'],
+  },
 };
 
 export const supportedChains = Object.values(chainMap).map(
