@@ -1,18 +1,16 @@
 import { NavBar } from '../components/NavBar/NavBar';
-import { AuxoDAO, Lend, Support, Footer, Header } from '../components/Home';
+import { AuxoDAO, Lend, Footer } from '../components/Home';
 
 import ParallaxSection from '../components/Parallax/ParallaxSection';
 
 export default function Home() {
   return (
     <>
-      <Header />
+      <NavBar />
       <ParallaxSection />
       <div>
-        <NavBar />
         <AuxoDAO />
         <Lend />
-        <Support />
       </div>
       <Footer />
     </>
