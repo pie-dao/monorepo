@@ -4,6 +4,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   useIsUserMaxLockDuration,
+  useUserHasLock,
   useUserLockAmount,
 } from '../../hooks/useToken';
 import { useStakingTokenContract } from '../../hooks/useContracts';
@@ -19,6 +20,7 @@ const ARVNotificationBar = () => {
 
   const userLockAmount = useUserLockAmount('ARV');
   const tokenLocker = useStakingTokenContract('ARV');
+  const hasLocks = useUserHasLock('ARV');
   const dispatch = useAppDispatch();
 
   const boostToMax = () => {
@@ -42,7 +44,7 @@ const ARVNotificationBar = () => {
     dispatch(setIsOpen(true));
   };
 
-  if (!isMaxxed && account)
+  if (!isMaxxed && account && hasLocks)
     return (
       <div className="flex gap-x-2 flex-wrap gap-y-4">
         <div className="flex md:flex-1 p-[1px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full">

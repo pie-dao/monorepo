@@ -72,7 +72,7 @@ export default function XAUXO({
     <>
       <div className="flex flex-col">
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
-          <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:p-0">
+          <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:p-0 sm:px-3 sm:py-2">
             <div className="flex gap-x-2 order-1 items-center">
               <div className="flex flex-shrink-0">
                 <Image
@@ -144,9 +144,9 @@ export default function XAUXO({
                     )}
                   </p>
                   <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                    {t('totalStaked', { token: 'AUXO' })}
+                    {t('totalStaked', { token: 'PRV' })}
                     <Tooltip>
-                      {t('totalStakedTooltip', { token: 'AUXO' })}
+                      {t('totalStakedTooltip', { token: 'PRV' })}
                     </Tooltip>
                   </div>
                 </>

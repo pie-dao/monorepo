@@ -251,6 +251,7 @@ export const useUserLevel = (input: number) => {
   const remainingMonths = useUserRemainingStakingTimeInMonths();
   const hasLock = useUserHasLock('ARV');
   const userLevel = useMemo(() => {
+    if (!input) return;
     if (!hasLock) return input - 6;
     if (remainingMonths <= 6) return 0;
     return remainingMonths - 6;
@@ -270,11 +271,9 @@ export const useUserIncreasedLevel = (input: number) => {
 export const useUserLevelPercetageReward = (input: number) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const percentageReward = useMemo(() => {
-    const percentage = formatAsPercent(
-      LEVELS_REWARDS.find((d) => d[0] === input)[1] * 100,
-      defaultLocale,
-      2,
-    );
+    const findLevel = LEVELS_REWARDS?.find((d) => d[0] === input);
+    if (!findLevel) return '0%';
+    const percentage = formatAsPercent(findLevel[1] * 100, defaultLocale, 2);
     return percentage;
   }, [defaultLocale, input]);
   return percentageReward;

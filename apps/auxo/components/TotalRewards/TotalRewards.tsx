@@ -12,7 +12,6 @@ import {
 } from '../../store/rewards/rewards.slice';
 import Trans from 'next-translate/Trans';
 import { STEPS, TokenName } from '../../store/rewards/rewards.types';
-import { useTokenBalance, useUserStakedPRV } from '../../hooks/useToken';
 
 const TotalRewards: React.FC = () => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -22,9 +21,6 @@ const TotalRewards: React.FC = () => {
 
   const hasPRVRewards = totalPRVRewards?.value !== '0';
   const hasARVRewards = totalARVRewards?.value !== '0';
-
-  const hasArvPositions = useTokenBalance('ARV')?.label > 0;
-  const hasPrvPositions = useUserStakedPRV()?.label > 0;
 
   const { t } = useTranslation();
   return (
@@ -78,8 +74,6 @@ const TotalRewards: React.FC = () => {
           </div>
           {hasPRVRewards ? (
             <ActionsBar token="PRV" />
-          ) : hasPrvPositions ? (
-            <p>All good! You have no rewards to claim.</p>
           ) : (
             <NoRewards token="PRV" />
           )}

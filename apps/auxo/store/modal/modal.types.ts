@@ -64,4 +64,5 @@ export type SliceState = {
     losingAmount?: BigNumberReference;
   };
   showCompleteModal?: boolean;
+  isConvertAndStake?: boolean;
 };

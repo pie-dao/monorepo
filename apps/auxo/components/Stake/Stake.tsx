@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
-import StakeInput from './StakeInput';
+import StakeInput from '../Input/InputSlider';
 import {
   addNumberToBnReference,
   compareBalances,
@@ -36,6 +36,7 @@ import { Alert } from '../Alerts/Alerts';
 import { getMonthsSinceStake } from '../../utils/dates';
 import IncreaseLock from '../IncreaseLock/IncreaseLock';
 import WithdrawLock from '../WithdrawLock/WithdrawLock';
+import { STEPS } from '../../store/modal/modal.types';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -67,10 +68,19 @@ const Stake: React.FC<Props> = ({
   const stakedAUXO = useUserLockAmount('ARV');
   const isMaxxed = useIsUserMaxLockDuration('ARV');
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const timeSinceStake = useMemo(() => {
     if (!userLockStart) return 0;
     return getMonthsSinceStake(userLockStart);
   }, [userLockStart]);
+
+  useEffect(() => {
+    if (!hasLock) {
+      setSelectedIndex(0);
+    }
+  }, [hasLock]);
+
   const ARVEstimationCalc = useCallback(() => {
     return ARVConversionCalculator(
       depositValue,
@@ -95,33 +105,47 @@ const Stake: React.FC<Props> = ({
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/arv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full overflow-hidden">
-        <Tab.Group>
+        <Tab.Group defaultIndex={selectedIndex} onChange={setSelectedIndex}>
           <div className="flex justify-between items-center gap-x-4">
             <Tab.List className="flex gap-x-4 rounded-xl p-1">
-              {['stake', 'manageLock'].map((tab) => {
-                if (!hasLock && tab === 'manageLock') return null;
-                return (
-                  <Tab
-                    className={({ selected }) =>
-                      classNames(
-                        'text-base font-semibold focus:outline-none relative',
-                        selected ? ' text-secondary' : ' text-sub-light',
-                        'disabled:opacity-20',
-                      )
-                    }
-                    key={tab}
-                  >
-                    {({ selected }) => (
-                      <>
-                        {t(tab)}
-                        {selected && (
-                          <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
-                        )}
-                      </>
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    'text-base font-semibold focus:outline-none relative',
+                    selected ? ' text-secondary' : ' text-sub-light',
+                    'disabled:opacity-20',
+                  )
+                }
+              >
+                {({ selected }) => (
+                  <>
+                    {t('stake')}
+                    {selected && (
+                      <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
                     )}
-                  </Tab>
-                );
-              })}
+                  </>
+                )}
+              </Tab>
+              {hasLock && (
+                <Tab
+                  className={({ selected }) =>
+                    classNames(
+                      'text-base font-semibold focus:outline-none relative',
+                      selected ? ' text-secondary' : ' text-sub-light',
+                      'disabled:opacity-20',
+                    )
+                  }
+                >
+                  {({ selected }) => (
+                    <>
+                      {t('manageLock')}
+                      {selected && (
+                        <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+                      )}
+                    </>
+                  )}
+                </Tab>
+              )}
             </Tab.List>
             <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
               {t('getAUXO')}
@@ -130,7 +154,7 @@ const Stake: React.FC<Props> = ({
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
               <Tab.Panel className="h-full">
-                <ModalBox className="flex flex-col h-full">
+                <ModalBox className="flex flex-col h-full gap-y-2">
                   <div className="flex items-center justify-between w-full mb-2">
                     <p className="font-medium text-base text-primary">
                       {t('amountToStake')}
@@ -148,8 +172,8 @@ const Stake: React.FC<Props> = ({
                     </div>
                   </div>
                   <StakeInput
+                    resetOnSteps={[STEPS.STAKE_COMPLETED]}
                     label={name}
-                    value={depositValue}
                     setValue={setDepositValue}
                     max={balance}
                   />

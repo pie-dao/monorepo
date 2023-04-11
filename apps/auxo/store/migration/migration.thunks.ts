@@ -6,7 +6,11 @@ import {
 } from '../../store/products/products.contracts';
 import { toBalance } from '../../utils/formatBalance';
 import { UpgradoorAbi } from '@shared/util-blockchain';
-import { pendingNotification } from '../../components/Notifications/Notifications';
+import {
+  errorNotificationUpdate,
+  pendingNotification,
+  successNotificationUpdate,
+} from '../../components/Notifications/Notifications';
 import { ContractTransaction } from 'ethers';
 import { setCurrentStep, setTx, setTxState } from './migration.slice';
 import { STEPS_LIST, TX_STATES } from './migration.types';
@@ -68,6 +72,78 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
   },
 );
 
+interface MigrateOptions {
+  id: string;
+  method: (...args: any) => Promise<ContractTransaction>;
+  onPending: string;
+  onSuccess: string;
+  onError: string;
+  useDestinationWallet: boolean;
+}
+
+/**
+ * Works through the different passed migration parameters to determine which
+ * migration method to call and returns the options for the migration.
+ */
+function migrationOption({
+  boost,
+  token,
+  isSingleLock,
+  upgradoor,
+  destinationWallet,
+}: ThunkMigrateVeDOUGHProps): MigrateOptions {
+  if (token === 'ARV') {
+    if (isSingleLock) {
+      return {
+        id: 'updateSingleLockARV',
+        method: upgradoor.upgradeSingleLockARV,
+        onPending: `Updating Lock to ARV`,
+        onSuccess: `Lock updated to ARV`,
+        onError: `Error updating Lock to ARV`,
+        useDestinationWallet: true,
+      };
+    } else if (boost) {
+      return {
+        id: 'aggregateAndBoost',
+        method: upgradoor.aggregateAndBoost,
+        onPending: `Aggregating all locks to ARV and boosting`,
+        onSuccess: `All locks aggregated to ARV and boosted`,
+        onError: `Error aggregating all locks to ARV and boosting`,
+        useDestinationWallet: false,
+      };
+    } else {
+      return {
+        id: 'aggregateToARV',
+        method: upgradoor.aggregateToARV,
+        onPending: `Aggregating all locks to ARV`,
+        onSuccess: `All locks aggregated to ARV`,
+        onError: `Error aggregating all locks to ARV`,
+        useDestinationWallet: false,
+      };
+    }
+  } else {
+    if (isSingleLock) {
+      return {
+        id: 'updateSingleLockPRV',
+        method: upgradoor.upgradeSingleLockPRV,
+        onPending: `Updating Lock to PRV`,
+        onSuccess: `Lock updated to PRV`,
+        onError: `Error updating Lock to PRV`,
+        useDestinationWallet: true,
+      };
+    } else {
+      return {
+        id: 'aggregateToPRV',
+        method: upgradoor.aggregateToPRV,
+        onPending: `Aggregating all locks to PRV`,
+        onSuccess: `All locks aggregated to PRV`,
+        onError: `Error aggregating all locks to PRV`,
+        useDestinationWallet: false,
+      };
+    }
+  }
+}
+
 export type ThunkMigrateVeDOUGHProps = {
   upgradoor: UpgradoorAbi;
   boost: boolean;
@@ -88,7 +164,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       isSingleLock,
       sender,
     }: ThunkMigrateVeDOUGHProps,
-    { rejectWithValue, dispatch },
+    { rejectWithValue, dispatch, fulfillWithValue },
   ) => {
     if (
       !upgradoor ||
@@ -101,7 +177,6 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
         'Missing Contract, Boost, Destination Wallet, Token to migrate to or single lock definition',
       );
     }
-
     dispatch(
       setTx({
         hash: null,
@@ -109,49 +184,31 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       }),
     );
 
-    const {
-      aggregateAndBoost,
-      aggregateToARV,
-      upgradeSingleLockARV,
-      aggregateToPRV,
-      upgradeSingleLockPRV,
-    } = upgradoor;
-
     let tx: ContractTransaction;
-    if (token === 'ARV') {
-      if (isSingleLock) {
-        tx = await upgradeSingleLockARV(destinationWallet);
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      } else if (boost) {
-        tx = await aggregateAndBoost();
-        pendingNotification({
-          title: `aggregateAndBoostVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      } else {
-        tx = await aggregateToARV();
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      }
-    } else {
-      if (isSingleLock) {
-        tx = await upgradeSingleLockPRV(destinationWallet);
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      } else {
-        tx = await aggregateToPRV();
-        pendingNotification({
-          title: `aggregateVeDOUGHPending`,
-          id: 'aggregateVeDOUGH',
-        });
-      }
+    let m: MigrateOptions;
+
+    try {
+      m = migrationOption({
+        boost,
+        token,
+        isSingleLock,
+        upgradoor,
+        destinationWallet,
+        sender,
+      });
+
+      tx = m.useDestinationWallet
+        ? await m.method(destinationWallet)
+        : await m.method();
+
+      pendingNotification({
+        title: m.onPending,
+        id: m.id,
+      });
+    } catch (e) {
+      console.error(e);
+      errorNotificationUpdate(m.id, m.onError);
+      return rejectWithValue(e.message);
     }
 
     dispatch(
@@ -167,11 +224,14 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       setTxState(TX_STATES.COMPLETE);
       dispatch(setCurrentStep(STEPS_LIST.MIGRATE_SUCCESS));
       dispatch(ThunkGetVeDOUGHStakingData({ account: sender }));
+      successNotificationUpdate(m.id);
+      return fulfillWithValue(m.id);
     }
 
     if (receipt.status !== 1) {
       setTxState(TX_STATES.FAILED);
-      return rejectWithValue('Migration Failed');
+      errorNotificationUpdate(m.id, m.onError);
+      return rejectWithValue({ id: m.id, message: m.onError });
     }
   },
 );

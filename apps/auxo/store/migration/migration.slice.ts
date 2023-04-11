@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import addTxNotifications from '../../utils/notifications';
 import {
   ThunkGetVeDOUGHStakingData,
-  ThunkMigrateVeDOUGH,
   ThunkPreviewMigration,
 } from './migration.thunks';
 import { SliceState, STEPS_LIST } from './migration.types';
@@ -60,8 +58,6 @@ export const migrationSlice = createSlice({
       state.loadingPreview = false;
       state.estimatedOutput = action.payload;
     });
-
-    addTxNotifications(builder, ThunkMigrateVeDOUGH, 'aggregateVeDOUGH');
   },
 
   reducers: {

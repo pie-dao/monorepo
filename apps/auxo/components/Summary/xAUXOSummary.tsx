@@ -83,11 +83,6 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-5">
       <div className="flex flex-col w-full gap-y-4">
         <h3 className="text-xl font-semibold text-primary">{t('summary')}</h3>
-        <div>
-          <p className="text-primary font-medium text-base">
-            {t('irreversibleAction')}
-          </p>
-        </div>
       </div>
 
       {summaryData.map(({ icon, title, value }, index) => (

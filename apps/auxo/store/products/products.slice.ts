@@ -44,6 +44,7 @@ const initialState: SliceState = {
     balance: { tokens: 0, vaults: 0, total: 0 },
   },
   activeVault: '',
+  increasedStakingValue: 0,
 };
 
 const appSlice = createSlice({
@@ -255,9 +256,13 @@ const appSlice = createSlice({
     setActiveVault: (state, action: PayloadAction<string>) => {
       state.activeVault = action.payload;
     },
+    setIncreasedStakingValue: (state, action: PayloadAction<number>) => {
+      state.increasedStakingValue = action.payload;
+    },
   },
 });
 
-export const { setState, setActiveVault } = appSlice.actions;
+export const { setState, setActiveVault, setIncreasedStakingValue } =
+  appSlice.actions;
 
 export default appSlice.reducer;

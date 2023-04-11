@@ -16,6 +16,7 @@ import {
   AUXOAbi,
   RollStakerAbi,
   StakingManagerAbi,
+  PRVRouterAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -30,11 +31,11 @@ import {
   underlyingContractsFTMWrappers,
   underlyingContractsPolygonWrappers,
   stakingContract,
-  xAUXOStakingManager,
   xAUXOContract,
   veAUXOContract,
   rollStakerContract,
   merkleDistributorContract,
+  auxoContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
@@ -86,286 +87,317 @@ const deadline = Math.floor(Date.now() / 1000 + ONE_HOUR_DEADLINE).toString();
 
 export const thunkGetProductsData = createAsyncThunk(
   THUNKS.GET_PRODUCTS_DATA,
-  async () => {
-    const productDataResults = await Promise.allSettled(
-      contractWrappers.map((contractWrapper) => {
-        const results = promiseObject({
-          productDecimals: contractWrapper.decimals(),
-          symbol: contractWrapper.symbol(),
-          addresses: contractWrapper._multichainConfig,
-        });
-        return results;
-      }),
-    );
-    const results = productDataResults.map((result): Tokens => {
-      if (result.status === 'fulfilled') {
-        return {
-          [result.value.symbol]: {
-            productDecimals: result.value.productDecimals,
-            chainInfo: Object.assign(
-              {},
-              ...Object.entries(result.value.addresses).map(
-                ([chainId, config]) => ({
-                  [chainId]: {
-                    address: config.address,
-                  },
-                }),
+  async (_, { rejectWithValue }) => {
+    try {
+      const productDataResults = await Promise.allSettled(
+        contractWrappers.map((contractWrapper) => {
+          const results = promiseObject({
+            productDecimals: contractWrapper.decimals(),
+            symbol: contractWrapper.symbol(),
+            addresses: contractWrapper._multichainConfig,
+          });
+          return results;
+        }),
+      );
+      const results = productDataResults.map((result): Tokens => {
+        if (result.status === 'fulfilled') {
+          return {
+            [result.value.symbol]: {
+              productDecimals: result.value.productDecimals,
+              chainInfo: Object.assign(
+                {},
+                ...Object.entries(result.value.addresses).map(
+                  ([chainId, config]) => ({
+                    [chainId]: {
+                      address: config.address,
+                    },
+                  }),
+                ),
               ),
-            ),
-          },
-        };
-      }
-    });
-    return Object.assign({}, ...results);
+            },
+          };
+        }
+      });
+      return Object.assign({}, ...results);
+    } catch (e) {
+      console.error('thunkGetProductsData', e);
+      return rejectWithValue('Error fetching products data');
+    }
   },
 );
 
 export const thunkGetUserProductsData = createAsyncThunk(
   THUNKS.GET_USER_PRODUCTS_DATA,
-  async ({ account, spender }: { account: string; spender?: string }) => {
+  async (
+    { account, spender }: { account: string; spender?: string },
+    { rejectWithValue },
+  ) => {
     if (!account) return;
-    const productDataResults = await Promise.allSettled(
-      contractWrappers.map((contractWrapper) => {
-        const results = promiseObject({
-          balances: contractWrapper.multichain.balanceOf(account),
-          productDecimals: contractWrapper.decimals(),
-          symbol: contractWrapper.symbol(),
-          addresses: contractWrapper._multichainConfig,
-          allowances: spender
-            ? contractWrapper.multichain.allowance(account, spender)
-            : null,
-        });
-        return results;
-      }),
-    );
+    try {
+      const productDataResults = await Promise.allSettled(
+        contractWrappers.map((contractWrapper) => {
+          const results = promiseObject({
+            balances: contractWrapper.multichain.balanceOf(account),
+            productDecimals: contractWrapper.decimals(),
+            symbol: contractWrapper.symbol(),
+            addresses: contractWrapper._multichainConfig,
+            allowances: spender
+              ? contractWrapper.multichain.allowance(account, spender)
+              : null,
+          });
+          return results;
+        }),
+      );
 
-    const enrichWithTotalBalance = productDataResults.map((result): Tokens => {
-      if (result.status === 'fulfilled' && result.value.balances.data) {
-        const filterFulfilled = Object.values(
-          result.value.balances.data,
-        ).filter(
-          (value) => value.status === 'fulfilled',
-        ) as PromiseFulfilledResult<BigNumber>[];
-        const totalBalanceBN = filterFulfilled
-          .map((balance) => balance.value)
-          .reduce(sum, ethers.constants.Zero);
-        const totalBalance = toBalance(
-          totalBalanceBN,
-          result.value.productDecimals,
-        );
+      const enrichWithTotalBalance = productDataResults.map(
+        (result): Tokens => {
+          if (result.status === 'fulfilled' && result.value.balances.data) {
+            const filterFulfilled = Object.values(
+              result.value.balances.data,
+            ).filter(
+              (value) => value.status === 'fulfilled',
+            ) as PromiseFulfilledResult<BigNumber>[];
+            const totalBalanceBN = filterFulfilled
+              .map((balance) => balance.value)
+              .reduce(sum, ethers.constants.Zero);
+            const totalBalance = toBalance(
+              totalBalanceBN,
+              result.value.productDecimals,
+            );
 
-        const balances = Object.entries(result.value.balances.data).filter(
-          ([, value]) => value.status === 'fulfilled',
-        ) as [string, PromiseFulfilledResult<BigNumber>][];
+            const balances = Object.entries(result.value.balances.data).filter(
+              ([, value]) => value.status === 'fulfilled',
+            ) as [string, PromiseFulfilledResult<BigNumber>][];
 
-        const balancesFormatted = balances.map(([key, amount]) => ({
-          [key]: toBalance(amount.value, result.value.productDecimals),
-        }));
+            const balancesFormatted = balances.map(([key, amount]) => ({
+              [key]: toBalance(amount.value, result.value.productDecimals),
+            }));
 
-        let allowancesFormatted: { [x: string]: BigNumberReference }[];
+            let allowancesFormatted: { [x: string]: BigNumberReference }[];
 
-        if (result?.value?.allowances?.data && spender) {
-          const allowances = Object.entries(
-            result.value.allowances.data,
-          ).filter(([, value]) => value.status === 'fulfilled') as [
-            string,
-            PromiseFulfilledResult<BigNumber>,
-          ][];
-          allowancesFormatted = allowances.map(([key, amount]) => ({
-            [key]: toBalance(amount.value, result.value.productDecimals),
-          }));
-        }
+            if (result?.value?.allowances?.data && spender) {
+              const allowances = Object.entries(
+                result.value.allowances.data,
+              ).filter(([, value]) => value.status === 'fulfilled') as [
+                string,
+                PromiseFulfilledResult<BigNumber>,
+              ][];
+              allowancesFormatted = allowances.map(([key, amount]) => ({
+                [key]: toBalance(amount.value, result.value.productDecimals),
+              }));
+            }
 
-        return {
-          [result.value.symbol]: {
-            chainInfo: Object.assign(
-              {},
-              ...Object.entries(result.value.addresses).map(
-                ([chainId, config]) => ({
-                  [chainId]: {
-                    address: config.address,
-                    balance: balancesFormatted.find(
-                      (balance) => balance[chainId],
-                    )?.[chainId],
-                    allowance:
-                      spender && allowancesFormatted
-                        ? {
-                            [spender]: allowancesFormatted.find(
-                              (allowance) => allowance[chainId],
-                            )?.[chainId],
-                          }
-                        : null,
-                  },
-                }),
-              ),
-            ),
-            productDecimals: result.value.productDecimals,
-            totalBalance,
-          },
-        };
-      }
-    });
+            return {
+              [result.value.symbol]: {
+                chainInfo: Object.assign(
+                  {},
+                  ...Object.entries(result.value.addresses).map(
+                    ([chainId, config]) => ({
+                      [chainId]: {
+                        address: config.address,
+                        balance: balancesFormatted.find(
+                          (balance) => balance[chainId],
+                        )?.[chainId],
+                        allowance:
+                          spender && allowancesFormatted
+                            ? {
+                                [spender]: allowancesFormatted.find(
+                                  (allowance) => allowance[chainId],
+                                )?.[chainId],
+                              }
+                            : null,
+                      },
+                    }),
+                  ),
+                ),
+                productDecimals: result.value.productDecimals,
+                totalBalance,
+              },
+            };
+          }
+        },
+      );
 
-    const totalBalances = enrichWithTotalBalance
-      .map((result) => {
-        return Number(Object.values(result)[0].totalBalance.label);
-      })
-      .reduce(sumBalance, 0);
+      const totalBalances = enrichWithTotalBalance
+        .map((result) => {
+          return Number(Object.values(result)[0].totalBalance.label);
+        })
+        .reduce(sumBalance, 0);
 
-    const tokens = Object.assign({}, ...enrichWithTotalBalance);
+      const tokens = Object.assign({}, ...enrichWithTotalBalance);
 
-    const networksUsed = enrichWithTotalBalance.map((result) => {
-      return Object.values(result)[0].chainInfo;
-    });
+      const networksUsed = enrichWithTotalBalance.map((result) => {
+        return Object.values(result)[0].chainInfo;
+      });
 
-    const uniqueNetworksPerChain = Object.assign(
-      {},
-      ...Object.values(networksUsed),
-    );
+      const uniqueNetworksPerChain = Object.assign(
+        {},
+        ...Object.values(networksUsed),
+      );
 
-    const uniqueNetworks = filter(
-      uniqueNetworksPerChain,
-      ({ label }) => label !== 0,
-    ).length;
+      const uniqueNetworks = filter(
+        uniqueNetworksPerChain,
+        ({ label }) => label !== 0,
+      ).length;
 
-    const totalAssets = enrichWithTotalBalance.filter((result) => {
-      return Object.values(result)[0].totalBalance.label !== 0;
-    }).length;
+      const totalAssets = enrichWithTotalBalance.filter((result) => {
+        return Object.values(result)[0].totalBalance.label !== 0;
+      }).length;
 
-    return {
-      tokens,
-      uniqueNetworks,
-      totalAssets,
-      totalBalances,
-    };
+      return {
+        tokens,
+        uniqueNetworks,
+        totalAssets,
+        totalBalances,
+      };
+    } catch (e) {
+      console.error('thunkGetUserProductsData', e);
+      return rejectWithValue('Error fetching user products data');
+    }
   },
 );
 
 export const thunkGetVeAUXOStakingData = createAsyncThunk(
   THUNKS.GET_VE_AUXO_STAKING_DATA,
-  async () => {
-    // const depositedFilter = stakingContract.filters.Deposited();
+  async (_, { rejectWithValue }) => {
+    try {
+      // const depositedFilter = stakingContract.filters.Deposited();
+      const results = promiseObject({
+        stakingAmount: auxoContract.balanceOf(stakingContract.address),
+        stakingToken: stakingContract.depositToken(),
+        decimals: veAUXOContract.decimals(),
+        totalSupply: veAUXOContract.totalSupply(),
+        earlyTerminationFee: stakingContract.earlyExitFee(),
+        // tokensDeposited: stakingContract.queryFilter(depositedFilter),
+      });
+      const stakingData = await results;
+      // const uniqueAddresses = new Set<string>();
+      // stakingData.tokensDeposited.map(({ args }) => {
+      //   uniqueAddresses.add(args.owner);
+      // });
 
-    const results = promiseObject({
-      stakingAmount: contractWrappers[0].balanceOf(stakingContract.address),
-      stakingToken: stakingContract.depositToken(),
-      decimals: veAUXOContract.decimals(),
-      totalSupply: veAUXOContract.totalSupply(),
-      earlyTerminationFee: stakingContract.earlyExitFee(),
-      // tokensDeposited: stakingContract.queryFilter(depositedFilter),
-    });
+      // const checkForCurrentVotingPower = async () => {
+      //   let totalVotingAdresses = 0;
+      //   const currentVotingPower = [...uniqueAddresses].map(async (address) => {
+      //     await veAUXOContract.getVotes(address).then((votePower) => {
+      //       if (!votePower.isZero()) {
+      //         totalVotingAdresses++;
+      //       }
+      //     });
+      //     return totalVotingAdresses;
+      //   });
+      //   await Promise.all(currentVotingPower);
+      //   return totalVotingAdresses;
+      // };
 
-    const stakingData = await results;
-
-    // const uniqueAddresses = new Set<string>();
-    // stakingData.tokensDeposited.map(({ args }) => {
-    //   uniqueAddresses.add(args.owner);
-    // });
-
-    // const checkForCurrentVotingPower = async () => {
-    //   let totalVotingAdresses = 0;
-    //   const currentVotingPower = [...uniqueAddresses].map(async (address) => {
-    //     await veAUXOContract.getVotes(address).then((votePower) => {
-    //       if (!votePower.isZero()) {
-    //         totalVotingAdresses++;
-    //       }
-    //     });
-    //     return totalVotingAdresses;
-    //   });
-    //   await Promise.all(currentVotingPower);
-    //   return totalVotingAdresses;
-    // };
-
-    // const currentVotingPower = await checkForCurrentVotingPower();
-
-    return {
-      ['ARV']: {
-        stakingAmount: toBalance(
-          stakingData.stakingAmount,
-          stakingData.decimals,
-        ),
-        stakingToken: stakingData.stakingToken,
-        totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
-        earlyTerminationFee: toBalance(
-          stakingData.earlyTerminationFee,
-          stakingData.decimals,
-        ),
-        // votingAddresses: currentVotingPower,
-      },
-    };
+      // const currentVotingPower = await checkForCurrentVotingPower();
+      return {
+        ['ARV']: {
+          stakingAmount: toBalance(
+            stakingData.stakingAmount,
+            stakingData.decimals,
+          ),
+          stakingToken: stakingData.stakingToken,
+          totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
+          earlyTerminationFee: toBalance(
+            stakingData.earlyTerminationFee,
+            stakingData.decimals,
+          ),
+          // votingAddresses: currentVotingPower,
+        },
+      };
+    } catch (e) {
+      console.error('thunkGetVeAUXOStakingData', e);
+      return rejectWithValue('Error fetching ARV staking data');
+    }
   },
 );
 
 export const thunkGetXAUXOStakingData = createAsyncThunk(
   THUNKS.GET_X_AUXO_STAKING_DATA,
-  async () => {
-    const results = promiseObject({
-      stakingAmount: veAUXOContract.balanceOf(xAUXOStakingManager.address),
-      decimals: xAUXOContract.decimals(),
-      totalSupply: xAUXOContract.totalSupply(),
-      fee: xAUXOContract.fee(),
-    });
+  async (_, { rejectWithValue }) => {
+    try {
+      const results = promiseObject({
+        // includes pending stakes
+        stakingAmount: rollStakerContract.getProjectedNextEpochBalance(),
+        decimals: xAUXOContract.decimals(),
+        totalSupply: xAUXOContract.totalSupply(),
+        fee: xAUXOContract.fee(),
+      });
 
-    const stakingData = await results;
-    return {
-      ['PRV']: {
-        stakingAmount: toBalance(
-          stakingData.stakingAmount,
-          stakingData.decimals,
-        ),
-        totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
-        fee: toBalance(stakingData.fee, stakingData.decimals),
-      },
-    };
+      const stakingData = await results;
+      return {
+        ['PRV']: {
+          stakingAmount: toBalance(
+            stakingData.stakingAmount,
+            stakingData.decimals,
+          ),
+          totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
+          fee: toBalance(
+            stakingData.fee.mul(BigNumber.from(100)),
+            stakingData.decimals,
+          ),
+        },
+      };
+    } catch (e) {
+      console.error('thunkGetXAUXOStakingData', e);
+      return rejectWithValue('Error fetching PRV staking data');
+    }
   },
 );
 
 export const thunkGetUserStakingData = createAsyncThunk(
   THUNKS.GET_USER_STAKING_DATA,
-  async ({ account }: { account: string }) => {
+  async ({ account }: { account: string }, { rejectWithValue }) => {
     if (!account) return;
 
-    const veAUXOresults = promiseObject({
-      lock: stakingContract.lockOf(account),
-      decimals: veAUXOContract.decimals(),
-      totalSupply: veAUXOContract.totalSupply(),
-      // votes: veAUXOContract.getVotes(account),
-      // delegation: veAUXOContract.delegates(account),
-    });
+    try {
+      const veAUXOresults = promiseObject({
+        lock: stakingContract.lockOf(account),
+        decimals: veAUXOContract.decimals(),
+        totalSupply: veAUXOContract.totalSupply(),
+        // votes: veAUXOContract.getVotes(account),
+        // delegation: veAUXOContract.delegates(account),
+      });
 
-    const xAUXOResults = promiseObject({
-      balance: rollStakerContract.getTotalBalanceForUser(account),
-      currentEpochBalance: rollStakerContract.getActiveBalanceForUser(account),
-      decimals: xAUXOContract.decimals(),
-    });
+      const xAUXOResults = promiseObject({
+        balance: rollStakerContract.getTotalBalanceForUser(account),
+        currentEpochBalance:
+          rollStakerContract.getActiveBalanceForUser(account),
+        decimals: xAUXOContract.decimals(),
+      });
 
-    const veAUXOData = await veAUXOresults;
-    const xAUXOData = await xAUXOResults;
+      const veAUXOData = await veAUXOresults;
+      const xAUXOData = await xAUXOResults;
 
-    return {
-      ['ARV']: {
-        userStakingData: {
-          amount: toBalance(veAUXOData.lock.amount, veAUXOData.decimals),
-          lockedAt: veAUXOData.lock.lockedAt,
-          lockDuration: veAUXOData.lock.lockDuration,
-          // votingPower: percentageBetween(
-          //   veAUXOData.votes,
-          //   veAUXOData.totalSupply,
-          //   veAUXOData.decimals,
-          // ),
-          // delegator: veAUXOData.delegation,
+      return {
+        ['ARV']: {
+          userStakingData: {
+            amount: toBalance(veAUXOData.lock.amount, veAUXOData.decimals),
+            lockedAt: veAUXOData.lock.lockedAt,
+            lockDuration: veAUXOData.lock.lockDuration,
+            // votingPower: percentageBetween(
+            //   veAUXOData.votes,
+            //   veAUXOData.totalSupply,
+            //   veAUXOData.decimals,
+            // ),
+            // delegator: veAUXOData.delegation,
+          },
         },
-      },
-      ['PRV']: {
-        userStakingData: {
-          amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
-          currentEpochBalance: toBalance(
-            xAUXOData.currentEpochBalance,
-            xAUXOData.decimals,
-          ),
+        ['PRV']: {
+          userStakingData: {
+            amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
+            currentEpochBalance: toBalance(
+              xAUXOData.currentEpochBalance,
+              xAUXOData.decimals,
+            ),
+          },
         },
-      },
-    };
+      };
+    } catch (e) {
+      console.error('thunkGetUserStakingData', e);
+      return rejectWithValue('Error fetching user staking data');
+    }
   },
 );
 
@@ -1222,10 +1254,12 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 export type ThunkConvertXAUXOProps = {
   deposit: BigNumberReference;
   auxoContract: AUXOAbi | undefined;
-  xAUXOContract: PRVAbi | undefined;
+  xAUXOContract?: PRVAbi | undefined;
   account: string;
   signer: JsonRpcSigner;
   stakingManager: StakingManagerAbi;
+  isConvertAndStake: boolean;
+  PRVRouterContract?: PRVRouterAbi;
 };
 
 export const thunkConvertXAUXO = createAsyncThunk(
@@ -1237,14 +1271,15 @@ export const thunkConvertXAUXO = createAsyncThunk(
       deposit,
       auxoContract,
       xAUXOContract,
+      isConvertAndStake,
+      PRVRouterContract,
     }: ThunkConvertXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !auxoContract || !xAUXOContract || !account)
+    if (!deposit || !auxoContract || !account)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
 
     // const tx = await xAUXOContract.depositFor(account, deposit.value);
-
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -1254,7 +1289,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
       ({ r, v, s } = await getPermitSignature(
         signer,
         auxoContract,
-        xAUXOContract.address,
+        isConvertAndStake ? PRVRouterContract.address : xAUXOContract.address,
         deposit.value,
         deadline,
       ));
@@ -1263,18 +1298,34 @@ export const thunkConvertXAUXO = createAsyncThunk(
       return rejectWithValue('Permit Signature Failed');
     }
 
-    try {
-      tx = await xAUXOContract.depositForWithSignature(
-        account,
-        deposit.value,
-        deadline,
-        v,
-        r,
-        s,
-      );
-    } catch (e) {
-      console.error(e);
-      return rejectWithValue('Deposit Failed');
+    if (isConvertAndStake) {
+      try {
+        tx = await PRVRouterContract.convertAndStakeWithSignature(
+          deposit.value,
+          account,
+          deadline,
+          v,
+          r,
+          s,
+        );
+      } catch (e) {
+        console.error(e);
+        return rejectWithValue('Convert and Stake Failed');
+      }
+    } else {
+      try {
+        tx = await xAUXOContract.depositForWithSignature(
+          account,
+          deposit.value,
+          deadline,
+          v,
+          r,
+          s,
+        );
+      } catch (e) {
+        console.error(e);
+        return rejectWithValue('Convert Failed');
+      }
     }
 
     // set block explorer transaction hash
@@ -1371,7 +1422,9 @@ export const thunkStakeXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserProductsData({ account }));
       dispatch(thunkGetUserStakingData({ account }));
+      dispatch(thunkGetUserProductsData({ account }));
     }
 
     return receipt.status === 1
@@ -1422,6 +1475,7 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.UNSTAKE_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserProductsData({ account }));
       dispatch(thunkGetUserStakingData({ account }));
     }
 

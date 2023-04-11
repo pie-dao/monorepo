@@ -1,6 +1,7 @@
 import { Dialog } from '@headlessui/react';
 import CopyToClipboard from '../../../../components/CopyText/CopyText';
 import useTranslation from 'next-translate/useTranslation';
+import { MAINNET_RPC } from '../../../../utils/networks';
 
 export default function SwitchChainModal() {
   const { t } = useTranslation('migration');
@@ -34,8 +35,7 @@ export default function SwitchChainModal() {
               Click <span className="font-bold">“Add Network”</span>.
             </li>
             <li className="leading-9">
-              Add as RPC URL{' '}
-              <CopyToClipboard text="https://bestnet.alexintosh.com/rpc/team-testing" />
+              Add as RPC URL <CopyToClipboard text={MAINNET_RPC} />
               <br /> with a chainID of{' '}
               <code className="p-1 bg-gray-200 rounded">1</code> and currency of{' '}
               <code className="p-1 bg-gray-200 rounded">ETH</code>.

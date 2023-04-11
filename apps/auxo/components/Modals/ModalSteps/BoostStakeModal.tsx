@@ -96,13 +96,11 @@ export default function BoostStakeModal() {
                   </span>
                 </div>
               </div>
-              {userLevel && (
-                <ParentSize className="w-full h-40 relative -top-6">
-                  {({ width }) => (
-                    <LevelChart width={width} height={160} level={30} />
-                  )}
-                </ParentSize>
-              )}
+              <ParentSize className="w-full h-40 relative -top-6">
+                {({ width }) => (
+                  <LevelChart width={width} height={160} level={30} />
+                )}
+              </ParentSize>
             </div>
           )}
           {swap?.stakingTime && (

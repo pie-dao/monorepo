@@ -8,10 +8,10 @@ import {
   useTokenBalance,
   useUserEndDate,
   useUserHasLock,
+  useUserIncreasedLevel,
   useUserLevel,
   useUserLevelPercetageReward,
   useUserLockAmount,
-  useUserLockDuration,
   useUserVotingPower,
 } from '../../hooks/useToken';
 import veAUXOIcon from '../../public/tokens/AUXO.svg';
@@ -32,6 +32,7 @@ type Props = {
 
 const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
+  const { increasedStakingValue } = useAppSelector((state) => state.dashboard);
   const { account } = useWeb3React();
   const { name } = tokenConfig;
   const { t } = useTranslation();
@@ -42,14 +43,16 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   const delegator = useDelegatorAddress(name);
   const endDate = useUserEndDate();
   const userLevel = useUserLevel(commitmentValue);
+  const increasedLevel = useUserIncreasedLevel(increasedStakingValue);
   const userLevelPercetageReward = useUserLevelPercetageReward(userLevel);
 
   const numEmojis = useMemo(() => {
-    if (userLevel >= 28) {
-      return Math.min(userLevel - 27, 3);
+    const level = hasLock ? increasedLevel : userLevel;
+    if (level >= 28) {
+      return Math.min(level - 27, 3);
     }
     return 0;
-  }, [userLevel]);
+  }, [hasLock, increasedLevel, userLevel]);
 
   const fireEmojis = useMemo(
     () =>
@@ -121,27 +124,18 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           </>
         ),
       },
-      {
-        icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
-        title: t('governancePower'),
-        value: votingPowerValue,
-      },
+      // {
+      //   icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
+      //   title: t('governancePower'),
+      //   value: votingPowerValue,
+      // },
       {
         icon: <Image src={unlock} alt="triangle" width={24} height={24} />,
         title: t('unlock'),
         value: hasLock ? endDate : '--/--/----',
       },
     ];
-  }, [
-    account,
-    defaultLocale,
-    stakedAuxo,
-    t,
-    veAUXOBalance,
-    votingPowerValue,
-    hasLock,
-    endDate,
-  ]);
+  }, [account, defaultLocale, stakedAuxo, t, veAUXOBalance, hasLock, endDate]);
 
   return (
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2">
@@ -151,15 +145,18 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         </h3>
         <h4 className="text-base font-bold text-white uppercase bg-gradient-major-secondary-predominant rounded-xl py-1 px-4">
           {t('levelAndReward', {
-            level: userLevel,
-            reward: userLevelPercetageReward,
+            level: hasLock ? increasedLevel : userLevel,
           })}
           {fireEmojis?.length > 0 && <span className="ml-2">{fireEmojis}</span>}
         </h4>
       </div>
       <ParentSize className="w-full h-40 relative -top-8">
         {({ width }) => (
-          <LevelChart width={width} height={180} level={userLevel} />
+          <LevelChart
+            width={width}
+            height={180}
+            level={hasLock ? increasedLevel : userLevel}
+          />
         )}
       </ParentSize>
       {summaryData.map(({ icon, title, value }, index) => (

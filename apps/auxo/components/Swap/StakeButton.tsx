@@ -8,14 +8,20 @@ import useTranslation from 'next-translate/useTranslation';
 import { TokenConfig } from '../../types/tokensConfig';
 import { ConnectButton } from '@shared/ui-library';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
-import { setIsOpen, setStep, setSwap } from '../../store/modal/modal.slice';
+import {
+  setIsConvertAndStake,
+  setIsOpen,
+  setStep,
+  setSwap,
+} from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
 
 const StakeActions: React.FC<{
   deposit: BigNumberReference;
   tokenConfig: TokenConfig;
   action?: 'stake' | 'unstake';
-}> = ({ deposit, tokenConfig, action = 'stake' }) => {
+  isConvertAndStake?: boolean;
+}> = ({ deposit, tokenConfig, action = 'stake', isConvertAndStake }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
@@ -33,6 +39,7 @@ const StakeActions: React.FC<{
   }, [action, deposit, stakedXAUXO, tokens]);
 
   const openModal = () => {
+    dispatch(setIsConvertAndStake(isConvertAndStake));
     dispatch(
       setStep(
         action === 'stake'

@@ -32,12 +32,19 @@ export const promiseObject = async <T>(obj: PromiseObject<T>): Promise<T> => {
   // we cannot use map due to above compiler issues
   keys.forEach((key) => promises.push(obj[key]));
 
-  const results = await Promise.all(promises);
-
-  // destructure the results of the await calls back into their respective k/v pairs
-  return results.reduce((map, current, index) => {
-    const key = keys[index];
-    map[key] = current as Awaited<{ [K in keyof T]: T[K] }[keyof T]>;
-    return map;
-  }, {} as T);
+  // the awaited result will throw an unhandled runtime error even if calling
+  // code is wrapped in a try/catch. Instead we will catch the error here and
+  // return an empty object.
+  try {
+    const results = await Promise.all(promises);
+    // destructure the results of the await calls back into their respective k/v pairs
+    return results.reduce((map, current, index) => {
+      const key = keys[index];
+      map[key] = current as Awaited<{ [K in keyof T]: T[K] }[keyof T]>;
+      return map;
+    }, {} as T);
+  } catch (e) {
+    console.error('Promise Object Call Failed', e);
+    return {} as T;
+  }
 };
