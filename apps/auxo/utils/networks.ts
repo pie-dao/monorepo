@@ -5,6 +5,7 @@ export const SUPPORTED_CHAINS = {
   GOERLI: 5,
   FANTOM: 250,
   POLYGON: 137,
+  AVAX_FUJI: 43113,
 } as const;
 
 type ValueOf<T> = T[keyof T];
@@ -22,12 +23,14 @@ export const RPC_URLS =
         5: 'https://rpc.ankr.com/eth_goerli',
         137: 'https://polygon-rpc.com',
         250: 'http://127.0.0.1:8546',
+        43113: 'https://api.avax-test.network/ext/bc/C/rpc',
       }
     : {
         1: MAINNET_RPC,
         5: 'https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e',
         137: 'https://polygon-rpc.com',
         250: 'https://1rpc.io/ftm',
+        43113: 'https://api.avax.network/ext/bc/C/rpc',
       };
 
 export const config = Object.entries(RPC_URLS).reduce((obj, [chain, url]) => {
@@ -95,7 +98,7 @@ export const chainMap: ChainMap = {
     blockExplorerUrls: ['https://polygonscan.com'],
   },
   [SUPPORTED_CHAINS.GOERLI]: {
-    blockTime: 1,
+    blockTime: 12,
     chainId: `0x${Number(SUPPORTED_CHAINS.GOERLI).toString(16)}`,
     chainName: 'Goerli',
     nativeCurrency: {
@@ -105,5 +108,17 @@ export const chainMap: ChainMap = {
     },
     rpcUrls: ['https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e'],
     blockExplorerUrls: ['https://goerli.etherscan.io'],
+  },
+  [SUPPORTED_CHAINS.AVAX_FUJI]: {
+    blockTime: 2,
+    chainId: `0x${Number(SUPPORTED_CHAINS.AVAX_FUJI).toString(16)}`,
+    chainName: 'Fuji',
+    nativeCurrency: {
+      name: 'Fuji C-Chain Ether',
+      symbol: 'F-ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+    blockExplorerUrls: ['https://testnet.snowtrace.io/'],
   },
 };

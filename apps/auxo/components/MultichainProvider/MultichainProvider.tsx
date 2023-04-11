@@ -29,6 +29,10 @@ const polygonProvider = new ethers.providers.JsonRpcProvider(
   RPC_URLS[SUPPORTED_CHAINS.POLYGON],
 );
 
+const fujiProvider = new ethers.providers.JsonRpcProvider(
+  RPC_URLS[SUPPORTED_CHAINS.AVAX_FUJI],
+);
+
 export const EthereumWeb3Context = React.createContext<Web3ContextData>({
   provider: ethereumProvider,
 });
@@ -45,19 +49,25 @@ export const GoerliWeb3Context = React.createContext<Web3ContextData>({
   provider: goerliProvider,
 });
 
+export const FujiWeb3Context = React.createContext<Web3ContextData>({
+  provider: fujiProvider,
+});
+
 // Use this meta context object to make all providers available in the application
 export const Web3ContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
 }) => (
-  <GoerliWeb3Context.Provider value={{ provider: goerliProvider }}>
-    <EthereumWeb3Context.Provider value={{ provider: ethereumProvider }}>
-      <FTMWeb3Context.Provider value={{ provider: ftmProvider }}>
-        <PolygonWeb3Context.Provider value={{ provider: polygonProvider }}>
-          {children}
-        </PolygonWeb3Context.Provider>
-      </FTMWeb3Context.Provider>
-    </EthereumWeb3Context.Provider>
-  </GoerliWeb3Context.Provider>
+  <FujiWeb3Context.Provider value={{ provider: fujiProvider }}>
+    <GoerliWeb3Context.Provider value={{ provider: goerliProvider }}>
+      <EthereumWeb3Context.Provider value={{ provider: ethereumProvider }}>
+        <FTMWeb3Context.Provider value={{ provider: ftmProvider }}>
+          <PolygonWeb3Context.Provider value={{ provider: polygonProvider }}>
+            {children}
+          </PolygonWeb3Context.Provider>
+        </FTMWeb3Context.Provider>
+      </EthereumWeb3Context.Provider>
+    </GoerliWeb3Context.Provider>
+  </FujiWeb3Context.Provider>
 );

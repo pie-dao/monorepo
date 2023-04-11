@@ -5,6 +5,7 @@ export const RPC_URLS: Record<number, string> = {
   [SUPPORTED_CHAINS.MAINNET]: 'https://eth.llamarpc.com',
   [SUPPORTED_CHAINS.FANTOM]: 'https://1rpc.io/ftm',
   [SUPPORTED_CHAINS.POLYGON]: 'https://polygon.llamarpc.com',
+  [SUPPORTED_CHAINS.AVAX_FUJI]: 'https://api.avax.network/ext/bc/C/rpc',
 };
 
 export default function getLibrary(provider): Web3Provider {

@@ -4,12 +4,13 @@
     "name": "AUXO",
     "description": "AUXO Token",
     "addresses": {
-      "1": { "address": "0xc5B524357934e45B26a01A37CC0525C5a3939D08" },
+      "1": { "address": "0xD855cE0C298537ad5b5b96060Cf90e663696bbf6" },
       "5": {
         "address": "0xAB3c5c69ABA8Db739665742763FDf5701c508B8a"
       },
       "250": { "address": null, "exclude": true },
-      "137": { "address": null, "exclude": true }
+      "137": { "address": null, "exclude": true },
+      "43113": { "address": "0x78553336233D46d0931897F919220F6aCc9e68C2" }
     },
     "coingeckoId": "auxo-token"
   },
@@ -19,17 +20,23 @@
     "description": "veAUXO Token",
     "addresses": {
       "1": {
-        "address": "0x3373B031fcEE1CdA3fdb3187f5661A02f02261d9",
-        "stakingAddress": "0x71F622F26F3c8A45C003056f89C55bEBD8d4eA58",
-        "merkleDistributorAddress": "0x24f8cea0F451ac4D1364244E319ccA6709faC7BB",
-        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
+        "address": "0xeE1eb820BeeCED56657bA74fa8D70748D7A6756C",
+        "stakingAddress": "0x696358bBb1a743052E0E87BeD78AAd9d18f0e1F4",
+        "merkleDistributorAddress": "0x9155497EAE31D432C0b13dBCc0615a37f55a2c87",
+        "merkleDistributorHelperAddress": "0xD5bFeBDce5c91413E41cc7B24C8402c59A344f7c"
       },
       "5": {
         "address": "0x25d46ef3229F16846Da3F6ff616946564164Cc06",
         "stakingAddress": "0xe0a7e931e2595E69D995462aD4D3DC676030168B"
       },
       "250": { "address": null, "exclude": true },
-      "137": { "address": null, "exclude": true }
+      "137": { "address": null, "exclude": true },
+      "43113": {
+        "address": "0x421aC624A9DbB504DD002756f44653016ff7bd7a",
+        "stakingAddress": "0x3c41e06d85f7fde123d311672ad14b8c70a5e815",
+        "merkleDistributorAddress": "0xb9d4f582422ac7e165ecd60bcb5b1ad484ace07f",
+        "merkleDistributorHelperAddress": "0x19ED5a2B40cF9EcC5ae3ECE1a56ab58b52d26131"
+      }
     },
     "coingeckoId": "veAuxo-token"
   },
@@ -39,13 +46,13 @@
     "description": "xAUXO Token",
     "addresses": {
       "1": {
-        "address": "0x958D554885484e75DCaC4132dbbBaBE8bD9Ea90F",
-        "stakingAddress": "0xD8d3c9804bb9c8647fdE591dB78ab7a9aeb4C09D",
-        "rollStakerAddress": "0x547171540E1642d55C3454FB5031b27D7C5eC59e",
-        "merkleDistributorAddress": "0xa87BCE5DEEad429bC4d5FE49f355382f083817a2",
-        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4",
-        "PRVMerkleVerifierAddress": "0x3bf93d1A744A53b4A2663EbdD63bedd4f49194e6",
-        "PRVRouterAddress": "0x06bFd90343d569d0A9420010861e9BA87Cc3fB6a"
+        "address": "0x2f8D338360D095a72680A943A22fE6a0d398a0B4",
+        "stakingAddress": "0x5A569Ad19272Afa97103fD4DbadF33B2FcbaA175",
+        "rollStakerAddress": "0x43cA9bAe8dF108684E5EAaA720C25e1b32B0A075",
+        "merkleDistributorAddress": "0xfaE849108F2A63Abe3BaB17E21Be077d07e7a9A2",
+        "merkleDistributorHelperAddress": "0xD5bFeBDce5c91413E41cc7B24C8402c59A344f7c",
+        "PRVMerkleVerifierAddress": "0xb04CB6c52E73CF3e2753776030CE85a36549c9C2",
+        "PRVRouterAddress": "0x9d136eEa063eDE5418A6BC7bEafF009bBb6CFa70"
       },
       "5": {
         "address": "0x8D9d6bd460712Ea491A06619A04743e0eF9d8278",
@@ -53,7 +60,16 @@
         "rollStakerAddress": "0x0CE5E343f88DEB5970F724e597A762dFe8c6f397"
       },
       "250": { "address": null, "exclude": true },
-      "137": { "address": null, "exclude": true }
+      "137": { "address": null, "exclude": true },
+      "43113": {
+        "address": "0x25A58b099E6ab9aDE8bC5c8AEE90cae34A321c85",
+        "stakingAddress": "0x5A569Ad19272Afa97103fD4DbadF33B2FcbaA175",
+        "rollStakerAddress": "0xde65a59adC0E68b3c87350589493A37161eDB2A6",
+        "merkleDistributorAddress": "0xa5a185c7e141e884b0abb660e542e18d9d3f055d",
+        "merkleDistributorHelperAddress": "0x19ED5a2B40cF9EcC5ae3ECE1a56ab58b52d26131",
+        "PRVMerkleVerifierAddress": "0x6e30BC8e934033D9074a64F2A3B88C300F1bF6cD",
+        "PRVRouterAddress": "0x22C613f312a65da8b9A3766d513ED04D295C7102"
+      }
     },
     "coingeckoId": "xAuxo-token"
   }

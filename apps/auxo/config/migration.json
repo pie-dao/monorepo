@@ -7,7 +7,7 @@
       "1": {
         "address": "0xE6136F2e90EeEA7280AE5a0a8e6F48Fb222AF945",
         "stakingAddress": "0x6Bd0D8c8aD8D3F1f97810d5Cc57E9296db73DC45",
-        "upgradoorAddress": "0x593cAF587B57E56ce756E8d34D1E0a6a1FB7929E"
+        "upgradoorAddress": "0x85495222Fd7069B987Ca38C2142732EbBFb7175D"
       },
       "5": {
         "address": null,
@@ -16,7 +16,12 @@
         "upgradoorAddress": null
       },
       "250": { "address": null, "exclude": true },
-      "137": { "address": null, "exclude": true }
+      "137": { "address": null, "exclude": true },
+      "43113": {
+        "address": "0x78553336233D46d0931897F919220F6aCc9e68C2",
+        "stakingAddress": "0x78553336233D46d0931897F919220F6aCc9e68C2",
+        "upgradoorAddress": "0x78553336233D46d0931897F919220F6aCc9e68C2"
+      }
     },
     "coingeckoId": "xAuxo-token"
   }
