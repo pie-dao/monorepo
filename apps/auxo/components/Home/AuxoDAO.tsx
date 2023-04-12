@@ -180,7 +180,10 @@ const AuxoDAO: React.FC = () => {
         </p>
         <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
           {yieldFeatures.map((feature, index) => (
-            <div key={index} className="flex gap-y-4 relative isolate">
+            <div
+              key={index}
+              className="flex gap-y-4 relative isolate -ml-8 lg:ml-0"
+            >
               <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background shadow-md relative z-10 left-6 -top-2">
                 {feature.icon}
               </div>
@@ -224,11 +227,6 @@ const AuxoDAO: React.FC = () => {
           <h5 className="text-base text-white font-semibold mt-2">
             {t('farmSeriouslyDescription')}
           </h5>
-          <Link passHref href="/farms">
-            <button className="w-fit mx-auto px-20 py-2 text-lg font-medium text-white bg-transparent rounded-full ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 mt-8">
-              {t('farmNow')}
-            </button>
-          </Link>
           <div className="flex items-center justify-center w-full lg:text-center mt-20">
             {/* <div className="md:mt-8 flex flex-col items-center text-base">
               <p className="flex font-bold text-5xl bg-background/20 rounded-full h-24 w-24 place-items-center">
@@ -255,7 +253,7 @@ const AuxoDAO: React.FC = () => {
         </Container>
         <Container
           size="xl"
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-80 sm:-translate-y-16 w-full"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 translate-y-10 md:-translate-y-16 w-full"
         >
           <div className="h-[460px] md:h-[780px] w-full rounded-lg overflow-hidden isolate">
             <RiveComponent

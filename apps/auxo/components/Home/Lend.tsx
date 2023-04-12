@@ -96,11 +96,12 @@ const Lend: React.FC = () => {
               ))}
             </div>
           </Container>
-          <Link passHref href="/farms">
-            <button className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 mt-8">
-              {t('comingSoon')}
-            </button>
-          </Link>
+          <button
+            disabled
+            className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 mt-8"
+          >
+            {t('comingSoon')}
+          </button>
         </div>
       </Container>
     </section>
