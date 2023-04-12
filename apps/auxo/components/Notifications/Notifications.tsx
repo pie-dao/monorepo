@@ -115,7 +115,7 @@ export const errorNotificationUpdateById = (toastId: Id) => {
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
           <Trans
-            i18nKey={`${toastId}Error` || 'defaultError'}
+            i18nKey={toastId ? `${toastId}Error` : 'defaultError'}
             ns={'notifications'}
           />
         </p>
