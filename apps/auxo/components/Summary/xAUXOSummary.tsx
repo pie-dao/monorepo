@@ -9,6 +9,8 @@ import {
   useTokenBalance,
   useUserStakedPRV,
   usePRVFee,
+  useUserPendingBalancePRV,
+  useUserCurrentEpochStakedPRV,
 } from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
@@ -30,6 +32,8 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   const auxoBalance = useTokenBalance('AUXO');
   const xAUXOBalance = useTokenBalance(name);
   const stakedXAUXO = useUserStakedPRV();
+  const pendingStakedPRV = useUserPendingBalancePRV();
+  const currentStakedPrv = useUserCurrentEpochStakedPRV();
   const fee = usePRVFee();
 
   const summaryData = useMemo(() => {
@@ -61,14 +65,46 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
         ),
         title: t('stakedBalance', { token: 'PRV' }),
-        value: `
-          ${
-            account
-              ? formatBalance(stakedXAUXO.label, defaultLocale, 4, 'standard')
-              : '0'
-          }
-          PRV
-        `,
+        value: (
+          <Trans
+            i18nKey="activeStakedBalance"
+            values={{
+              activeBalance: formatBalance(
+                currentStakedPrv.label,
+                defaultLocale,
+                4,
+                'standard',
+              ),
+            }}
+          />
+        ),
+      },
+      {
+        icon: (
+          <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
+        ),
+        title: t('yourPendingStakedBalance', { token: 'PRV' }),
+        value: (
+          <div className="flex items-center gap-x-2">
+            <Trans
+              i18nKey="pendingStakedBalance"
+              values={{
+                pendingBalance: formatBalance(
+                  pendingStakedPRV.label,
+                  defaultLocale,
+                  4,
+                  'standard',
+                ),
+              }}
+            />
+            <a
+              className="text-primary underline"
+              href="https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#how-staking-works-in-prv"
+            >
+              <InformationCircleIcon className="h-5 w-5 text-primary" />
+            </a>
+          </div>
+        ),
       },
       {
         icon: null,
@@ -76,7 +112,16 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         value: formatAsPercent(fee?.label ?? 0),
       },
     ];
-  }, [account, auxoBalance, defaultLocale, fee, t, xAUXOBalance, stakedXAUXO]);
+  }, [
+    t,
+    account,
+    auxoBalance,
+    defaultLocale,
+    xAUXOBalance,
+    currentStakedPrv?.label,
+    pendingStakedPRV?.label,
+    fee?.label,
+  ]);
 
   return (
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-5">
