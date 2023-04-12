@@ -62,6 +62,7 @@ const ParallaxSection: React.FC = () => {
             objectFit="cover"
             objectPosition="top"
             className="mix-blend-color-dodge"
+            priority
           />
 
           <Image
@@ -71,6 +72,7 @@ const ParallaxSection: React.FC = () => {
             objectFit="cover"
             objectPosition="bottom"
             className="mix-blend-color-dodge"
+            priority
           />
         </div>
         <div className="relative inset-0 z-10 overflow-hidden">
@@ -90,7 +92,7 @@ const ParallaxSection: React.FC = () => {
               transition={{ delay: 0.4, duration: 0.8 }}
               className="w-[80%] md:w-[55%]"
             >
-              <Image src={AuxoLogotype} alt="AuxoDAO" />
+              <Image src={AuxoLogotype} alt="AuxoDAO" priority />
             </motion.div>
             <motion.h3
               initial={{ opacity: 0 }}
@@ -115,7 +117,7 @@ const ParallaxSection: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <Image src={cloudOne} alt="cloud" />
+              <Image src={cloudOne} alt="cloud" priority />
             </motion.div>
           </div>
           <div
@@ -131,7 +133,7 @@ const ParallaxSection: React.FC = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <Image src={cloudTwo} alt="cloud" />
+              <Image src={cloudTwo} alt="cloud" priority />
             </motion.div>
           </div>
           <div className="flex mt-16 md:mt-0 md:place-items-center">

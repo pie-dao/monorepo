@@ -16,11 +16,3 @@ export default function Home() {
     </>
   );
 }
-
-// export const getStaticProps = wrapper.getStaticProps(() => () => {
-//   // this gets rendered on the server, then not on the client
-//   return {
-//     // does not seem to work with key `initialState`
-//     props: { title: 'Home' },
-//   };
-// });
