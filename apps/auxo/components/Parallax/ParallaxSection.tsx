@@ -1,5 +1,4 @@
-import React, { useRef } from 'react';
-import { Parallax, ParallaxLayer, IParallax } from '@react-spring/parallax';
+import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import RiveComponent, { Fit, Layout, Alignment } from '@rive-app/react-canvas';
@@ -51,39 +50,38 @@ const tokens = [
 
 const ParallaxSection: React.FC = () => {
   const { t } = useTranslation();
-  const parallax = useRef<IParallax>(null);
 
   return (
     <>
-      <div
-        style={{
-          minHeight: '100svh',
-        }}
-      >
-        <Parallax ref={parallax} pages={2}>
-          <ParallaxLayer
-            offset={0}
-            speed={0}
-            factor={3}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={bg}
+            alt="AuxoDAO"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="top"
             className="mix-blend-color-dodge"
-          >
-            <Image
-              src={bg}
-              alt="AuxoDAO"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="start"
-            />
-          </ParallaxLayer>
-          <ParallaxLayer
-            offset={0}
-            speed={0.3}
+          />
+
+          <Image
+            src={fluid}
+            alt="AuxoDAO"
+            layout="responsive"
+            objectFit="cover"
+            objectPosition="bottom"
+            className="mix-blend-color-dodge"
+          />
+        </div>
+        <div className="relative inset-0 z-10 overflow-hidden">
+          <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               pointerEvents: 'none',
+              height: '100dvh',
             }}
           >
             <motion.div
@@ -102,26 +100,15 @@ const ParallaxSection: React.FC = () => {
             >
               {t('subtitle')}
             </motion.h3>
-          </ParallaxLayer>
-          <ParallaxLayer
-            offset={1.2}
-            speed={0.2}
-            factor={3}
-            className="mix-blend-color-dodge"
-          >
-            <Image
-              src={fluid}
-              alt="AuxoDAO"
-              layout="fill"
-              objectFit="cover"
-              objectPosition="start"
-            />
-          </ParallaxLayer>
-          <ParallaxLayer
-            offset={1}
-            speed={0.7}
-            factor={3}
-            style={{ width: '30%', marginLeft: '70%' }}
+          </div>
+
+          <div
+            style={{
+              width: '30%',
+              marginLeft: '65%',
+              marginTop: '10%',
+              position: 'absolute',
+            }}
           >
             <motion.div
               initial={{ opacity: 0 }}
@@ -130,12 +117,14 @@ const ParallaxSection: React.FC = () => {
             >
               <Image src={cloudOne} alt="cloud" />
             </motion.div>
-          </ParallaxLayer>
-          <ParallaxLayer
-            offset={0.8}
-            speed={1}
-            factor={3}
-            style={{ width: '45%', marginLeft: '3%' }}
+          </div>
+          <div
+            style={{
+              width: '45%',
+              marginLeft: '3%',
+              marginTop: '-10%',
+              position: 'absolute',
+            }}
           >
             <motion.div
               initial={{ opacity: 0 }}
@@ -144,12 +133,8 @@ const ParallaxSection: React.FC = () => {
             >
               <Image src={cloudTwo} alt="cloud" />
             </motion.div>
-          </ParallaxLayer>
-          <ParallaxLayer
-            offset={0.7}
-            speed={0.1}
-            className="flex mt-16 md:mt-0 md:place-items-center"
-          >
+          </div>
+          <div className="flex mt-16 md:mt-0 md:place-items-center">
             <div className="flex h-[550px] w-[75%] md:w-[55%] mx-auto">
               <RiveComponent
                 layout={
@@ -161,54 +146,46 @@ const ParallaxSection: React.FC = () => {
                 src="/animations/hero-x-nocubes.riv"
               />
             </div>
-          </ParallaxLayer>
-          <ParallaxLayer
-            offset={1.1}
-            speed={0.2}
-            className="flex sm:place-items-center"
+          </div>
+          <Container
+            size="xl"
+            className="w-full flex flex-col items-center content-start pointer-events-none lg:grid lg:grid-cols-3 gap-y-7 place-items-start text-white mb-32"
           >
-            <Container
-              size="xl"
-              className="w-full flex flex-col items-center content-center pointer-events-none lg:grid lg:grid-cols-3 gap-y-7 place-items-center text-white"
-            >
-              {tokens.map((token, i) => (
-                <div
-                  className={classNames(
-                    'flex flex-col items-center justify-center gap-y-3 lg:gap-y-6',
-                    i % 2 === 0 && 'lg:mt-36',
-                  )}
-                  key={i}
-                >
+            {tokens.map((token, i) => (
+              <div
+                className={classNames(
+                  'flex flex-col items-center justify-start gap-y-3 lg:gap-y-6',
+                  i % 2 === 0 && 'lg:mt-16',
+                )}
+                key={i}
+              >
+                <div className={`rounded-full ${token.bg} flex p-3 shadow-sm`}>
                   <div
-                    className={`rounded-full ${token.bg} flex p-3 shadow-sm`}
+                    className={classNames(
+                      'w-[42px] h-[42px]',
+                      i % 2 !== 0 && 'top-[1px] relative',
+                    )}
                   >
-                    <div
-                      className={classNames(
-                        'w-[42px] h-[42px]',
-                        i % 2 !== 0 && 'top-[1px] relative',
-                      )}
-                    >
-                      {token.image}
-                    </div>
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-center">
-                      {t(token.name)}
-                    </h2>
-                    <p className="text-center">{t(token.description)}</p>
-                  </div>
-                  <div>
-                    <Link passHref href={token.button.link}>
-                      <button className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70">
-                        {t(token.button.text)}
-                      </button>
-                    </Link>
+                    {token.image}
                   </div>
                 </div>
-              ))}
-            </Container>
-          </ParallaxLayer>
-        </Parallax>
+                <div>
+                  <h2 className="text-2xl font-bold text-center">
+                    {t(token.name)}
+                  </h2>
+                  <p className="text-center">{t(token.description)}</p>
+                </div>
+                <div>
+                  <Link passHref href={token.button.link}>
+                    <button className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70">
+                      {t(token.button.text)}
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </Container>
+        </div>
       </div>
     </>
   );

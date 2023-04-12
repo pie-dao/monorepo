@@ -10,7 +10,6 @@ import useTranslation from 'next-translate/useTranslation';
 const sections = [
   { id: 'auxodao', title: 'AuxoDAO' },
   { id: 'lend', title: 'Lend' },
-  { id: 'support', title: 'Support' },
 ];
 
 function MenuIcon({ open, ...props }) {
