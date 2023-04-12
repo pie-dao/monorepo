@@ -136,7 +136,7 @@ export function NavBar() {
           >
             <rect width="32" height="4" fill="#0B78DD" rx="2" />
           </svg>
-          <Image src={AUXOLogotype} alt="AUXO" />
+          <Image src={AUXOLogotype} alt="AUXO" priority />
         </div>
         <ul
           role="list"
