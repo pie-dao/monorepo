@@ -7,15 +7,18 @@ export const pendingNotification = ({
   subtitle,
   id,
 }: {
-  title: string;
+  title?: string;
   subtitle?: string;
-  id: string | number;
+  id: Id;
 }) =>
   toast(
     <>
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={title} ns={'notifications'} />
+          <Trans
+            i18nKey={id ? `${id}Pending` : 'Pending...'}
+            ns={'notifications'}
+          />
         </p>
         {subtitle && (
           <p className="mt-1 text-sm text-gray-500">
@@ -25,7 +28,7 @@ export const pendingNotification = ({
       </div>
     </>,
     {
-      type: 'default',
+      type: 'info',
       autoClose: false,
       toastId: `${id}Pending`,
     },
@@ -73,7 +76,10 @@ export const successNotificationUpdate = (toastId: Id) => {
     <>
       <div className="ml-3 flex-1" data-cy={`${toastId}Success`}>
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={`${toastId}Success`} ns={'notifications'} />
+          <Trans
+            i18nKey={toastId ? `${toastId}Success` : 'Success!'}
+            ns={'notifications'}
+          />
         </p>
       </div>
     </>,
@@ -92,6 +98,32 @@ export const errorNotificationUpdate = (toastId: Id, message: string) => {
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
           <Trans i18nKey={message || 'defaultError'} ns={'notifications'} />
+        </p>
+      </div>
+    </>,
+    {
+      type: 'error',
+      autoClose: 10000,
+      toastId: `${toastId}Error`,
+    },
+  );
+};
+
+/**
+ * To preserve backward comptability, we create a new notification for errors that
+ * keys by id instead of message. In the future, we should merge both functions and just
+ * use the id as the key to ensure i81n is working properly.
+ */
+export const errorNotificationUpdateById = (toastId: Id) => {
+  toast.dismiss(`${toastId}Pending`);
+  toast(
+    <>
+      <div className="ml-3 flex-1">
+        <p className="text-sm font-medium text-gray-900">
+          <Trans
+            i18nKey={toastId ? `${toastId}Error` : 'defaultError'}
+            ns={'notifications'}
+          />
         </p>
       </div>
     </>,
