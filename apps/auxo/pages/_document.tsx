@@ -16,6 +16,7 @@ export default class _Document extends Document {
             sizes="32x32"
             href="/images/favicon-32x32.png"
           />
+          <link rel="shortcut icon" href="/images/favicon.ico" />
           <link
             rel="icon"
             type="image/png"
