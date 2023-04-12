@@ -71,7 +71,7 @@ const AuxoDAO: React.FC = () => {
       button: {
         image: ARVIcon,
         text: t('learnArv'),
-        link: '/',
+        link: 'https://docs.auxo.fi/auxo-docs/rewards-vaults/arv-active-rewards-vault',
       },
     },
     {
@@ -90,7 +90,7 @@ const AuxoDAO: React.FC = () => {
       button: {
         image: PRVIcon,
         text: t('learnPrv'),
-        link: '/',
+        link: 'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault',
       },
     },
   ];
