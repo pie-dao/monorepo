@@ -49,6 +49,7 @@ import {
   setShowCompleteModal,
   setState,
   initialState,
+  setIsIncreasedValue,
 } from '../modal/modal.slice';
 import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
@@ -1093,6 +1094,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setIsIncreasedValue(true));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetUserStakingData({ account: signer._address }));

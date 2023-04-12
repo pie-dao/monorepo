@@ -14,6 +14,9 @@ import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
 import { useAppSelector } from '../../hooks';
+import { InformationCircleIcon } from '@heroicons/react/outline';
+import Trans from 'next-translate/Trans';
+import Banner from '../Banner/Banner';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -35,18 +38,14 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         icon: <Image src={AuxoIcon} alt="AUXO" width={24} height={24} />,
         title: t('tokenBalance', { token: 'AUXO' }),
         value:
-          account && auxoBalance ? (
-            `${formatBalance(
-              auxoBalance.label,
-              defaultLocale,
-              4,
-              'standard',
-            )} AUXO`
-          ) : (
-            <p className="underline text-secondary font-medium">
-              <Link href="#">{t('getAUXO')}</Link>
-            </p>
-          ),
+          account && auxoBalance
+            ? `${formatBalance(
+                auxoBalance.label,
+                defaultLocale,
+                4,
+                'standard',
+              )} AUXO`
+            : 'N/A',
       },
       {
         icon: <Image src={xAUXOIcon} alt="xAUXO" width={24} height={24} />,
@@ -84,7 +83,6 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
       <div className="flex flex-col w-full gap-y-4">
         <h3 className="text-xl font-semibold text-primary">{t('summary')}</h3>
       </div>
-
       {summaryData.map(({ icon, title, value }, index) => (
         <div
           className="bg-sidebar flex items-center gap-x-4 rounded-md shadow-card self-center w-full p-2"
@@ -99,6 +97,32 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           </dd>
         </div>
       ))}
+      <Banner
+        bgColor="bg-info"
+        content={
+          <Trans
+            i18nKey="stakingStabilisesRewards"
+            components={{
+              a: (
+                <a
+                  href={
+                    'https://auxodaos-organization.gitbook.io/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
+                  }
+                  className="text-primary underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                />
+              ),
+            }}
+          />
+        }
+        icon={
+          <InformationCircleIcon
+            className="h-5 w-5 text-primary"
+            aria-hidden="true"
+          />
+        }
+      />
     </div>
   );
 };

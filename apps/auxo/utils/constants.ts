@@ -114,7 +114,7 @@ function generateEnrichedData(
 export const COLORED_CHART_DATA = generateEnrichedData(LEVEL_CHART_DATA);
 
 export const MERKLE_TREES_BY_USER_URL =
-  'https://raw.githubusercontent.com/gbonumore/pie-reporter/e13ba605971c230b8804965a36c01a07f9dc3be9/reports/merkle-trees-by-user.json';
+  'https://raw.githubusercontent.com/jordaniza/auxo-reporter/main/reports/latest/merkle-tree-combined.json?token=GHSAT0AAAAAACAXUJ6EAC65I7WRKK4V5XTUZBP3UHQ';
 
 export const LATEST_MERKLE_TREE_URL =
   'https://bafybeiaosmmppyrn3eqidyhnc36iu7woop257ofpkwupvkze4pk2zzlnuq.ipfs.w3s.link/merkle-tree-veAUXO.json';

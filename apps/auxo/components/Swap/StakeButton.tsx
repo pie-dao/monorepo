@@ -8,18 +8,13 @@ import useTranslation from 'next-translate/useTranslation';
 import { TokenConfig } from '../../types/tokensConfig';
 import { ConnectButton } from '@shared/ui-library';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
-import {
-  setIsConvertAndStake,
-  setIsOpen,
-  setStep,
-  setSwap,
-} from '../../store/modal/modal.slice';
+import { setIsOpen, setStep, setSwap } from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
 
 const StakeActions: React.FC<{
   deposit: BigNumberReference;
   tokenConfig: TokenConfig;
-  action?: 'stake' | 'unstake';
+  action?: 'convert' | 'unstake' | 'convertAndStake';
   isConvertAndStake?: boolean;
 }> = ({ deposit, tokenConfig, action = 'stake', isConvertAndStake }) => {
   const { t } = useTranslation();
@@ -27,22 +22,30 @@ const StakeActions: React.FC<{
   const ready = useServerHandoffComplete();
   const dispatch = useAppDispatch();
   const tokens = useTokenBalance(tokenConfig.name);
+  const auxoBalance = useTokenBalance('AUXO');
   const stakedXAUXO = useUserStakedPRV();
+
+  const sufficientTokens = useMemo(() => {
+    switch (action) {
+      case 'convert':
+        return compareBalances(tokens, 'gte', deposit);
+      case 'convertAndStake':
+        return compareBalances(auxoBalance, 'gte', deposit);
+      case 'unstake':
+        return compareBalances(stakedXAUXO, 'gte', deposit);
+    }
+  }, [action, auxoBalance, deposit, stakedXAUXO, tokens]);
 
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;
-    const sufficientTokens =
-      action === 'stake'
-        ? compareBalances(tokens, 'gte', deposit)
-        : compareBalances(stakedXAUXO, 'gte', deposit);
-    return !sufficientTokens || invalidDeposit;
-  }, [action, deposit, stakedXAUXO, tokens]);
+    const sufficientTokenNumber = sufficientTokens;
+    return !sufficientTokenNumber || invalidDeposit;
+  }, [deposit?.label, sufficientTokens]);
 
   const openModal = () => {
-    dispatch(setIsConvertAndStake(isConvertAndStake));
     dispatch(
       setStep(
-        action === 'stake'
+        action === 'convert' || action === 'convertAndStake'
           ? STEPS.CONFIRM_STAKE_PRV
           : STEPS.CONFIRM_UNSTAKE_PRV,
       ),

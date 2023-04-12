@@ -7,7 +7,12 @@ import { compareBalances } from '../../utils/balances';
 import { TokenConfig } from '../../types/tokensConfig';
 import { ConnectButton } from '@shared/ui-library';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
-import { setIsOpen, setStep, setSwap } from '../../store/modal/modal.slice';
+import {
+  setIsConvertAndStake,
+  setIsOpen,
+  setStep,
+  setSwap,
+} from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
 import { useXAUXOTokenContract } from '../../hooks/useContracts';
 
@@ -17,15 +22,15 @@ function DepositActions({
   tokenConfig,
   toToken,
   children,
-}: // isConvertAndStake,
-{
+  isConvertAndStake = false,
+}: {
   deposit: BigNumberReference;
   estimation: BigNumberReference;
   tokenConfig: TokenConfig;
   stakingTime?: number;
   toToken: string;
   children?: React.ReactNode;
-  // isConvertAndStake?: boolean;
+  isConvertAndStake?: boolean;
 }) {
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
@@ -40,6 +45,7 @@ function DepositActions({
   }, [deposit, tokens]);
 
   const openModal = () => {
+    dispatch(setIsConvertAndStake(isConvertAndStake));
     dispatch(setStep(STEPS.CONFIRM_CONVERT_PRV));
     dispatch(
       setSwap({

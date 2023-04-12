@@ -13,11 +13,14 @@ import { BigNumberReference } from '../store/products/products.types';
 import { formatBalance } from '../utils/formatBalance';
 
 import useSWR from 'swr';
-import fetcher from '../utils/fetcher';
-import { LATEST_MERKLE_TREE_URL } from '../utils/constants';
+import { fetcher } from '../utils/fetcher';
+import {
+  LATEST_MERKLE_TREE_URL,
+  MERKLE_TREES_BY_USER_URL,
+} from '../utils/constants';
 import TotalRewardsBar from '../components/TotalRewardsBar/TotalRewardsBar';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { MerkleTree } from '../types/merkleTree';
+import { MerkleTree, MerkleTreesByUser } from '../types/merkleTree';
 import { thunkGetUserRewards } from '../store/rewards/rewards.thunks';
 import TotalRewards from '../components/TotalRewards/TotalRewards';
 import RewardsHistory from '../components/RewardsHistory/RewardsHistory';
@@ -40,13 +43,14 @@ export default function Rewards() {
   const ArvBalance = useTokenBalance('ARV');
   const StakedPrvBalance = useUserStakedPRV();
   const allTimeTotal = useAppSelector(
-    (state) => state.rewards.data.metadata.allTimeTotal,
+    (state) => state?.rewards?.data?.metadata?.allTimeTotal,
   );
 
-  const lastDistributionAmount = {
-    label: 2000000,
-    value: '2000000',
-  };
+  // const {
+  //   data: merkleTreesByUser,
+  //   isLoading,
+  //   error,
+  // } = useSWR<MerkleTreesByUser>(MERKLE_TREES_BY_USER_URL, fetcher);
 
   useEffect(() => {
     if (merkleTreesByUser && account) {
@@ -88,7 +92,6 @@ export default function Rewards() {
                 </p>
                 <div className="flex text-[10px] sm:text-base text-primary font-semibold gap-x-1">
                   {t('compactTokenBalance', { token: 'ARV' })}
-                  <Tooltip>{t('totalStakedTooltip', { token: 'ARV' })}</Tooltip>
                 </div>
               </>
             )}
@@ -113,14 +116,13 @@ export default function Rewards() {
                 </p>
                 <div className="flex text-[10px] sm:text-base text-primary font-semibold gap-x-1">
                   {t('compactStakedBalance', { token: 'PRV' })}
-                  <Tooltip>{t('totalTooltip', { token: 'veAUXO' })}</Tooltip>
                 </div>
               </>
             )}
           </div>
         </div>
         <div className="flex gap-x-2 items-center w-full sm:w-fit">
-          <GradientBox>
+          {/* <GradientBox>
             <>
               <p className="font-bold text-primary text-xl">
                 <span>
@@ -138,14 +140,14 @@ export default function Rewards() {
                 <Tooltip>{t('lastMonthEarningsTooltip')}</Tooltip>
               </div>
             </>
-          </GradientBox>
+          </GradientBox> */}
           <GradientBox>
             <>
               <p className="font-bold text-primary text-xl">
                 <span>
                   ETH{' '}
                   {formatBalance(
-                    allTimeTotal.label,
+                    allTimeTotal?.label,
                     defaultLocale,
                     4,
                     'standard',
@@ -154,7 +156,6 @@ export default function Rewards() {
               </p>
               <div className="flex text-base text-sub-dark font-medium gap-x-1">
                 {t('allTimeTotal')}
-                <Tooltip>{t('allTimeTotal')}</Tooltip>
               </div>
             </>
           </GradientBox>

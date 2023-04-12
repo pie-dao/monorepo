@@ -5,12 +5,20 @@ export type Props = {
   icon?: React.ReactNode;
   bgColor?: string;
   textColor?: string;
+  className?: string;
 };
-const Banner: React.FC<Props> = ({ icon, content, bgColor, textColor }) => {
+const Banner: React.FC<Props> = ({
+  icon,
+  content,
+  bgColor,
+  textColor,
+  className,
+}) => {
   return (
     <div
       className={classNames(
         bgColor ?? 'bg-white',
+        className,
         'rounded-lg items-center py-1 justify-center',
       )}
     >

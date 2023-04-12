@@ -21,6 +21,7 @@ export const initialState: SliceState = {
   },
   isConvertAndStake: false,
   showCompleteModal: false,
+  isIncreasedValue: false,
 };
 
 export const sidebarSlice = createSlice({
@@ -58,6 +59,9 @@ export const sidebarSlice = createSlice({
     setIsConvertAndStake: (state, action: PayloadAction<boolean>) => {
       state.isConvertAndStake = action.payload;
     },
+    setIsIncreasedValue: (state, action: PayloadAction<boolean>) => {
+      state.isIncreasedValue = action.payload;
+    },
   },
 });
 
@@ -71,5 +75,6 @@ export const {
   setShowCompleteModal,
   setState,
   setIsConvertAndStake,
+  setIsIncreasedValue,
 } = sidebarSlice.actions;
 export default sidebarSlice.reducer;

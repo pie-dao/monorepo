@@ -38,6 +38,7 @@ import {
 import { subBalances, subPercentageToBalance } from '../utils/balances';
 import { BigNumberReference } from '../store/products/products.types';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
+import Trans from 'next-translate/Trans';
 
 export default function ARV({
   tokenConfig,
@@ -216,7 +217,7 @@ export default function ARV({
                 </>
               )}
             </div>
-            <div className="flex flex-col py-1">
+            {/* <div className="flex flex-col py-1">
               {!votingAddresses ? (
                 <>
                   <BaseSubDarkTextSkeleton />
@@ -233,10 +234,10 @@ export default function ARV({
                   </div>
                 </>
               )}
-            </div>
+            </div> */}
           </div>
           <div className="flex gap-x-2 items-center w-full sm:w-fit">
-            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
+            {/* <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
               <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.avgAPR
@@ -248,7 +249,7 @@ export default function ARV({
                   <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
               <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
                 <p className="font-bold text-primary text-xl">
@@ -290,81 +291,123 @@ export default function ARV({
                       />
                     </svg>
                   </div>
-                  <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold">
-                    STAKE AUXO TO
-                  </p>
-                  <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold">
-                    ACTIVE REWARD VAULT
-                  </p>
+                  <Trans
+                    i18nKey="arvSlide1Title"
+                    components={{
+                      highlight: (
+                        <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold" />
+                      ),
+                    }}
+                  />
                   <p className=" max-w-sm text-primary font-semibold text-xl mt-2 mx-auto">
-                    Be at the driving seat.
-                    <br /> Lock AUXO in the ARV to get the max amount of
-                    rewards.
+                    <Trans
+                      i18nKey="arvSlide1Description"
+                      components={{
+                        br: <br />,
+                      }}
+                    />
                   </p>
                 </div>
               </div>
             </div>
             <div className="relative h-[482px] flex-[0_0_100%]">
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_2.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
-                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
-                    What is Active Reward Vault.
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
+                    {t('arvSlide2Title')}
                   </h2>
-                  <p className="font-medium text-base text-white">
-                    Active Rewards vault is...... Earn monthly rewards with an
-                    ARV, a non-transferable asset that grants you governing
-                    rights for the DAO; stake for 36 months to obtain the
-                    maximum Reward Level and profit. You can redeem them for
-                    AUXO when the lock period ends.
+                  <p className="font-medium text-xs md:text-base text-white">
+                    <Trans
+                      i18nKey="arvSlide2Description"
+                      components={{
+                        br: <br />,
+                      }}
+                    />
                   </p>
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                    <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                      <Image
+                        src={DoubleCheckmark}
+                        alt="double checkmark"
+                        width={18}
+                        height={18}
+                        priority
+                      />
+                      <span>{t('earnsMoreRewards')}</span>
+                    </div>
+                    <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                      <Image
+                        src={DoubleCheckmark}
+                        alt="double checkmark"
+                        width={18}
+                        height={18}
+                        priority
+                      />
+                      <span>{t('directControl')}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="relative h-[482px] flex-[0_0_100%]">
-              <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_3.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
-                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
-                    What is Active Reward Vault.
-                  </h2>
-                  <p className="font-medium text-base text-white">
-                    Active Rewards vault is...... Earn monthly rewards with an
-                    ARV, a non-transferable asset that grants you governing
-                    rights for the DAO; stake for 36 months to obtain the
-                    maximum Reward Level and profit. You can redeem them for
-                    AUXO when the lock period ends.
-                  </p>
-                </div>
-              </div>
-            </div>
+
             <div className="relative h-[482px] flex-[0_0_100%]">
               <div className="overflow-hidden rounded-lg relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_4.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
-                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
-                    What is Active Reward Vault.
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
+                    {t('arvSlide3Title')}
                   </h2>
                   <p className="font-medium text-base text-white">
-                    Active Rewards vault is...... Earn monthly rewards with an
-                    ARV, a non-transferable asset that grants you governing
-                    rights for the DAO; stake for 36 months to obtain the
-                    maximum Reward Level and profit. You can redeem them for
-                    AUXO when the lock period ends.
+                    <Trans
+                      i18nKey="arvSlide3Description1"
+                      components={{
+                        br: <br />,
+                      }}
+                    />
                   </p>
+                  <p className="font-medium text-base text-white">
+                    {t('arvSlide3Description2')}
+                  </p>
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                    <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                      <Image
+                        src={DoubleCheckmark}
+                        alt="double checkmark"
+                        width={18}
+                        height={18}
+                        priority
+                      />
+                      <span>{t('longTermAlignment')}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div className="relative h-[482px] flex-[0_0_100%]">
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_5.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
-                  <h2 className="text-4xl bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold">
-                    What is Active Reward Vault.
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                  <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
+                    {t('arvSlide4Title')}
                   </h2>
                   <p className="font-medium text-base text-white">
-                    Active Rewards vault is...... Earn monthly rewards with an
-                    ARV, a non-transferable asset that grants you governing
-                    rights for the DAO; stake for 36 months to obtain the
-                    maximum Reward Level and profit. You can redeem them for
-                    AUXO when the lock period ends.
+                    <Trans
+                      i18nKey="arvSlide4Description"
+                      components={{
+                        br: <br />,
+                      }}
+                    />
                   </p>
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                    <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
+                      <Image
+                        src={DoubleCheckmark}
+                        alt="double checkmark"
+                        width={18}
+                        height={18}
+                        priority
+                      />
+                      <span>{t('paidActiveParticipants')}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

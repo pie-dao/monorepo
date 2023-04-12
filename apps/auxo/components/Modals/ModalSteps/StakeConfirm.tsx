@@ -26,6 +26,7 @@ import AUXOImage from '../../../public/tokens/AUXO.svg';
 import ARVImage from '../../../public/tokens/24x24/ARV.svg';
 import AUXOBig from '../../../public/images/AUXOBig.svg';
 import PendingTransaction from '../../PendingTransaction/PendingTransaction';
+import Trans from 'next-translate/Trans';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -90,14 +91,22 @@ export default function StakeConfirm() {
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2 text-center">
               <p className="text-lg text-sub-dark font-medium">
-                {!hasLock
-                  ? t('stakeTokenModalDescription', {
+                {!hasLock ? (
+                  t('stakeTokenModalDescription', {
+                    token: swap?.from.token,
+                    months: swap?.stakingTime,
+                  })
+                ) : (
+                  <Trans
+                    i18nKey="stakeTokenIncreaseAmountModalDescription"
+                    values={{
                       token: swap?.from.token,
-                      months: swap?.stakingTime,
-                    })
-                  : t('stakeTokenIncreaseAmountModalDescription', {
-                      token: swap?.from.token,
-                    })}
+                    }}
+                    components={{
+                      br: <br />,
+                    }}
+                  />
+                )}
               </p>
             </div>
             <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">

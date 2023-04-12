@@ -65,4 +65,5 @@ export type SliceState = {
   };
   showCompleteModal?: boolean;
   isConvertAndStake?: boolean;
+  isIncreasedValue?: boolean;
 };

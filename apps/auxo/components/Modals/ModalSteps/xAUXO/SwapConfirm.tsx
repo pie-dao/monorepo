@@ -65,14 +65,21 @@ export default function StakeConfirm() {
             as="h3"
             className="font-bold text-center text-xl text-primary capitalize w-full"
           >
-            {t('convertToken', { token: swap?.to?.token })}
+            {t(isConvertAndStake ? 'stakeAndConvertToken' : 'convertToken', {
+              token: swap?.to?.token,
+            })}
           </Dialog.Title>
           <div className="flex flex-col items-center justify-center w-full gap-y-6">
             <div className="mt-2">
               <p className="text-lg text-sub-dark font-medium">
-                {t('convertConfirmModalDescription', {
-                  token: swap?.to?.token,
-                })}
+                {t(
+                  isConvertAndStake
+                    ? 'convertAndStakeConfirmModalDescription'
+                    : 'convertConfirmModalDescription',
+                  {
+                    token: swap?.to?.token,
+                  },
+                )}
               </p>
             </div>
             <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
@@ -121,11 +128,6 @@ export default function StakeConfirm() {
                         {swap.to.token}
                       </span>
                     </div>
-                  </div>
-                  <div className="w-full flex justify-center items-center">
-                    <p className="text-sub-dark text-sm font-medium text-center max-w-sm">
-                      {t('irreversibleModal')}
-                    </p>
                   </div>
                 </div>
               )}
