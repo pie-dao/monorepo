@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useWeb3React } from '@web3-react/core';
 import useTranslation from 'next-translate/useTranslation';
 import { Connect } from './Connect';
-import { useConnectedWallet } from '../hooks/use-connected-wallet';
 import { useENSName } from '../hooks/use-ens-name';
 import { MetamaskIcon, WalletConnectIcon } from '../shared/external-icons';
 import { classNames } from '../utils/class-names';
@@ -46,7 +45,6 @@ const bounceTransition = {
 };
 
 export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
-  useConnectedWallet();
   const { account, active, library } = useWeb3React();
   const ensName = useENSName(library, account);
   const [isOpen, setIsOpen] = useState(false);
