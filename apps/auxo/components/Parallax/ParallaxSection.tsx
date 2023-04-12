@@ -90,7 +90,7 @@ const ParallaxSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="w-[80%] md:w-[55%]"
+              className="w-[80%] md:w-[55%] flex justify-center"
             >
               <Image src={AuxoLogotype} alt="AuxoDAO" priority />
             </motion.div>
@@ -151,7 +151,7 @@ const ParallaxSection: React.FC = () => {
           </div>
           <Container
             size="xl"
-            className="w-full flex flex-col items-center content-start pointer-events-none lg:grid lg:grid-cols-3 gap-y-7 place-items-start text-white mb-32"
+            className="w-full flex flex-col items-center content-start pointer-events-none lg:grid lg:grid-cols-3 gap-y-7 place-items-center text-white mb-32"
           >
             {tokens.map((token, i) => (
               <div
