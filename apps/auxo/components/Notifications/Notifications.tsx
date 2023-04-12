@@ -15,7 +15,10 @@ export const pendingNotification = ({
     <>
       <div className="ml-3 flex-1">
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={`${id}Pending`} ns={'notifications'} />
+          <Trans
+            i18nKey={id ? `${id}Pending` : 'Pending...'}
+            ns={'notifications'}
+          />
         </p>
         {subtitle && (
           <p className="mt-1 text-sm text-gray-500">
@@ -73,7 +76,10 @@ export const successNotificationUpdate = (toastId: Id) => {
     <>
       <div className="ml-3 flex-1" data-cy={`${toastId}Success`}>
         <p className="text-sm font-medium text-gray-900">
-          <Trans i18nKey={`${toastId}Success`} ns={'notifications'} />
+          <Trans
+            i18nKey={toastId ? `${toastId}Success` : 'Success!'}
+            ns={'notifications'}
+          />
         </p>
       </div>
     </>,
