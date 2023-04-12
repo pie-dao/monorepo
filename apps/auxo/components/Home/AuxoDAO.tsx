@@ -49,7 +49,7 @@ const AuxoDAO: React.FC = () => {
       button: {
         image: AUXO,
         text: 'AUXO',
-        link: '/',
+        link: 'https://docs.auxo.fi/auxo-docs/usdauxo',
       },
     },
   ];
