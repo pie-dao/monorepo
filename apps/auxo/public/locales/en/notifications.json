@@ -2,39 +2,62 @@
   "makeDepositPending": "Your deposit is pending",
   "makeDepositSuccess": "Your deposit was successful",
   "makeDepositError": "Your deposit failed",
+
   "approveDepositPending": "Your deposit is pending",
   "approveDepositSuccess": "Your deposit was successful",
   "approveDepositError": "Your deposit failed",
+
   "increaseWithdrawalPending": "Your increase withdrawal request is pending",
   "increaseWithdrawalSuccess": "Your increase withdrawal request was successful",
   "increaseWithdrawalError": "Your increase withdrawal request failed",
+
   "confirmWithdrawalPending": "Your withdrawal request is pending",
   "confirmWithdrawalSuccess": "Your withdrawal request was successful",
   "confirmWithdrawalError": "Your withdrawal request failed",
+
   "authorizeDepositorPending": "Your Opt In request is pending",
   "authorizeDepositorSuccess": "Your Opt In request was successful",
   "authorizeDepositorError": "Your Opt In request failed",
-  "updateSingleLockARVPending": "Migrating your veDOUGH",
-  "aggregateAndBoostVeDOUGHPending": "Aggregating and boosting veDOUGH pending",
-  "aggregateAndBoostVeDOUGHSuccess": "Aggregated and boosted veDOUGH successfully",
-  "aggregateAndBoostVeDOUGHError": "There was an error while aggregating and boosting veDOUGH",
-  "aggregateVeDOUGHPending": "Aggregating veDOUGH",
-  "aggregateVeDOUGHSuccess": "Aggregated veDOUGH successfully",
-  "aggregateVeDOUGHError": "There was an error while aggregating veDOUGH",
+
+  "updateSingleLockARVPending": "Migrating your veDOUGH lock to ARV",
+  "updateSingleLockARVSuccess": "Migrated your veDOUGH to ARV lock successfully",
+  "updateSingleLockARVError": "Error migrating your veDOUGH lock to ARV",
+
+  "aggregateAndBoostPending": "Aggregating and boosting veDOUGH to ARV pending",
+  "aggregateAndBoostSuccess": "Aggregated and boosted veDOUGH to ARV successfully",
+  "aggregateAndBoostError": "There was an error while aggregating and boosting veDOUGH to ARV",
+
+  "aggregateToARVPending": "Aggregating veDOUGH to ARV",
+  "aggregateToARVSuccess": "Aggregated veDOUGH successfully to ARV",
+  "aggregateToARVError": "There was an error while aggregating veDOUGH to ARV",
+
+  "updateSingleLockPRVPending": "Migrating your veDOUGH lock to PRV",
+  "updateSingleLockPRVSuccess": "Aggregated your veDOUGH to PRV successfully",
+  "updateSingleLockPRVError": "Error migrating your veDOUGH lock to PRV",
+
+  "aggregateToPRVPending": "Aggregating veDOUGH to PRV",
+  "aggregateToPRVSuccess": "Aggregated veDOUGH successfully to PRV",
+  "aggregateToPRVError": "There was an error while aggregating veDOUGH to PRV",
+
   "stakeXAUXOPending": "Staking PRV",
   "stakeXAUXOSuccess": "Staked PRV successfully",
   "stakeXAUXOError": "There was an error while staking PRV",
+
   "unstakeXAUXOPending": "Unstaking PRV",
   "unstakeXAUXOSuccess": "Unstaked PRV successfully",
   "unstakeXAUXOError": "There was an error while unstaking PRV",
+
   "convertXAUXOPending": "Converting to PRV",
   "convertXAUXOSuccess": "Converted to PRV successfully",
   "convertXAUXOError": "There was an error while converting to PRV",
+
   "approveTokenPending": "Approving token",
   "approveTokenSuccess": "Approved token successfully",
   "approveTokenError": "There was an error while approving this token",
+
   "claimRewardsPending": "Claiming rewards",
   "claimRewardsSuccess": "Claimed rewards successfully",
   "claimRewardsError": "There was an error while claiming rewards",
+
   "defaultError": "There was an error"
 }

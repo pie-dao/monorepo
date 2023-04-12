@@ -7,10 +7,11 @@ import {
 import { toBalance } from '../../utils/formatBalance';
 import { UpgradoorAbi } from '@shared/util-blockchain';
 import {
-  errorNotificationUpdate,
+  errorNotificationUpdateById,
   pendingNotification,
   successNotificationUpdate,
 } from '../../components/Notifications/Notifications';
+
 import { ContractTransaction } from 'ethers';
 import { setCurrentStep, setTx, setTxState } from './migration.slice';
 import { STEPS_LIST, TX_STATES } from './migration.types';
@@ -75,9 +76,6 @@ export const ThunkGetVeDOUGHStakingData = createAsyncThunk(
 interface MigrateOptions {
   id: string;
   method: (...args: any) => Promise<ContractTransaction>;
-  onPending: string;
-  onSuccess: string;
-  onError: string;
   useDestinationWallet: boolean;
 }
 
@@ -97,27 +95,18 @@ function migrationOption({
       return {
         id: 'updateSingleLockARV',
         method: upgradoor.upgradeSingleLockARV,
-        onPending: `Updating Lock to ARV`,
-        onSuccess: `Lock updated to ARV`,
-        onError: `Error updating Lock to ARV`,
         useDestinationWallet: true,
       };
     } else if (boost) {
       return {
         id: 'aggregateAndBoost',
         method: upgradoor.aggregateAndBoost,
-        onPending: `Aggregating all locks to ARV and boosting`,
-        onSuccess: `All locks aggregated to ARV and boosted`,
-        onError: `Error aggregating all locks to ARV and boosting`,
         useDestinationWallet: false,
       };
     } else {
       return {
         id: 'aggregateToARV',
         method: upgradoor.aggregateToARV,
-        onPending: `Aggregating all locks to ARV`,
-        onSuccess: `All locks aggregated to ARV`,
-        onError: `Error aggregating all locks to ARV`,
         useDestinationWallet: false,
       };
     }
@@ -126,18 +115,12 @@ function migrationOption({
       return {
         id: 'updateSingleLockPRV',
         method: upgradoor.upgradeSingleLockPRV,
-        onPending: `Updating Lock to PRV`,
-        onSuccess: `Lock updated to PRV`,
-        onError: `Error updating Lock to PRV`,
         useDestinationWallet: true,
       };
     } else {
       return {
         id: 'aggregateToPRV',
         method: upgradoor.aggregateToPRV,
-        onPending: `Aggregating all locks to PRV`,
-        onSuccess: `All locks aggregated to PRV`,
-        onError: `Error aggregating all locks to PRV`,
         useDestinationWallet: false,
       };
     }
@@ -202,12 +185,11 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
         : await m.method();
 
       pendingNotification({
-        title: m.onPending,
         id: m.id,
       });
     } catch (e) {
       console.error(e);
-      errorNotificationUpdate(m.id, m.onError);
+      errorNotificationUpdateById(m.id);
       return rejectWithValue(e.message);
     }
 
@@ -230,8 +212,8 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
 
     if (receipt.status !== 1) {
       setTxState(TX_STATES.FAILED);
-      errorNotificationUpdate(m.id, m.onError);
-      return rejectWithValue({ id: m.id, message: m.onError });
+      errorNotificationUpdateById(m.id);
+      return rejectWithValue({ id: m.id, message: 'There was an error' });
     }
   },
 );
