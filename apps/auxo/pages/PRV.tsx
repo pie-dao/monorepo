@@ -23,6 +23,7 @@ import TokensConfig from '../config/products.json';
 import { TokenConfig } from '../types/tokensConfig';
 import Summary from '../components/Summary/xAUXOSummary';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
+import Trans from 'next-translate/Trans';
 
 export default function XAUXO({
   tokenConfig,
@@ -230,16 +231,21 @@ export default function XAUXO({
                       />
                     </svg>
                   </div>
-                  <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold">
-                    WORRY-FREE STAKING
-                  </p>
-                  <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold">
-                    WITH PRV
-                  </p>
+                  <Trans
+                    i18nKey="prvSlide1Title"
+                    components={{
+                      highlight: (
+                        <p className="text-4xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/20 font-bold" />
+                      ),
+                    }}
+                  />
                   <p className=" max-w-sm text-primary font-semibold text-xl mt-2 mx-auto">
-                    Free from governance obligations,
-                    <br />
-                    get paid to stabilize the $AUXO price.
+                    <Trans
+                      i18nKey="prvSlide1Description"
+                      components={{
+                        br: <br />,
+                      }}
+                    />
                   </p>
                 </div>
               </div>
@@ -248,14 +254,10 @@ export default function XAUXO({
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_1.png')] bg-cover h-full">
                 <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-8">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
-                    Who is PRV for?
+                    {t('prvSlide2Title')}
                   </h2>
                   <p className="font-medium text-base text-white">
-                    The Passive Rewards is perfect for DAO members seeking a
-                    passive approach. PRV allows to earn rewards to help
-                    stabilising the price of $AUXO while minimising both the gas
-                    expenditures and effort required to maintain a fully
-                    maximised rewards position.
+                    {t('prvSlide2Description')}
                   </p>
                   <div className="flex gap-x-6 gap-y-2 flex-wrap">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
@@ -286,17 +288,13 @@ export default function XAUXO({
               <div className="overflow-hidden  relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_2.png')] bg-cover h-full">
                 <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
-                    How Staking works in PRV
+                    {t('prvSlide3Title')}
                   </h2>
                   <p className="font-medium text-base text-white">
-                    PRV must be staked in the PRV Locker for a full staking
-                    epoch before rewards can be claimed. Users need only do this
-                    once: staked tokens continue to earn rewards in perpetuity
-                    until the PRV is unstaked.
+                    {t('prvSlide3Description1')}
                   </p>
                   <p className="font-medium text-base text-white">
-                    A staking epoch lasts for a full calendar month and begins
-                    on at the start of said month.
+                    {t('prvSlide3Description2')}
                   </p>
                   <div className="flex gap-x-6 gap-y-2 flex-wrap">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">

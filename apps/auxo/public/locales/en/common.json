@@ -321,5 +321,21 @@
   "earningTreasuryYield": "Earns 30% of Treasury Yield",
   "unstakeAnytime": "Unstake anytime",
   "stakeAtLeastOneEpoch": "Stake for at least 1 epoch for rewards",
-  "stakingStabilisesRewards": "PRV Staking earn rewards to helps stabilize the price of $AUXO. The Passive Vault implements a delayed-withdrawal-mechanism, converting PRV back to $AUXO is subject to availability. <a>Learn more</a>"
+  "stakingStabilisesRewards": "PRV Staking earn rewards to helps stabilize the price of $AUXO. The Passive Vault implements a delayed-withdrawal-mechanism, converting PRV back to $AUXO is subject to availability. <a>Learn more</a>",
+  "arvSlide1Title": "<highlight>STAKE AUXO TO</highlight> <highlight>ACTIVE REWARDS VAULT</highlight>",
+  "arvSlide1Description": "Be at the driving seat. <br></br> Lock AUXO in the ARV to get the max amount of rewards.",
+  "arvSlide2Title": "Why stake with the Active Rewards Vault?",
+  "arvSlide2Description": "As an ARV holder you are at the driving seat! <br></br> Holders of ARV are responsible for governing the protocol, ensure data notorization and transparency, issuing liquidity events and much more.<br></br>Staking in ARV earns 70% of the yield generated from the Treasury.",
+  "arvSlide3Title": "Restake monthly",
+  "arvSlide3Description1": "The minimum stake of 6 months gets a Rewards Level of 0.<br></br>Staking for 36 months gets the highest Rewards Level of 30.",
+  "arvSlide3Description2": "Each month the ARV lock will loose a Reward Level, by restaking you make sure to get the highest reward level.",
+  "arvSlide4Title": "Governance Mining",
+  "arvSlide4Description": "We believe that active and engaged governance is essential for scaling decentralized systems, and incentives should reward users for their contributions.",
+  "prvSlide1Title": "<highlight>WORRY-FREE STAKING</highlight><highlight>WITH PRV</highlight>",
+  "prvSlide1Description": "Free from governance obligations,<br></br>get paid to stabilize the $AUXO price.",
+  "prvSlide2Title": "Who is PRV for?",
+  "prvSlide2Description": "The Passive Rewards is perfect for DAO members seeking a passive approach. PRV allows to earn rewards to help stabilising the price of $AUXO while minimising both the gas expenditures and effort required to maintain a fully maximised rewards position.",
+  "prvSlide3Title": "How Staking works in PRV",
+  "prvSlide3Description1": "PRV must be staked in the PRV Locker for a full staking epoch before rewards can be claimed. Users need only do this once: staked tokens continue to earn rewards in perpetuity until the PRV is unstaked.",
+  "prvSlide3Description2": " A staking epoch lasts for a full calendar month and begins on at the start of said month."
 }
