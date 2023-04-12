@@ -40,7 +40,7 @@ export default function Socials({ open }: { open: boolean }) {
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path d={path} />
+                {path}
               </svg>
             </a>
           </motion.li>
@@ -64,7 +64,7 @@ export const Discord = () => (
       fill="currentColor"
       viewBox="0 0 24 24"
     >
-      <path d={discord} />
+      {discord}
     </svg>
   </a>
 );

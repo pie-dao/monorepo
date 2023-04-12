@@ -45,7 +45,13 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-7 xl:col-span-8 flex items-start gap-x-10',
             )}
           >
-            {(featureIdx % 2 !== 0 || textPosition === 'left') && (
+            <div
+              className={classNames(
+                textPosition === 'left' && 'md:block',
+                featureIdx % 2 === 0 && textPosition !== 'left' && 'md:hidden',
+                'block',
+              )}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -54,15 +60,8 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               >
                 <rect width="32" height="4" fill="#0B78DD" rx="2" />
               </svg>
-            )}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 32 4"
-              className="w-8 h-1 fill-current mt-4 absolute -left-4 sm:-left-3 xl:[position:initial] lg:hidden"
-            >
-              <rect width="32" height="4" fill="#0B78DD" rx="2" />
-            </svg>
+            </div>
+
             <div className="flex flex-col xl:ml-4">
               <h3 className="text-4xl font-semibold text-primary">
                 {feature.title}
@@ -71,7 +70,7 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
                 {feature.description}
               </p>
               <Link passHref href={feature?.button?.link}>
-                <div className="flex items-center mt-8">
+                <div className="flex items-center mt-8 cursor-pointer">
                   <div className="flex items-center rounded-l-[50px] rounded-r-[20px] bg-gradient-primary w-fit shadow-sm">
                     <div className="rounded-full bg-background flex p-3 shadow-sm">
                       <Image

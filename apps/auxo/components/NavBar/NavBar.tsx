@@ -136,7 +136,7 @@ export function NavBar() {
           >
             <rect width="32" height="4" fill="#0B78DD" rx="2" />
           </svg>
-          <Image src={AUXOLogotype} alt="AUXO" />
+          <Image src={AUXOLogotype} alt="AUXO" priority />
         </div>
         <ul
           role="list"
@@ -159,7 +159,10 @@ export function NavBar() {
           ))}
           <li>
             <Link passHref href="/ARV">
-              <button className="w-fit px-8 py-2 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary flex gap-x-2 items-center font-medium">
+              <button
+                disabled
+                className="w-fit px-8 py-2 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:cursor-not-allowed disabled:opacity-70 flex gap-x-2 items-center font-medium"
+              >
                 <TemplateIcon className="fill-current w-4 h-4" />
                 {t('launchApp')}
               </button>
