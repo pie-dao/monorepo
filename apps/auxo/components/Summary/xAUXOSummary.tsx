@@ -1,13 +1,11 @@
 import { useMemo } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import AuxoIcon from '../../public/tokens/AUXO.svg';
 import xAUXOIcon from '../../public/tokens/32x32/PRV.svg';
 import xAUXOIconCircle from '../../public/tokens/32x32/PRV.svg';
 import useTranslation from 'next-translate/useTranslation';
 import {
   useTokenBalance,
-  useUserStakedPRV,
   usePRVFee,
   useUserPendingBalancePRV,
   useUserCurrentEpochStakedPRV,
@@ -31,7 +29,6 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   const { t } = useTranslation();
   const auxoBalance = useTokenBalance('AUXO');
   const xAUXOBalance = useTokenBalance(name);
-  const stakedXAUXO = useUserStakedPRV();
   const pendingStakedPRV = useUserPendingBalancePRV();
   const currentStakedPrv = useUserCurrentEpochStakedPRV();
   const fee = usePRVFee();
