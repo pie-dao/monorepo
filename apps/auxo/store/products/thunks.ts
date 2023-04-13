@@ -365,6 +365,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
         balance: rollStakerContract.getTotalBalanceForUser(account),
         currentEpochBalance:
           rollStakerContract.getActiveBalanceForUser(account),
+        pendingBalance: rollStakerContract.getPendingBalanceForUser(account),
         decimals: xAUXOContract.decimals(),
       });
 
@@ -390,6 +391,10 @@ export const thunkGetUserStakingData = createAsyncThunk(
             amount: toBalance(xAUXOData.balance, xAUXOData.decimals),
             currentEpochBalance: toBalance(
               xAUXOData.currentEpochBalance,
+              xAUXOData.decimals,
+            ),
+            pendingBalance: toBalance(
+              xAUXOData.pendingBalance,
               xAUXOData.decimals,
             ),
           },

@@ -22,6 +22,7 @@ export type Token = {
   userStakingData?: {
     amount: BigNumberReference;
     currentEpochBalance?: BigNumberReference;
+    pendingBalance?: BigNumberReference;
     lockedAt: number;
     lockDuration: number;
     votingPower?: BigNumberReference;

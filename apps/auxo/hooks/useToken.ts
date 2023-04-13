@@ -116,6 +116,14 @@ export const useUserCurrentEpochStakedPRV = (): BigNumberReference => {
   );
 };
 
+export const useUserPendingBalancePRV = (): BigNumberReference => {
+  return useAppSelector(
+    (state) =>
+      state.dashboard?.tokens?.PRV?.userStakingData?.pendingBalance ??
+      zeroBalance,
+  );
+};
+
 export const useDelegatorAddress = (token: string): string => {
   return useAppSelector(
     (state) => state.dashboard?.tokens?.[token]?.userStakingData?.delegator,

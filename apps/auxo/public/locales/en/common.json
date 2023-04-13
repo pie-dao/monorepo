@@ -116,7 +116,7 @@
   "increaseStake": "Increase stake",
   "tokenBalance": "Your ${token} balance",
   "compactTokenBalance": "${token} balance",
-  "stakedBalance": "Your staked ${token} balance",
+  "stakedBalance": "Your active staked ${token}",
   "compactStakedBalance": "Staked ${token} balance",
   "governancePower": "Governance power:",
   "stakeTime": "Stake time",
@@ -337,5 +337,8 @@
   "prvSlide2Description": "The Passive Rewards is perfect for DAO members seeking a passive approach. PRV allows to earn rewards to help stabilising the price of $AUXO while minimising both the gas expenditures and effort required to maintain a fully maximised rewards position.",
   "prvSlide3Title": "How Staking works in PRV",
   "prvSlide3Description1": "PRV must be staked in the PRV Locker for a full staking epoch before rewards can be claimed. Users need only do this once: staked tokens continue to earn rewards in perpetuity until the PRV is unstaked.",
-  "prvSlide3Description2": " A staking epoch lasts for a full calendar month and begins on at the start of said month."
+  "prvSlide3Description2": " A staking epoch lasts for a full calendar month and begins on at the start of said month.",
+  "activeStakedBalance": "${activeBalance} PRV",
+  "yourPendingStakedBalance": "Your next epoch staked PRV",
+  "pendingStakedBalance": "${pendingBalance} PRV"
 }
