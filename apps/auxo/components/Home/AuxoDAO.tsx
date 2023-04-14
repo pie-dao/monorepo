@@ -4,19 +4,16 @@ import Container from '../Container/Container';
 import LeftRightContainer from '../LeftRightContainer/LeftRightContainer';
 import Feature1Image from '../../public/images/home/features/feature1.svg';
 import Feature2Image from '../../public/images/home/features/feature2.svg';
+import Feature3Image from '../../public/images/home/features/feature3.svg';
 import AUXO from '../../public/tokens/AUXO.svg';
 import ARVIcon from '../../public/tokens/32x32/ARV.svg';
 import PRVIcon from '../../public/tokens/32x32/PRV.svg';
-import Link from 'next/link';
 import RiveComponent, { Fit, Layout, Alignment } from '@rive-app/react-canvas';
 import classNames from '../../utils/classnames';
 import { useInView, useMotionValue, useSpring } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { useAppSelector } from '../../hooks';
-import {
-  formatBalance,
-  formatBalanceCurrency,
-} from '../../utils/formatBalance';
+import { formatBalanceCurrency } from '../../utils/formatBalance';
 
 const AuxoDAO: React.FC = () => {
   const { t } = useTranslation();
@@ -43,8 +40,8 @@ const AuxoDAO: React.FC = () => {
         </span>
       ),
       image: {
-        alt: 'AUXOFeatureTitle',
-        src: Feature1Image,
+        alt: 'treasury backed liquidity',
+        src: Feature2Image,
       },
       button: {
         image: AUXO,
@@ -66,7 +63,7 @@ const AuxoDAO: React.FC = () => {
       description: t('ARVFeatureDescription'),
       image: {
         alt: 'ARVFeatureTitle',
-        src: Feature1Image,
+        src: Feature3Image,
       },
       button: {
         image: ARVIcon,
@@ -85,7 +82,7 @@ const AuxoDAO: React.FC = () => {
       description: t('PRVFeatureDescription'),
       image: {
         alt: 'PRVFeatureTitle',
-        src: Feature2Image,
+        src: Feature1Image,
       },
       button: {
         image: PRVIcon,
