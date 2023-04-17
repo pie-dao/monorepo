@@ -43,7 +43,7 @@
         "rollStakerAddress": "0x096b4F2253a430F33edc9B8e6A8e1d2fb4faA317",
         "merkleDistributorAddress": "0x06c88C0FD7296717083C0A449C854005218095c5",
         "merkleDistributorHelperAddress": "0x2cd92e3a127A476b14451a62A1BFF16f24A3aedd",
-        "PRVMerkleVerifierAddress": "0x8213f2C1e0BBd8891632EAA5f9A324560ECc394B",
+        "PRVMerkleVerifierAddress": "0x663A888854c505E9bcE8eef81033aa149186aD4d",
         "PRVRouterAddress": "0xEE2b00267188c60aaF1d46EA5c8f4B36006FA6Cc"
       },
       "5": {
