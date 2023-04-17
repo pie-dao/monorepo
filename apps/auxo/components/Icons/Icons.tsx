@@ -1,5 +1,12 @@
-export const PrvIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32">
+import classNames from '../../utils/classnames';
+
+export const PrvIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 32 32"
+    className={classNames(className)}
+  >
     <path
       fill="#000064"
       d="M32 16c0-8.83656-7.1634-16-16-16C7.16344 0 0 7.16344 0 16c0 8.8366 7.16344 16 16 16 8.8366 0 16-7.1634 16-16Z"
@@ -11,8 +18,13 @@ export const PrvIcon = () => (
   </svg>
 );
 
-export const ArvIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 32 32">
+export const ArvIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 32 32"
+    className={classNames(className)}
+  >
     <path
       fill="#0B78DD"
       d="M.0000014 16C6.3e-7 7.16345 7.16344.00000217 16 .0000014 24.8366 6.3e-7 32 7.16344 32 16c0 8.8366-7.1634 16-16 16C7.16345 32 .00000217 24.8366.0000014 16Z"
