@@ -178,7 +178,7 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 pb-8 pt-3 w-full h-16 overflow-hidden mx-2"
+                className="flex flex-shrink-0 pb-8 pt-3 w-full h-16 overflow-hidden"
               >
                 <AuxoLogotype />
               </motion.div>
