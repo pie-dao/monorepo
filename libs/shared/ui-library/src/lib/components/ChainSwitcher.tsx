@@ -95,7 +95,7 @@ export const ChainSwitcher: FunctionComponent<Props> = ({
               animate={{ opacity: open ? 1 : 0 }}
               transition={{ duration: 0.1 }}
               static
-              className="absolute overflow-hidden right-0 mt-2 p-1 w-48 origin-top-right text-text font-medium rounded-md bg-gradient-primary drop-shadow-sm space-y-2"
+              className="absolute overflow-hidden right-0 mt-2 p-1 w-48 origin-top-right text-text font-medium rounded-md bg-gradient-primary drop-shadow-sm space-y-2 z-10"
             >
               <h3 className="border-b-2 pt-2 mx-2 border-primary mb-3">
                 {t('switchNetwork')}
