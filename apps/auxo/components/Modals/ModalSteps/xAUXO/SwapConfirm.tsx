@@ -7,7 +7,6 @@ import {
   getSigner,
   useAUXOTokenContract,
   usePRVRouterContract,
-  useXAUXOStakingManager,
   useXAUXOTokenContract,
 } from '../../../../hooks/useContracts';
 import { thunkConvertXAUXO } from '../../../../store/products/thunks';
@@ -38,7 +37,6 @@ export default function StakeConfirm() {
   const xAUXOContract = useXAUXOTokenContract();
   const chainExplorer = useChainExplorer();
   const signer = getSigner(library, account);
-  const stakingManager = useXAUXOStakingManager();
   const PRVRouterContract = usePRVRouterContract();
 
   const makeDeposit = () => {
@@ -50,7 +48,6 @@ export default function StakeConfirm() {
         xAUXOContract,
         account,
         signer,
-        stakingManager,
         PRVRouterContract,
         isConvertAndStake,
       }),

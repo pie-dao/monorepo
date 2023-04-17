@@ -103,13 +103,6 @@ export const xAUXOContract = MAINNETMulticall.wrap(
   ),
 );
 
-export const xAUXOStakingManager = MAINNETMulticall.wrap(
-  StakingManagerAbi__factory.connect(
-    products['PRV'].addresses[selectedNetwork].stakingAddress,
-    new ethers.providers.JsonRpcProvider(localRPC),
-  ),
-);
-
 export const rollStakerContract = MAINNETMulticall.wrap(
   RollStakerAbi__factory.connect(
     products['PRV'].addresses[selectedNetwork].rollStakerAddress,

@@ -22,7 +22,7 @@
         "address": "0x069c0Ed12dB7199c1DdAF73b94de75AAe8061d33",
         "stakingAddress": "0x3E70FF09C8f53294FFd389a7fcF7276CC3d92e64",
         "merkleDistributorAddress": "0x727a21924D9267E49D025a48464324edfcD215B5",
-        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4"
+        "merkleDistributorHelperAddress": "0x2cd92e3a127A476b14451a62A1BFF16f24A3aedd"
       },
       "5": {
         "address": "0x25d46ef3229F16846Da3F6ff616946564164Cc06",
@@ -40,10 +40,9 @@
     "addresses": {
       "1": {
         "address": "0xc72fbD264b40D88E445bcf82663D63FF21e722AF",
-        "stakingAddress": "0xD8d3c9804bb9c8647fdE591dB78ab7a9aeb4C09D",
         "rollStakerAddress": "0x096b4F2253a430F33edc9B8e6A8e1d2fb4faA317",
         "merkleDistributorAddress": "0x06c88C0FD7296717083C0A449C854005218095c5",
-        "merkleDistributorHelperAddress": "0x9e7F7d0E8b8F38e3CF2b3F7dd362ba2e9E82baa4",
+        "merkleDistributorHelperAddress": "0x2cd92e3a127A476b14451a62A1BFF16f24A3aedd",
         "PRVMerkleVerifierAddress": "0x8213f2C1e0BBd8891632EAA5f9A324560ECc394B",
         "PRVRouterAddress": "0xEE2b00267188c60aaF1d46EA5c8f4B36006FA6Cc"
       },
