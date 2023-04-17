@@ -1264,7 +1264,6 @@ export type ThunkConvertXAUXOProps = {
   xAUXOContract?: PRVAbi | undefined;
   account: string;
   signer: JsonRpcSigner;
-  stakingManager: StakingManagerAbi;
   isConvertAndStake: boolean;
   PRVRouterContract?: PRVRouterAbi;
 };
