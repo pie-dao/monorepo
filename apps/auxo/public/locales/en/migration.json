@@ -47,7 +47,7 @@
   "oneByOne": "Migrate one-by-one lock",
   "selectToken": "Be part of the Active Reward Vault and/or Passive Reward Vault",
   "timeToMigrate": "Time to migrate",
-  "timeToMigrateSubtitle1": "Migration is available until XX-WW-YYYY.",
+  "timeToMigrateSubtitle1": "Migration is available until 19th May 2023.",
   "timeToMigrateSubtitle2": "After that, you will not be able to migrate your DOUGH anymore.",
   "timeToMigrateArrived": "The time has finally arrived, all veDOUGH holders can now migrate their DOUGH locks to ARV or PRV. Follow the steps to discover and migrate.",
   "lockStart": "Start lock",

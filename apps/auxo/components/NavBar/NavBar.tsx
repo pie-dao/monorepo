@@ -158,11 +158,8 @@ export function NavBar() {
             </li>
           ))}
           <li>
-            <Link passHref href="/ARV">
-              <button
-                disabled
-                className="w-fit px-8 py-2 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:cursor-not-allowed disabled:opacity-70 flex gap-x-2 items-center font-medium"
-              >
+            <Link passHref href="/migration">
+              <button className="w-fit px-8 py-2 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:cursor-not-allowed disabled:opacity-70 flex gap-x-2 items-center font-medium">
                 <TemplateIcon className="fill-current w-4 h-4" />
                 {t('launchApp')}
               </button>
