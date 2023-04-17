@@ -74,21 +74,21 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 };
 
 const RewardsHistoryChart = () => {
-  const { rewardPositions } = useAppSelector((state) => state?.rewards.data);
+  const { data } = useAppSelector((state) => state.rewards);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { t } = useTranslation();
 
-  const data = useMemo(() => {
-    const ArvMonths = rewardPositions?.ARV?.map((reward) => reward.month);
-    const PrvMonths = rewardPositions?.PRV?.map((reward) => reward.month);
+  const getData = useMemo(() => {
+    const ArvMonths = data?.rewardPositions?.ARV?.map((reward) => reward.month);
+    const PrvMonths = data?.rewardPositions?.PRV?.map((reward) => reward.month);
     if (!ArvMonths && !PrvMonths) return null;
     const months = [...new Set([...ArvMonths, ...PrvMonths])];
 
     return months.map((month) => {
-      const ArvReward = rewardPositions.ARV.find(
+      const ArvReward = data?.rewardPositions.ARV.find(
         (reward) => reward.month === month,
       )?.rewards?.label;
-      const PrvReward = rewardPositions.PRV.find(
+      const PrvReward = data?.rewardPositions.PRV.find(
         (reward) => reward.month === month,
       )?.rewards?.label;
       return {
@@ -100,7 +100,7 @@ const RewardsHistoryChart = () => {
         PRV: PrvReward || 0,
       };
     });
-  }, [defaultLocale, rewardPositions?.ARV, rewardPositions?.PRV]);
+  }, [data?.rewardPositions?.ARV, data?.rewardPositions?.PRV, defaultLocale]);
 
   if (!data) return null;
 
@@ -141,7 +141,7 @@ const RewardsHistoryChart = () => {
                 <BarChart
                   width={500}
                   height={300}
-                  data={data}
+                  data={getData}
                   margin={{
                     top: 50,
                     right: 30,
@@ -161,7 +161,7 @@ const RewardsHistoryChart = () => {
                     tickLine={true}
                     tickSize={8}
                     axisLine={false}
-                    domain={[0, max(data, (d) => d.ARV + d.PRV)]}
+                    domain={[0, max(getData, (d) => d.ARV + d.PRV)]}
                   />
                   <Tooltip cursor={false} content={<CustomTooltip />} />
                   <Legend />

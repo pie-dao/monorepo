@@ -19,8 +19,8 @@ const TotalRewards: React.FC = () => {
   const totalPRVRewards = useActiveRewards('PRV');
   const totalARVRewards = useActiveRewards('ARV');
 
-  const hasPRVRewards = totalPRVRewards?.value !== '0';
-  const hasARVRewards = totalARVRewards?.value !== '0';
+  const hasPRVRewards = totalPRVRewards && totalPRVRewards?.value !== '0';
+  const hasARVRewards = totalARVRewards && totalARVRewards?.value !== '0';
 
   const { t } = useTranslation();
   return (
@@ -37,7 +37,7 @@ const TotalRewards: React.FC = () => {
             <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  totalARVRewards.label,
+                  totalARVRewards?.label,
                   defaultLocale,
                   4,
                   'standard',
@@ -64,7 +64,7 @@ const TotalRewards: React.FC = () => {
             <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  hasPRVRewards ? totalPRVRewards.label : 0,
+                  hasPRVRewards ? totalPRVRewards?.label : 0,
                   defaultLocale,
                   4,
                   'standard',
