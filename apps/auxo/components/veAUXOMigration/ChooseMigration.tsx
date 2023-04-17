@@ -86,7 +86,6 @@ const ChooseMigration: React.FC<Props> = ({ token }) => {
             subtitle={t('migrateOneLockSubtitle', {
               token: TOKEN_NAMES[token],
             })}
-            description={t('migrateSingleLockDescription')}
             tokenOut={token}
             isSingleLock={true}
             goToStep={() => nextStep(true)}
