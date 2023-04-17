@@ -6,7 +6,6 @@ import {
 import { SliceState, STEPS_LIST } from './migration.types';
 
 const initialState: SliceState = {
-  isMigrationDeployed: null,
   currentStep: STEPS_LIST.CHOOSE_MIGRATION_TYPE,
   previousStep: null,
   isSingleLock: false,
@@ -123,14 +122,10 @@ export const migrationSlice = createSlice({
         status: null,
       };
     },
-    setIsMigrationDeployed: (state, action: PayloadAction<boolean>) => {
-      state.isMigrationDeployed = action.payload;
-    },
   },
 });
 
 export const {
-  setIsMigrationDeployed,
   setCurrentStep,
   setPreviousStep,
   setDestinationWallet,
