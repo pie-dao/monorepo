@@ -80,7 +80,7 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
             static
             as="div"
             open={isOpen}
-            className="fixed inset-0 z-10 overflow-y-hidden"
+            className="fixed inset-0 z-50 overflow-y-hidden"
             onClose={closeModal}
           >
             {({ connected, connecting, waiting }) => (

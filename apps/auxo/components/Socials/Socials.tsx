@@ -18,11 +18,11 @@ const SocialIcons = [
 
 export default function Socials({ open }: { open: boolean }) {
   return (
-    <div className="gap-2 flex flex-col px-2">
+    <div className="block w-full mt-auto">
       <motion.ul
         className={classNames(
-          'flex items-center justify-center gap-2 my-2',
-          open ? 'flex-row' : 'flex-col',
+          'flex items-center justify-between mx-2 py-2 border-t border-custom-border px-2 gap-y-2 mb-20',
+          open ? 'flex-row' : 'flex-col mb-0',
         )}
         layout
       >

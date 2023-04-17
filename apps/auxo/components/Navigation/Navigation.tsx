@@ -10,13 +10,17 @@ import {
   useMotionValue,
   Variants,
 } from 'framer-motion';
-import diamond from '../../public/images/icons/diamond.svg';
-import xAUXOIcon from '../../public/tokens/32x32/PRV.svg';
-import veAUXOIcon from '../../public/tokens/32x32/ARV.svg';
+import { TrendingUpIcon, XIcon } from '@heroicons/react/outline';
+import {
+  ArvIcon,
+  PrvIcon,
+  BanknotesIcon,
+  AuxoLogotype,
+  AuxoLogo,
+} from '../Icons/Icons';
 import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
-import AUXOLogo from '../../public/images/auxoIcon.svg';
 import MenuIcon from '../Header/MenuIcon';
 
 type DragEvent = MouseEvent | TouchEvent | PointerEvent;
@@ -33,12 +37,10 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    // { name: t('Homepage'), href: '/', icon: diamond },
-    // { name: t('Dashboard'), href: '/treasury', icon: diamond },
-    { name: t('ARV'), href: '/ARV', icon: veAUXOIcon },
-    { name: t('PRV'), href: '/PRV', icon: xAUXOIcon },
-    { name: t('migration'), href: '/migration', icon: diamond },
-    { name: t('rewards'), href: '/rewards', icon: diamond },
+    { name: t('ARV'), href: '/ARV', icon: ArvIcon },
+    { name: t('PRV'), href: '/PRV', icon: PrvIcon },
+    { name: t('rewards'), href: '/rewards', icon: BanknotesIcon },
+    { name: t('migration'), href: '/migration', icon: TrendingUpIcon },
   ];
 
   useEffect(() => {
@@ -151,146 +153,120 @@ export default function Navigation({
   const splitPath = pathname.split('/');
   const path = `/${splitPath[1]}`;
 
-  if (!mounted) return null; // Skeleton UI probably needed here since we're checking for mobile on client side
+  if (!mounted) return null;
+
   return (
-    <div
-      className={classNames(
-        'fixed h-full z-10 transition-all duration-300',
-        open ? 'w-[180px]' : 'w-[40px]',
-      )}
-    >
+    <div className="relative">
       <AnimatePresence initial={false}>
         <motion.aside
-          animate={open ? 'visible' : 'hidden'}
-          exit="hidden"
-          drag="x"
-          variants={sidebarVariants}
-          dragConstraints={{
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
-          }}
-          style={{ x }}
-          dragElastic={0.8}
-          dragMomentum={false}
-          onDrag={handleDrag}
-          onDragEnd={handleDragEnd}
           className={classNames(
-            'h-full w-[180px] fixed z-50 lg:z-0 bg-sidebar',
+            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-20 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow',
+            isDesktop
+              ? open
+                ? 'max-w-[11rem] overflow-y-auto'
+                : 'max-w-[3.5rem] overflow-hidden'
+              : open
+              ? 'translate-x-0 max-w-[11rem]'
+              : '-translate-x-full max-w-[11rem]',
           )}
         >
-          <div className="flex flex-col flex-grow pt-5 h-full">
-            <div className="flex items-center flex-shrink-0 px-4 gap-x-2">
-              <div className="flex flex-shrink-0">
-                <Image src={AUXOLogo} alt="AUXO Logo" priority />
-              </div>
-              <motion.h2
-                className="text-xl font-medium text-primary"
-                animate={open ? 'visible' : 'hidden'}
-                initial="visible"
-                exit="hidden"
-                variants={titleVariants}
+          <AnimatePresence exitBeforeEnter>
+            {open && (
+              <motion.div
+                key={1}
+                initial={{ x: 10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -10, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-shrink-0 pb-8 pt-3 w-full h-16 overflow-hidden mx-2"
               >
-                {open && 'Auxo'}
-              </motion.h2>
-            </div>
-            <nav className="mt-10 flex-1 overflow-y-auto px-2 space-y-1 overflow-hidden font-medium ">
-              <motion.ul
-                variants={listVariants}
-                initial="hidden"
-                animate="visible"
-                className="space-y-2"
+                <AuxoLogotype />
+              </motion.div>
+            )}
+            {!open && (
+              <motion.div
+                key={2}
+                initial={{ x: 10, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: -10, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-shrink-0 mb-8 mt-3 w-10 h-10 overflow-hidden mx-auto shadow-lg rounded-full"
               >
-                {navigation.map((item) => {
-                  const active = path === item.href;
-                  return (
-                    <motion.li
-                      key={item.name}
-                      variants={itemVariants}
-                      whileHover={
-                        !active && {
-                          scale: 1.03,
-                        }
+                <AuxoLogo />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div className="block w-full">
+            <motion.ul
+              variants={listVariants}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-col pl-0 mb-0 list-none mx-2 gap-y-2"
+            >
+              {navigation.map((item) => {
+                const active = path === item.href;
+                return (
+                  <motion.li
+                    key={item.name}
+                    variants={itemVariants}
+                    whileHover={
+                      !active && {
+                        scale: 1.03,
                       }
-                      whileTap={
-                        !active && {
-                          scale: 0.95,
-                        }
+                    }
+                    whileTap={
+                      !active && {
+                        scale: 0.95,
                       }
-                    >
-                      <Link href={item.href} passHref>
-                        <div
-                          className={classNames(
-                            active
-                              ? 'text-primary cursor-default bg-white'
-                              : 'text-gray-400 cursor-pointer hover:text-primary',
-                            'group flex items-center p-2 text-sm font-medium rounded-full border border-customBorder hover:bg-white hover:drop-shadow-sm gap-x-2',
-                          )}
-                          onClick={() => {
-                            if (!isDesktop) {
-                              setOpen(false);
-                            }
-                          }}
-                        >
-                          <div className="flex items-center justify-center w-6 h-6 flex-shrink-0">
-                            <Image
-                              src={item.icon}
-                              alt={item.name}
-                              width={24}
-                              height={24}
-                              priority
-                            />
-                          </div>
-                          <motion.span
-                            variants={itemVariants}
-                            className="text-base ml-5"
-                            initial="hidden"
-                            animate={open ? 'visible' : 'hidden'}
-                          >
-                            {item.name}
-                          </motion.span>
+                    }
+                  >
+                    <Link href={item.href} passHref>
+                      <button
+                        disabled={active}
+                        className={classNames(
+                          active
+                            ? 'cursor-default bg-primary text-white border'
+                            : 'text-primary cursor-pointer hover:text-white hover:bg-primary',
+                          'group w-full flex items-center p-2 text-sm font-medium rounded-lg  gap-x-2',
+                        )}
+                        onClick={() => {
+                          if (!isDesktop) {
+                            setOpen(false);
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-center w-6 h-6 flex-shrink-0">
+                          <item.icon />
                         </div>
-                      </Link>
-                    </motion.li>
-                  );
-                })}
-              </motion.ul>
-            </nav>
-            <Socials open={open} />
+                        <motion.span
+                          variants={itemVariants}
+                          className="text-base"
+                          initial="hidden"
+                          animate={open ? 'visible' : 'hidden'}
+                        >
+                          {item.name}
+                        </motion.span>
+                      </button>
+                    </Link>
+                  </motion.li>
+                );
+              })}
+            </motion.ul>
           </div>
+          <Socials open={open} />
         </motion.aside>
       </AnimatePresence>
-      {!isDesktop && open && (
-        <>
-          <div
-            className="absolute inset z-40 inset-0 backdrop-blur-sm"
-            onClick={() => setOpen(false)}
-          />
-        </>
-      )}
-      {!isLargeDesktop && (
-        <motion.button
-          type="button"
-          animate={open ? 'visible' : 'hidden'}
-          variants={{
-            hidden: {
-              x: 40,
-            },
-            visible: {
-              x: 0,
-              transition: { duration: 0.4 },
-            },
-          }}
-          className={classNames(
-            'focus:outline-none pt-7 -pl-8 absolute z-10 self-star top-0',
-            open ? '-right-3' : 'right-2',
-          )}
-          onClick={() => setOpen(!open)}
-        >
-          <MenuIcon open={open} />
-        </motion.button>
-      )}
+      <motion.button
+        type="button"
+        className={classNames(
+          'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 mt-7',
+          open ? 'left-36 md:left-40' : 'left-5 md:left-6 lg:left-20',
+        )}
+        onClick={() => setOpen(!open)}
+      >
+        <MenuIcon open={open} />
+      </motion.button>
     </div>
   );
 }

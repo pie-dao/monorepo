@@ -21,7 +21,7 @@ export default function Header({ title, icon }: HeaderProps) {
   const mqXl = useMediaQuery('(min-width: 1280px)');
 
   return (
-    <header className="flex-shrink-0 z-10 w-full px-7">
+    <header className="flex-shrink-0 z-10 w-full">
       <div className="flex items-center justify-between py-5">
         <div className="w-full flex items-center gap-x-3 flex-wrap">
           {icon && (
