@@ -21,7 +21,6 @@ import 'react-lite-youtube-embed/dist/LiteYouTubeEmbed.css';
 
 export default function Migration() {
   const { t } = useTranslation('migration');
-  const { isMigrationDeployed } = useAppSelector((state) => state.migration);
 
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
@@ -80,10 +79,7 @@ export default function Migration() {
         </div>
         <div className="flex flex-col items-center justify-center mt-12">
           <Link href="/migration/start" passHref>
-            <button
-              disabled={!isMigrationDeployed}
-              className="w-fit flex items-center gap-x-2 px-12 py-2 text-base font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent"
-            >
+            <button className="w-fit flex items-center gap-x-2 px-12 py-2 text-base font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent hover:text-secondary disabled:opacity-70 disabled:text-sub-light disabled:ring-sub-light disabled:bg-transparent">
               {t('startMigration')}
               <ChevronRightIcon className="w-5 h-5" />
             </button>

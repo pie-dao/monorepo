@@ -42,7 +42,7 @@ export default function Header({ title, icon }: HeaderProps) {
               <>
                 <GasPrice />
                 <ChainSwitcher
-                  allowedChains={['MAINNET', 'FANTOM', 'POLYGON', 'GOERLI']}
+                  allowedChains={['MAINNET']}
                   showNetworkName={mqXl}
                 />
                 <ConnectButton />

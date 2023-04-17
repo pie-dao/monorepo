@@ -326,13 +326,6 @@ export function useUpgradoor() {
   );
 }
 
-export function useXAUXOStakingManager() {
-  const { chainId } = useWeb3React();
-  return useStakingManager(
-    tokensConfig['PRV']?.addresses[chainId]?.stakingAddress,
-  );
-}
-
 export function useMerkleDistributor(token: string) {
   const { chainId } = useWeb3React();
   return useMerkleDistributorContract(

@@ -96,6 +96,7 @@ const RewardsHistory = () => {
     PRV: Month[];
   };
   const shapeData = useMemo(() => {
+    if (isEmpty(claimedRewards)) return [];
     return Object.entries(claimedRewards)
       .map(([key, value]: [string, Month[]]) => {
         return value.map((item) => ({
