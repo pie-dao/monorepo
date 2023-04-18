@@ -345,5 +345,6 @@
   "rollStakerProxyContract": "RollStakerProxy",
   "merkleDistributorContract": "MerkleDistributor PRV Proxy",
   "merkleVerifierContract": "PRVMerkleVerifier Proxy",
-  "PrvRouterContract": "PRV Router"
+  "PrvRouterContract": "PRV Router",
+  "unstaking": "Unstaking"
 }
