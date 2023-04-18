@@ -340,5 +340,6 @@
   "prvSlide3Description2": " A staking epoch lasts for a full calendar month and begins on the start of said month.",
   "activeStakedBalance": "${activeBalance} PRV",
   "yourPendingStakedBalance": "Your next epoch staked PRV",
-  "pendingStakedBalance": "${pendingBalance} PRV"
+  "pendingStakedBalance": "${pendingBalance} PRV",
+  "WETH": "WETH"
 }

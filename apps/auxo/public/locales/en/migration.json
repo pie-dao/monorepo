@@ -83,7 +83,7 @@
   "PRVConversionBanner": "Conversion 100 DOUGH = 1 AUXO, see the next step for details",
   "lifecycle": "Life cycle of your veDOUGH",
   "veDOUGHtoDOUGH": "veDOUGH unlock to DOUGH",
-  "DOUGHtoAUXO": "DOUGH will be converted to AUXO at 100:1 rate (ex. “”)",
+  "DOUGHtoAUXO": "DOUGH will be converted to AUXO at 100:1 rate",
   "AUXOtoArvPrv": "You choose whether to receive ARV or PRV",
   "startMigration": "Let’s start the migration",
   "faq1": "What is the migration about",
@@ -212,7 +212,6 @@
   "activeRewardVaultDescription": "Be at the driving seat, lock AUXO in the Active Vault, vote and re-stake every month to get the max amount of rewards.",
   "earlyTerminationFee": "* Subject to an early termination fee",
   "conversionIrreversible": "* Subject to the availability in the vault.",
-  "migrateSingleLockDescription": "ℹ️ All your previous vesting entries will be joined in 1 Active Reward Vault",
   "migrateMultipleLocksDescription": "ℹ️ Locks will be migrated in an order determined by our smart contracts, unfortunately, it is not possible to manually select which locks to migrate first.",
   "notEOAorWL": "This address is not an EOA or a whitelisted contract",
   "invalidAddress": "Invalid address"

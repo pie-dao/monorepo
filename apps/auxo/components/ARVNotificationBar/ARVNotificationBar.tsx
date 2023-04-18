@@ -46,41 +46,43 @@ const ARVNotificationBar = () => {
 
   if (!isMaxxed && account && hasLocks)
     return (
-      <div className="flex gap-x-2 flex-wrap gap-y-4">
-        <div className="flex md:flex-1 p-[1px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full">
-          <div className="px-4 py-2 rounded-full w-full flex gap-x-4 items-center">
-            <div className="flex shrink-0">
-              <Image
-                src={CoinImage}
-                alt="Coin"
-                width={24}
-                height={24}
-                priority
-              />
+      <section className="mt-6">
+        <div className="flex gap-x-2 flex-wrap gap-y-4">
+          <div className="flex md:flex-1 p-[1px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full">
+            <div className="px-4 py-2 rounded-full w-full flex gap-x-4 items-center">
+              <div className="flex shrink-0">
+                <Image
+                  src={CoinImage}
+                  alt="Coin"
+                  width={24}
+                  height={24}
+                  priority
+                />
+              </div>
+              <h2 className="font-medium text-white text-base">
+                {t('restakeBefore', {
+                  date: new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth() + 1,
+                    0,
+                  ).toLocaleDateString(defaultLocale, {
+                    month: 'long',
+                    day: 'numeric',
+                  }),
+                })}
+              </h2>
             </div>
-            <h2 className="font-medium text-white text-base">
-              {t('restakeBefore', {
-                date: new Date(
-                  new Date().getFullYear(),
-                  new Date().getMonth() + 1,
-                  0,
-                ).toLocaleDateString(defaultLocale, {
-                  month: 'long',
-                  day: 'numeric',
-                }),
-              })}
-            </h2>
+          </div>
+          <div className="flex">
+            <button
+              onClick={boostToMax}
+              className="px-4 py-1 text-base font-medium bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full text-white hover:bg-white"
+            >
+              {t('restake')}
+            </button>
           </div>
         </div>
-        <div className="flex">
-          <button
-            onClick={boostToMax}
-            className="px-4 py-1 text-base font-medium bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full text-white hover:bg-white"
-          >
-            {t('restake')}
-          </button>
-        </div>
-      </div>
+      </section>
     );
   return null;
 };

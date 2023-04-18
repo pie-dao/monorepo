@@ -16,13 +16,12 @@ import PreviewMigration from '../veAUXOMigration/PreviewMigration';
 import { MIGRATION_TYPE } from '../../store/migration/migration.types';
 import MigratingPositions from '../MigrationPositions/MigrationPositions';
 import { Wallet } from 'ethers';
-import { useUserHasLock, useUserLockDuration } from '../../hooks/useToken';
-import Trans from 'next-translate/Trans';
+import { useUserHasLock } from '../../hooks/useToken';
 
 type Props = {
   title: string;
   subtitle: string;
-  description: string;
+  description?: string;
   tokenOut: 'ARV' | 'PRV';
   isSingleLock: boolean;
   goToStep: () => void;
@@ -87,13 +86,11 @@ const MigrationCard: React.FC<Props> = ({
     <div className="flex flex-col px-4 py-4 rounded-md bg-gradient-primary shadow-sm bg gap-y-3 items-center w-full align-middle transition-all mx-auto max-w-2xl @container">
       <div className="flex flex-col items-center w-full border-hidden gap-y-1">
         <h3 className="text-lg font-medium text-secondary">{title}</h3>
-        <p className="text-sm text-primary min-h-[2rem] place-items-center text-center flex">
-          <Trans
-            i18nKey={`${subtitle}`}
-            components={{ b: <span className="font-bold" /> }}
-            ns="migration"
-          />
-        </p>
+        {subtitle && (
+          <p className="text-sm text-primary min-h-[2rem] place-items-center text-center flex">
+            {subtitle}
+          </p>
+        )}
       </div>
       {!loadingPositions ? (
         <>
