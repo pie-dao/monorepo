@@ -68,16 +68,13 @@ const Tooltip: React.FC<Props> = ({
                 <Popover.Panel
                   static
                   ref={setPopperElement}
-                  style={{
-                    ...styles.popper,
-                    zIndex: 40,
-                  }}
+                  style={styles.popper}
                   as={motion.div}
                   variants={variants}
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="bg-white rounded-md shadow-md px-4 py-3"
+                  className="bg-white rounded-md shadow-md px-4 py-3 z-40"
                   {...attributes.popper}
                 >
                   {children}
