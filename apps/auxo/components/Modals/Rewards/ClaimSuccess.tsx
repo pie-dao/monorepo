@@ -287,7 +287,7 @@ const BouncingCoin = ({ coins }: { coins: number }) => {
       {[...Array(coins)].map((_, index) => {
         return (
           <div
-            className={`absolute top-0`}
+            className="absolute bottom-[28rem]"
             style={{
               left: `${Math.random() * 100}%`,
             }}

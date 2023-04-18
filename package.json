@@ -21,7 +21,7 @@
     "@graphql-codegen/typescript-msw": "^1.1.6",
     "@graphql-codegen/typescript-rtk-query": "^2.2.13",
     "@graphql-tools/utils": "^8.6.13",
-    "@headlessui/react": "^1.4.3",
+    "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^1.0.6",
     "@hexworks/cobalt-core": "^2022.1.1-PREVIEW",
     "@hexworks/cobalt-http": "^2022.1.1-PREVIEW",

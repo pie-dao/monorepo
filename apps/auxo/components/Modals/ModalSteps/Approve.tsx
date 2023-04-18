@@ -3,7 +3,10 @@ import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
 import Image from 'next/image';
-import { useCurrentTokenContract } from '../../../hooks/useToken';
+import {
+  useChainExplorer,
+  useCurrentTokenContract,
+} from '../../../hooks/useToken';
 import { thunkApproveToken } from '../../../store/products/thunks';
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
@@ -25,6 +28,7 @@ export default function Approve() {
   const dispatch = useAppDispatch();
   const [approving, setApproving] = useState(false);
   const tokenContract = useCurrentTokenContract(swap?.from?.token);
+  const chainExplorer = useChainExplorer();
 
   const approveDeposit = () => {
     setApproving(true);
@@ -114,18 +118,22 @@ export default function Approve() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-semibold text-primary">
-                  {t('blockExplorer')}
+                <span className="text-sm text-sub-dark font-medium">
+                  {t('tx')}:
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${tx.hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {tx.hash}
+                  {tx?.hash}
                 </a>
               </div>
             </div>

@@ -46,11 +46,7 @@
         "PRVMerkleVerifierAddress": "0x663A888854c505E9bcE8eef81033aa149186aD4d",
         "PRVRouterAddress": "0xEE2b00267188c60aaF1d46EA5c8f4B36006FA6Cc"
       },
-      "5": {
-        "address": "0x8D9d6bd460712Ea491A06619A04743e0eF9d8278",
-        "stakingAddress": "0xF17634aBF9e946B7dF3ef8a925dcE69D6Ab27D60",
-        "rollStakerAddress": "0x0CE5E343f88DEB5970F724e597A762dFe8c6f397"
-      },
+      "5": { "address": null, "exclude": true },
       "250": { "address": null, "exclude": true },
       "137": { "address": null, "exclude": true }
     },

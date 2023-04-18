@@ -8,6 +8,8 @@ export type TokenConfig = {
       stakingAddress?: string;
       rollStakerAddress?: string;
       merkleDistributorAddress?: string;
+      PRVMerkleVerifierAddress?: string;
+      PRVRouterAddress?: string;
       exclude?: boolean;
     };
   };
