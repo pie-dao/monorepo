@@ -341,5 +341,9 @@
   "activeStakedBalance": "${activeBalance} PRV",
   "yourPendingStakedBalance": "Your next epoch staked PRV",
   "pendingStakedBalance": "${pendingBalance} PRV",
-  "WETH": "WETH"
+  "WETH": "WETH",
+  "rollStakerProxyContract": "RollStakerProxy",
+  "merkleDistributorContract": "MerkleDistributor PRV Proxy",
+  "merkleVerifierContract": "PRVMerkleVerifier Proxy",
+  "PrvRouterContract": "PRV Router"
 }

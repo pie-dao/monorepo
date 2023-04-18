@@ -21,6 +21,7 @@ import {
   thunkWithdrawFromVeAUXO,
   thunkStakeXAUXO,
   thunkUnstakeXAUXO,
+  thunkEarlyTermination,
 } from './thunks';
 import { Tokens, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
@@ -194,6 +195,7 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkWithdrawFromVeAUXO, 'withdrawVeAuxo');
     addTxNotifications(builder, thunkStakeXAUXO, 'stakeXAUXO');
     addTxNotifications(builder, thunkUnstakeXAUXO, 'unstakeXAUXO');
+    addTxNotifications(builder, thunkEarlyTermination, 'earlyTermination');
   },
 
   reducers: {

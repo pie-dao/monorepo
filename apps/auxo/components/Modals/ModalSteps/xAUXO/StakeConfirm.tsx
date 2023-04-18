@@ -85,11 +85,6 @@ const StakeConfirm: React.FC<{
         <div className="divide-y border-y flex flex-col items-center gap-x-2 self-center justify-between w-full">
           {swap && (
             <div className="flex place-content-center w-full py-6 gap-x-2 items-center">
-              <div>
-                <p className="font-medium text-primary text-xl">
-                  {t('staking')}:
-                </p>
-              </div>
               <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg">
                 <Image
                   src={imageMap[swap.from.token]}
