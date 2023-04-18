@@ -18,7 +18,10 @@ import AUXOImage from '../../../../public/tokens/AUXO.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import { xAUXOContract } from '../../../../store/products/products.contracts';
 import { compareBalances } from '../../../../utils/balances';
-import { useUserCurrentEpochStakedPRV } from '../../../../hooks/useToken';
+import {
+  useChainExplorer,
+  useUserCurrentEpochStakedPRV,
+} from '../../../../hooks/useToken';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -29,6 +32,7 @@ const StakeConfirm: React.FC<{
   action?: 'stake' | 'unstake';
 }> = ({ action = 'stake' }) => {
   const { t } = useTranslation();
+  const chainExplorer = useChainExplorer();
   const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -111,13 +115,17 @@ const StakeConfirm: React.FC<{
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-semibold text-primary">
-                  {t('blockExplorer')}
+                <span className="text-sm text-sub-dark font-medium">
+                  {t('tx')}:
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${tx?.hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"
