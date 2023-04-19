@@ -3,8 +3,9 @@ import classNames from '../../utils/classnames';
 type Props = {
   itemsLength: number;
   selectedIndex: number;
+  goTo: (index: number, jump?: boolean) => void;
 };
-const Dots = ({ itemsLength, selectedIndex }: Props) => {
+const Dots = ({ itemsLength, selectedIndex, goTo }: Props) => {
   const arr = new Array(itemsLength).fill(0);
   return (
     <div
@@ -13,14 +14,18 @@ const Dots = ({ itemsLength, selectedIndex }: Props) => {
     >
       {arr.map((_, index) => {
         const selected = index === selectedIndex;
+
         return (
-          <div
+          <button
+            onClick={() => {
+              goTo(index);
+            }}
             className={classNames(
               'h-2 w-2 rounded-full transition-all duration-300 bg-secondary ring-2 inset ring-sub-light',
               !selected && 'bg-transparent ',
             )}
             key={index}
-          ></div>
+          ></button>
         );
       })}
     </div>

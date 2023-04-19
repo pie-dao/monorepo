@@ -62,7 +62,11 @@ const Carousel: FC<Props> = ({ children, ...options }: Props) => {
       <div className="overflow-hidden rounded-lg" ref={emblaRef}>
         <div className="flex">{children}</div>
       </div>
-      <Dots itemsLength={length} selectedIndex={selectedIndex} />
+      <Dots
+        itemsLength={length}
+        selectedIndex={selectedIndex}
+        goTo={emblaApi?.scrollTo}
+      />
       <CarouselControls
         canScrollPrev={canScrollPrev}
         onPrev={() => emblaApi?.scrollPrev()}
