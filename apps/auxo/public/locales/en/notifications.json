@@ -59,5 +59,29 @@
   "claimRewardsSuccess": "Claimed rewards successfully",
   "claimRewardsError": "There was an error while claiming rewards",
 
+  "increaseLockVeAuxoPending": "Increasing lock",
+  "increaseLockVeAuxoSuccess": "Increased lock successfully",
+  "increaseLockVeAuxoError": "There was an error while increasing lock",
+
+  "earlyTerminationPending": "Exiting your ARV position",
+  "earlyTerminationSuccess": "Exited your ARV position successfully",
+  "earlyTerminationError": "There was an error while exiting your ARV position",
+
+  "stakeAuxoPending": "Staking AUXO to PRV",
+  "stakeAuxoSuccess": "Staked AUXO to PRV successfully",
+  "stakeAuxoError": "There was an error while staking AUXO to PRV",
+
+  "increaseStakeAuxoPending": "Increasing stake amount",
+  "increaseStakeAuxoSuccess": "Increased stake amount successfully",
+  "increaseStakeAuxoError": "There was an error while increasing stake amount",
+
+  "boostToMaxVeAuxoPending": "Boosting your lock to max",
+  "boostToMaxVeAuxoSuccess": "Boosted your lock to max successfully",
+  "boostToMaxVeAuxoError": "There was an error while boosting your lock",
+
+  "withdrawVeAuxoPending": "Withdrawing your AUXO",
+  "withdrawVeAuxoSuccess": "Withdrew your AUXO successfully",
+  "withdrawVeAuxoError": "There was an error while withdrawing your AUXO",
+
   "defaultError": "There was an error"
 }

@@ -37,10 +37,14 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    { name: t('ARV'), href: '/ARV', icon: ArvIcon },
-    { name: t('PRV'), href: '/PRV', icon: PrvIcon },
-    { name: t('rewards'), href: '/rewards', icon: BanknotesIcon },
-    { name: t('migration'), href: '/migration', icon: TrendingUpIcon },
+    { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
+    { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
+    { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
+    {
+      name: t('migration'),
+      href: '/migration',
+      icon: <TrendingUpIcon className="w-6 h-6" />,
+    },
   ];
 
   useEffect(() => {
@@ -178,12 +182,12 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 pb-8 pt-3 w-full h-16 overflow-hidden mx-2"
+                className="flex flex-shrink-0 pb-8 pt-3 pl-4 w-full h-16 overflow-hidden"
               >
                 <AuxoLogotype />
               </motion.div>
             )}
-            {!open && (
+            {!open && isDesktop && (
               <motion.div
                 key={2}
                 initial={{ x: 10, opacity: 0 }}
@@ -237,7 +241,7 @@ export default function Navigation({
                         }}
                       >
                         <div className="flex items-center justify-center w-6 h-6 flex-shrink-0">
-                          <item.icon />
+                          {item.icon}
                         </div>
                         <motion.span
                           variants={itemVariants}

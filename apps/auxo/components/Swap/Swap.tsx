@@ -73,12 +73,20 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
         address: tokenConfig?.addresses?.[chainId]?.address,
       },
       {
-        title: t('xAuxoContract'),
-        address: tokenConfig?.addresses?.[chainId]?.stakingAddress,
+        title: t('rollStakerProxyContract'),
+        address: tokenConfig?.addresses?.[chainId]?.rollStakerAddress,
       },
       {
-        title: t('stakingContract'),
-        address: tokenConfig?.addresses?.[chainId]?.rollStakerAddress,
+        title: t('merkleDistributorContract'),
+        address: tokenConfig?.addresses?.[chainId]?.merkleDistributorAddress,
+      },
+      {
+        title: t('merkleVerifierContract'),
+        address: tokenConfig?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
+      },
+      {
+        title: t('PrvRouterContract'),
+        address: tokenConfig?.addresses?.[chainId]?.PRVRouterAddress,
       },
     ];
   }, [chainId, tokenConfig?.addresses, t]);
@@ -227,7 +235,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                                   a: (
                                     <a
                                       href={
-                                        'https://auxodaos-organization.gitbook.io/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
+                                        'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
                                       }
                                       className="text-primary underline"
                                       target="_blank"
@@ -392,7 +400,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig }) => {
                     )}
                     <div className="flex place-items-center justify-between w-full">
                       <p className="text-base text-primary font-medium">
-                        {t('staking')}:
+                        {t('unstaking')}:
                       </p>
                       <p className="text-secondary font-bold text-lg">
                         {formatBalance(

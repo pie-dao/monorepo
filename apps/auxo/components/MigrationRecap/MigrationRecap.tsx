@@ -27,7 +27,6 @@ export type MigrationRecapProps = {
   newLockEnd?: string;
   token: 'ARV' | 'PRV';
   oldLockDuration: number;
-  fee: string;
 };
 
 export const MigrationRecap: React.FC<MigrationRecapProps> = ({
@@ -40,7 +39,6 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
   newLockEnd,
   oldLockDuration,
   token,
-  fee,
 }) => {
   const { t } = useTranslation('migration');
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -107,17 +105,6 @@ export const MigrationRecap: React.FC<MigrationRecapProps> = ({
           }}
           ns="migration"
         />
-        {token === 'PRV' && (
-          <>
-            {' '}
-            <Trans
-              i18nKey="PRVFee"
-              values={{ fee }}
-              components={{ fee: <span className="font-semibold" /> }}
-              ns="migration"
-            />
-          </>
-        )}
       </p>
       <Tooltip>
         <p className="font-medium text-primary text-base">

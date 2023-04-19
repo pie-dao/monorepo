@@ -10,6 +10,7 @@ import { formatBalance } from '../../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
 import { addMonths } from '../../../utils/dates';
 import {
+  useChainExplorer,
   useDecimals,
   useUserLevel,
   useUserLevelPercetageReward,
@@ -23,6 +24,7 @@ import LevelChart from '../../LevelChart/LevelChart';
 export default function BoostStakeModal() {
   const { t } = useTranslation();
   const { account } = useWeb3React();
+  const chainExplorer = useChainExplorer();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
@@ -148,18 +150,22 @@ export default function BoostStakeModal() {
                   width={24}
                   height={24}
                 />
-                <span className="text-xl font-semibold text-primary">
-                  {t('blockExplorer')}
+                <span className="text-sm text-sub-dark font-medium">
+                  {t('tx')}:
                 </span>
               </div>
               <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
                 <a
-                  href={`https://goerli.etherscan.io/tx/${tx.hash}`}
+                  href={
+                    chainExplorer?.url
+                      ? `${chainExplorer?.url}/tx/${tx?.hash}`
+                      : '#'
+                  }
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-medium text-primary truncate underline max-w-xs"
                 >
-                  {tx.hash}
+                  {tx?.hash}
                 </a>
               </div>
             </div>

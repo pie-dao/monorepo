@@ -10,7 +10,6 @@ import { Web3ContextProvider } from '../components/MultichainProvider/Multichain
 import { wrapper } from '../store';
 import { NotificationDisplay } from '../components/Notifications/Notifications';
 import ModalManager from '../components/Modals/ModalManager';
-import ModalMigration from '../components/Modals/ModalMigration';
 import ModalStakingSuccess from '../components/Modals/ModalSuccess';
 import './styles.css';
 import './app.scss';
@@ -55,7 +54,6 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
           <div className="h-full">
             <NotificationDisplay />
             <ModalManager />
-            <ModalMigration />
             <ModalStakingSuccess />
             <RewardsModalManager />
             <ClaimSuccess />

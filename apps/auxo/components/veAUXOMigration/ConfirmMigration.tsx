@@ -66,10 +66,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     estimatedOutput,
   } = useAppSelector((state) => state.migration);
 
-  const entryFee = useAppSelector(
-    (state) => state.dashboard?.tokens['PRV']?.fee?.label,
-  );
-
   const dispatch = useAppDispatch();
   const upgradoor = useUpgradoor();
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
@@ -208,8 +204,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       memoizedPositions[0].lockDuration,
     );
 
-    const fee = formatBalance(entryFee, defaultLocale, 4, 'standard');
-
     return {
       migrationType: migrationTypeText,
       locks,
@@ -220,7 +214,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
       newLockEnd,
       oldLockDuration,
       token,
-      fee,
     };
   }, [
     textForMigrationType,
@@ -234,7 +227,6 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     t,
     memoizedPositions,
     destinationWallet,
-    entryFee,
   ]);
 
   return (

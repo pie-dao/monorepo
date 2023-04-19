@@ -26,7 +26,6 @@ export type Position = {
 };
 
 export type SliceState = {
-  isMigrationDeployed: boolean | null;
   currentStep: STEPS_LIST | null;
   previousStep: STEPS_LIST | null;
   isSingleLock: boolean;

@@ -20,6 +20,7 @@ import { useClaimedRewards } from '../../hooks/useRewards';
 import { Month } from '../../store/rewards/rewards.types';
 import { formatBalance } from '../../utils/formatBalance';
 import classNames from '../../utils/classnames';
+import { isEmpty } from 'lodash';
 
 const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
   const { t } = useTranslation();
@@ -102,7 +103,7 @@ const RewardsHistoryChart = () => {
     });
   }, [data?.rewardPositions?.ARV, data?.rewardPositions?.PRV, defaultLocale]);
 
-  if (!data) return null;
+  if (isEmpty(getData)) return null;
 
   return (
     <div className="mt-8">

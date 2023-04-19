@@ -268,9 +268,7 @@ export default function ARV({
             </div>
           </div>
         </section>
-        <section className=" mt-6">
-          <ARVNotificationBar />
-        </section>
+        <ARVNotificationBar />
         <section className="mt-6">
           <TokenCarousel>
             <div className="relative h-[482px] flex-[0_0_100%]">
