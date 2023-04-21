@@ -21,9 +21,17 @@ import {
   thunkWithdrawFromVeAUXO,
   thunkStakeXAUXO,
   thunkUnstakeXAUXO,
+  thunkGetUserPrvWithdrawal,
   thunkEarlyTermination,
+  ThunkWithdrawPrv,
 } from './thunks';
-import { Tokens, SliceState, Vaults } from './products.types';
+import {
+  Tokens,
+  SliceState,
+  Vaults,
+  BigNumberReference,
+  Token,
+} from './products.types';
 import { merge } from 'lodash';
 import addTxNotifications from '../../utils/notifications';
 
@@ -181,6 +189,25 @@ const appSlice = createSlice({
       state.loading = false;
     });
 
+    builder.addCase(thunkGetUserPrvWithdrawal.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(thunkGetUserPrvWithdrawal.rejected, (state, action) => {
+      console.error(action.error);
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetUserPrvWithdrawal.fulfilled, (state, action) => {
+      appSlice.caseReducers.setPrvWithdrawal(state, {
+        ...action,
+        payload: {
+          ...action.payload,
+        },
+      });
+      state.loading = false;
+    });
+
     addTxNotifications(builder, thunkMakeDeposit, 'makeDeposit');
     addTxNotifications(builder, thunkApproveDeposit, 'approveDeposit');
     addTxNotifications(builder, thunkApproveToken, 'approveToken');
@@ -196,6 +223,7 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkStakeXAUXO, 'stakeXAUXO');
     addTxNotifications(builder, thunkUnstakeXAUXO, 'unstakeXAUXO');
     addTxNotifications(builder, thunkEarlyTermination, 'earlyTermination');
+    addTxNotifications(builder, ThunkWithdrawPrv, 'withdrawPrv');
   },
 
   reducers: {
@@ -260,6 +288,10 @@ const appSlice = createSlice({
     },
     setIncreasedStakingValue: (state, action: PayloadAction<number>) => {
       state.increasedStakingValue = action.payload;
+    },
+
+    setPrvWithdrawal: (state, action: PayloadAction<Tokens>) => {
+      state.tokens = merge({}, state.tokens, action.payload);
     },
   },
 });

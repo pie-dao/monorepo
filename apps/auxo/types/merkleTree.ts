@@ -5,6 +5,12 @@ export type Recipient = {
   proof: string[];
 };
 
+export type PrvWithdrawalRecipient = {
+  windowIndex: number;
+  amount: string;
+  proof: string[];
+};
+
 export type MerkleTreesByUser = {
   [user: string]: {
     [token: string]: {
@@ -28,6 +34,15 @@ export type MerkleTree = {
   };
   recipients: {
     [address: string]: Recipient;
+  };
+  root: string;
+};
+
+export type PrvWithdrawalMerkleTree = {
+  windowIndex: number;
+  maxAmount: string;
+  recipients: {
+    [address: string]: PrvWithdrawalRecipient;
   };
   root: string;
 };

@@ -95,6 +95,8 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
               }}
             />
             <a
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-primary underline"
               href="https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#how-staking-works-in-prv"
             >
@@ -148,7 +150,7 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
               a: (
                 <a
                   href={
-                    'https://auxodaos-organization.gitbook.io/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
+                    'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
                   }
                   className="text-primary underline"
                   target="_blank"

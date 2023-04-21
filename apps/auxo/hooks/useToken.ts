@@ -2,7 +2,7 @@ import { Erc20Abi } from '@shared/util-blockchain';
 import { getExplorer } from '@shared/util-blockchain/abis';
 import { useWeb3React } from '@web3-react/core';
 import { BigNumberReference } from '../store/products/products.types';
-import { zeroBalance } from '../utils/balances';
+import { isZero, subPercentageToBalance, zeroBalance } from '../utils/balances';
 import { useAppSelector } from './index';
 import { useTokenContract } from './useContracts';
 import {
@@ -161,20 +161,26 @@ export const useApprovalLimit = (
 
 export function usePRVEstimation(
   amount: BigNumberReference,
-): BigNumberReference {
+  subtractedValue = false,
+): {
+  value: BigNumberReference;
+  subtractedValue: BigNumberReference;
+} {
   const decimals = useDecimals('PRV');
   const fee = usePRVFee();
   const estimation = useCallback(() => {
-    if (!amount) return zeroBalance;
-    if (!fee) return amount;
-    const amountBN = BigNumber.from(amount.value);
-    if (!amountBN) return zeroBalance;
-    const feeBN = BigNumber.from(fee.value);
-    const result = amountBN.sub(
-      amountBN.mul(feeBN).div(BigNumber.from('10').pow(18)),
-    );
-    return toBalance(result, decimals);
-  }, [amount, fee, decimals]);
+    const zero = {
+      value: zeroBalance,
+      subtractedValue: zeroBalance,
+    };
+    if (isZero(amount, decimals) || !amount) return zero;
+    if (isZero(fee, decimals))
+      return {
+        value: amount,
+        subtractedValue: zeroBalance,
+      };
+    return subPercentageToBalance(amount, fee, decimals, subtractedValue);
+  }, [amount, decimals, fee, subtractedValue]);
   return estimation();
 }
 
@@ -315,5 +321,20 @@ const getPassedMonths = (monthsAtLock: number, startingAtLock: number) => {
 export const useEarlyTerminationFee = () => {
   return useAppSelector(
     (state) => state.dashboard?.tokens?.ARV?.earlyTerminationFee ?? zeroBalance,
+  );
+};
+
+export const useUserPrvClaimableAmount = () => {
+  return useAppSelector(
+    (state) =>
+      state.dashboard?.tokens?.PRV?.userStakingData?.claimableAmount ??
+      zeroBalance,
+  );
+};
+
+export const useCurrentPrvWithdrawalAmount = () => {
+  return useAppSelector(
+    (state) =>
+      state.dashboard?.tokens?.PRV?.currentWithdrawalAmount ?? zeroBalance,
   );
 };

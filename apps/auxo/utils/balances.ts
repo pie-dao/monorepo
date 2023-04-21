@@ -90,20 +90,46 @@ export const isZero = (b: BigNumberReference, decimals: number): boolean => {
   return value.isZero();
 };
 
-export const subPercentageToBalance = (
+export function subPercentageToBalance(
   b1: BigNumberReference,
   percentage: BigNumberReference,
   decimals: number,
-): BigNumberReference => {
-  const b1Value = BigNumber.from(b1.value);
-  const percentageOfB1 = BigNumber.from(b1.value)
-    .mul(percentage.value)
-    .div(BigNumber.from(10).pow(decimals));
+): BigNumberReference;
 
-  const subtractedValue = b1Value.sub(percentageOfB1);
-
-  return toBalance(subtractedValue, decimals);
+export function subPercentageToBalance(
+  b1: BigNumberReference,
+  percentage: BigNumberReference,
+  decimals: number,
+  showSubtractedValue: boolean,
+): {
+  value: BigNumberReference;
+  subtractedValue: BigNumberReference;
 };
+
+export function subPercentageToBalance(
+  b1: BigNumberReference,
+  percentage: BigNumberReference,
+  decimals: number,
+  showSubtractedValue?: boolean,
+) {
+  const base18Value = BigNumber.from(b1.value);
+  const base18Percentage = BigNumber.from(percentage.value);
+
+  const subtractedValue = base18Value
+    .mul(base18Percentage)
+    .div(ethers.utils.parseUnits('100', decimals));
+
+  const totalValue = base18Value.sub(subtractedValue);
+
+  if (showSubtractedValue) {
+    return {
+      value: toBalance(totalValue, decimals),
+      subtractedValue: toBalance(subtractedValue, decimals),
+    };
+  }
+
+  return toBalance(totalValue, decimals);
+}
 
 export const addNumberToBnReference = (
   b1: BigNumberReference,
@@ -132,4 +158,38 @@ export const addNumberToBnReference = (
     value: value.toString(),
     label,
   };
+};
+
+// compare balances and pick the lowest
+
+export const pickBalance = (
+  b1: BigNumberReference,
+  b2: BigNumberReference,
+  pick: 'min' | 'max',
+): BigNumberReference => {
+  switch (pick) {
+    case 'min':
+      return BigNumber.from(b1.value).lt(BigNumber.from(b2.value)) ? b1 : b2;
+    case 'max':
+      return BigNumber.from(b1.value).gt(BigNumber.from(b2.value)) ? b1 : b2;
+    default:
+      throw new Error('Invalid pick, specify min or max');
+  }
+};
+
+// refactor pick balance to allow a any amount of balances using a linked list
+
+export const pickBalanceList = (
+  balances: BigNumberReference[],
+  pick: 'min' | 'max',
+): BigNumberReference => {
+  if (balances.length === 0) {
+    throw new Error('No balances to pick from');
+  }
+  if (balances.length === 1) {
+    return balances[0];
+  }
+  const [first, second, ...rest] = balances;
+  const picked = pickBalance(first, second, pick);
+  return pickBalanceList([picked, ...rest], pick);
 };

@@ -83,5 +83,9 @@
   "withdrawVeAuxoSuccess": "Withdrew your AUXO successfully",
   "withdrawVeAuxoError": "There was an error while withdrawing your AUXO",
 
+  "withdrawPrvPending": "Withdrawing your PRV",
+  "withdrawPrvSuccess": "Withdrew your PRV successfully",
+  "withdrawPrvError": "There was an error while withdrawing your PRV",
+
   "defaultError": "There was an error"
 }

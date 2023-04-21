@@ -17,6 +17,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import {
   thunkGetUserProductsData,
+  thunkGetUserPrvWithdrawal,
   thunkGetUserStakingData,
 } from '../store/products/thunks';
 import TokensConfig from '../config/products.json';
@@ -24,6 +25,11 @@ import { TokenConfig } from '../types/tokensConfig';
 import Summary from '../components/Summary/xAUXOSummary';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
 import Trans from 'next-translate/Trans';
+import PrvWithdrawalTree from '../config/PrvWithdrawalTree.json';
+import { usePRVMerkleVerifier } from '../hooks/useContracts';
+import { PrvWithdrawalMerkleTree } from '../types/merkleTree';
+
+const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 
 export default function XAUXO({
   tokenConfig,
@@ -43,6 +49,7 @@ export default function XAUXO({
     (state) => state.dashboard?.tokens[tokenConfig.name]?.totalSupply,
   );
 
+  const prvMerkleVerifier = usePRVMerkleVerifier();
   const { account, chainId } = useWeb3React<Web3Provider>();
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -68,6 +75,21 @@ export default function XAUXO({
 
   const data = null;
   const isError = false;
+
+  useEffect(() => {
+    if (prvTree && prvTree?.recipients && account && prvMerkleVerifier) {
+      dispatch(
+        thunkGetUserPrvWithdrawal({
+          account,
+          claim: {
+            ...prvTree?.recipients[account],
+            account,
+          },
+          prvMerkleVerifier,
+        }),
+      );
+    }
+  }, [account, dispatch, prvMerkleVerifier]);
 
   return (
     <>
@@ -328,6 +350,10 @@ export default function XAUXO({
           <Swap
             stakingTokenConfig={stakingTokenConfig}
             tokenConfig={tokenConfig}
+            claim={{
+              ...prvTree?.recipients?.[account],
+              account,
+            }}
           />
           <Summary tokenConfig={tokenConfig} />
         </section>

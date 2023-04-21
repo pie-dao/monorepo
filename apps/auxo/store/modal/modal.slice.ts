@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SliceState, Steps } from './modal.types';
+import { PrvWithdrawalRecipient } from '../../types/merkleTree';
 
 export const initialState: SliceState = {
   step: null,
@@ -22,6 +23,7 @@ export const initialState: SliceState = {
   isConvertAndStake: false,
   showCompleteModal: false,
   isIncreasedValue: false,
+  claim: null,
 };
 
 export const sidebarSlice = createSlice({
@@ -62,6 +64,16 @@ export const sidebarSlice = createSlice({
     setIsIncreasedValue: (state, action: PayloadAction<boolean>) => {
       state.isIncreasedValue = action.payload;
     },
+    setClaim: (
+      state,
+      action: PayloadAction<
+        PrvWithdrawalRecipient & {
+          account: string;
+        }
+      >,
+    ) => {
+      state.claim = action.payload;
+    },
   },
 });
 
@@ -76,5 +88,6 @@ export const {
   setState,
   setIsConvertAndStake,
   setIsIncreasedValue,
+  setClaim,
 } = sidebarSlice.actions;
 export default sidebarSlice.reducer;
