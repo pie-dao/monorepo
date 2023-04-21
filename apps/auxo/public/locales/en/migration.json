@@ -158,8 +158,10 @@
   "newLockTime": "New lock time",
   "singleLockMigrationARV": "Migrate single lock to Active Reward Vault  with LEVEL ${boostLevel}",
   "singleLockMigrationPRV": "Migrate single lock to Passive Reward Vault",
+  "singleLockMigrationPRVAndStake": "Migrate single lock to Passive Reward Vault & Stake",
   "multipleLocksMigrationARV": "Migrate all locks to Active Reward Vault with LEVEL ${boostLevel}",
   "multipleLocksMigrationPRV": "Migrate all locks to Passive Reward Vault",
+  "multipleLocksMigrationPRVAndStake": "Migrate all locks to Passive Reward Vault & Stake",
   "multipleLocksMigrationARVBoost": "Aggregate locks to Active Reward Vault with MAX LEVEL 30",
   "singleLockMigrationARVCompleted": "Single lock migrated to Active Reward Vault successfully",
   "singleLockMigrationPRVCompleted": "Single lock migrated to Passive Reward Vault successfully",
@@ -214,5 +216,7 @@
   "conversionIrreversible": "* Subject to the availability in the vault.",
   "migrateMultipleLocksDescription": "ℹ️ Locks will be migrated in an order determined by our smart contracts, unfortunately, it is not possible to manually select which locks to migrate first.",
   "notEOAorWL": "This address is not an EOA or a whitelisted contract",
-  "invalidAddress": "Invalid address"
+  "invalidAddress": "Invalid address",
+  "stakeOn": "Migrate & Stake PRV 🔥",
+  "stakeOff": "Don't stake PRV"
 }

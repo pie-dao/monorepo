@@ -15,6 +15,8 @@ const initialState: SliceState = {
   positions: [],
   estimatedOutput: null,
   boost: true,
+  stake: false,
+  aggregateStake: false,
   migrationType: null,
   DOUGHInput: '',
   tx: {
@@ -96,6 +98,12 @@ export const migrationSlice = createSlice({
     setBoost: (state, action: PayloadAction<boolean>) => {
       state.boost = action.payload;
     },
+    setStake: (state, action: PayloadAction<boolean>) => {
+      state.stake = action.payload;
+    },
+    setAggregateStake: (state, action: PayloadAction<boolean>) => {
+      state.aggregateStake = action.payload;
+    },
     setMigrationType: (
       state,
       action: PayloadAction<SliceState['migrationType']>,
@@ -115,6 +123,7 @@ export const migrationSlice = createSlice({
       state.positions = [];
       state.estimatedOutput = null;
       state.boost = false;
+      state.stake = false;
       state.migrationType = null;
       state.DOUGHInput = '';
       state.tx = {
@@ -134,6 +143,8 @@ export const {
   setTxHash,
   setTxState,
   setBoost,
+  setStake,
+  setAggregateStake,
   setMigrationType,
   setConvertedDOUGHLabel,
   setCleanupFlow,
