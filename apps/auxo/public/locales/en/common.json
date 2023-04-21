@@ -342,7 +342,7 @@
   "yourPendingStakedBalance": "Your next epoch staked PRV",
   "pendingStakedBalance": "${pendingBalance} PRV",
   "burningPrvToAuxo": "Burning PRV to AUXO",
-  "burningPrvToAuxoSubtitle": "PRV holder can burn their token to get Auxo back subject to the availability in the vault. The monthly redemption budget from PRV–>AUXO is computed every month.",
+  "burningPrvToAuxoSubtitle": "PRV holders can burn their token to get Auxo back subject to the availability in the vault. The monthly redemption budget from PRV–>AUXO is computed every month.",
   "checkDocumentation": "Check the documentation",
   "goToDocs": "Go to docs",
   "epoch": "Epoch:",
@@ -359,8 +359,8 @@
   "fee": "Fee",
   "confirmWithdrawPrv": "Confirm & Redeem",
   "withdrawPrvTitle": "You are burning PRV for AUXO",
-  "withdrawPrvDescription": "PRV holder can burn their token to get Auxo back subject to the availability in the vault. The monthly redemption budget from PRV–>AUXO is computed every month.",
+  "withdrawPrvDescription": "PRV holders can burn their token to get Auxo back subject to the availability in the vault. The monthly redemption budget from PRV–>AUXO is computed every month.",
   "withdrawingPrv": "Withdrawing PRV",
   "withdrawn": "Withdrawn PRV",
-  "withdrawExplanation": "PRV to AUXO redemption is subject to a redemption allowance derived by a function considering for each epoch the Auxo price premium versus the treasury net asset value."
+  "withdrawExplanation": "PRV to AUXO redemption is subject to a redemption allowance. This allowance is based on the Auxo price premium versus the treasury net asset value."
 }
