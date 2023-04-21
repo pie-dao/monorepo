@@ -23,7 +23,7 @@ export default function WithdrawPrvCompleted() {
       <div className="flex flex-col items-center justify-center w-full gap-y-4">
         <div className="h-[180px] w-full rounded-lg overflow-hidden">
           <RiveComponent
-            src={'/animations/AUXO-PRV.riv'}
+            src={'/animations/PRV_AUXO.riv'}
             layout={
               new Layout({
                 fit: Fit.Contain,
