@@ -83,5 +83,9 @@
   "withdrawVeAuxoSuccess": "Withdrew your AUXO successfully",
   "withdrawVeAuxoError": "There was an error while withdrawing your AUXO",
 
+  "delegateVotePending": "Delegating your vote",
+  "delegateVoteSuccess": "Delegated your vote successfully",
+  "delegateVoteError": "There was an error while delegating your vote",
+
   "defaultError": "There was an error"
 }

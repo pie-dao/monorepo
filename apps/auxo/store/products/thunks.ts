@@ -21,7 +21,7 @@ import {
 import filter from 'lodash/filter';
 import find from 'lodash/find';
 import { promiseObject } from '../../utils/promiseObject';
-import { toBalance } from '../../utils/formatBalance';
+import { percentageBetween, toBalance } from '../../utils/formatBalance';
 import {
   contractWrappers,
   FTMAuthContractWrapper,
@@ -80,6 +80,7 @@ export const THUNKS = {
   WITHDRAW_VE_AUXO: 'ARV/withdrawVeAUXO',
   GET_USER_REWARDS: 'app/getUserRewards',
   EARLY_TERMINATION: 'ARV/earlyTermination',
+  DELEGATE_VOTE: 'ARV/delegateVote',
 };
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
@@ -357,8 +358,7 @@ export const thunkGetUserStakingData = createAsyncThunk(
         lock: stakingContract.lockOf(account),
         decimals: veAUXOContract.decimals(),
         totalSupply: veAUXOContract.totalSupply(),
-        // votes: veAUXOContract.getVotes(account),
-        // delegation: veAUXOContract.delegates(account),
+        delegation: veAUXOContract.delegates(account),
       });
 
       const xAUXOResults = promiseObject({
@@ -372,18 +372,24 @@ export const thunkGetUserStakingData = createAsyncThunk(
       const veAUXOData = await veAUXOresults;
       const xAUXOData = await xAUXOResults;
 
+      const isSelfDelegate = veAUXOData.delegation === account;
+
+      const votes = isSelfDelegate
+        ? await veAUXOContract.getVotes(account)
+        : BigNumber.from(0);
+
       return {
         ['ARV']: {
           userStakingData: {
             amount: toBalance(veAUXOData.lock.amount, veAUXOData.decimals),
             lockedAt: veAUXOData.lock.lockedAt,
             lockDuration: veAUXOData.lock.lockDuration,
-            // votingPower: percentageBetween(
-            //   veAUXOData.votes,
-            //   veAUXOData.totalSupply,
-            //   veAUXOData.decimals,
-            // ),
-            // delegator: veAUXOData.delegation,
+            votingPower: percentageBetween(
+              votes,
+              veAUXOData.totalSupply,
+              veAUXOData.decimals,
+            ),
+            delegator: veAUXOData.delegation,
           },
         },
         ['PRV']: {
@@ -1534,5 +1540,49 @@ export const thunkEarlyTermination = createAsyncThunk(
     }
 
     return receipt.status !== 1 && rejectWithValue('Terminate Early Failed');
+  },
+);
+
+export type ThunkDelegateVoteProps = {
+  account: string;
+  ARV: VeAUXOAbi | undefined;
+};
+
+export const thunkDelegateVote = createAsyncThunk(
+  THUNKS.DELEGATE_VOTE,
+  async (
+    { account, ARV }: ThunkDelegateVoteProps,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!account || !ARV)
+      return rejectWithValue('Missing Account Details or Contract');
+
+    dispatch(setTxHash(null));
+    let tx: ContractTransaction;
+
+    try {
+      tx = await ARV.delegate(account);
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Delegate Failed');
+    }
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `delegateVotePending`,
+      id: 'delegateVote',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(thunkGetVeAUXOStakingData());
+      dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserStakingData({ account }));
+    }
+
+    return receipt.status !== 1 && rejectWithValue('Delegate Failed');
   },
 );

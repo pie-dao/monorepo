@@ -20,6 +20,7 @@ import {
   ClaimHelperAbi__factory,
   PRVMerkleVerifierAbi__factory,
   PRVRouterAbi__factory,
+  VeAUXOAbi__factory,
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
 import migration from '../config/migration.json';
@@ -269,6 +270,21 @@ export function usePRVMerkleVerifierContract(address?: string) {
   }, [address, library, account, active]);
 }
 
+export function useARVContract(address?: string) {
+  const { library, account, active } = useWeb3React();
+  return useMemo(() => {
+    if (!address || !library) return;
+    try {
+      if (!active) throw new ProviderNotActivatedError();
+      const providerSigner = getProviderOrSigner(library, account);
+      return VeAUXOAbi__factory.connect(address, providerSigner);
+    } catch (error) {
+      console.error('Failed to get contract', error);
+      return undefined;
+    }
+  }, [address, library, account, active]);
+}
+
 export function useAuxoVaultContract(vaultAddress?: string) {
   return useVaultContract(vaultAddress);
 }
@@ -345,4 +361,9 @@ export function usePRVMerkleVerifier() {
   return usePRVMerkleVerifierContract(
     tokensConfig['PRV']?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
   );
+}
+
+export function useARVToken() {
+  const { chainId } = useWeb3React();
+  return useARVContract(tokensConfig['ARV']?.addresses?.[chainId]?.address);
 }
