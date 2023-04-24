@@ -168,9 +168,7 @@ export default function XAUXO({
                   </p>
                   <div className="flex text-base text-sub-dark font-medium gap-x-1">
                     {t('totalStaked', { token: 'PRV' })}
-                    <Tooltip>
-                      {t('totalStakedTooltip', { token: 'PRV' })}
-                    </Tooltip>
+                    <Tooltip>{t('totalStakedPrvTooltip')}</Tooltip>
                   </div>
                 </>
               )}
@@ -274,7 +272,7 @@ export default function XAUXO({
             </div>
             <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_1.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide2Title')}
                   </h2>
@@ -308,7 +306,7 @@ export default function XAUXO({
             </div>
             <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden  relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_2.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-8">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide3Title')}
                   </h2>
