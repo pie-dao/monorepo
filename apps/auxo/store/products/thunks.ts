@@ -334,9 +334,9 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
       const results = promiseObject({
         // includes pending stakes
         stakingAmount: rollStakerContract.getProjectedNextEpochBalance(),
-        currentWithdrawalAmount: PrvMerkleVerifierContract.budgetRemaining(
-          prvTree?.windowIndex,
-        ),
+        // currentWithdrawalAmount: PrvMerkleVerifierContract.budgetRemaining(
+        //   prvTree?.windowIndex,
+        // ),
         decimals: xAUXOContract.decimals(),
         totalSupply: xAUXOContract.totalSupply(),
         fee: xAUXOContract.fee(),
@@ -354,10 +354,10 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
             stakingData.fee.mul(BigNumber.from(100)),
             stakingData.decimals,
           ),
-          currentWithdrawalAmount: toBalance(
-            stakingData.currentWithdrawalAmount,
-            stakingData.decimals,
-          ),
+          // currentWithdrawalAmount: toBalance(
+          //   stakingData.currentWithdrawalAmount,
+          //   stakingData.decimals,
+          // ),
         },
       };
     } catch (e) {
