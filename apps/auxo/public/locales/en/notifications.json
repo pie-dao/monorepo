@@ -43,7 +43,7 @@
   "aggregateToPRVSuccess": "Aggregated veDOUGH successfully to PRV",
   "aggregateToPRVError": "There was an error while aggregating veDOUGH to PRV",
 
-  "aggregateToPRVAndStake": "Aggregating veDOUGH to PRV and staking",
+  "aggregateToPRVAndStakePending": "Aggregating veDOUGH to PRV and staking",
   "aggregateToPRVAndStakeSuccess": "Aggregated veDOUGH successfully to PRV and staked",
   "aggregateToPRVAndStakeError": "There was an error while aggregating and staking veDOUGH to PRV",
 

@@ -192,7 +192,6 @@ export const thunkClaimAllRewards = createAsyncThunk(
   ) => {
     if (isEmpty(claims))
       return rejectWithValue('Missing Contract, Account Details or Rewards');
-    console.log(claimHelper);
 
     dispatch(setTxHash(null));
     let tx: ContractTransaction;

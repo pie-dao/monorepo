@@ -193,7 +193,7 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
 
     let tx: ContractTransaction;
     let m: MigrateOptions;
-    console.log('stake', stake);
+
     try {
       m = migrationOption({
         boost,
