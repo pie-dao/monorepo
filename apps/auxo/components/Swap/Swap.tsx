@@ -611,6 +611,8 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                               </p>
                             </div>
                             <a
+                              rel="noreferrer noopener"
+                              target="_blank"
                               className="w-fit px-5 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary hover:bg-secondary hover:text-white flex gap-x-2 items-center"
                               href="https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics"
                             >
