@@ -210,9 +210,7 @@ export default function ARV({
                   </p>
                   <div className="flex text-base text-sub-dark font-medium gap-x-1">
                     {t('totalStaked', { token: 'AUXO' })}
-                    <Tooltip>
-                      {t('totalStakedTooltip', { token: 'AUXO' })}
-                    </Tooltip>
+                    <Tooltip>{t('totalStakedArvTooltip')}</Tooltip>
                   </div>
                 </>
               )}
