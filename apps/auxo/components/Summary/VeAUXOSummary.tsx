@@ -1,6 +1,5 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { ethers } from 'ethers';
 import useTranslation from 'next-translate/useTranslation';
 import { useWeb3React } from '@web3-react/core';
 import {
@@ -10,7 +9,6 @@ import {
   useUserHasLock,
   useUserIncreasedLevel,
   useUserLevel,
-  useUserLevelPercetageReward,
   useUserLockAmount,
   useUserVotingPower,
 } from '../../hooks/useToken';
@@ -19,12 +17,13 @@ import triangle from '../../public/images/icons/triangle.svg';
 import unlock from '../../public/images/icons/unlock.svg';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
-import { useAppSelector } from '../../hooks';
-import trimAccount from '../../utils/trimAccount';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ParentSize } from '@visx/responsive';
 import LevelChart from '../LevelChart/LevelChart';
 import { ExclamationIcon } from '@heroicons/react/solid';
 import Banner from '../Banner/Banner';
+import { thunkDelegateVote } from '../../store/products/thunks';
+import { useARVToken } from '../../hooks/useContracts';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -35,18 +34,28 @@ type Props = {
 const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { increasedStakingValue } = useAppSelector((state) => state.dashboard);
+  const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const { name } = tokenConfig;
   const { t } = useTranslation();
   const veAUXOBalance = useTokenBalance(name);
-  const votingPower = useUserVotingPower(name);
+  const arvConract = useARVToken();
   const stakedAuxo = useUserLockAmount(name);
   const hasLock = useUserHasLock(name);
   const delegator = useDelegatorAddress(name);
   const endDate = useUserEndDate();
   const userLevel = useUserLevel(commitmentValue);
   const increasedLevel = useUserIncreasedLevel(increasedStakingValue);
-  const userLevelPercetageReward = useUserLevelPercetageReward(userLevel);
+  const votingPower = useUserVotingPower('ARV');
+
+  const delegateVote = useCallback(() => {
+    dispatch(
+      thunkDelegateVote({
+        ARV: arvConract,
+        account,
+      }),
+    );
+  }, [account, arvConract, dispatch]);
 
   const numEmojis = useMemo(() => {
     const level = hasLock ? increasedLevel : userLevel;
@@ -66,31 +75,33 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
     [numEmojis],
   );
 
-  const votingPowerValue = useMemo(
-    (): JSX.Element =>
-      (account && votingPower?.label !== 0) || veAUXOBalance?.label === 0 ? (
-        <p>{formatAsPercent(votingPower.label)}</p>
-      ) : account && delegator && delegator === ethers.constants.AddressZero ? (
-        <a
-          target="_blank"
-          href={process.env.NEXT_PUBLIC_TALLY_URL}
-          rel="noreferrer noopener"
-          className="text-secondary underline"
+  const votingPowerValue = useMemo(() => {
+    if (veAUXOBalance?.label === 0 || !account || !delegator) {
+      return t('N/A');
+    }
+    if (delegator === account) {
+      return formatAsPercent(votingPower?.label, defaultLocale, 2);
+    }
+    if (delegator !== account) {
+      return (
+        <button
+          onClick={delegateVote}
+          className="text-base font-bold text-white uppercase bg-gradient-major-secondary-predominant rounded-xl py-1 px-4"
         >
-          {t('notDelegated')}
-        </a>
-      ) : account && delegator && delegator !== account ? (
-        <a
-          target="_blank"
-          href={`https://tally.xyz/profile/${delegator}`}
-          rel="noreferrer noopener"
-          className="text-secondary underline"
-        >
-          {t('delegatedTo', { account: trimAccount(delegator, true) })}
-        </a>
-      ) : null,
-    [account, votingPower?.label, veAUXOBalance?.label, delegator, t],
-  );
+          {t('delegateToSelfForRewards')}
+        </button>
+      );
+    }
+    return '--';
+  }, [
+    account,
+    defaultLocale,
+    delegateVote,
+    delegator,
+    t,
+    veAUXOBalance?.label,
+    votingPower?.label,
+  ]);
 
   const summaryData = useMemo(() => {
     return [
@@ -117,7 +128,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           <>
             {account &&
               formatBalance(
-                veAUXOBalance.label,
+                veAUXOBalance?.label,
                 defaultLocale,
                 2,
                 'standard',
@@ -126,18 +137,27 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           </>
         ),
       },
-      // {
-      //   icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
-      //   title: t('governancePower'),
-      //   value: votingPowerValue,
-      // },
+      {
+        icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
+        title: t('governancePower'),
+        value: votingPowerValue,
+      },
       {
         icon: <Image src={unlock} alt="triangle" width={24} height={24} />,
         title: t('unlock'),
         value: hasLock ? endDate : '--/--/----',
       },
     ];
-  }, [account, defaultLocale, stakedAuxo, t, veAUXOBalance, hasLock, endDate]);
+  }, [
+    t,
+    account,
+    stakedAuxo.label,
+    defaultLocale,
+    veAUXOBalance?.label,
+    votingPowerValue,
+    hasLock,
+    endDate,
+  ]);
 
   return (
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2">
@@ -161,12 +181,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           />
         )}
       </ParentSize>
-      <a
-        href={process.env.NEXT_PUBLIC_TALLY_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group group-hover:text-underline"
-      >
+      {account && delegator !== account && (
         <Banner
           bgColor="bg-warning"
           content={t('rememberToDelegate')}
@@ -178,7 +193,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           }
           className="group-hover:text-underline"
         />
-      </a>
+      )}
       {summaryData.map(({ icon, title, value }, index) => (
         <div
           className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"

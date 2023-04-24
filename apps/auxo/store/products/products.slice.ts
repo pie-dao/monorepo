@@ -22,6 +22,7 @@ import {
   thunkStakeXAUXO,
   thunkUnstakeXAUXO,
   thunkEarlyTermination,
+  thunkDelegateVote,
 } from './thunks';
 import { Tokens, SliceState, Vaults } from './products.types';
 import { merge } from 'lodash';
@@ -196,6 +197,7 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkStakeXAUXO, 'stakeXAUXO');
     addTxNotifications(builder, thunkUnstakeXAUXO, 'unstakeXAUXO');
     addTxNotifications(builder, thunkEarlyTermination, 'earlyTermination');
+    addTxNotifications(builder, thunkDelegateVote, 'delegateVote');
   },
 
   reducers: {

@@ -346,5 +346,6 @@
   "merkleDistributorContract": "MerkleDistributor PRV Proxy",
   "merkleVerifierContract": "PRVMerkleVerifier Proxy",
   "PrvRouterContract": "PRV Router",
-  "unstaking": "Unstaking"
+  "unstaking": "Unstaking",
+  "delegateToSelfForRewards": "Delegate"
 }
