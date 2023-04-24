@@ -34,6 +34,8 @@ export type SliceState = {
   loadingPreview: boolean;
   positions: Position[];
   boost: boolean;
+  stake: boolean;
+  aggregateStake: boolean;
   migrationType: typeof MIGRATION_TYPE[keyof typeof MIGRATION_TYPE] | null;
   DOUGHInput: string;
   estimatedOutput: {

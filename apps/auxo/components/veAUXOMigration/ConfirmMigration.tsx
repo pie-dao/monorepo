@@ -63,6 +63,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     isSingleLock,
     boost,
     migrationType,
+    stake,
+    aggregateStake,
     estimatedOutput,
   } = useAppSelector((state) => state.migration);
 
@@ -89,6 +91,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
         token,
         isSingleLock,
         sender: account,
+        stake,
+        aggregateStake,
       }),
     );
   };
@@ -127,7 +131,11 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     const baseText = token === 'ARV' ? 'MigrationARV' : 'MigrationPRV';
     const boostText = token === 'ARV' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
-    return t(`${lockText}${baseText}${boostText}`, {
+    const stakeText =
+      (stake && isSingleLock) || (aggregateStake && !isSingleLock)
+        ? 'AndStake'
+        : '';
+    return t(`${lockText}${baseText}${boostText}${stakeText}`, {
       boostLevel: getLevel(
         getRemainingMonths(
           new Date(),
@@ -138,7 +146,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
         ),
       ),
     });
-  }, [token, boost, isSingleLock, t, memoizedPositions]);
+  }, [token, boost, isSingleLock, t, memoizedPositions, stake]);
 
   const migrationRecapContent = useMemo<MigrationRecapProps>(() => {
     if (!memoizedPositions) return null;

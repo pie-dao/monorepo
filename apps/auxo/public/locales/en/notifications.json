@@ -35,9 +35,17 @@
   "updateSingleLockPRVSuccess": "Aggregated your veDOUGH to PRV successfully",
   "updateSingleLockPRVError": "Error migrating your veDOUGH lock to PRV",
 
+  "updateSingleLockPRVAndStakePending": "Migrating your veDOUGH lock to PRV and staking",
+  "updateSingleLockPRVAndStakeSuccess": "Aggregated and staked your veDOUGH to PRV successfully",
+  "updateSingleLockPRVAndStakeError": "Error migrating your veDOUGH lock to PRV and staking",
+
   "aggregateToPRVPending": "Aggregating veDOUGH to PRV",
   "aggregateToPRVSuccess": "Aggregated veDOUGH successfully to PRV",
   "aggregateToPRVError": "There was an error while aggregating veDOUGH to PRV",
+
+  "aggregateToPRVAndStakePending": "Aggregating veDOUGH to PRV and staking",
+  "aggregateToPRVAndStakeSuccess": "Aggregated veDOUGH successfully to PRV and staked",
+  "aggregateToPRVAndStakeError": "There was an error while aggregating and staking veDOUGH to PRV",
 
   "stakeXAUXOPending": "Staking PRV",
   "stakeXAUXOSuccess": "Staked PRV successfully",
