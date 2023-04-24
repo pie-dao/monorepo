@@ -74,7 +74,7 @@ const Tooltip: React.FC<Props> = ({
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
-                  className="bg-white rounded-md shadow-md px-4 py-3 z-40"
+                  className="bg-white rounded-md shadow-md px-4 py-3 z-40 max-w-md"
                   {...attributes.popper}
                 >
                   {children}

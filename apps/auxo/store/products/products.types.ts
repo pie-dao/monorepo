@@ -19,6 +19,7 @@ export type Token = {
   votingAddresses?: number;
   fee?: BigNumberReference;
   earlyTerminationFee?: BigNumberReference;
+  currentWithdrawalAmount?: BigNumberReference;
   userStakingData?: {
     amount: BigNumberReference;
     currentEpochBalance?: BigNumberReference;
@@ -27,6 +28,7 @@ export type Token = {
     lockDuration: number;
     votingPower?: BigNumberReference;
     delegator?: string;
+    claimableAmount?: BigNumberReference;
   };
 };
 

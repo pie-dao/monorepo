@@ -1,3 +1,4 @@
+import { PrvWithdrawalRecipient } from '../../types/merkleTree';
 import { BigNumberReference } from '../products/products.types';
 
 export const STEPS = {
@@ -16,6 +17,9 @@ export const STEPS = {
   UNSTAKE_COMPLETED: 'UNSTAKE_COMPLETED',
   BOOST_STAKE_ARV: 'BOOST_STAKE_ARV',
   CONVERT_COMPLETED: 'CONVERT_COMPLETED',
+  WITHDRAW_PRV: 'WITHDRAW_PRV',
+  CONFIRM_WITHDRAW_PRV: 'CONFIRM_WITHDRAW_PRV',
+  WITHDRAW_PRV_COMPLETED: 'WITHDRAW_PRV_COMPLETED',
 } as const;
 
 export type Steps =
@@ -33,7 +37,10 @@ export type Steps =
   | `${'BOOST_STAKE_'}${string}`
   | `${'EARLY_TERMINATION'}`
   | `${'CONFIRM_EARLY_TERMINATION'}`
-  | `${'EARLY_TERMINATION_COMPLETED'}`;
+  | `${'EARLY_TERMINATION_COMPLETED'}`
+  | `${'WITHDRAW_PRV'}`
+  | `${'CONFIRM_WITHDRAW_PRV'}`
+  | `${'WITHDRAW_PRV_COMPLETED'}`;
 
 export const TX_STATES = {
   PENDING: 'PENDING',
@@ -66,4 +73,7 @@ export type SliceState = {
   showCompleteModal?: boolean;
   isConvertAndStake?: boolean;
   isIncreasedValue?: boolean;
+  claim: PrvWithdrawalRecipient & {
+    account: string;
+  };
 };

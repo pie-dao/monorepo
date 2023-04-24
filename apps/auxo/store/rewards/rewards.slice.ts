@@ -4,7 +4,7 @@ import { BigNumberReference } from '../products/products.types';
 import { thunkClaimRewards, thunkGetUserRewards } from './rewards.thunks';
 import { SliceState, Steps, TokenName, TxState } from './rewards.types';
 
-const initialState: SliceState = {
+export const initialState: SliceState = {
   data: {
     rewardPositions: {
       ARV: [],

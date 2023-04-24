@@ -95,5 +95,9 @@
   "delegateVoteSuccess": "Delegated your vote successfully",
   "delegateVoteError": "There was an error while delegating your vote",
 
+  "withdrawPrvPending": "Withdrawing your PRV",
+  "withdrawPrvSuccess": "PRV successfully Withdrawn",
+  "withdrawPrvError": "There was an error while withdrawing your PRV",
+
   "defaultError": "There was an error"
 }

@@ -16,6 +16,8 @@ import UnstakeArv from './ModalSteps/UnstakeArv';
 import UnstakeCompleted from './ModalSteps/UnstakeCompleted';
 import EarlyTermination from './ModalSteps/EarlyTermination/EarlyTermination';
 import EarlyTerminationComplete from './ModalSteps/EarlyTermination/EarlyTerminationComplete';
+import WithdrawPrv from './ModalSteps/xAUXO/WithdrawPrv';
+import WithdrawPrvCompleted from './ModalSteps/xAUXO/WithdrawPrvCompleted';
 
 export default function ModalManager() {
   const { step, isOpen } = useAppSelector((state) => state.modal);
@@ -69,6 +71,10 @@ export default function ModalManager() {
                   {step === STEPS.EARLY_TERMINATION && <EarlyTermination />}
                   {step === STEPS.EARLY_TERMINATION_COMPLETED && (
                     <EarlyTerminationComplete />
+                  )}
+                  {step === STEPS.WITHDRAW_PRV && <WithdrawPrv />}
+                  {step === STEPS.WITHDRAW_PRV_COMPLETED && (
+                    <WithdrawPrvCompleted />
                   )}
                 </ModalBox>
               </>

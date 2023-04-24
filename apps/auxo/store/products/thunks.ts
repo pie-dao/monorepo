@@ -17,6 +17,7 @@ import {
   RollStakerAbi,
   StakingManagerAbi,
   PRVRouterAbi,
+  PRVMerkleVerifierAbi,
 } from '@shared/util-blockchain';
 import filter from 'lodash/filter';
 import find from 'lodash/find';
@@ -36,6 +37,7 @@ import {
   rollStakerContract,
   merkleDistributorContract,
   auxoContract,
+  PrvMerkleVerifierContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens, Vault, Vaults } from './products.types';
 import { vaults as vaultConfigs } from '../../config/auxoVaults';
@@ -55,6 +57,13 @@ import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
 import { JsonRpcSigner } from '@ethersproject/providers';
 import { ONE_HOUR_DEADLINE } from '../../utils/constants';
+import {
+  PrvWithdrawalMerkleTree,
+  PrvWithdrawalRecipient,
+} from '../../types/merkleTree';
+import { isEmpty } from 'lodash';
+import PrvWithdrawalTree from '../../config/PrvWithdrawalTree.json';
+import { defaultAbiCoder } from '@ethersproject/abi';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -80,12 +89,15 @@ export const THUNKS = {
   WITHDRAW_VE_AUXO: 'ARV/withdrawVeAUXO',
   GET_USER_REWARDS: 'app/getUserRewards',
   EARLY_TERMINATION: 'ARV/earlyTermination',
+  WITHDRAW_PRV: 'PRV/withdrawPRV',
   DELEGATE_VOTE: 'ARV/delegateVote',
 };
 
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
 const sumBalance = (x: number, y: number) => x + y;
 const deadline = Math.floor(Date.now() / 1000 + ONE_HOUR_DEADLINE).toString();
+
+const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 
 export const thunkGetProductsData = createAsyncThunk(
   THUNKS.GET_PRODUCTS_DATA,
@@ -322,6 +334,9 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
       const results = promiseObject({
         // includes pending stakes
         stakingAmount: rollStakerContract.getProjectedNextEpochBalance(),
+        currentWithdrawalAmount: PrvMerkleVerifierContract.budgetRemaining(
+          prvTree?.windowIndex,
+        ),
         decimals: xAUXOContract.decimals(),
         totalSupply: xAUXOContract.totalSupply(),
         fee: xAUXOContract.fee(),
@@ -337,6 +352,10 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
           totalSupply: toBalance(stakingData.totalSupply, stakingData.decimals),
           fee: toBalance(
             stakingData.fee.mul(BigNumber.from(100)),
+            stakingData.decimals,
+          ),
+          currentWithdrawalAmount: toBalance(
+            stakingData.currentWithdrawalAmount,
             stakingData.decimals,
           ),
         },
@@ -1540,6 +1559,93 @@ export const thunkEarlyTermination = createAsyncThunk(
     }
 
     return receipt.status !== 1 && rejectWithValue('Terminate Early Failed');
+  },
+);
+
+export type ThunkUserPrvWithdrawal = {
+  account: string;
+  claim: PrvWithdrawalRecipient & { account: string };
+  prvMerkleVerifier: PRVMerkleVerifierAbi;
+};
+
+export const thunkGetUserPrvWithdrawal = createAsyncThunk(
+  THUNKS.GET_USER_REWARDS,
+  async (
+    { account, claim, prvMerkleVerifier }: ThunkUserPrvWithdrawal,
+    { rejectWithValue },
+  ) => {
+    try {
+      if (!account || isEmpty(claim))
+        return rejectWithValue('Missing Account Details or Rewards');
+      const { proof: merkleProof, ...rest } = claim;
+      const amountToClaim = await prvMerkleVerifier.availableToWithdrawInClaim({
+        ...rest,
+        merkleProof,
+      });
+
+      return {
+        ['PRV']: {
+          userStakingData: {
+            claimableAmount: toBalance(amountToClaim, 18),
+          },
+        },
+      };
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Get User Rewards Failed');
+    }
+  },
+);
+
+export type ThunkWithdrawPrvProps = {
+  amount: BigNumberReference;
+  account: string;
+  PRV: PRVAbi | undefined;
+  claim: PrvWithdrawalRecipient & { account: string };
+};
+
+export const ThunkWithdrawPrv = createAsyncThunk(
+  THUNKS.WITHDRAW_PRV,
+  async (
+    { account, amount, PRV, claim }: ThunkWithdrawPrvProps,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!amount || !account || !PRV || isEmpty(claim))
+      return rejectWithValue('Missing Contract, Account Details and Amount');
+
+    const encodedClaim = defaultAbiCoder.encode(
+      ['tuple(uint256,uint256,bytes32[],address)'],
+      [[claim.windowIndex, claim.amount, claim.proof, account]],
+    );
+
+    let tx: ContractTransaction;
+    dispatch(setTxHash(null));
+    try {
+      tx = await PRV.withdraw(amount.value, encodedClaim);
+    } catch (e) {
+      console.error(e);
+    }
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `withdrawPrvPending`,
+      id: 'withdrawPrv',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(setStep(STEPS.WITHDRAW_PRV_COMPLETED));
+      dispatch(thunkGetXAUXOStakingData());
+      dispatch(thunkGetUserProductsData({ account }));
+      dispatch(thunkGetUserStakingData({ account }));
+    }
+
+    return receipt.status === 1
+      ? { amount }
+      : rejectWithValue('Withdraw Failed');
   },
 );
 

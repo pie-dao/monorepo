@@ -15,6 +15,7 @@ import {
   RollStakerAbi__factory,
   MerkleDistributorAbi__factory,
   PRVAbi__factory,
+  PRVMerkleVerifierAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, MAINNET_RPC, SUPPORTED_CHAINS } from '../../utils/networks';
@@ -131,6 +132,13 @@ export const merkleDistributorContract = (token: string) =>
       new ethers.providers.JsonRpcProvider(localRPC),
     ),
   );
+
+export const PrvMerkleVerifierContract = MAINNETMulticall.wrap(
+  PRVMerkleVerifierAbi__factory.connect(
+    products['PRV'].addresses[selectedNetwork].PRVMerkleVerifierAddress,
+    new ethers.providers.JsonRpcProvider(localRPC),
+  ),
+);
 
 export const FTMContractWrappers = FTMContracts.map((address) => {
   const contract = YieldvaultAbi__factory.connect(
