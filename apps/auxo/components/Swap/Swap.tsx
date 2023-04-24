@@ -154,11 +154,11 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
               <Tab.Panel className="h-full">
                 <ModalBox className="flex flex-col gap-y-4 h-full">
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center justify-between w-full gap-x-4">
                     <p className="text-base text-primary font-medium">
                       {t('amountToStake')}
                     </p>
-                    <div className="flex w-68 justify-end">
+                    <div className="flex w-72 justify-end">
                       <Listbox value={tab} onChange={setTab}>
                         {({ open }) => (
                           <div className="relative mt-1 w-full">
@@ -167,7 +167,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                                 <div className="flex flex-shrink-0">
                                   {tab.image}
                                 </div>
-                                <h2 className="text-lg font-medium text-primary">
+                                <h2 className="text-base md:text-lg font-medium text-primary">
                                   {tab.title}
                                 </h2>
                               </div>
