@@ -264,8 +264,10 @@ export default function Navigation({
       <motion.button
         type="button"
         className={classNames(
-          'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 mt-7',
-          open ? 'left-36 md:left-40' : 'left-5 md:left-6 lg:left-20',
+          'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 mt-7 rounded-full',
+          open
+            ? 'left-36 lg:left-40 bg-transparent'
+            : 'left-5 lg:left-20 bg-white/90 shadow py-2 px-1',
         )}
         onClick={() => setOpen(!open)}
       >

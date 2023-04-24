@@ -200,7 +200,7 @@ export default function ARV({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark sm:text-xl">
+                  <p className="font-bold text-sub-dark text-base sm:text-xl">
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
@@ -208,7 +208,7 @@ export default function ARV({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-xs sm:text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
                     {t('totalStaked', { token: 'AUXO' })}
                     <Tooltip>
                       {t('totalStakedTooltip', { token: 'AUXO' })}
@@ -415,6 +415,7 @@ export default function ARV({
         <section className="grid grid-cols-1 xl:grid-cols-2 gap-4  text-xs md:text-inherit mt-6">
           <Stake
             tokenConfig={stakingTokenConfig}
+            destinationToken={tokenConfig}
             commitmentValue={commitmentValue}
             setCommitmentValue={setCommitmentValue}
           />

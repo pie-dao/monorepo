@@ -47,6 +47,7 @@ type Props = {
 
 const Stake: React.FC<Props> = ({
   tokenConfig,
+  destinationToken,
   commitmentValue,
   setCommitmentValue,
 }) => {
@@ -102,6 +103,27 @@ const Stake: React.FC<Props> = ({
     return addNumberToBnReference(veAUXOBalance, convertNewAmount, decimals);
   }, [depositValue, remainingCommitment, veAUXOBalance, decimals]);
 
+  const addressList = useMemo(() => {
+    return [
+      {
+        title: t('auxoContract'),
+        address: tokenConfig?.addresses?.[1]?.address,
+      },
+      {
+        title: t('arvContract'),
+        address: destinationToken?.addresses?.[1]?.address,
+      },
+      {
+        title: t('tokenLockerContract'),
+        address: destinationToken?.addresses?.[1]?.stakingAddress,
+      },
+      {
+        title: t('merkleDistributorContract'),
+        address: destinationToken?.addresses?.[1]?.merkleDistributorAddress,
+      },
+    ];
+  }, [t, tokenConfig?.addresses, destinationToken?.addresses]);
+
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/arv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full overflow-hidden">
@@ -120,6 +142,24 @@ const Stake: React.FC<Props> = ({
                 {({ selected }) => (
                   <>
                     {t('stake')}
+                    {selected && (
+                      <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+                    )}
+                  </>
+                )}
+              </Tab>
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    'text-base font-semibold focus:outline-none relative',
+                    selected ? ' text-secondary' : ' text-sub-light',
+                    'disabled:opacity-20',
+                  )
+                }
+              >
+                {({ selected }) => (
+                  <>
+                    {t('info')}
                     {selected && (
                       <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
                     )}
@@ -256,6 +296,30 @@ const Stake: React.FC<Props> = ({
                     tokenConfig={tokenConfig}
                     toToken="ARV"
                   />
+                </ModalBox>
+              </Tab.Panel>
+              <Tab.Panel className="h-full">
+                <ModalBox className="flex flex-col h-full gap-y-2">
+                  <div className="flex flex-col items-center justify-between w-full divide-y">
+                    {addressList.map((el, index) => (
+                      <div
+                        key={index}
+                        className="grid grid-cols-2 gap-y py-2 items-center"
+                      >
+                        <p className="text-base text-primary font-medium">
+                          {el.title}
+                        </p>
+                        <a
+                          className="text-secondary font-bold text-lg truncate"
+                          href={`https://etherscan.io/address/${el.address}`}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                        >
+                          {el.address}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
                 </ModalBox>
               </Tab.Panel>
               {hasLock && (
