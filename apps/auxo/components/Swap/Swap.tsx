@@ -13,7 +13,6 @@ import DepositActions from './ApproveDepositButton';
 import StakeButton from './StakeButton';
 import useTranslation from 'next-translate/useTranslation';
 import {
-  useChainExplorer,
   useCurrentPrvWithdrawalAmount,
   usePRVEstimation,
   useTokenBalance,
@@ -81,7 +80,6 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
   const balance = useTokenBalance(originToken);
   const PrvBalance = useTokenBalance(stakingToken);
   const stakedXAUXO = useUserStakedPRV();
-  const chainExplorer = useChainExplorer();
 
   const userWithdrawableAmount = useUserPrvClaimableAmount();
   const prvWithdrawableAmount = useCurrentPrvWithdrawalAmount();
@@ -100,26 +98,30 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
     return [
       {
         title: t('auxoContract'),
-        address: tokenConfig?.addresses?.[chainId]?.address,
+        address: stakingTokenConfig?.addresses?.[1]?.address,
+      },
+      {
+        title: t('prvContract'),
+        address: tokenConfig?.addresses?.[1]?.address,
       },
       {
         title: t('rollStakerProxyContract'),
-        address: tokenConfig?.addresses?.[chainId]?.rollStakerAddress,
+        address: tokenConfig?.addresses?.[1]?.rollStakerAddress,
       },
       {
         title: t('merkleDistributorContract'),
-        address: tokenConfig?.addresses?.[chainId]?.merkleDistributorAddress,
+        address: tokenConfig?.addresses?.[1]?.merkleDistributorAddress,
       },
       {
         title: t('merkleVerifierContract'),
-        address: tokenConfig?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
+        address: tokenConfig?.addresses?.[1]?.PRVMerkleVerifierAddress,
       },
       {
         title: t('PrvRouterContract'),
-        address: tokenConfig?.addresses?.[chainId]?.PRVRouterAddress,
+        address: tokenConfig?.addresses?.[1]?.PRVRouterAddress,
       },
     ];
-  }, [chainId, tokenConfig?.addresses, t]);
+  }, [t, stakingTokenConfig?.addresses, tokenConfig?.addresses]);
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background">
@@ -152,11 +154,11 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
               <Tab.Panel className="h-full">
                 <ModalBox className="flex flex-col gap-y-4 h-full">
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center justify-between w-full gap-x-4">
                     <p className="text-base text-primary font-medium">
                       {t('amountToStake')}
                     </p>
-                    <div className="flex w-68 justify-end">
+                    <div className="flex w-72 justify-end">
                       <Listbox value={tab} onChange={setTab}>
                         {({ open }) => (
                           <div className="relative mt-1 w-full">
@@ -165,7 +167,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                                 <div className="flex flex-shrink-0">
                                   {tab.image}
                                 </div>
-                                <h2 className="text-lg font-medium text-primary">
+                                <h2 className="text-base md:text-lg font-medium text-primary">
                                   {tab.title}
                                 </h2>
                               </div>
@@ -323,7 +325,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                           deposit={stakingDepositValue}
                           tokenConfig={tokenConfig}
                           isConvertAndStake={false}
-                          action="convert"
+                          action="stake"
                         />
                       </>
                     )}
@@ -463,7 +465,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                         </p>
                         <a
                           className="text-secondary font-bold text-lg truncate"
-                          href={`${chainExplorer?.url}/address/${el.address}`}
+                          href={`https://etherscan.io/address/${el.address}`}
                           target="_blank"
                           rel="noreferrer noopener"
                         >
@@ -609,6 +611,8 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                               </p>
                             </div>
                             <a
+                              rel="noreferrer noopener"
+                              target="_blank"
                               className="w-fit px-5 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary hover:bg-secondary hover:text-white flex gap-x-2 items-center"
                               href="https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics"
                             >

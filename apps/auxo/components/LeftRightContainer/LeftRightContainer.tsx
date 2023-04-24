@@ -69,7 +69,11 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               <p className="mt-2 text-base text-primary">
                 {feature.description}
               </p>
-              <Link passHref href={feature?.button?.link}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={feature?.button?.link}
+              >
                 <div className="flex items-center mt-8 cursor-pointer">
                   <div className="flex items-center rounded-l-[50px] rounded-r-[20px] bg-gradient-primary w-fit shadow-sm">
                     <div className="rounded-full bg-background flex p-3 shadow-sm">
@@ -88,7 +92,7 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
                     </div>
                   </div>
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
           <div

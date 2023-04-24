@@ -98,7 +98,7 @@ const ParallaxSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              className="text-primary font-bold text-lg sm:text-2xl lg:text-4xl max-w-sm lg:max-w-xl text-center relative -top-8 lg:-top-10 xl:-top-12"
+              className="text-primary font-bold text-lg sm:text-2xl lg:text-4xl max-w-sm lg:max-w-xl text-center relative lg:-top-10 xl:-top-12"
             >
               {t('subtitle')}
             </motion.h3>

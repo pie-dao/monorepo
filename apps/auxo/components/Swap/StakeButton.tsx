@@ -14,9 +14,9 @@ import { STEPS } from '../../store/modal/modal.types';
 const StakeActions: React.FC<{
   deposit: BigNumberReference;
   tokenConfig: TokenConfig;
-  action?: 'convert' | 'unstake' | 'convertAndStake';
+  action?: 'convert' | 'unstake' | 'convertAndStake' | 'stake';
   isConvertAndStake?: boolean;
-}> = ({ deposit, tokenConfig, action = 'stake', isConvertAndStake }) => {
+}> = ({ deposit, tokenConfig, action = 'stake' }) => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const ready = useServerHandoffComplete();
@@ -28,6 +28,7 @@ const StakeActions: React.FC<{
   const sufficientTokens = useMemo(() => {
     switch (action) {
       case 'convert':
+      case 'stake':
         return compareBalances(tokens, 'gte', deposit);
       case 'convertAndStake':
         return compareBalances(auxoBalance, 'gte', deposit);
@@ -45,7 +46,7 @@ const StakeActions: React.FC<{
   const openModal = () => {
     dispatch(
       setStep(
-        action === 'convert' || action === 'convertAndStake'
+        action !== 'unstake'
           ? STEPS.CONFIRM_STAKE_PRV
           : STEPS.CONFIRM_UNSTAKE_PRV,
       ),
