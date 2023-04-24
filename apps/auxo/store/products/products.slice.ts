@@ -23,6 +23,7 @@ import {
   thunkUnstakeXAUXO,
   thunkGetUserPrvWithdrawal,
   thunkEarlyTermination,
+  thunkDelegateVote,
   ThunkWithdrawPrv,
 } from './thunks';
 import {
@@ -223,6 +224,7 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkStakeXAUXO, 'stakeXAUXO');
     addTxNotifications(builder, thunkUnstakeXAUXO, 'unstakeXAUXO');
     addTxNotifications(builder, thunkEarlyTermination, 'earlyTermination');
+    addTxNotifications(builder, thunkDelegateVote, 'delegateVote');
     addTxNotifications(builder, ThunkWithdrawPrv, 'withdrawPrv');
   },
 

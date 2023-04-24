@@ -355,6 +355,7 @@
   "merkleVerifierContract": "PRVMerkleVerifier Proxy",
   "PrvRouterContract": "PRV Router",
   "unstaking": "Unstaking",
+  "delegateToSelfForRewards": "Delegate",
   "youGet": "You get",
   "fee": "Fee",
   "confirmWithdrawPrv": "Confirm & Redeem",

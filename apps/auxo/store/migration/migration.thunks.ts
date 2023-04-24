@@ -88,6 +88,8 @@ function migrationOption({
   token,
   isSingleLock,
   upgradoor,
+  stake,
+  aggregateStake,
   destinationWallet,
 }: ThunkMigrateVeDOUGHProps): MigrateOptions {
   if (token === 'ARV') {
@@ -112,17 +114,33 @@ function migrationOption({
     }
   } else {
     if (isSingleLock) {
-      return {
-        id: 'updateSingleLockPRV',
-        method: upgradoor.upgradeSingleLockPRV,
-        useDestinationWallet: true,
-      };
+      if (stake) {
+        return {
+          id: 'updateSingleLockPRVAndStake',
+          method: upgradoor.upgradeSingleLockPRVAndStake,
+          useDestinationWallet: true,
+        };
+      } else {
+        return {
+          id: 'updateSingleLockPRV',
+          method: upgradoor.upgradeSingleLockPRV,
+          useDestinationWallet: true,
+        };
+      }
     } else {
-      return {
-        id: 'aggregateToPRV',
-        method: upgradoor.aggregateToPRV,
-        useDestinationWallet: false,
-      };
+      if (aggregateStake) {
+        return {
+          id: 'aggregateToPRVAndStake',
+          method: upgradoor.aggregateToPRVAndStake,
+          useDestinationWallet: false,
+        };
+      } else {
+        return {
+          id: 'aggregateToPRV',
+          method: upgradoor.aggregateToPRV,
+          useDestinationWallet: false,
+        };
+      }
     }
   }
 }
@@ -130,6 +148,8 @@ function migrationOption({
 export type ThunkMigrateVeDOUGHProps = {
   upgradoor: UpgradoorAbi;
   boost: boolean;
+  stake: boolean;
+  aggregateStake: boolean;
   destinationWallet: string;
   token: 'ARV' | 'PRV';
   isSingleLock: boolean;
@@ -142,6 +162,8 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
     {
       upgradoor,
       boost,
+      stake,
+      aggregateStake,
       destinationWallet,
       token,
       isSingleLock,
@@ -154,7 +176,9 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
       typeof boost !== 'boolean' ||
       !destinationWallet ||
       !token ||
-      typeof isSingleLock !== 'boolean'
+      typeof isSingleLock !== 'boolean' ||
+      typeof stake !== 'boolean' ||
+      typeof aggregateStake !== 'boolean'
     ) {
       return rejectWithValue(
         'Missing Contract, Boost, Destination Wallet, Token to migrate to or single lock definition',
@@ -178,6 +202,8 @@ export const ThunkMigrateVeDOUGH = createAsyncThunk(
         upgradoor,
         destinationWallet,
         sender,
+        stake,
+        aggregateStake,
       });
 
       tx = m.useDestinationWallet
