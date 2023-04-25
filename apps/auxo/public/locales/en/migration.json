@@ -76,8 +76,7 @@
   "oneLock": "You have one lock",
   "multipleLocks": "You have ${locks} locks",
   "withoutBoost": "Without boosting, the vesting end date will be the longest among your locks.",
-  "boostOff": "Boost to max (36 months)",
-  "boostOn": "🔥 Boosting to 36 months. Max rewards! 🔥",
+  "boostOn": "🔥 Boost to 36 months. Max rewards! 🔥",
   "veDOUGHToToken": "Your DOUGH to ${tokenOut}",
   "ARVConversionBanner": "Conversion 100 DOUGH = 1 AUXO, see the next step for details",
   "PRVConversionBanner": "Conversion 100 DOUGH = 1 AUXO, see the next step for details",
@@ -217,6 +216,5 @@
   "migrateMultipleLocksDescription": "ℹ️ Locks will be migrated in an order determined by our smart contracts, unfortunately, it is not possible to manually select which locks to migrate first.",
   "notEOAorWL": "This address is not an EOA or a whitelisted contract",
   "invalidAddress": "Invalid address",
-  "stakeOn": "Migrate & Stake PRV 🔥",
-  "stakeOff": "Don't stake PRV"
+  "stakeOn": "Migrate & Stake PRV 🔥"
 }

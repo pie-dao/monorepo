@@ -14,7 +14,7 @@ const initialState: SliceState = {
   loadingPreview: false,
   positions: [],
   estimatedOutput: null,
-  boost: true,
+  boost: false,
   stake: false,
   aggregateStake: false,
   migrationType: null,

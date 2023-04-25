@@ -135,11 +135,7 @@ const MigrationCard: React.FC<Props> = ({
                   className="pr-2 text-sub-dark font-medium text-base"
                   htmlFor="boost"
                 >
-                  {boost ? (
-                    <span className="text-primary">{t('boostOn')}</span>
-                  ) : (
-                    t('boostOff')
-                  )}
+                  <span className="text-primary">{t('boostOn')}</span>
                 </label>
                 <Switch.Root
                   className={classNames(
@@ -203,17 +199,7 @@ const MigrationCard: React.FC<Props> = ({
                   className="pr-2 text-sub-dark font-medium text-base"
                   htmlFor="stake"
                 >
-                  {isSingleLock ? (
-                    stake ? (
-                      <span className="text-primary">{t('stakeOn')}</span>
-                    ) : (
-                      t('stakeOff')
-                    )
-                  ) : aggregateStake ? (
-                    <span className="text-primary">{t('stakeOn')}</span>
-                  ) : (
-                    t('stakeOff')
-                  )}
+                  <span className="text-primary">{t('stakeOn')}</span>
                 </label>
                 <Switch.Root
                   className={classNames(
