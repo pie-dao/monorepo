@@ -132,7 +132,8 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
     const boostText = token === 'ARV' && boost ? 'Boost' : '';
     const lockText = isSingleLock ? 'singleLock' : 'multipleLocks';
     const stakeText =
-      (stake && isSingleLock) || (aggregateStake && !isSingleLock)
+      token === 'PRV' &&
+      ((stake && isSingleLock) || (aggregateStake && !isSingleLock))
         ? 'AndStake'
         : '';
     return t(`${lockText}${baseText}${boostText}${stakeText}`, {
@@ -146,7 +147,7 @@ const ConfirmMigration: React.FC<Props> = ({ token }) => {
         ),
       ),
     });
-  }, [token, boost, isSingleLock, t, memoizedPositions, stake]);
+  }, [token, boost, isSingleLock, stake, aggregateStake, t, memoizedPositions]);
 
   const migrationRecapContent = useMemo<MigrationRecapProps>(() => {
     if (!memoizedPositions) return null;
