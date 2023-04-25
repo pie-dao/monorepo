@@ -33,7 +33,6 @@ import {
   useTokenBalance,
   useUserHasLock,
   useUserLockAmount,
-  useUserLockDuration,
 } from '../hooks/useToken';
 import { subBalances, subPercentageToBalance } from '../utils/balances';
 import { BigNumberReference } from '../store/products/products.types';

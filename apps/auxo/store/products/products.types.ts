@@ -10,7 +10,7 @@ export type ChainInfo = {
 };
 
 export type Token = {
-  productDecimals: number;
+  productDecimals?: number;
   totalBalance?: BigNumberReference;
   chainInfo?: ChainBasedInfo;
   stakingAmount?: BigNumberReference;
@@ -21,11 +21,11 @@ export type Token = {
   earlyTerminationFee?: BigNumberReference;
   currentWithdrawalAmount?: BigNumberReference;
   userStakingData?: {
-    amount: BigNumberReference;
+    amount?: BigNumberReference;
     currentEpochBalance?: BigNumberReference;
     pendingBalance?: BigNumberReference;
-    lockedAt: number;
-    lockDuration: number;
+    lockedAt?: number;
+    lockDuration?: number;
     votingPower?: BigNumberReference;
     delegator?: string;
     claimableAmount?: BigNumberReference;
@@ -33,20 +33,7 @@ export type Token = {
 };
 
 export type Tokens = {
-  [x: string | number]: Token;
-};
-
-interface BasicVaultInformation {
-  name: string;
-  address: string;
-  description: string;
-  symbol: string;
-  chainId: number;
-  underlyingSymbol: string;
-}
-
-export type Vaults = {
-  [vaultSymbol: string]: Vault;
+  [x: string]: Token;
 };
 
 export type BigNumberReference = {
@@ -54,79 +41,24 @@ export type BigNumberReference = {
   value: string;
 };
 
-// Information about the underlying vault token
-export interface VaultToken {
-  address: string;
-  decimals: number;
-}
-
-// Properties shared across users, ie. total deposits
-export interface VaultStats {
-  currentAPY: BigNumberReference;
-  deposits: BigNumberReference;
-  lastHarvest: number;
-  batchBurnRound: number;
-  exchangeRate: BigNumberReference;
-}
-
-// Properties unique to a given user ie. own deposits
-export interface UserBalances {
-  wallet: BigNumberReference;
-  vaultUnderlying: BigNumberReference;
-  vault: BigNumberReference;
-  allowance: BigNumberReference;
-  batchBurn: {
-    round: number;
-    shares: BigNumberReference;
-    available: BigNumberReference;
-  };
-}
-
-// information about the vault auth contract, used for checking if an account is allowed to use this vault
-export interface VaultAuth {
-  address: string;
-  isDepositor: boolean;
-}
-
-// information about the per-account deposit limits (note, the vaultcap contract extends the vault base)
-export interface VaultCap {
-  underlying: BigNumberReference | null;
-}
-
-/**
- * Additional Vault fields are populated at runtime, thus they may be optional
- */
-export interface Vault extends BasicVaultInformation {
-  token: VaultToken;
-  auth: VaultAuth;
-  cap: VaultCap;
-  stats?: VaultStats;
-  userBalances?: UserBalances;
-}
-
 export type Stats = {
   networks: {
-    vaults: number;
     tokens: number;
     total: number;
   };
   assets: {
-    vaultsUsed: number;
     tokensUsed: number;
     totalProductsUsed: number;
   };
   balance: {
     tokens: number;
-    vaults: number;
     total: number;
   };
 };
 
 export type SliceState = {
   tokens: Tokens;
-  vaults: Vaults;
   stats: Stats;
   loading: boolean;
-  activeVault: string;
   increasedStakingValue: number;
 };

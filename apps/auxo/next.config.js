@@ -19,21 +19,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  typescript: {
-    // !! WARN !!
-    // ONLY FOR TESTING VERCEL BUILD IN DEVELOPMENT
-    // DO NOT USE THIS IN PRODUCTION
-    ignoreBuildErrors: true,
-  },
-  redirects: async () => {
-    return [
-      {
-        source: '/vaults/:slug',
-        destination: '/migration',
-        permanent: false,
-      },
-    ];
-  },
 };
 
 module.exports = withNx(nextTranslate(nextConfig));

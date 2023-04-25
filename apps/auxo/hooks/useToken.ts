@@ -11,8 +11,8 @@ import {
   MAX_LOCK_DURATION_IN_SECONDS,
 } from '../utils/constants';
 import { useCallback, useMemo } from 'react';
-import { BigNumber, ethers } from 'ethers';
-import { formatAsPercent, toBalance } from '../utils/formatBalance';
+import { ethers } from 'ethers';
+import { formatAsPercent } from '../utils/formatBalance';
 import { addMonths, getRemainingTimeInMonths } from '../utils/dates';
 
 export const useCurrentChainAddress = (token: string): string => {
