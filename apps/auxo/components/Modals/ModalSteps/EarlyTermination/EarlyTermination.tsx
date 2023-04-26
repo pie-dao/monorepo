@@ -1,29 +1,16 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
-import {
-  getSigner,
-  useAUXOTokenContract,
-  useStakingContract,
-  useStakingTokenContract,
-} from '../../../../hooks/useContracts';
+import { useStakingTokenContract } from '../../../../hooks/useContracts';
 import {
   useChainExplorer,
   useEarlyTerminationFee,
-  useUserLevel,
-  useUserLockDuration,
-  useUserNewEndDateFromToday,
 } from '../../../../hooks/useToken';
-import {
-  thunkEarlyTermination,
-  thunkIncreaseStakeAuxo,
-  thunkStakeAuxo,
-} from '../../../../store/products/thunks';
+import { thunkEarlyTermination } from '../../../../store/products/thunks';
 import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
-import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
 import AUXOImage from '../../../../public/tokens/32x32/AUXO.svg';
 import ARVImage from '../../../../public/tokens/32x32/ARV.svg';
