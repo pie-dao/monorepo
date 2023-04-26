@@ -10,7 +10,7 @@ import {
   useMotionValue,
   Variants,
 } from 'framer-motion';
-import { TrendingUpIcon, XIcon } from '@heroicons/react/outline';
+import { TrendingUpIcon } from '@heroicons/react/outline';
 import {
   ArvIcon,
   PrvIcon,

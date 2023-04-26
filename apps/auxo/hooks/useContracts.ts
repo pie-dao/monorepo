@@ -160,7 +160,7 @@ export function usePRVMerkleVerifier() {
   const { chainId } = useWeb3React();
   return useContract(
     PRVMerkleVerifierAbi__factory,
-    tokensConfig['PRV']?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
+    tokensConfig?.['PRV']?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
   );
 }
 
@@ -168,6 +168,6 @@ export function useARVToken() {
   const { chainId } = useWeb3React();
   return useContract(
     VeAUXOAbi__factory,
-    tokensConfig['ARV']?.addresses?.[chainId]?.address,
+    tokensConfig?.['ARV']?.addresses?.[chainId]?.address,
   );
 }
