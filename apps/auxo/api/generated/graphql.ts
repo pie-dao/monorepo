@@ -1,5 +1,5 @@
-import { api } from '../baseApi';
 import { graphql, ResponseResolver, GraphQLRequest, GraphQLContext } from 'msw';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -11,6 +11,31 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
+
+function fetcher<TData, TVariables>(
+  endpoint: string,
+  requestInit: RequestInit,
+  query: string,
+  variables?: TVariables,
+) {
+  return async (): Promise<TData> => {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      ...requestInit,
+      body: JSON.stringify({ query, variables }),
+    });
+
+    const json = await res.json();
+
+    if (json.errors) {
+      const { message } = json.errors[0];
+
+      throw new Error(message);
+    }
+
+    return json.data;
+  };
+}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -18,842 +43,133 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  BigInt: any;
   Timestamp: any;
 };
 
-export type EventData = {
-  __typename?: 'EventData';
-  amount: Scalars['Float'];
-  priceInCurrency: Scalars['Float'];
-  priceInETH: Scalars['Float'];
+export type Block_Height = {
+  hash?: InputMaybe<Scalars['Int']>;
+  number?: InputMaybe<Scalars['Int']>;
+  number_gte?: InputMaybe<Scalars['Int']>;
 };
 
-export type Governance = {
-  __typename?: 'Governance';
-  status: Scalars['String'];
-  timestamp: Scalars['Timestamp'];
-  title: Scalars['String'];
-  url: Scalars['String'];
+export type GlpStat = {
+  __typename?: 'GlpStat';
+  aumInUsdg: Scalars['BigInt'];
+  distributedEsgmx: Scalars['BigInt'];
+  distributedEsgmxCumulative: Scalars['BigInt'];
+  distributedEsgmxUsd: Scalars['BigInt'];
+  distributedEsgmxUsdCumulative: Scalars['BigInt'];
+  distributedEth: Scalars['BigInt'];
+  distributedEthCumulative: Scalars['BigInt'];
+  distributedUsd: Scalars['BigInt'];
+  distributedUsdCumulative: Scalars['BigInt'];
+  glpSupply: Scalars['BigInt'];
+  id: Scalars['ID'];
+  period: Period;
+  timestamp?: Maybe<Scalars['Int']>;
 };
 
-export type LinkEntity = {
-  __typename?: 'LinkEntity';
-  title: Scalars['String'];
-  url: Scalars['String'];
-  urlText: Scalars['String'];
-};
+export enum GlpStat_OrderBy {
+  AumInUsdg = 'aumInUsdg',
+  DistributedEsgmx = 'distributedEsgmx',
+  DistributedEsgmxCumulative = 'distributedEsgmxCumulative',
+  DistributedEsgmxUsd = 'distributedEsgmxUsd',
+  DistributedEsgmxUsdCumulative = 'distributedEsgmxUsdCumulative',
+  DistributedEth = 'distributedEth',
+  DistributedEthCumulative = 'distributedEthCumulative',
+  DistributedUsd = 'distributedUsd',
+  DistributedUsdCumulative = 'distributedUsdCumulative',
+  GlpSupply = 'glpSupply',
+  Id = 'id',
+  Period = 'period',
+  Timestamp = 'timestamp',
+}
 
-export type MarketDataEntity = {
-  __typename?: 'MarketDataEntity';
-  allTimeHigh: Scalars['Float'];
-  allTimeLow: Scalars['Float'];
-  circulatingSupply: Scalars['Float'];
-  currentPrice: Scalars['Float'];
-  discount: Scalars['Float'];
-  event?: Maybe<UserEvent>;
-  fromInception: Scalars['Float'];
-  holders: Scalars['Float'];
-  interests: Scalars['Float'];
-  managementFee: Scalars['Float'];
-  marketCap: Scalars['Float'];
-  marketCapRank: Scalars['Float'];
-  nav: Scalars['Float'];
-  swapFee: Scalars['Float'];
-  timestamp: Scalars['Timestamp'];
-  totalSupply: Scalars['Float'];
-  totalVolume: Scalars['Float'];
-  twentyFourHourChange: PriceChange;
-};
+export enum OrderDirection {
+  Asc = 'asc',
+  Desc = 'desc',
+}
 
-export type MarketDataEntityCurrentPriceArgs = {
-  currency?: Scalars['String'];
-};
-
-export type NewsEntity = {
-  __typename?: 'NewsEntity';
-  description: Scalars['String'];
-  title: Scalars['String'];
-  type: Scalars['String'];
-};
-
-export type PriceChange = {
-  __typename?: 'PriceChange';
-  change: Scalars['Float'];
-  price: Scalars['Float'];
-};
+export enum Period {
+  Daily = 'daily',
+  Hourly = 'hourly',
+  Monthly = 'monthly',
+  Total = 'total',
+}
 
 export type Query = {
   __typename?: 'Query';
-  allUsers?: Maybe<Array<Maybe<User>>>;
-  getTokenChart?: Maybe<UserTokenEntity>;
-  getTreasury: TreasuryEntity;
-  me: User;
-  token?: Maybe<TokenEntity>;
-  tokens?: Maybe<Array<Maybe<TokenEntity>>>;
-  tokensBySymbol?: Maybe<Array<Maybe<TokenEntity>>>;
-  user?: Maybe<User>;
-  vaults?: Maybe<Array<Maybe<YieldVaultEntity>>>;
+  glpStats: Array<GlpStat>;
 };
 
-export type QueryGetTokenChartArgs = {
-  currency?: Scalars['String'];
-  interval?: Scalars['String'];
-  symbol: Scalars['String'];
+export type QueryGlpStatsArgs = {
+  block?: InputMaybe<Block_Height>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GlpStat_OrderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
 };
 
-export type QueryGetTreasuryArgs = {
-  currency?: Scalars['String'];
-};
-
-export type QueryTokenArgs = {
-  symbol: Scalars['String'];
-};
-
-export type QueryTokensBySymbolArgs = {
-  symbols: Array<Scalars['String']>;
-};
-
-export type QueryUserArgs = {
-  address: Scalars['String'];
-  currency?: Scalars['String'];
-};
-
-export type QueryVaultsArgs = {
-  currency?: Scalars['String'];
-};
-
-export type StrategyEntity = {
-  __typename?: 'StrategyEntity';
-  allocationPercentage: Scalars['Float'];
-  description: Scalars['String'];
-  links: Array<LinkEntity>;
-  title: Scalars['String'];
-};
-
-export type TokenEntity = TokenInterface & {
-  __typename?: 'TokenEntity';
-  address: Scalars['String'];
-  chain: Scalars['String'];
-  coinGeckoId: Scalars['String'];
-  decimals: Scalars['Float'];
-  governance: Array<Governance>;
-  inceptionDate: Scalars['Timestamp'];
-  kind: Scalars['String'];
-  marketData: Array<MarketDataEntity>;
-  name: Scalars['String'];
-  riskGrade: Scalars['String'];
-  symbol: Scalars['String'];
-  underlyingTokens: Array<UnderlyingTokenEntity>;
-};
-
-export type TokenInterface = {
-  address: Scalars['String'];
-  chain: Scalars['String'];
-  coinGeckoId: Scalars['String'];
-  decimals: Scalars['Float'];
-  governance: Array<Governance>;
-  inceptionDate: Scalars['Timestamp'];
-  kind: Scalars['String'];
-  marketData: Array<MarketDataEntity>;
-  name: Scalars['String'];
-  riskGrade: Scalars['String'];
-  symbol: Scalars['String'];
-  underlyingTokens: Array<UnderlyingTokenEntity>;
-};
-
-export type TreasuryContentEntity = {
-  __typename?: 'TreasuryContentEntity';
-  about: Scalars['String'];
-  links: Array<LinkEntity>;
-  news: Array<NewsEntity>;
-};
-
-export type TreasuryEntity = {
-  __typename?: 'TreasuryEntity';
-  content: TreasuryContentEntity;
-  marketData: TreasuryMarketDataEntity;
-};
-
-export type TreasuryMarketDataEntity = {
-  __typename?: 'TreasuryMarketDataEntity';
-  auxoAPR: Scalars['Float'];
-  avgAPR: Scalars['Float'];
-  capitalUtilisation: Scalars['Float'];
-  currentPrice: Scalars['Float'];
-  tvl: Scalars['Float'];
-  tvlInEth: Scalars['Float'];
-  twentyFourHourChange: PriceChange;
-};
-
-export type TreasuryMarketDataEntityCurrentPriceArgs = {
-  currency?: Scalars['String'];
-};
-
-export type TreasuryMarketDataEntityTvlArgs = {
-  currency?: InputMaybe<Scalars['String']>;
-};
-
-export type User = {
-  __typename?: 'User';
-  address: Scalars['String'];
-  performance: Scalars['Float'];
-  pieVaults: Array<UserTokenEntity>;
-  profit: Scalars['Float'];
-  totalBalance: Scalars['Float'];
-  twentyFourHourChange: PriceChange;
-  yieldVaults: Array<UserYieldVaultEntity>;
-};
-
-export type UserEvent = {
-  __typename?: 'UserEvent';
-  eventData: EventData;
-  eventType: Scalars['String'];
-};
-
-export type UserTokenEntity = TokenInterface & {
-  __typename?: 'UserTokenEntity';
-  address: Scalars['String'];
-  chain: Scalars['String'];
-  coinGeckoId: Scalars['String'];
-  decimals: Scalars['Float'];
-  governance: Array<Governance>;
-  inceptionDate: Scalars['Timestamp'];
-  kind: Scalars['String'];
-  marketData: Array<MarketDataEntity>;
-  name: Scalars['String'];
-  riskGrade: Scalars['String'];
-  symbol: Scalars['String'];
-  underlyingTokens: Array<UnderlyingTokenEntity>;
-};
-
-export type UserYieldVaultEntity = YieldVaultInterface & {
-  __typename?: 'UserYieldVaultEntity';
-  address: Scalars['String'];
-  name: Scalars['String'];
-  symbol: Scalars['String'];
-  totalEarnings: Scalars['Float'];
-  twentyFourHourEarnings: Scalars['Float'];
-};
-
-export type YieldVaultEntity = YieldVaultInterface & {
-  __typename?: 'YieldVaultEntity';
-  address: Scalars['String'];
-  name: Scalars['String'];
-  strategies: Array<StrategyEntity>;
-  symbol: Scalars['String'];
-  underlyingToken: TokenEntity;
-};
-
-export type YieldVaultInterface = {
-  name: Scalars['String'];
-  symbol: Scalars['String'];
-};
-
-export type UnderlyingTokenEntity = {
-  __typename?: 'underlyingTokenEntity';
-  address: Scalars['String'];
-  decimals: Scalars['Float'];
-  marketData: Array<UnderlyingTokenMarketData>;
-  name: Scalars['String'];
-  symbol: Scalars['String'];
-};
-
-export type UnderlyingTokenMarketData = {
-  __typename?: 'underlyingTokenMarketData';
-  allocation: Scalars['Float'];
-  amountPerToken: Scalars['Float'];
-  currentPrice: Scalars['Float'];
-  marginalTVLPercentage: Scalars['Float'];
-  totalHeld: Scalars['Float'];
-  twentyFourHourChange: PriceChange;
-};
-
-export type UnderlyingTokenMarketDataCurrentPriceArgs = {
-  currency?: Scalars['String'];
-};
-
-export type FindUserQueryVariables = Exact<{
-  address: Scalars['String'];
+export type GetGlpStatsQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  orderBy?: InputMaybe<GlpStat_OrderBy>;
 }>;
 
-export type FindUserQuery = {
+export type GetGlpStatsQuery = {
   __typename?: 'Query';
-  user?: {
-    __typename?: 'User';
-    address: string;
-    totalBalance: number;
-    profit: number;
-    performance: number;
-    pieVaults: Array<{
-      __typename?: 'UserTokenEntity';
-      symbol: string;
-      name: string;
-    }>;
-    twentyFourHourChange: {
-      __typename?: 'PriceChange';
-      price: number;
-      change: number;
-    };
-    yieldVaults: Array<{
-      __typename?: 'UserYieldVaultEntity';
-      name: string;
-      symbol: string;
-      twentyFourHourEarnings: number;
-      totalEarnings: number;
-      address: string;
-    }>;
-  } | null;
-};
-
-export type AllUsersQueryVariables = Exact<{ [key: string]: never }>;
-
-export type AllUsersQuery = {
-  __typename?: 'Query';
-  allUsers?: Array<{ __typename?: 'User'; address: string } | null> | null;
-};
-
-export type ChartDataFragment = {
-  __typename?: 'UserTokenEntity';
-  marketData: Array<{
-    __typename?: 'MarketDataEntity';
-    currentPrice: number;
-    nav: number;
-    timestamp: any;
-    totalVolume: number;
-    event?: {
-      __typename?: 'UserEvent';
-      eventType: string;
-      eventData: {
-        __typename?: 'EventData';
-        amount: number;
-        priceInETH: number;
-        priceInCurrency: number;
-      };
-    } | null;
+  glpStats: Array<{
+    __typename?: 'GlpStat';
+    id: string;
+    aumInUsdg: any;
+    glpSupply: any;
   }>;
 };
 
-export type UserFieldsFragment = {
-  __typename?: 'User';
-  address: string;
-  totalBalance: number;
-  profit: number;
-  performance: number;
-  pieVaults: Array<{
-    __typename?: 'UserTokenEntity';
-    symbol: string;
-    name: string;
-  }>;
-  twentyFourHourChange: {
-    __typename?: 'PriceChange';
-    price: number;
-    change: number;
-  };
-  yieldVaults: Array<{
-    __typename?: 'UserYieldVaultEntity';
-    name: string;
-    symbol: string;
-    twentyFourHourEarnings: number;
-    totalEarnings: number;
-    address: string;
-  }>;
-};
+/**
+ * @param resolver a function that accepts a captured request and may return a mocked response.
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockGetGlpStatsQuery((req, res, ctx) => {
+ *   const { first, orderDirection, orderBy } = req.variables;
+ *   return res(
+ *     ctx.data({ glpStats })
+ *   )
+ * })
+ */
+export const mockGetGlpStatsQuery = (
+  resolver: ResponseResolver<
+    GraphQLRequest<GetGlpStatsQueryVariables>,
+    GraphQLContext<GetGlpStatsQuery>,
+    any
+  >,
+) =>
+  graphql.query<GetGlpStatsQuery, GetGlpStatsQueryVariables>(
+    'getGlpStats',
+    resolver,
+  );
 
-export type GetProductsBySymbolQueryVariables = Exact<{
-  symbols: Array<Scalars['String']> | Scalars['String'];
-  currency: Scalars['String'];
-}>;
-
-export type GetProductsBySymbolQuery = {
-  __typename?: 'Query';
-  tokensBySymbol?: Array<{
-    __typename?: 'TokenEntity';
-    symbol: string;
-    riskGrade: string;
-    inceptionDate: any;
-    marketData: Array<{
-      __typename?: 'MarketDataEntity';
-      currentPrice: number;
-      fromInception: number;
-      discount: number;
-      interests: number;
-      nav: number;
-      marketCap: number;
-      holders: number;
-      allTimeHigh: number;
-      allTimeLow: number;
-      swapFee: number;
-      managementFee: number;
-      totalSupply: number;
-      twentyFourHourChange: {
-        __typename?: 'PriceChange';
-        price: number;
-        change: number;
-      };
-    }>;
-    underlyingTokens: Array<{
-      __typename?: 'underlyingTokenEntity';
-      name: string;
-      symbol: string;
-      address: string;
-      decimals: number;
-      marketData: Array<{
-        __typename?: 'underlyingTokenMarketData';
-        currentPrice: number;
-        amountPerToken: number;
-        totalHeld: number;
-        allocation: number;
-        marginalTVLPercentage: number;
-        twentyFourHourChange: {
-          __typename?: 'PriceChange';
-          price: number;
-          change: number;
-        };
-      }>;
-    }>;
-    governance: Array<{
-      __typename?: 'Governance';
-      title: string;
-      url: string;
-      status: string;
-      timestamp: any;
-    }>;
-  } | null> | null;
-};
-
-export type GetVaultsQueryVariables = Exact<{
-  currency: Scalars['String'];
-}>;
-
-export type GetVaultsQuery = {
-  __typename?: 'Query';
-  vaults?: Array<{
-    __typename?: 'YieldVaultEntity';
-    symbol: string;
-    name: string;
-    address: string;
-    underlyingToken: {
-      __typename?: 'TokenEntity';
-      marketData: Array<{
-        __typename?: 'MarketDataEntity';
-        currentPrice: number;
-      }>;
-    };
-    strategies: Array<{
-      __typename?: 'StrategyEntity';
-      title: string;
-      description: string;
-      allocationPercentage: number;
-      links: Array<{ __typename?: 'LinkEntity'; title: string; url: string }>;
-    }>;
-  } | null> | null;
-};
-
-export type GetTokenChartQueryVariables = Exact<{
-  symbol: Scalars['String'];
-  currency: Scalars['String'];
-  interval: Scalars['String'];
-}>;
-
-export type GetTokenChartQuery = {
-  __typename?: 'Query';
-  getTokenChart?: {
-    __typename?: 'UserTokenEntity';
-    marketData: Array<{
-      __typename?: 'MarketDataEntity';
-      currentPrice: number;
-      nav: number;
-      timestamp: any;
-      totalVolume: number;
-      event?: {
-        __typename?: 'UserEvent';
-        eventType: string;
-        eventData: {
-          __typename?: 'EventData';
-          amount: number;
-          priceInETH: number;
-          priceInCurrency: number;
-        };
-      } | null;
-    }>;
-  } | null;
-};
-
-export type GetTreasuryQueryVariables = Exact<{
-  currency?: Scalars['String'];
-}>;
-
-export type GetTreasuryQuery = {
-  __typename?: 'Query';
-  getTreasury: {
-    __typename?: 'TreasuryEntity';
-    content: {
-      __typename?: 'TreasuryContentEntity';
-      about: string;
-      links: Array<{
-        __typename?: 'LinkEntity';
-        title: string;
-        url: string;
-        urlText: string;
-      }>;
-      news: Array<{
-        __typename?: 'NewsEntity';
-        title: string;
-        description: string;
-        type: string;
-      }>;
-    };
-    marketData: {
-      __typename?: 'TreasuryMarketDataEntity';
-      currentPrice: number;
-      tvl: number;
-      tvlInEth: number;
-      capitalUtilisation: number;
-      avgAPR: number;
-      auxoAPR: number;
-      twentyFourHourChange: { __typename?: 'PriceChange'; change: number };
-    };
-  };
-};
-
-export const ChartDataFragmentDoc = `
-    fragment ChartData on UserTokenEntity {
-  marketData {
-    currentPrice
-    nav
-    timestamp
-    totalVolume
-    event {
-      eventType
-      eventData {
-        amount
-        priceInETH
-        priceInCurrency
-      }
-    }
+export const GetGlpStatsDocument = `
+    query getGlpStats($first: Int, $orderDirection: OrderDirection, $orderBy: GlpStat_orderBy) {
+  glpStats(first: $first, orderDirection: $orderDirection, orderBy: $orderBy) {
+    id
+    aumInUsdg
+    glpSupply
   }
 }
     `;
-export const UserFieldsFragmentDoc = `
-    fragment UserFields on User {
-  address
-  totalBalance
-  pieVaults {
-    symbol
-    name
-  }
-  twentyFourHourChange {
-    price
-    change
-  }
-  yieldVaults {
-    name
-    symbol
-    twentyFourHourEarnings
-    totalEarnings
-    address
-  }
-  profit
-  performance
-}
-    `;
-export const FindUserDocument = `
-    query findUser($address: String!) {
-  user(address: $address) {
-    ...UserFields
-  }
-}
-    ${UserFieldsFragmentDoc}`;
-export const AllUsersDocument = `
-    query allUsers {
-  allUsers {
-    address
-  }
-}
-    `;
-export const GetProductsBySymbolDocument = `
-    query getProductsBySymbol($symbols: [String!]!, $currency: String!) {
-  tokensBySymbol(symbols: $symbols) {
-    marketData {
-      currentPrice(currency: $currency)
-      twentyFourHourChange {
-        price
-        change
-      }
-      fromInception
-      discount
-      interests
-      nav
-      marketCap
-      holders
-      allTimeHigh
-      allTimeLow
-      swapFee
-      managementFee
-      totalSupply
-    }
-    underlyingTokens {
-      name
-      symbol
-      address
-      decimals
-      marketData {
-        currentPrice(currency: $currency)
-        amountPerToken
-        totalHeld
-        allocation
-        twentyFourHourChange {
-          price
-          change
-        }
-        marginalTVLPercentage
-      }
-    }
-    symbol
-    riskGrade
-    inceptionDate
-    governance {
-      title
-      url
-      status
-      timestamp
-    }
-  }
-}
-    `;
-export const GetVaultsDocument = `
-    query getVaults($currency: String!) {
-  vaults(currency: $currency) {
-    underlyingToken {
-      marketData {
-        currentPrice(currency: $currency)
-      }
-    }
-    symbol
-    name
-    address
-    strategies {
-      title
-      description
-      allocationPercentage
-      links {
-        title
-        url
-      }
-    }
-  }
-}
-    `;
-export const GetTokenChartDocument = `
-    query getTokenChart($symbol: String!, $currency: String!, $interval: String!) {
-  getTokenChart(symbol: $symbol, currency: $currency, interval: $interval) {
-    ...ChartData
-  }
-}
-    ${ChartDataFragmentDoc}`;
-export const GetTreasuryDocument = `
-    query getTreasury($currency: String! = "usd") {
-  getTreasury(currency: $currency) {
-    content {
-      about
-      links {
-        title
-        url
-        urlText
-      }
-      news {
-        title
-        description
-        type
-      }
-    }
-    marketData {
-      currentPrice(currency: $currency)
-      tvl(currency: $currency)
-      tvlInEth
-      capitalUtilisation
-      avgAPR
-      auxoAPR
-      twentyFourHourChange {
-        change
-      }
-    }
-  }
-}
-    `;
-
-const injectedRtkApi = api.injectEndpoints({
-  endpoints: (build) => ({
-    findUser: build.query<FindUserQuery, FindUserQueryVariables>({
-      query: (variables) => ({ document: FindUserDocument, variables }),
-    }),
-    allUsers: build.query<AllUsersQuery, AllUsersQueryVariables | void>({
-      query: (variables) => ({ document: AllUsersDocument, variables }),
-    }),
-    getProductsBySymbol: build.query<
-      GetProductsBySymbolQuery,
-      GetProductsBySymbolQueryVariables
-    >({
-      query: (variables) => ({
-        document: GetProductsBySymbolDocument,
-        variables,
-      }),
-    }),
-    getVaults: build.query<GetVaultsQuery, GetVaultsQueryVariables>({
-      query: (variables) => ({ document: GetVaultsDocument, variables }),
-    }),
-    getTokenChart: build.query<GetTokenChartQuery, GetTokenChartQueryVariables>(
-      {
-        query: (variables) => ({ document: GetTokenChartDocument, variables }),
-      },
+export const useGetGlpStatsQuery = <TData = GetGlpStatsQuery, TError = unknown>(
+  dataSource: { endpoint: string; fetchParams?: RequestInit },
+  variables?: GetGlpStatsQueryVariables,
+  options?: UseQueryOptions<GetGlpStatsQuery, TError, TData>,
+) =>
+  useQuery<GetGlpStatsQuery, TError, TData>(
+    variables === undefined ? ['getGlpStats'] : ['getGlpStats', variables],
+    fetcher<GetGlpStatsQuery, GetGlpStatsQueryVariables>(
+      dataSource.endpoint,
+      dataSource.fetchParams || {},
+      GetGlpStatsDocument,
+      variables,
     ),
-    getTreasury: build.query<
-      GetTreasuryQuery,
-      GetTreasuryQueryVariables | void
-    >({
-      query: (variables) => ({ document: GetTreasuryDocument, variables }),
-    }),
-  }),
-});
-
-export { injectedRtkApi as api };
-export const {
-  useFindUserQuery,
-  useLazyFindUserQuery,
-  useAllUsersQuery,
-  useLazyAllUsersQuery,
-  useGetProductsBySymbolQuery,
-  useLazyGetProductsBySymbolQuery,
-  useGetVaultsQuery,
-  useLazyGetVaultsQuery,
-  useGetTokenChartQuery,
-  useLazyGetTokenChartQuery,
-  useGetTreasuryQuery,
-  useLazyGetTreasuryQuery,
-} = injectedRtkApi;
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockFindUserQuery((req, res, ctx) => {
- *   const { address } = req.variables;
- *   return res(
- *     ctx.data({ user })
- *   )
- * })
- */
-export const mockFindUserQuery = (
-  resolver: ResponseResolver<
-    GraphQLRequest<FindUserQueryVariables>,
-    GraphQLContext<FindUserQuery>,
-    any
-  >,
-) => graphql.query<FindUserQuery, FindUserQueryVariables>('findUser', resolver);
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockAllUsersQuery((req, res, ctx) => {
- *   return res(
- *     ctx.data({ allUsers })
- *   )
- * })
- */
-export const mockAllUsersQuery = (
-  resolver: ResponseResolver<
-    GraphQLRequest<AllUsersQueryVariables>,
-    GraphQLContext<AllUsersQuery>,
-    any
-  >,
-) => graphql.query<AllUsersQuery, AllUsersQueryVariables>('allUsers', resolver);
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetProductsBySymbolQuery((req, res, ctx) => {
- *   const { symbols, currency } = req.variables;
- *   return res(
- *     ctx.data({ tokensBySymbol })
- *   )
- * })
- */
-export const mockGetProductsBySymbolQuery = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetProductsBySymbolQueryVariables>,
-    GraphQLContext<GetProductsBySymbolQuery>,
-    any
-  >,
-) =>
-  graphql.query<GetProductsBySymbolQuery, GetProductsBySymbolQueryVariables>(
-    'getProductsBySymbol',
-    resolver,
-  );
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetVaultsQuery((req, res, ctx) => {
- *   const { currency } = req.variables;
- *   return res(
- *     ctx.data({ vaults })
- *   )
- * })
- */
-export const mockGetVaultsQuery = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetVaultsQueryVariables>,
-    GraphQLContext<GetVaultsQuery>,
-    any
-  >,
-) =>
-  graphql.query<GetVaultsQuery, GetVaultsQueryVariables>('getVaults', resolver);
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetTokenChartQuery((req, res, ctx) => {
- *   const { symbol, currency, interval } = req.variables;
- *   return res(
- *     ctx.data({ getTokenChart })
- *   )
- * })
- */
-export const mockGetTokenChartQuery = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetTokenChartQueryVariables>,
-    GraphQLContext<GetTokenChartQuery>,
-    any
-  >,
-) =>
-  graphql.query<GetTokenChartQuery, GetTokenChartQueryVariables>(
-    'getTokenChart',
-    resolver,
-  );
-
-/**
- * @param resolver a function that accepts a captured request and may return a mocked response.
- * @see https://mswjs.io/docs/basics/response-resolver
- * @example
- * mockGetTreasuryQuery((req, res, ctx) => {
- *   const { currency } = req.variables;
- *   return res(
- *     ctx.data({ getTreasury })
- *   )
- * })
- */
-export const mockGetTreasuryQuery = (
-  resolver: ResponseResolver<
-    GraphQLRequest<GetTreasuryQueryVariables>,
-    GraphQLContext<GetTreasuryQuery>,
-    any
-  >,
-) =>
-  graphql.query<GetTreasuryQuery, GetTreasuryQueryVariables>(
-    'getTreasury',
-    resolver,
+    options,
   );

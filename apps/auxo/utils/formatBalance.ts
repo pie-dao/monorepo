@@ -4,19 +4,27 @@ import { zeroBalance } from './balances';
 
 export function formatBalanceCurrency(
   balanceAmount: number,
-  defaultLocale?: string,
-  defaultCurrency?: string,
-  compact?: boolean,
-  maximumFractionDigits?: number,
-): string | null {
-  const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
+  defaultLocale = 'en-US',
+  defaultCurrency = 'USD',
+  compact = false,
+  maximumFractionDigits = 2,
+): string {
+  // Determine the minimum fraction digits required
+  const decimalPart = Math.abs(balanceAmount % 1);
+  const minimumFractionDigits = decimalPart === 0 ? 0 : maximumFractionDigits;
+
+  // Create a new Intl.NumberFormat instance with the given options
+  const formatter = new Intl.NumberFormat(defaultLocale, {
     style: 'currency',
-    currency: defaultCurrency ?? 'USD',
+    currency: defaultCurrency,
     notation: compact ? 'compact' : 'standard',
     compactDisplay: 'short',
-    maximumFractionDigits: maximumFractionDigits ?? 2,
-  }).format(balanceAmount ?? 0);
-  return balance;
+    minimumFractionDigits,
+    maximumFractionDigits,
+  });
+
+  // Format the balance amount and return the result
+  return formatter.format(balanceAmount ?? 0);
 }
 
 export function formatBalance(
@@ -33,15 +41,56 @@ export function formatBalance(
   return balance;
 }
 
+// Formats a given number as a percentage with optional locale and fraction digits.
+// Formats a given number as a percentage with optional locale and fraction digits.
 export function formatAsPercent(
-  num: number,
-  defaultLocale?: string,
-  maximumFractionDigits?: number,
+  num?: number,
+  defaultLocale = 'en-US',
+  maximumFractionDigits = 3,
 ): string {
-  return new Intl.NumberFormat(defaultLocale ?? 'en-US', {
+  // Handle the case when the input number is missing
+  if (typeof num === 'undefined') {
+    num = 0;
+  }
+
+  // Determine the minimum fraction digits required
+  const decimalPart = Math.abs(num % 1);
+  const decimalStr = decimalPart.toFixed(maximumFractionDigits).slice(2);
+  const minimumFractionDigits =
+    decimalPart === 0 ? 0 : decimalStr.replace(/0+$/, '').length;
+
+  // Create a new Intl.NumberFormat instance with the given options
+  const formatter = new Intl.NumberFormat(defaultLocale, {
     style: 'percent',
-    maximumFractionDigits: maximumFractionDigits ?? 3,
-  }).format(num / 100);
+    minimumFractionDigits,
+    maximumFractionDigits: Math.max(
+      minimumFractionDigits,
+      maximumFractionDigits,
+    ),
+  });
+
+  // Format the number as a percentage and return the result
+  return formatter.format(num / 100);
+}
+
+export function formatAsPercentOfTotal(
+  number: number,
+  total: number,
+  defaultLocale?: string,
+): string {
+  if (total === 0 || isNaN(total) || isNaN(number)) {
+    throw new Error('Invalid input');
+  }
+
+  const percentage = number / total;
+  const formatter = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
+    style: 'percent',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+    useGrouping: false,
+  });
+
+  return formatter.format(percentage);
 }
 
 export const smallToBalance = (

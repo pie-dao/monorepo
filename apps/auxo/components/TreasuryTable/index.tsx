@@ -2,9 +2,21 @@ import { Tab } from '@headlessui/react';
 import { motion, Variants } from 'framer-motion';
 import useTranslation from 'next-translate/useTranslation';
 import classNames from '../../utils/classnames';
-import { TreasuryContentEntity } from '../../api/generated/graphql';
 import ParentSize from '@visx/responsive/lib/components/ParentSizeModern';
 import PieChart from '../PieChart';
+import { DownloadIcon } from '@heroicons/react/outline';
+import { useStrapiCollection } from '../../hooks';
+import { TypesMap } from '../../types/cmsTypes';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import {
+  GlpStat_OrderBy,
+  OrderDirection,
+  useGetGlpStatsQuery,
+} from '../../api/generated/graphql';
+import MultisigAddresses from '../../config/daoContracts.json';
+import ethLogo from '../../public/chains/ethereum.svg';
+import Image from 'next/image';
+import { isEmpty } from 'lodash';
 
 const variants: Variants = {
   initial: {
@@ -29,12 +41,39 @@ const variants: Variants = {
   },
 };
 
-export function TreasuryTabs(treasuryData: TreasuryContentEntity) {
+export type TreasuryTabsProps = {
+  downloadUrl?: string;
+};
+
+export function TreasuryTabs(
+  props: TreasuryTabsProps,
+): React.ReactElement<TreasuryTabsProps> {
   const { t } = useTranslation();
-  const { about, links, news } = treasuryData;
+
+  const { data, isLoading: isBreakdownLoading } =
+    useStrapiCollection<TypesMap['breakdowns']>('breakdowns');
+
+  const { data: news, isLoading: isNewsLoading } = useStrapiCollection<
+    TypesMap['updates']
+  >('updates', {
+    'sort[0]': 'createdAt:desc',
+    'pagination[page]': 1,
+    'pagination[pageSize]': 3,
+  });
+
+  const { data: glpPrice, isLoading } = useGetGlpStatsQuery(
+    {
+      endpoint: 'https://api.thegraph.com/subgraphs/name/gmx-io/gmx-stats',
+    },
+    {
+      first: 1,
+      orderBy: GlpStat_OrderBy.Timestamp,
+      orderDirection: OrderDirection.Desc,
+    },
+  );
 
   return (
-    <section className="w-full px-4 md:px-10 pb-16 bg-background pt-8">
+    <section className="w-full bg-background pt-8">
       <Tab.Group>
         <Tab.List className="md:flex p-1 md:max-w-xs gap-x-2 grid grid-cols-2 w-full">
           {['About', 'News'].map((title) => (
@@ -47,16 +86,12 @@ export function TreasuryTabs(treasuryData: TreasuryContentEntity) {
                 )
               }
               key={title}
-              data-cy={`product-tab-${title.toLowerCase()}`}
             >
               {({ selected }) => (
                 <>
                   {t(title)}
                   {selected ? (
-                    <motion.div
-                      className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary"
-                      layoutId="underlineList"
-                    />
+                    <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
                   ) : null}
                 </>
               )}
@@ -65,62 +100,103 @@ export function TreasuryTabs(treasuryData: TreasuryContentEntity) {
         </Tab.List>
 
         <Tab.Panels className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden mt-4">
-          <SingleProductPanel
-            className="divide-y"
-            testId="product-tab-description-content"
-          >
+          <SingleProductPanel className="divide-y">
             <>
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                <div className="flex flex-col gap-y-8">
+                <div className="flex flex-col gap-y-8 divide-gray-200">
                   <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
-                    {about}
+                    {t('treasuryDescription')}
                   </div>
-                  <div>
-                    <dl className="divide-y divide-gray-200">
-                      {links.map((link) => (
-                        <div
-                          key={link.title}
-                          className="grid grid-cols-2 gap-4 py-5"
-                        >
-                          <dt className="text-sm font-bold text-primary">
-                            {link.title}
-                          </dt>
-                          <dd className="text-sm font-medium text-secondary mt-0 text-right">
-                            <a href={link.url} target="_blank" rel="noreferrer">
-                              {link.urlText}
-                            </a>
-                          </dd>
-                        </div>
-                      ))}
-                    </dl>
+                  <div className="flex flex-col gap-y-6">
+                    <div className="flex flex-col gap-y-3">
+                      <h3 className="text-base text-primary font-medium">
+                        {t('multisigAddresses')}
+                      </h3>
+                      <dl className="ml-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <dt className="text-sm font-medium text-primary flex gap-x-2 items-center">
+                          <div className="flex flex-shrink-0">
+                            <Image
+                              src={ethLogo}
+                              width={18}
+                              height={18}
+                              alt="eth"
+                            />
+                          </div>
+                          {t('ethereum')}
+                        </dt>
+                        <dd className="text-secondary text-lg truncate">
+                          <a
+                            href={`https://etherscan.io/address/${MultisigAddresses.multisigs.treasury[1]}`}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                          >
+                            {MultisigAddresses.multisigs.treasury[1]}
+                          </a>
+                        </dd>
+                      </dl>
+                    </div>
+                    <div className="grid grid-cols-2 gap-y py-2 items-center ">
+                      <p className="text-base text-primary font-medium">
+                        {t('treasuryReport')}
+                      </p>
+                      <a
+                        className="w-fit px-5 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary hover:bg-secondary hover:text-white flex gap-x-2 items-center cursor-pointer place-self-end"
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        href={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${props.downloadUrl}`}
+                      >
+                        <DownloadIcon className="w-5 h-5" />
+                        <span className="font-medium">Download</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div className="w-full h-full">
-                  <ParentSize>
-                    {({ width }) => <PieChart width={width} height={300} />}
-                  </ParentSize>
+                  {isBreakdownLoading ? (
+                    <div className="flex justify-center items-center h-full">
+                      <LoadingSpinner />
+                    </div>
+                  ) : (
+                    <ParentSize>
+                      {({ width }) => (
+                        <PieChart
+                          width={width}
+                          height={300}
+                          data={data?.data?.map((item) => ({
+                            label: item.attributes.label,
+                            value: item.attributes.value,
+                          }))}
+                        />
+                      )}
+                    </ParentSize>
+                  )}
                 </div>
               </div>
             </>
           </SingleProductPanel>
           <SingleProductPanel
-            className="divide-y gap-x-2"
+            className="flex flex-col space-y-3 divide-y border-custom-border"
             testId="product-tab-description-content"
           >
-            {news.map((newsItem) => (
-              <div
-                key={newsItem.title}
-                className="flex items-center gap-x-4 p-2 divide-y divide-y-custom-border"
-              >
-                <div className="flex flex-col gap-y-3 text-primary">
-                  <div className="flex gap-x-2 items-center">
-                    <IconSwitcher icon={newsItem.type} />
-                    <h2 className="text-lg font-bold">{newsItem.title}</h2>
+            {!isEmpty(news) &&
+              news?.data?.map((newsItem) => (
+                <div
+                  key={newsItem?.attributes?.title}
+                  className="flex items-center gap-x-4 p-2"
+                >
+                  <div className="flex flex-col gap-y-3 text-primary">
+                    <div className="flex gap-x-2 items-center">
+                      <IconSwitcher icon={newsItem?.attributes?.type} />
+                      <h2 className="text-lg font-semibold">
+                        {newsItem?.attributes?.title}
+                      </h2>
+                    </div>
+                    <p className="text-sm text-primary">
+                      {newsItem?.attributes?.text}
+                    </p>
                   </div>
-                  <p className="text-base">{newsItem.description}</p>
                 </div>
-              </div>
-            ))}
+              ))}
           </SingleProductPanel>
         </Tab.Panels>
       </Tab.Group>
@@ -183,7 +259,7 @@ export const IconSwitcher = ({ icon }: { icon: string }) => {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-primary"
+          className="h-6 w-6 text-sub-dark"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -200,7 +276,7 @@ export const IconSwitcher = ({ icon }: { icon: string }) => {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-primary"
+          className="h-6 w-6 text-sub-dark"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -214,10 +290,11 @@ export const IconSwitcher = ({ icon }: { icon: string }) => {
         </svg>
       );
     case 'info':
+    default:
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-primary"
+          className="h-6 w-6 text-sub-dark"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

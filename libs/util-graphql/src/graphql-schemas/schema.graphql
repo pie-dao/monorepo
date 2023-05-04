@@ -1,203 +1,65 @@
 scalar Timestamp
+scalar BigInt
+
+enum Period {
+  hourly
+  daily
+  monthly
+  total
+}
 
 schema {
   query: Query
 }
 
+enum OrderDirection {
+  asc
+  desc
+}
+
+enum GlpStat_orderBy {
+  id
+  glpSupply
+  aumInUsdg
+  distributedEth
+  distributedEthCumulative
+  distributedUsd
+  distributedUsdCumulative
+  distributedEsgmx
+  distributedEsgmxCumulative
+  distributedEsgmxUsd
+  distributedEsgmxUsdCumulative
+  period
+  timestamp
+}
+
+input Block_height {
+  hash: Int
+  number: Int
+  number_gte: Int
+}
+
 type Query {
-  me: User!
-  user(address: String!, currency: String! = "USD"): User
-  allUsers: [User]
-  token(symbol: String!): TokenEntity
-  tokens: [TokenEntity]
-  tokensBySymbol(symbols: [String!]!): [TokenEntity]
-  vaults(currency: String! = "USD"): [YieldVaultEntity]
-  getTokenChart(
-    symbol: String!
-    currency: String! = "USD"
-    interval: String! = "1D"
-  ): UserTokenEntity
-  getTreasury(currency: String! = "usd"): TreasuryEntity!
+  glpStats(
+    block: Block_height
+    first: Int
+    orderBy: GlpStat_orderBy
+    orderDirection: OrderDirection
+  ): [GlpStat!]!
 }
 
-type User {
-  address: String!
-  pieVaults: [UserTokenEntity!]!
-  twentyFourHourChange: PriceChange!
-  yieldVaults: [UserYieldVaultEntity!]!
-  totalBalance: Float!
-  profit: Float!
-  performance: Float!
-}
-
-type MarketDataEntity {
-  circulatingSupply: Float!
-  currentPrice(currency: String! = "USD"): Float!
-  marketCap: Float!
-  marketCapRank: Float!
-  timestamp: Timestamp!
-  totalVolume: Float!
-  twentyFourHourChange: PriceChange!
-  fromInception: Float!
-  discount: Float!
-  interests: Float!
-  nav: Float!
-  holders: Float!
-  allTimeHigh: Float!
-  allTimeLow: Float!
-  swapFee: Float!
-  totalSupply: Float!
-  managementFee: Float!
-  event: UserEvent
-}
-
-type UserEvent {
-  eventType: String!
-  eventData: EventData!
-}
-
-type EventData {
-  amount: Float!
-  priceInETH: Float!
-  priceInCurrency: Float!
-}
-
-interface TokenInterface {
-  address: String!
-  chain: String!
-  coinGeckoId: String!
-  decimals: Float!
-  kind: String!
-  marketData: [MarketDataEntity!]!
-  name: String!
-  symbol: String!
-  riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
-  inceptionDate: Timestamp!
-  governance: [Governance!]!
-}
-
-type Governance {
-  title: String!
-  url: String!
-  timestamp: Timestamp!
-  status: String!
-}
-
-type LinkEntity {
-  url: String!
-  title: String!
-}
-
-type StrategyEntity {
-  title: String!
-  description: String!
-  allocationPercentage: Float!
-  links: [LinkEntity!]!
-}
-
-type TokenEntity implements TokenInterface {
-  address: String!
-  chain: String!
-  coinGeckoId: String!
-  decimals: Float!
-  kind: String!
-  marketData: [MarketDataEntity!]!
-  name: String!
-  symbol: String!
-  riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
-  inceptionDate: Timestamp!
-  governance: [Governance!]!
-}
-
-type UserTokenEntity implements TokenInterface {
-  address: String!
-  chain: String!
-  coinGeckoId: String!
-  decimals: Float!
-  kind: String!
-  marketData: [MarketDataEntity!]!
-  name: String!
-  symbol: String!
-  riskGrade: String!
-  underlyingTokens: [underlyingTokenEntity!]!
-  inceptionDate: Timestamp!
-  governance: [Governance!]!
-}
-
-interface YieldVaultInterface {
-  symbol: String!
-  name: String!
-}
-
-type YieldVaultEntity implements YieldVaultInterface {
-  underlyingToken: TokenEntity!
-  symbol: String!
-  name: String!
-  address: String!
-  strategies: [StrategyEntity!]!
-}
-
-type UserYieldVaultEntity implements YieldVaultInterface {
-  symbol: String!
-  name: String!
-  address: String!
-  twentyFourHourEarnings: Float!
-  totalEarnings: Float!
-}
-
-type PriceChange {
-  price: Float!
-  change: Float!
-}
-
-type underlyingTokenEntity {
-  marketData: [underlyingTokenMarketData!]!
-  name: String!
-  symbol: String!
-  decimals: Float!
-  address: String!
-}
-
-type underlyingTokenMarketData {
-  marginalTVLPercentage: Float!
-  currentPrice(currency: String! = "USD"): Float!
-  twentyFourHourChange: PriceChange!
-  totalHeld: Float!
-  amountPerToken: Float!
-  allocation: Float!
-}
-
-type LinkEntity {
-  url: String!
-  urlText: String!
-  title: String!
-}
-
-type NewsEntity {
-  title: String!
-  description: String!
-  type: String!
-}
-
-type TreasuryMarketDataEntity {
-  currentPrice(currency: String! = "usd"): Float!
-  tvl(currency: String = "usd"): Float!
-  tvlInEth: Float!
-  capitalUtilisation: Float!
-  avgAPR: Float!
-  auxoAPR: Float!
-  twentyFourHourChange: PriceChange!
-}
-
-type TreasuryContentEntity {
-  about: String!
-  links: [LinkEntity!]!
-  news: [NewsEntity!]!
-}
-
-type TreasuryEntity {
-  content: TreasuryContentEntity!
-  marketData: TreasuryMarketDataEntity!
+type GlpStat {
+  id: ID!
+  glpSupply: BigInt!
+  aumInUsdg: BigInt!
+  distributedEth: BigInt!
+  distributedEthCumulative: BigInt!
+  distributedUsd: BigInt!
+  distributedUsdCumulative: BigInt!
+  distributedEsgmx: BigInt!
+  distributedEsgmxCumulative: BigInt!
+  distributedEsgmxUsd: BigInt!
+  distributedEsgmxUsdCumulative: BigInt!
+  period: Period!
+  timestamp: Int
 }

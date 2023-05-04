@@ -84,7 +84,7 @@
   "capitalUtilization": "Capital Utilization",
   "capitalUtilizationTooltip": "The capital utilization is the percentage of the fund's assets that are currently invested",
   "averageAPR": "Average APR",
-  "AUXOAPR": "AUXO APR",
+  "auxoApr": "AUXO APR",
   "AUXOAPRTooltip": "The AUXO APR is the average rate of return on a funds assets.",
   "averageAPRTooltip": "The average APR is the average rate of return on a funds assets.",
   "amount": "Amount",
@@ -365,5 +365,11 @@
   "withdrawPrvDescription": "PRV holders can burn their token to get Auxo back subject to the availability in the vault. The monthly redemption budget from PRV–>AUXO is computed every month.",
   "withdrawingPrv": "Withdrawing PRV",
   "withdrawn": "Withdrawn PRV",
-  "withdrawExplanation": "PRV to AUXO redemption is subject to a redemption allowance. This allowance is based on the Auxo price premium versus the treasury net asset value."
+  "withdrawExplanation": "PRV to AUXO redemption is subject to a redemption allowance. This allowance is based on the Auxo price premium versus the treasury net asset value.",
+  "treasury": "Treasury",
+  "treasuryDescription": "The treasury is the pool of assets that backs the Auxo token. The treasury is managed by the DAO",
+  "ethereum": "Ethereum",
+  "treasuryReport": "Treasury Report",
+  "multisigAddresses": "Multisig Addresses",
+  "position": "Position"
 }
