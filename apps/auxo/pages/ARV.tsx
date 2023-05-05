@@ -39,6 +39,7 @@ import { subBalances, subPercentageToBalance } from '../utils/balances';
 import { BigNumberReference } from '../store/products/products.types';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
 import Trans from 'next-translate/Trans';
+import AddToWallet from '../components/AddToWallet/AddToWallet';
 
 export default function ARV({
   tokenConfig,
@@ -116,45 +117,22 @@ export default function ARV({
       <div className="flex flex-col">
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
           <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:px-3 sm:py-2">
-            <div className="flex gap-x-2 order-1 items-center">
-              <div className="flex flex-shrink-0">
-                <Image
-                  src={veAUXOicon}
-                  alt={'veAUXO Icon'}
-                  width={32}
-                  height={32}
-                  priority
-                />
-              </div>
-              <h2
-                className="text-base lg:text-lg font-bold text-primary w-fit"
-                data-cy="product-name"
-              >
-                {t('ActiveRewardVault')}
-              </h2>
+            <div className="flex flex-shrink-0">
+              <Image
+                src={veAUXOicon}
+                alt={'veAUXO Icon'}
+                width={32}
+                height={32}
+                priority
+              />
             </div>
-            <div className="flex items-center sm:ml-auto order-3 sm:order-2 gap-x-2 w-full sm:w-fit">
-              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                <Image
-                  src={DoubleCheckmark}
-                  alt="double checkmark"
-                  width={18}
-                  height={18}
-                  priority
-                />
-                <span>{t('upToRewards')}</span>
-              </div>
-              <div className="w-full sm:hidden md:flex md:w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                <Image
-                  src={DoubleCheckmark}
-                  alt="double checkmark"
-                  width={18}
-                  height={18}
-                  priority
-                />
-                <span>{t('governanceEnabled')}</span>
-              </div>
-            </div>
+            <h2
+              className="text-base lg:text-lg font-bold text-primary w-fit"
+              data-cy="product-name"
+            >
+              {t('ActiveRewardVault')}
+            </h2>
+            <AddToWallet token="ARV" />
             {account && hasLock && (
               <div className="flex order-2 sm:order-3 mx-4">
                 <Tooltip
