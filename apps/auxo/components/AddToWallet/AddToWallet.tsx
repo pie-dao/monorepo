@@ -17,10 +17,10 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
       onClick={async () => await addTokenToWallet(chainId, token, displayName)}
     >
       <div className="flex gap-x-2 items-center">
-        <div className="flex gap-x-1">
+        <div className="hidden sm:flex gap-x-1">
           <span className="text-sub-dark underline text-sm hover:text-sub-light">
             {t('addTokenToWallet', {
-              token: displayName,
+              token: displayName ?? token,
             })}
           </span>
         </div>

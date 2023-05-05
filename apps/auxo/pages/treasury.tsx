@@ -22,6 +22,7 @@ import {
 import PositionsTabs from '../components/Positions';
 import { useWeb3React } from '@web3-react/core';
 import { wrapper } from '../store';
+import AddToWallet from '../components/AddToWallet/AddToWallet';
 
 export default function Treasury(): ReactElement {
   const { defaultCurrency, defaultLocale } = useAppSelector(
@@ -47,21 +48,7 @@ export default function Treasury(): ReactElement {
             >
               AUXO
             </h2>
-            <button
-              className="flex ml-auto pr-2"
-              onClick={async () => await addTokenToWallet(chainId, 'AUXO')}
-            >
-              <div className="flex gap-x-2 items-center">
-                <div className="hidden sm:flex gap-x-1">
-                  <span className="text-sub-dark underline text-sm hover:text-sub-light">
-                    {t('addTokenToWallet', {
-                      token: `AUXO`,
-                    })}
-                  </span>
-                </div>
-                <MetamaskIcon className="h-5 w-5" />
-              </div>
-            </button>
+            <AddToWallet token="AUXO" />
           </div>
         </section>
 
