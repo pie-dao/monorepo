@@ -167,7 +167,7 @@ export function NavBar() {
 export const GoToApp = () => {
   const { t } = useTranslation();
   return (
-    <Link passHref href="/migration">
+    <Link passHref href="/ARV">
       <button className="w-fit px-4 py-1 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:cursor-not-allowed disabled:opacity-70 flex gap-x-2 items-center font-medium">
         <TemplateIcon className="fill-current w-4 h-4" />
         {t('launchApp')}
