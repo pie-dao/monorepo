@@ -20,7 +20,7 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
         <div className="flex gap-x-1">
           <span className="text-sub-dark underline text-sm hover:text-sub-light">
             {t('addTokenToWallet', {
-              token: displayName,
+              token: displayName ?? token,
             })}
           </span>
         </div>

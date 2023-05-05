@@ -39,6 +39,7 @@ import { subBalances, subPercentageToBalance } from '../utils/balances';
 import { BigNumberReference } from '../store/products/products.types';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
 import Trans from 'next-translate/Trans';
+import AddToWallet from '../components/AddToWallet/AddToWallet';
 
 export default function ARV({
   tokenConfig,
@@ -234,20 +235,20 @@ export default function ARV({
               )}
             </div> */}
           </div>
-          <div className="flex gap-x-2 items-center w-full sm:w-fit">
+          <div className="flex flex-col gap-x-2 items-center w-full sm:w-fit">
             {/* <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
               <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
-                <p className="font-bold text-primary text-xl">
-                  {isError || !data?.getTreasury?.marketData?.avgAPR
-                    ? 'N/A'
-                    : formatAsPercent(0, defaultLocale)}
+              <p className="font-bold text-primary text-xl">
+              {isError || !data?.getTreasury?.marketData?.avgAPR
+                ? 'N/A'
+                : formatAsPercent(0, defaultLocale)}
                 </p>
                 <div className="flex text-base text-sub-dark font-medium gap-x-1">
-                  {t('lastMonthDistribution')}
-                  <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
+                {t('lastMonthDistribution')}
+                <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
-              </div>
-            </div> */}
+                </div>
+              </div> */}
             <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
               <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
                 <p className="font-bold text-primary text-xl">
@@ -264,10 +265,13 @@ export default function ARV({
                 </div>
               </div>
             </div>
+            <div className="mt-1 pl-2">
+              <AddToWallet token="ARV" />
+            </div>
           </div>
         </section>
         <ARVNotificationBar />
-        <section className="mt-6">
+        <section className="mt-3">
           <TokenCarousel>
             <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden shadow-sm items-start w-full font-medium transition-all mx-auto bg-center bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_1.png')] bg-cover h-full relative">
