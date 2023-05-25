@@ -32,11 +32,6 @@ export default function Navigation({
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
-    {
-      name: t('migration'),
-      href: '/migration',
-      icon: <TrendingUpIcon className="w-6 h-6" />,
-    },
   ];
 
   useEffect(() => {

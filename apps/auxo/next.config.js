@@ -29,8 +29,18 @@ const nextConfig = {
     return [
       {
         source: '/vaults/:slug',
-        destination: '/migration',
+        destination: '/',
         permanent: false,
+      },
+      {
+        source: '/migration/:slug*',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/migration',
+        destination: '/',
+        permanent: true,
       },
     ];
   },

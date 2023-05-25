@@ -31,8 +31,7 @@ const tokens = [
     image: <Image src={AUXOImage} alt="AUXO" width={42} height={42} />,
     description: 'intrinsicValue',
     button: {
-      text: 'common:getNow',
-      link: '/treasury',
+      text: 'common:comingSoonHomepage',
     },
     bg: 'bg-primary/30',
   },
@@ -151,7 +150,7 @@ const ParallaxSection: React.FC = () => {
           </div>
           <Container
             size="xl"
-            className="w-full flex flex-col items-center content-start pointer-events-none lg:grid lg:grid-cols-3 gap-y-7 place-items-center text-white mb-32"
+            className="w-full flex flex-col items-center content-start lg:grid lg:grid-cols-3 gap-y-7 place-items-center text-white mb-32"
           >
             {tokens.map((token, i) => (
               <div
@@ -178,9 +177,9 @@ const ParallaxSection: React.FC = () => {
                   <p className="text-center">{t(token.description)}</p>
                 </div>
                 <div>
-                  <Link passHref href={token.button.link}>
+                  <Link passHref href={token.button.link ?? '/'}>
                     <button
-                      disabled
+                      disabled={token.button.link === undefined}
                       className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       {t(token.button.text)}

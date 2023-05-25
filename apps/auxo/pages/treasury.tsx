@@ -3,8 +3,6 @@ import { ReactElement } from 'react';
 import Image from 'next/image';
 import { Layout } from '../components';
 import AuxoIcon from '../public/tokens/AUXO.svg';
-import { MetamaskIcon } from '@shared/ui-library';
-import addTokenToWallet from '../utils/addTokenToWallet';
 import {
   formatAsPercent,
   formatBalance,
@@ -21,6 +19,7 @@ import {
 import PositionsTabs from '../components/Positions';
 import { useWeb3React } from '@web3-react/core';
 import { TypesMap } from '../types/cmsTypes';
+import AddToWallet from '../components/AddToWallet/AddToWallet';
 
 export default function Treasury(): ReactElement {
   const { defaultCurrency, defaultLocale } = useAppSelector(
@@ -48,22 +47,13 @@ export default function Treasury(): ReactElement {
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap ">
           <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:px-3 sm:py-2">
             <Image src={AuxoIcon} alt={'Auxo Icon'} width={32} height={32} />
-            <h2 className="text-xl font-bold text-primary w-fit">AUXO</h2>
-            <button
-              className="flex ml-auto pr-2 group"
-              onClick={async () => await addTokenToWallet(chainId, 'AUXO')}
+            <h2
+              className="text-lg font-medium text-primary w-fit"
+              data-cy="product-name"
             >
-              <div className="flex gap-x-2 items-center">
-                <div className="hidden sm:flex gap-x-1">
-                  <span className="text-sub-dark underline text-sm group-hover:text-sub-light">
-                    {t('addTokenToWallet', {
-                      token: `AUXO`,
-                    })}
-                  </span>
-                </div>
-                <MetamaskIcon className="h-5 w-5" />
-              </div>
-            </button>
+              AUXO
+            </h2>
+            <AddToWallet token="AUXO" />
           </div>
         </section>
 

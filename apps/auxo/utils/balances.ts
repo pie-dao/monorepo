@@ -41,12 +41,14 @@ export const subBalances = (
 export const mulBalances = (
   b1: BigNumberReference,
   b2: BigNumberReference,
+  decimals = 18,
 ): BigNumberReference => {
   const label = b1.label * b2.label;
   const value = BigNumber.from(b1.value)
-
     .mul(BigNumber.from(b2.value))
+    .div(BigNumber.from(10).pow(decimals))
     .toString();
+
   return {
     label,
     value,
