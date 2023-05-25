@@ -33,10 +33,8 @@ import {
   useTokenBalance,
   useUserHasLock,
   useUserLockAmount,
-  useUserLockDuration,
 } from '../hooks/useToken';
-import { subBalances, subPercentageToBalance } from '../utils/balances';
-import { BigNumberReference } from '../store/products/products.types';
+import { mulBalances, subBalances } from '../utils/balances';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
 import Trans from 'next-translate/Trans';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
@@ -81,13 +79,13 @@ export default function ARV({
     );
   }, [account, dispatch, stakingTokenConfig.addresses, chainId]);
 
-  const AuxoMinusFee: BigNumberReference = useMemo(() => {
-    return subPercentageToBalance(AuxoBalance, earlyTerminationFee, decimals);
-  }, [AuxoBalance, earlyTerminationFee, decimals]);
-
   const losingAmount = useMemo(() => {
-    return subBalances(AuxoBalance, AuxoMinusFee);
-  }, [AuxoBalance, AuxoMinusFee]);
+    return mulBalances(AuxoBalance, earlyTerminationFee, decimals);
+  }, [AuxoBalance, decimals, earlyTerminationFee]);
+
+  const AuxoMinusFee = useMemo(() => {
+    return subBalances(AuxoBalance, losingAmount);
+  }, [AuxoBalance, losingAmount]);
 
   const openEarlyTermination = () => {
     dispatch(
