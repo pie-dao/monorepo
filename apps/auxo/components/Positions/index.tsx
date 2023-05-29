@@ -87,10 +87,7 @@ export default function PositionsTabs() {
                 <>
                   {t(title)}
                   {selected ? (
-                    <motion.div
-                      className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary"
-                      layoutId="underlineListPosition"
-                    />
+                    <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
                   ) : null}
                 </>
               )}
@@ -104,12 +101,9 @@ export default function PositionsTabs() {
               <div className="hidden items-center mb-2 lg:flex">
                 <div className="min-w-0 flex-1 flex items-start px-3">
                   <div className="flex-shrink-0 w-[40px]"></div>
-                  <div className="min-w-0 flex-1 px-4 sm:px-0 sm:grid sm:grid-cols-8 sm:gap-4 ">
+                  <div className="min-w-0 flex-1 px-4 sm:px-0 sm:grid sm:grid-cols-7 sm:gap-4 ">
                     <div className="flex flex-col justify-between col-span-1 -ml-[55px] md:ml-0">
                       <p className="text-xs">{t('position')}</p>
-                    </div>
-                    <div className="flex flex-col justify-between col-span-1">
-                      <p className="text-xs">{t('price')}</p>
                     </div>
                     <div className="flex flex-col justify-center col-span-4">
                       <p className="text-xs">{t('holding')}</p>
@@ -191,7 +185,9 @@ export default function PositionsTabs() {
                                   transition={{ duration: 0.3 }}
                                   className="py-2 space-y-1 border-t border-customBorder mt-2"
                                 >
-                                  <p>{item?.attributes?.Description}</p>
+                                  <p className="text-primary text-base">
+                                    {item?.attributes?.Description}
+                                  </p>
                                 </motion.div>
                               </Disclosure.Panel>
                             )}
@@ -246,6 +242,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
     <Disclosure
       as="div"
       className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
+      defaultOpen
     >
       {({ open }) => (
         <>
@@ -253,14 +250,18 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
             <div className="flex items-center mb-2">
               <div className="min-w-0 flex-1 flex items-center">
                 <div className="flex flex-shrink-0 self-start">
-                  <Image
-                    src={TreasuryPlaceholder}
-                    alt={exposure?.attributes?.Title}
-                    height={36}
-                    width={36}
-                  />
+                  {exposure?.attributes?.Icon?.data?.attributes?.url ? (
+                    <div className="flex flex-shrink-0 self-start">
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${exposure?.attributes?.Icon?.data?.attributes?.url}`}
+                        alt={exposure?.attributes?.Title}
+                        height={36}
+                        width={36}
+                      />
+                    </div>
+                  ) : null}
                 </div>
-                <div className="min-w-0 flex-1 px-2 flex sm:gap-4 items-center justify-between lg:justify-start lg:grid lg:grid-cols-8">
+                <div className="min-w-0 flex-1 px-2 flex sm:gap-4 items-center justify-between lg:justify-start lg:grid lg:grid-cols-7">
                   <div className="flex flex-col justify-between col-span-1">
                     <p
                       className="text-base font-bold text-primary"
@@ -269,43 +270,43 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                       {exposure?.attributes?.Title}
                     </p>
                   </div>
-                  <div className="flex flex-row lg:flex-col justify-between col-span-1 items-center lg:items-start gap-x-2">
-                    <p className="text-base text-primary">
-                      {formatBalanceCurrency(1, 'en-US', 'USD', false)}
-                    </p>
-                  </div>
                   <div className="flex-col justify-center hidden lg:block col-span-4">
-                    <p
-                      className="text-base text-primary"
-                      data-cy="principalAmount"
-                    >
-                      {formatBalance(
-                        exposure?.attributes?.positions_farmings?.data
-                          ?.map(
-                            (position) =>
-                              position?.attributes?.principal_amount,
-                          )
-                          .reduce((a, b) => a + b, 0),
-                        'en-US',
-                        4,
-                        'standard',
-                      )}
-                    </p>
+                    {exposure.id !== 7 && (
+                      <p
+                        className="text-base text-primary"
+                        data-cy="principalAmount"
+                      >
+                        {formatBalanceCurrency(
+                          exposure?.attributes?.positions_farmings?.data
+                            ?.map(
+                              (position) =>
+                                position?.attributes?.principal_amount,
+                            )
+                            .reduce((a, b) => a + b, 0),
+                          'en-US',
+                          'USD',
+                          false,
+                          2,
+                        )}
+                      </p>
+                    )}
                   </div>
                   <div className="hidden lg:flex flex-col justify-center text-right col-span-2">
-                    <p className="text-base text-primary font-medium">
-                      {formatBalanceCurrency(
-                        exposure?.attributes?.positions_farmings?.data
-                          ?.map(
-                            (position) =>
-                              position?.attributes?.principal_amount,
-                          )
-                          .reduce((a, b) => a + b, 0),
-                        'en-US',
-                        'USD',
-                        true,
-                      )}
-                    </p>
+                    {exposure.id !== 7 && (
+                      <p className="text-base text-primary font-medium">
+                        {formatBalanceCurrency(
+                          exposure?.attributes?.positions_farmings?.data
+                            ?.map(
+                              (position) =>
+                                position?.attributes?.principal_amount,
+                            )
+                            .reduce((a, b) => a + b, 0),
+                          'en-US',
+                          'USD',
+                          true,
+                        )}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -321,31 +322,35 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                 />
               </motion.div>
             </div>
-            <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
-              <p>{t('holding')}:</p>
-              <p>
-                {formatBalance(
-                  exposure?.attributes?.positions_farmings?.data
-                    ?.map((position) => position?.attributes?.principal_amount)
-                    .reduce((a, b) => a + b, 0),
-                )}
-                <span className="text-sm text-sub-light">
-                  {' '}
-                  (
-                  {formatBalanceCurrency(
+            {exposure?.id !== 7 && (
+              <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
+                <p>{t('holding')}:</p>
+                <p>
+                  {formatBalance(
                     exposure?.attributes?.positions_farmings?.data
                       ?.map(
                         (position) => position?.attributes?.principal_amount,
                       )
                       .reduce((a, b) => a + b, 0),
-                    'en-US',
-                    'USD',
-                    true,
                   )}
-                  )
-                </span>
-              </p>
-            </div>
+                  <span className="text-sm text-sub-light">
+                    {' '}
+                    (
+                    {formatBalanceCurrency(
+                      exposure?.attributes?.positions_farmings?.data
+                        ?.map(
+                          (position) => position?.attributes?.principal_amount,
+                        )
+                        .reduce((a, b) => a + b, 0),
+                      'en-US',
+                      'USD',
+                      true,
+                    )}
+                    )
+                  </span>
+                </p>
+              </div>
+            )}
           </Disclosure.Button>
           <AnimatePresence initial={false}>
             {open && (
@@ -376,7 +381,9 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                   <div className="w-full flex flex-col space-between ">
                     <div className="hidden items-center sm:flex mt-4">
                       <div className="min-w-0 flex-1 flex items-start">
-                        <div className="flex-shrink-0 w-[60px]"></div>
+                        {exposure.id !== 7 && (
+                          <div className="flex-shrink-0 w-[50px]"></div>
+                        )}
                         <div className="min-w-0 flex-1 hidden lg:grid lg:grid-cols-5 sm:gap-4 px-4 text-sub-dark">
                           <div>
                             <p className="text-xs">{t('amount')}</p>
@@ -390,9 +397,11 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                           <div>
                             <p className="text-xs">{t('rewards')}</p>
                           </div>
-                          <div className="text-right">
-                            <p className="text-xs">{t('value')}</p>
-                          </div>
+                          {exposure.id !== 7 && (
+                            <div className="text-right">
+                              <p className="text-xs">{t('value')}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -403,19 +412,22 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                             className="min-w-0 flex-1 flex items-center gap-x-3"
                             key={position.id}
                           >
-                            <div className="flex-shrink-0 w-[40px] hidden lg:flex">
-                              <p className="text-xs text-secondary">
-                                {formatAsPercentOfTotal(
-                                  position?.attributes?.principal_amount,
-                                  exposure?.attributes?.positions_farmings?.data
-                                    .map(
-                                      (position) =>
-                                        position?.attributes?.principal_amount,
-                                    )
-                                    .reduce((a, b) => a + b, 0),
-                                )}
-                              </p>
-                            </div>
+                            {exposure.id !== 7 && (
+                              <div className="flex-shrink-0 w-[40px] hidden lg:flex">
+                                <p className="text-xs text-secondary">
+                                  {formatAsPercentOfTotal(
+                                    position?.attributes?.principal_amount,
+                                    exposure?.attributes?.positions_farmings?.data
+                                      .map(
+                                        (position) =>
+                                          position?.attributes
+                                            ?.principal_amount,
+                                      )
+                                      .reduce((a, b) => a + b, 0),
+                                  )}
+                                </p>
+                              </div>
+                            )}
                             <div className="w-full grid lg:grid-cols-5 lg:gap-x-4 px-4 py-2 bg-[#F7F7FF] rounded-md items-center">
                               <div className="flex-row hidden lg:block">
                                 <p className="text-xs text-primary">
@@ -432,33 +444,39 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 </p>
                               </div>
                               <div className="flex w-full items-center gap-x-2 border-b lg:border-0 mb-1 lg:mb-0 pb-1 lg:pb-0">
-                                <div className="flex lg:hidden">
-                                  <p className="flex text-md text-secondary">
-                                    {formatAsPercentOfTotal(
-                                      position?.attributes?.principal_amount,
-                                      exposure?.attributes?.positions_farmings?.data
-                                        .map(
-                                          (position) =>
-                                            position?.attributes
-                                              ?.principal_amount,
-                                        )
-                                        .reduce((a, b) => a + b, 0),
-                                    )}
-                                  </p>
-                                </div>
-                                <div className="flex gap-x-4 items-center relative">
-                                  <div className="flex flex-shrink-0">
-                                    <Image
-                                      src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
-                                      width={24}
-                                      height={24}
-                                      alt={
-                                        position?.attributes?.protocol?.data
-                                          ?.attributes?.icon?.data?.[0]
-                                          ?.attributes?.name
-                                      }
-                                    />
+                                {exposure?.id !== 7 && (
+                                  <div className="flex lg:hidden">
+                                    <p className="flex text-md text-secondary">
+                                      {formatAsPercentOfTotal(
+                                        position?.attributes?.principal_amount,
+                                        exposure?.attributes?.positions_farmings?.data
+                                          .map(
+                                            (position) =>
+                                              position?.attributes
+                                                ?.principal_amount,
+                                          )
+                                          .reduce((a, b) => a + b, 0),
+                                      )}
+                                    </p>
                                   </div>
+                                )}
+                                <div className="flex gap-x-4 items-center relative">
+                                  {position?.attributes?.protocol?.data
+                                    ?.attributes?.icon?.data?.[0]?.attributes
+                                    ?.url ? (
+                                    <div className="flex flex-shrink-0">
+                                      <Image
+                                        src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
+                                        width={24}
+                                        height={24}
+                                        alt={
+                                          position?.attributes?.protocol?.data
+                                            ?.attributes?.icon?.data?.[0]
+                                            ?.attributes?.name
+                                        }
+                                      />
+                                    </div>
+                                  ) : null}
                                   <div className="absolute top-0 left-4 transform -translate-y-1/2 w-3.5 h-3.5">
                                     <Image
                                       src={getChainImageUrl(
@@ -470,7 +488,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                     />
                                   </div>
                                   <div>
-                                    <p className="text-md lg:text-sm text-primary ml-auto">
+                                    <p className="text-md lg:text-sm text-primary ml-auto truncate max-w-[7rem] sm:max-w-none">
                                       {
                                         position?.attributes?.protocol?.data
                                           ?.attributes?.name
@@ -542,16 +560,18 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                   )}
                                 </div>
                               </div>
-                              <div className="hidden flex-col lg:flex text-right">
-                                <p className="text-xs text-primary">
-                                  {formatBalanceCurrency(
-                                    position?.attributes?.principal_amount,
-                                    'en-US',
-                                    'USD',
-                                    true,
-                                  )}
-                                </p>
-                              </div>
+                              {exposure.id !== 7 && (
+                                <div className="hidden flex-col lg:flex text-right">
+                                  <p className="text-xs text-primary">
+                                    {formatBalance(
+                                      position?.attributes?.principal_amount,
+                                      'en-US',
+                                      2,
+                                      'compact',
+                                    )}
+                                  </p>
+                                </div>
+                              )}
                             </div>
                           </div>
                         ),

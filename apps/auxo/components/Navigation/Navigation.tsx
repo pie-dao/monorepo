@@ -28,7 +28,11 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    { name: t('treasury'), href: '/treasury', icon: <TemplateIcon /> },
+    {
+      name: t('treasury'),
+      href: '/treasury',
+      icon: <TemplateIcon className='className="w-6 h-6"' />,
+    },
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
@@ -99,7 +103,7 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 pb-8 pt-3 pl-4 w-full h-16 overflow-hidden"
+                className="flex flex-shrink-0 pb-8 pt-3 pl-4 w-[120px] sm:w-full h-16 overflow-hidden"
               >
                 <AuxoLogotype />
               </motion.div>

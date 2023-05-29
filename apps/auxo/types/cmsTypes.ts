@@ -152,6 +152,9 @@ export const Exposure = z.object({
     positions_farmings: z.object({
       data: z.array(PositionFarming),
     }),
+    Icon: z.object({
+      data: Media,
+    }),
   }),
 });
 

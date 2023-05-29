@@ -20,6 +20,8 @@ import PositionsTabs from '../components/Positions';
 import { useWeb3React } from '@web3-react/core';
 import { TypesMap } from '../types/cmsTypes';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
+import { AlphaBanner } from '../components/AlphaBanner/AlphaBanner';
+import { wrapper } from '../store';
 
 export default function Treasury(): ReactElement {
   const { defaultCurrency, defaultLocale } = useAppSelector(
@@ -44,6 +46,8 @@ export default function Treasury(): ReactElement {
   return (
     <>
       <div className="flex flex-col">
+        <AlphaBanner />
+
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap ">
           <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:px-3 sm:py-2">
             <Image src={AuxoIcon} alt={'Auxo Icon'} width={32} height={32} />
@@ -167,3 +171,12 @@ export default function Treasury(): ReactElement {
 Treasury.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
+
+export const getStaticProps = wrapper.getStaticProps(() => () => {
+  return {
+    // does not seem to work with key `initialState`
+    props: {
+      title: 'Treasury',
+    },
+  };
+});

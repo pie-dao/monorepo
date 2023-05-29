@@ -14,9 +14,12 @@ import {
   useGetGlpStatsQuery,
 } from '../../api/generated/graphql';
 import MultisigAddresses from '../../config/daoContracts.json';
-import ethLogo from '../../public/chains/ethereum.svg';
-import Image from 'next/image';
+
 import { isEmpty } from 'lodash';
+import { Fragment } from 'react';
+import { chainMap } from '../../utils/networks';
+import { getExplorer } from '@shared/util-blockchain/abis';
+import ChainIcons from '../ChainIcons/ChainIcons';
 
 const variants: Variants = {
   initial: {
@@ -76,7 +79,7 @@ export function TreasuryTabs(
     <section className="w-full bg-background pt-8">
       <Tab.Group>
         <Tab.List className="md:flex p-1 md:max-w-xs gap-x-2 grid grid-cols-2 w-full">
-          {['About', 'News'].map((title) => (
+          {['About'].map((title) => (
             <Tab
               className={({ selected }) =>
                 classNames(
@@ -113,26 +116,34 @@ export function TreasuryTabs(
                         {t('multisigAddresses')}
                       </h3>
                       <dl className="ml-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        <dt className="text-sm font-medium text-primary flex gap-x-2 items-center">
-                          <div className="flex flex-shrink-0">
-                            <Image
-                              src={ethLogo}
-                              width={18}
-                              height={18}
-                              alt="eth"
-                            />
-                          </div>
-                          {t('ethereum')}
-                        </dt>
-                        <dd className="text-secondary text-lg truncate">
-                          <a
-                            href={`https://etherscan.io/address/${MultisigAddresses.multisigs.treasury[1]}`}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                          >
-                            {MultisigAddresses.multisigs.treasury[1]}
-                          </a>
-                        </dd>
+                        {Object.entries(
+                          MultisigAddresses.multisigs.treasury,
+                        ).map(([key, value]) => (
+                          <Fragment key={key}>
+                            <dt className="text-sm font-medium text-primary flex gap-x-2 items-center">
+                              <div className="flex flex-shrink-0">
+                                <ChainIcons
+                                  chainId={Number(key)}
+                                  svgProps={{
+                                    className: 'w-5 h-5 text-primary',
+                                  }}
+                                />
+                              </div>
+                              {chainMap[Number(key)].chainName}
+                            </dt>
+                            <dd className="text-secondary text-lg truncate">
+                              <a
+                                href={`${
+                                  getExplorer(Number(key))[0].url
+                                }/address/${value}`}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                              >
+                                {value}
+                              </a>
+                            </dd>
+                          </Fragment>
+                        ))}
                       </dl>
                     </div>
                     <div className="grid grid-cols-2 gap-y py-2 items-center ">
@@ -216,7 +227,6 @@ export function SingleProductPanel({
   return (
     <Tab.Panel>
       <motion.div
-        layout
         variants={variants}
         initial="initial"
         exit="exit"

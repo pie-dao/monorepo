@@ -5,6 +5,8 @@ export const SUPPORTED_CHAINS = {
   GOERLI: 5,
   FANTOM: 250,
   POLYGON: 137,
+  ARBITRUM: 42161,
+  OPTIMISM: 10,
 } as const;
 
 type ValueOf<T> = T[keyof T];
@@ -104,5 +106,29 @@ export const chainMap: ChainMap = {
     },
     rpcUrls: ['https://goerli.infura.io/v3/eeb01ac87aad4a4e907e914fcfc8be8e'],
     blockExplorerUrls: ['https://goerli.etherscan.io'],
+  },
+  [SUPPORTED_CHAINS.ARBITRUM]: {
+    blockTime: 1,
+    chainId: `0x${Number(SUPPORTED_CHAINS.ARBITRUM).toString(16)}`,
+    chainName: 'Arbitrum',
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+    blockExplorerUrls: ['https://arbiscan.io'],
+  },
+  [SUPPORTED_CHAINS.OPTIMISM]: {
+    blockTime: 1,
+    chainId: `0x${Number(SUPPORTED_CHAINS.OPTIMISM).toString(16)}`,
+    chainName: 'Optimism',
+    nativeCurrency: {
+      name: 'Ether',
+      symbol: 'ETH',
+      decimals: 18,
+    },
+    rpcUrls: ['https://mainnet.optimism.io'],
+    blockExplorerUrls: ['https://optimistic.etherscan.io'],
   },
 };
