@@ -35,7 +35,7 @@ export default async function handler(
       ResponseList[req.query.path[0]].parse(parsedData);
       return res.status(200).send(parsedData);
     } catch (e) {
-      console.log(util.inspect(e, false, null, true /* enable colors */));
+      console.error(util.inspect(e, false, null, true));
       return res.status(500).send(e);
     }
   } else {
@@ -43,7 +43,7 @@ export default async function handler(
       ResponseList[req.query.path].parse(parsedData);
       return res.status(200).send(parsedData);
     } catch (e) {
-      console.log(util.inspect(e, false, null, true /* enable colors */));
+      console.error(util.inspect(e, false, null, true));
       return res.status(500).send(e);
     }
   }

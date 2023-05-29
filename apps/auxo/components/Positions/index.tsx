@@ -237,6 +237,10 @@ export type SingleTokenPositionProps = {
 
 export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
   const { t } = useTranslation();
+  const positionsFarming = exposure?.attributes?.positions_farmings?.data;
+  const principalAmount = positionsFarming
+    ?.map((position) => position?.attributes?.principal_amount)
+    ?.reduce((a, b) => a + b, 0);
 
   return (
     <Disclosure
@@ -277,12 +281,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                         data-cy="principalAmount"
                       >
                         {formatBalanceCurrency(
-                          exposure?.attributes?.positions_farmings?.data
-                            ?.map(
-                              (position) =>
-                                position?.attributes?.principal_amount,
-                            )
-                            .reduce((a, b) => a + b, 0),
+                          principalAmount,
                           'en-US',
                           'USD',
                           false,
@@ -295,12 +294,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                     {exposure.id !== 7 && (
                       <p className="text-base text-primary font-medium">
                         {formatBalanceCurrency(
-                          exposure?.attributes?.positions_farmings?.data
-                            ?.map(
-                              (position) =>
-                                position?.attributes?.principal_amount,
-                            )
-                            .reduce((a, b) => a + b, 0),
+                          principalAmount,
                           'en-US',
                           'USD',
                           true,
@@ -326,22 +320,12 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
               <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
                 <p>{t('holding')}:</p>
                 <p>
-                  {formatBalance(
-                    exposure?.attributes?.positions_farmings?.data
-                      ?.map(
-                        (position) => position?.attributes?.principal_amount,
-                      )
-                      .reduce((a, b) => a + b, 0),
-                  )}
+                  {formatBalance(principalAmount)}
                   <span className="text-sm text-sub-light">
                     {' '}
                     (
                     {formatBalanceCurrency(
-                      exposure?.attributes?.positions_farmings?.data
-                        ?.map(
-                          (position) => position?.attributes?.principal_amount,
-                        )
-                        .reduce((a, b) => a + b, 0),
+                      principalAmount,
                       'en-US',
                       'USD',
                       true,
@@ -406,31 +390,85 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                       </div>
                     </div>
                     <div className="flex flex-col gap-y-2 mt-2">
-                      {exposure?.attributes?.positions_farmings?.data?.map(
-                        (position) => (
-                          <div
-                            className="min-w-0 flex-1 flex items-center gap-x-3"
-                            key={position.id}
-                          >
-                            {exposure.id !== 7 && (
-                              <div className="flex-shrink-0 w-[40px] hidden lg:flex">
-                                <p className="text-xs text-secondary">
-                                  {formatAsPercentOfTotal(
-                                    position?.attributes?.principal_amount,
-                                    exposure?.attributes?.positions_farmings?.data
-                                      .map(
-                                        (position) =>
-                                          position?.attributes
-                                            ?.principal_amount,
-                                      )
-                                      .reduce((a, b) => a + b, 0),
-                                  )}
-                                </p>
+                      {positionsFarming?.map((position) => (
+                        <div
+                          className="min-w-0 flex-1 flex items-center gap-x-3"
+                          key={position.id}
+                        >
+                          {exposure.id !== 7 && (
+                            <div className="flex-shrink-0 w-[40px] hidden lg:flex">
+                              <p className="text-xs text-secondary">
+                                {formatAsPercentOfTotal(
+                                  position?.attributes?.principal_amount,
+                                  principalAmount,
+                                )}
+                              </p>
+                            </div>
+                          )}
+                          <div className="w-full grid lg:grid-cols-5 lg:gap-x-4 px-4 py-2 bg-[#F7F7FF] rounded-md items-center">
+                            <div className="flex-row hidden lg:block">
+                              <p className="text-xs text-primary">
+                                {formatBalance(
+                                  position?.attributes?.principal_amount,
+                                  'en-US',
+                                  2,
+                                  'compact',
+                                )}{' '}
+                                {
+                                  position?.attributes?.principal?.data
+                                    ?.attributes?.symbol
+                                }
+                              </p>
+                            </div>
+                            <div className="flex w-full items-center gap-x-2 border-b lg:border-0 mb-1 lg:mb-0 pb-1 lg:pb-0">
+                              {exposure?.id !== 7 && (
+                                <div className="flex lg:hidden">
+                                  <p className="flex text-md text-secondary">
+                                    {formatAsPercentOfTotal(
+                                      position?.attributes?.principal_amount,
+                                      principalAmount,
+                                    )}
+                                  </p>
+                                </div>
+                              )}
+                              <div className="flex gap-x-4 items-center relative">
+                                {position?.attributes?.protocol?.data
+                                  ?.attributes?.icon?.data?.[0]?.attributes
+                                  ?.url ? (
+                                  <div className="flex flex-shrink-0">
+                                    <Image
+                                      src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
+                                      width={24}
+                                      height={24}
+                                      alt={
+                                        position?.attributes?.protocol?.data
+                                          ?.attributes?.icon?.data?.[0]
+                                          ?.attributes?.name
+                                      }
+                                    />
+                                  </div>
+                                ) : null}
+                                <div className="absolute top-0 left-4 transform -translate-y-1/2 w-3.5 h-3.5">
+                                  <Image
+                                    src={getChainImageUrl(
+                                      position?.attributes?.Network?.toLowerCase(),
+                                    )}
+                                    width={20}
+                                    height={20}
+                                    alt={position?.attributes?.Network}
+                                  />
+                                </div>
+                                <div>
+                                  <p className="text-md lg:text-sm text-primary ml-auto truncate max-w-[7rem] sm:max-w-none">
+                                    {
+                                      position?.attributes?.protocol?.data
+                                        ?.attributes?.name
+                                    }
+                                  </p>
+                                </div>
                               </div>
-                            )}
-                            <div className="w-full grid lg:grid-cols-5 lg:gap-x-4 px-4 py-2 bg-[#F7F7FF] rounded-md items-center">
-                              <div className="flex-row hidden lg:block">
-                                <p className="text-xs text-primary">
+                              <div className="flex-col flex lg:hidden ml-auto">
+                                <p className="text-sm text-primary">
                                   {formatBalance(
                                     position?.attributes?.principal_amount,
                                     'en-US',
@@ -443,139 +481,69 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                   }
                                 </p>
                               </div>
-                              <div className="flex w-full items-center gap-x-2 border-b lg:border-0 mb-1 lg:mb-0 pb-1 lg:pb-0">
-                                {exposure?.id !== 7 && (
-                                  <div className="flex lg:hidden">
-                                    <p className="flex text-md text-secondary">
-                                      {formatAsPercentOfTotal(
-                                        position?.attributes?.principal_amount,
-                                        exposure?.attributes?.positions_farmings?.data
-                                          .map(
-                                            (position) =>
-                                              position?.attributes
-                                                ?.principal_amount,
-                                          )
-                                          .reduce((a, b) => a + b, 0),
-                                      )}
-                                    </p>
-                                  </div>
-                                )}
-                                <div className="flex gap-x-4 items-center relative">
-                                  {position?.attributes?.protocol?.data
-                                    ?.attributes?.icon?.data?.[0]?.attributes
-                                    ?.url ? (
-                                    <div className="flex flex-shrink-0">
-                                      <Image
-                                        src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
-                                        width={24}
-                                        height={24}
-                                        alt={
-                                          position?.attributes?.protocol?.data
-                                            ?.attributes?.icon?.data?.[0]
-                                            ?.attributes?.name
-                                        }
-                                      />
-                                    </div>
-                                  ) : null}
-                                  <div className="absolute top-0 left-4 transform -translate-y-1/2 w-3.5 h-3.5">
-                                    <Image
-                                      src={getChainImageUrl(
-                                        position?.attributes?.Network?.toLowerCase(),
-                                      )}
-                                      width={20}
-                                      height={20}
-                                      alt={position?.attributes?.Network}
-                                    />
-                                  </div>
-                                  <div>
-                                    <p className="text-md lg:text-sm text-primary ml-auto truncate max-w-[7rem] sm:max-w-none">
-                                      {
-                                        position?.attributes?.protocol?.data
-                                          ?.attributes?.name
-                                      }
-                                    </p>
-                                  </div>
-                                </div>
-                                <div className="flex-col flex lg:hidden ml-auto">
-                                  <p className="text-sm text-primary">
-                                    {formatBalance(
-                                      position?.attributes?.principal_amount,
-                                      'en-US',
-                                      2,
-                                      'compact',
-                                    )}{' '}
-                                    {
-                                      position?.attributes?.principal?.data
-                                        ?.attributes?.symbol
-                                    }
-                                  </p>
-                                </div>
-                              </div>
-                              <MobileAccordionContent
-                                title={'value'}
-                                content={formatBalanceCurrency(
-                                  position?.attributes?.principal_amount,
-                                  'en-US',
-                                  'USD',
-                                  true,
-                                )}
-                              />
-                              <MobileAccordionContent
-                                title={'strategy'}
-                                content={position?.attributes?.strategies?.data
+                            </div>
+                            <MobileAccordionContent
+                              title={'value'}
+                              content={formatBalanceCurrency(
+                                position?.attributes?.principal_amount,
+                                'en-US',
+                                'USD',
+                                true,
+                              )}
+                            />
+                            <MobileAccordionContent
+                              title={'strategy'}
+                              content={position?.attributes?.strategies?.data
+                                ?.map((strategy) => strategy?.attributes?.Title)
+                                .join(', ')}
+                            />
+                            <div className="hidden flex-col lg:flex">
+                              <p className="text-xs text-primary">
+                                {position?.attributes?.strategies?.data
                                   ?.map(
                                     (strategy) => strategy?.attributes?.Title,
                                   )
                                   .join(', ')}
-                              />
-                              <div className="hidden flex-col lg:flex">
-                                <p className="text-xs text-primary">
-                                  {position?.attributes?.strategies?.data
-                                    ?.map(
-                                      (strategy) => strategy?.attributes?.Title,
-                                    )
-                                    .join(', ')}
-                                </p>
-                              </div>
-                              <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 py-1 items-center">
-                                <p className="text-sm text-sub-dark flex lg:hidden">
-                                  {t('rewards')}
-                                </p>
-                                <div className="flex items-center gap-x-1 ml-auto lg:ml-0">
-                                  {position?.attributes?.rewards?.data?.map(
-                                    (reward) =>
-                                      reward?.attributes?.icon?.data?.attributes
-                                        ?.url && (
-                                        <Image
-                                          key={reward?.id}
-                                          src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${reward?.attributes?.icon?.data?.attributes?.url}`}
-                                          width={24}
-                                          height={24}
-                                          alt={
-                                            reward?.attributes?.icon?.data
-                                              ?.attributes?.name
-                                          }
-                                        />
-                                      ),
-                                  )}
-                                </div>
-                              </div>
-                              {exposure.id !== 7 && (
-                                <div className="hidden flex-col lg:flex text-right">
-                                  <p className="text-xs text-primary">
-                                    {formatBalance(
-                                      position?.attributes?.principal_amount,
-                                      'en-US',
-                                      2,
-                                      'compact',
-                                    )}
-                                  </p>
-                                </div>
-                              )}
+                              </p>
                             </div>
+                            <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 py-1 items-center">
+                              <p className="text-sm text-sub-dark flex lg:hidden">
+                                {t('rewards')}
+                              </p>
+                              <div className="flex items-center gap-x-1 ml-auto lg:ml-0">
+                                {position?.attributes?.rewards?.data?.map(
+                                  (reward) =>
+                                    reward?.attributes?.icon?.data?.attributes
+                                      ?.url && (
+                                      <Image
+                                        key={reward?.id}
+                                        src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${reward?.attributes?.icon?.data?.attributes?.url}`}
+                                        width={24}
+                                        height={24}
+                                        alt={
+                                          reward?.attributes?.icon?.data
+                                            ?.attributes?.name
+                                        }
+                                      />
+                                    ),
+                                )}
+                              </div>
+                            </div>
+                            {exposure.id !== 7 && (
+                              <div className="hidden flex-col lg:flex text-right">
+                                <p className="text-xs text-primary">
+                                  {formatBalance(
+                                    position?.attributes?.principal_amount,
+                                    'en-US',
+                                    2,
+                                    'compact',
+                                  )}
+                                </p>
+                              </div>
+                            )}
                           </div>
-                        ),
-                      )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </motion.div>

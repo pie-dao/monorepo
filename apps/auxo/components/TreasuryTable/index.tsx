@@ -116,34 +116,36 @@ export function TreasuryTabs(
                         {t('multisigAddresses')}
                       </h3>
                       <dl className="ml-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
-                        {Object.entries(
-                          MultisigAddresses.multisigs.treasury,
-                        ).map(([key, value]) => (
-                          <Fragment key={key}>
-                            <dt className="text-sm font-medium text-primary flex gap-x-2 items-center">
-                              <div className="flex flex-shrink-0">
-                                <ChainIcons
-                                  chainId={Number(key)}
-                                  svgProps={{
-                                    className: 'w-5 h-5 text-primary',
-                                  }}
-                                />
-                              </div>
-                              {chainMap[Number(key)].chainName}
-                            </dt>
-                            <dd className="text-secondary text-lg truncate">
-                              <a
-                                href={`${
-                                  getExplorer(Number(key))[0].url
-                                }/address/${value}`}
-                                target="_blank"
-                                rel="noreferrer noopener"
-                              >
-                                {value}
-                              </a>
-                            </dd>
-                          </Fragment>
-                        ))}
+                        {!isEmpty(MultisigAddresses?.multisigs?.treasury)
+                          ? Object.entries(
+                              MultisigAddresses?.multisigs?.treasury,
+                            ).map(([key, value]) => (
+                              <Fragment key={key}>
+                                <dt className="text-sm font-medium text-primary flex gap-x-2 items-center">
+                                  <div className="flex flex-shrink-0">
+                                    <ChainIcons
+                                      chainId={Number(key)}
+                                      svgProps={{
+                                        className: 'w-5 h-5 text-primary',
+                                      }}
+                                    />
+                                  </div>
+                                  {chainMap[Number(key)].chainName}
+                                </dt>
+                                <dd className="text-secondary text-lg truncate">
+                                  <a
+                                    href={`${
+                                      getExplorer(Number(key))[0].url
+                                    }/address/${value}`}
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                  >
+                                    {value}
+                                  </a>
+                                </dd>
+                              </Fragment>
+                            ))
+                          : null}
                       </dl>
                     </div>
                     <div className="grid grid-cols-2 gap-y py-2 items-center ">
