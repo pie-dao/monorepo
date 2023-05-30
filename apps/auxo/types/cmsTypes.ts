@@ -62,9 +62,7 @@ export const Report = z.object({
     tvl_in_eth: z.number(),
     capital_utilisation: z.number(),
     avg_apr: z.number(),
-    report_file: z.object({
-      data: Media,
-    }),
+    report_url: z.string().nullish(),
   }),
 });
 

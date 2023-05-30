@@ -14,7 +14,6 @@ import { isEmpty } from 'lodash';
 import { useStrapiCollection } from '../../hooks';
 import { TypesMap } from '../../types/cmsTypes';
 import { useMemo } from 'react';
-import TreasuryPlaceholder from '../../public/images/treasury/treasury_placeholder.png';
 
 const variants: Variants = {
   initial: {
@@ -257,7 +256,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                   {exposure?.attributes?.Icon?.data?.attributes?.url ? (
                     <div className="flex flex-shrink-0 self-start">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${exposure?.attributes?.Icon?.data?.attributes?.url}`}
+                        src={`${exposure?.attributes?.Icon?.data?.attributes?.url}`}
                         alt={exposure?.attributes?.Title}
                         height={36}
                         width={36}
@@ -437,7 +436,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                   ?.url ? (
                                   <div className="flex flex-shrink-0">
                                     <Image
-                                      src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
+                                      src={`${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
                                       width={24}
                                       height={24}
                                       alt={
@@ -517,7 +516,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                       ?.url && (
                                       <Image
                                         key={reward?.id}
-                                        src={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${reward?.attributes?.icon?.data?.attributes?.url}`}
+                                        src={`${reward?.attributes?.icon?.data?.attributes?.url}`}
                                         width={24}
                                         height={24}
                                         alt={

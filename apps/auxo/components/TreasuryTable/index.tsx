@@ -156,7 +156,7 @@ export function TreasuryTabs(
                         className="w-fit px-5 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary hover:bg-secondary hover:text-white flex gap-x-2 items-center cursor-pointer place-self-end"
                         target="_blank"
                         rel="noreferrer noopener"
-                        href={`${process.env.NEXT_PUBLIC_CMS_ENDPOINT}${props.downloadUrl}`}
+                        href={`${props.downloadUrl}`}
                       >
                         <DownloadIcon className="w-5 h-5" />
                         <span className="font-medium">Download</span>

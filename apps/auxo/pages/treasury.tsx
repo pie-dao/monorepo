@@ -40,7 +40,7 @@ export default function Treasury(): ReactElement {
       'sort[0]': 'createdAt:desc',
       'pagination[page]': 1,
       'pagination[pageSize]': 1,
-      populate: 'report_file',
+      populate: 'report_url',
     });
 
   return (
@@ -157,10 +157,7 @@ export default function Treasury(): ReactElement {
           </div>
         </section>
         <TreasuryTabs
-          downloadUrl={
-            latestReport?.data?.[0]?.attributes?.report_file?.data?.attributes
-              ?.url
-          }
+          downloadUrl={latestReport?.data?.[0]?.attributes?.report_url || ''}
         />
         <PositionsTabs />
       </div>
