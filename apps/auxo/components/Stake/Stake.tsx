@@ -187,9 +187,15 @@ const Stake: React.FC<Props> = ({
                 </Tab>
               )}
             </Tab.List>
-            {/* <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
-              {t('getAUXO')}
-            </button> */}
+            <a
+              rel="noreferrer noopener"
+              target="_blank"
+              href="https://app.uniswap.org/#/swap?outputCurrency=0xff030228a046F640143Dab19be00009606C89B1d&inputCurrency=ETH"
+            >
+              <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
+                {t('getAUXO')}
+              </button>
+            </a>
           </div>
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
