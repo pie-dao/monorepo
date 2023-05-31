@@ -6,7 +6,5 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'typescript-rtk-query':
-          importBaseApiFrom: '../baseApi'
-          exportHooks: true
       - 'typescript-msw'
+      - typescript-react-query

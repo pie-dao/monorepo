@@ -9,3 +9,4 @@ export const useAppSelector: TypedUseSelectorHook<ReturnType<RootState>> =
   useSelector;
 
 export * from './useFormattedBalance';
+export * from './useTreasury';

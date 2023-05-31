@@ -16,6 +16,7 @@ const nextConfig = {
       'raw.githubusercontent.com',
       'static.tildacdn.com',
       '188.166.45.35', // CMS images
+      'strapi-auxo-s3-bucket.s3.us-west-1.amazonaws.com',
     ],
   },
   reactStrictMode: true,

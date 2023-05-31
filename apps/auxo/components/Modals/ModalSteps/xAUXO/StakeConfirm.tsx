@@ -6,6 +6,7 @@ import Image from 'next/image';
 import {
   getSigner,
   useRollStakerXAUXOContract,
+  useXAUXOTokenContract,
 } from '../../../../hooks/useContracts';
 import {
   thunkStakeXAUXO,
@@ -16,7 +17,6 @@ import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
 import { useWeb3React } from '@web3-react/core';
 import AUXOImage from '../../../../public/tokens/AUXO.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
-import { xAUXOContract } from '../../../../store/products/products.contracts';
 import { compareBalances } from '../../../../utils/balances';
 import {
   useChainExplorer,
@@ -39,6 +39,7 @@ const StakeConfirm: React.FC<{
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const rollStaker = useRollStakerXAUXOContract();
+  const PRV = useXAUXOTokenContract();
   const signer = getSigner(library, account);
   const shouldRevertDeposit = compareBalances(
     swap?.from?.amount,
@@ -51,7 +52,7 @@ const StakeConfirm: React.FC<{
     action === 'stake' &&
       dispatch(
         thunkStakeXAUXO({
-          xAUXO: xAUXOContract,
+          xAUXO: PRV,
           deposit: swap?.from?.amount,
           account,
           rollStaker,
