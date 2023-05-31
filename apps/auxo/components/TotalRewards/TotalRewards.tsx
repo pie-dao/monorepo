@@ -149,7 +149,11 @@ const NoRewards = ({ token }: { token: string }) => {
             />
           </svg>
         </div>
-        <p>
+        <a
+          href="https://app.uniswap.org/#/swap?outputCurrency=0xff030228a046F640143Dab19be00009606C89B1d&inputCurrency=ETH"
+          target="_blank"
+          rel="noreferrer noopener"
+        >
           <Trans
             i18nKey="getAUXOandStake"
             components={{
@@ -160,7 +164,7 @@ const NoRewards = ({ token }: { token: string }) => {
             }}
             ns="common"
           />
-        </p>
+        </a>
       </button>
       {/* <button className="ring-2 ring-secondary bg-secondary text-white rounded-full px-2 py-1 text-sm font-medium enabled:hover:bg-transparent enabled:hover:text-secondary mt-3">
         {t('compoundRewards', { token })}
