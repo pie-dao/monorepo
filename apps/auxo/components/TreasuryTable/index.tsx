@@ -148,7 +148,7 @@ export function TreasuryTabs(
                           : null}
                       </dl>
                     </div>
-                    <div className="grid grid-cols-2 gap-y py-2 items-center ">
+                    {/* <div className="grid grid-cols-2 gap-y py-2 items-center ">
                       <p className="text-base text-primary font-medium">
                         {t('treasuryReport')}
                       </p>
@@ -161,7 +161,7 @@ export function TreasuryTabs(
                         <DownloadIcon className="w-5 h-5" />
                         <span className="font-medium">Download</span>
                       </a>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="w-full h-full">
