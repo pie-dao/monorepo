@@ -35,6 +35,7 @@ import {
 } from '../store/products/thunks';
 import { useSingleRewardList } from '../hooks/useRewards';
 import { orderBy } from 'lodash';
+import { AlphaBanner } from '../components/AlphaBanner/AlphaBanner';
 
 export default function Rewards() {
   const { t } = useTranslation();

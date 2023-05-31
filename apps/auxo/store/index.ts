@@ -12,7 +12,6 @@ import productsReducer from './products/products.slice';
 import notificationsReducer from './notifications/notifications.slice';
 import migrationReducer from './migration/migration.slice';
 import rewardsReducer from './rewards/rewards.slice';
-import { api } from '../api/generated/graphql';
 import { merge } from 'lodash';
 import memoize from 'proxy-memoize';
 import { useCallback } from 'react';
@@ -25,7 +24,6 @@ export const rootReducer = combineReducers({
   notifications: notificationsReducer,
   migration: migrationReducer,
   rewards: rewardsReducer,
-  [api.reducerPath]: api.reducer,
 });
 
 const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
@@ -45,7 +43,7 @@ export const makeStore = () =>
         serializableCheck: {
           ignoredActions: [HYDRATE],
         },
-      }).concat(api.middleware),
+      }),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

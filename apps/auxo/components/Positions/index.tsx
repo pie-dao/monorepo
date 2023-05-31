@@ -5,13 +5,15 @@ import classNames from '../../utils/classnames';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import Image from 'next/image';
 import {
-  formatAsPercent,
+  formatAsPercentOfTotal,
   formatBalance,
   formatBalanceCurrency,
 } from '../../utils/formatBalance';
-import PriceChange from '../PriceChange/PriceChange';
 import { getChainImageUrl } from '../../utils/images';
 import { isEmpty } from 'lodash';
+import { useStrapiCollection } from '../../hooks';
+import { TypesMap } from '../../types/cmsTypes';
+import { useMemo } from 'react';
 
 const variants: Variants = {
   initial: {
@@ -36,45 +38,36 @@ const variants: Variants = {
   },
 };
 
-export default function PositionsTabs(treasuryPositions) {
+export default function PositionsTabs() {
   const { t } = useTranslation();
 
-  const strategies = [
-    {
-      title: 'Beethoven LP Strategy - USDC/fUSDT/MIM liquidity pool',
-      description:
-        'Supplies liquidity to Beethovenx in the Ziggy Stardust & Magic Internet Money pool. LP position earns trading fees and BEETS. This strategy tries to maximise yield by providing part of earned BEETS in the Fidelio Duetto 80/20 pool and staking Fidelio Duetto BPTs to earn more BEETS. Earned rewards are sold and reinvested.',
-      allocationPercentage: 30,
-      links: [
-        {
-          title: 'Link 1',
-          url: 'https://www.google.com',
-        },
-        {
-          title: 'Link 2',
-          url: 'https://www.google.com',
-        },
-      ],
-    },
-    {
-      title: 'Beethoven LP Strategy - USDC/fUSDT/MIM liquidity pool',
-      description:
-        'Supplies liquidity to Beethovenx in the Ziggy Stardust & Magic Internet Money pool. LP position earns trading fees and BEETS. This strategy tries to maximise yield by providing part of earned BEETS in the Fidelio Duetto 80/20 pool and staking Fidelio Duetto BPTs to earn more BEETS. Earned rewards are sold and reinvested.',
-      allocationPercentage: 70,
-      links: [
-        {
-          title: 'Link 1',
-          url: 'https://www.google.com',
-        },
-        {
-          title: 'Link 2',
-          url: 'https://www.google.com',
-        },
-      ],
-    },
-  ];
+  const { data: exposures, isLoading } = useStrapiCollection<
+    TypesMap['exposures']
+  >('exposures', {
+    populate: 'deep,4',
+  });
+
+  const strategiesList = useMemo(() => {
+    if (isLoading || isEmpty(exposures)) {
+      return [];
+    }
+
+    const flatList = exposures?.data?.flatMap((exposure) =>
+      exposure?.attributes?.positions_farmings?.data?.flatMap(
+        (position) => position.attributes?.strategies?.data,
+      ),
+    );
+
+    const uniqueList = flatList?.filter(
+      (strategy, index, self) =>
+        index === self.findIndex((s) => s.id === strategy.id),
+    );
+
+    return uniqueList;
+  }, [exposures, isLoading]);
+
   return (
-    <section className="w-full px-4 md:px-10 pb-16 bg-background">
+    <section className="w-full pb-16 mt-8">
       <Tab.Group>
         <Tab.List className="md:flex p-1 md:max-w-xs gap-x-2 grid grid-cols-2 w-full mb-4">
           {['Treasury positions', 'Strategy details'].map((title) => (
@@ -93,10 +86,7 @@ export default function PositionsTabs(treasuryPositions) {
                 <>
                   {t(title)}
                   {selected ? (
-                    <motion.div
-                      className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary"
-                      layoutId="underlineListPosition"
-                    />
+                    <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
                   ) : null}
                 </>
               )}
@@ -110,12 +100,9 @@ export default function PositionsTabs(treasuryPositions) {
               <div className="hidden items-center mb-2 lg:flex">
                 <div className="min-w-0 flex-1 flex items-start px-3">
                   <div className="flex-shrink-0 w-[40px]"></div>
-                  <div className="min-w-0 flex-1 px-4 sm:px-0 sm:grid sm:grid-cols-8 sm:gap-4 ">
+                  <div className="min-w-0 flex-1 px-4 sm:px-0 sm:grid sm:grid-cols-7 sm:gap-4 ">
                     <div className="flex flex-col justify-between col-span-1 -ml-[55px] md:ml-0">
-                      <p className="text-xs">{t('token')}</p>
-                    </div>
-                    <div className="flex flex-col justify-between col-span-1">
-                      <p className="text-xs">{t('price')}</p>
+                      <p className="text-xs">{t('position')}</p>
                     </div>
                     <div className="flex flex-col justify-center col-span-4">
                       <p className="text-xs">{t('holding')}</p>
@@ -125,9 +112,11 @@ export default function PositionsTabs(treasuryPositions) {
                 <div className="h-5 w-5"></div>
               </div>
               <div className="flex flex-col gap-y-2">
-                <SingleTokenPosition />
-                <SingleTokenPosition />
-                <SingleTokenPosition />
+                {!isEmpty(exposures)
+                  ? exposures?.data?.map((item) => (
+                      <SingleTokenPosition key={`${item.id}`} exposure={item} />
+                    ))
+                  : null}
               </div>
             </div>
           </SingleProductPanel>
@@ -136,10 +125,10 @@ export default function PositionsTabs(treasuryPositions) {
             testId="product-tab-description-content"
           >
             <div className="bg-gradient-primary shadow-md rounded-lg px-3 py-4 flex flex-col gap-y-4 overflow-hidden">
-              {!isEmpty(strategies)
-                ? strategies.map((item, index) => (
+              {!isEmpty(strategiesList)
+                ? strategiesList.map((item, index) => (
                     <Disclosure
-                      key={`${item.title}-${index}`}
+                      key={index}
                       as="div"
                       className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
                       data-cy="strategy-item"
@@ -164,13 +153,8 @@ export default function PositionsTabs(treasuryPositions) {
                               </motion.div>
                               <div className="flex-1">
                                 <h3 className="text-sm text-primary font-medium leading-5">
-                                  {item.title}
+                                  {item?.attributes?.Title}
                                 </h3>
-                              </div>
-                              <div>
-                                <p className="text-secondary text-sm">
-                                  {formatAsPercent(item.allocationPercentage)}
-                                </p>
                               </div>
                             </div>
                           </Disclosure.Button>
@@ -200,18 +184,9 @@ export default function PositionsTabs(treasuryPositions) {
                                   transition={{ duration: 0.3 }}
                                   className="py-2 space-y-1 border-t border-customBorder mt-2"
                                 >
-                                  <p>{item.description}</p>
-                                  <div className="flex flex-wrap gap-4 mt-4">
-                                    {item.links.map((link, index) => (
-                                      <a
-                                        key={`${link.title}-${index}`}
-                                        href={link.url}
-                                        className="text-secondary text-sm"
-                                      >
-                                        {link.title}
-                                      </a>
-                                    ))}
-                                  </div>
+                                  <p className="text-primary text-base">
+                                    {item?.attributes?.Description}
+                                  </p>
                                 </motion.div>
                               </Disclosure.Panel>
                             )}
@@ -255,102 +230,22 @@ export function SingleProductPanel({
   );
 }
 
-export const SingleTokenPosition = () => {
+export type SingleTokenPositionProps = {
+  exposure: TypesMap['exposure'];
+};
+
+export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
   const { t } = useTranslation();
-  const token = {
-    icon: 'http://188.166.45.35:8080/uploads/eth_90d032940f.png',
-    name: 'Ethereum',
-    symbol: 'ETH',
-    priceIn24h: {
-      value: 2.3,
-      change: 3.1,
-    },
-    totalPrincipalAmount: 30020120,
-    totalPrincipalRelative: 30,
-    totalValue: 2313001.2,
-    positions: [
-      {
-        id: 8,
-        principalRelative: 10,
-        network: 'ethereum',
-        principalAmount: 20200,
-        principalValue: 2335739.23,
-        protocol: {
-          title: 'Compound',
-          icon:
-            process.env.NEXT_PUBLIC_CMS_ENDPOINT +
-            '/uploads/eth_90d032940f.png',
-        },
-        strategies: [
-          {
-            title: 'GLP',
-            description: 'Provide liquidity into GLP',
-          },
-          {
-            title: 'Sen tran + gauge',
-            description: 'Provide liquidity into GLP',
-          },
-        ],
-        APR: 23.2,
-        rewards: [
-          {
-            name: 'Sushi',
-            icon:
-              process.env.NEXT_PUBLIC_CMS_ENDPOINT +
-              '/uploads/eth_90d032940f.png',
-          },
-          {
-            name: 'L2 Optimism',
-            icon:
-              process.env.NEXT_PUBLIC_CMS_ENDPOINT +
-              '/uploads/eth_90d032940f.png',
-          },
-        ],
-        valueInUSD: 20200,
-      },
-      {
-        id: 1,
-        principalRelative: 90,
-        network: 'polygon',
-        principalAmount: 20200,
-        principalValue: 2335739.23,
-        protocol: {
-          title: 'Curve',
-          icon:
-            process.env.NEXT_PUBLIC_CMS_ENDPOINT +
-            '/uploads/eth_90d032940f.png',
-        },
-        strategies: [
-          {
-            title: 'GLP',
-            description: 'Provide liquidity into GLP',
-          },
-        ],
-        APR: 23.2,
-        rewards: [
-          {
-            name: 'Sushi',
-            icon:
-              process.env.NEXT_PUBLIC_CMS_ENDPOINT +
-              '/uploads/eth_90d032940f.png',
-          },
-          {
-            name: 'L2 Optimism',
-            icon:
-              process.env.NEXT_PUBLIC_CMS_ENDPOINT +
-              '/uploads/eth_90d032940f.png',
-          },
-        ],
-        valueInUSD: 20200,
-      },
-    ],
-  };
+  const positionsFarming = exposure?.attributes?.positions_farmings?.data;
+  const principalAmount = positionsFarming
+    ?.map((position) => position?.attributes?.principal_amount)
+    ?.reduce((a, b) => a + b, 0);
+
   return (
     <Disclosure
-      key={token.name}
       as="div"
       className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden"
-      data-cy={`positions-table-${token.name}`}
+      defaultOpen
     >
       {({ open }) => (
         <>
@@ -358,63 +253,53 @@ export const SingleTokenPosition = () => {
             <div className="flex items-center mb-2">
               <div className="min-w-0 flex-1 flex items-center">
                 <div className="flex flex-shrink-0 self-start">
-                  <Image
-                    src={token.icon}
-                    alt={token.name}
-                    height={36}
-                    width={36}
-                  />
+                  {exposure?.attributes?.Icon?.data?.attributes?.url ? (
+                    <div className="flex flex-shrink-0 self-start">
+                      <Image
+                        src={`${exposure?.attributes?.Icon?.data?.attributes?.url}`}
+                        alt={exposure?.attributes?.Title}
+                        height={36}
+                        width={36}
+                      />
+                    </div>
+                  ) : null}
                 </div>
-                <div className="min-w-0 flex-1 px-2 flex sm:gap-4 items-center justify-between lg:justify-start lg:grid lg:grid-cols-8">
+                <div className="min-w-0 flex-1 px-2 flex sm:gap-4 items-center justify-between lg:justify-start lg:grid lg:grid-cols-7">
                   <div className="flex flex-col justify-between col-span-1">
                     <p
                       className="text-base font-bold text-primary"
                       data-cy="name"
                     >
-                      {token.symbol}
-                    </p>
-                    <p className="text-xs text-sub-dark hidden lg:block">
-                      {token.name}
-                    </p>
-                  </div>
-                  <div className="flex flex-row lg:flex-col justify-between col-span-1 items-center lg:items-start gap-x-2">
-                    <p className="text-base" data-cy="price">
-                      {formatBalanceCurrency(
-                        token.priceIn24h.value,
-                        'en-US',
-                        'USD',
-                        false,
-                      )}
-                    </p>
-                    <p className="text-xs text-secondary">
-                      <PriceChange amount={token.priceIn24h.change} />
+                      {exposure?.attributes?.Title}
                     </p>
                   </div>
                   <div className="flex-col justify-center hidden lg:block col-span-4">
-                    <p
-                      className="text-base text-primary"
-                      data-cy="principalAmount"
-                    >
-                      {formatBalance(
-                        token.totalPrincipalAmount,
-                        'en-US',
-                        2,
-                        'compact',
-                      )}
-                    </p>
+                    {exposure.id !== 7 && (
+                      <p
+                        className="text-base text-primary"
+                        data-cy="principalAmount"
+                      >
+                        {formatBalanceCurrency(
+                          principalAmount,
+                          'en-US',
+                          'USD',
+                          false,
+                          2,
+                        )}
+                      </p>
+                    )}
                   </div>
                   <div className="hidden lg:flex flex-col justify-center text-right col-span-2">
-                    <p
-                      className="text-base text-primary font-medium"
-                      data-cy="value"
-                    >
-                      {formatBalanceCurrency(
-                        token.totalValue,
-                        'en-US',
-                        'USD',
-                        true,
-                      )}
-                    </p>
+                    {exposure.id !== 7 && (
+                      <p className="text-base text-primary font-medium">
+                        {formatBalanceCurrency(
+                          principalAmount,
+                          'en-US',
+                          'USD',
+                          true,
+                        )}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -430,23 +315,25 @@ export const SingleTokenPosition = () => {
                 />
               </motion.div>
             </div>
-            <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
-              <p>{t('holding')}:</p>
-              <p>
-                {formatBalance(token.totalPrincipalAmount)}
-                <span className="text-sm text-sub-light">
-                  {' '}
-                  (
-                  {formatBalanceCurrency(
-                    token.totalValue,
-                    'en-US',
-                    'USD',
-                    true,
-                  )}
-                  )
-                </span>
-              </p>
-            </div>
+            {exposure?.id !== 7 && (
+              <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
+                <p>{t('holding')}:</p>
+                <p>
+                  {formatBalance(principalAmount)}
+                  <span className="text-sm text-sub-light">
+                    {' '}
+                    (
+                    {formatBalanceCurrency(
+                      principalAmount,
+                      'en-US',
+                      'USD',
+                      true,
+                    )}
+                    )
+                  </span>
+                </p>
+              </div>
+            )}
           </Disclosure.Button>
           <AnimatePresence initial={false}>
             {open && (
@@ -456,7 +343,7 @@ export const SingleTokenPosition = () => {
                 animate="open"
                 static
                 exit="collapsed"
-                key={'panel-' + token.name}
+                key={'panel-' + exposure?.attributes?.Title}
                 variants={{
                   open: { opacity: 1, height: 'auto' },
                   collapsed: { opacity: 0, height: 0 },
@@ -477,99 +364,127 @@ export const SingleTokenPosition = () => {
                   <div className="w-full flex flex-col space-between ">
                     <div className="hidden items-center sm:flex mt-4">
                       <div className="min-w-0 flex-1 flex items-start">
-                        <div className="flex-shrink-0 w-[40px]"></div>
-                        <div className="min-w-0 flex-1 hidden lg:grid lg:grid-cols-7 sm:gap-4 px-4 text-sub-dark">
+                        {exposure.id !== 7 && (
+                          <div className="flex-shrink-0 w-[50px]"></div>
+                        )}
+                        <div className="min-w-0 flex-1 hidden lg:grid lg:grid-cols-5 sm:gap-4 px-4 text-sub-dark">
                           <div>
                             <p className="text-xs">{t('amount')}</p>
                           </div>
-                          <div className="col-span-2">
+                          <div>
                             <p className="text-xs">{t('protocol')}</p>
                           </div>
                           <div>
                             <p className="text-xs">{t('strategy')}</p>
                           </div>
                           <div>
-                            <p className="text-xs">{t('apr')}</p>
-                          </div>
-                          <div>
                             <p className="text-xs">{t('rewards')}</p>
                           </div>
-                          <div className="text-right">
-                            <p className="text-xs">{t('value')}</p>
-                          </div>
+                          {exposure.id !== 7 && (
+                            <div className="text-right">
+                              <p className="text-xs">{t('value')}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="flex flex-col gap-y-2 mt-2">
-                      {token.positions.map((position) => (
+                      {positionsFarming?.map((position) => (
                         <div
-                          className="min-w-0 flex-1 flex items-center"
+                          className="min-w-0 flex-1 flex items-center gap-x-3"
                           key={position.id}
                         >
-                          <div className="flex-shrink-0 w-[40px] hidden lg:flex">
-                            <p className="text-xs text-secondary">
-                              {formatAsPercent(position.principalRelative)}
-                            </p>
-                          </div>
-                          <div className="w-full grid lg:grid-cols-7 lg:gap-x-4 px-4 py-2 bg-[#F7F7FF] rounded-md items-center">
+                          {exposure.id !== 7 && (
+                            <div className="flex-shrink-0 w-[40px] hidden lg:flex">
+                              <p className="text-xs text-secondary">
+                                {formatAsPercentOfTotal(
+                                  position?.attributes?.principal_amount,
+                                  principalAmount,
+                                )}
+                              </p>
+                            </div>
+                          )}
+                          <div className="w-full grid lg:grid-cols-5 lg:gap-x-4 px-4 py-2 bg-[#F7F7FF] rounded-md items-center">
                             <div className="flex-row hidden lg:block">
                               <p className="text-xs text-primary">
                                 {formatBalance(
-                                  position.principalAmount,
+                                  position?.attributes?.principal_amount,
                                   'en-US',
                                   2,
                                   'compact',
                                 )}{' '}
-                                {token.symbol}
+                                {
+                                  position?.attributes?.principal?.data
+                                    ?.attributes?.symbol
+                                }
                               </p>
                             </div>
-                            <div className="flex w-full items-center gap-x-2 border-b lg:border-0 mb-1 lg:mb-0 pb-1 lg:pb-0 lg:col-span-2">
-                              <div className="flex lg:hidden">
-                                <p className="flex text-md text-secondary">
-                                  {formatAsPercent(position.principalRelative)}
-                                </p>
-                              </div>
-                              <div className="flex gap-x-2 items-center relative">
-                                <div className="flex flex-shrink-0">
-                                  <Image
-                                    src={position.protocol.icon}
-                                    width={24}
-                                    height={24}
-                                    alt={position.protocol.title}
-                                  />
+                            <div className="flex w-full items-center gap-x-2 border-b lg:border-0 mb-1 lg:mb-0 pb-1 lg:pb-0">
+                              {exposure?.id !== 7 && (
+                                <div className="flex lg:hidden">
+                                  <p className="flex text-md text-secondary">
+                                    {formatAsPercentOfTotal(
+                                      position?.attributes?.principal_amount,
+                                      principalAmount,
+                                    )}
+                                  </p>
                                 </div>
+                              )}
+                              <div className="flex gap-x-4 items-center relative">
+                                {position?.attributes?.protocol?.data
+                                  ?.attributes?.icon?.data?.[0]?.attributes
+                                  ?.url ? (
+                                  <div className="flex flex-shrink-0">
+                                    <Image
+                                      src={`${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
+                                      width={24}
+                                      height={24}
+                                      alt={
+                                        position?.attributes?.protocol?.data
+                                          ?.attributes?.icon?.data?.[0]
+                                          ?.attributes?.name
+                                      }
+                                    />
+                                  </div>
+                                ) : null}
                                 <div className="absolute top-0 left-4 transform -translate-y-1/2 w-3.5 h-3.5">
                                   <Image
                                     src={getChainImageUrl(
-                                      position.network.toLowerCase(),
+                                      position?.attributes?.Network?.toLowerCase(),
                                     )}
                                     width={20}
                                     height={20}
-                                    alt={position.network}
+                                    alt={position?.attributes?.Network}
                                   />
                                 </div>
                                 <div>
-                                  <p className="text-md lg:text-sm text-primary ml-auto">
-                                    {position.protocol.title}
+                                  <p className="text-md lg:text-sm text-primary ml-auto truncate max-w-[7rem] sm:max-w-none">
+                                    {
+                                      position?.attributes?.protocol?.data
+                                        ?.attributes?.name
+                                    }
                                   </p>
                                 </div>
                               </div>
                               <div className="flex-col flex lg:hidden ml-auto">
                                 <p className="text-sm text-primary">
                                   {formatBalance(
-                                    position.principalAmount,
+                                    position?.attributes?.principal_amount,
                                     'en-US',
                                     2,
                                     'compact',
                                   )}{' '}
-                                  {token.symbol}
+                                  {
+                                    position?.attributes?.principal?.data
+                                      ?.attributes?.symbol
+                                  }
                                 </p>
                               </div>
                             </div>
                             <MobileAccordionContent
                               title={'value'}
                               content={formatBalanceCurrency(
-                                position.principalValue,
+                                position?.attributes?.principal_amount,
                                 'en-US',
                                 'USD',
                                 true,
@@ -577,24 +492,17 @@ export const SingleTokenPosition = () => {
                             />
                             <MobileAccordionContent
                               title={'strategy'}
-                              content={position.strategies
-                                .map((strategy) => strategy.title)
+                              content={position?.attributes?.strategies?.data
+                                ?.map((strategy) => strategy?.attributes?.Title)
                                 .join(', ')}
-                            />
-                            <MobileAccordionContent
-                              title={'apr'}
-                              content={formatAsPercent(position.APR)}
                             />
                             <div className="hidden flex-col lg:flex">
                               <p className="text-xs text-primary">
-                                {position.strategies
-                                  .map((strategy) => strategy.title)
+                                {position?.attributes?.strategies?.data
+                                  ?.map(
+                                    (strategy) => strategy?.attributes?.Title,
+                                  )
                                   .join(', ')}
-                              </p>
-                            </div>
-                            <div className="hidden flex-col lg:flex">
-                              <p className={classNames(`text-xs text-primary`)}>
-                                {formatAsPercent(position.APR)}
                               </p>
                             </div>
                             <div className="grid grid-cols-2 lg:grid-cols-1 gap-4 py-1 items-center">
@@ -602,22 +510,36 @@ export const SingleTokenPosition = () => {
                                 {t('rewards')}
                               </p>
                               <div className="flex items-center gap-x-1 ml-auto lg:ml-0">
-                                {position.rewards.map((reward) => (
-                                  <Image
-                                    key={reward.name}
-                                    src={reward.icon}
-                                    width={24}
-                                    height={24}
-                                    alt={reward.name}
-                                  />
-                                ))}
+                                {position?.attributes?.rewards?.data?.map(
+                                  (reward) =>
+                                    reward?.attributes?.icon?.data?.attributes
+                                      ?.url && (
+                                      <Image
+                                        key={reward?.id}
+                                        src={`${reward?.attributes?.icon?.data?.attributes?.url}`}
+                                        width={24}
+                                        height={24}
+                                        alt={
+                                          reward?.attributes?.icon?.data
+                                            ?.attributes?.name
+                                        }
+                                      />
+                                    ),
+                                )}
                               </div>
                             </div>
-                            <div className="hidden flex-col lg:flex text-right">
-                              <p className="text-xs text-primary">
-                                {formatBalanceCurrency(position.valueInUSD)}
-                              </p>
-                            </div>
+                            {exposure.id !== 7 && (
+                              <div className="hidden flex-col lg:flex text-right">
+                                <p className="text-xs text-primary">
+                                  {formatBalance(
+                                    position?.attributes?.principal_amount,
+                                    'en-US',
+                                    2,
+                                    'compact',
+                                  )}
+                                </p>
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -627,7 +549,7 @@ export const SingleTokenPosition = () => {
               </Disclosure.Panel>
             )}
           </AnimatePresence>
-          <div className="min-w-0 flex-1 flex gap-4 flex-col sm:flex-row">
+          {/* <div className="min-w-0 flex-1 flex gap-4 flex-col sm:flex-row">
             <div className="flex flex-1 items-center gap-x-4">
               <div className="flex flex-1 bg-gray-200 rounded-full h-1.5">
                 <div
@@ -639,7 +561,7 @@ export const SingleTokenPosition = () => {
                 {formatAsPercent(token.totalPrincipalRelative)}
               </div>
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </Disclosure>

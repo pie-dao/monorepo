@@ -1,16 +1,9 @@
 import { Dispatch, SetStateAction, useState, useEffect, useMemo } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
-import {
-  AnimatePresence,
-  motion,
-  PanInfo,
-  useMotionValue,
-  Variants,
-} from 'framer-motion';
-import { TrendingUpIcon, XIcon } from '@heroicons/react/outline';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
+import { TemplateIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import {
   ArvIcon,
   PrvIcon,
@@ -22,8 +15,6 @@ import classNames from '../../utils/classnames';
 import { Socials } from '../';
 import { useMediaQuery } from 'usehooks-ts';
 import MenuIcon from '../Header/MenuIcon';
-
-type DragEvent = MouseEvent | TouchEvent | PointerEvent;
 
 export default function Navigation({
   open,
@@ -37,6 +28,11 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
+    {
+      name: t('treasury'),
+      href: '/treasury',
+      icon: <TemplateIcon className='className="w-6 h-6"' />,
+    },
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
@@ -47,37 +43,6 @@ export default function Navigation({
   }, []);
 
   const isDesktop = useMediaQuery('(min-width: 1024px)');
-  const isLargeDesktop = useMediaQuery('(min-width: 1920px)');
-
-  const sidebarVariants = useMemo(
-    (): Variants =>
-      !isDesktop
-        ? {
-            visible: {
-              width: 180,
-              x: 0,
-              opacity: 1,
-            },
-            hidden: {
-              width: 0,
-              x: -180,
-              opacity: 0,
-              transition: { duration: 0.3 },
-            },
-          }
-        : {
-            visible: {
-              width: 180,
-              x: 0,
-            },
-            hidden: {
-              width: 60,
-              x: 0,
-              transition: { duration: 0.3 },
-            },
-          },
-    [isDesktop],
-  );
 
   const listVariants = useMemo(
     (): Variants =>
@@ -109,45 +74,6 @@ export default function Navigation({
     },
   };
 
-  const titleVariants: Variants = !isDesktop
-    ? {
-        hidden: {
-          opacity: 0,
-          width: 0,
-        },
-        visible: {
-          opacity: 1,
-          width: 180,
-        },
-      }
-    : {
-        hidden: {
-          opacity: 1,
-          width: 180,
-          x: 0,
-          transition: { delay: 0, duration: 0.2 },
-        },
-        visible: {
-          opacity: 1,
-          x: 15,
-          width: 40,
-        },
-      };
-
-  const x = useMotionValue(0);
-  const handleDragEnd = (_event: DragEvent, info: PanInfo) => {
-    if (info.offset.x < -80) {
-      setOpen(false);
-    }
-    handleDrag(_event, info);
-  };
-
-  const handleDrag = (_event: DragEvent, info: PanInfo) => {
-    if (info.offset.x > 0) {
-      x.set(0);
-    }
-  };
-
   const { pathname } = useRouter();
   const splitPath = pathname.split('/');
   const path = `/${splitPath[1]}`;
@@ -177,7 +103,7 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 pb-8 pt-3 pl-4 w-full h-16 overflow-hidden"
+                className="flex flex-shrink-0 pb-8 pt-3 pl-4 w-[120px] sm:w-full h-16 overflow-hidden"
               >
                 <AuxoLogotype />
               </motion.div>
