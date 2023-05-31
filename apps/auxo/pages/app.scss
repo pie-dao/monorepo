@@ -1,21 +1,3 @@
-.main-title {
-  background-clip: text;
-  text-fill-color: transparent;
-  background-image: linear-gradient(
-    90deg,
-    rgba(11, 120, 221, 1) 0%,
-    rgba(11, 120, 221, 1) 80%,
-    rgba(11, 221, 145, 1) 100%
-  );
-  color: transparent;
-}
-
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
 @mixin hidden-balance-($color) {
   color: transparent;
   text-shadow: rgb($color) 0px 0px 14px;

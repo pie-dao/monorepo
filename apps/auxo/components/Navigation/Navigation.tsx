@@ -2,7 +2,13 @@ import { Dispatch, SetStateAction, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  PanInfo,
+  useMotionValue,
+  Variants,
+} from 'framer-motion';
 import { TemplateIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import {
   ArvIcon,

@@ -1,5 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import { ReactElement, useEffect, useState } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { Layout } from '../components';
 import GradientBox from '../components/GradientBox/GradientBox';
 import {
@@ -9,7 +9,6 @@ import {
 import Tooltip from '../components/Tooltip/Tooltip';
 import { defaultLocale } from '../i18n';
 import { wrapper } from '../store';
-import { BigNumberReference } from '../store/products/products.types';
 import { formatBalance } from '../utils/formatBalance';
 
 import useSWR from 'swr';
@@ -18,14 +17,12 @@ import {
   LATEST_MERKLE_TREE_URL,
   MERKLE_TREES_BY_USER_URL,
 } from '../utils/constants';
-import TotalRewardsBar from '../components/TotalRewardsBar/TotalRewardsBar';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { MerkleTree, MerkleTreesByUser } from '../types/merkleTree';
 import { thunkGetUserRewards } from '../store/rewards/rewards.thunks';
 import TotalRewards from '../components/TotalRewards/TotalRewards';
 import RewardsHistory from '../components/RewardsHistory/RewardsHistory';
 import RewardsHistoryChart from '../components/RewardsHistoryChart/RewardsHistoryChart';
-import { useMerkleDistributor } from '../hooks/useContracts';
 import { useWeb3React } from '@web3-react/core';
 import merkleTreesByUser from '../config/merkleTreesByUser.json';
 import { useTokenBalance, useUserStakedPRV } from '../hooks/useToken';
@@ -33,9 +30,6 @@ import {
   thunkGetUserProductsData,
   thunkGetUserStakingData,
 } from '../store/products/thunks';
-import { useSingleRewardList } from '../hooks/useRewards';
-import { orderBy } from 'lodash';
-import { AlphaBanner } from '../components/AlphaBanner/AlphaBanner';
 
 export default function Rewards() {
   const { t } = useTranslation();
@@ -162,7 +156,6 @@ export default function Rewards() {
           </GradientBox>
         </div>
       </section>
-      {/* <TotalRewardsBar /> */}
       <TotalRewards />
       <RewardsHistory />
       <RewardsHistoryChart />

@@ -3,14 +3,11 @@ import { useWeb3React } from '@web3-react/core';
 import { providers } from '@0xsequence/multicall';
 import { MulticallProvider } from '@0xsequence/multicall/dist/declarations/src/providers';
 import { LibraryProvider } from '../types/utilities';
-import { JsonRpcSigner } from '@ethersproject/providers';
+import { JsonRpcSigner, Provider } from '@ethersproject/providers';
 import { ProviderNotActivatedError } from '../errors';
 import {
   Erc20Abi__factory,
-  YieldvaultAbi__factory,
-  MerkleauthAbi__factory,
   TokenLockerAbi__factory,
-  StakingManagerAbi__factory,
   PRVAbi__factory,
   UpgradoorAbi__factory,
   AUXOAbi__factory,
@@ -24,6 +21,7 @@ import {
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
 import migration from '../config/migration.json';
+import { Signer } from 'ethers';
 
 export function getSigner(
   library: LibraryProvider,
@@ -60,310 +58,116 @@ function getProviderOrSigner(
     : getMulticallProvider(provider, multicallAddress);
 }
 
-export function useVaultContract(address?: string) {
+interface ContractFactory {
+  connect(address: string, providerSigner: Provider | Signer): any;
+}
+
+export function useContract<T extends ContractFactory>(
+  abiFactory: T,
+  address: string,
+): ReturnType<T['connect']> | undefined {
   const { library, account, active } = useWeb3React();
   return useMemo(() => {
     if (!address || !library) return;
     try {
       if (!active) throw new ProviderNotActivatedError();
       const providerSigner = getProviderOrSigner(library, account);
-      return YieldvaultAbi__factory.connect(address, providerSigner);
+      return abiFactory.connect(address, providerSigner);
     } catch (error) {
       console.error('Failed to get contract', error);
       return undefined;
     }
-  }, [address, library, account, active]);
-}
-
-export function useERC20Contract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return Erc20Abi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useAUXOContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return AUXOAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [library, active, account, address]);
-}
-
-export function useXAUXOContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return PRVAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function usePRVRouter(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return PRVRouterAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useRollStakerContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return RollStakerAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useAuthContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return MerkleauthAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useStakingContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return TokenLockerAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useUpgradoorContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return UpgradoorAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useStakingManager(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return StakingManagerAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useVeDOUGHSharesTimeLockContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return SharesTimeLockAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useMerkleDistributorContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return MerkleDistributorAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useClaimHelperContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return ClaimHelperAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function usePRVMerkleVerifierContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return PRVMerkleVerifierAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useARVContract(address?: string) {
-  const { library, account, active } = useWeb3React();
-  return useMemo(() => {
-    if (!address || !library) return;
-    try {
-      if (!active) throw new ProviderNotActivatedError();
-      const providerSigner = getProviderOrSigner(library, account);
-      return VeAUXOAbi__factory.connect(address, providerSigner);
-    } catch (error) {
-      console.error('Failed to get contract', error);
-      return undefined;
-    }
-  }, [address, library, account, active]);
-}
-
-export function useAuxoVaultContract(vaultAddress?: string) {
-  return useVaultContract(vaultAddress);
+  }, [abiFactory, address, library, account, active]);
 }
 
 export function useTokenContract(tokenAddress?: string) {
-  return useERC20Contract(tokenAddress);
-}
-
-export function useMerkleAuthContract(vaultAddress?: string) {
-  return useAuthContract(vaultAddress);
+  return useContract(Erc20Abi__factory, tokenAddress);
 }
 
 export function useStakingTokenContract(token?: string) {
   const { chainId } = useWeb3React();
-  return useStakingContract(
-    tokensConfig[token]?.addresses[chainId]?.stakingAddress,
+  return useContract(
+    TokenLockerAbi__factory,
+    tokensConfig?.[token]?.addresses?.[chainId]?.stakingAddress,
   );
 }
 
 export function useVeDOUGHStakingContract() {
   const { chainId } = useWeb3React();
-  return useVeDOUGHSharesTimeLockContract(
-    migration['veDOUGH']?.addresses?.[chainId]?.stakingAddress,
+  return useContract(
+    SharesTimeLockAbi__factory,
+    migration?.['veDOUGH']?.addresses?.[chainId]?.stakingAddress,
   );
 }
 
 export function useAUXOTokenContract() {
   const { chainId } = useWeb3React();
-  return useAUXOContract(tokensConfig['AUXO']?.addresses[chainId]?.address);
+  return useContract(
+    AUXOAbi__factory,
+    tokensConfig?.['AUXO']?.addresses[chainId]?.address,
+  );
 }
 
 export function useXAUXOTokenContract() {
   const { chainId } = useWeb3React();
-  return useXAUXOContract(tokensConfig['PRV']?.addresses[chainId]?.address);
+  return useContract(
+    PRVAbi__factory,
+    tokensConfig?.['PRV']?.addresses[chainId]?.address,
+  );
 }
 
 export function usePRVRouterContract() {
   const { chainId } = useWeb3React();
-  return usePRVRouter(
-    tokensConfig['PRV']?.addresses[chainId]?.PRVRouterAddress,
+  return useContract(
+    PRVRouterAbi__factory,
+    tokensConfig?.['PRV']?.addresses[chainId]?.PRVRouterAddress,
   );
 }
 
 export function useRollStakerXAUXOContract() {
   const { chainId } = useWeb3React();
-  return useRollStakerContract(
-    tokensConfig['PRV']?.addresses[chainId]?.rollStakerAddress,
+  return useContract(
+    RollStakerAbi__factory,
+    tokensConfig?.['PRV']?.addresses[chainId]?.rollStakerAddress,
   );
 }
 
 export function useUpgradoor() {
   const { chainId } = useWeb3React();
-  return useUpgradoorContract(
-    migration['veDOUGH']?.addresses?.[chainId]?.upgradoorAddress,
+  return useContract(
+    UpgradoorAbi__factory,
+    migration?.['veDOUGH']?.addresses?.[chainId]?.upgradoorAddress,
   );
 }
 
 export function useMerkleDistributor(token: string) {
   const { chainId } = useWeb3React();
-  return useMerkleDistributorContract(
-    tokensConfig[token]?.addresses[chainId]?.merkleDistributorAddress,
+  return useContract(
+    MerkleDistributorAbi__factory,
+    tokensConfig?.[token]?.addresses[chainId]?.merkleDistributorAddress,
   );
 }
 
 export function useClaimHelper(token: string) {
   const { chainId } = useWeb3React();
-  return useClaimHelperContract(
-    tokensConfig[token]?.addresses[chainId]?.merkleDistributorHelperAddress,
+  return useContract(
+    ClaimHelperAbi__factory,
+    tokensConfig?.[token]?.addresses[chainId]?.merkleDistributorHelperAddress,
   );
 }
 
 export function usePRVMerkleVerifier() {
   const { chainId } = useWeb3React();
-  return usePRVMerkleVerifierContract(
-    tokensConfig['PRV']?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
+  return useContract(
+    PRVMerkleVerifierAbi__factory,
+    tokensConfig?.['PRV']?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
   );
 }
 
 export function useARVToken() {
   const { chainId } = useWeb3React();
-  return useARVContract(tokensConfig['ARV']?.addresses?.[chainId]?.address);
+  return useContract(
+    VeAUXOAbi__factory,
+    tokensConfig?.['ARV']?.addresses?.[chainId]?.address,
+  );
 }

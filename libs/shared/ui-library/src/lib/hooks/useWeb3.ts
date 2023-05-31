@@ -1,5 +1,4 @@
 import { useWeb3React } from '@web3-react/core';
-import { SafeAppConnector } from '@gnosis.pm/safe-apps-web3-react';
 import { injected } from '../connectors';
 import { useEffect, useState } from 'react';
 import { UAParser } from 'ua-parser-js';
