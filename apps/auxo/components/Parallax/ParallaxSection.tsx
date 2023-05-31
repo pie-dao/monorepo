@@ -23,6 +23,7 @@ const tokens = [
     button: {
       text: 'common:stake',
       link: '/ARV',
+      external: false,
     },
     bg: 'bg-secondary/30',
   },
@@ -31,7 +32,9 @@ const tokens = [
     image: <Image src={AUXOImage} alt="AUXO" width={42} height={42} />,
     description: 'intrinsicValue',
     button: {
-      text: 'common:comingSoonHomepage',
+      text: 'common:getAUXO',
+      external: true,
+      link: 'https://app.uniswap.org/#/swap?outputCurrency=0xff030228a046F640143Dab19be00009606C89B1d&inputCurrency=ETH',
     },
     bg: 'bg-primary/30',
   },
@@ -42,6 +45,7 @@ const tokens = [
     button: {
       text: 'common:stake',
       link: '/PRV',
+      external: false,
     },
     bg: 'bg-sub-dark/30',
   },
@@ -177,14 +181,26 @@ const ParallaxSection: React.FC = () => {
                   <p className="text-center">{t(token.description)}</p>
                 </div>
                 <div>
-                  <Link passHref href={token.button.link ?? '/'}>
-                    <button
-                      disabled={token.button.link === undefined}
-                      className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 disabled:cursor-not-allowed"
+                  {token.button.external ? (
+                    <a
+                      href={token.button.link ?? '/'}
+                      target="_blank"
+                      rel="noreferrer"
                     >
-                      {t(token.button.text)}
-                    </button>
-                  </Link>
+                      <button className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 disabled:cursor-not-allowed">
+                        {t(token.button.text)}
+                      </button>
+                    </a>
+                  ) : (
+                    <Link passHref href={token.button.link ?? '/'}>
+                      <button
+                        disabled={token.button.link === undefined}
+                        className="w-fit mx-auto px-16 py-1 text-lg font-medium text-white bg-transparent rounded-2xl ring-inset ring-2 ring-white enabled:hover:bg-white enabled:hover:text-primary disabled:opacity-70 disabled:cursor-not-allowed"
+                      >
+                        {t(token.button.text)}
+                      </button>
+                    </Link>
+                  )}
                 </div>
               </div>
             ))}
