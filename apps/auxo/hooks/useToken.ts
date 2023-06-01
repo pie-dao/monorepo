@@ -223,7 +223,7 @@ export const useCheckUserIsMaxBoosted = () => {
   const remainingMonths = useUserRemainingStakingTimeInMonths();
   const isMaxBoosted = useMemo(() => {
     if (remainingMonths === null) return null;
-    return remainingMonths !== 36;
+    return remainingMonths === 36;
   }, [remainingMonths]);
   return isMaxBoosted;
 };
