@@ -219,6 +219,15 @@ export const useUserRemainingStakingTimeInMonths = () => {
   return remainingTime;
 };
 
+export const useCheckUserIsMaxBoosted = () => {
+  const remainingMonths = useUserRemainingStakingTimeInMonths();
+  const isMaxBoosted = useMemo(() => {
+    if (remainingMonths === null) return null;
+    return remainingMonths !== 36;
+  }, [remainingMonths]);
+  return isMaxBoosted;
+};
+
 export const useUserEndDate = () => {
   const userLockStartingTime = useUserLockStartingTime('ARV');
   const userLockDuration = useUserLockDurationInSeconds('ARV');

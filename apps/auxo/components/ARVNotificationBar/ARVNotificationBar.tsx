@@ -3,7 +3,7 @@ import CoinImage from '../../public/images/icons/coin.svg';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
-  useIsUserMaxLockDuration,
+  useCheckUserIsMaxBoosted,
   useUserHasLock,
   useUserLockAmount,
 } from '../../hooks/useToken';
@@ -16,7 +16,7 @@ const ARVNotificationBar = () => {
   const { t } = useTranslation();
   const { account } = useWeb3React();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const isMaxxed = useIsUserMaxLockDuration('ARV');
+  const isMaxxed = useCheckUserIsMaxBoosted();
 
   const userLockAmount = useUserLockAmount('ARV');
   const tokenLocker = useStakingTokenContract('ARV');
