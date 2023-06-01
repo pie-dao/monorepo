@@ -11,9 +11,9 @@ import {
 import DepositActions from './ApproveDepositButton';
 import useTranslation from 'next-translate/useTranslation';
 import {
+  useCheckUserIsMaxBoosted,
   useDecimals,
   useIsUserLockExpired,
-  useIsUserMaxLockDuration,
   useTokenBalance,
   useUserEndDate,
   useUserLockAmount,
@@ -67,7 +67,7 @@ const Stake: React.FC<Props> = ({
   const userLockStart = useUserLockStartingTime('ARV');
   const isUserLockExpired = useIsUserLockExpired();
   const stakedAUXO = useUserLockAmount('ARV');
-  const isMaxxed = useIsUserMaxLockDuration('ARV');
+  const isMaxxed = useCheckUserIsMaxBoosted();
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 

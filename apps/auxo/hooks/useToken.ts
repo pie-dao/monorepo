@@ -282,6 +282,15 @@ export const useUserLevel = (input: number) => {
   return userLevel;
 };
 
+export const useMonthsSinceStake = () => {
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const monthsSinceStake = useMemo(() => {
+    if (!userLockStartingTime) return null;
+    return getRemainingTimeInMonths(userLockStartingTime, Date.now() / 1000);
+  }, [userLockStartingTime]);
+  return monthsSinceStake;
+};
+
 export const useUserIncreasedLevel = (input: number) => {
   const remainingMonths = useUserRemainingStakingTimeInMonths();
   const sum = useMemo(() => remainingMonths + input, [input, remainingMonths]);
