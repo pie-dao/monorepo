@@ -14,6 +14,7 @@ import {
   useCheckUserIsMaxBoosted,
   useDecimals,
   useIsUserLockExpired,
+  useIsUserMaxLockDuration,
   useTokenBalance,
   useUserEndDate,
   useUserLockAmount,
@@ -67,7 +68,7 @@ const Stake: React.FC<Props> = ({
   const userLockStart = useUserLockStartingTime('ARV');
   const isUserLockExpired = useIsUserLockExpired();
   const stakedAUXO = useUserLockAmount('ARV');
-  const isMaxxed = useCheckUserIsMaxBoosted();
+  const isMaxxed = useIsUserMaxLockDuration('ARV');
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
