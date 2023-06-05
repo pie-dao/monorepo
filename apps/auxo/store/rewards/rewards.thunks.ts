@@ -199,15 +199,18 @@ export const thunkGetUserRewards = createAsyncThunk(
         return rejectWithValue('Missing Account Details or Rewards');
 
       const allMonthsPromisify = async () => {
-        const results: Month[][] = await Promise.all(
-          Object.entries(rewards).map(([token, recipient]) => {
-            return Promise.all(
+        const rewardPositions: {
+          [token: string]: Month[];
+        } = {};
+
+        await Promise.all(
+          Object.entries(rewards).map(async ([token, recipient]) => {
+            const months = await Promise.all(
               Object.entries(recipient).map(async ([month, reward]) => {
                 const { windowIndex, accountIndex, rewards, proof } = reward;
                 const monthClaimed = await merkleDistributorContract(
                   token,
                 ).isClaimed(windowIndex, accountIndex);
-
                 return {
                   month,
                   monthClaimed,
@@ -221,10 +224,11 @@ export const thunkGetUserRewards = createAsyncThunk(
                 };
               }),
             );
+            rewardPositions[token] = months;
           }),
         );
 
-        return results;
+        return rewardPositions;
       };
 
       const results = await allMonthsPromisify();
@@ -244,54 +248,58 @@ export const thunkGetUserRewards = createAsyncThunk(
 
       const data: Data = {
         rewardPositions: {
-          ARV: results[0],
-          PRV: results[1],
+          ARV: results?.ARV,
+          PRV: results?.PRV,
         },
         metadata: {
           ARV: {
-            total: results[0]
-              ? results[0]
-                  ?.filter((value) => !value.monthClaimed)
-                  ?.reduce((acc, curr) => {
+            total: results?.ARV
+              ? results?.ARV?.filter((value) => !value.monthClaimed)?.reduce(
+                  (acc, curr) => {
                     return addBalances(acc, curr.rewards);
-                  }, zeroBalance)
+                  },
+                  zeroBalance,
+                )
               : zeroBalance,
             isCompound: isCompoundActive.ARV,
           },
           PRV: {
-            total: results[1]
-              ? results[1]
-                  ?.filter((value) => !value.monthClaimed)
-                  ?.reduce((acc, curr) => {
+            total: results?.PRV
+              ? results?.PRV?.filter((value) => !value.monthClaimed)?.reduce(
+                  (acc, curr) => {
                     return addBalances(acc, curr.rewards);
-                  }, zeroBalance)
+                  },
+                  zeroBalance,
+                )
               : zeroBalance,
             isCompound: isCompoundActive.PRV,
           },
           total: addBalances(
-            results[0]
-              ? results[0]
-                  ?.filter((value) => !value.monthClaimed)
-                  ?.reduce((acc, curr) => {
+            results?.ARV
+              ? results?.ARV.filter((value) => !value.monthClaimed)?.reduce(
+                  (acc, curr) => {
                     return addBalances(acc, curr.rewards);
-                  }, zeroBalance)
+                  },
+                  zeroBalance,
+                )
               : zeroBalance,
-            results[1]
-              ? results[1]
-                  ?.filter((value) => !value.monthClaimed)
-                  ?.reduce((acc, curr) => {
+            results?.PRV
+              ? results?.PRV?.filter((value) => !value.monthClaimed)?.reduce(
+                  (acc, curr) => {
                     return addBalances(acc, curr.rewards);
-                  }, zeroBalance)
+                  },
+                  zeroBalance,
+                )
               : zeroBalance,
           ),
           allTimeTotal: addBalances(
-            results[0]
-              ? results[0]?.reduce((acc, curr) => {
+            results?.ARV
+              ? results?.ARV.reduce((acc, curr) => {
                   return addBalances(acc, curr.rewards);
                 }, zeroBalance)
               : zeroBalance,
-            results[1]
-              ? results[1]?.reduce((acc, curr) => {
+            results?.PRV
+              ? results?.PRV?.reduce((acc, curr) => {
                   return addBalances(acc, curr.rewards);
                 }, zeroBalance)
               : zeroBalance,
