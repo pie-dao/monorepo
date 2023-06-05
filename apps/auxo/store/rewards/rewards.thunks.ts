@@ -1,20 +1,17 @@
 import { ContractTransaction, ethers } from 'ethers';
-import { isEmpty, set } from 'lodash';
+import { isEmpty } from 'lodash';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { toBalance } from '../../utils/formatBalance';
 import { UserMerkleTree } from '../../types/merkleTree';
 import { merkleDistributorContract } from '../products/products.contracts';
 import { MerkleDistributorAbi, ClaimHelperAbi } from '@shared/util-blockchain';
 import {
   setTxHash,
   setShowCompleteModal,
-  setTotalClaiming,
   setClaimStep,
 } from '../rewards/rewards.slice';
 import { pendingNotification } from '../../components/Notifications/Notifications';
 import { addBalances, zeroBalance } from '../../utils/balances';
 import { Month, Data, STEPS } from './rewards.types';
-// import merkleTreesByUser from '../../config/merkleTreesByUser.json';
 import { promiseObject } from '../../utils/promiseObject';
 import daoContracts from '../../config/daoContracts.json';
 

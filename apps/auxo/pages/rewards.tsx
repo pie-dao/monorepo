@@ -19,7 +19,6 @@ import TotalRewards from '../components/TotalRewards/TotalRewards';
 import RewardsHistory from '../components/RewardsHistory/RewardsHistory';
 import RewardsHistoryChart from '../components/RewardsHistoryChart/RewardsHistoryChart';
 import { useWeb3React } from '@web3-react/core';
-// import merkleTreesByUser from '../config/merkleTreesByUser.json';
 import { useTokenBalance, useUserStakedPRV } from '../hooks/useToken';
 import {
   thunkGetUserProductsData,
