@@ -1,5 +1,5 @@
 import { ContractTransaction, ethers } from 'ethers';
-import { isEmpty } from 'lodash';
+import { isEmpty, set } from 'lodash';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toBalance } from '../../utils/formatBalance';
 import { UserMerkleTree } from '../../types/merkleTree';
@@ -9,14 +9,19 @@ import {
   setTxHash,
   setShowCompleteModal,
   setTotalClaiming,
+  setClaimStep,
 } from '../rewards/rewards.slice';
 import { pendingNotification } from '../../components/Notifications/Notifications';
 import { addBalances, zeroBalance } from '../../utils/balances';
-import { Month, Data } from './rewards.types';
-import merkleTreesByUser from '../../config/merkleTreesByUser.json';
+import { Month, Data, STEPS } from './rewards.types';
+// import merkleTreesByUser from '../../config/merkleTreesByUser.json';
+import { promiseObject } from '../../utils/promiseObject';
+import daoContracts from '../../config/daoContracts.json';
 
 export const THUNKS = {
   GET_USER_REWARDS: 'rewards/getUserRewards',
+  COMPOUND_REWARDS: 'rewards/compoundRewards',
+  STOP_COMPOUND_REWARDS: 'rewards/stopCompoundRewards',
   CLAIM_REWARDS: 'rewards/claimRewards',
 };
 
@@ -28,15 +33,22 @@ export type ThunkClaimRewards = {
   isSingleClaim: boolean;
   token?: string;
   account: string;
+  userRewards: UserMerkleTree;
 };
 
 export const thunkClaimRewards = createAsyncThunk(
   THUNKS.CLAIM_REWARDS,
   async (
-    { isSingleClaim, claim, merkleDistributor, account }: ThunkClaimRewards,
+    {
+      isSingleClaim,
+      claim,
+      merkleDistributor,
+      account,
+      userRewards,
+    }: ThunkClaimRewards,
     { rejectWithValue, dispatch },
   ) => {
-    if (isEmpty(claim))
+    if (isEmpty(claim) || !merkleDistributor || !account)
       return rejectWithValue('Missing Contract, Account Details or Rewards');
 
     dispatch(setTxHash(null));
@@ -56,6 +68,7 @@ export const thunkClaimRewards = createAsyncThunk(
       console.error(e);
       return rejectWithValue('Claim Rewards Failed');
     }
+
     const { hash } = tx;
     dispatch(setTxHash(hash));
 
@@ -71,13 +84,108 @@ export const thunkClaimRewards = createAsyncThunk(
       dispatch(
         thunkGetUserRewards({
           account,
-          rewards: merkleTreesByUser[account],
+          rewards: userRewards,
         }),
       );
       return receipt.status;
     }
 
     return receipt.status !== 1 && rejectWithValue('Claim Rewards Failed');
+  },
+);
+
+export type ThunkCompoundRewards = {
+  merkleDistributor: MerkleDistributorAbi;
+  token: 'ARV' | 'PRV';
+  account: string;
+  userRewards: UserMerkleTree;
+};
+
+export const thunkCompoundRewards = createAsyncThunk(
+  THUNKS.COMPOUND_REWARDS,
+  async (
+    { merkleDistributor, account, userRewards }: ThunkCompoundRewards,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!account || !merkleDistributor)
+      return rejectWithValue('Missing Account Details or Rewards');
+
+    dispatch(setTxHash(null));
+    let tx: ContractTransaction;
+
+    try {
+      tx = await merkleDistributor.setRewardsDelegate(
+        daoContracts.multisigs.operations[1],
+      );
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue(
+        'There was an error while activating autocompounding',
+      );
+    }
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `compoundRewardsPending`,
+      id: 'compoundRewards',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(
+        thunkGetUserRewards({
+          account,
+          rewards: userRewards,
+        }),
+      );
+      dispatch(setClaimStep(STEPS.COMPOUND_COMPLETED));
+      return receipt.status;
+    }
+
+    return receipt.status !== 1 && rejectWithValue('Compound Rewards Failed');
+  },
+);
+
+export const thunkStopCompoundRewards = createAsyncThunk(
+  THUNKS.STOP_COMPOUND_REWARDS,
+  async (
+    { merkleDistributor, account, userRewards }: ThunkCompoundRewards,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!account || !merkleDistributor)
+      return rejectWithValue('Missing Account Details or Rewards');
+
+    dispatch(setTxHash(null));
+    let tx: ContractTransaction;
+
+    try {
+      tx = await merkleDistributor.removeRewardsDelegate();
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue(
+        'There was an error while deactivating autocompounding',
+      );
+    }
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `stopCompoundRewardsPending`,
+      id: 'stopCompoundRewards',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(thunkGetUserRewards({ account, rewards: userRewards }));
+      return receipt.status;
+    }
+
+    return (
+      receipt.status !== 1 && rejectWithValue('Stop Compound Rewards Failed')
+    );
   },
 );
 
@@ -124,41 +232,72 @@ export const thunkGetUserRewards = createAsyncThunk(
 
       const results = await allMonthsPromisify();
 
+      const isCompoundActiveForUser = promiseObject({
+        ARV: merkleDistributorContract('ARV').isRewardsDelegate(
+          account,
+          daoContracts.multisigs.operations[1],
+        ),
+        PRV: merkleDistributorContract('PRV').isRewardsDelegate(
+          account,
+          daoContracts.multisigs.operations[1],
+        ),
+      });
+
+      const isCompoundActive = await isCompoundActiveForUser;
+
       const data: Data = {
         rewardPositions: {
           ARV: results[0],
           PRV: results[1],
         },
         metadata: {
-          ARV: results[0]
-            .filter((value) => !value.monthClaimed)
-            .reduce((acc, curr) => {
-              return addBalances(acc, curr.rewards);
-            }, zeroBalance),
-          PRV: results[1]
-            .filter((value) => !value.monthClaimed)
-            .reduce((acc, curr) => {
-              return addBalances(acc, curr.rewards);
-            }, zeroBalance),
+          ARV: {
+            total: results[0]
+              ? results[0]
+                  ?.filter((value) => !value.monthClaimed)
+                  ?.reduce((acc, curr) => {
+                    return addBalances(acc, curr.rewards);
+                  }, zeroBalance)
+              : zeroBalance,
+            isCompound: isCompoundActive.ARV,
+          },
+          PRV: {
+            total: results[1]
+              ? results[1]
+                  ?.filter((value) => !value.monthClaimed)
+                  ?.reduce((acc, curr) => {
+                    return addBalances(acc, curr.rewards);
+                  }, zeroBalance)
+              : zeroBalance,
+            isCompound: isCompoundActive.PRV,
+          },
           total: addBalances(
             results[0]
-              .filter((value) => !value.monthClaimed)
-              .reduce((acc, curr) => {
-                return addBalances(acc, curr.rewards);
-              }, zeroBalance),
+              ? results[0]
+                  ?.filter((value) => !value.monthClaimed)
+                  ?.reduce((acc, curr) => {
+                    return addBalances(acc, curr.rewards);
+                  }, zeroBalance)
+              : zeroBalance,
             results[1]
-              .filter((value) => !value.monthClaimed)
-              .reduce((acc, curr) => {
-                return addBalances(acc, curr.rewards);
-              }, zeroBalance),
+              ? results[1]
+                  ?.filter((value) => !value.monthClaimed)
+                  ?.reduce((acc, curr) => {
+                    return addBalances(acc, curr.rewards);
+                  }, zeroBalance)
+              : zeroBalance,
           ),
           allTimeTotal: addBalances(
-            results[0].reduce((acc, curr) => {
-              return addBalances(acc, curr.rewards);
-            }, zeroBalance),
-            results[1].reduce((acc, curr) => {
-              return addBalances(acc, curr.rewards);
-            }, zeroBalance),
+            results[0]
+              ? results[0]?.reduce((acc, curr) => {
+                  return addBalances(acc, curr.rewards);
+                }, zeroBalance)
+              : zeroBalance,
+            results[1]
+              ? results[1]?.reduce((acc, curr) => {
+                  return addBalances(acc, curr.rewards);
+                }, zeroBalance)
+              : zeroBalance,
           ),
         },
       };
@@ -222,10 +361,10 @@ export const thunkClaimAllRewards = createAsyncThunk(
 
     if (receipt.status === 1) {
       dispatch(setShowCompleteModal(true));
-      thunkGetUserRewards({
-        account,
-        rewards: merkleTreesByUser[account],
-      });
+      // thunkGetUserRewards({
+      //   account,
+      //   rewards: merkleTreesByUser[account],
+      // });
       return receipt.status;
     }
 

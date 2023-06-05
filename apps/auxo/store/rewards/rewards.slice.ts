@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import addTxNotifications from '../../utils/notifications';
 import { BigNumberReference } from '../products/products.types';
-import { thunkClaimRewards, thunkGetUserRewards } from './rewards.thunks';
+import {
+  thunkClaimRewards,
+  thunkCompoundRewards,
+  thunkGetUserRewards,
+  thunkStopCompoundRewards,
+} from './rewards.thunks';
 import { SliceState, Steps, TokenName, TxState } from './rewards.types';
 
 export const initialState: SliceState = {
@@ -12,12 +17,18 @@ export const initialState: SliceState = {
     },
     metadata: {
       ARV: {
-        value: '0',
-        label: 0,
+        total: {
+          value: '0',
+          label: 0,
+        },
+        isCompound: false,
       },
       PRV: {
-        value: '0',
-        label: 0,
+        total: {
+          value: '0',
+          label: 0,
+        },
+        isCompound: false,
       },
       total: {
         value: '0',
@@ -69,6 +80,12 @@ const rewardsSlice = createSlice({
       state.loading = false;
     });
     addTxNotifications(builder, thunkClaimRewards, 'claimRewards');
+    addTxNotifications(builder, thunkCompoundRewards, 'compoundRewards');
+    addTxNotifications(
+      builder,
+      thunkStopCompoundRewards,
+      'stopCompoundRewards',
+    );
   },
 
   reducers: {

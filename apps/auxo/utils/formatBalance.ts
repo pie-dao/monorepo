@@ -36,6 +36,7 @@ export function formatBalance(
   const balance = new Intl.NumberFormat(defaultLocale ?? 'en-US', {
     style: 'decimal',
     notation: notation ?? 'compact',
+    minimumFractionDigits: 0,
     maximumFractionDigits: fixed ?? 0,
   }).format(balanceAmount ?? 0);
   return balance;
@@ -59,7 +60,6 @@ export function formatAsPercent(
   const minimumFractionDigits =
     decimalPart === 0 ? 0 : decimalStr.replace(/0+$/, '').length;
 
-  // Create a new Intl.NumberFormat instance with the given options
   const formatter = new Intl.NumberFormat(defaultLocale, {
     style: 'percent',
     minimumFractionDigits,

@@ -9,9 +9,23 @@ import {
   setClaimFlowOpen,
   setClaimStep,
   setClaimToken,
+  setTxHash,
 } from '../../store/rewards/rewards.slice';
 import Trans from 'next-translate/Trans';
 import { STEPS, TokenName } from '../../store/rewards/rewards.types';
+import { useMemo, useRef } from 'react';
+import { useIsAutoCompoundEnabled } from '../../hooks/useToken';
+import { isEmpty, isEqual } from 'lodash';
+import { zeroBalance } from '../../utils/balances';
+import { thunkStopCompoundRewards } from '../../store/rewards/rewards.thunks';
+import { useMerkleDistributor } from '../../hooks/useContracts';
+import { useWeb3React } from '@web3-react/core';
+import { StopIcon } from '@heroicons/react/solid';
+import classNames from '../../utils/classnames';
+import useSWR from 'swr';
+import { fetcher } from '../../utils/fetcher';
+import { MerkleTreesByUser } from '../../types/merkleTree';
+import { MERKLE_TREES_BY_USER_URL } from '../../utils/constants';
 
 const TotalRewards: React.FC = () => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -19,8 +33,8 @@ const TotalRewards: React.FC = () => {
   const totalPRVRewards = useActiveRewards('PRV');
   const totalARVRewards = useActiveRewards('ARV');
 
-  const hasPRVRewards = totalPRVRewards && totalPRVRewards?.value !== '0';
-  const hasARVRewards = totalARVRewards && totalARVRewards?.value !== '0';
+  const hasPRVRewards = !isEqual(totalPRVRewards?.total, zeroBalance);
+  const hasARVRewards = !isEqual(totalARVRewards?.total, zeroBalance);
 
   const { t } = useTranslation();
   return (
@@ -37,7 +51,7 @@ const TotalRewards: React.FC = () => {
             <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  totalARVRewards?.label,
+                  totalARVRewards?.total?.label,
                   defaultLocale,
                   4,
                   'standard',
@@ -64,7 +78,7 @@ const TotalRewards: React.FC = () => {
             <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  hasPRVRewards ? totalPRVRewards?.label : 0,
+                  hasPRVRewards ? totalPRVRewards?.total?.label : 0,
                   defaultLocale,
                   4,
                   'standard',
@@ -88,6 +102,14 @@ export default TotalRewards;
 const ActionsBar = ({ token }: { token: TokenName }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const merkleDistributor = useMerkleDistributor(token);
+  const { account } = useWeb3React();
+
+  const { data: merkleTreesByUser, isLoading } = useSWR<MerkleTreesByUser>(
+    MERKLE_TREES_BY_USER_URL,
+    fetcher,
+  );
+
   const openDetailsModal = () => {
     dispatch(setClaimToken(token));
     dispatch(setClaimStep(STEPS.LIST_REWARDS));
@@ -99,6 +121,43 @@ const ActionsBar = ({ token }: { token: TokenName }) => {
     dispatch(setClaimStep(STEPS.CLAIM_MULTI_REWARDS));
     dispatch(setClaimFlowOpen(true));
   };
+
+  const openCompoundModal = () => {
+    dispatch(setClaimToken(token));
+    dispatch(setClaimStep(STEPS.COMPOUND_REWARDS));
+    dispatch(setClaimFlowOpen(true));
+  };
+
+  const stopAutoCompound = () => {
+    if (isLoading || isEmpty(merkleTreesByUser)) return;
+    dispatch(
+      thunkStopCompoundRewards({
+        token,
+        account,
+        merkleDistributor,
+        userRewards: merkleTreesByUser[account],
+      }),
+    ).finally(() => {
+      dispatch(setTxHash(null));
+    });
+  };
+
+  const isCompouding = useIsAutoCompoundEnabled(token);
+  const hoverRef = useRef(null);
+
+  const compoundButtonText = useMemo(() => {
+    if (isCompouding) {
+      return (
+        <>
+          <span>
+            <StopIcon className="w-4 h-4" />
+          </span>
+          <span>{t('stopAutocompound')}</span>
+        </>
+      );
+    }
+    return t('autocompound');
+  }, [isCompouding, t]);
 
   return (
     <div className="w-full flex justify-between gap-x-4">
@@ -112,11 +171,30 @@ const ActionsBar = ({ token }: { token: TokenName }) => {
       </div>
       <div className="flex items-center gap-x-2">
         <button
-          onClick={() => openClaimAllModal()}
-          className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-inset ring-1 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
+          onClick={() => {
+            if (isCompouding) {
+              stopAutoCompound();
+            } else {
+              openCompoundModal();
+            }
+          }}
+          ref={hoverRef}
+          className={classNames(
+            'ring-2 ring-secondary bg-secondary text-white rounded-full px-2 py-1 text-sm font-medium enabled:hover:bg-transparent enabled:hover:text-secondary flex justify-center items-center gap-x-1',
+            !isCompouding && 'min-w-none',
+            isCompouding && 'min-w-[190px]',
+          )}
         >
-          {t('claim')}
+          {compoundButtonText}
         </button>
+        {!isCompouding && (
+          <button
+            onClick={() => openClaimAllModal()}
+            className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
+          >
+            {t('claim')}
+          </button>
+        )}
       </div>
     </div>
   );
@@ -166,9 +244,6 @@ const NoRewards = ({ token }: { token: string }) => {
           />
         </a>
       </button>
-      {/* <button className="ring-2 ring-secondary bg-secondary text-white rounded-full px-2 py-1 text-sm font-medium enabled:hover:bg-transparent enabled:hover:text-secondary mt-3">
-        {t('compoundRewards', { token })}
-      </button> */}
     </div>
   );
 };

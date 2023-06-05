@@ -338,3 +338,9 @@ export const useCurrentPrvWithdrawalAmount = () => {
       state.dashboard?.tokens?.PRV?.currentWithdrawalAmount ?? zeroBalance,
   );
 };
+
+export const useIsAutoCompoundEnabled = (token: 'ARV' | 'PRV') => {
+  return useAppSelector(
+    (state) => state.rewards?.data?.metadata?.[token]?.isCompound ?? false,
+  );
+};

@@ -11,13 +11,20 @@ import ARVImage from '../../../public/tokens/32x32/ARV.svg';
 import PRVImage from '../../../public/tokens/32x32/PRV.svg';
 import PendingTransaction from '../../PendingTransaction/PendingTransaction';
 import { thunkClaimRewards } from '../../../store/rewards/rewards.thunks';
-import { WETH_ADDRESS } from '../../../utils/constants';
+import {
+  MERKLE_TREES_BY_USER_URL,
+  WETH_ADDRESS,
+} from '../../../utils/constants';
 import wEthImage from '../../../public/tokens/24x24/ETH.svg';
 import {
   useActiveRewards,
   useUnclaimedRewards,
 } from '../../../hooks/useRewards';
 import { setTotalClaiming } from '../../../store/rewards/rewards.slice';
+import useSWR from 'swr';
+import { fetcher } from '../../../utils/fetcher';
+import { MerkleTreesByUser } from '../../../types/merkleTree';
+import { isEmpty } from 'lodash';
 
 const imageMap = {
   ARV: ARVImage,
@@ -37,9 +44,15 @@ export default function ClaimRewards() {
   const unclaimedRewards = useUnclaimedRewards(name);
   const unclaimedRewardsTotal = useActiveRewards(name);
 
+  const { data: merkleTreesByUser, isLoading } = useSWR<MerkleTreesByUser>(
+    MERKLE_TREES_BY_USER_URL,
+    fetcher,
+  );
+
   const claimRewards = () => {
+    if (isLoading || isEmpty(merkleTreesByUser)) return;
     setClaimRewardLoading(true);
-    dispatch(setTotalClaiming(unclaimedRewardsTotal));
+    dispatch(setTotalClaiming(unclaimedRewardsTotal?.total));
     dispatch(
       thunkClaimRewards({
         claim: unclaimedRewards.map((reward) => ({
@@ -53,6 +66,7 @@ export default function ClaimRewards() {
         merkleDistributor,
         account,
         isSingleClaim: false,
+        userRewards: merkleTreesByUser[account],
       }),
     ).finally(() => setClaimRewardLoading(false));
   };
@@ -86,7 +100,7 @@ export default function ClaimRewards() {
                   <Image src={wEthImage} alt={'weth'} width={24} height={24} />
                   <span>
                     {formatBalance(
-                      unclaimedRewardsTotal?.label,
+                      unclaimedRewardsTotal?.total?.label,
                       defaultLocale,
                       4,
                       'standard',

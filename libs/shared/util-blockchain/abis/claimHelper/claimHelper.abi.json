@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_activeDistributorAddres",
+        "name": "_activeDistributorAddress",
         "type": "address"
       },
       {
@@ -20,7 +20,7 @@
     "name": "ActiveDistributor",
     "outputs": [
       {
-        "internalType": "contract MerkleDistributor",
+        "internalType": "contract IMerkleDistributor",
         "name": "",
         "type": "address"
       }
@@ -33,7 +33,7 @@
     "name": "PassiveDistributor",
     "outputs": [
       {
-        "internalType": "contract MerkleDistributor",
+        "internalType": "contract IMerkleDistributor",
         "name": "",
         "type": "address"
       }
@@ -55,26 +55,14 @@
             "name": "accountIndex",
             "type": "uint256"
           },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "address", "name": "token", "type": "address" },
           {
             "internalType": "bytes32[]",
             "name": "merkleProof",
             "type": "bytes32[]"
           },
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
+          { "internalType": "address", "name": "account", "type": "address" }
         ],
         "internalType": "struct IMerkleDistributorCore.Claim",
         "name": "_ActiveClaim",
@@ -92,26 +80,14 @@
             "name": "accountIndex",
             "type": "uint256"
           },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "address", "name": "token", "type": "address" },
           {
             "internalType": "bytes32[]",
             "name": "merkleProof",
             "type": "bytes32[]"
           },
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
+          { "internalType": "address", "name": "account", "type": "address" }
         ],
         "internalType": "struct IMerkleDistributorCore.Claim",
         "name": "_PassiveClaim",
@@ -119,13 +95,7 @@
       }
     ],
     "name": "claim",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -143,26 +113,14 @@
             "name": "accountIndex",
             "type": "uint256"
           },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "address", "name": "token", "type": "address" },
           {
             "internalType": "bytes32[]",
             "name": "merkleProof",
             "type": "bytes32[]"
           },
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
+          { "internalType": "address", "name": "account", "type": "address" }
         ],
         "internalType": "struct IMerkleDistributorCore.Claim[]",
         "name": "_ActiveClaim",
@@ -180,26 +138,14 @@
             "name": "accountIndex",
             "type": "uint256"
           },
-          {
-            "internalType": "uint256",
-            "name": "amount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "token",
-            "type": "address"
-          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "address", "name": "token", "type": "address" },
           {
             "internalType": "bytes32[]",
             "name": "merkleProof",
             "type": "bytes32[]"
           },
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
+          { "internalType": "address", "name": "account", "type": "address" }
         ],
         "internalType": "struct IMerkleDistributorCore.Claim[]",
         "name": "_PassiveClaim",
@@ -207,13 +153,7 @@
       }
     ],
     "name": "claimMulti",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -221,11 +161,7 @@
     "inputs": [],
     "name": "weth",
     "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
+      { "internalType": "contract IERC20", "name": "", "type": "address" }
     ],
     "stateMutability": "view",
     "type": "function"

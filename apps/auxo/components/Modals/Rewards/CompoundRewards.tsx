@@ -10,14 +10,15 @@ import { useWeb3React } from '@web3-react/core';
 import ARVImage from '../../../public/tokens/32x32/ARV.svg';
 import PRVImage from '../../../public/tokens/32x32/PRV.svg';
 import PendingTransaction from '../../PendingTransaction/PendingTransaction';
-import { thunkClaimRewards } from '../../../store/rewards/rewards.thunks';
-import { WETH_ADDRESS } from '../../../utils/constants';
+import { thunkCompoundRewards } from '../../../store/rewards/rewards.thunks';
 import wEthImage from '../../../public/tokens/24x24/ETH.svg';
 import { setTotalClaiming } from '../../../store/rewards/rewards.slice';
+import { useActiveRewards } from '../../../hooks/useRewards';
+import Balancer from 'react-wrap-balancer';
+import { MERKLE_TREES_BY_USER_URL } from '../../../utils/constants';
 import useSWR from 'swr';
 import { fetcher } from '../../../utils/fetcher';
 import { MerkleTreesByUser } from '../../../types/merkleTree';
-import { MERKLE_TREES_BY_USER_URL } from '../../../utils/constants';
 import { isEmpty } from 'lodash';
 
 const imageMap = {
@@ -29,12 +30,13 @@ export type Token = 'PRV' | 'ARV';
 export default function ClaimRewards() {
   const { t } = useTranslation();
   const { name } = useAppSelector((state) => state.rewards.claimFlow.token);
-  const { claim, tx } = useAppSelector((state) => state.rewards.claimFlow);
+  const { tx } = useAppSelector((state) => state.rewards.claimFlow);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
   const { account } = useWeb3React();
   const merkleDistributor = useMerkleDistributor(name);
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
+  const unclaimedRewardsTotal = useActiveRewards(name);
 
   const { data: merkleTreesByUser, isLoading } = useSWR<MerkleTreesByUser>(
     MERKLE_TREES_BY_USER_URL,
@@ -44,20 +46,12 @@ export default function ClaimRewards() {
   const claimSingleReward = () => {
     if (isLoading || isEmpty(merkleTreesByUser)) return;
     setClaimRewardLoading(true);
-    dispatch(setTotalClaiming(claim.rewards));
+    dispatch(setTotalClaiming(unclaimedRewardsTotal?.total));
     dispatch(
-      thunkClaimRewards({
-        claim: {
-          windowIndex: claim.windowIndex,
-          merkleProof: claim.proof,
-          amount: claim.rewards.value,
-          accountIndex: claim.accountIndex,
-          account,
-          token: WETH_ADDRESS,
-        },
+      thunkCompoundRewards({
         merkleDistributor,
         account,
-        isSingleClaim: true,
+        token: name,
         userRewards: merkleTreesByUser[account],
       }),
     ).finally(() => setClaimRewardLoading(false));
@@ -80,7 +74,7 @@ export default function ClaimRewards() {
             as="h3"
             className="font-bold text-center text-xl text-primary capitalize w-full"
           >
-            {t('claimingRewardsFor', {
+            {t('compoundingRewardsFor', {
               token: name,
             })}
           </Dialog.Title>
@@ -91,7 +85,7 @@ export default function ClaimRewards() {
                   <Image src={wEthImage} alt={'weth'} width={24} height={24} />
                   <span>
                     {formatBalance(
-                      claim?.rewards?.label,
+                      unclaimedRewardsTotal?.total?.label,
                       defaultLocale,
                       4,
                       'standard',
@@ -103,13 +97,8 @@ export default function ClaimRewards() {
             </div>
           </div>
           <div className="w-full flex flex-col gap-y-4 items-center mt-4">
-            <p className="font-semibold text-primary text-base">
-              {t('distributedOn', {
-                date: new Date(claim?.month).toLocaleDateString(defaultLocale, {
-                  month: 'short',
-                  year: 'numeric',
-                }),
-              })}
+            <p className="font-semibold text-primary text-base text-center">
+              <Balancer>{t('allUnclaimedRewards')}</Balancer>
             </p>
             {!claimRewardLoading ? (
               <button
@@ -117,7 +106,7 @@ export default function ClaimRewards() {
                 className="w-full px-16 py-2.5 text-lg font-medium uppercase text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                 onClick={claimSingleReward}
               >
-                {t('claimRewards')}
+                {t('compoundRewards', { token: name })}
               </button>
             ) : (
               <div className="w-full flex justify-center">

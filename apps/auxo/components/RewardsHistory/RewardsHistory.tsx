@@ -98,11 +98,12 @@ const RewardsHistory = () => {
   const shapeData = useMemo(() => {
     if (isEmpty(claimedRewards)) return [];
     return Object.entries(claimedRewards)
+      .filter(([key, value]: [string, Month[]]) => value !== undefined)
       .map(([key, value]: [string, Month[]]) => {
-        return value.map((item) => ({
+        return value?.map((item) => ({
           source: key as 'PRV' | 'ARV',
-          claimDate: new Date(item.month),
-          amount: item.rewards.label,
+          claimDate: new Date(item?.month),
+          amount: item?.rewards?.label,
         }));
       })
       .flat();

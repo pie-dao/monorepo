@@ -6,25 +6,20 @@ import {
   BaseSubDarkTextSkeleton,
   BoldSubDarkTextSkeleton,
 } from '../components/Skeleton';
-import Tooltip from '../components/Tooltip/Tooltip';
 import { defaultLocale } from '../i18n';
 import { wrapper } from '../store';
 import { formatBalance } from '../utils/formatBalance';
-
 import useSWR from 'swr';
 import { fetcher } from '../utils/fetcher';
-import {
-  LATEST_MERKLE_TREE_URL,
-  MERKLE_TREES_BY_USER_URL,
-} from '../utils/constants';
+import { MERKLE_TREES_BY_USER_URL } from '../utils/constants';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { MerkleTree, MerkleTreesByUser } from '../types/merkleTree';
+import { MerkleTreesByUser } from '../types/merkleTree';
 import { thunkGetUserRewards } from '../store/rewards/rewards.thunks';
 import TotalRewards from '../components/TotalRewards/TotalRewards';
 import RewardsHistory from '../components/RewardsHistory/RewardsHistory';
 import RewardsHistoryChart from '../components/RewardsHistoryChart/RewardsHistoryChart';
 import { useWeb3React } from '@web3-react/core';
-import merkleTreesByUser from '../config/merkleTreesByUser.json';
+// import merkleTreesByUser from '../config/merkleTreesByUser.json';
 import { useTokenBalance, useUserStakedPRV } from '../hooks/useToken';
 import {
   thunkGetUserProductsData,
@@ -41,11 +36,10 @@ export default function Rewards() {
     (state) => state?.rewards?.data?.metadata?.allTimeTotal,
   );
 
-  // const {
-  //   data: merkleTreesByUser,
-  //   isLoading,
-  //   error,
-  // } = useSWR<MerkleTreesByUser>(MERKLE_TREES_BY_USER_URL, fetcher);
+  const { data: merkleTreesByUser } = useSWR<MerkleTreesByUser>(
+    MERKLE_TREES_BY_USER_URL,
+    fetcher,
+  );
 
   useEffect(() => {
     if (merkleTreesByUser && account) {
@@ -56,7 +50,7 @@ export default function Rewards() {
         }),
       );
     }
-  }, [account, dispatch]);
+  }, [account, dispatch, merkleTreesByUser]);
 
   useEffect(() => {
     if (account) {
@@ -77,7 +71,7 @@ export default function Rewards() {
               </>
             ) : (
               <>
-                <p className="font-bold text-sub-dark sm:text-xl">
+                <p className="font-bold text-sub-dark text-base sm:text-xl">
                   {formatBalance(
                     ArvBalance.label,
                     defaultLocale,
@@ -85,9 +79,9 @@ export default function Rewards() {
                     'standard',
                   )}
                 </p>
-                <div className="flex text-[10px] sm:text-base text-primary font-semibold gap-x-1">
+                <p className="flex text-base text-sub-dark font-medium gap-x-1">
                   {t('compactTokenBalance', { token: 'ARV' })}
-                </div>
+                </p>
               </>
             )}
           </div>
@@ -99,7 +93,7 @@ export default function Rewards() {
               </>
             ) : (
               <>
-                <p className="font-bold text-sub-dark sm:text-xl">
+                <p className="font-bold text-sub-dark text-base sm:text-xl">
                   <span>
                     {formatBalance(
                       StakedPrvBalance.label,
@@ -109,9 +103,9 @@ export default function Rewards() {
                     )}
                   </span>
                 </p>
-                <div className="flex text-[10px] sm:text-base text-primary font-semibold gap-x-1">
+                <p className="flex text-base text-sub-dark font-medium gap-x-1">
                   {t('compactStakedBalance', { token: 'PRV' })}
-                </div>
+                </p>
               </>
             )}
           </div>

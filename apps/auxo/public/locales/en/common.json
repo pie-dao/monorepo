@@ -374,5 +374,15 @@
   "multisigAddresses": "Multisig Addresses",
   "position": "Position",
   "arvContract": "ARV Contract",
-  "tokenLockerContract": "TokenLocker Contract"
+  "tokenLockerContract": "TokenLocker Contract",
+  "autocompound": "Autocompound",
+  "autocompoundActive": "Autocompound active",
+  "stopAutocompound": "Stop Autocompound",
+  "compounding": "Compounding",
+  "compoundingRewardsFor": "Autocompounding rewards for ${token}",
+  "allUnclaimedRewards": "All the rewards that you have not yet claimed will accumulate and be processed during the next scheduled time. Additionally, both your previously earned and any upcoming rewards will automatically be added together on a weekly basis, converting them into PRV. This automatic compounding process will continue every week unless you specifically stop it.",
+  "stopAutocompounding": "Stop Autocompounding",
+  "stopAutocompoundingDescription": "From now on you will not autocompound your rewards anymore and you will be able to claim your rewards in wETH again",
+  "pendingTransaction": "Pending transaction",
+  "autocompoundActiveFor": "Autocompound active for ${token}"
 }
