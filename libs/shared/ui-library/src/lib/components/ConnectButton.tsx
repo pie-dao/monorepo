@@ -64,7 +64,7 @@ export const ConnectButton: FunctionComponent<Props> = ({ className }) => {
         type="button"
         onClick={openModal}
         className={classNames(
-          'px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white',
+          'px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white h-[34px]',
           className,
         )}
         id="connect-button"

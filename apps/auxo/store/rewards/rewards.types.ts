@@ -4,9 +4,11 @@ import { MerkleDistributorAbi } from '@shared/util-blockchain';
 export const STEPS = {
   LIST_REWARDS: 'LIST_REWARDS',
   CLAIM_REWARDS: 'CLAIM_REWARDS',
+  COMPOUND_REWARDS: 'COMPOUND_REWARDS',
   CLAIM_MULTI_REWARDS: 'CLAIM_MULTI_REWARDS',
   CLAIM_ALL_REWARDS: 'CLAIM_ALL_REWARDS',
   CLAIM_COMPLETED: 'CLAIM_COMPLETED',
+  COMPOUND_COMPLETED: 'COMPOUND_COMPLETED',
 } as const;
 
 export type Steps = keyof typeof STEPS;
@@ -42,8 +44,14 @@ export type Data = {
     PRV: Month[];
   };
   metadata: {
-    ARV: BigNumberReference;
-    PRV: BigNumberReference;
+    ARV: {
+      total: BigNumberReference;
+      isCompound: boolean;
+    };
+    PRV: {
+      total: BigNumberReference;
+      isCompound: boolean;
+    };
     total: BigNumberReference;
     allTimeTotal: BigNumberReference;
   };

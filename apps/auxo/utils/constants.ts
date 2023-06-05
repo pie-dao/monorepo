@@ -115,9 +115,6 @@ function generateEnrichedData(
 export const COLORED_CHART_DATA = generateEnrichedData(LEVEL_CHART_DATA);
 
 export const MERKLE_TREES_BY_USER_URL =
-  'https://raw.githubusercontent.com/jordaniza/auxo-reporter/main/reports/latest/merkle-tree-combined.json?token=GHSAT0AAAAAACAXUJ6EAC65I7WRKK4V5XTUZBP3UHQ';
-
-export const LATEST_MERKLE_TREE_URL =
-  'https://bafybeiaosmmppyrn3eqidyhnc36iu7woop257ofpkwupvkze4pk2zzlnuq.ipfs.w3s.link/merkle-tree-veAUXO.json';
+  'https://raw.githubusercontent.com/AuxoDAO/auxo-reporter/main/reports/latest/merkle-tree-combined.json';
 
 export const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';

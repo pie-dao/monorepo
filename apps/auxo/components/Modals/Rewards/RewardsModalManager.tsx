@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import ModalBox from '../ModalBox';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { Dialog } from '@headlessui/react';
-import { STEPS, type Steps } from '../../../store/rewards/rewards.types';
+import { STEPS } from '../../../store/rewards/rewards.types';
 import {
   setClaimFlowOpen,
   setClaimToken,
@@ -14,6 +14,8 @@ import ListRewards from './ListRewards';
 import ClaimRewards from './ClaimRewards';
 import ClaimMultiRewards from './ClaimMultiRewards';
 import ClaimAllRewards from './ClaimAllRewards';
+import CompoundRewards from './CompoundRewards';
+import CompoundSuccess from './CompoundSuccess';
 
 export default function RewardsModalManager() {
   const { open, step } = useAppSelector((state) => state.rewards.claimFlow);
@@ -52,6 +54,8 @@ export default function RewardsModalManager() {
                   {step === STEPS.CLAIM_REWARDS && <ClaimRewards />}
                   {step === STEPS.CLAIM_MULTI_REWARDS && <ClaimMultiRewards />}
                   {step === STEPS.CLAIM_ALL_REWARDS && <ClaimAllRewards />}
+                  {step === STEPS.COMPOUND_REWARDS && <CompoundRewards />}
+                  {step === STEPS.COMPOUND_COMPLETED && <CompoundSuccess />}
                 </ModalBox>
               </>
             </Dialog.Panel>

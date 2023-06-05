@@ -99,5 +99,13 @@
   "withdrawPrvSuccess": "PRV successfully Withdrawn",
   "withdrawPrvError": "There was an error while withdrawing your PRV",
 
+  "compoundRewardsPending": "Activating autocompounding",
+  "compoundRewardsSuccess": "Activated autocompounding successfully",
+  "compoundRewardsError": "There was an error while activating autocompounding",
+
+  "stopCompoundRewardsPending": "Deactivating autocompounding",
+  "stopCompoundRewardsSuccess": "Deactivated autocompounding successfully",
+  "stopCompoundRewardsError": "There was an error while deactivating autocompounding",
+
   "defaultError": "There was an error"
 }

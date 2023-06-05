@@ -2,7 +2,6 @@ import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
 import Image from 'next/image';
-import { useMerkleDistributor } from '../../../hooks/useContracts';
 import { formatBalance } from '../../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
 import ARVImage from '../../../public/tokens/32x32/ARV.svg';
@@ -14,7 +13,9 @@ import {
 import { Month, STEPS } from '../../../store/rewards/rewards.types';
 import { findMonthsByProof } from '../../../utils/findClaims';
 import { setClaim, setClaimStep } from '../../../store/rewards/rewards.slice';
-import { WETH_ADDRESS } from '../../../utils/constants';
+import { isEmpty } from 'lodash';
+import { useIsAutoCompoundEnabled } from '../../../hooks/useToken';
+import classNames from '../../../utils/classnames';
 
 const imageMap = {
   ARV: ARVImage,
@@ -40,6 +41,8 @@ export default function ListRewards() {
     dispatch(setClaim(choosenClaim));
     dispatch(setClaimStep(STEPS.CLAIM_REWARDS));
   };
+
+  const isCompounding = useIsAutoCompoundEnabled(name);
 
   return (
     <>
@@ -83,7 +86,7 @@ export default function ListRewards() {
             <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  totalActiveRewards.label,
+                  totalActiveRewards?.total?.label,
                   defaultLocale,
                   4,
                   'standard',
@@ -92,40 +95,46 @@ export default function ListRewards() {
             </p>
           </div>
           <div className="w-full flex flex-col gap-y-2">
-            {totalActiveRewardsList.map((reward) => (
-              <div
-                key={reward.month}
-                className="w-full flex justify-between gap-x-4 bg-gradient-primary-inverse rounded-md"
-              >
-                <div className="flex items-center">
-                  <p className=" text-primary text-sm font-medium px-2 py-1">
-                    {new Date(reward.month).toLocaleString(defaultLocale, {
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </p>
+            {!isEmpty(totalActiveRewardsList) &&
+              totalActiveRewardsList.map((reward) => (
+                <div
+                  key={reward.month}
+                  className="w-full flex justify-between gap-x-4 bg-gradient-primary-inverse rounded-md"
+                >
+                  <div className="flex items-center">
+                    <p className=" text-primary text-sm font-medium px-2 py-1">
+                      {new Date(reward.month).toLocaleString(defaultLocale, {
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-x-2">
+                    <p className="text-primary text-sm font-medium">
+                      {t('WETHAmount', {
+                        amountLabel: formatBalance(
+                          reward.rewards.label,
+                          defaultLocale,
+                          4,
+                        ),
+                      })}
+                    </p>
+                    <button
+                      onClick={() => {
+                        claimSingleReward(reward);
+                      }}
+                      disabled={isCompounding}
+                      className={classNames(
+                        'flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-inset ring-1 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70',
+                        isCompounding &&
+                          'background-animate  disabled:bg-secondary disabled:ring-0 bg-gradient-to-r from-primary to-secondary',
+                      )}
+                    >
+                      {isCompounding ? t('compounding') : t('claim')}
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-x-2">
-                  <p className="text-primary text-sm font-medium">
-                    {t('WETHAmount', {
-                      amountLabel: formatBalance(
-                        reward.rewards.label,
-                        defaultLocale,
-                        4,
-                      ),
-                    })}
-                  </p>
-                  <button
-                    onClick={() => {
-                      claimSingleReward(reward);
-                    }}
-                    className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-inset ring-1 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
-                  >
-                    {t('claim')}
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>

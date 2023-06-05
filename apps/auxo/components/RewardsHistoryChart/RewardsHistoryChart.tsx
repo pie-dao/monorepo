@@ -80,17 +80,19 @@ const RewardsHistoryChart = () => {
   const { t } = useTranslation();
 
   const getData = useMemo(() => {
-    const ArvMonths = data?.rewardPositions?.ARV?.map((reward) => reward.month);
-    const PrvMonths = data?.rewardPositions?.PRV?.map((reward) => reward.month);
+    const ArvMonths =
+      data?.rewardPositions?.ARV?.map((reward) => reward.month) ?? [];
+    const PrvMonths =
+      data?.rewardPositions?.PRV?.map((reward) => reward.month) ?? [];
     if (!ArvMonths && !PrvMonths) return null;
     const months = [...new Set([...ArvMonths, ...PrvMonths])];
 
-    return months.map((month) => {
-      const ArvReward = data?.rewardPositions.ARV.find(
-        (reward) => reward.month === month,
+    return months?.map((month) => {
+      const ArvReward = data?.rewardPositions?.ARV?.find(
+        (reward) => reward?.month === month,
       )?.rewards?.label;
-      const PrvReward = data?.rewardPositions.PRV.find(
-        (reward) => reward.month === month,
+      const PrvReward = data?.rewardPositions?.PRV?.find(
+        (reward) => reward?.month === month,
       )?.rewards?.label;
       return {
         name: new Date(month).toLocaleString(defaultLocale, {
@@ -138,7 +140,7 @@ const RewardsHistoryChart = () => {
         <Tab.Panels className="mt-4">
           <Tab.Panel>
             <div className="flex w-full h-[500px]">
-              <ResponsiveContainer>
+              <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   width={500}
                   height={300}
@@ -162,7 +164,13 @@ const RewardsHistoryChart = () => {
                     tickLine={true}
                     tickSize={8}
                     axisLine={false}
-                    domain={[0, max(getData, (d) => d.ARV + d.PRV)]}
+                    domain={[
+                      0,
+                      max(getData, (d) => (d.ARV + d.PRV).toFixed(2)),
+                    ]}
+                    tickFormatter={(value) => {
+                      return formatBalance(value, defaultLocale, 2, 'standard');
+                    }}
                   />
                   <Tooltip cursor={false} content={<CustomTooltip />} />
                   <Legend />
