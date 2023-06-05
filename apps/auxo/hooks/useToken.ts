@@ -219,6 +219,15 @@ export const useUserRemainingStakingTimeInMonths = () => {
   return remainingTime;
 };
 
+export const useCheckUserIsMaxBoosted = () => {
+  const remainingMonths = useUserRemainingStakingTimeInMonths();
+  const isMaxBoosted = useMemo(() => {
+    if (remainingMonths === null) return null;
+    return remainingMonths === 36;
+  }, [remainingMonths]);
+  return isMaxBoosted;
+};
+
 export const useUserEndDate = () => {
   const userLockStartingTime = useUserLockStartingTime('ARV');
   const userLockDuration = useUserLockDurationInSeconds('ARV');
@@ -271,6 +280,15 @@ export const useUserLevel = (input: number) => {
     return remainingMonths - 6;
   }, [hasLock, input, remainingMonths]);
   return userLevel;
+};
+
+export const useMonthsSinceStake = () => {
+  const userLockStartingTime = useUserLockStartingTime('ARV');
+  const monthsSinceStake = useMemo(() => {
+    if (!userLockStartingTime) return null;
+    return getRemainingTimeInMonths(userLockStartingTime, Date.now() / 1000);
+  }, [userLockStartingTime]);
+  return monthsSinceStake;
 };
 
 export const useUserIncreasedLevel = (input: number) => {

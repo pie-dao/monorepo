@@ -11,6 +11,7 @@ import {
 import DepositActions from './ApproveDepositButton';
 import useTranslation from 'next-translate/useTranslation';
 import {
+  useCheckUserIsMaxBoosted,
   useDecimals,
   useIsUserLockExpired,
   useIsUserMaxLockDuration,

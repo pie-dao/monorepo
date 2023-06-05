@@ -2,8 +2,7 @@ import { AVG_SECONDS_IN_MONTH } from './constants';
 
 export function addMonths(numOfMonths: number, date = new Date()) {
   const dateCopy = new Date(date.getTime());
-  const addMonthsInSecs = numOfMonths * AVG_SECONDS_IN_MONTH;
-  dateCopy.setSeconds(dateCopy.getSeconds() + addMonthsInSecs);
+  dateCopy.setMonth(dateCopy.getMonth() + numOfMonths);
   return dateCopy;
 }
 
@@ -19,7 +18,7 @@ export function formatDate(
 }
 
 export function fromLockedAtToMonths(date: number) {
-  return date / AVG_SECONDS_IN_MONTH;
+  return Math.ceil(date / AVG_SECONDS_IN_MONTH);
 }
 
 export function getRemainingMonths(
@@ -44,5 +43,5 @@ export function getRemainingTimeInMonths(start: number, duration: number) {
 export function getMonthsSinceStake(lockedAt: number) {
   const now = new Date().getTime() / 1000;
   const remainingTime = now - lockedAt;
-  return Math.round(remainingTime / AVG_SECONDS_IN_MONTH);
+  return Math.ceil(remainingTime / AVG_SECONDS_IN_MONTH);
 }
