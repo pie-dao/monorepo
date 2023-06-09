@@ -25,7 +25,7 @@ export const useLatestUnclaimedRewards = (token: Token) => {
     ?.sort((a, b) => {
       return b.windowIndex - a.windowIndex;
     })
-    ?.find((r) => !r.monthClaimed) as Month;
+    ?.find((r) => !r.monthClaimed);
   return latestUnclaimedReward;
 };
 
