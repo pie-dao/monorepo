@@ -170,7 +170,7 @@ const ActionsBar = ({ token }: { token: TokenName }) => {
         </button>
       </div>
       <div className="flex items-center gap-x-2">
-        {/* <button
+        <button
           onClick={() => {
             if (isCompouding) {
               stopAutoCompound();
@@ -186,7 +186,7 @@ const ActionsBar = ({ token }: { token: TokenName }) => {
           )}
         >
           {compoundButtonText}
-        </button> */}
+        </button>
         {!isCompouding && (
           <button
             onClick={() => openClaimAllModal()}
