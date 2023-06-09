@@ -15,6 +15,20 @@ export const useActiveRewards = (token: Token) => {
   return data?.metadata?.[token];
 };
 
+export const useLatestUnclaimedRewards = (token: Token) => {
+  const { data } = useAppSelector((state) => state?.rewards);
+  const rewardPosition = data?.rewardPositions?.[token];
+  if (isEmpty(rewardPosition)) {
+    return null;
+  }
+  const latestUnclaimedReward = [...rewardPosition]
+    ?.sort((a, b) => {
+      return b.windowIndex - a.windowIndex;
+    })
+    ?.find((r) => !r.monthClaimed) as Month;
+  return latestUnclaimedReward;
+};
+
 export const useSingleRewardList = (token: Token): WritableDraft<Month>[] => {
   const { data } = useAppSelector((state) => state?.rewards);
   const rewardPosition = data?.rewardPositions?.[token];

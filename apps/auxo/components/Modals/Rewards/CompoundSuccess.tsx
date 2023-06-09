@@ -34,6 +34,11 @@ export default function WithdrawPrvCompleted() {
             </span>
           </div>
         </div>
+        <div className="w-full flex flex-col gap-y-4 items-center">
+          <p className="font-semibold text-primary text-base text-left w-full">
+            {t('successAutocompoundingDescription')}
+          </p>
+        </div>
         {tx?.hash && (
           <div className="flex items-center self-center justify-between w-full py-2">
             <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">
