@@ -13,8 +13,10 @@ import PendingTransaction from '../../PendingTransaction/PendingTransaction';
 import { thunkCompoundRewards } from '../../../store/rewards/rewards.thunks';
 import wEthImage from '../../../public/tokens/24x24/ETH.svg';
 import { setTotalClaiming } from '../../../store/rewards/rewards.slice';
-import { useActiveRewards } from '../../../hooks/useRewards';
-import Balancer from 'react-wrap-balancer';
+import {
+  useActiveRewards,
+  useLatestUnclaimedRewards,
+} from '../../../hooks/useRewards';
 import { MERKLE_TREES_BY_USER_URL } from '../../../utils/constants';
 import useSWR from 'swr';
 import { fetcher } from '../../../utils/fetcher';
@@ -37,6 +39,7 @@ export default function ClaimRewards() {
   const merkleDistributor = useMerkleDistributor(name);
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   const unclaimedRewardsTotal = useActiveRewards(name);
+  const lastUnclaimedReward = useLatestUnclaimedRewards(name);
 
   const { data: merkleTreesByUser, isLoading } = useSWR<MerkleTreesByUser>(
     MERKLE_TREES_BY_USER_URL,
@@ -46,7 +49,7 @@ export default function ClaimRewards() {
   const claimSingleReward = () => {
     if (isLoading || isEmpty(merkleTreesByUser)) return;
     setClaimRewardLoading(true);
-    dispatch(setTotalClaiming(unclaimedRewardsTotal?.total));
+    dispatch(setTotalClaiming(lastUnclaimedReward?.rewards));
     dispatch(
       thunkCompoundRewards({
         merkleDistributor,
@@ -97,8 +100,14 @@ export default function ClaimRewards() {
             </div>
           </div>
           <div className="w-full flex flex-col gap-y-4 items-center mt-4">
-            <p className="font-semibold text-primary text-base text-center">
-              <Balancer>{t('allUnclaimedRewards')}</Balancer>
+            <p className="font-semibold text-primary text-base text-left w-full">
+              {t('allUnclaimedRewards1')}
+            </p>
+            <p className="font-semibold text-primary text-base text-left w-full">
+              {t('allUnclaimedRewards2')}
+            </p>
+            <p className="font-semibold text-primary text-base text-left w-full">
+              {t('allUnclaimedRewards3')}
             </p>
             {!claimRewardLoading ? (
               <button

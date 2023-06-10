@@ -14,7 +14,11 @@ import {
 import Trans from 'next-translate/Trans';
 import { STEPS, TokenName } from '../../store/rewards/rewards.types';
 import { useMemo, useRef } from 'react';
-import { useIsAutoCompoundEnabled } from '../../hooks/useToken';
+import {
+  useIsAutoCompoundEnabled,
+  useTokenBalance,
+  useUserStakedPRV,
+} from '../../hooks/useToken';
 import { isEmpty, isEqual } from 'lodash';
 import { zeroBalance } from '../../utils/balances';
 import { thunkStopCompoundRewards } from '../../store/rewards/rewards.thunks';
@@ -32,6 +36,12 @@ const TotalRewards: React.FC = () => {
 
   const totalPRVRewards = useActiveRewards('PRV');
   const totalARVRewards = useActiveRewards('ARV');
+
+  const ARVBalance = useTokenBalance('ARV');
+  const StakedPRVBalance = useUserStakedPRV();
+
+  const hasARVBalance = !isEqual(ARVBalance, zeroBalance);
+  const hasPRVBalance = !isEqual(StakedPRVBalance, zeroBalance);
 
   const hasPRVRewards = !isEqual(totalPRVRewards?.total, zeroBalance);
   const hasARVRewards = !isEqual(totalARVRewards?.total, zeroBalance);
@@ -51,7 +61,7 @@ const TotalRewards: React.FC = () => {
             <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  totalARVRewards?.total?.label,
+                  hasARVRewards ? totalARVRewards?.total?.label : 0,
                   defaultLocale,
                   4,
                   'standard',
@@ -59,8 +69,8 @@ const TotalRewards: React.FC = () => {
               })}
             </p>
           </div>
-          {hasARVRewards ? (
-            <ActionsBar token="ARV" />
+          {hasARVBalance ? (
+            <ActionsBar token="ARV" showClaim={hasARVRewards} />
           ) : (
             <NoRewards token="ARV" />
           )}
@@ -86,8 +96,8 @@ const TotalRewards: React.FC = () => {
               })}
             </p>
           </div>
-          {hasPRVRewards ? (
-            <ActionsBar token="PRV" />
+          {hasPRVBalance ? (
+            <ActionsBar token="PRV" showClaim={hasPRVRewards} />
           ) : (
             <NoRewards token="PRV" />
           )}
@@ -99,7 +109,13 @@ const TotalRewards: React.FC = () => {
 
 export default TotalRewards;
 
-const ActionsBar = ({ token }: { token: TokenName }) => {
+const ActionsBar = ({
+  token,
+  showClaim,
+}: {
+  token: TokenName;
+  showClaim: boolean;
+}) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const merkleDistributor = useMerkleDistributor(token);
@@ -161,16 +177,23 @@ const ActionsBar = ({ token }: { token: TokenName }) => {
 
   return (
     <div className="w-full flex justify-between gap-x-4">
-      <div className="flex items-center gap-x-2">
+      {showClaim && (
+        <div className="flex items-center gap-x-2">
+          <button
+            onClick={() => openDetailsModal()}
+            className="ring-1 ring-primary rounded-full px-2 py-1 text-primary font-medium text-sm bg-transparent enabled:hover:bg-primary enabled:hover:text-white"
+          >
+            {t('details')}
+          </button>
+        </div>
+      )}
+      <div
+        className={classNames(
+          'flex items-center gap-x-2',
+          !showClaim && 'ml-auto',
+        )}
+      >
         <button
-          onClick={() => openDetailsModal()}
-          className="ring-1 ring-primary rounded-full px-2 py-1 text-primary font-medium text-sm bg-transparent enabled:hover:bg-primary enabled:hover:text-white"
-        >
-          {t('details')}
-        </button>
-      </div>
-      <div className="flex items-center gap-x-2">
-        {/* <button
           onClick={() => {
             if (isCompouding) {
               stopAutoCompound();
@@ -186,8 +209,8 @@ const ActionsBar = ({ token }: { token: TokenName }) => {
           )}
         >
           {compoundButtonText}
-        </button> */}
-        {!isCompouding && (
+        </button>
+        {!isCompouding && showClaim && (
           <button
             onClick={() => openClaimAllModal()}
             className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
