@@ -1,0 +1,48 @@
+diff --git a/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/lib.esm/base-provider.js b/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/lib.esm/base-provider.js
+index 72f62fc..90f2c84 100644
+--- a/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/lib.esm/base-provider.js
++++ b/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/lib.esm/base-provider.js
+@@ -447,13 +447,14 @@ export class Resolver {
+                 return null;
+             }
+             // IPFS (CID: 1, Type: DAG-PB)
+-            const ipfs = hexBytes.match(/^0xe3010170(([0-9a-f][0-9a-f])([0-9a-f][0-9a-f])([0-9a-f]*))$/);
+-            if (ipfs) {
+-                const length = parseInt(ipfs[3], 16);
+-                if (ipfs[4].length === length * 2) {
+-                    return "ipfs:/\/" + Base58.encode("0x" + ipfs[1]);
+-                }
++        const ipfs = hexBytes.match(/^0x(e3010170|e5010172)(([0-9a-f][0-9a-f])([0-9a-f][0-9a-f])([0-9a-f]*))$/);
++           if (ipfs) {
++            const scheme = (ipfs[1] === "e3010170") ? "ipfs": "ipns";
++            const length = parseInt(ipfs[4], 16);
++            if (ipfs[5].length === length * 2) {
++                return `${ scheme }:/\/${ Base58.encode("0x" + ipfs[2])}`;
+             }
++        }
+             // Swarm (CID: 1, Type: swarm-manifest; hash/length hard-coded to keccak256/32)
+             const swarm = hexBytes.match(/^0xe40101fa011b20([0-9a-f]*)$/);
+             if (swarm) {
+diff --git a/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/src.ts/base-provider.ts b/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/src.ts/base-provider.ts
+index 299b2ab..8627cf8 100644
+--- a/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/src.ts/base-provider.ts
++++ b/node_modules/@web3-onboard/core/node_modules/@ethersproject/providers/src.ts/base-provider.ts
+@@ -520,12 +520,13 @@ export class Resolver implements EnsResolver {
+         // No contenthash
+         if (hexBytes == null || hexBytes === "0x") { return null; }
+ 
+-        // IPFS (CID: 1, Type: DAG-PB)
+-        const ipfs = hexBytes.match(/^0xe3010170(([0-9a-f][0-9a-f])([0-9a-f][0-9a-f])([0-9a-f]*))$/);
++        // IPFS (CID: 1, Type: 70=DAG-PB, 72=libp2p-key)
++        const ipfs = hexBytes.match(/^0x(e3010170|e5010172)(([0-9a-f][0-9a-f])([0-9a-f][0-9a-f])([0-9a-f]*))$/);
+         if (ipfs) {
+-            const length = parseInt(ipfs[3], 16);
+-            if (ipfs[4].length === length * 2) {
+-                return "ipfs:/\/" + Base58.encode("0x" + ipfs[1]);
++            const scheme = (ipfs[1] === "e3010170") ? "ipfs": "ipns";
++            const length = parseInt(ipfs[4], 16);
++            if (ipfs[5].length === length * 2) {
++                return `${ scheme }:/\/${ Base58.encode("0x" + ipfs[2])}`;
+             }
+         }
+ 
