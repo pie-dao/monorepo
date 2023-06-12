@@ -27,6 +27,7 @@ import Summary from '../components/Summary/VeAUXOSummary';
 import ARVNotificationBar from '../components/ARVNotificationBar/ARVNotificationBar';
 import { STEPS } from '../store/modal/modal.types';
 import { setIsOpen, setStep, setSwap } from '../store/modal/modal.slice';
+import { useSetChain } from '@web3-onboard/react';
 import {
   useDecimals,
   useEarlyTerminationFee,
@@ -62,7 +63,9 @@ export default function ARV({
   const earlyTerminationFee = useEarlyTerminationFee();
   const hasLock = useUserHasLock(tokenConfig.name);
   const [commitmentValue, setCommitmentValue] = useState(36);
-  const { account, chainId } = useWeb3React<Web3Provider>();
+  const { account } = useWeb3React<Web3Provider>();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (!account && !chainId) return;

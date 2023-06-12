@@ -49,3 +49,13 @@
     background-position: 100% 50%;
   }
 }
+
+@media not all and (min-resolution: 0.001dpcm) {
+  @supports (-webkit-appearance: none) and (stroke-color: transparent) {
+    @media (hover: none) {
+      .modal-safari-fix {
+        margin-bottom: 44px; /* accommodate the Safari bottom bar */
+      }
+    }
+  }
+}

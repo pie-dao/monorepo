@@ -22,6 +22,7 @@ import {
 import tokensConfig from '../config/products.json';
 import migration from '../config/migration.json';
 import { Signer } from 'ethers';
+import { useSetChain } from '@web3-onboard/react';
 
 export function getSigner(
   library: LibraryProvider,
@@ -85,7 +86,8 @@ export function useTokenContract(tokenAddress?: string) {
 }
 
 export function useStakingTokenContract(token?: string) {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     TokenLockerAbi__factory,
     tokensConfig?.[token]?.addresses?.[chainId]?.stakingAddress,
@@ -93,7 +95,8 @@ export function useStakingTokenContract(token?: string) {
 }
 
 export function useVeDOUGHStakingContract() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     SharesTimeLockAbi__factory,
     migration?.['veDOUGH']?.addresses?.[chainId]?.stakingAddress,
@@ -101,7 +104,8 @@ export function useVeDOUGHStakingContract() {
 }
 
 export function useAUXOTokenContract() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     AUXOAbi__factory,
     tokensConfig?.['AUXO']?.addresses[chainId]?.address,
@@ -109,7 +113,8 @@ export function useAUXOTokenContract() {
 }
 
 export function useXAUXOTokenContract() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     PRVAbi__factory,
     tokensConfig?.['PRV']?.addresses[chainId]?.address,
@@ -117,7 +122,8 @@ export function useXAUXOTokenContract() {
 }
 
 export function usePRVRouterContract() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     PRVRouterAbi__factory,
     tokensConfig?.['PRV']?.addresses[chainId]?.PRVRouterAddress,
@@ -125,7 +131,8 @@ export function usePRVRouterContract() {
 }
 
 export function useRollStakerXAUXOContract() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     RollStakerAbi__factory,
     tokensConfig?.['PRV']?.addresses[chainId]?.rollStakerAddress,
@@ -133,7 +140,8 @@ export function useRollStakerXAUXOContract() {
 }
 
 export function useUpgradoor() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     UpgradoorAbi__factory,
     migration?.['veDOUGH']?.addresses?.[chainId]?.upgradoorAddress,
@@ -141,7 +149,8 @@ export function useUpgradoor() {
 }
 
 export function useMerkleDistributor(token: string) {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     MerkleDistributorAbi__factory,
     tokensConfig?.[token]?.addresses[chainId]?.merkleDistributorAddress,
@@ -149,7 +158,8 @@ export function useMerkleDistributor(token: string) {
 }
 
 export function useClaimHelper(token: string) {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     ClaimHelperAbi__factory,
     tokensConfig?.[token]?.addresses[chainId]?.merkleDistributorHelperAddress,
@@ -157,7 +167,8 @@ export function useClaimHelper(token: string) {
 }
 
 export function usePRVMerkleVerifier() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     PRVMerkleVerifierAbi__factory,
     tokensConfig?.['PRV']?.addresses?.[chainId]?.PRVMerkleVerifierAddress,
@@ -165,7 +176,8 @@ export function usePRVMerkleVerifier() {
 }
 
 export function useARVToken() {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id;
   return useContract(
     VeAUXOAbi__factory,
     tokensConfig?.['ARV']?.addresses?.[chainId]?.address,

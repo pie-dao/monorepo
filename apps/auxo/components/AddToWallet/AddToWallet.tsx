@@ -1,5 +1,5 @@
 import { MetamaskIcon } from '@shared/ui-library';
-import { useWeb3React } from '@web3-react/core';
+import { useSetChain } from '@web3-onboard/react';
 import useTranslation from 'next-translate/useTranslation';
 import { addTokenToWallet } from '../../utils/addTokenToWallet';
 
@@ -10,11 +10,14 @@ type AddToWalletProps = {
 
 const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
   const { t } = useTranslation();
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+
   return (
     <button
       className="flex ml-auto pr-2"
-      onClick={async () => await addTokenToWallet(chainId, token, displayName)}
+      onClick={async () =>
+        await addTokenToWallet(connectedChain?.id, token, displayName)
+      }
     >
       <div className="flex gap-x-2 items-center">
         <div className="hidden sm:flex gap-x-1">

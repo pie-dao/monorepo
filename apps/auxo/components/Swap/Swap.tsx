@@ -19,6 +19,7 @@ import {
   useUserPrvClaimableAmount,
   useUserStakedPRV,
 } from '../../hooks/useToken';
+import { useSetChain } from '@web3-onboard/react';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
 import { useWeb3React } from '@web3-react/core';
@@ -67,7 +68,7 @@ const tokenOptions = [
 
 const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
   const [tab, setTab] = useState(tokenOptions[0]);
-  const { account, chainId } = useWeb3React();
+  const { account } = useWeb3React();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { name: originToken } = stakingTokenConfig;
   const { name: stakingToken } = tokenConfig;

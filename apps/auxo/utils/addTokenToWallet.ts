@@ -28,7 +28,7 @@ const addToken = async (
 };
 
 export const addTokenToWallet = async (
-  chainId: number,
+  chainId: string,
   tokenName: string,
   displayName?: string,
 ) => {

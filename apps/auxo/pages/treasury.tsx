@@ -17,7 +17,6 @@ import {
   BoxLoading,
 } from '../components/Skeleton';
 import PositionsTabs from '../components/Positions';
-import { useWeb3React } from '@web3-react/core';
 import { TypesMap } from '../types/cmsTypes';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
 import { AlphaBanner } from '../components/AlphaBanner/AlphaBanner';
@@ -33,7 +32,6 @@ export default function Treasury(): ReactElement {
   // });
 
   const { t } = useTranslation();
-  const { chainId } = useWeb3React();
 
   const { data: latestReport, isLoading: isReportLoading } =
     useStrapiCollection<TypesMap['reports']>('reports', {
