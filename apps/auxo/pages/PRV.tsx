@@ -52,7 +52,7 @@ export default function XAUXO({
 
   const prvMerkleVerifier = usePRVMerkleVerifier();
   const [{ connectedChain }] = useSetChain();
-  const chainId = connectedChain?.id;
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   const [{ wallet }] = useConnectWallet();
 
   const account = wallet?.accounts[0]?.address;
@@ -62,12 +62,14 @@ export default function XAUXO({
     dispatch(
       thunkGetUserProductsData({
         account,
+        provider: wallet?.provider,
         spender: tokenConfig.addresses[chainId]?.address,
       }),
     );
     dispatch(
       thunkGetUserStakingData({
         account,
+        provider: wallet?.provider,
       }),
     );
   }, [

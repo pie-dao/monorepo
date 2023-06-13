@@ -18,7 +18,7 @@ import { thunkGetUserRewards } from '../store/rewards/rewards.thunks';
 import TotalRewards from '../components/TotalRewards/TotalRewards';
 import RewardsHistory from '../components/RewardsHistory/RewardsHistory';
 import RewardsHistoryChart from '../components/RewardsHistoryChart/RewardsHistoryChart';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useTokenBalance, useUserStakedPRV } from '../hooks/useToken';
 import {
   thunkGetUserProductsData,
@@ -28,7 +28,8 @@ import {
 export default function Rewards() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const ArvBalance = useTokenBalance('ARV');
   const StakedPrvBalance = useUserStakedPRV();
   const allTimeTotal = useAppSelector(
@@ -52,11 +53,15 @@ export default function Rewards() {
   }, [account, dispatch, merkleTreesByUser]);
 
   useEffect(() => {
-    if (account) {
-      dispatch(thunkGetUserProductsData({ account }));
-      dispatch(thunkGetUserStakingData({ account }));
+    if (account && wallet?.provider) {
+      dispatch(
+        thunkGetUserProductsData({ account, provider: wallet?.provider }),
+      );
+      dispatch(
+        thunkGetUserStakingData({ account, provider: wallet?.provider }),
+      );
     }
-  }, [account, dispatch]);
+  }, [account, dispatch, wallet?.provider]);
 
   return (
     <div className="flex flex-col">

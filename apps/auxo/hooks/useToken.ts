@@ -1,6 +1,5 @@
 import { Erc20Abi } from '@shared/util-blockchain';
 import { getExplorer } from '@shared/util-blockchain/abis';
-import { useWeb3React } from '@web3-react/core';
 import { BigNumberReference } from '../store/products/products.types';
 import { isZero, subPercentageToBalance, zeroBalance } from '../utils/balances';
 import { useAppSelector } from './index';
@@ -18,7 +17,7 @@ import { addMonths, getRemainingTimeInMonths } from '../utils/dates';
 
 export const useCurrentChainAddress = (token: string): string => {
   const [{ connectedChain }] = useSetChain();
-  const chainId = connectedChain?.id;
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   return useAppSelector(
     (state) => state.dashboard?.tokens?.[token]?.chainInfo?.[chainId]?.address,
   );
@@ -134,7 +133,7 @@ export const useDelegatorAddress = (token: string): string => {
 
 export const useTokenBalance = (token: string): BigNumberReference => {
   const [{ connectedChain }] = useSetChain();
-  const chainId = connectedChain?.id;
+  const chainId = Number(connectedChain?.id);
   return useAppSelector(
     (state) =>
       state?.dashboard?.tokens?.[token]?.chainInfo?.[chainId]?.balance ??
@@ -152,7 +151,7 @@ export const useApprovalLimit = (
    * request a higher limit
    */
   const [{ connectedChain }] = useSetChain();
-  const chainId = connectedChain?.id;
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   const limit = useAppSelector(
     (state) =>
       state?.dashboard?.tokens?.[token]?.chainInfo?.[chainId]?.allowance?.[
@@ -206,7 +205,7 @@ export const useIsFirstTimeMigration = (): boolean => {
 
 export const useChainExplorer = () => {
   const [{ connectedChain }] = useSetChain();
-  const chainId = connectedChain?.id;
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   return getExplorer(Number(chainId))?.[0];
 };
 

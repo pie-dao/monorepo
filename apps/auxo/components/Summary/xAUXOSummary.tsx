@@ -12,7 +12,7 @@ import {
 } from '../../hooks/useToken';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useAppSelector } from '../../hooks';
 import { InformationCircleIcon } from '@heroicons/react/outline';
 import Trans from 'next-translate/Trans';
@@ -24,7 +24,8 @@ type Props = {
 
 const Summary: React.FC<Props> = ({ tokenConfig }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const { name } = tokenConfig;
   const { t } = useTranslation();
   const auxoBalance = useTokenBalance('AUXO');

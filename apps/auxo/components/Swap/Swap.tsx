@@ -19,10 +19,9 @@ import {
   useUserPrvClaimableAmount,
   useUserStakedPRV,
 } from '../../hooks/useToken';
-import { useSetChain } from '@web3-onboard/react';
 import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useAppSelector } from '../../hooks';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Listbox, Tab } from '@headlessui/react';
@@ -68,7 +67,8 @@ const tokenOptions = [
 
 const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
   const [tab, setTab] = useState(tokenOptions[0]);
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { name: originToken } = stakingTokenConfig;
   const { name: stakingToken } = tokenConfig;

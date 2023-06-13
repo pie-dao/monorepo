@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { Layout } from '../../../components';
 import { wrapper } from '../../../store';
 import { useAppDispatch } from '../../../hooks';
@@ -14,7 +14,8 @@ import MigrationBanner from '../../../components/MigrationBanner/MigrationBanner
 
 export default function Migration({ token }: { token: 'PRV' | 'ARV' }) {
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const getStep = useMigrationSteps(token);
 
   useEffect(() => {

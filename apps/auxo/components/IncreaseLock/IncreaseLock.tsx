@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import useTranslation from 'next-translate/useTranslation';
 import { addMonths } from '../../utils/dates';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -20,6 +19,7 @@ import {
 import ARVConversionCalculator from '../../utils/ARVConversionCalculator';
 import { addNumberToBnReference, zeroBalance } from '../../utils/balances';
 import { formatBalance } from '../../utils/formatBalance';
+import { useConnectWallet } from '@web3-onboard/react';
 
 const IncreaseLock: React.FC = () => {
   const { t } = useTranslation();
@@ -27,7 +27,8 @@ const IncreaseLock: React.FC = () => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { increasedStakingValue } = useAppSelector((state) => state.dashboard);
   const tokenLocker = useStakingTokenContract('ARV');
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const actualLock = useUserLockDuration('ARV');
   const userStartingLock = useUserLockStartingTime('ARV');
   const userLockStartingTime = useUserLockStartingTime('ARV');

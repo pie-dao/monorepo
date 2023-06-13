@@ -17,7 +17,7 @@ import {
 } from '../../store/migration/migration.thunks';
 import { formatBalance, toBalance } from '../../utils/formatBalance';
 import { STEPS_LIST } from '../../store/migration/migration.types';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import PreviewMigration from './PreviewMigration';
 import {
   MigrationRecap,
@@ -55,7 +55,8 @@ export function getLevel(input: number): number {
 
 const ConfirmMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const {
     destinationWallet,

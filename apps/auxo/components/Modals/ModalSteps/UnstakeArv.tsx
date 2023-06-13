@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
@@ -20,7 +20,8 @@ type Props = {
 const UnstakeArv = ({ closeModal }: Props) => {
   const { t } = useTranslation();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const tokenLocker = useStakingTokenContract('ARV');
   const dispatch = useAppDispatch();
   const [withdrawLoading, setWithdrawLoading] = useState(false);

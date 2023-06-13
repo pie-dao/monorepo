@@ -14,7 +14,7 @@ export type Web3ContextData = {
   provider: LibraryProvider;
 };
 
-const ethereumProvider = new ethers.providers.JsonRpcProvider(
+export const ethereumProvider = new ethers.providers.JsonRpcProvider(
   RPC_URLS[SUPPORTED_CHAINS.MAINNET],
 );
 

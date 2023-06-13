@@ -1,4 +1,3 @@
-import { useWeb3React } from '@web3-react/core';
 import {
   useUserLockAmount,
   useUserLockStartingTime,
@@ -16,7 +15,6 @@ const WithdrawLock = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const { account } = useWeb3React();
   const tokenLocker = useStakingTokenContract('ARV');
   const stakedAUXO = useUserLockAmount('ARV');
   const userLockStart = useUserLockStartingTime('ARV');

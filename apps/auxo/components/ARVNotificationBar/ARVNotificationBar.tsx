@@ -10,11 +10,12 @@ import {
 import { useStakingTokenContract } from '../../hooks/useContracts';
 import { setStep, setSwap, setIsOpen } from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 
 const ARVNotificationBar = () => {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const isMaxxed = useCheckUserIsMaxBoosted();
 

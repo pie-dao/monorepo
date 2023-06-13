@@ -1,5 +1,5 @@
 import { Dialog } from '@headlessui/react';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '../../../hooks';

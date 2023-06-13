@@ -16,7 +16,7 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
     <button
       className="flex ml-auto pr-2"
       onClick={async () =>
-        await addTokenToWallet(connectedChain?.id, token, displayName)
+        await addTokenToWallet(connectedChain?.id ?? '1', token, displayName)
       }
     >
       <div className="flex gap-x-2 items-center">

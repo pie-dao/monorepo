@@ -3,6 +3,7 @@ import { useConnectWallet } from '@web3-onboard/react';
 import type { TokenSymbol } from '@web3-onboard/common';
 import Image from 'next/image';
 import trimAccount from '../../utils/trimAccount';
+import useTranslation from 'next-translate/useTranslation';
 
 interface Account {
   address: string;
@@ -13,6 +14,7 @@ interface Account {
 export default function ConnectWallet() {
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [account, setAccount] = useState<Account | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (wallet?.provider) {
@@ -29,9 +31,12 @@ export default function ConnectWallet() {
   if (wallet?.provider && account) {
     return (
       <div>
-        <div className="px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white">
+        <button
+          onClick={() => disconnect(wallet)}
+          className="px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white"
+        >
           {account.ens?.name ? account.ens.name : trimAccount(account.address)}
-        </div>
+        </button>
       </div>
     );
   }
@@ -43,7 +48,7 @@ export default function ConnectWallet() {
         disabled={connecting}
         onClick={() => connect()}
       >
-        Connect
+        {t('connectWallet')}
       </button>
     </div>
   );

@@ -1,6 +1,4 @@
-import { ConnectButton } from '@shared/ui-library';
-import { useWeb3React } from '@web3-react/core';
-import classNames from '../../utils/classnames';
+import { useConnectWallet } from '@web3-onboard/react';
 import useTranslation from 'next-translate/useTranslation';
 import Link from 'next/link';
 import { useMemo } from 'react';
@@ -37,7 +35,8 @@ const MigrationCardOption: React.FC<Props> = ({
   banners,
 }) => {
   const { t } = useTranslation('migration');
-  const { account } = useWeb3React();
+  const [{ wallet }, connect] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const ready = useServerHandoffComplete();
   const { positions } = useAppSelector((state) => state.migration);
   const memoizedPositions = useMemo(() => {
@@ -87,7 +86,12 @@ const MigrationCardOption: React.FC<Props> = ({
             </button>
           </Link>
         ) : (
-          <ConnectButton className="w-full px-4 py-2 text-base !text-secondary bg-transparent !rounded-full ring-inset ring-1 ring-secondary enabled:hover:!bg-secondary enabled:hover:!text-white disabled:opacity-70 flex gap-x-2 items-center justify-center border-0" />
+          <button
+            onClick={() => connect()}
+            className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+          >
+            {t('connectWallet')}
+          </button>
         )}
       </div>
     </div>

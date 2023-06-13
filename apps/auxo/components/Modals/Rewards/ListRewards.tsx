@@ -3,7 +3,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
 import Image from 'next/image';
 import { formatBalance } from '../../../utils/formatBalance';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import ARVImage from '../../../public/tokens/32x32/ARV.svg';
 import PRVImage from '../../../public/tokens/32x32/PRV.svg';
 import {
@@ -29,7 +29,8 @@ export default function ListRewards() {
   const { rewardPositions } = useAppSelector((state) => state.rewards.data);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
 
   const totalActiveRewards = useActiveRewards(name);
   const totalActiveRewardsList = useUnclaimedRewards(name);

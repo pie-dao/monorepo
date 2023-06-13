@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import useTranslation from 'next-translate/useTranslation';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import {
   useDelegatorAddress,
   useTokenBalance,
@@ -35,7 +35,8 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { increasedStakingValue } = useAppSelector((state) => state.dashboard);
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const { name } = tokenConfig;
   const { t } = useTranslation();
   const veAUXOBalance = useTokenBalance(name);
@@ -76,13 +77,13 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   );
 
   const votingPowerValue = useMemo(() => {
-    if (veAUXOBalance?.label === 0 || !account || !delegator) {
+    if (votingPower?.label === 0 || !account || !delegator) {
       return t('N/A');
     }
-    if (delegator === account) {
+    if (delegator.toLowerCase() === account.toLowerCase()) {
       return formatAsPercent(votingPower?.label, defaultLocale, 2);
     }
-    if (delegator !== account) {
+    if (delegator.toLowerCase() !== account.toLowerCase()) {
       return (
         <button
           onClick={delegateVote}
@@ -93,15 +94,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
       );
     }
     return '--';
-  }, [
-    account,
-    defaultLocale,
-    delegateVote,
-    delegator,
-    t,
-    veAUXOBalance?.label,
-    votingPower?.label,
-  ]);
+  }, [account, defaultLocale, delegateVote, delegator, t, votingPower?.label]);
 
   const summaryData = useMemo(() => {
     return [
@@ -110,13 +103,9 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         title: t('AUXOStaked'),
         value: (
           <>
-            {account &&
-              formatBalance(
-                stakedAuxo.label,
-                defaultLocale,
-                2,
-                'standard',
-              )}{' '}
+            {wallet?.provider
+              ? formatBalance(stakedAuxo?.label, defaultLocale, 2, 'standard')
+              : null}{' '}
             AUXO
           </>
         ),
@@ -126,13 +115,14 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         title: t('vaultBalance'),
         value: (
           <>
-            {account &&
-              formatBalance(
-                veAUXOBalance?.label,
-                defaultLocale,
-                2,
-                'standard',
-              )}{' '}
+            {wallet?.provider
+              ? formatBalance(
+                  veAUXOBalance?.label,
+                  defaultLocale,
+                  2,
+                  'standard',
+                )
+              : null}{' '}
             ARV
           </>
         ),
@@ -150,8 +140,8 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
     ];
   }, [
     t,
-    account,
-    stakedAuxo.label,
+    wallet?.provider,
+    stakedAuxo?.label,
     defaultLocale,
     veAUXOBalance?.label,
     votingPowerValue,
@@ -201,7 +191,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         >
           <dt className="text-base text-primary font-medium flex items-center gap-x-2">
             {icon && icon}
-            {t(title)}
+            {title}
           </dt>
           <dd className="flex ml-auto font-semibold text-base text-primary">
             {value}

@@ -1,6 +1,6 @@
 import { useMediaQuery } from 'usehooks-ts';
 import { useCallback, useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { Navigation, Header } from '../../components';
 import {
   thunkGetProductsData,
@@ -11,10 +11,9 @@ import {
 } from '../../store/products/thunks';
 import { useAppDispatch } from '../../hooks';
 import classNames from '../../utils/classnames';
+import { ethereumProvider } from '../MultichainProvider/MultichainProvider';
 
 export default function Layout({ children }) {
-  const { library, account } = useWeb3React();
-
   const mq = useMediaQuery('(max-width: 1023px)');
   const [open, setOpen] = useState(true);
   const dispatch = useAppDispatch();
@@ -22,27 +21,25 @@ export default function Layout({ children }) {
     setOpen(!mq);
   }, [mq]);
 
-  const updateOnBlock = useCallback(() => {
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
+
+  const updateOnBlock = useCallback(async () => {
     dispatch(thunkGetProductsData());
     dispatch(thunkGetVeAUXOStakingData());
     dispatch(thunkGetXAUXOStakingData());
-    if (account) {
-      thunkGetUserProductsData({ account });
-      thunkGetUserStakingData({ account });
-    }
-  }, [account, dispatch]);
+    if (!account || !wallet?.provider) return;
+    dispatch(thunkGetUserProductsData({ account, provider: wallet?.provider }));
+    dispatch(thunkGetUserStakingData({ account, provider: wallet?.provider }));
+  }, [account, wallet?.provider, dispatch]);
 
   useEffect(() => {
-    if (library) {
-      library.getBlockNumber().then(() => {
-        updateOnBlock();
+    if (ethereumProvider) {
+      ethereumProvider.on('block', async () => {
+        await updateOnBlock();
       });
-      //     library.on('block', updateOnBlock);
-      return () => {
-        library.removeListener('block', updateOnBlock);
-      };
     }
-  }, [library, updateOnBlock]);
+  }, [updateOnBlock]);
 
   return (
     <>

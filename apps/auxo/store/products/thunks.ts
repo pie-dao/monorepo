@@ -46,6 +46,7 @@ import {
 import { isEmpty } from 'lodash';
 import PrvWithdrawalTree from '../../config/PrvWithdrawalTree.json';
 import { defaultAbiCoder } from '@ethersproject/abi';
+import { EIP1193Provider } from '@web3-onboard/core';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -119,10 +120,14 @@ export const thunkGetProductsData = createAsyncThunk(
 export const thunkGetUserProductsData = createAsyncThunk(
   THUNKS.GET_USER_PRODUCTS_DATA,
   async (
-    { account, spender }: { account: string; spender?: string },
+    {
+      account,
+      provider,
+      spender,
+    }: { account: string; provider: EIP1193Provider; spender?: string },
     { rejectWithValue },
   ) => {
-    if (!account) return;
+    if (!account || !provider) return;
     try {
       const productDataResults = await Promise.allSettled(
         contractWrappers.map((contractWrapper) => {
@@ -345,8 +350,11 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
 
 export const thunkGetUserStakingData = createAsyncThunk(
   THUNKS.GET_USER_STAKING_DATA,
-  async ({ account }: { account: string }, { rejectWithValue }) => {
-    if (!account) return;
+  async (
+    { account, provider }: { account: string; provider: EIP1193Provider },
+    { rejectWithValue },
+  ) => {
+    if (!account || !provider) return;
 
     try {
       const veAUXOresults = promiseObject({
@@ -367,7 +375,8 @@ export const thunkGetUserStakingData = createAsyncThunk(
       const veAUXOData = await veAUXOresults;
       const xAUXOData = await xAUXOResults;
 
-      const isSelfDelegate = veAUXOData.delegation === account;
+      const isSelfDelegate =
+        veAUXOData.delegation.toLowerCase() === account.toLowerCase();
 
       const votes = isSelfDelegate
         ? await veAUXOContract.getVotes(account)
@@ -457,9 +466,6 @@ export const thunkApproveToken = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setTxState(TX_STATES.COMPLETE));
       dispatch(setStep(nextStep));
-      dispatch(
-        thunkGetUserProductsData({ account: addressFromSigner, spender }),
-      );
     }
 
     return receipt.status === 1
@@ -469,7 +475,7 @@ export const thunkApproveToken = createAsyncThunk(
 );
 
 export type ThunkStakeAuxoProps = {
-  signer: JsonRpcSigner;
+  signer: EIP1193Provider;
   deposit: BigNumberReference;
   stakingTime: BigNumberish;
   tokenLocker: TokenLockerAbi | undefined;
@@ -500,6 +506,7 @@ export const thunkStakeAuxo = createAsyncThunk(
     try {
       ({ r, v, s } = await getPermitSignature(
         signer,
+        account,
         AUXOToken,
         tokenLocker.address,
         deposit.value,
@@ -514,7 +521,7 @@ export const thunkStakeAuxo = createAsyncThunk(
       tx = await tokenLocker.depositByMonthsWithSignature(
         deposit.value,
         stakingTime,
-        signer._address,
+        account,
         deadline,
         v,
         r,
@@ -538,10 +545,6 @@ export const thunkStakeAuxo = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(
-        thunkGetUserProductsData({ account, spender: tokenLocker.address }),
-      );
       dispatch(
         setTx({
           hash,
@@ -557,21 +560,30 @@ export const thunkStakeAuxo = createAsyncThunk(
 );
 
 export type ThunkIncreaseStakeAuxoProps = {
+  account: string;
   deposit: BigNumberReference;
   tokenLocker: TokenLockerAbi | undefined;
-  signer: JsonRpcSigner;
+  signer: EIP1193Provider;
   AUXOToken: AUXOAbi;
 };
 
 export const thunkIncreaseStakeAuxo = createAsyncThunk(
   THUNKS.INCREASE_STAKE_AUXO,
   async (
-    { signer, deposit, tokenLocker, AUXOToken }: ThunkIncreaseStakeAuxoProps,
+    {
+      account,
+      signer,
+      deposit,
+      tokenLocker,
+      AUXOToken,
+    }: ThunkIncreaseStakeAuxoProps,
     { rejectWithValue, dispatch },
   ) => {
     if (!tokenLocker || !deposit)
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTx({ status: null, hash: null }));
+
+    console.log('thunkIncreaseStakeAuxo', AUXOToken);
 
     let tx: ContractTransaction;
     let r: string;
@@ -581,6 +593,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
     try {
       ({ r, v, s } = await getPermitSignature(
         signer,
+        account,
         AUXOToken,
         tokenLocker.address,
         deposit.value,
@@ -618,13 +631,6 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
       dispatch(setIsIncreasedValue(true));
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account: signer._address }));
-      dispatch(
-        thunkGetUserProductsData({
-          account: signer._address,
-          spender: tokenLocker.address,
-        }),
-      );
       dispatch(
         setTx({
           hash,
@@ -671,13 +677,6 @@ export const thunkBoostToMaxVeAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetVeAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(
-        thunkGetUserProductsData({
-          account,
-          spender: tokenLocker.address,
-        }),
-      );
     }
 
     if (receipt.status !== 1) return rejectWithValue('Boost Failed');
@@ -716,13 +715,6 @@ export const thunkWithdrawFromVeAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.WITHDRAW_ARV_COMPLETED));
       dispatch(thunkGetVeAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(
-        thunkGetUserProductsData({
-          account,
-          spender: tokenLocker.address,
-        }),
-      );
     }
 
     if (receipt.status !== 1) return rejectWithValue('Withdraw Failed');
@@ -760,13 +752,6 @@ export const thunkIncreaseLockVeAUXO = createAsyncThunk(
 
     if (receipt.status === 1) {
       dispatch(thunkGetVeAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(
-        thunkGetUserProductsData({
-          account,
-          spender: tokenLocker.address,
-        }),
-      );
       dispatch(setState(initialState));
     }
 
@@ -779,7 +764,7 @@ export type ThunkConvertXAUXOProps = {
   auxoContract: AUXOAbi | undefined;
   xAUXOContract?: PRVAbi | undefined;
   account: string;
-  signer: JsonRpcSigner;
+  signer: EIP1193Provider;
   isConvertAndStake: boolean;
   PRVRouterContract?: PRVRouterAbi;
 };
@@ -810,6 +795,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
     try {
       ({ r, v, s } = await getPermitSignature(
         signer,
+        account,
         auxoContract,
         isConvertAndStake ? PRVRouterContract.address : xAUXOContract.address,
         deposit.value,
@@ -865,13 +851,6 @@ export const thunkConvertXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.CONVERT_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(
-        thunkGetUserProductsData({
-          account,
-          spender: xAUXOContract.address,
-        }),
-      );
     }
 
     return receipt.status === 1
@@ -883,7 +862,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
 export type ThunkStakeXAUXOProps = {
   deposit: BigNumberReference;
   account: string;
-  signer: JsonRpcSigner;
+  signer: EIP1193Provider;
   xAUXO: PRVAbi | undefined;
   rollStaker: RollStakerAbi | undefined;
 };
@@ -891,7 +870,7 @@ export type ThunkStakeXAUXOProps = {
 export const thunkStakeXAUXO = createAsyncThunk(
   THUNKS.STAKE_X_AUXO,
   async (
-    { account, deposit, signer, xAUXO, rollStaker }: ThunkStakeXAUXOProps,
+    { signer, account, deposit, xAUXO, rollStaker }: ThunkStakeXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
     if (!deposit || !account || !xAUXO || !signer || !rollStaker)
@@ -907,6 +886,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
     try {
       ({ r, v, s } = await getPermitSignature(
         signer,
+        account,
         xAUXO,
         rollStaker.address,
         deposit.value,
@@ -944,9 +924,6 @@ export const thunkStakeXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setShowCompleteModal(true));
       dispatch(thunkGetXAUXOStakingData());
-      dispatch(thunkGetUserProductsData({ account }));
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(thunkGetUserProductsData({ account }));
     }
 
     return receipt.status === 1
@@ -997,8 +974,6 @@ export const thunkUnstakeXAUXO = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.UNSTAKE_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
-      dispatch(thunkGetUserProductsData({ account }));
-      dispatch(thunkGetUserStakingData({ account }));
     }
 
     return receipt.status === 1
@@ -1043,10 +1018,6 @@ export const thunkEarlyTermination = createAsyncThunk(
       dispatch(setStep(STEPS.EARLY_TERMINATION_COMPLETED));
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetXAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
-      dispatch(
-        thunkGetUserProductsData({ account, spender: tokenLocker.address }),
-      );
     }
 
     return receipt.status !== 1 && rejectWithValue('Terminate Early Failed');
@@ -1130,8 +1101,6 @@ export const ThunkWithdrawPrv = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(setStep(STEPS.WITHDRAW_PRV_COMPLETED));
       dispatch(thunkGetXAUXOStakingData());
-      dispatch(thunkGetUserProductsData({ account }));
-      dispatch(thunkGetUserStakingData({ account }));
     }
 
     return receipt.status === 1
@@ -1177,7 +1146,6 @@ export const thunkDelegateVote = createAsyncThunk(
     if (receipt.status === 1) {
       dispatch(thunkGetVeAUXOStakingData());
       dispatch(thunkGetXAUXOStakingData());
-      dispatch(thunkGetUserStakingData({ account }));
     }
 
     return receipt.status !== 1 && rejectWithValue('Delegate Failed');

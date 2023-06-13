@@ -1,4 +1,4 @@
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import useTranslation from 'next-translate/useTranslation';
 import Lock from '../Lock/Lock';
 import {
@@ -17,7 +17,8 @@ import { stakingContract } from '../../store/products/products.contracts';
 
 const StakingHistory: React.FC = () => {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const tokenLocker = useStakingTokenContract('ARV');
   const userLockStartingTime = useUserLockStartingTime('ARV');
   const userLockDuration = useUserLockDurationInSeconds('ARV');

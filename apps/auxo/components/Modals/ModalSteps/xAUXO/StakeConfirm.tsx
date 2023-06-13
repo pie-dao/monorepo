@@ -4,7 +4,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
 import {
-  getSigner,
   useRollStakerXAUXOContract,
   useXAUXOTokenContract,
 } from '../../../../hooks/useContracts';
@@ -14,7 +13,7 @@ import {
 } from '../../../../store/products/thunks';
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import AUXOImage from '../../../../public/tokens/AUXO.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import { compareBalances } from '../../../../utils/balances';
@@ -33,14 +32,16 @@ const StakeConfirm: React.FC<{
 }> = ({ action = 'stake' }) => {
   const { t } = useTranslation();
   const chainExplorer = useChainExplorer();
-  const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
   const [depositLoading, setDepositLoading] = useState(false);
   const rollStaker = useRollStakerXAUXOContract();
   const PRV = useXAUXOTokenContract();
-  const signer = getSigner(library, account);
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
+  const signer = wallet?.provider;
+
   const shouldRevertDeposit = compareBalances(
     swap?.from?.amount,
     'gt',

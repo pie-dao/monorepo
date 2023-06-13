@@ -4,7 +4,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
 import Image from 'next/image';
 import {
-  getSigner,
   useAUXOTokenContract,
   useStakingTokenContract,
 } from '../../../hooks/useContracts';
@@ -21,12 +20,13 @@ import {
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
 import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import AUXOImage from '../../../public/tokens/AUXO.svg';
 import ARVImage from '../../../public/tokens/24x24/ARV.svg';
 import AUXOBig from '../../../public/images/AUXOBig.svg';
 import PendingTransaction from '../../PendingTransaction/PendingTransaction';
 import Trans from 'next-translate/Trans';
+import { providers } from 'ethers';
 
 const imageMap = {
   AUXO: AUXOImage,
@@ -35,7 +35,6 @@ const imageMap = {
 
 export default function StakeConfirm() {
   const { t } = useTranslation();
-  const { account, library } = useWeb3React();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
@@ -43,10 +42,12 @@ export default function StakeConfirm() {
   const stakingContract = useStakingTokenContract(swap.to.token);
   const hasLock = useUserLockDuration(swap.to.token);
   const AUXOToken = useAUXOTokenContract();
-  const signer = getSigner(library, account);
   const userLevel = useUserLevel(!hasLock ? swap.stakingTime : hasLock);
   const userNewEndDate = useUserNewEndDateFromToday(swap.stakingTime);
   const chainExplorer = useChainExplorer();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
+  const signer = wallet?.provider;
 
   const fireEmoji = useMemo(() => {
     if (userLevel !== 30) return null;
@@ -62,6 +63,7 @@ export default function StakeConfirm() {
     dispatch(
       hasLock
         ? thunkIncreaseStakeAuxo({
+            account,
             signer,
             deposit: swap?.from?.amount,
             tokenLocker: stakingContract,
@@ -69,11 +71,11 @@ export default function StakeConfirm() {
           })
         : thunkStakeAuxo({
             signer,
+            account,
             AUXOToken,
             deposit: swap?.from?.amount,
             tokenLocker: stakingContract,
             stakingTime: swap.stakingTime,
-            account,
           }),
     ).finally(() => setDepositLoading(false));
   };
