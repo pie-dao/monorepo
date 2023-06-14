@@ -24,7 +24,7 @@ import { MAINNET_RPC } from '../utils/networks';
 
 const wcV2InitOptions = {
   version: 2 as const,
-  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
+  projectId: '8a7af8264337fea1b5ccb8c8fee47ad3',
   requiredChains: [1],
 };
 
