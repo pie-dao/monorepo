@@ -272,7 +272,7 @@
     "url-loader": "^3.0.0",
     "util": "^0.12.4"
   },
-  "postinstall": "script/typechain && patch-package",
+  "postinstall": "script/typechain && npx patch-package",
   "msw": {
     "workerDirectory": "public"
   },
