@@ -24,6 +24,7 @@ export default function ConnectWallet() {
         balance: wallet.accounts[0].balance,
         ens: { name, avatar: avatar?.url },
       });
+      console.log(name);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, wallet?.accounts[0]?.ens]);
