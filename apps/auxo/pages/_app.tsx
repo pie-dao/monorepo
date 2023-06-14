@@ -20,10 +20,11 @@ import './app.scss';
 import 'react-toastify/dist/ReactToastify.min.css';
 import RewardsModalManager from '../components/Modals/Rewards/RewardsModalManager';
 import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
+import { MAINNET_RPC } from '../utils/networks';
 
 const wcV2InitOptions = {
   version: 2 as const,
-  projectId: '8a7af8264337fea1b5ccb8c8fee47ad3',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
   requiredChains: [1],
 };
 
@@ -37,7 +38,7 @@ const web3Onboard = init({
       id: '0x1',
       token: 'ETH',
       label: 'Ethereum Mainnet',
-      rpcUrl: 'https://eth.llamarpc.com',
+      rpcUrl: MAINNET_RPC,
     },
   ],
   appMetadata: {
