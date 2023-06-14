@@ -71,5 +71,5 @@
 
 :root {
   --onboard-modal-z-index: 1000;
-  --account-center-z-index: 1000;
+  --account-center-z-index: 9;
 }
