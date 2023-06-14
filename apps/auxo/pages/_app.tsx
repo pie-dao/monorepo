@@ -50,7 +50,13 @@ const web3Onboard = init({
   connect: {
     autoConnectAllPreviousWallet: true,
   },
-
+  theme: {
+    '--w3o-background-color': '#f6f7ff',
+    '--w3o-foreground-color': '#f6f7ff',
+    '--w3o-text-color': '#1f0860',
+    '--w3o-border-color': '#babddc',
+    '--w3o-action-color': '#248be0',
+  },
   accountCenter: {
     desktop: {
       enabled: true,
