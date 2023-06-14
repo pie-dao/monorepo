@@ -24,23 +24,11 @@ export default function ConnectWallet() {
         balance: wallet.accounts[0].balance,
         ens: { name, avatar: avatar?.url },
       });
-      console.log(name);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, wallet?.accounts[0]?.ens]);
 
-  if (wallet?.provider && account) {
-    return (
-      <div>
-        <button
-          onClick={() => disconnect(wallet)}
-          className="px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white"
-        >
-          {account.ens?.name ? account.ens.name : trimAccount(account.address)}
-        </button>
-      </div>
-    );
-  }
+  if (wallet?.provider && account) return null;
 
   return (
     <div>

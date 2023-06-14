@@ -24,7 +24,7 @@ import { MAINNET_RPC } from '../utils/networks';
 
 const wcV2InitOptions = {
   version: 2 as const,
-  projectId: '8a7af8264337fea1b5ccb8c8fee47ad3',
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
   requiredChains: [1],
 };
 
@@ -60,7 +60,7 @@ const web3Onboard = init({
   accountCenter: {
     desktop: {
       enabled: true,
-      position: 'bottomRight',
+      position: 'topRight',
     },
     mobile: {
       enabled: true,
