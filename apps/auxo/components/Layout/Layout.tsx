@@ -39,6 +39,11 @@ export default function Layout({ children }) {
         await updateOnBlock();
       });
     }
+    return () => {
+      if (ethereumProvider) {
+        ethereumProvider.removeAllListeners('block');
+      }
+    };
   }, [updateOnBlock]);
 
   return (
