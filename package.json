@@ -17,6 +17,7 @@
     "@0xsequence/multicall": "^0.37.1",
     "@discord-nestjs/core": "^3.0.2",
     "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/hash": "^5.7.0",
     "@graphql-codegen/typescript-msw": "^1.1.6",
     "@graphql-codegen/typescript-react-query": "^4.1.0",
     "@graphql-codegen/typescript-rtk-query": "^2.2.13",
