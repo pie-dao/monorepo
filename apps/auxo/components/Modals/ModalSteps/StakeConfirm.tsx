@@ -47,7 +47,6 @@ export default function StakeConfirm() {
   const chainExplorer = useChainExplorer();
   const [{ wallet }] = useConnectWallet();
   const account = wallet?.accounts[0]?.address;
-  const signer = wallet?.provider;
 
   const fireEmoji = useMemo(() => {
     if (userLevel !== 30) return null;
@@ -64,13 +63,13 @@ export default function StakeConfirm() {
       hasLock
         ? thunkIncreaseStakeAuxo({
             account,
-            signer,
+            wallet,
             deposit: swap?.from?.amount,
             tokenLocker: stakingContract,
             AUXOToken,
           })
         : thunkStakeAuxo({
-            signer,
+            wallet,
             account,
             AUXOToken,
             deposit: swap?.from?.amount,

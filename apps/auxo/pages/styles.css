@@ -70,6 +70,6 @@
 }
 
 :root {
-  --onboard-modal-z-index: 1000;
+  --onboard-modal-z-index: 80;
   --account-center-z-index: 80;
 }

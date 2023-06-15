@@ -37,7 +37,6 @@ import {
 } from '../modal/modal.slice';
 import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
-import { JsonRpcSigner } from '@ethersproject/providers';
 import { ONE_HOUR_DEADLINE } from '../../utils/constants';
 import {
   PrvWithdrawalMerkleTree,
@@ -46,7 +45,7 @@ import {
 import { isEmpty } from 'lodash';
 import PrvWithdrawalTree from '../../config/PrvWithdrawalTree.json';
 import { defaultAbiCoder } from '@ethersproject/abi';
-import { EIP1193Provider } from '@web3-onboard/core';
+import { WalletState, EIP1193Provider } from '@web3-onboard/core';
 
 export const THUNKS = {
   GET_PRODUCTS_DATA: 'app/getProductsData',
@@ -461,7 +460,6 @@ export const thunkApproveToken = createAsyncThunk(
     );
 
     const receipt = await tx.wait();
-    const addressFromSigner = await token.signer.getAddress();
 
     if (receipt.status === 1) {
       dispatch(setTxState(TX_STATES.COMPLETE));
@@ -475,7 +473,7 @@ export const thunkApproveToken = createAsyncThunk(
 );
 
 export type ThunkStakeAuxoProps = {
-  signer: EIP1193Provider;
+  wallet: WalletState;
   deposit: BigNumberReference;
   stakingTime: BigNumberish;
   tokenLocker: TokenLockerAbi | undefined;
@@ -490,7 +488,7 @@ export const thunkStakeAuxo = createAsyncThunk(
       tokenLocker,
       account,
       stakingTime,
-      signer,
+      wallet,
       AUXOToken,
     }: ThunkStakeAuxoProps,
     { rejectWithValue, dispatch },
@@ -505,7 +503,7 @@ export const thunkStakeAuxo = createAsyncThunk(
 
     try {
       ({ r, v, s } = await getPermitSignature(
-        signer,
+        wallet,
         account,
         AUXOToken,
         tokenLocker.address,
@@ -563,7 +561,7 @@ export type ThunkIncreaseStakeAuxoProps = {
   account: string;
   deposit: BigNumberReference;
   tokenLocker: TokenLockerAbi | undefined;
-  signer: EIP1193Provider;
+  wallet: WalletState;
   AUXOToken: AUXOAbi;
 };
 
@@ -572,7 +570,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
   async (
     {
       account,
-      signer,
+      wallet,
       deposit,
       tokenLocker,
       AUXOToken,
@@ -583,8 +581,6 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
       return rejectWithValue('Missing Contract, Account Details or Deposit');
     dispatch(setTx({ status: null, hash: null }));
 
-    console.log('thunkIncreaseStakeAuxo', AUXOToken);
-
     let tx: ContractTransaction;
     let r: string;
     let v: number;
@@ -592,7 +588,7 @@ export const thunkIncreaseStakeAuxo = createAsyncThunk(
 
     try {
       ({ r, v, s } = await getPermitSignature(
-        signer,
+        wallet,
         account,
         AUXOToken,
         tokenLocker.address,
@@ -764,7 +760,7 @@ export type ThunkConvertXAUXOProps = {
   auxoContract: AUXOAbi | undefined;
   xAUXOContract?: PRVAbi | undefined;
   account: string;
-  signer: EIP1193Provider;
+  wallet: WalletState;
   isConvertAndStake: boolean;
   PRVRouterContract?: PRVRouterAbi;
 };
@@ -773,7 +769,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
   THUNKS.CONVERT_X_AUXO,
   async (
     {
-      signer,
+      wallet,
       account,
       deposit,
       auxoContract,
@@ -794,7 +790,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
 
     try {
       ({ r, v, s } = await getPermitSignature(
-        signer,
+        wallet,
         account,
         auxoContract,
         isConvertAndStake ? PRVRouterContract.address : xAUXOContract.address,
@@ -862,7 +858,7 @@ export const thunkConvertXAUXO = createAsyncThunk(
 export type ThunkStakeXAUXOProps = {
   deposit: BigNumberReference;
   account: string;
-  signer: EIP1193Provider;
+  wallet: WalletState;
   xAUXO: PRVAbi | undefined;
   rollStaker: RollStakerAbi | undefined;
 };
@@ -870,10 +866,10 @@ export type ThunkStakeXAUXOProps = {
 export const thunkStakeXAUXO = createAsyncThunk(
   THUNKS.STAKE_X_AUXO,
   async (
-    { signer, account, deposit, xAUXO, rollStaker }: ThunkStakeXAUXOProps,
+    { wallet, account, deposit, xAUXO, rollStaker }: ThunkStakeXAUXOProps,
     { rejectWithValue, dispatch },
   ) => {
-    if (!deposit || !account || !xAUXO || !signer || !rollStaker)
+    if (!deposit || !account || !xAUXO || !wallet || !rollStaker)
       return rejectWithValue(
         'Missing Contract, Account Details, Deposit, xAUXO or Signer',
       );
@@ -885,7 +881,7 @@ export const thunkStakeXAUXO = createAsyncThunk(
 
     try {
       ({ r, v, s } = await getPermitSignature(
-        signer,
+        wallet,
         account,
         xAUXO,
         rollStaker.address,

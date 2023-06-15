@@ -38,7 +38,6 @@ export default function StakeConfirm() {
   const chainExplorer = useChainExplorer();
   const [{ wallet }] = useConnectWallet();
   const account = wallet?.accounts[0]?.address;
-  const signer = wallet?.provider;
 
   const PRVRouterContract = usePRVRouterContract();
 
@@ -50,7 +49,7 @@ export default function StakeConfirm() {
         auxoContract,
         xAUXOContract,
         account,
-        signer,
+        wallet,
         PRVRouterContract,
         isConvertAndStake,
       }),

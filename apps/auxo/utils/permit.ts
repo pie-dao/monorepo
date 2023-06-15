@@ -1,10 +1,11 @@
 import { BigNumberish, constants, Signature } from 'ethers';
 import { splitSignature } from 'ethers/lib/utils';
 import { AUXOAbi, PRVAbi } from '@shared/util-blockchain';
-import { EIP1193Provider } from '@web3-onboard/core';
+import { WalletState } from '@web3-onboard/core';
+import { _TypedDataEncoder } from '@ethersproject/hash';
 
 export async function getPermitSignature(
-  signer: EIP1193Provider,
+  wallet: WalletState,
   account: string,
   token: AUXOAbi | PRVAbi,
   spender: string,
@@ -20,24 +21,17 @@ export async function getPermitSignature(
     token.nonces(account),
     permitConfig?.name ?? token.name(),
     permitConfig?.version ?? '1',
-    signer.request({ method: 'eth_chainId' }) ?? 1,
+    wallet?.provider.request({ method: 'eth_chainId' }) ?? 1,
   ]);
 
-  const msgParams = JSON.stringify({
+  const msgParams = {
     domain: {
       chainId,
       name,
       verifyingContract: token.address,
       version,
     },
-    primaryType: 'Permit',
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-      ],
       Permit: [
         { name: 'owner', type: 'address' },
         { name: 'spender', type: 'address' },
@@ -46,7 +40,6 @@ export async function getPermitSignature(
         { name: 'deadline', type: 'uint256' },
       ],
     },
-
     message: {
       owner: account,
       spender: spender,
@@ -54,14 +47,24 @@ export async function getPermitSignature(
       nonce: nonce.toString(),
       deadline: deadline,
     },
-  });
+  };
+
+  const eip712Encoded = JSON.stringify(
+    _TypedDataEncoder.getPayload(
+      msgParams.domain,
+      msgParams.types,
+      msgParams.message,
+    ),
+  );
 
   const eip712Request = {
     method: 'eth_signTypedData_v4',
-    params: [account, msgParams],
+    params: [account.toLowerCase(), eip712Encoded],
   };
 
-  const myReq = (await signer.request(eip712Request)) as string;
+  const signatureRequest = (await wallet?.provider.request(
+    eip712Request,
+  )) as string;
 
-  return splitSignature(myReq);
+  return splitSignature(signatureRequest);
 }

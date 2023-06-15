@@ -57,7 +57,7 @@ const StakeConfirm: React.FC<{
           deposit: swap?.from?.amount,
           account,
           rollStaker,
-          signer,
+          wallet,
         }),
       ).finally(() => setDepositLoading(false));
     action === 'unstake' &&
