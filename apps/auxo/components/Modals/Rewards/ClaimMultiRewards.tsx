@@ -25,6 +25,7 @@ import useSWR from 'swr';
 import { fetcher } from '../../../utils/fetcher';
 import { MerkleTreesByUser } from '../../../types/merkleTree';
 import { isEmpty } from 'lodash';
+import getUserMerkleTree from '../../../utils/getUserMerkleTree';
 
 const imageMap = {
   ARV: ARVImage,
@@ -67,7 +68,7 @@ export default function ClaimRewards() {
         merkleDistributor,
         account,
         isSingleClaim: false,
-        userRewards: merkleTreesByUser[account],
+        userRewards: getUserMerkleTree(merkleTreesByUser, account),
       }),
     ).finally(() => setClaimRewardLoading(false));
   };

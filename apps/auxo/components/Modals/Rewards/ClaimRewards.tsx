@@ -19,6 +19,7 @@ import { fetcher } from '../../../utils/fetcher';
 import { MerkleTreesByUser } from '../../../types/merkleTree';
 import { MERKLE_TREES_BY_USER_URL } from '../../../utils/constants';
 import { isEmpty } from 'lodash';
+import getUserMerkleTree from '../../../utils/getUserMerkleTree';
 
 const imageMap = {
   ARV: ARVImage,
@@ -59,7 +60,7 @@ export default function ClaimRewards() {
         merkleDistributor,
         account,
         isSingleClaim: true,
-        userRewards: merkleTreesByUser[account],
+        userRewards: getUserMerkleTree(merkleTreesByUser, account),
       }),
     ).finally(() => setClaimRewardLoading(false));
   };
