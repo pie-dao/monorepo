@@ -30,6 +30,7 @@ import useSWR from 'swr';
 import { fetcher } from '../../utils/fetcher';
 import { MerkleTreesByUser } from '../../types/merkleTree';
 import { MERKLE_TREES_BY_USER_URL } from '../../utils/constants';
+import getUserMerkleTree from '../../utils/getUserMerkleTree';
 
 const TotalRewards: React.FC = () => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -152,7 +153,7 @@ const ActionsBar = ({
         token,
         account,
         merkleDistributor,
-        userRewards: merkleTreesByUser[account],
+        userRewards: getUserMerkleTree(merkleTreesByUser, account),
       }),
     ).finally(() => {
       dispatch(setTxHash(null));
