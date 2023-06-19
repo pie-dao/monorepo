@@ -1,10 +1,10 @@
 import { Erc20Abi } from '@shared/util-blockchain';
 import { getExplorer } from '@shared/util-blockchain/abis';
-import { useWeb3React } from '@web3-react/core';
 import { BigNumberReference } from '../store/products/products.types';
 import { isZero, subPercentageToBalance, zeroBalance } from '../utils/balances';
 import { useAppSelector } from './index';
 import { useTokenContract } from './useContracts';
+import { useSetChain } from '@web3-onboard/react';
 import {
   AVG_SECONDS_IN_MONTH,
   LEVELS_REWARDS,
@@ -16,7 +16,8 @@ import { formatAsPercent } from '../utils/formatBalance';
 import { addMonths, getRemainingTimeInMonths } from '../utils/dates';
 
 export const useCurrentChainAddress = (token: string): string => {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   return useAppSelector(
     (state) => state.dashboard?.tokens?.[token]?.chainInfo?.[chainId]?.address,
   );
@@ -131,7 +132,8 @@ export const useDelegatorAddress = (token: string): string => {
 };
 
 export const useTokenBalance = (token: string): BigNumberReference => {
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = Number(connectedChain?.id);
   return useAppSelector(
     (state) =>
       state?.dashboard?.tokens?.[token]?.chainInfo?.[chainId]?.balance ??
@@ -148,7 +150,8 @@ export const useApprovalLimit = (
    * We can use this to determine whether to allow a deposit, or
    * request a higher limit
    */
-  const { chainId } = useWeb3React();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   const limit = useAppSelector(
     (state) =>
       state?.dashboard?.tokens?.[token]?.chainInfo?.[chainId]?.allowance?.[
@@ -201,8 +204,9 @@ export const useIsFirstTimeMigration = (): boolean => {
 };
 
 export const useChainExplorer = () => {
-  const { chainId } = useWeb3React();
-  return getExplorer(chainId)?.[0];
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
+  return getExplorer(Number(chainId))?.[0];
 };
 
 export const useUserRemainingStakingTimeInMonths = () => {

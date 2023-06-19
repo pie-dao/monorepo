@@ -1,10 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
-import { useWeb3React } from '@web3-react/core';
-import trimAccount from '../../utils/trimAccount';
 import { useCallback, useMemo, useState } from 'react';
 import { ethers } from 'ethers';
 import {
-  getSigner,
   useStakingTokenContract,
   useUpgradoor,
   useVeDOUGHStakingContract,
@@ -17,12 +14,13 @@ import {
   setPreviousStep,
 } from '../../store/migration/migration.slice';
 import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
-import { ConnectButton } from '@shared/ui-library';
+
 import { CheckIcon, ExclamationIcon } from '@heroicons/react/outline';
 import Banner from '../Banner/Banner';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import * as Label from '@radix-ui/react-label';
 import classNames from '../../utils/classnames';
+import { useConnectWallet } from '@web3-onboard/react';
 
 type Props = {
   isCurrentWallet: boolean;
@@ -38,7 +36,8 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
   const [invalidReason, setInvalidReason] = useState<string>('');
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
   const { t } = useTranslation('migration');
-  const { account } = useWeb3React();
+  const [{ wallet }, connect] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const tokenLocker = useStakingTokenContract('ARV');
   const upgradoor = useUpgradoor();
   const eDOUGHTokenLocker = useVeDOUGHStakingContract();
@@ -252,7 +251,12 @@ const AddressCard: React.FC<Props> = ({ isCurrentWallet, token }) => {
               {t('sameWalletButton')}
             </button>
           ) : (
-            <ConnectButton className="w-full px-4 py-2 text-base !text-secondary bg-transparent !rounded-full ring-inset ring-1 ring-secondary enabled:hover:!bg-secondary enabled:hover:!text-white disabled:opacity-70 flex gap-x-2 items-center justify-center border-0" />
+            <button
+              onClick={() => connect()}
+              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            >
+              {t('connectWallet')}
+            </button>
           ))}
         {!isCurrentWallet && (
           <button

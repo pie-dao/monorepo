@@ -1,9 +1,7 @@
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useAppDispatch } from '../../hooks';
 import { BigNumberReference } from '../../store/products/products.types';
 import { TokenConfig } from '../../types/tokensConfig';
-import { ConnectButton } from '@shared/ui-library';
-import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 import {
   setClaim,
   setIsOpen,
@@ -12,6 +10,7 @@ import {
 } from '../../store/modal/modal.slice';
 import { STEPS } from '../../store/modal/modal.types';
 import { PrvWithdrawalRecipient } from '../../types/merkleTree';
+import useTranslation from 'next-translate/useTranslation';
 
 function WithdrawButton({
   disabled,
@@ -31,9 +30,11 @@ function WithdrawButton({
   children?: React.ReactNode;
   disabled: boolean;
 }) {
-  const { account } = useWeb3React();
-  const ready = useServerHandoffComplete();
+  const [{ wallet }, connect] = useConnectWallet();
+
+  const account = wallet?.accounts[0]?.address;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
 
   const openModal = () => {
     dispatch(
@@ -69,7 +70,12 @@ function WithdrawButton({
           </button>
         </>
       ) : (
-        ready && <ConnectButton className="w-full" />
+        <button
+          onClick={() => connect()}
+          className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+        >
+          {t('connectWallet')}
+        </button>
       )}
     </div>
   );

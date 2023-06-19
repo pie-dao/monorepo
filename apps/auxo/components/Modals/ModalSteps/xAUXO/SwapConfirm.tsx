@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../../hooks';
 import Image from 'next/image';
 import {
-  getSigner,
   useAUXOTokenContract,
   usePRVRouterContract,
   useXAUXOTokenContract,
@@ -13,11 +12,12 @@ import { thunkConvertXAUXO } from '../../../../store/products/thunks';
 import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
 import LoadingSpinner from '../../../LoadingSpinner/LoadingSpinner';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useChainExplorer } from '../../../../hooks/useToken';
 import AuxoImage from '../../../../public/tokens/AUXO.svg';
 import PrvImage from '../../../../public/tokens/24x24/PRV.svg';
 import PendingTransaction from '../../../PendingTransaction/PendingTransaction';
+import { ethers } from 'ethers';
 
 const imageMap = {
   AUXO: AuxoImage,
@@ -26,7 +26,7 @@ const imageMap = {
 
 export default function StakeConfirm() {
   const { t } = useTranslation();
-  const { account, library } = useWeb3React();
+
   const { tx, swap, isConvertAndStake } = useAppSelector(
     (state) => state.modal,
   );
@@ -36,7 +36,9 @@ export default function StakeConfirm() {
   const auxoContract = useAUXOTokenContract();
   const xAUXOContract = useXAUXOTokenContract();
   const chainExplorer = useChainExplorer();
-  const signer = getSigner(library, account);
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
+
   const PRVRouterContract = usePRVRouterContract();
 
   const makeDeposit = () => {
@@ -47,7 +49,7 @@ export default function StakeConfirm() {
         auxoContract,
         xAUXOContract,
         account,
-        signer,
+        wallet,
         PRVRouterContract,
         isConvertAndStake,
       }),

@@ -7,7 +7,7 @@ import MigrationCardOption from '../../../components/MigrationCardOption/Migrati
 import ARV from '../../../public/tokens/32x32/ARV.svg';
 import PRV from '../../../public/tokens/32x32/PRV.svg';
 import Image from 'next/image';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useAppDispatch } from '../../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../../store/migration/migration.thunks';
 import MigrationBanner from '../../../components/MigrationBanner/MigrationBanner';
@@ -58,7 +58,8 @@ export default function Migration() {
   const { t } = useTranslation('migration');
 
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
 
   useEffect(() => {
     dispatch(setCleanupFlow());

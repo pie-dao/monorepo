@@ -15,7 +15,7 @@ import {
   MIGRATION_TYPE,
 } from '../../store/migration/migration.types';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useTokenBalance } from '../../hooks/useToken';
 import { isZero } from '../../utils/balances';
 import MigrationFAQ from '../MigrationFAQ/MigrationFAQ';
@@ -28,7 +28,8 @@ type Props = {
 const ChooseMigration: React.FC<Props> = ({ token }) => {
   const { t } = useTranslation('migration');
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const noLocks = isZero(useTokenBalance(token), 18);
   const { boost } = useAppSelector((state) => state.migration);
 

@@ -7,7 +7,7 @@ import { useStakingTokenContract } from '../../../hooks/useContracts';
 import { thunkBoostToMaxVeAUXO } from '../../../store/products/thunks';
 import ArrowRight from '../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../utils/formatBalance';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { addMonths } from '../../../utils/dates';
 import {
   useChainExplorer,
@@ -23,7 +23,8 @@ import LevelChart from '../../LevelChart/LevelChart';
 
 export default function BoostStakeModal() {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const chainExplorer = useChainExplorer();
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);

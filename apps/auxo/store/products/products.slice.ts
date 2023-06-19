@@ -23,7 +23,7 @@ import { Tokens, SliceState } from './products.types';
 import { merge } from 'lodash';
 import addTxNotifications from '../../utils/notifications';
 
-const initialState: SliceState = {
+export const initialState: SliceState = {
   tokens: {},
   loading: false,
   stats: {

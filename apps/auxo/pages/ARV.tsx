@@ -15,8 +15,7 @@ import {
 import { formatBalance, formatAsPercent } from '../utils/formatBalance';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import Stake from '../components/Stake/Stake';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import {
   thunkGetUserProductsData,
   thunkGetUserStakingData,
@@ -27,6 +26,7 @@ import Summary from '../components/Summary/VeAUXOSummary';
 import ARVNotificationBar from '../components/ARVNotificationBar/ARVNotificationBar';
 import { STEPS } from '../store/modal/modal.types';
 import { setIsOpen, setStep, setSwap } from '../store/modal/modal.slice';
+import { useSetChain } from '@web3-onboard/react';
 import {
   useDecimals,
   useEarlyTerminationFee,
@@ -62,22 +62,27 @@ export default function ARV({
   const earlyTerminationFee = useEarlyTerminationFee();
   const hasLock = useUserHasLock(tokenConfig.name);
   const [commitmentValue, setCommitmentValue] = useState(36);
-  const { account, chainId } = useWeb3React<Web3Provider>();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (!account && !chainId) return;
     dispatch(
       thunkGetUserProductsData({
         account,
+        provider: wallet?.provider,
         spender: stakingTokenConfig.addresses[chainId]?.stakingAddress,
       }),
     );
     dispatch(
       thunkGetUserStakingData({
         account,
+        provider: wallet?.provider,
       }),
     );
-  }, [account, dispatch, stakingTokenConfig.addresses, chainId]);
+  }, [account, dispatch, stakingTokenConfig.addresses, chainId, wallet]);
 
   const losingAmount = useMemo(() => {
     return mulBalances(AuxoBalance, earlyTerminationFee, decimals);

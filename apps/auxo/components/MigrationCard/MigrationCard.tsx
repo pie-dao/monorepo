@@ -13,7 +13,7 @@ import {
 import Banner from '../Banner/Banner';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { isEmpty } from 'lodash';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useUpgradoor } from '../../hooks/useContracts';
 import { ThunkPreviewMigration } from '../../store/migration/migration.thunks';
 import PreviewMigration from '../veAUXOMigration/PreviewMigration';
@@ -43,7 +43,8 @@ const MigrationCard: React.FC<Props> = ({
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { positions, loadingPositions, boost, stake, aggregateStake } =
     useAppSelector((state) => state.migration);
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const dispatch = useAppDispatch();
   const upgradoor = useUpgradoor();
   const hasLock = useUserHasLock('ARV');

@@ -1,9 +1,7 @@
-import { ChainSwitcher, ConnectButton } from '@shared/ui-library';
 import useTranslation from 'next-translate/useTranslation';
-import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
-import { useMediaQuery } from 'usehooks-ts';
-import GasPrice from '../GasPrice/GasPrice';
+
 import Image, { StaticImageData } from 'next/image';
+import ConnectedUserCard from '../ConnectedUserCard/ConnectedUserCard';
 
 type HeaderProps = {
   title: string;
@@ -17,8 +15,6 @@ type HeaderProps = {
 
 export default function Header({ title, icon }: HeaderProps) {
   const { t } = useTranslation();
-  const ready = useServerHandoffComplete();
-  const mqXl = useMediaQuery('(min-width: 1280px)');
 
   return (
     <header className="flex-shrink-0 z-10 w-full">
@@ -38,16 +34,7 @@ export default function Header({ title, icon }: HeaderProps) {
             {t(title)}
           </h1>
           <div className="ml-auto flex gap-x-3 items-center">
-            {ready && (
-              <>
-                <GasPrice />
-                <ChainSwitcher
-                  allowedChains={['MAINNET']}
-                  showNetworkName={mqXl}
-                />
-                <ConnectButton />
-              </>
-            )}
+            <ConnectedUserCard />
           </div>
         </div>
       </div>

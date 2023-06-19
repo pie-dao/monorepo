@@ -11,8 +11,8 @@ import {
 import { thunkEarlyTermination } from '../../../../store/products/thunks';
 import ArrowRight from '../../../../public/images/icons/arrow-right.svg';
 import { formatBalance } from '../../../../utils/formatBalance';
-import { useWeb3React } from '@web3-react/core';
-import AUXOImage from '../../../../public/tokens/32x32/AUXO.svg';
+import { useConnectWallet } from '@web3-onboard/react';
+import AUXOImage from '../../../../public/tokens/AUXO.svg';
 import ARVImage from '../../../../public/tokens/32x32/ARV.svg';
 import xAUXOImage from '../../../../public/tokens/24x24/PRV.svg';
 import PendingTransaction from '../../../PendingTransaction/PendingTransaction';
@@ -26,7 +26,8 @@ const imageMap = {
 
 export default function StakeConfirm() {
   const { t } = useTranslation();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const { tx, swap } = useAppSelector((state) => state.modal);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();

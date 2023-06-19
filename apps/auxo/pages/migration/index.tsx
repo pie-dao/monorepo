@@ -4,7 +4,7 @@ import { ReactElement, useEffect } from 'react';
 import { Layout } from '../../components';
 import { wrapper } from '../../store';
 import Image from 'next/image';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ThunkGetVeDOUGHStakingData } from '../../store/migration/migration.thunks';
 import MigrationBanner from '../../components/MigrationBanner/MigrationBanner';
@@ -23,7 +23,8 @@ export default function Migration() {
   const { t } = useTranslation('migration');
 
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
 
   useEffect(() => {
     if (account) {

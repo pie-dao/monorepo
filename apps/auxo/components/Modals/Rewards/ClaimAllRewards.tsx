@@ -9,7 +9,7 @@ import {
 } from '../../../hooks/useContracts';
 import { useChainExplorer } from '../../../hooks/useToken';
 import { formatBalance } from '../../../utils/formatBalance';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import ARVImage from '../../../public/tokens/32x32/ARV.svg';
 import PRVImage from '../../../public/tokens/32x32/PRV.svg';
 import PendingTransaction from '../../PendingTransaction/PendingTransaction';
@@ -36,7 +36,8 @@ export default function ClaimRewards() {
   const { tx } = useAppSelector((state) => state.rewards.claimFlow);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
   const claimHelper = useClaimHelper('ARV');
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   const unclaimedRewardsTotal = useTotalActiveRewards();

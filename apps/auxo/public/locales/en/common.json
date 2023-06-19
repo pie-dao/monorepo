@@ -387,5 +387,6 @@
   "successAutocompoundingDescription": "All done! Check every 25th of the month to see your rewards compounding.",
   "stopAutocompoundingDescription": "From now on you will not autocompound your rewards anymore and you will be able to claim your rewards in wETH again",
   "pendingTransaction": "Pending transaction",
-  "autocompoundActiveFor": "Autocompound active for ${token}"
+  "autocompoundActiveFor": "Autocompound active for ${token}",
+  "N/A": "N/A"
 }

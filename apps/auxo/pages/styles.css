@@ -68,3 +68,8 @@
     --color-light-red: 255 176 176;
   }
 }
+
+:root {
+  --onboard-modal-z-index: 80;
+  --account-center-z-index: 80;
+}

@@ -23,7 +23,7 @@ import { isEmpty, isEqual } from 'lodash';
 import { zeroBalance } from '../../utils/balances';
 import { thunkStopCompoundRewards } from '../../store/rewards/rewards.thunks';
 import { useMerkleDistributor } from '../../hooks/useContracts';
-import { useWeb3React } from '@web3-react/core';
+import { useConnectWallet } from '@web3-onboard/react';
 import { StopIcon } from '@heroicons/react/solid';
 import classNames from '../../utils/classnames';
 import useSWR from 'swr';
@@ -119,7 +119,8 @@ const ActionsBar = ({
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const merkleDistributor = useMerkleDistributor(token);
-  const { account } = useWeb3React();
+  const [{ wallet }] = useConnectWallet();
+  const account = wallet?.accounts[0]?.address;
 
   const { data: merkleTreesByUser, isLoading } = useSWR<MerkleTreesByUser>(
     MERKLE_TREES_BY_USER_URL,

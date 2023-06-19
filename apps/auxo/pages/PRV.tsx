@@ -13,8 +13,7 @@ import {
 import { formatBalance, formatAsPercent } from '../utils/formatBalance';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import Swap from '../components/Swap/Swap';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { useSetChain } from '@web3-onboard/react';
 import {
   thunkGetUserProductsData,
   thunkGetUserPrvWithdrawal,
@@ -29,6 +28,7 @@ import PrvWithdrawalTree from '../config/PrvWithdrawalTree.json';
 import { usePRVMerkleVerifier } from '../hooks/useContracts';
 import { PrvWithdrawalMerkleTree } from '../types/merkleTree';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
+import { useConnectWallet } from '@web3-onboard/react';
 
 const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 
@@ -51,19 +51,25 @@ export default function XAUXO({
   );
 
   const prvMerkleVerifier = usePRVMerkleVerifier();
-  const { account, chainId } = useWeb3React<Web3Provider>();
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
+  const [{ wallet }] = useConnectWallet();
+
+  const account = wallet?.accounts[0]?.address;
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (!account && !chainId) return;
+    if (!wallet && !chainId) return;
     dispatch(
       thunkGetUserProductsData({
         account,
+        provider: wallet?.provider,
         spender: tokenConfig.addresses[chainId]?.address,
       }),
     );
     dispatch(
       thunkGetUserStakingData({
         account,
+        provider: wallet?.provider,
       }),
     );
   }, [
@@ -72,6 +78,7 @@ export default function XAUXO({
     stakingTokenConfig.addresses,
     chainId,
     tokenConfig.addresses,
+    wallet,
   ]);
 
   const data = null;
