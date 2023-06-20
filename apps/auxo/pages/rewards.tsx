@@ -24,6 +24,7 @@ import {
   thunkGetUserProductsData,
   thunkGetUserStakingData,
 } from '../store/products/thunks';
+import getUserMerkleTree from '../utils/getUserMerkleTree';
 
 export default function Rewards() {
   const { t } = useTranslation();
@@ -46,7 +47,7 @@ export default function Rewards() {
       dispatch(
         thunkGetUserRewards({
           account,
-          rewards: merkleTreesByUser[account],
+          rewards: getUserMerkleTree(merkleTreesByUser, account),
         }),
       );
     }
