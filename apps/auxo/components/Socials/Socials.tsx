@@ -4,7 +4,7 @@ import { discord, twitter, github } from '../../utils/social-icons';
 
 const SocialIcons = [
   { path: discord, href: 'https://discord.gg/x3kmf4bpJc' },
-  { path: twitter, href: 'https://twitter.com/PieDAO_DeFi' },
+  { path: twitter, href: 'https://twitter.com/AuxoDAO' },
   { path: github, href: 'https://github.com/AuxoDAO' },
 ];
 
