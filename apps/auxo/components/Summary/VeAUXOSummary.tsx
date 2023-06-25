@@ -77,13 +77,10 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   );
 
   const votingPowerValue = useMemo(() => {
-    if (votingPower?.label === 0 || !account || !delegator) {
-      return t('N/A');
-    }
-    if (delegator.toLowerCase() === account.toLowerCase()) {
+    if (delegator?.toLowerCase() === account?.toLowerCase()) {
       return formatAsPercent(votingPower?.label, defaultLocale, 2);
     }
-    if (delegator.toLowerCase() !== account.toLowerCase()) {
+    if (delegator?.toLowerCase() !== account?.toLowerCase()) {
       return (
         <button
           onClick={delegateVote}
@@ -92,6 +89,9 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           {t('delegateToSelfForRewards')}
         </button>
       );
+    }
+    if (!account || !delegator) {
+      return t('N/A');
     }
     return '--';
   }, [account, defaultLocale, delegateVote, delegator, t, votingPower?.label]);
