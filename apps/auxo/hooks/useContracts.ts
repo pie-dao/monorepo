@@ -16,6 +16,7 @@ import {
   PRVMerkleVerifierAbi__factory,
   PRVRouterAbi__factory,
   VeAUXOAbi__factory,
+  LendingPoolAbi__factory,
 } from '@shared/util-blockchain';
 import tokensConfig from '../config/products.json';
 import migration from '../config/migration.json';
@@ -179,4 +180,8 @@ export function useARVToken() {
     VeAUXOAbi__factory,
     tokensConfig?.['ARV']?.addresses?.[chainId]?.address,
   );
+}
+
+export function useLendingPoolContract(address?: string) {
+  return useContract(LendingPoolAbi__factory, address);
 }

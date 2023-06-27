@@ -195,3 +195,39 @@ export const pickBalanceList = (
   const picked = pickBalance(first, second, pick);
   return pickBalanceList([picked, ...rest], pick);
 };
+
+export const multiplyNumberToBnReference = (
+  b1: BigNumberReference,
+  number: number,
+  decimals: number,
+): BigNumberReference => {
+  let value: BigNumber;
+  try {
+    value = BigNumber.from(b1.value).mul(
+      ethers.utils.parseUnits(number.toString(), decimals),
+    );
+  } catch (e) {
+    if (e.code === 'INVALID_ARGUMENT') {
+      console.debug('Number too large to be converted to a BigNumber');
+      value = BigNumber.from(b1.value);
+    } else {
+      throw e;
+    }
+  }
+
+  return {
+    label: parseFloat(ethers.utils.formatUnits(value.toString(), decimals)),
+    value: value.toString(),
+  };
+};
+
+export const calculatePriceInUSD = (
+  amount: BigNumberReference,
+  decimals: number,
+  price: number,
+): number => {
+  const amountInTokens = ethers.utils.formatUnits(amount.value, decimals);
+  const amountInUSD = parseFloat(amountInTokens) * price;
+
+  return amountInUSD;
+};

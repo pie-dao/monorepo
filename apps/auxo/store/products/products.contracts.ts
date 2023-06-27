@@ -13,11 +13,13 @@ import {
   MerkleDistributorAbi__factory,
   PRVAbi__factory,
   PRVMerkleVerifierAbi__factory,
+  LendingPoolAbi__factory,
 } from '@shared/util-blockchain';
 import { ethers } from 'ethers';
 import { config, MAINNET_RPC, SUPPORTED_CHAINS } from '../../utils/networks';
 import products from '../../config/products.json';
 import migration from '../../config/migration.json';
+import lendingPools from '../../config/lendingPools.json';
 
 const localRPC = MAINNET_RPC;
 
@@ -106,3 +108,12 @@ export const PrvMerkleVerifierContract = MAINNETMulticall.wrap(
     new ethers.providers.JsonRpcProvider(localRPC),
   ),
 );
+
+export const poolAddressesContracts = lendingPools.map((pool) => {
+  return MAINNETMulticall.wrap(
+    LendingPoolAbi__factory.connect(
+      pool,
+      new ethers.providers.JsonRpcProvider(localRPC),
+    ),
+  );
+});

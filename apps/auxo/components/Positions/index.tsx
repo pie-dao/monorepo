@@ -482,15 +482,6 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                               </div>
                             </div>
                             <MobileAccordionContent
-                              title={'value'}
-                              content={formatBalanceCurrency(
-                                position?.attributes?.principal_amount,
-                                'en-US',
-                                'USD',
-                                true,
-                              )}
-                            />
-                            <MobileAccordionContent
                               title={'strategy'}
                               content={position?.attributes?.strategies?.data
                                 ?.map((strategy) => strategy?.attributes?.Title)

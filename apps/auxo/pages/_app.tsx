@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AppProps, NextWebVitalsMetric } from 'next/app';
@@ -21,6 +21,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import RewardsModalManager from '../components/Modals/Rewards/RewardsModalManager';
 import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
 import { MAINNET_RPC } from '../utils/networks';
+import LendingModalManager from '../components/Modals/Lending/LendingModalManager';
 
 const wcV1InitOptions = {
   connectFirstChainId: true,
@@ -100,6 +101,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
   const { props, store } = wrapper.useWrappedStore(rest);
   usePagesViews();
   const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <Web3ContextProvider>
       <Web3OnboardProvider web3Onboard={web3Onboard}>
@@ -115,6 +117,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
                 <ModalManager />
                 <ModalStakingSuccess />
                 <RewardsModalManager />
+                <LendingModalManager />
                 <ClaimSuccess />
                 {getLayout(<Component {...props.pageProps} />)}
               </div>

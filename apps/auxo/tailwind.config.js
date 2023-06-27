@@ -8,6 +8,9 @@ function withOpacityValue(variable) {
     if (opacityValue === undefined) {
       return `rgb(var(${variable}))`;
     }
+    if (variable.startsWith('--gradient')) {
+      return `linear-gradient(var(${variable}) / ${opacityValue})`;
+    }
     return `rgb(var(${variable}) / ${opacityValue})`;
   };
 }

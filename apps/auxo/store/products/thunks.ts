@@ -21,7 +21,6 @@ import {
   veAUXOContract,
   rollStakerContract,
   auxoContract,
-  PrvMerkleVerifierContract,
 } from './products.contracts';
 import { BigNumberReference, Tokens } from './products.types';
 import { pendingNotification } from '../../components/Notifications/Notifications';
@@ -38,12 +37,8 @@ import {
 import { Steps, STEPS, TX_STATES } from '../modal/modal.types';
 import { getPermitSignature } from '../../utils/permit';
 import { ONE_HOUR_DEADLINE } from '../../utils/constants';
-import {
-  PrvWithdrawalMerkleTree,
-  PrvWithdrawalRecipient,
-} from '../../types/merkleTree';
+import { PrvWithdrawalRecipient } from '../../types/merkleTree';
 import { isEmpty } from 'lodash';
-import PrvWithdrawalTree from '../../config/PrvWithdrawalTree.json';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { WalletState, EIP1193Provider } from '@web3-onboard/core';
 
@@ -72,8 +67,6 @@ export const THUNKS = {
 const sum = (x: ethers.BigNumber, y: ethers.BigNumber) => x.add(y);
 const sumBalance = (x: number, y: number) => x + y;
 const deadline = Math.floor(Date.now() / 1000 + ONE_HOUR_DEADLINE).toString();
-
-const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 
 export const thunkGetProductsData = createAsyncThunk(
   THUNKS.GET_PRODUCTS_DATA,
@@ -126,6 +119,7 @@ export const thunkGetUserProductsData = createAsyncThunk(
     }: { account: string; provider: EIP1193Provider; spender?: string },
     { rejectWithValue },
   ) => {
+    console.log('new data request');
     if (!account || !provider) return;
     try {
       const productDataResults = await Promise.allSettled(

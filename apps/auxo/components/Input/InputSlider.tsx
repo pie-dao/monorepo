@@ -18,7 +18,7 @@ function InputSlider({
   label,
   disabled = false,
 }: {
-  resetOnSteps: Steps[] /* Steps to reset the input */;
+  resetOnSteps?: Steps[] /* Steps to reset the input */;
   setValue: SetStateType<BigNumberReference>;
   max: BigNumberReference;
   label: string;
@@ -36,7 +36,7 @@ function InputSlider({
       setDisplayValue('');
       setValue(zeroBalance);
     }
-  }, [step, showCompleteModal, setDisplayValue, setValue]);
+  }, [step, showCompleteModal, setDisplayValue, setValue, resetOnSteps]);
 
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {

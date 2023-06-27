@@ -107,5 +107,25 @@
   "stopCompoundRewardsSuccess": "Deactivated autocompounding successfully",
   "stopCompoundRewardsError": "There was an error while deactivating autocompounding",
 
+  "lendDepositPending": "Depositing",
+  "lendDepositSuccess": "Deposited successfully",
+  "lendDepositError": "There was an error while depositing",
+
+  "claimLendRewardsPending": "Claiming yield",
+  "claimLendRewardsSuccess": "Claimed yield successfully",
+  "claimLendRewardsError": "There was an error while claiming your yield",
+
+  "requestWithdrawalPending": "Requesting withdrawal",
+  "requestWithdrawalSuccess": "Requested withdrawal successfully",
+  "requestWithdrawalError": "There was an error while requesting withdrawal",
+
+  "withdrawPending": "Withdrawing",
+  "withdrawSuccess": "Withdrawn successfully",
+  "withdrawError": "There was an error while withdrawing",
+
+  "unlendPending": "Unlending",
+  "unlendSuccess": "Unlended successfully",
+  "unlendError": "There was an error while unlending",
+
   "defaultError": "There was an error"
 }

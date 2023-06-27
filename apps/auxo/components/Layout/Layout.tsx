@@ -12,6 +12,10 @@ import {
 import { useAppDispatch } from '../../hooks';
 import classNames from '../../utils/classnames';
 import { ethereumProvider } from '../MultichainProvider/MultichainProvider';
+import {
+  thunkGetLendingData,
+  thunkGetUserLendingData,
+} from '../../store/lending/lending.thunks';
 
 export default function Layout({ children }) {
   const mq = useMediaQuery('(max-width: 1023px)');
@@ -28,9 +32,11 @@ export default function Layout({ children }) {
     dispatch(thunkGetProductsData());
     dispatch(thunkGetVeAUXOStakingData());
     dispatch(thunkGetXAUXOStakingData());
+    dispatch(thunkGetLendingData());
     if (!account || !wallet?.provider) return;
     dispatch(thunkGetUserProductsData({ account, provider: wallet?.provider }));
     dispatch(thunkGetUserStakingData({ account, provider: wallet?.provider }));
+    dispatch(thunkGetUserLendingData({ account, provider: wallet?.provider }));
   }, [account, wallet?.provider, dispatch]);
 
   useEffect(() => {
@@ -45,6 +51,20 @@ export default function Layout({ children }) {
       }
     };
   }, [updateOnBlock]);
+
+  useEffect(() => {
+    if (account && wallet?.provider) {
+      dispatch(
+        thunkGetUserProductsData({ account, provider: wallet?.provider }),
+      );
+      dispatch(
+        thunkGetUserStakingData({ account, provider: wallet?.provider }),
+      );
+      dispatch(
+        thunkGetUserLendingData({ account, provider: wallet?.provider }),
+      );
+    }
+  }, [account, dispatch, wallet?.provider]);
 
   return (
     <>

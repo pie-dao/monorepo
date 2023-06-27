@@ -3,6 +3,7 @@
     "image": "/tokens/AUXO.svg",
     "name": "AUXO",
     "description": "AUXO Token",
+    "decimals": 18,
     "addresses": {
       "1": { "address": "0xff030228a046F640143Dab19be00009606C89B1d" },
       "5": {
@@ -17,6 +18,7 @@
     "image": "/tokens/32x32/ARV.svg",
     "name": "ARV",
     "description": "veAUXO Token",
+    "decimals": 18,
     "addresses": {
       "1": {
         "address": "0x069c0Ed12dB7199c1DdAF73b94de75AAe8061d33",
@@ -37,6 +39,7 @@
     "image": "/tokens/32x32/PRV.svg",
     "name": "PRV",
     "description": "xAUXO Token",
+    "decimals": 18,
     "addresses": {
       "1": {
         "address": "0xc72fbD264b40D88E445bcf82663D63FF21e722AF",
@@ -51,5 +54,18 @@
       "137": { "address": null, "exclude": true }
     },
     "coingeckoId": "xAuxo-token"
+  },
+  "USDC": {
+    "image": null,
+    "name": "USDC",
+    "decimals": 6,
+    "description": "USDC Token",
+    "addresses": {
+      "1": { "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48" },
+      "5": { "address": null, "exclude": true },
+      "250": { "address": null, "exclude": true },
+      "137": { "address": null, "exclude": true }
+    },
+    "coingeckoId": "usd-coin"
   }
 }

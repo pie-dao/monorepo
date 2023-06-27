@@ -77,9 +77,11 @@ export const Token = z.object({
     iconUrl: z.string().nullish(),
     symbol: z.string().nullish(),
     decimals: z.number().nullish(),
-    icon: z.object({
-      data: Media,
-    }),
+    icon: z
+      .object({
+        data: Media.nullish(),
+      })
+      .nullish(),
   }),
 });
 
@@ -176,6 +178,35 @@ export const Breakdown = z.object({
   }),
 });
 
+export const Pool = z.object({
+  id: z.number(),
+  attributes: z.object({
+    title: z.string().nullish(),
+    description: z.string().nullish(),
+    token: z.object({
+      data: Token.nullish(),
+    }),
+    date_until_next_state: z.string().nullish(),
+    address: z.string().nullish(),
+    card_image: z.object({
+      data: Media.nullish(),
+    }),
+    pool_token_image: z.object({
+      data: Media.nullish(),
+    }),
+    is_active: z.boolean().nullish(),
+    createdAt: z.string().nullish(),
+    publishedAt: z.string().nullish(),
+    updatedAt: z.string().nullish(),
+    tags: z.array(
+      z.object({
+        id: z.number(),
+        tag: z.string(),
+      }),
+    ),
+  }),
+});
+
 const createResponse = <T extends z.ZodType<any, any>>(schema: T) =>
   basicStrapiResponse.extend({ data: schema });
 const createListResponse = <T extends z.ZodType<any, any>>(schema: T) =>
@@ -206,6 +237,9 @@ export const StrategyListApiResponse = createListResponse(Strategy);
 export const ProtocolApiResponse = createResponse(Protocol);
 export const ProtocolListApiResponse = createListResponse(Protocol);
 
+export const PoolApiResponse = createResponse(Pool);
+export const PoolListApiResponse = createListResponse(Pool);
+
 export type TypesMap = {
   position: z.infer<typeof PositionFarming>;
   positions: z.infer<typeof PositionFarmingListApiResponse>;
@@ -223,6 +257,8 @@ export type TypesMap = {
   strategies: z.infer<typeof StrategyListApiResponse>;
   protocol: z.infer<typeof Protocol>;
   protocols: z.infer<typeof ProtocolListApiResponse>;
+  pool: z.infer<typeof Pool>;
+  pools: z.infer<typeof PoolListApiResponse>;
 };
 
 export const ResponseList = {
@@ -242,4 +278,6 @@ export const ResponseList = {
   strategies: StrategyListApiResponse,
   protocol: ProtocolApiResponse,
   protocols: ProtocolListApiResponse,
+  pool: PoolApiResponse,
+  pools: PoolListApiResponse,
 };
