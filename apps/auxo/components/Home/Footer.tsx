@@ -1,10 +1,11 @@
 import Container from '../Container/Container';
 import { discord, twitter, github } from '../../utils/social-icons';
 import { motion } from 'framer-motion';
+import { MailIcon } from '@heroicons/react/solid';
 
 const SocialIcons = [
   { path: discord, href: 'https://discord.gg/x3kmf4bpJc' },
-  { path: twitter, href: 'https://twitter.com/PieDAO_DeFi' },
+  { path: twitter, href: 'https://twitter.com/AuxoDAO' },
   { path: github, href: 'https://github.com/AuxoDAO' },
 ];
 
@@ -64,6 +65,15 @@ const Footer: React.FC = () => (
                   clipRule="evenodd"
                 />
               </svg>
+            </a>
+          </motion.li>
+          <motion.li
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            layout
+          >
+            <a href={'mailto:auxodao@protonmail.com'}>
+              <MailIcon className="h-6 w-6 text-sub-dark hover:text-secondary" />
             </a>
           </motion.li>
         </ul>

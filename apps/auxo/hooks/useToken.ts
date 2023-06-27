@@ -281,6 +281,7 @@ export const useUserLevel = (input: number) => {
     if (!input) return;
     if (!hasLock) return input - 6;
     if (remainingMonths <= 6) return 0;
+    if (remainingMonths > 36) return 30;
     return remainingMonths - 6;
   }, [hasLock, input, remainingMonths]);
   return userLevel;
