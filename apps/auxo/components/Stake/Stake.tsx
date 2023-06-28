@@ -27,7 +27,7 @@ import { TokenConfig } from '../../types/tokensConfig';
 import { formatBalance } from '../../utils/formatBalance';
 import StakeSlider from './StakeSlider';
 import { useConnectWallet } from '@web3-onboard/react';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import ARVConversionCalculator from '../../utils/ARVConversionCalculator';
 import { Tab } from '@headlessui/react';
 import classNames from '../../utils/classnames';
@@ -38,6 +38,8 @@ import { getMonthsSinceStake } from '../../utils/dates';
 import IncreaseLock from '../IncreaseLock/IncreaseLock';
 import WithdrawLock from '../WithdrawLock/WithdrawLock';
 import { STEPS } from '../../store/modal/modal.types';
+import { useStakingTokenContract } from '../../hooks/useContracts';
+import { setStep, setSwap, setIsOpen } from '../../store/modal/modal.slice';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -69,7 +71,33 @@ const Stake: React.FC<Props> = ({
   const userLockStart = useUserLockStartingTime('ARV');
   const isUserLockExpired = useIsUserLockExpired();
   const stakedAUXO = useUserLockAmount('ARV');
-  const isMaxxed = useIsUserMaxLockDuration('ARV');
+  const isMaxLock = useIsUserMaxLockDuration('ARV');
+  const isMaxxed = useCheckUserIsMaxBoosted();
+
+  const userLockAmount = useUserLockAmount('ARV');
+  const tokenLocker = useStakingTokenContract('ARV');
+  const dispatch = useAppDispatch();
+
+  const boostToMax = () => {
+    dispatch(setStep(STEPS.BOOST_STAKE_ARV));
+    dispatch(
+      setSwap({
+        swap: {
+          from: {
+            token: 'AUXO',
+            amount: userLockAmount,
+          },
+          to: {
+            token: 'ARV',
+            amount: userLockAmount,
+          },
+          stakingTime: 36,
+          spender: tokenLocker.address,
+        },
+      }),
+    );
+    dispatch(setIsOpen(true));
+  };
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -358,7 +386,17 @@ const Stake: React.FC<Props> = ({
                             </dd>
                           </dl>
                         </div>
-                        {!isMaxxed && <IncreaseLock />}
+                        {!isMaxxed && (
+                          <div className="flex items-center justify-center mt-4 w-full">
+                            <button
+                              onClick={boostToMax}
+                              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+                            >
+                              {t('restake')}
+                            </button>
+                          </div>
+                        )}
+                        {!isMaxLock && <IncreaseLock />}
                       </>
                     )}
                   </ModalBox>

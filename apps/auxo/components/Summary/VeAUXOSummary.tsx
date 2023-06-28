@@ -109,6 +109,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
             AUXO
           </>
         ),
+        visibility: true,
       },
       {
         icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
@@ -126,16 +127,19 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
             ARV
           </>
         ),
+        visibility: true,
       },
       {
         icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
         title: t('governancePower'),
         value: votingPowerValue,
+        visibility: hasLock,
       },
       {
         icon: <Image src={unlock} alt="triangle" width={24} height={24} />,
         title: t('unlock'),
         value: hasLock ? endDate : '--/--/----',
+        visibility: hasLock,
       },
     ];
   }, [
@@ -184,20 +188,23 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           className="group-hover:text-underline"
         />
       )}
-      {summaryData.map(({ icon, title, value }, index) => (
-        <div
-          className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"
-          key={index}
-        >
-          <dt className="text-base text-primary font-medium flex items-center gap-x-2">
-            {icon && icon}
-            {title}
-          </dt>
-          <dd className="flex ml-auto font-semibold text-base text-primary">
-            {value}
-          </dd>
-        </div>
-      ))}
+      {summaryData.map(({ icon, title, value, visibility }, index) => {
+        if (!visibility) return null;
+        return (
+          <div
+            className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"
+            key={index}
+          >
+            <dt className="text-base text-primary font-medium flex items-center gap-x-2">
+              {icon && icon}
+              {title}
+            </dt>
+            <dd className="flex ml-auto font-semibold text-base text-primary">
+              {value}
+            </dd>
+          </div>
+        );
+      })}
     </div>
   );
 };
