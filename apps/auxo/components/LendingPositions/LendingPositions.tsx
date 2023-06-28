@@ -177,7 +177,7 @@ export const SinglePoolPosition = ({ position }: SinglePoolPositionProps) => {
             <div className="flex md:hidden">
               <p className="text-sm text-primary font-medium">
                 {formatBalance(
-                  position?.lastEpoch?.totalBorrow?.label,
+                  position?.userData?.balance?.label,
                   defaultLocale,
                   4,
                   'standard',
@@ -189,7 +189,7 @@ export const SinglePoolPosition = ({ position }: SinglePoolPositionProps) => {
           <div className="hidden flex-col md:flex">
             <p className="text-sm text-primary font-medium">
               {formatBalance(
-                position?.lastEpoch?.totalBorrow?.label,
+                position?.userData?.balance?.label,
                 defaultLocale,
                 4,
                 'standard',
