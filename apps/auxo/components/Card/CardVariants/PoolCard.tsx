@@ -72,7 +72,7 @@ export const PoolCard = ({ pool }: { pool: userMergedPosition }) => {
                 value: (
                   <>
                     {formatBalance(
-                      pool?.lastActiveEpoch?.totalBorrow?.label,
+                      pool?.lastEpoch?.totalBorrow?.label,
                       defaultLocale,
                       2,
                       'standard',
@@ -85,8 +85,14 @@ export const PoolCard = ({ pool }: { pool: userMergedPosition }) => {
                 title: t('rewardsGenerated'),
                 value: (
                   <>
-                    {formatBalance(1000, defaultLocale, 2, 'standard')}{' '}
-                    {pool?.attributes?.token?.data?.attributes?.symbol}{' '}
+                    {pool?.lastEpoch?.forClaims?.label !== 0
+                      ? `${formatBalance(
+                          pool?.lastEpoch?.forClaims?.label,
+                          defaultLocale,
+                          2,
+                          'standard',
+                        )} ${pool?.attributes?.token?.data?.attributes?.symbol}`
+                      : t('N/A')}
                   </>
                 ),
               },
