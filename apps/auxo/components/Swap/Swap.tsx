@@ -557,7 +557,13 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                             deposit={withdrawDepositValue}
                             tokenConfig={tokenConfig}
                             disabled={
-                              !canWithdraw || withdrawDepositValue?.label === 0
+                              !canWithdraw ||
+                              withdrawDepositValue?.label === 0 ||
+                              compareBalances(
+                                withdrawDepositValue,
+                                'gt',
+                                withdrawableAmount,
+                              )
                             }
                             fee={withdrawalCalculation?.subtractedValue}
                             estimation={withdrawalCalculation?.value}
