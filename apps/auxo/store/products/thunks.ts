@@ -314,15 +314,16 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
       const results = promiseObject({
         // includes pending stakes
         stakingAmount: rollStakerContract.getProjectedNextEpochBalance(),
-        // currentWithdrawalAmount: PrvMerkleVerifierContract.budgetRemaining(
-        //   prvTree?.windowIndex,
-        // ),
+        currentWithdrawalAmount: PrvMerkleVerifierContract.budgetRemaining(
+          prvTree?.windowIndex,
+        ),
         decimals: xAUXOContract.decimals(),
         totalSupply: xAUXOContract.totalSupply(),
         fee: xAUXOContract.fee(),
       });
 
       const stakingData = await results;
+
       return {
         ['PRV']: {
           stakingAmount: toBalance(
@@ -334,15 +335,15 @@ export const thunkGetXAUXOStakingData = createAsyncThunk(
             stakingData.fee.mul(BigNumber.from(100)),
             stakingData.decimals,
           ),
-          // currentWithdrawalAmount: toBalance(
-          //   stakingData.currentWithdrawalAmount,
-          //   stakingData.decimals,
-          // ),
+          currentWithdrawalAmount: toBalance(
+            stakingData.currentWithdrawalAmount,
+            stakingData.decimals,
+          ),
         },
       };
     } catch (e) {
       console.error('thunkGetXAUXOStakingData', e);
-      return rejectWithValue('Error fetching PRV staking data');
+      rejectWithValue('Error fetching PRV staking data');
     }
   },
 );
@@ -1033,7 +1034,7 @@ export const thunkGetUserPrvWithdrawal = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      if (!account || isEmpty(claim))
+      if (!account || isEmpty(claim) || !prvMerkleVerifier)
         return rejectWithValue('Missing Account Details or Rewards');
       const { proof: merkleProof, ...rest } = claim;
       const amountToClaim = await prvMerkleVerifier.availableToWithdrawInClaim({

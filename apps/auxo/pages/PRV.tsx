@@ -29,6 +29,7 @@ import { usePRVMerkleVerifier } from '../hooks/useContracts';
 import { PrvWithdrawalMerkleTree } from '../types/merkleTree';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
 import { useConnectWallet } from '@web3-onboard/react';
+import { getPRVWithdrawalMerkleTree } from '../utils/getUserMerkleTree';
 
 const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 
@@ -90,7 +91,7 @@ export default function XAUXO({
         thunkGetUserPrvWithdrawal({
           account,
           claim: {
-            ...prvTree?.recipients[account],
+            ...getPRVWithdrawalMerkleTree(prvTree, account),
             account,
           },
           prvMerkleVerifier,
@@ -324,7 +325,7 @@ export default function XAUXO({
             stakingTokenConfig={stakingTokenConfig}
             tokenConfig={tokenConfig}
             claim={{
-              ...prvTree?.recipients?.[account],
+              ...getPRVWithdrawalMerkleTree(prvTree, account),
               account,
             }}
           />
