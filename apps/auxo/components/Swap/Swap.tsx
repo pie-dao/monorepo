@@ -129,7 +129,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
         <Tab.Group>
           <Tab.List className="flex gap-x-4 rounded-xl p-1">
-            {['convertStake', 'unstake', 'info', 'withdraw'].map((tab) => (
+            {['convertStake', 'unstake', 'info', 'redeem'].map((tab) => (
               <Tab
                 className={({ selected }) =>
                   classNames(
