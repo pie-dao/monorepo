@@ -42,7 +42,7 @@ const StakeSlider: React.FC<Props> = ({
       </div>
       <div className="flex items-center justify-between gap-x-4 w-full">
         <Slider.Root
-          className="relative flex items-center select-none touch-none w-[85%] h-6"
+          className="relative flex items-center select-none touch-none w-[65%] sm:w-[85%] h-6"
           defaultValue={[36]}
           max={36}
           min={minLock || 6}
@@ -57,7 +57,7 @@ const StakeSlider: React.FC<Props> = ({
           </Slider.Track>
           <Slider.Thumb className="block w-[20px] h-[20px] bg-secondary shadow-sm rounded-xl" />
         </Slider.Root>
-        <p className="text-primary font-bold text-sm w-[15%] shrink-0 text-right">
+        <p className="text-primary font-bold text-sm shrink-0 text-right">
           {commitmentValue} {t('months')}
         </p>
       </div>

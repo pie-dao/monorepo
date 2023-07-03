@@ -17,7 +17,7 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
       className="flex ml-auto pr-2"
       onClick={async () =>
         await addTokenToWallet(
-          Number(connectedChain?.id) ?? 1,
+          isNaN(Number(connectedChain?.id)) ? 1 : Number(connectedChain?.id),
           token,
           displayName,
         )

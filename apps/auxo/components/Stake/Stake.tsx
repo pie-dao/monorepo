@@ -309,16 +309,20 @@ const Stake: React.FC<Props> = ({
               <Tab.Panel className="h-full">
                 <ModalBox className="flex flex-col h-full gap-y-2">
                   <div className="flex flex-col items-center justify-between w-full divide-y">
-                    {addressList.map((el, index) => (
+                    {addressList?.map((el, index) => (
                       <div
                         key={index}
-                        className="grid grid-cols-2 gap-y py-2 items-center"
+                        className={classNames(
+                          'grid grid-cols-2 gap-y py-2 items-center',
+                          index === 0 && 'pt-0',
+                          index === addressList?.length - 1 && 'pb-0',
+                        )}
                       >
                         <p className="text-base text-primary font-medium">
                           {el.title}
                         </p>
                         <a
-                          className="text-secondary font-bold text-lg truncate"
+                          className="text-secondary font-bold text-base truncate"
                           href={`https://etherscan.io/address/${el.address}`}
                           target="_blank"
                           rel="noreferrer noopener"

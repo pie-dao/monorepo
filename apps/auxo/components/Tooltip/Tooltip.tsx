@@ -37,7 +37,6 @@ const Tooltip: React.FC<Props> = ({
         name: 'preventOverflow',
         options: {
           altAxis: true,
-          padding: 10,
         },
       },
       {

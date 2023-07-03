@@ -62,7 +62,7 @@ function DepositActions({
   };
 
   return (
-    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4 mt-auto">
+    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4 mt-4 xl:mt-auto">
       {account ? (
         <>
           <button

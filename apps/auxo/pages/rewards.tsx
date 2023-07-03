@@ -67,7 +67,7 @@ export default function Rewards() {
   return (
     <div className="flex flex-col">
       <section className="flex flex-wrap justify-between gap-4 text-xs md:text-inherit mt-6">
-        <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
+        <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap flex-wrap">
           <div className="flex flex-col py-1">
             {!ArvBalance ? (
               <>
@@ -84,7 +84,7 @@ export default function Rewards() {
                     'standard',
                   )}
                 </p>
-                <p className="flex text-base text-sub-dark font-medium gap-x-1">
+                <p className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('compactTokenBalance', { token: 'ARV' })}
                 </p>
               </>
@@ -108,7 +108,7 @@ export default function Rewards() {
                     )}
                   </span>
                 </p>
-                <p className="flex text-base text-sub-dark font-medium gap-x-1">
+                <p className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('compactStakedBalance', { token: 'PRV' })}
                 </p>
               </>
@@ -129,7 +129,7 @@ export default function Rewards() {
                   )}
                 </span>
               </p>
-              <div className="flex text-base text-sub-dark font-medium gap-x-1">
+              <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                 {t('lastMonthEarnings')}
                 <Tooltip>{t('lastMonthEarningsTooltip')}</Tooltip>
               </div>
@@ -148,7 +148,7 @@ export default function Rewards() {
                   )}
                 </span>
               </p>
-              <div className="flex text-base text-sub-dark font-medium gap-x-1">
+              <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                 {t('allTimeTotal')}
               </div>
             </>

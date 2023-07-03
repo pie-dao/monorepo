@@ -459,13 +459,13 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                     {addressList.map((el, index) => (
                       <div
                         key={index}
-                        className="grid grid-cols-2 gap-y py-2 items-center"
+                        className="grid grid-cols-2 gap-y py-1 items-center"
                       >
-                        <p className="text-base text-primary font-medium">
+                        <p className="text-sm text-primary font-medium">
                           {el.title}
                         </p>
                         <a
-                          className="text-secondary font-bold text-lg truncate"
+                          className="text-secondary font-bold text-base truncate"
                           href={`https://etherscan.io/address/${el.address}`}
                           target="_blank"
                           rel="noreferrer noopener"

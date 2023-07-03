@@ -119,7 +119,7 @@ export default function ARV({
     <>
       <div className="flex flex-col">
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap">
-          <div className="flex flex-wrap sm:flex-nowrap flex-1 items-center gap-2 sm:bg-gradient-primary sm:rounded-full sm:shadow-md self-center w-full xl:w-auto p-2 sm:px-3 sm:py-2">
+          <div className="flex flex-nowrap flex-1 items-center gap-2 bg-gradient-primary rounded-full shadow-md self-center w-full xl:w-auto p-2 px-3 py-2">
             <div className="flex flex-shrink-0">
               <Image
                 src={veAUXOicon}
@@ -130,7 +130,7 @@ export default function ARV({
               />
             </div>
             <h2
-              className="text-base lg:text-lg font-bold text-primary w-fit"
+              className="text-base lg:text-lg font-bold text-primary w-fit truncate"
               data-cy="product-name"
             >
               {t('ActiveRewardVault')}
@@ -172,7 +172,7 @@ export default function ARV({
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
         <section className="flex flex-wrap justify-between gap-4  text-sm md:text-inherit mt-6">
-          <div className="flex gap-x-4 items-center w-full sm:w-fit">
+          <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
                 <>
@@ -189,7 +189,7 @@ export default function ARV({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                     {t('totalStaked', { token: 'AUXO' })}
                     <Tooltip>{t('totalStakedArvTooltip')}</Tooltip>
                   </div>
@@ -217,20 +217,21 @@ export default function ARV({
           </div>
           <div className="flex gap-x-2 items-center w-full sm:w-fit">
             {/* <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
-              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
+              <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
+
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.avgAPR
                     ? 'N/A'
                     : formatAsPercent(0, defaultLocale)}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('lastMonthDistribution')}
                   <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
               </div>
             </div> */}
-            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
-              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
+            <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full">
+              <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.auxoAPR
                     ? 'N/A'
@@ -239,7 +240,7 @@ export default function ARV({
                         defaultLocale,
                       )}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('apr', { token: 'ARV' })}
                   <Tooltip>{t('aprTooltip', { token: 'ARV' })}</Tooltip>
                 </div>

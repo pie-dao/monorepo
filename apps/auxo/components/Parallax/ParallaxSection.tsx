@@ -25,7 +25,7 @@ const tokens = [
       link: '/ARV',
       external: false,
     },
-    bg: 'bg-secondary/30',
+    bg: 'bg-secondary/10',
   },
   {
     name: 'AUXO',
@@ -36,7 +36,7 @@ const tokens = [
       external: true,
       link: 'https://app.uniswap.org/#/swap?outputCurrency=0xff030228a046F640143Dab19be00009606C89B1d&inputCurrency=ETH',
     },
-    bg: 'bg-primary/30',
+    bg: 'bg-primary/10',
   },
   {
     name: 'PRV',
@@ -47,7 +47,7 @@ const tokens = [
       link: '/PRV',
       external: false,
     },
-    bg: 'bg-sub-dark/30',
+    bg: 'bg-sub-dark/10',
   },
 ];
 
@@ -86,7 +86,7 @@ const ParallaxSection: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               pointerEvents: 'none',
-              height: '100dvh',
+              height: 'calc(100dvh - 56px)',
             }}
           >
             <motion.div
@@ -139,8 +139,8 @@ const ParallaxSection: React.FC = () => {
               <Image src={cloudTwo} alt="cloud" priority />
             </motion.div>
           </div>
-          <div className="flex mt-16 md:mt-0 md:place-items-center">
-            <div className="flex h-[550px] w-[75%] md:w-[55%] mx-auto">
+          <div className="flex md:mt-0 md:place-items-center">
+            <div className="flex h-[550px] w-[75%] md:w-[55%] mx-auto -mt-32">
               <RiveComponent
                 layout={
                   new Layout({

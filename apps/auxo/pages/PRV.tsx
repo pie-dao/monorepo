@@ -124,7 +124,7 @@ export default function XAUXO({
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
         <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
-          <div className="flex gap-x-4 items-center w-full sm:w-fit">
+          <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
                 <>
@@ -141,7 +141,7 @@ export default function XAUXO({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                     {t('totalStaked', { token: 'PRV' })}
                     <Tooltip>{t('totalStakedPrvTooltip')}</Tooltip>
                   </div>
@@ -166,7 +166,7 @@ export default function XAUXO({
                       )}
                     </span>
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                     {t('total', { token: 'PRV' })}
                     <Tooltip>{t('totalTooltip', { token: 'PRV' })}</Tooltip>
                   </div>
@@ -176,20 +176,21 @@ export default function XAUXO({
           </div>
           <div className="flex gap-x-2 items-center w-full sm:w-fit">
             {/* <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
-              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
+              <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
+
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.avgAPR
                     ? 'N/A'
                     : formatAsPercent(0, defaultLocale)}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('lastMonthDistribution')}
                   <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
               </div>
             </div> */}
-            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
-              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
+            <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full">
+              <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.auxoAPR
                     ? 'N/A'
@@ -198,7 +199,7 @@ export default function XAUXO({
                         defaultLocale,
                       )}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('apr', { token: 'PRV' })}
                   <Tooltip>{t('aprTooltip', { token: 'PRV' })}</Tooltip>
                 </div>

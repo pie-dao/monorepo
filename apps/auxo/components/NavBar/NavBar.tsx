@@ -6,35 +6,20 @@ import AUXOLogotype from '../../public/images/AUXOLogotype.svg';
 import Link from 'next/link';
 import { TemplateIcon } from '@heroicons/react/outline';
 import useTranslation from 'next-translate/useTranslation';
+import MenuIcon from '../Header/MenuIcon';
+import { useServerHandoffComplete } from '../../hooks/useServerHandoffComplete';
 
 const sections = [
   { id: 'auxodao', title: 'AuxoDAO' },
   { id: 'lend', title: 'Lend' },
 ];
 
-function MenuIcon({ open, ...props }) {
-  return (
-    <svg
-      aria-hidden="true"
-      fill="none"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      viewBox="0 0 24 24"
-      {...props}
-    >
-      <path
-        d={open ? 'M17 7 7 17M7 7l10 10' : 'm15 16-3 3-3-3M15 8l-3-3-3 3'}
-      />
-    </svg>
-  );
-}
-
 export function NavBar() {
   const { t } = useTranslation();
   const navBarRef = useRef() as MutableRefObject<HTMLDivElement>;
   const [activeIndex, setActiveIndex] = useState(null);
   const mobileActiveIndex = activeIndex === null ? 0 : activeIndex;
+  const handOffCompleted = useServerHandoffComplete();
 
   useEffect(() => {
     function updateActiveIndex() {
@@ -72,6 +57,12 @@ export function NavBar() {
     };
   }, [activeIndex]);
 
+  const handleScrollToTop = () => {
+    if (handOffCompleted) {
+      window?.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   return (
     <div ref={navBarRef} className="sticky top-0 z-50">
       <Popover className="sm:hidden">
@@ -80,41 +71,41 @@ export function NavBar() {
             <div
               className={classNames(
                 'relative flex items-center py-3 px-4 gap-x-4',
-                !open &&
-                  'bg-white/95 shadow-sm [@supports(backdrop-filter:blur(0))]:bg-white/80 [@supports(backdrop-filter:blur(0))]:backdrop-blur',
+
+                'bg-white/95 shadow-sm [@supports(backdrop-filter:blur(0))]:bg-white/80 [@supports(backdrop-filter:blur(0))]:backdrop-blur',
               )}
             >
-              {!open && (
+              {
                 <div className="flex gap-x-2 items-center justify-between flex-shrink-0 flex-1">
-                  <Image src={AUXOLogotype} alt="AUXO" priority />
+                  <Image
+                    src={AUXOLogotype}
+                    alt="AUXO"
+                    priority
+                    onClick={handleScrollToTop}
+                    className="cursor-pointer"
+                  />
                   <GoToApp />
                 </div>
-              )}
+              }
               <Popover.Button
                 className={classNames(
-                  '-mr-1 flex h-8 w-8 items-center justify-center',
+                  '-mr-1 flex h-8 w-8 items-center justify-center focus:outline-none',
                   open && 'relative z-10 ml-auto',
                 )}
                 aria-label="Toggle navigation menu"
               >
-                <MenuIcon open={open} className="h-6 w-6 stroke-primary" />
+                <MenuIcon open={open} />
               </Popover.Button>
             </div>
-            <Popover.Panel className="absolute inset-x-0 top-0 bg-white/95 py-3.5 shadow-sm [@supports(backdrop-filter:blur(0))]:bg-white/80 [@supports(backdrop-filter:blur(0))]:backdrop-blur">
+            <Popover.Panel className="absolute inset-x-0 bg-gradient-primary m-3.5 shadow-md divide-y rounded-md">
               {sections.map((section, sectionIndex) => (
                 <Popover.Button
                   as={'a'}
                   key={section.id}
                   href={`#${section.id}`}
-                  className="flex items-center py-1.5 px-4"
+                  className="flex items-center py-1.5 mx-3"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="font-mono text-sm text-secondary"
-                  >
-                    {(sectionIndex + 1).toString().padStart(2, '0')}
-                  </span>
-                  <span className="ml-4 text-base font-medium text-primary">
+                  <span className="text-base font-medium text-primary">
                     {section.title}
                   </span>
                 </Popover.Button>
@@ -168,7 +159,7 @@ export const GoToApp = () => {
   const { t } = useTranslation();
   return (
     <Link passHref href="/ARV">
-      <button className="w-fit px-4 py-1 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:cursor-not-allowed disabled:opacity-70 flex gap-x-2 items-center font-medium">
+      <button className="w-fit px-4 py-2 text-base text-white bg-secondary rounded-full ring-inset ring-1 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:cursor-not-allowed disabled:opacity-70 flex gap-x-2 items-center font-medium">
         <TemplateIcon className="fill-current w-4 h-4" />
         {t('launchApp')}
       </button>

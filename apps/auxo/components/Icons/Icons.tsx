@@ -53,6 +53,20 @@ export const BanknotesIcon = () => (
   </svg>
 );
 
+export const TreasuryIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    className="w-6 h-6"
+  >
+    <path
+      fill="currentColor"
+      d="M10 3H4c-.55228 0-1 .44772-1 1v4c0 .55228.44772 1 1 1h6c.5523 0 1-.44772 1-1V4c0-.55228-.4477-1-1-1ZM9 7H5V5h4v2Zm1 4H4c-.55228 0-1 .4477-1 1v8c0 .5523.44772 1 1 1h6c.5523 0 1-.4477 1-1v-8c0-.5523-.4477-1-1-1Zm-1 8H5v-6h4v6Zm11-4h-6c-.5523 0-1 .4477-1 1v4c0 .5523.4477 1 1 1h6c.5523 0 1-.4477 1-1v-4c0-.5523-.4477-1-1-1Zm-1 4h-4v-2h4v2Zm1-16h-6c-.5523 0-1 .44772-1 1v8c0 .5523.4477 1 1 1h6c.5523 0 1-.4477 1-1V4c0-.55228-.4477-1-1-1Zm-1 8h-4V5h4v6Z"
+    />
+  </svg>
+);
+
 export const AuxoLogotype = () => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 71 18">
     <path

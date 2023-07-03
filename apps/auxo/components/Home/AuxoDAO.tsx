@@ -151,7 +151,7 @@ const AuxoDAO: React.FC = () => {
   return (
     <section
       id="auxodao"
-      className="scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:py-38"
+      className="scroll-mt-14 py-8 sm:scroll-mt-38 sm:py-20 lg:py-38"
     >
       <Container size="xl" className="flex flex-col">
         <h5 className="text-center text-secondary text-lg font-bold">
@@ -179,7 +179,7 @@ const AuxoDAO: React.FC = () => {
           {yieldFeatures.map((feature, index) => (
             <div
               key={index}
-              className="flex gap-y-4 relative isolate -ml-8 lg:ml-0"
+              className="flex gap-y-4 relative isolate -ml-5 lg:ml-0"
             >
               <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background shadow-md relative z-10 left-6 -top-2">
                 {feature.icon}
@@ -212,7 +212,7 @@ const AuxoDAO: React.FC = () => {
         </p>
       </Container> */}
       <LeftRightContainer features={features} />
-      <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-16 sm:scroll-mt-38 sm:py-20 lg:py-38 my-48">
+      <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-8 sm:scroll-mt-38 sm:py-20 lg:py-38 my-48">
         <div className="absolute inset-0 bg-primary opacity-70" />
         <Container
           size="xl"
@@ -236,8 +236,8 @@ const AuxoDAO: React.FC = () => {
               <p className="font-bold text-5xl">
                 + <AnimatedAmount value={3_000_000} />
               </p>
-              <p className="font-bold text-lg mt-5">{t('common:AUXO')}</p>
-              <p className="text-sm mt-2">{t('intrinsicValue')}</p>
+              <p className="font-bold text-3xl mt-1">{t('common:AUXO')}</p>
+              <p className="text-sm mt-4">{t('intrinsicValue')}</p>
             </div>
             {/* <div className="md:mt-8 flex flex-col items-center text-base">
               <p className="flex font-bold text-5xl bg-background/20 rounded-full h-24 w-24 place-items-center">

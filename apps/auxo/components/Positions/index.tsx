@@ -74,7 +74,7 @@ export default function PositionsTabs() {
             <Tab
               className={({ selected }) =>
                 classNames(
-                  'md:w-fit py-1 text-md font-medium leading-5 focus:outline-none relative text-center',
+                  'md:w-fit py-2 text-md font-medium leading-5 focus:outline-none relative text-center',
                   !selected && 'text-sub-light',
                   selected && 'text-secondary',
                 )
@@ -317,8 +317,8 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
             </div>
             {exposure?.id !== 7 && (
               <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
-                <p>{t('holding')}:</p>
-                <p>
+                <p className="text-primary font-bold">{t('holding')}:</p>
+                <p className="text-primary font-bold">
                   {formatBalance(principalAmount)}
                   <span className="text-sm text-sub-light">
                     {' '}
