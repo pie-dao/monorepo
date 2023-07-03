@@ -8,10 +8,17 @@ import {
   thunkGetXAUXOStakingData,
   thunkGetUserProductsData,
   thunkGetUserStakingData,
+  thunkGetUserPrvWithdrawal,
 } from '../../store/products/thunks';
 import { useAppDispatch } from '../../hooks';
 import classNames from '../../utils/classnames';
 import { ethereumProvider } from '../MultichainProvider/MultichainProvider';
+import PrvWithdrawalTree from '../../config/PrvWithdrawalTree.json';
+import { usePRVMerkleVerifier } from '../../hooks/useContracts';
+import { PrvWithdrawalMerkleTree } from '../../types/merkleTree';
+import { getPRVWithdrawalMerkleTree } from '../../utils/getUserMerkleTree';
+
+const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 import {
   thunkGetLendingData,
   thunkGetUserLendingData,
@@ -27,6 +34,7 @@ export default function Layout({ children }) {
 
   const [{ wallet }] = useConnectWallet();
   const account = wallet?.accounts[0]?.address;
+  const prvMerkleVerifier = usePRVMerkleVerifier();
 
   const updateOnBlock = useCallback(async () => {
     dispatch(thunkGetProductsData());
@@ -37,7 +45,19 @@ export default function Layout({ children }) {
     dispatch(thunkGetUserProductsData({ account, provider: wallet?.provider }));
     dispatch(thunkGetUserStakingData({ account, provider: wallet?.provider }));
     dispatch(thunkGetUserLendingData({ account, provider: wallet?.provider }));
-  }, [account, wallet?.provider, dispatch]);
+    if (prvTree && prvTree?.recipients && account && prvMerkleVerifier) {
+      dispatch(
+        thunkGetUserPrvWithdrawal({
+          account,
+          claim: {
+            ...getPRVWithdrawalMerkleTree(prvTree, account),
+            account,
+          },
+          prvMerkleVerifier,
+        }),
+      );
+    }
+  }, [dispatch, account, wallet?.provider, prvMerkleVerifier]);
 
   useEffect(() => {
     if (ethereumProvider) {

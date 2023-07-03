@@ -23,10 +23,6 @@ import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
 import { MAINNET_RPC } from '../utils/networks';
 import LendingModalManager from '../components/Modals/Lending/LendingModalManager';
 
-const wcV1InitOptions = {
-  connectFirstChainId: true,
-};
-
 const wcV2InitOptions = {
   version: 2 as const,
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
@@ -34,7 +30,7 @@ const wcV2InitOptions = {
 };
 
 const injected = injectedModule();
-const walletConnect = walletConnectModule(wcV1InitOptions || wcV2InitOptions);
+const walletConnect = walletConnectModule(wcV2InitOptions);
 
 const web3Onboard = init({
   wallets: [injected, walletConnect],
