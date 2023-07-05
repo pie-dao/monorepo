@@ -16,7 +16,7 @@ import { setClaim, setClaimStep } from '../../../store/rewards/rewards.slice';
 import { isEmpty } from 'lodash';
 import { useIsAutoCompoundEnabled } from '../../../hooks/useToken';
 import classNames from '../../../utils/classnames';
-import isValidDate from '../../../utils/isValidDate';
+import { sanitizeDate } from '../../../utils/date';
 
 const imageMap = {
   ARV: ARVImage,
@@ -105,11 +105,14 @@ export default function ListRewards() {
                 >
                   <div className="flex items-center">
                     <p className=" text-primary text-sm font-medium px-2 py-1">
-                      {reward?.month && isValidDate(reward.month)
-                        ? new Date(reward.month).toLocaleString(defaultLocale, {
-                            month: 'short',
-                            year: 'numeric',
-                          })
+                      {reward?.month
+                        ? new Date(sanitizeDate(reward.month)).toLocaleString(
+                            defaultLocale,
+                            {
+                              month: 'short',
+                              year: 'numeric',
+                            },
+                          )
                         : '---'}
                     </p>
                   </div>

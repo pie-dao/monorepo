@@ -35,6 +35,7 @@ import * as Label from '@radix-ui/react-label';
 import { formatBalance } from '../../utils/formatBalance';
 import { Month } from '../../store/rewards/rewards.types';
 import { isEmpty } from 'lodash';
+import { sanitizeDate } from '../../utils/date';
 
 type Reward = {
   source: 'PRV' | 'ARV';
@@ -81,7 +82,7 @@ const RewardsHistory = () => {
       .map(([key, value]: [string, Month[]]) => {
         return value?.map((item) => ({
           source: key as 'PRV' | 'ARV',
-          claimDate: new Date(item?.month),
+          claimDate: new Date(sanitizeDate(item?.month)),
           amount: item?.rewards?.label,
         }));
       })
