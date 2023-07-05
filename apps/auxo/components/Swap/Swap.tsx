@@ -49,7 +49,7 @@ type Props = {
 
 const tokenOptions = [
   {
-    title: <Trans i18nKey="stakeAndConvertToken" values={{ token: 'PRV' }} />,
+    title: <Trans i18nKey="convertAndStake" />,
     value: 'convertAndStake',
     image: <Image src={PRVIcon} alt={'PRV'} width={24} height={24} />,
   },
@@ -168,7 +168,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                                 <div className="flex flex-shrink-0">
                                   {tab.image}
                                 </div>
-                                <h2 className="text-base md:text-lg font-medium text-primary">
+                                <h2 className="text-xs md:text-lg font-medium text-primary">
                                   {tab.title}
                                 </h2>
                               </div>
@@ -203,7 +203,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                                     <div className="flex flex-shrink-0">
                                       {token.image}
                                     </div>
-                                    <h2 className="text-lg font-medium text-primary group-hover:text-secondary">
+                                    <h2 className="text-sm md:text-lg font-medium text-primary group-hover:text-secondary">
                                       {token.title}
                                     </h2>
                                   </div>
