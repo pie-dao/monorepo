@@ -95,7 +95,7 @@ const RewardsHistoryChart = () => {
         (reward) => reward?.month === month,
       )?.rewards?.label;
       return {
-        name: new Date(month).toLocaleString(defaultLocale, {
+        name: new Date(month + '-01').toLocaleString(defaultLocale, {
           month: 'short',
           year: 'numeric',
         }),

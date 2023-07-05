@@ -107,10 +107,13 @@ export default function ClaimRewards() {
           <div className="w-full flex flex-col gap-y-4 items-center mt-4">
             <p className="font-semibold text-primary text-base">
               {t('distributedOn', {
-                date: new Date(claim?.month).toLocaleDateString(defaultLocale, {
-                  month: 'short',
-                  year: 'numeric',
-                }),
+                date: new Date(claim?.month + '-01').toLocaleDateString(
+                  defaultLocale,
+                  {
+                    month: 'short',
+                    year: 'numeric',
+                  },
+                ),
               })}
             </p>
             {!claimRewardLoading ? (

@@ -81,7 +81,7 @@ const RewardsHistory = () => {
       .map(([key, value]: [string, Month[]]) => {
         return value?.map((item) => ({
           source: key as 'PRV' | 'ARV',
-          claimDate: new Date(item?.month),
+          claimDate: new Date(item?.month + '-01'),
           amount: item?.rewards?.label,
         }));
       })

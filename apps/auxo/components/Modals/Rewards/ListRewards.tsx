@@ -104,10 +104,15 @@ export default function ListRewards() {
                 >
                   <div className="flex items-center">
                     <p className=" text-primary text-sm font-medium px-2 py-1">
-                      {new Date(reward.month).toLocaleString(defaultLocale, {
-                        month: 'short',
-                        year: 'numeric',
-                      })}
+                      {reward?.month
+                        ? new Date(reward.month + '-01').toLocaleString(
+                            defaultLocale,
+                            {
+                              month: 'short',
+                              year: 'numeric',
+                            },
+                          )
+                        : '---'}
                     </p>
                   </div>
                   <div className="flex items-center gap-x-2">
