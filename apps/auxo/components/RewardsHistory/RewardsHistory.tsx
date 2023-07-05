@@ -426,6 +426,9 @@ const RewardsHistory = () => {
                                     {t('claimed')}
                                   </span>
                                   <span className="text-primary text-lg lg:text-sm font-semibold">
+                                    {cell.getValue() as string}
+                                    {JSON.stringify(cell.getValue())}
+                                    {defaultLocale}
                                     {new Date(
                                       cell.getValue() as string,
                                     ).toLocaleDateString(defaultLocale, {
