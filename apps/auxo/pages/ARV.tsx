@@ -269,7 +269,7 @@ export default function ARV({
                       />
                     </svg>
                   </div>
-                  <div>
+                  <div className="flex justify-center w-full flex-col text-center">
                     <Trans
                       i18nKey="arvSlide1Title"
                       components={{
