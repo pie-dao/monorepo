@@ -158,8 +158,8 @@ const Stake: React.FC<Props> = ({
     <div className="bg-gradient-to-r from-white via-white to-background">
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/arv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full overflow-hidden">
         <Tab.Group defaultIndex={selectedIndex} onChange={setSelectedIndex}>
-          <div className="flex justify-between items-center gap-x-4">
-            <Tab.List className="flex gap-x-4 rounded-xl p-1">
+          <div className="flex justify-between items-center gap-x-4 mb-2">
+            <Tab.List className="flex gap-x-4 rounded-xl p-1 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
               <Tab
                 className={({ selected }) =>
                   classNames(
@@ -222,7 +222,7 @@ const Stake: React.FC<Props> = ({
               target="_blank"
               href="https://app.uniswap.org/#/swap?outputCurrency=0xff030228a046F640143Dab19be00009606C89B1d&inputCurrency=ETH"
             >
-              <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
+              <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
                 {t('getAUXO')}
               </button>
             </a>
@@ -337,16 +337,20 @@ const Stake: React.FC<Props> = ({
               <Tab.Panel className="h-full">
                 <ModalBox className="flex flex-col h-full gap-y-2">
                   <div className="flex flex-col items-center justify-between w-full divide-y">
-                    {addressList.map((el, index) => (
+                    {addressList?.map((el, index) => (
                       <div
                         key={index}
-                        className="grid grid-cols-2 gap-y py-2 items-center"
+                        className={classNames(
+                          'grid grid-cols-2 gap-y py-2 items-center w-full',
+                          index === 0 && 'pt-0',
+                          index === addressList?.length - 1 && 'pb-0',
+                        )}
                       >
                         <p className="text-base text-primary font-medium">
                           {el.title}
                         </p>
                         <a
-                          className="text-secondary font-bold text-lg truncate"
+                          className="text-primary hover:text-secondary font-bold text-base truncate"
                           href={`https://etherscan.io/address/${el.address}`}
                           target="_blank"
                           rel="noreferrer noopener"
@@ -390,7 +394,7 @@ const Stake: React.FC<Props> = ({
                           <div className="flex items-center justify-center mt-4 w-full">
                             <button
                               onClick={boostToMax}
-                              className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+                              className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                             >
                               {t('restake')}
                             </button>

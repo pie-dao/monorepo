@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import classNames from '../../utils/classnames';
 
 export type ContainerProps = {
@@ -17,7 +17,7 @@ const styles = {
   wide: 'mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:max-w-[calc(1536px-2rem)]',
 };
 
-const Container: React.FC<ContainerProps> = ({
+const Container: React.FC<ContainerProps & HTMLAttributes<HTMLDivElement>> = ({
   size = 'sm',
   className,
   children,

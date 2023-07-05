@@ -69,12 +69,12 @@ export default function PositionsTabs() {
   return (
     <section className="w-full pb-16 mt-8">
       <Tab.Group>
-        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-2 grid grid-cols-2 w-full mb-4">
+        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-4 grid grid-cols-2 w-full mb-4 ml-[10px]">
           {['Treasury positions', 'Strategy details'].map((title) => (
             <Tab
               className={({ selected }) =>
                 classNames(
-                  'md:w-fit py-1 text-md font-medium leading-5 focus:outline-none relative text-center',
+                  'md:w-fit py-2 text-md font-medium leading-5 focus:outline-none relative text-center',
                   !selected && 'text-sub-light',
                   selected && 'text-secondary',
                 )
@@ -99,7 +99,7 @@ export default function PositionsTabs() {
             <div className="w-full flex flex-col space-between">
               <div className="hidden items-center mb-2 lg:flex">
                 <div className="min-w-0 flex-1 flex items-start px-3">
-                  <div className="flex-shrink-0 w-[40px]"></div>
+                  <div className="flex-shrink-0 w-[35px]"></div>
                   <div className="min-w-0 flex-1 px-4 sm:px-0 sm:grid sm:grid-cols-7 sm:gap-4 ">
                     <div className="flex flex-col justify-between col-span-1 -ml-[55px] md:ml-0">
                       <p className="text-xs">{t('position')}</p>
@@ -111,7 +111,7 @@ export default function PositionsTabs() {
                 </div>
                 <div className="h-5 w-5"></div>
               </div>
-              <div className="flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-6">
                 {!isEmpty(exposures)
                   ? exposures?.data?.map((item) => (
                       <SingleTokenPosition key={`${item.id}`} exposure={item} />
@@ -182,7 +182,7 @@ export default function PositionsTabs() {
                                     open: { opacity: 1, y: 0 },
                                   }}
                                   transition={{ duration: 0.3 }}
-                                  className="py-2 space-y-1 border-t border-customBorder mt-2"
+                                  className="pt-1 space-y-1 border-t border-customBorder mt-2"
                                 >
                                   <p className="text-primary text-base">
                                     {item?.attributes?.Description}
@@ -250,16 +250,16 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
       {({ open }) => (
         <>
           <Disclosure.Button as="div" className="cursor-pointer">
-            <div className="flex items-center mb-2">
+            <div className="flex items-center">
               <div className="min-w-0 flex-1 flex items-center">
                 <div className="flex flex-shrink-0 self-start">
                   {exposure?.attributes?.Icon?.data?.attributes?.url ? (
-                    <div className="flex flex-shrink-0 self-start">
+                    <div className="flex flex-shrink-0 self-start rounded-full shadow-md">
                       <Image
                         src={`${exposure?.attributes?.Icon?.data?.attributes?.url}`}
                         alt={exposure?.attributes?.Title}
-                        height={36}
-                        width={36}
+                        height={28}
+                        width={28}
                       />
                     </div>
                   ) : null}
@@ -317,8 +317,8 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
             </div>
             {exposure?.id !== 7 && (
               <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
-                <p>{t('holding')}:</p>
-                <p>
+                <p className="text-primary font-bold">{t('holding')}:</p>
+                <p className="text-primary font-bold">
                   {formatBalance(principalAmount)}
                   <span className="text-sm text-sub-light">
                     {' '}
@@ -434,11 +434,11 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 {position?.attributes?.protocol?.data
                                   ?.attributes?.icon?.data?.[0]?.attributes
                                   ?.url ? (
-                                  <div className="flex flex-shrink-0">
+                                  <div className="p-1 w-8 h-8 rounded-full bg-white">
                                     <Image
                                       src={`${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
-                                      width={24}
-                                      height={24}
+                                      width={28}
+                                      height={28}
                                       alt={
                                         position?.attributes?.protocol?.data
                                           ?.attributes?.icon?.data?.[0]
@@ -481,7 +481,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 </p>
                               </div>
                             </div>
-                            <MobileAccordionContent
+                            {/* <MobileAccordionContent
                               title={'value'}
                               content={formatBalanceCurrency(
                                 position?.attributes?.principal_amount,
@@ -489,7 +489,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 'USD',
                                 true,
                               )}
-                            />
+                            /> */}
                             <MobileAccordionContent
                               title={'strategy'}
                               content={position?.attributes?.strategies?.data
@@ -514,16 +514,20 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                   (reward) =>
                                     reward?.attributes?.icon?.data?.attributes
                                       ?.url && (
-                                      <Image
+                                      <div
+                                        className="p-1 w-8 h-8 rounded-full bg-white"
                                         key={reward?.id}
-                                        src={`${reward?.attributes?.icon?.data?.attributes?.url}`}
-                                        width={24}
-                                        height={24}
-                                        alt={
-                                          reward?.attributes?.icon?.data
-                                            ?.attributes?.name
-                                        }
-                                      />
+                                      >
+                                        <Image
+                                          src={`${reward?.attributes?.icon?.data?.attributes?.url}`}
+                                          width={28}
+                                          height={28}
+                                          alt={
+                                            reward?.attributes?.icon?.data
+                                              ?.attributes?.name
+                                          }
+                                        />
+                                      </div>
                                     ),
                                 )}
                               </div>

@@ -12,7 +12,7 @@ const SocialIcons = [
 const Footer: React.FC = () => (
   <footer>
     <Container
-      size="lg"
+      size="xl"
       className="flex justify-between py-2 flex-wrap gap-x-12 gap-y-2"
     >
       <div className="flex w-full justify-center md:justify-end">

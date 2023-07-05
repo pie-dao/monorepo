@@ -77,7 +77,7 @@ const Carousel: FC<Props> = ({ children, ...options }: Props) => {
         onNext={() => emblaApi?.scrollNext()}
         position="right"
       />
-      <div className="flex gap-x-2 bottom-0 absolute w-full max-w-[90%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center">
+      <div className="flex gap-x-2 bottom-0 absolute w-full max-w-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 items-center">
         <button
           className="group group-hover:shadow-lg bg-secondary rounded-full"
           onClick={() => {

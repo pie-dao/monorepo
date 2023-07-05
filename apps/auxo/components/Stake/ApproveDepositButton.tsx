@@ -62,13 +62,13 @@ function DepositActions({
   };
 
   return (
-    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4 mt-auto">
+    <div className="flex justify-center items-center gap-x-4 flex-wrap gap-y-4 mt-4 xl:mt-auto">
       {account ? (
         <>
           <button
             onClick={openModal}
             disabled={disabledStake}
-            className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
             {t('stakeAUXO')}
           </button>
@@ -76,7 +76,7 @@ function DepositActions({
       ) : (
         <button
           onClick={() => connect()}
-          className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+          className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
         >
           {t('connectWallet')}
         </button>

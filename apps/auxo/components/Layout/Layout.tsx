@@ -72,14 +72,14 @@ export default function Layout({ children }) {
         <Navigation open={open} setOpen={setOpen} />
         <div
           className={classNames(
-            'flex-1 flex flex-row w-full min-[1920px]:container min-[1920px]:mx-auto transition-all duration-300 ease-in-out sm:ml-8',
+            'flex-1 flex flex-row w-full min-[1920px]:container min-[1920px]:mx-auto transition-all duration-300 ease-in-out',
             open
               ? 'lg:ml-48 min-[1920px]:ml-auto'
-              : 'lg:ml-24 min-[1920px]:ml-auto',
+              : 'lg:ml-[6.75rem] min-[1920px]:ml-auto',
           )}
         >
           <div className="flex flex-col flex-1">
-            <main className="flex-1  px-7 w-full pb-10 min-h-full">
+            <main className="flex-1 px-2 lg:px-6 w-full pb-10 min-h-full">
               <Header title={children.props.title} icon={children.props.icon} />
               {children}
             </main>

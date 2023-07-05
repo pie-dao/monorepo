@@ -30,7 +30,7 @@ export default function Header({ title, icon }: HeaderProps) {
               />
             </div>
           )}
-          <h1 className="hidden sm:flex text-2xl font-semibold text-primary w-auto drop-shadow-md">
+          <h1 className="hidden sm:flex text-2xl font-semibold text-primary w-auto drop-shadow-md ml-12 lg:ml-0 ">
             {t(title)}
           </h1>
           <div className="ml-auto flex gap-x-3 items-center">

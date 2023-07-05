@@ -1,6 +1,6 @@
 import { max } from 'd3-array';
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import {
   BarChart,
@@ -111,7 +111,7 @@ const RewardsHistoryChart = () => {
     <div className="mt-8">
       <Tab.Group>
         <div className="flex justify-between items-center gap-x-4">
-          <Tab.List className="flex gap-x-4 rounded-xl p-1">
+          <Tab.List className="flex gap-x-4 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full ml-[10px]">
             {['earningsOverTime'].map((tab) => {
               return (
                 <Tab
@@ -138,9 +138,9 @@ const RewardsHistoryChart = () => {
           </Tab.List>
         </div>
         <Tab.Panels className="mt-4">
-          <Tab.Panel>
+          <Tab.Panel className="w-full h-full">
             <div className="flex w-full h-[500px]">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width={'99%'} height="100%">
                 <BarChart
                   width={500}
                   height={300}
@@ -173,7 +173,14 @@ const RewardsHistoryChart = () => {
                     }}
                   />
                   <Tooltip cursor={false} content={<CustomTooltip />} />
-                  <Legend />
+                  <Legend
+                    wrapperStyle={{
+                      marginTop: 10,
+                      left: 40,
+                      right: 0,
+                      bottom: 0,
+                    }}
+                  />
                   <Bar
                     dataKey="ARV"
                     stackId="a"
