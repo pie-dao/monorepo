@@ -8,6 +8,17 @@ const SocialIcons = [
   { path: github, href: 'https://github.com/AuxoDAO' },
 ];
 
+const variants = {
+  open: {
+    opacity: 1,
+    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+  },
+  closed: {
+    opacity: [0, 1],
+    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+  },
+};
+
 export default function Socials({ open }: { open: boolean }) {
   return (
     <div className="block w-full mt-auto">
@@ -16,14 +27,15 @@ export default function Socials({ open }: { open: boolean }) {
           'flex items-center justify-between mx-2 py-2 border-t border-custom-border px-2 gap-y-2',
           open ? 'flex-row' : 'flex-col',
         )}
-        layout
+        variants={variants}
+        initial="closed"
+        animate={open ? 'open' : 'closed'}
       >
         {SocialIcons.map(({ path, href }) => (
           <motion.li
             key={href}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            layout
           >
             <a href={href} target="_blank" rel="noopener noreferrer">
               {path && (
@@ -39,7 +51,7 @@ export default function Socials({ open }: { open: boolean }) {
             </a>
           </motion.li>
         ))}
-        <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} layout>
+        <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <a
             href={'https://mirror.xyz/auxo.eth'}
             target="_blank"

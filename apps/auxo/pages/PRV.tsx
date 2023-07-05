@@ -209,7 +209,7 @@ export default function XAUXO({
         </section>
         <section className="mt-6">
           <TokenCarousel>
-            <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
+            <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden shadow-sm items-start w-full font-medium transition-all mx-auto bg-center bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_1.png')] bg-cover h-full relative">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full flex flex-col place-items-center">
                   <div className="flex flex-shrink-0 mb-12">
@@ -246,71 +246,79 @@ export default function XAUXO({
                 </div>
               </div>
             </div>
-            <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
+            <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_1.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[90%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide2Title')}
                   </h2>
-                  <p className="font-medium text-base text-white">
+                  <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide2Description')}
                   </p>
                   <div className="flex gap-x-6 gap-y-2 flex-wrap">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('votingNotRequired')}</span>
                     </div>
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('earningTreasuryYield')}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
+            <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden  relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_2.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[90%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide3Title')}
                   </h2>
-                  <p className="font-medium text-base text-white">
+                  <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide3Description1')}
                   </p>
-                  <p className="font-medium text-base text-white">
+                  <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide3Description2')}
                   </p>
                   <div className="flex gap-x-6 gap-y-2 flex-wrap">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('unstakeAnytime')}</span>
                     </div>
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('stakeAtLeastOneEpoch')}</span>
                     </div>
                   </div>

@@ -22,7 +22,7 @@ import AddToWallet from '../components/AddToWallet/AddToWallet';
 import { AlphaBanner } from '../components/AlphaBanner/AlphaBanner';
 import { wrapper } from '../store';
 
-export default function Treasury(): ReactElement {
+export default function Treasury({ title }): ReactElement {
   const { defaultCurrency, defaultLocale } = useAppSelector(
     (state) => state.preferences,
   );
@@ -44,8 +44,10 @@ export default function Treasury(): ReactElement {
   return (
     <>
       <div className="flex flex-col">
+        <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md">
+          {t(title)}
+        </h2>
         <AlphaBanner />
-
         <section className="flex flex-col xl:flex-row w-full gap-4 flex-wrap ">
           <div className="flex flex-nowrap flex-1 items-center gap-2 bg-gradient-primary rounded-full shadow-md self-center w-full xl:w-auto p-2 px-3 py-2">
             <Image src={AuxoIcon} alt={'Auxo Icon'} width={32} height={32} />

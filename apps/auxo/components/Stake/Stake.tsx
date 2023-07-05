@@ -130,8 +130,8 @@ const Stake: React.FC<Props> = ({
     <div className="bg-gradient-to-r from-white via-white to-background">
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/arv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 h-full overflow-hidden">
         <Tab.Group defaultIndex={selectedIndex} onChange={setSelectedIndex}>
-          <div className="flex justify-between items-center gap-x-4">
-            <Tab.List className="flex gap-x-4 rounded-xl p-1">
+          <div className="flex justify-between items-center gap-x-4 mb-2">
+            <Tab.List className="flex gap-x-4 rounded-xl p-1 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
               <Tab
                 className={({ selected }) =>
                   classNames(

@@ -42,28 +42,7 @@ type Reward = {
   amount: number;
 };
 
-const sampleData: Reward[] = [
-  {
-    source: 'PRV',
-    claimDate: new Date('2021-09-01'),
-    amount: 100,
-  },
-  {
-    source: 'PRV',
-    claimDate: new Date('2021-10-02'),
-    amount: 200,
-  },
-  {
-    source: 'ARV',
-    claimDate: new Date('2021-10-02'),
-    amount: 300,
-  },
-  {
-    source: 'ARV',
-    claimDate: new Date('2021-11-02'),
-    amount: 400,
-  },
-];
+const checkboxes = ['ARV', 'PRV'];
 
 const columnHelper = createColumnHelper<Reward>();
 
@@ -126,11 +105,7 @@ const RewardsHistory = () => {
                 />
               </div>
               <p className="text-primary text-lg font-medium flex gap-x-2">
-                {t(
-                  info.getValue() === 'ARV'
-                    ? 'ActiveRewardVault'
-                    : 'PassiveRewardVault',
-                )}
+                {t(info.getValue())}
               </p>
             </div>
           );
@@ -212,7 +187,7 @@ const RewardsHistory = () => {
     <div className="mt-4">
       <Tab.Group>
         <div className="flex justify-between items-center gap-x-4">
-          <Tab.List className="flex gap-x-4 rounded-xl p-1">
+          <Tab.List className="flex gap-x-4 rounded-xl p-1 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
             {['claimedHistory'].map((tab) => {
               return (
                 <Tab
@@ -241,89 +216,83 @@ const RewardsHistory = () => {
         <Tab.Panels className="mt-4 h-full">
           <Tab.Panel>
             <div className="w-full flex flex-col shadow-sm rounded-lg bg-gradient-primary overflow-hidden">
-              <div className="items-center justify-between w-full px-4 py-2 flex">
-                <div className="flex items-center gap-x-2">
-                  <h3 className="text-primary text-lg font-semibold flex gap-x-2 items-center">
+              <div className="lg:items-center justify-between w-full px-4 py-2 flex flex-col lg:flex-row gap-3">
+                <div className="flex justify-between gap-x-2 w-full items-center">
+                  <h3 className="text-primary text-base font-semibold flex gap-x-2 items-center">
                     {t('yourRewardsHistory')}
                   </h3>
+                  <Tooltip
+                    className="block lg:hidden"
+                    icon={
+                      <Image
+                        src={ThreeDots}
+                        width={18}
+                        height={18}
+                        priority
+                        alt="three dots"
+                      />
+                    }
+                  >
+                    <div className="flex bg-white rounded-md">
+                      <button
+                        className="flex items-center gap-x-2"
+                        onClick={downloadCSV}
+                      >
+                        <CloudDownloadIcon className="w-4 h-4" />
+
+                        <span className="text-primary font-medium text-sm">
+                          {t('downloadCSV')}
+                        </span>
+                      </button>
+                    </div>
+                  </Tooltip>
                 </div>
                 <div className="flex items-center gap-x-5">
                   <div className="flex gap-x-4 items-center">
                     <p className="text-sm font-primary font-medium">
                       {t('show')}
                     </p>
-                    <div className="flex items-center w-full">
-                      <Checkbox.Root
-                        id="ARV"
-                        value={'ARV'}
-                        defaultChecked
-                        disabled={
-                          filterTags.length === 1 && filterTags[0] === 'PRV'
-                        }
-                        onCheckedChange={(state) => {
-                          !state
-                            ? setFilterTags([...filterTags, 'ARV'])
-                            : setFilterTags(
-                                filterTags.filter(
-                                  (filterTag) => filterTag !== 'ARV',
-                                ),
-                              );
-                        }}
-                        className={classNames(
-                          'flex h-4 w-4 items-center justify-center rounded-sm pointer',
-                          'radix-state-checked:bg-secondary radix-state-unchecked:bg-light-gray ring-2 ring-offset-2 ring-secondary',
-                          'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
-                          'disabled:opacity-50 disabled:cursor-not-allowed',
-                        )}
-                      >
-                        <Checkbox.Indicator>
-                          <CheckIcon className="h-4 w-4 self-center text-white" />
-                        </Checkbox.Indicator>
-                      </Checkbox.Root>
-                      <Label.Label
-                        htmlFor="ARV"
-                        className="ml-3 select-none text-sm font-medium text-primary cursor-pointer"
-                      >
-                        {t('ARV')}
-                      </Label.Label>
-                    </div>
-                    <div className="flex items-center w-full">
-                      <Checkbox.Root
-                        id="PRV"
-                        value={'PRV'}
-                        defaultChecked
-                        disabled={
-                          filterTags.length === 1 && filterTags[0] === 'ARV'
-                        }
-                        onCheckedChange={(state) => {
-                          !state
-                            ? setFilterTags([...filterTags, 'PRV'])
-                            : setFilterTags(
-                                filterTags.filter(
-                                  (filterTag) => filterTag !== 'PRV',
-                                ),
-                              );
-                        }}
-                        className={classNames(
-                          'flex h-4 w-4 items-center justify-center rounded-sm pointer',
-                          'radix-state-checked:bg-secondary radix-state-unchecked:bg-light-gray ring-2 ring-offset-2 ring-secondary',
-                          'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
-                          'disabled:opacity-50 disabled:cursor-not-allowed',
-                        )}
-                      >
-                        <Checkbox.Indicator>
-                          <CheckIcon className="h-4 w-4 self-center text-white" />
-                        </Checkbox.Indicator>
-                      </Checkbox.Root>
-                      <Label.Label
-                        htmlFor="PRV"
-                        className="ml-3 select-none text-sm font-medium text-primary cursor-pointer"
-                      >
-                        {t('PRV')}
-                      </Label.Label>
-                    </div>
+                    {checkboxes.map((checkbox) => (
+                      <div className="flex items-center w-full" key={checkbox}>
+                        <Checkbox.Root
+                          id={checkbox}
+                          value={checkbox}
+                          defaultChecked
+                          disabled={
+                            filterTags.length === 1 &&
+                            filterTags[0] !== checkbox
+                          }
+                          onCheckedChange={(state) => {
+                            !state
+                              ? setFilterTags([...filterTags, checkbox])
+                              : setFilterTags(
+                                  filterTags.filter(
+                                    (filterTag) => filterTag !== checkbox,
+                                  ),
+                                );
+                          }}
+                          className={classNames(
+                            'flex h-4 w-4 items-center justify-center rounded-sm pointer',
+                            'radix-state-checked:bg-secondary radix-state-unchecked:bg-sub-dark ring-offset-2 ring-secondary',
+                            'focus:outline-none focus-visible:ring focus-visible:ring-opacity-75',
+                            'disabled:opacity-50 disabled:cursor-not-allowed',
+                          )}
+                        >
+                          <Checkbox.Indicator>
+                            <CheckIcon className="h-4 w-4 self-center text-white" />
+                          </Checkbox.Indicator>
+                        </Checkbox.Root>
+                        <Label.Label
+                          htmlFor={checkbox}
+                          className="ml-3 select-none text-sm font-medium text-primary cursor-pointer"
+                        >
+                          {t(checkbox)}
+                        </Label.Label>
+                      </div>
+                    ))}
                   </div>
                   <Tooltip
+                    className="hidden lg:block"
                     icon={
                       <Image
                         src={ThreeDots}
@@ -432,7 +401,7 @@ const RewardsHistory = () => {
                     return (
                       <div
                         key={row.id}
-                        className="min-w-0 flex-1 px-2 flex sm:gap-4 items-center justify-between lg:justify-start lg:grid lg:grid-cols-8 w-full bg-sidebar my-2 py-2 rounded-md gap-x-4"
+                        className="min-w-0 flex-1 flex-wrap flex flex-row gap-4 justify-between lg:justify-start lg:grid lg:grid-cols-8 w-full bg-sidebar my-2 p-2 rounded-lg gap-x-4"
                       >
                         {row.getVisibleCells().map((cell) => {
                           switch (cell.column.id) {
@@ -440,8 +409,13 @@ const RewardsHistory = () => {
                               return (
                                 <div
                                   key={cell.id}
-                                  className="flex flex-col justify-between col-span-3"
+                                  className="flex w-fit flex-col justify-between col-span-3 order-2 lg:order-none gap-x-1 gap-y-2"
                                 >
+                                  <div className="flex lg:hidden">
+                                    <span className="text-sub-dark text-xs">
+                                      {t('rewardsSource')}
+                                    </span>
+                                  </div>
                                   <span className="text-primary text-sm font-medium">
                                     {flexRender(
                                       cell.column.columnDef.cell,
@@ -454,9 +428,12 @@ const RewardsHistory = () => {
                               return (
                                 <div
                                   key={cell.id}
-                                  className="flex flex-col justify-center col-span-3 "
+                                  className="flex w-full lg:flex-col justify-start lg:justify-center col-span-3 order-1 lg:order-none gap-x-1"
                                 >
-                                  <span className="text-primary text-sm font-bold">
+                                  <span className="flex lg:hidden text-primary text-lg font-semibold">
+                                    {t('claimed')}
+                                  </span>
+                                  <span className="text-primary text-lg lg:text-sm font-semibold">
                                     {flexRender(
                                       cell.column.columnDef.cell,
                                       cell.getContext(),
@@ -468,26 +445,33 @@ const RewardsHistory = () => {
                               return (
                                 <div
                                   key={cell.id}
-                                  className="flex col-span-2 gap-x-2 justify-end text-right items-center"
+                                  className="flex flex-col w-fit lg:w-full col-span-2 text-right items-end order-2 lg:order-none gap-y-2"
                                 >
-                                  <div className="flex flex-shrink-0">
-                                    <Image
-                                      src={weth}
-                                      alt="ethereum"
-                                      width={24}
-                                      height={24}
-                                      priority
-                                    />
+                                  <div className="flex lg:hidden">
+                                    <span className="text-sub-dark text-xs">
+                                      {t('rewardsAmount')}
+                                    </span>
                                   </div>
-                                  <p className=" text-primary font-bold text-sm">
-                                    {t('WETHAmount', {
-                                      amountLabel: formatBalance(
-                                        cell.getValue() as number,
-                                        defaultLocale,
-                                        4,
-                                      ),
-                                    })}
-                                  </p>
+                                  <div className="flex items-center gap-x-2 w-full justify-end">
+                                    <div className="hidden lg:flex flex-shrink-0">
+                                      <Image
+                                        src={weth}
+                                        alt="ethereum"
+                                        width={24}
+                                        height={24}
+                                        priority
+                                      />
+                                    </div>
+                                    <p className="text-primary text-lg lg:text-sm font-semibold">
+                                      {t('WETHAmount', {
+                                        amountLabel: formatBalance(
+                                          cell.getValue() as number,
+                                          defaultLocale,
+                                          4,
+                                        ),
+                                      })}
+                                    </p>
+                                  </div>
                                 </div>
                               );
                             default:

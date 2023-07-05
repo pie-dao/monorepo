@@ -115,7 +115,7 @@ export function TreasuryTabs(
                       <h3 className="text-base text-primary font-medium">
                         {t('multisigAddresses')}
                       </h3>
-                      <dl className="ml-4 grid grid-cols-1 gap-3 sm:grid-cols-2 space-y-4 mt-2">
+                      <dl className="ml-4 flex flex-col space-y-4 mt-2">
                         {!isEmpty(MultisigAddresses?.multisigs?.treasury)
                           ? Object.entries(
                               MultisigAddresses?.multisigs?.treasury,

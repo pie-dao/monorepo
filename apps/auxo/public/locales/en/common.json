@@ -389,5 +389,8 @@
   "stopAutocompoundingDescription": "From now on you will not autocompound your rewards anymore and you will be able to claim your rewards in wETH again",
   "pendingTransaction": "Pending transaction",
   "autocompoundActiveFor": "Autocompound active for ${token}",
-  "N/A": "N/A"
+  "N/A": "N/A",
+  "claimed": "Claimed:",
+  "rewardsSource": "Rewards source",
+  "rewardsAmount": "Rewards amount"
 }

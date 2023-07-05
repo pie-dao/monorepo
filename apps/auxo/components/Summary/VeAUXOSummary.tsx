@@ -77,7 +77,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
   );
 
   const votingPowerValue = useMemo(() => {
-    if (delegator?.toLowerCase() === account?.toLowerCase()) {
+    if (delegator?.toLowerCase() === account?.toLowerCase() && account) {
       return formatAsPercent(votingPower?.label, defaultLocale, 2);
     }
     if (delegator?.toLowerCase() !== account?.toLowerCase()) {
@@ -105,7 +105,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           <>
             {wallet?.provider
               ? formatBalance(stakedAuxo?.label, defaultLocale, 2, 'standard')
-              : null}{' '}
+              : '0'}{' '}
             AUXO
           </>
         ),
@@ -122,7 +122,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
                   2,
                   'standard',
                 )
-              : null}{' '}
+              : '0'}{' '}
             ARV
           </>
         ),
@@ -184,20 +184,22 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
           className="group-hover:text-underline"
         />
       )}
-      {summaryData.map(({ icon, title, value }, index) => (
-        <div
-          className="bg-sidebar flex items-center gap-x-2 rounded-lg shadow-card self-center w-full p-2"
-          key={index}
-        >
-          <dt className="text-base text-primary font-medium flex items-center gap-x-2">
-            {icon && icon}
-            {title}
-          </dt>
-          <dd className="flex ml-auto font-semibold text-base text-primary">
-            {value}
-          </dd>
-        </div>
-      ))}
+      <div className="flex flex-col bg-sidebar lg:bg-transparent px-3 lg:px-0 lg:py-0 py-2 rounded-lg lg:space-y-2">
+        {summaryData.map(({ icon, title, value }, index) => (
+          <div
+            className="bg-sidebar flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-1 lg:rounded-md lg:shadow-card self-center w-full p-2"
+            key={index}
+          >
+            <dt className="text-base text-primary font-medium flex lg:items-center gap-x-2">
+              {icon && <div className="hidden lg:flex">{icon}</div>}
+              {title}
+            </dt>
+            <dd className="flex lg:ml-auto pr-2 font-bold lg:font-semibold text-base text-primary">
+              {value}
+            </dd>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

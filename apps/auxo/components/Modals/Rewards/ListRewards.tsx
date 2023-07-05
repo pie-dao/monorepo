@@ -80,11 +80,11 @@ export default function ListRewards() {
                 height={24}
                 priority
               />
-              <h3 className="text-primary text-lg font-semibold flex gap-x-2 items-center">
+              <h3 className="text-primary text-base font-semibold flex gap-x-2 items-center">
                 {t('totalRewards', { token: name })}
               </h3>
             </div>
-            <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
+            <p className="text-primary text-base font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
                   totalActiveRewards?.total?.label,

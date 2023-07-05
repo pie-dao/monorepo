@@ -128,7 +128,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
     <div className="bg-gradient-to-r from-white via-white to-background">
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
         <Tab.Group>
-          <Tab.List className="flex gap-x-4 rounded-xl p-1">
+          <Tab.List className="flex gap-x-4 rounded-xl p-1 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
             {['convertStake', 'unstake', 'info', 'withdraw'].map((tab) => (
               <Tab
                 className={({ selected }) =>
@@ -144,7 +144,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                   <>
                     {t(tab)}
                     {selected && (
-                      <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+                      <div className="absolute -bottom-[5px] left-0 right-0 h-[2px] bg-secondary" />
                     )}
                   </>
                 )}
@@ -258,7 +258,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                         >
                           {t('convert')}
                         </DepositActions>
-                        <div className="w-full flex justify-center items-center mt-auto">
+                        <div className="w-full flex justify-center items-center mt-auto mb-0.5">
                           <Banner
                             bgColor="bg-warning"
                             content={
@@ -373,7 +373,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                         >
                           {t('convertAndStake')}
                         </DepositActions>
-                        <div className="w-full flex justify-center items-center mt-auto">
+                        <div className="w-full flex justify-center items-center mt-auto mb-0.5">
                           <Banner
                             bgColor="bg-warning"
                             content={
@@ -604,7 +604,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                               {t('burningPrvToAuxoSubtitle')}
                             </p>
                           </div>
-                          <div className="flex justify-between w-full gap-x-2 items-center">
+                          <div className="flex justify-between w-full gap-2 items-center flex-wrap">
                             <div className="flex gap-x-2">
                               <DocumentTextIcon className="h-5 w-5 text-primary" />
                               <p className="text-base text-primary font-medium">

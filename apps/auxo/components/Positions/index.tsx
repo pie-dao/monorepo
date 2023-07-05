@@ -254,7 +254,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
               <div className="min-w-0 flex-1 flex items-center">
                 <div className="flex flex-shrink-0 self-start">
                   {exposure?.attributes?.Icon?.data?.attributes?.url ? (
-                    <div className="flex flex-shrink-0 self-start">
+                    <div className="flex flex-shrink-0 self-start rounded-full shadow-md">
                       <Image
                         src={`${exposure?.attributes?.Icon?.data?.attributes?.url}`}
                         alt={exposure?.attributes?.Title}
@@ -434,11 +434,11 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 {position?.attributes?.protocol?.data
                                   ?.attributes?.icon?.data?.[0]?.attributes
                                   ?.url ? (
-                                  <div className="flex flex-shrink-0">
+                                  <div className="p-1 w-8 h-8 rounded-full bg-white">
                                     <Image
                                       src={`${position?.attributes?.protocol?.data?.attributes?.icon?.data?.[0]?.attributes?.url}`}
-                                      width={24}
-                                      height={24}
+                                      width={28}
+                                      height={28}
                                       alt={
                                         position?.attributes?.protocol?.data
                                           ?.attributes?.icon?.data?.[0]
@@ -481,7 +481,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 </p>
                               </div>
                             </div>
-                            <MobileAccordionContent
+                            {/* <MobileAccordionContent
                               title={'value'}
                               content={formatBalanceCurrency(
                                 position?.attributes?.principal_amount,
@@ -489,7 +489,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 'USD',
                                 true,
                               )}
-                            />
+                            /> */}
                             <MobileAccordionContent
                               title={'strategy'}
                               content={position?.attributes?.strategies?.data
@@ -514,16 +514,20 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                   (reward) =>
                                     reward?.attributes?.icon?.data?.attributes
                                       ?.url && (
-                                      <Image
+                                      <div
+                                        className="p-1 w-8 h-8 rounded-full bg-white"
                                         key={reward?.id}
-                                        src={`${reward?.attributes?.icon?.data?.attributes?.url}`}
-                                        width={24}
-                                        height={24}
-                                        alt={
-                                          reward?.attributes?.icon?.data
-                                            ?.attributes?.name
-                                        }
-                                      />
+                                      >
+                                        <Image
+                                          src={`${reward?.attributes?.icon?.data?.attributes?.url}`}
+                                          width={28}
+                                          height={28}
+                                          alt={
+                                            reward?.attributes?.icon?.data
+                                              ?.attributes?.name
+                                          }
+                                        />
+                                      </div>
                                     ),
                                 )}
                               </div>

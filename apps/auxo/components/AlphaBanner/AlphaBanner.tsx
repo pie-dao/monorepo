@@ -1,6 +1,6 @@
 export const AlphaBanner: React.FC = () => {
   return (
-    <section className="w-full mb-6 flex">
+    <section className="w-full mb-6 mt-6 md:mt-2 flex">
       <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full">
         <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
           <div className="flex items-center gap-x-2">

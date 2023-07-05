@@ -30,7 +30,7 @@ const CarouselControls = (props: Props) => {
         }}
         disabled={disabled}
         className={classNames(
-          'px-4 py-2 text-white rounded-md',
+          'px-1 lg:px-4 lg:py-2 text-white rounded-md',
           disabled && 'opacity-50',
         )}
       >

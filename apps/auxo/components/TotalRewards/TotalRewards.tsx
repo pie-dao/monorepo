@@ -55,11 +55,11 @@ const TotalRewards: React.FC = () => {
           <div className="w-full flex justify-between gap-x-4 mb-2 pb-2 border-b border-custom-border">
             <div className="flex items-center gap-x-2">
               <Image src={ARV} alt="arv" width={24} height={24} priority />
-              <h3 className="text-primary text-lg font-semibold flex gap-x-2 items-center">
+              <h3 className="text-primary text-base font-semibold flex gap-x-2 items-center">
                 {t('totalRewards', { token: 'ARV' })}
               </h3>
             </div>
-            <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
+            <p className="text-primary text-base font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
                   hasARVRewards ? totalARVRewards?.total?.label : 0,
@@ -82,11 +82,11 @@ const TotalRewards: React.FC = () => {
           <div className="w-full flex justify-between gap-x-4 mb-2 pb-2 border-b border-custom-border">
             <div className="flex items-center gap-x-2">
               <Image src={PRV} alt="prv" width={24} height={24} priority />
-              <h3 className="text-primary text-lg font-semibold flex gap-x-2 items-center">
+              <h3 className="text-primary text-base font-semibold flex gap-x-2 items-center">
                 {t('totalRewards', { token: 'PRV' })}
               </h3>
             </div>
-            <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
+            <p className="text-primary text-base font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
                   hasPRVRewards ? totalPRVRewards?.total?.label : 0,

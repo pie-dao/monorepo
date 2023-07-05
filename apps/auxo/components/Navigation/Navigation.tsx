@@ -195,7 +195,7 @@ export default function Navigation({
           'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 rounded-full',
           open
             ? 'left-36 lg:left-40 bg-transparent mt-7'
-            : 'left-7 lg:left-20 bg-white/90 shadow py-2 px-1 mt-5',
+            : 'left-2 lg:left-20 bg-white/90 shadow py-2 px-1 mt-5',
         )}
         onClick={() => setOpen(!open)}
       >

@@ -26,7 +26,7 @@ import {
 } from '../store/products/thunks';
 import getUserMerkleTree from '../utils/getUserMerkleTree';
 
-export default function Rewards() {
+export default function Rewards({ title }) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [{ wallet }] = useConnectWallet();
@@ -66,8 +66,11 @@ export default function Rewards() {
 
   return (
     <div className="flex flex-col">
+      <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md">
+        {t(title)}
+      </h2>
       <section className="flex flex-wrap justify-between gap-4 text-xs md:text-inherit mt-6">
-        <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap flex-wrap">
+        <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
           <div className="flex flex-col py-1">
             {!ArvBalance ? (
               <>
@@ -76,13 +79,14 @@ export default function Rewards() {
               </>
             ) : (
               <>
-                <p className="font-bold text-sub-dark text-base sm:text-xl">
+                <p className="font-semibold text-primary text-base sm:text-xl">
                   {formatBalance(
                     ArvBalance.label,
                     defaultLocale,
                     2,
                     'standard',
-                  )}
+                  )}{' '}
+                  ARV
                 </p>
                 <p className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
                   {t('compactTokenBalance', { token: 'ARV' })}
@@ -98,14 +102,15 @@ export default function Rewards() {
               </>
             ) : (
               <>
-                <p className="font-bold text-sub-dark text-base sm:text-xl">
+                <p className="font-semibold text-primary text-base sm:text-xl">
                   <span>
                     {formatBalance(
                       StakedPrvBalance.label,
                       defaultLocale,
                       2,
                       'standard',
-                    )}
+                    )}{' '}
+                    PRV
                   </span>
                 </p>
                 <p className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
