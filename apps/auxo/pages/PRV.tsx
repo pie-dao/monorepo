@@ -213,7 +213,7 @@ export default function XAUXO({
             <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden shadow-sm items-start w-full font-medium transition-all mx-auto bg-center bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_1.png')] bg-cover h-full relative">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full flex flex-col place-items-center">
-                  <div className="flex flex-shrink-0 mb-12">
+                  <div className="flex flex-shrink-0 mb-12 justify-center">
                     <svg
                       width="41"
                       height="41"
