@@ -16,6 +16,7 @@ import { setClaim, setClaimStep } from '../../../store/rewards/rewards.slice';
 import { isEmpty } from 'lodash';
 import { useIsAutoCompoundEnabled } from '../../../hooks/useToken';
 import classNames from '../../../utils/classnames';
+import isValidDate from '../../../utils/isValidDate';
 
 const imageMap = {
   ARV: ARVImage,
