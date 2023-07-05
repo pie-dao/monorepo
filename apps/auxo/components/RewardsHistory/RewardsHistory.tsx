@@ -38,7 +38,7 @@ import { isEmpty } from 'lodash';
 
 type Reward = {
   source: 'PRV' | 'ARV';
-  claimDate: Date;
+  claimDate: string;
   amount: number;
 };
 
@@ -81,7 +81,7 @@ const RewardsHistory = () => {
       .map(([key, value]: [string, Month[]]) => {
         return value?.map((item) => ({
           source: key as 'PRV' | 'ARV',
-          claimDate: new Date(item?.month + '-01'),
+          claimDate: item?.month,
           amount: item?.rewards?.label,
         }));
       })
@@ -113,11 +113,7 @@ const RewardsHistory = () => {
       }),
       columnHelper.accessor((row) => row.claimDate, {
         header: 'claimDate',
-        cell: (info) =>
-          info.renderValue().toLocaleDateString(defaultLocale, {
-            month: '2-digit',
-            year: 'numeric',
-          }),
+        cell: (info) => info.renderValue(),
       }),
       columnHelper.accessor((row) => row.amount, {
         header: 'rewardAmount',
@@ -162,11 +158,7 @@ const RewardsHistory = () => {
       const parser = new Parser();
       const transformTimestampOnData = data.map((item) => ({
         ...item,
-        claimDate: item.claimDate.toLocaleDateString(defaultLocale, {
-          month: '2-digit',
-          day: '2-digit',
-          year: 'numeric',
-        }),
+        claimDate: item.claimDate,
       }));
       const csv = parser.parse(transformTimestampOnData);
       const blob = new Blob([csv], { type: 'text/csv' });
@@ -434,10 +426,12 @@ const RewardsHistory = () => {
                                     {t('claimed')}
                                   </span>
                                   <span className="text-primary text-lg lg:text-sm font-semibold">
-                                    {flexRender(
-                                      cell.column.columnDef.cell,
-                                      cell.getContext(),
-                                    )}
+                                    {new Date(
+                                      cell.getValue() as string,
+                                    ).toLocaleDateString(defaultLocale, {
+                                      month: '2-digit',
+                                      year: 'numeric',
+                                    })}
                                   </span>
                                 </div>
                               );

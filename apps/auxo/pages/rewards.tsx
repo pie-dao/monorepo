@@ -160,6 +160,23 @@ export default function Rewards({ title }) {
           </GradientBox>
         </div>
       </section>
+      {new Date('2023-06').toLocaleDateString('en-US', {
+        month: '2-digit',
+        year: 'numeric',
+      })}
+      {new Date('2023-06-01').toLocaleDateString('en-US', {
+        month: '2-digit',
+        year: 'numeric',
+      })}
+      {new Date('2023-06-01').toLocaleDateString(defaultLocale, {
+        month: '2-digit',
+        year: 'numeric',
+      })}
+      {new Date('2023-06').toLocaleDateString(defaultLocale, {
+        month: '2-digit',
+        year: 'numeric',
+      })}
+
       <TotalRewards />
       <RewardsHistory />
       <RewardsHistoryChart />
