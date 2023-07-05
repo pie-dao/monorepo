@@ -11,11 +11,17 @@ const SocialIcons = [
 const variants = {
   open: {
     opacity: 1,
-    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+    transition: {
+      duration: 0.6,
+      ease: 'easeInOut',
+    },
   },
   closed: {
     opacity: [0, 1],
-    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    transition: {
+      duration: 0.6,
+      ease: 'easeInOut',
+    },
   },
 };
 

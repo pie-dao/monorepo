@@ -92,7 +92,7 @@ export default function Navigation({
       <AnimatePresence initial={false}>
         <motion.aside
           className={classNames(
-            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-20 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow',
+            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-20 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow overflow-hidden',
             isDesktop
               ? open
                 ? 'max-w-[11rem] overflow-y-auto'
@@ -110,7 +110,7 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 w-[96px] p-2.5 overflow-hidden"
+                className="flex flex-shrink-0 w-[96px] h-[20px] p-2.5"
               >
                 <AuxoLogotype />
               </motion.div>
