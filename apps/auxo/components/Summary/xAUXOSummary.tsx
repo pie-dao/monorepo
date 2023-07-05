@@ -148,32 +148,34 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
           </div>
         ))}
       </div>
-      <Banner
-        bgColor="bg-info"
-        content={
-          <Trans
-            i18nKey="stakingStabilisesRewards"
-            components={{
-              a: (
-                <a
-                  href={
-                    'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
-                  }
-                  className="text-primary underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-              ),
-            }}
-          />
-        }
-        icon={
-          <InformationCircleIcon
-            className="h-5 w-5 text-primary"
-            aria-hidden="true"
-          />
-        }
-      />
+      <div className="flex mt-4">
+        <Banner
+          bgColor="bg-info"
+          content={
+            <Trans
+              i18nKey="stakingStabilisesRewards"
+              components={{
+                a: (
+                  <a
+                    href={
+                      'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
+                    }
+                    className="text-primary underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                ),
+              }}
+            />
+          }
+          icon={
+            <InformationCircleIcon
+              className="h-5 w-5 text-primary"
+              aria-hidden="true"
+            />
+          }
+        />
+      </div>
     </div>
   );
 };
