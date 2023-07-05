@@ -79,7 +79,7 @@ export default function Layout({ children }) {
           )}
         >
           <div className="flex flex-col flex-1">
-            <main className="flex-1 px-2 w-full pb-10 min-h-full">
+            <main className="flex-1 px-2 lg:px-6 w-full pb-10 min-h-full">
               <Header title={children.props.title} icon={children.props.icon} />
               {children}
             </main>
