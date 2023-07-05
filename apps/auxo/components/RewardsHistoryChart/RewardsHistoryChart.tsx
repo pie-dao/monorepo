@@ -111,7 +111,7 @@ const RewardsHistoryChart = () => {
     <div className="mt-8">
       <Tab.Group>
         <div className="flex justify-between items-center gap-x-4">
-          <Tab.List className="flex gap-x-4 rounded-xl p-1 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
+          <Tab.List className="flex gap-x-4 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full ml-[10px]">
             {['earningsOverTime'].map((tab) => {
               return (
                 <Tab

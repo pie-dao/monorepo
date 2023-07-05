@@ -80,7 +80,7 @@ export default function Treasury({ title }): ReactElement {
                     )}
                   </p>
 
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('tvl')}
                     <Tooltip>{t('tvlTooltip')}</Tooltip>
                   </div>
@@ -103,7 +103,7 @@ export default function Treasury({ title }): ReactElement {
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('tvlInEth')}
                     <Tooltip>{t('tvlInEthTooltip')}</Tooltip>
                   </div>
@@ -125,7 +125,7 @@ export default function Treasury({ title }): ReactElement {
                       defaultLocale,
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('capitalUtilization')}
                     <Tooltip>{t('capitalUtilizationTooltip')}</Tooltip>
                   </div>
@@ -146,7 +146,7 @@ export default function Treasury({ title }): ReactElement {
                         defaultLocale,
                       )}
                     </p>
-                    <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                    <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                       {t('averageAPR')}
                       <Tooltip>{t('averageAPRTooltip')}</Tooltip>
                     </div>

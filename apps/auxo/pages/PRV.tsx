@@ -142,7 +142,7 @@ export default function XAUXO({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('totalStaked', { token: 'PRV' })}
                     <Tooltip>{t('totalStakedPrvTooltip')}</Tooltip>
                   </div>
@@ -167,7 +167,7 @@ export default function XAUXO({
                       )}
                     </span>
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('total', { token: 'PRV' })}
                     <Tooltip>{t('totalTooltip', { token: 'PRV' })}</Tooltip>
                   </div>
@@ -184,7 +184,7 @@ export default function XAUXO({
                     ? 'N/A'
                     : formatAsPercent(0, defaultLocale)}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('lastMonthDistribution')}
                   <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
@@ -200,7 +200,7 @@ export default function XAUXO({
                         defaultLocale,
                       )}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('apr', { token: 'PRV' })}
                   <Tooltip>{t('aprTooltip', { token: 'PRV' })}</Tooltip>
                 </div>

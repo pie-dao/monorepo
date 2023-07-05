@@ -189,7 +189,7 @@ export default function ARV({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('totalStaked', { token: 'AUXO' })}
                     <Tooltip>{t('totalStakedArvTooltip')}</Tooltip>
                   </div>
@@ -224,7 +224,7 @@ export default function ARV({
                     ? 'N/A'
                     : formatAsPercent(0, defaultLocale)}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('lastMonthDistribution')}
                   <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
@@ -240,7 +240,7 @@ export default function ARV({
                         defaultLocale,
                       )}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('apr', { token: 'ARV' })}
                   <Tooltip>{t('aprTooltip', { token: 'ARV' })}</Tooltip>
                 </div>
@@ -253,7 +253,7 @@ export default function ARV({
           <TokenCarousel>
             <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden shadow-sm items-start w-full font-medium transition-all mx-auto bg-center bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_1.png')] bg-cover h-full relative">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[85%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full flex flex-col place-items-center">
                   <div className="flex flex-shrink-0 mb-12 justify-center">
                     <svg
                       width="40"

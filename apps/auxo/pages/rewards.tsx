@@ -88,7 +88,7 @@ export default function Rewards({ title }) {
                   )}{' '}
                   ARV
                 </p>
-                <p className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                <p className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('compactTokenBalance', { token: 'ARV' })}
                 </p>
               </>
@@ -113,7 +113,7 @@ export default function Rewards({ title }) {
                     PRV
                   </span>
                 </p>
-                <p className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+                <p className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('compactStakedBalance', { token: 'PRV' })}
                 </p>
               </>
@@ -134,7 +134,7 @@ export default function Rewards({ title }) {
                   )}
                 </span>
               </p>
-              <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+              <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                 {t('lastMonthEarnings')}
                 <Tooltip>{t('lastMonthEarningsTooltip')}</Tooltip>
               </div>
@@ -153,7 +153,7 @@ export default function Rewards({ title }) {
                   )}
                 </span>
               </p>
-              <div className="flex text-base text-sub-dark font-medium gap-x-1 items-center">
+              <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                 {t('allTimeTotal')}
               </div>
             </>

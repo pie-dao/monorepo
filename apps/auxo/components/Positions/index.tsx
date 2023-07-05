@@ -69,7 +69,7 @@ export default function PositionsTabs() {
   return (
     <section className="w-full pb-16 mt-8">
       <Tab.Group>
-        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-2 grid grid-cols-2 w-full mb-4">
+        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-4 grid grid-cols-2 w-full mb-4 ml-[10px]">
           {['Treasury positions', 'Strategy details'].map((title) => (
             <Tab
               className={({ selected }) =>
@@ -111,7 +111,7 @@ export default function PositionsTabs() {
                 </div>
                 <div className="h-5 w-5"></div>
               </div>
-              <div className="flex flex-col gap-y-2">
+              <div className="flex flex-col gap-y-6">
                 {!isEmpty(exposures)
                   ? exposures?.data?.map((item) => (
                       <SingleTokenPosition key={`${item.id}`} exposure={item} />
