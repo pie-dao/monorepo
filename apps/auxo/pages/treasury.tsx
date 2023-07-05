@@ -44,7 +44,7 @@ export default function Treasury({ title }): ReactElement {
   return (
     <>
       <div className="flex flex-col">
-        <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md">
+        <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md ml-[10px]">
           {t(title)}
         </h2>
         <AlphaBanner />
@@ -63,7 +63,7 @@ export default function Treasury({ title }): ReactElement {
 
         {/* Section for TVL, Capital Utilization, and APY */}
         <section className="flex flex-wrap justify-between gap-4  text-sm md:text-inherit mt-6">
-          <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
+          <div className="flex gap-x-4 items-center w-full sm:w-fit ml-[10px] flex-wrap">
             <div className="flex flex-col py-1">
               {isReportLoading ? (
                 <>
@@ -72,7 +72,7 @@ export default function Treasury({ title }): ReactElement {
                 </>
               ) : (
                 <>
-                  <p className="font-semibold text-primary sm:text-xl">
+                  <p className="font-semibold text-primary sm:text-xl text-base">
                     {formatBalanceCurrency(
                       latestReport?.data?.[0]?.attributes?.tvl,
                       defaultLocale,
@@ -95,7 +95,7 @@ export default function Treasury({ title }): ReactElement {
                 </>
               ) : (
                 <>
-                  <p className="font-semibold text-primary sm:text-xl">
+                  <p className="font-semibold text-primary sm:text-xl text-base">
                     {formatBalance(
                       latestReport?.data?.[0]?.attributes?.tvl_in_eth,
                       defaultLocale,
@@ -119,7 +119,7 @@ export default function Treasury({ title }): ReactElement {
                 </>
               ) : (
                 <>
-                  <p className="font-semibold text-primary sm:text-xl">
+                  <p className="font-semibold text-primary sm:text-xl text-base">
                     {formatAsPercent(
                       latestReport?.data?.[0]?.attributes?.capital_utilisation,
                       defaultLocale,

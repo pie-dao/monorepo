@@ -140,7 +140,7 @@ const ParallaxSection: React.FC = () => {
             </motion.div>
           </div>
           <div className="flex md:mt-0 md:place-items-center">
-            <div className="flex h-[550px] w-[75%] md:w-[55%] mx-auto -mt-32">
+            <div className="flex h-[450px] w-[75%] md:w-[55%] mx-auto -mt-32">
               <RiveComponent
                 layout={
                   new Layout({

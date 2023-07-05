@@ -66,11 +66,11 @@ export default function Rewards({ title }) {
 
   return (
     <div className="flex flex-col">
-      <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md">
+      <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md ml-[10px]">
         {t(title)}
       </h2>
       <section className="flex flex-wrap justify-between gap-4 text-xs md:text-inherit mt-6">
-        <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
+        <div className="flex gap-x-4 items-center w-full sm:w-fit ml-[10px] flex-wrap">
           <div className="flex flex-col py-1">
             {!ArvBalance ? (
               <>

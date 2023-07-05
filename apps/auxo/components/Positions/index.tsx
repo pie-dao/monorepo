@@ -258,8 +258,8 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                       <Image
                         src={`${exposure?.attributes?.Icon?.data?.attributes?.url}`}
                         alt={exposure?.attributes?.Title}
-                        height={36}
-                        width={36}
+                        height={28}
+                        width={28}
                       />
                     </div>
                   ) : null}

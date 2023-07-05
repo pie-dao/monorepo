@@ -125,7 +125,7 @@ export default function XAUXO({
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
         <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
-          <div className="flex gap-x-4 items-center w-full sm:w-fit flex-wrap">
+          <div className="flex gap-x-4 items-center w-full sm:w-fit ml-[10px] flex-wrap">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
                 <>
@@ -134,7 +134,7 @@ export default function XAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark text-base sm:text-xl">
+                  <p className="font-semibold text-primary text-base sm:text-xl">
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
@@ -157,7 +157,7 @@ export default function XAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-base text-sub-dark sm:text-xl">
+                  <p className="font-semibold text-primary text-base sm:text-xl">
                     <span>
                       {formatBalance(
                         totalSupply.label,
@@ -249,14 +249,14 @@ export default function XAUXO({
             </div>
             <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_1.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[90%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[85%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide2Title')}
                   </h2>
                   <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide2Description')}
                   </p>
-                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap justify-center w-full lg:justify-start">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
                       <div className="flex flex-shrink-0">
                         <Image
@@ -287,7 +287,7 @@ export default function XAUXO({
             </div>
             <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden  relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_2.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[90%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[85%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide3Title')}
                   </h2>
@@ -297,7 +297,7 @@ export default function XAUXO({
                   <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide3Description2')}
                   </p>
-                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap justify-center w-full lg:justify-start">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
                       <div className="flex flex-shrink-0">
                         <Image

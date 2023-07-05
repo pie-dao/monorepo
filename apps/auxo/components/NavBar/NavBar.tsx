@@ -87,7 +87,7 @@ export function NavBar() {
                   <GoToApp />
                 </div>
               }
-              <Popover.Button
+              {/* <Popover.Button
                 className={classNames(
                   '-mr-1 flex h-8 w-8 items-center justify-center focus:outline-none',
                   open && 'relative z-10 ml-auto',
@@ -95,9 +95,9 @@ export function NavBar() {
                 aria-label="Toggle navigation menu"
               >
                 <MenuIcon open={open} />
-              </Popover.Button>
+              </Popover.Button> */}
             </div>
-            <Popover.Panel className="absolute inset-x-0 bg-gradient-primary m-3.5 shadow-md divide-y rounded-md">
+            {/* <Popover.Panel className="absolute inset-x-0 bg-gradient-primary m-3.5 shadow-md divide-y rounded-md">
               {sections.map((section, sectionIndex) => (
                 <Popover.Button
                   as={'a'}
@@ -110,7 +110,7 @@ export function NavBar() {
                   </span>
                 </Popover.Button>
               ))}
-            </Popover.Panel>
+            </Popover.Panel> */}
           </>
         )}
       </Popover>
@@ -131,7 +131,7 @@ export function NavBar() {
           role="list"
           className="flex w-fit text-base font-medium text-primary items-center gap-x-10 sm:px-6 lg:px-8"
         >
-          {sections.map((section, sectionIndex) => (
+          {/* {sections.map((section, sectionIndex) => (
             <li key={section.id} className="flex justify-center">
               <a
                 href={`#${section.id}`}
@@ -145,7 +145,7 @@ export function NavBar() {
                 {section.title}
               </a>
             </li>
-          ))}
+          ))} */}
           <li>
             <GoToApp />
           </li>

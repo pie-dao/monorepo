@@ -212,7 +212,7 @@ const AuxoDAO: React.FC = () => {
         </p>
       </Container> */}
       <LeftRightContainer features={features} />
-      <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-8 sm:scroll-mt-38 sm:py-20 lg:py-38 my-48">
+      <div className="w-full bg-[url('/images/background/bg-farm.png')] bg-cover relative gap-y-12 scroll-mt-14 py-8 sm:scroll-mt-38 sm:py-20 lg:py-38 mt-20 mb-48">
         <div className="absolute inset-0 bg-primary opacity-70" />
         <Container
           size="xl"
