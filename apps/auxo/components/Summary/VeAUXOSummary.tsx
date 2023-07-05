@@ -109,6 +109,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
             AUXO
           </>
         ),
+        visibility: true,
       },
       {
         icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
@@ -126,16 +127,19 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
             ARV
           </>
         ),
+        visibility: true,
       },
       {
         icon: <Image src={triangle} alt="triangle" width={24} height={24} />,
         title: t('governancePower'),
         value: votingPowerValue,
+        visibility: hasLock,
       },
       {
         icon: <Image src={unlock} alt="triangle" width={24} height={24} />,
         title: t('unlock'),
         value: hasLock ? endDate : '--/--/----',
+        visibility: hasLock,
       },
     ];
   }, [
@@ -185,20 +189,23 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
         />
       )}
       <div className="flex flex-col bg-sidebar lg:bg-transparent px-3 lg:px-0 lg:py-0 py-2 rounded-lg lg:space-y-2">
-        {summaryData.map(({ icon, title, value }, index) => (
-          <div
-            className="bg-sidebar flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-1 lg:rounded-md lg:shadow-card self-center w-full p-2"
-            key={index}
-          >
-            <dt className="text-base text-primary font-medium flex lg:items-center gap-x-2">
-              {icon && <div className="hidden lg:flex">{icon}</div>}
-              {title}
-            </dt>
-            <dd className="flex lg:ml-auto pr-2 font-bold lg:font-semibold text-base text-primary">
-              {value}
-            </dd>
-          </div>
-        ))}
+        {summaryData.map(({ icon, title, value, visibility }, index) => {
+          if (!visibility) return null;
+          return (
+            <div
+              className="bg-sidebar flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-1 lg:rounded-md lg:shadow-card self-center w-full p-2"
+              key={index}
+            >
+              <dt className="text-base text-primary font-medium flex lg:items-center gap-x-2">
+                {icon && <div className="hidden lg:flex">{icon}</div>}
+                {title}
+              </dt>
+              <dd className="flex lg:ml-auto pr-2 font-bold lg:font-semibold text-base text-primary">
+                {value}
+              </dd>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -129,7 +129,7 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
       <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
         <Tab.Group>
           <Tab.List className="flex gap-x-4 rounded-xl p-1 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
-            {['convertStake', 'unstake', 'info', 'withdraw'].map((tab) => (
+            {['convertStake', 'unstake', 'info', 'redeem'].map((tab) => (
               <Tab
                 className={({ selected }) =>
                   classNames(
@@ -557,7 +557,13 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                             deposit={withdrawDepositValue}
                             tokenConfig={tokenConfig}
                             disabled={
-                              !canWithdraw || withdrawDepositValue?.label === 0
+                              !canWithdraw ||
+                              withdrawDepositValue?.label === 0 ||
+                              compareBalances(
+                                withdrawDepositValue,
+                                'gt',
+                                withdrawableAmount,
+                              )
                             }
                             fee={withdrawalCalculation?.subtractedValue}
                             estimation={withdrawalCalculation?.value}
