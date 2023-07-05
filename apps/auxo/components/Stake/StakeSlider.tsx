@@ -29,15 +29,14 @@ const StakeSlider: React.FC<Props> = ({
           <p className="text-sm font-medium text-primary">{t('stakeTime')}</p>
         </div>
         <div>
-          <p className="underline text-sub-dark text-xs">
-            <a
-              href="https://docs.auxo.fi/auxo-docs/rewards-vaults/arv-active-rewards-vault"
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {t('whyLocked')}
-            </a>
-          </p>
+          <a
+            href="https://docs.auxo.fi/auxo-docs/rewards-vaults/arv-active-rewards-vault"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline text-sub-dark hover:text-secondary text-xs"
+          >
+            {t('whyLocked')}
+          </a>
         </div>
       </div>
       <div className="flex items-center justify-between gap-x-4 w-full">

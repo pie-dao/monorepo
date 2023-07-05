@@ -121,7 +121,7 @@ export function TreasuryTabs(
                                   </div>
                                   {chainMap[Number(key)].chainName}
                                 </dt>
-                                <dd className="text-secondary text-base truncate">
+                                <dd className="text-primary hover:text-secondary text-base truncate">
                                   <a
                                     href={`${
                                       getExplorer(Number(key))[0].url

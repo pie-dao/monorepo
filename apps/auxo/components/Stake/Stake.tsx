@@ -222,7 +222,7 @@ const Stake: React.FC<Props> = ({
               target="_blank"
               href="https://app.uniswap.org/#/swap?outputCurrency=0xff030228a046F640143Dab19be00009606C89B1d&inputCurrency=ETH"
             >
-              <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:bg-sub-dark enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
+              <button className="px-4 py-0.5 text-base text-sub-dark bg-transparent rounded-2xl ring-inset ring-1 ring-sub-dark enabled:hover:ring-secondary enabled:hover:bg-secondary enabled:hover:text-white disabled:opacity-70 flex gap-x-2 items-center">
                 {t('getAUXO')}
               </button>
             </a>
@@ -341,7 +341,7 @@ const Stake: React.FC<Props> = ({
                       <div
                         key={index}
                         className={classNames(
-                          'grid grid-cols-2 gap-y py-2 items-center',
+                          'grid grid-cols-2 gap-y py-2 items-center w-full',
                           index === 0 && 'pt-0',
                           index === addressList?.length - 1 && 'pb-0',
                         )}
@@ -350,7 +350,7 @@ const Stake: React.FC<Props> = ({
                           {el.title}
                         </p>
                         <a
-                          className="text-secondary font-bold text-base truncate"
+                          className="text-primary hover:text-secondary font-bold text-base truncate"
                           href={`https://etherscan.io/address/${el.address}`}
                           target="_blank"
                           rel="noreferrer noopener"

@@ -99,7 +99,7 @@ export default function PositionsTabs() {
             <div className="w-full flex flex-col space-between">
               <div className="hidden items-center mb-2 lg:flex">
                 <div className="min-w-0 flex-1 flex items-start px-3">
-                  <div className="flex-shrink-0 w-[40px]"></div>
+                  <div className="flex-shrink-0 w-[35px]"></div>
                   <div className="min-w-0 flex-1 px-4 sm:px-0 sm:grid sm:grid-cols-7 sm:gap-4 ">
                     <div className="flex flex-col justify-between col-span-1 -ml-[55px] md:ml-0">
                       <p className="text-xs">{t('position')}</p>
@@ -182,7 +182,7 @@ export default function PositionsTabs() {
                                     open: { opacity: 1, y: 0 },
                                   }}
                                   transition={{ duration: 0.3 }}
-                                  className="py-2 space-y-1 border-t border-customBorder mt-2"
+                                  className="pt-1 space-y-1 border-t border-customBorder mt-2"
                                 >
                                   <p className="text-primary text-base">
                                     {item?.attributes?.Description}
@@ -250,7 +250,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
       {({ open }) => (
         <>
           <Disclosure.Button as="div" className="cursor-pointer">
-            <div className="flex items-center mb-2">
+            <div className="flex items-center">
               <div className="min-w-0 flex-1 flex items-center">
                 <div className="flex flex-shrink-0 self-start">
                   {exposure?.attributes?.Icon?.data?.attributes?.url ? (
