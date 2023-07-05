@@ -20,6 +20,7 @@ import { MerkleTreesByUser } from '../../../types/merkleTree';
 import { MERKLE_TREES_BY_USER_URL } from '../../../utils/constants';
 import { isEmpty } from 'lodash';
 import getUserMerkleTree from '../../../utils/getUserMerkleTree';
+import { sanitizeDate } from '../../../utils/date';
 
 const imageMap = {
   ARV: ARVImage,
@@ -107,7 +108,7 @@ export default function ClaimRewards() {
           <div className="w-full flex flex-col gap-y-4 items-center mt-4">
             <p className="font-semibold text-primary text-base">
               {t('distributedOn', {
-                date: new Date(claim?.month + '-01').toLocaleDateString(
+                date: new Date(sanitizeDate(claim?.month)).toLocaleDateString(
                   defaultLocale,
                   {
                     month: 'short',

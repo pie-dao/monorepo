@@ -35,10 +35,11 @@ import * as Label from '@radix-ui/react-label';
 import { formatBalance } from '../../utils/formatBalance';
 import { Month } from '../../store/rewards/rewards.types';
 import { isEmpty } from 'lodash';
+import { sanitizeDate } from '../../utils/date';
 
 type Reward = {
   source: 'PRV' | 'ARV';
-  claimDate: string;
+  claimDate: Date;
   amount: number;
 };
 
@@ -81,7 +82,7 @@ const RewardsHistory = () => {
       .map(([key, value]: [string, Month[]]) => {
         return value?.map((item) => ({
           source: key as 'PRV' | 'ARV',
-          claimDate: item?.month,
+          claimDate: new Date(sanitizeDate(item?.month)),
           amount: item?.rewards?.label,
         }));
       })
@@ -113,7 +114,11 @@ const RewardsHistory = () => {
       }),
       columnHelper.accessor((row) => row.claimDate, {
         header: 'claimDate',
-        cell: (info) => info.renderValue(),
+        cell: (info) =>
+          info.renderValue().toLocaleDateString(defaultLocale, {
+            month: '2-digit',
+            year: 'numeric',
+          }),
       }),
       columnHelper.accessor((row) => row.amount, {
         header: 'rewardAmount',
@@ -158,7 +163,11 @@ const RewardsHistory = () => {
       const parser = new Parser();
       const transformTimestampOnData = data.map((item) => ({
         ...item,
-        claimDate: item.claimDate,
+        claimDate: item.claimDate.toLocaleDateString(defaultLocale, {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric',
+        }),
       }));
       const csv = parser.parse(transformTimestampOnData);
       const blob = new Blob([csv], { type: 'text/csv' });
@@ -426,15 +435,10 @@ const RewardsHistory = () => {
                                     {t('claimed')}
                                   </span>
                                   <span className="text-primary text-lg lg:text-sm font-semibold">
-                                    {cell.getValue() as string}
-                                    {JSON.stringify(cell.getValue())}
-                                    {defaultLocale}
-                                    {new Date(
-                                      cell.getValue() as string,
-                                    ).toLocaleDateString(defaultLocale, {
-                                      month: '2-digit',
-                                      year: 'numeric',
-                                    })}
+                                    {flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext(),
+                                    )}
                                   </span>
                                 </div>
                               );

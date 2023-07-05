@@ -21,6 +21,7 @@ import { Month } from '../../store/rewards/rewards.types';
 import { formatBalance } from '../../utils/formatBalance';
 import classNames from '../../utils/classnames';
 import { isEmpty } from 'lodash';
+import { sanitizeDate } from '../../utils/date';
 
 const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
   const { t } = useTranslation();
@@ -95,7 +96,7 @@ const RewardsHistoryChart = () => {
         (reward) => reward?.month === month,
       )?.rewards?.label;
       return {
-        name: new Date(month + '-01').toLocaleString(defaultLocale, {
+        name: new Date(sanitizeDate(month)).toLocaleString(defaultLocale, {
           month: 'short',
           year: 'numeric',
         }),
