@@ -48,6 +48,20 @@ const web3Onboard = init({
       token: 'ETH',
       label: 'Ethereum Mainnet',
       rpcUrl: MAINNET_RPC,
+      secondaryTokens: [
+        {
+          address: '0xff030228a046F640143Dab19be00009606C89B1d',
+          icon: '/tokens/AUXO.svg',
+        },
+        {
+          address: '0x069c0Ed12dB7199c1DdAF73b94de75AAe8061d33',
+          icon: '/tokens/32x32/ARV.svg',
+        },
+        {
+          address: '0xc72fbD264b40D88E445bcf82663D63FF21e722AF',
+          icon: '/tokens/32x32/PRV.svg',
+        },
+      ],
     },
   ],
   appMetadata: {
