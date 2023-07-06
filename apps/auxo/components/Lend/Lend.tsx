@@ -91,7 +91,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                 >
                   {({ selected }) => (
                     <>
-                      {t('unlend')}
+                      {t('withdraw')}
                       {selected && (
                         <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
                       )}

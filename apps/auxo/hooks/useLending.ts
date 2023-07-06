@@ -1,5 +1,10 @@
 import { useAppSelector } from '.';
-import { calculatePriceInUSD, zeroBalance } from '../utils/balances';
+import { BigNumberReference } from '../store/products/products.types';
+import {
+  calculatePriceInUSD,
+  compareBalances,
+  zeroBalance,
+} from '../utils/balances';
 import { findProductByAddress } from '../utils/findProductByAddress';
 import { useCoinGeckoTokenPrice } from './useCoingecko';
 
@@ -51,4 +56,23 @@ export const UseMaxBorrowableAmountFromPool = (poolAddress: string) => {
     (state) =>
       state?.lending?.pools?.[poolAddress]?.lastEpoch?.maxBorrow ?? zeroBalance,
   );
+};
+
+export const UsePoolApproval = (poolAddress: string): BigNumberReference => {
+  return useAppSelector(
+    (state) =>
+      state?.lending?.pools?.[poolAddress]?.userData?.allowance ?? zeroBalance,
+  );
+};
+
+export const UseLoan = (poolAddress: string) => {
+  return useAppSelector(
+    (state) =>
+      state?.lending?.pools?.[poolAddress]?.userData?.balance ?? zeroBalance,
+  );
+};
+
+export const UseSufficentApproval = (poolAddress: string): boolean => {
+  const allowance = UsePoolApproval(poolAddress);
+  return compareBalances(allowance, 'gt', zeroBalance);
 };

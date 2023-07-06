@@ -76,6 +76,7 @@ export type Pool = {
     canWithdraw?: boolean;
     unlendableAmount?: BigNumberReference;
     preference?: number;
+    allowance?: BigNumberReference;
   };
   epochs?: convertedEpoch[];
 };

@@ -45,18 +45,18 @@ export default function Layout({ children }) {
     dispatch(thunkGetUserProductsData({ account, provider: wallet?.provider }));
     dispatch(thunkGetUserStakingData({ account, provider: wallet?.provider }));
     dispatch(thunkGetUserLendingData({ account, provider: wallet?.provider }));
-    if (prvTree && prvTree?.recipients && account && prvMerkleVerifier) {
-      dispatch(
-        thunkGetUserPrvWithdrawal({
-          account,
-          claim: {
-            ...getPRVWithdrawalMerkleTree(prvTree, account),
-            account,
-          },
-          prvMerkleVerifier,
-        }),
-      );
-    }
+    // if (prvTree && prvTree?.recipients && account && prvMerkleVerifier) {
+    //   dispatch(
+    //     thunkGetUserPrvWithdrawal({
+    //       account,
+    //       claim: {
+    //         ...getPRVWithdrawalMerkleTree(prvTree, account),
+    //         account,
+    //       },
+    //       prvMerkleVerifier,
+    //     }),
+    //   );
+    // }
   }, [dispatch, account, wallet?.provider, prvMerkleVerifier]);
 
   useEffect(() => {

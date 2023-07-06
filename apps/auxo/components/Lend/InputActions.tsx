@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useConnectWallet } from '@web3-onboard/react';
 import { useAppDispatch } from '../../hooks';
-import { useTokenBalance } from '../../hooks/useToken';
+import { useApprovalLimit, useTokenBalance } from '../../hooks/useToken';
 import { BigNumberReference } from '../../store/products/products.types';
 import { compareBalances } from '../../utils/balances';
 import useTranslation from 'next-translate/useTranslation';
@@ -15,6 +15,8 @@ import {
   setSpender,
 } from '../../store/lending/lending.slice';
 import { STEPS } from '../../store/lending/lending.types';
+import { useTokenContract } from '../../hooks/useContracts';
+import { UsePoolApproval, UseSufficentApproval } from '../../hooks/useLending';
 
 const LendActions: React.FC<{
   deposit: BigNumberReference;
@@ -34,6 +36,7 @@ const LendActions: React.FC<{
   const account = wallet?.accounts[0]?.address;
   const dispatch = useAppDispatch();
   const tokens = useTokenBalance(tokenConfig.name);
+  const hasSufficentApproval = UseSufficentApproval(poolAddress);
 
   const sufficientTokens = useMemo(() => {
     switch (action) {
@@ -55,7 +58,9 @@ const LendActions: React.FC<{
       case 'deposit':
         dispatch(setLendingFlowPool(poolAddress));
         dispatch(setDepositValue(deposit));
-        dispatch(setLendingStep(STEPS.APPROVE_LEND));
+        hasSufficentApproval
+          ? dispatch(setLendingStep(STEPS.LEND_DEPOSIT))
+          : dispatch(setLendingStep(STEPS.APPROVE_LEND));
         dispatch(setSpender(poolAddress));
         dispatch(setPrincipal(tokenConfig.name));
         dispatch(setLendingFlowOpen(true));

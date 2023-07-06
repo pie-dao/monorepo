@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { poolAddressesContracts } from '../products/products.contracts';
+import {
+  contractWrappers,
+  poolAddressesContracts,
+  productContracts,
+} from '../products/products.contracts';
 import { promiseObject } from '../../utils/promiseObject';
-import { isEmpty } from 'lodash';
+import { find, isEmpty } from 'lodash';
 import { EIP1193Provider } from '@web3-onboard/core';
 import { toBalance } from '../../utils/formatBalance';
 import { BigNumber, BigNumberish } from 'ethers';
@@ -46,7 +50,7 @@ export const thunkGetLendingData = createAsyncThunk(
             poolAddress: wrappedPool.address,
             principal: wrappedPool.principalToken(),
             isLocked: wrappedPool.isLocked(),
-            lastEpoch: wrappedPool.getPendingEpoch(),
+            lastEpoch: wrappedPool.getLatestEpoch(),
             lastActiveEpoch: wrappedPool.getLastActiveEpoch(),
             epochs: wrappedPool.getEpochs(),
             // canDeposit: wrappedPool.isPoolAcceptingDeposits()
@@ -117,7 +121,6 @@ export type ThunkUserLendingData = {
 export const thunkGetUserLendingData = createAsyncThunk(
   THUNKS.GET_USER_LENDING_DATA,
   async ({ account, provider }: ThunkUserLendingData, { rejectWithValue }) => {
-    console.log('new data should be fetched');
     if (!account || !provider) {
       return rejectWithValue('No account or provider');
     }
@@ -146,6 +149,40 @@ export const thunkGetUserLendingData = createAsyncThunk(
 
       let totalDeposited = 0;
       let totalClaimableRewards = 0;
+
+      const lendingPoolsApproval = await Promise.allSettled(
+        lendingPoolsData.map((pool) => {
+          const principalContract = find(
+            contractWrappers,
+            (contract) =>
+              contract.address.toLowerCase() === pool.principal.toLowerCase(),
+          );
+          return promiseObject({
+            allowance: principalContract.multichain.allowance(
+              account,
+              pool.poolAddress,
+            ),
+            poolAddress: pool.poolAddress,
+          });
+        }),
+      );
+
+      const lendingPoolsApprovalData = lendingPoolsApproval
+        .map((result) => {
+          if (result.status === 'fulfilled') {
+            const { allowance, poolAddress } = result.value;
+            if (allowance.data[1]?.status === 'fulfilled') {
+              return {
+                allowance: allowance?.data?.[1]?.value,
+                poolAddress,
+              };
+            }
+          }
+          if (result.status === 'rejected') {
+            return null;
+          }
+        })
+        .filter(Boolean);
 
       try {
         for (const pool of lendingPoolsData) {
@@ -191,6 +228,12 @@ export const thunkGetUserLendingData = createAsyncThunk(
                       )
                     : zeroBalance,
                   preference: pool?.loan?.preference,
+                  allowance: toBalance(
+                    lendingPoolsApprovalData.find(
+                      (approval) => approval.poolAddress === pool.poolAddress,
+                    )?.allowance,
+                    findProductByAddress(pool.principal).decimals,
+                  ),
                 },
               },
             ];

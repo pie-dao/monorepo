@@ -1034,7 +1034,7 @@ export const thunkGetUserPrvWithdrawal = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      if (!account || isEmpty(claim) || !prvMerkleVerifier)
+      if (!account || isEmpty(claim?.proof) || !prvMerkleVerifier)
         return rejectWithValue('Missing Account Details or Rewards');
       const { proof: merkleProof, ...rest } = claim;
       const amountToClaim = await prvMerkleVerifier.availableToWithdrawInClaim({

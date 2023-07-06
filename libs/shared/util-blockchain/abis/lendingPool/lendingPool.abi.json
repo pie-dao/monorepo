@@ -17,9 +17,9 @@
         "type": "string"
       },
       {
-        "internalType": "uint128",
-        "name": "_maxBorrow",
-        "type": "uint128"
+        "internalType": "address",
+        "name": "_fundsRecipient",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -39,6 +39,12 @@
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "fundsRecipient",
+        "type": "address"
       },
       {
         "indexed": true,
@@ -466,6 +472,19 @@
     "inputs": [
       {
         "internalType": "uint128",
+        "name": "_maxBorrow",
+        "type": "uint128"
+      }
+    ],
+    "name": "createPendingEpoch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
       }
@@ -519,6 +538,19 @@
         "internalType": "uint128",
         "name": "forWithdrawal",
         "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fundsRecipient",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -657,51 +689,13 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_lender",
-        "type": "address"
-      }
-    ],
-    "name": "getLoan",
+    "inputs": [],
+    "name": "getLastMaxBorrow",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "uint16",
-            "name": "nextClaimableEpoch",
-            "type": "uint16"
-          },
-          {
-            "internalType": "uint16",
-            "name": "preferenceChanged",
-            "type": "uint16"
-          },
-          {
-            "internalType": "enum ILendingPoolData.WithdrawalPreference",
-            "name": "preference",
-            "type": "uint8"
-          },
-          {
-            "internalType": "uint128",
-            "name": "amount",
-            "type": "uint128"
-          },
-          {
-            "internalType": "uint128",
-            "name": "lastDepositedQty",
-            "type": "uint128"
-          },
-          {
-            "internalType": "uint16",
-            "name": "lastDepositedEpoch",
-            "type": "uint16"
-          }
-        ],
-        "internalType": "struct ILendingPoolData.Loan",
+        "internalType": "uint128",
         "name": "",
-        "type": "tuple"
+        "type": "uint128"
       }
     ],
     "stateMutability": "view",
@@ -709,7 +703,7 @@
   },
   {
     "inputs": [],
-    "name": "getPendingEpoch",
+    "name": "getLatestEpoch",
     "outputs": [
       {
         "components": [
@@ -759,12 +753,63 @@
   },
   {
     "inputs": [],
-    "name": "getPendingEpochId",
+    "name": "getLatestEpochId",
     "outputs": [
       {
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      }
+    ],
+    "name": "getLoan",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint16",
+            "name": "nextClaimableEpoch",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint16",
+            "name": "preferenceChanged",
+            "type": "uint16"
+          },
+          {
+            "internalType": "enum ILendingPoolData.WithdrawalPreference",
+            "name": "preference",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint16",
+            "name": "lastDepositedEpoch",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint128",
+            "name": "amount",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "lastDepositedQty",
+            "type": "uint128"
+          }
+        ],
+        "internalType": "struct ILendingPoolData.Loan",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -894,6 +939,19 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_maxBorrow",
+        "type": "uint128"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "isCurrentEpochActive",
     "outputs": [
@@ -909,6 +967,19 @@
   {
     "inputs": [],
     "name": "isLocked",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "latestActiveEpochIsClosed",
     "outputs": [
       {
         "internalType": "bool",
@@ -958,6 +1029,44 @@
   {
     "inputs": [
       {
+        "internalType": "uint128",
+        "name": "_amount",
+        "type": "uint128"
+      },
+      {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "lendWithSignature",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "",
         "type": "address"
@@ -981,6 +1090,11 @@
         "type": "uint8"
       },
       {
+        "internalType": "uint16",
+        "name": "lastDepositedEpoch",
+        "type": "uint16"
+      },
+      {
         "internalType": "uint128",
         "name": "amount",
         "type": "uint128"
@@ -989,11 +1103,6 @@
         "internalType": "uint128",
         "name": "lastDepositedQty",
         "type": "uint128"
-      },
-      {
-        "internalType": "uint16",
-        "name": "lastDepositedEpoch",
-        "type": "uint16"
       }
     ],
     "stateMutability": "view",

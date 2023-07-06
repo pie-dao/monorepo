@@ -144,7 +144,7 @@ export const useTokenBalance = (token: string): BigNumberReference => {
 export const useApprovalLimit = (
   token: string,
   spender: string,
-): { limit: BigNumberReference } => {
+): BigNumberReference => {
   /**
    * Determine current amount the vault is approved to spend
    * We can use this to determine whether to allow a deposit, or
@@ -158,8 +158,8 @@ export const useApprovalLimit = (
         spender
       ] ?? zeroBalance,
   );
-  if (!limit) return { limit: zeroBalance };
-  return { limit };
+  if (!limit) return zeroBalance;
+  return limit;
 };
 
 export function usePRVEstimation(
