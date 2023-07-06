@@ -4,6 +4,7 @@ import type { TokenSymbol } from '@web3-onboard/common';
 import Image from 'next/image';
 import trimAccount from '../../utils/trimAccount';
 import useTranslation from 'next-translate/useTranslation';
+import classNames from '../../utils/classnames';
 
 interface Account {
   address: string;
@@ -28,10 +29,10 @@ export default function ConnectWallet() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [wallet, wallet?.accounts[0]?.ens]);
 
-  if (wallet?.provider && account) return null;
-
   return (
-    <div>
+    <div
+      className={classNames(wallet?.provider && account ? 'invisible' : null)}
+    >
       <button
         className="px-4 py-1 text-base font-medium text-text bg-transparent rounded-2xl border border-text hover:bg-text hover:text-white h-[34px]"
         disabled={connecting}

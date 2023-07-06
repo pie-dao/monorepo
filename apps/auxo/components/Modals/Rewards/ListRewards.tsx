@@ -16,6 +16,7 @@ import { setClaim, setClaimStep } from '../../../store/rewards/rewards.slice';
 import { isEmpty } from 'lodash';
 import { useIsAutoCompoundEnabled } from '../../../hooks/useToken';
 import classNames from '../../../utils/classnames';
+import { sanitizeDate } from '../../../utils/date';
 
 const imageMap = {
   ARV: ARVImage,
@@ -80,11 +81,11 @@ export default function ListRewards() {
                 height={24}
                 priority
               />
-              <h3 className="text-primary text-lg font-semibold flex gap-x-2 items-center">
+              <h3 className="text-primary text-base font-semibold flex gap-x-2 items-center">
                 {t('totalRewards', { token: name })}
               </h3>
             </div>
-            <p className="text-primary text-lg font-semibold flex gap-x-2 uppercase items-center">
+            <p className="text-primary text-base font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
                   totalActiveRewards?.total?.label,
@@ -104,10 +105,15 @@ export default function ListRewards() {
                 >
                   <div className="flex items-center">
                     <p className=" text-primary text-sm font-medium px-2 py-1">
-                      {new Date(reward.month).toLocaleString(defaultLocale, {
-                        month: 'short',
-                        year: 'numeric',
-                      })}
+                      {reward?.month
+                        ? new Date(sanitizeDate(reward.month)).toLocaleString(
+                            defaultLocale,
+                            {
+                              month: 'short',
+                              year: 'numeric',
+                            },
+                          )
+                        : '---'}
                     </p>
                   </div>
                   <div className="flex items-center gap-x-2">

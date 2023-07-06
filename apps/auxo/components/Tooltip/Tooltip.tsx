@@ -3,10 +3,12 @@ import { Popover } from '@headlessui/react';
 import { usePopper } from 'react-popper';
 import { AnimatePresence, motion } from 'framer-motion';
 import { InformationCircleIcon } from '@heroicons/react/outline';
+import classNames from '../../utils/classnames';
 
 type Props = {
   children: React.ReactNode;
   icon?: React.ReactNode;
+  className?: string;
 };
 
 const variants = {
@@ -26,6 +28,7 @@ const variants = {
 
 const Tooltip: React.FC<Props> = ({
   children,
+  className,
   icon = <InformationCircleIcon />,
 }) => {
   const [referenceElement, setReferenceElement] = useState(null);
@@ -37,7 +40,6 @@ const Tooltip: React.FC<Props> = ({
         name: 'preventOverflow',
         options: {
           altAxis: true,
-          padding: 10,
         },
       },
       {
@@ -55,7 +57,10 @@ const Tooltip: React.FC<Props> = ({
         <>
           <Popover.Button
             ref={setReferenceElement}
-            className="flex focus:outline-none w-4 h-4 text-primary"
+            className={classNames(
+              'flex focus:outline-none w-4 h-4 text-primary',
+              className,
+            )}
             as={motion.button}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

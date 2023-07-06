@@ -42,7 +42,7 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
                 : featureIdx % 2 === 0
                 ? 'lg:col-start-5 xl:col-start-6'
                 : 'lg:col-start-1',
-              'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-7 xl:col-span-8 flex items-start gap-x-10',
+              'mt-6 lg:mt-0 lg:row-start-1 lg:col-span-7 xl:col-span-8 flex items-start gap-x-6',
             )}
           >
             <div
@@ -62,8 +62,8 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               </svg>
             </div>
 
-            <div className="flex flex-col xl:ml-4">
-              <h3 className="text-4xl font-semibold text-primary">
+            <div className="flex flex-col xl:ml-4 gap-y-4">
+              <h3 className="text-3xl md:text-4xl font-semibold text-primary">
                 {feature.title}
               </h3>
               <p className="mt-2 text-base text-primary">
@@ -76,7 +76,7 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               >
                 <div className="flex items-center mt-8 cursor-pointer">
                   <div className="flex items-center rounded-l-[50px] rounded-r-[20px] bg-gradient-primary w-fit shadow-sm">
-                    <div className="rounded-full bg-background flex p-3 shadow-sm">
+                    <div className="rounded-full bg-background flex p-3 shadow-sm flex-shrink-0">
                       <Image
                         src={feature?.button?.image}
                         alt={feature?.button?.text}
@@ -85,7 +85,7 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
                       />
                     </div>
                     <div className="flex items-center gap-x-2 px-4">
-                      <p className="text-primary font-semibold text-lg min-w-[14rem]">
+                      <p className="text-primary font-semibold text-lg min-w-[12rem]">
                         {feature?.button?.text}
                       </p>
                       <ChevronRightIcon className="w-5 h-5" />
@@ -107,11 +107,11 @@ const LeftRightContainer: React.FC<LeftRightContainerProps> = ({
               'flex-auto lg:row-start-1 lg:col-span-4 xl:col-span-5',
             )}
           >
-            <div className="overflow-hidden rounded-lg">
+            <div className="overflow-hidden rounded-lg mx-8 md:mx-0">
               <Image
                 src={feature.image.src}
                 alt={feature.image.alt}
-                width={444}
+                width={420}
                 className="object-cover object-center"
               />
             </div>

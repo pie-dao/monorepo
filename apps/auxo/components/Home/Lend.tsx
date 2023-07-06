@@ -61,13 +61,14 @@ const lendFeatures = [
 const Lend: React.FC = () => {
   const { t } = useTranslation();
   return (
-    <section
+    <Container
+      size="xl"
       id="lend"
-      className="scroll-mt-14 pb-16 sm:scroll-mt-24 sm:pb-20 lg:pb-38"
+      className="scroll-mt-14 pb-0 sm:scroll-mt-24"
     >
       <Container
-        size="wide"
-        className="py-16 place-items-center flex flex-col bg-cover mix-blend-multiply md:rounded-lg bg-[url('/images/background/lend.jpeg')] relative isolate overflow-hidden"
+        size="xl"
+        className="py-16 place-items-center flex flex-col bg-cover mix-blend-multiply rounded-lg bg-[url('/images/background/lend.jpeg')] relative isolate overflow-hidden"
       >
         <div className="inset-0 absolute bg-gradient-to-b bg-primary mix-blend-multiply opacity-90" />
         <div className="flex flex-col z-10">
@@ -104,7 +105,7 @@ const Lend: React.FC = () => {
           </button>
         </div>
       </Container>
-    </section>
+    </Container>
   );
 };
 
