@@ -39,24 +39,26 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
       {
         icon: <Image src={AuxoIcon} alt="AUXO" width={24} height={24} />,
         title: t('tokenBalance', { token: 'AUXO' }),
-        value:
-          account && auxoBalance
-            ? `${formatBalance(
-                auxoBalance.label,
-                defaultLocale,
-                4,
-                'standard',
-              )} AUXO`
-            : 'N/A',
+        value: (
+          <span className="font-bold text-base text-primary">
+            {account && auxoBalance
+              ? formatBalance(auxoBalance.label, defaultLocale, 4, 'standard')
+              : '0'}{' '}
+            AUXO
+          </span>
+        ),
       },
       {
         icon: <Image src={xAUXOIcon} alt="xAUXO" width={24} height={24} />,
         title: t('tokenBalance', { token: 'PRV' }),
-        value: `${
-          account && xAUXOBalance
-            ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
-            : '0'
-        } PRV`,
+        value: (
+          <span className="font-bold text-base text-primary">
+            {account && xAUXOBalance
+              ? formatBalance(xAUXOBalance.label, defaultLocale, 4, 'standard')
+              : '0'}{' '}
+            PRV
+          </span>
+        ),
       },
       {
         icon: (
@@ -84,17 +86,19 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         title: t('yourPendingStakedBalance', { token: 'PRV' }),
         value: (
           <div className="flex items-center gap-x-2">
-            <Trans
-              i18nKey="pendingStakedBalance"
-              values={{
-                pendingBalance: formatBalance(
-                  pendingStakedPRV.label,
-                  defaultLocale,
-                  4,
-                  'standard',
-                ),
-              }}
-            />
+            <span className="font-bold text-base text-primary flex leading-5">
+              <Trans
+                i18nKey="pendingStakedBalance"
+                values={{
+                  pendingBalance: formatBalance(
+                    pendingStakedPRV.label,
+                    defaultLocale,
+                    4,
+                    'standard',
+                  ),
+                }}
+              />
+            </span>
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -124,50 +128,54 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
   ]);
 
   return (
-    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-5">
+    <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2">
       <div className="flex flex-col w-full gap-y-4">
         <h3 className="text-xl font-semibold text-primary">{t('summary')}</h3>
       </div>
-      {summaryData.map(({ icon, title, value }, index) => (
-        <div
-          className="bg-sidebar flex items-center gap-x-4 rounded-md shadow-card self-center w-full p-2"
-          key={index}
-        >
-          <dt className="text-base text-primary font-medium flex items-center gap-x-2">
-            {icon && icon}
-            {title}:
-          </dt>
-          <dd className="flex ml-auto pr-2 font-semibold text-base text-primary">
-            {value}
-          </dd>
-        </div>
-      ))}
-      <Banner
-        bgColor="bg-info"
-        content={
-          <Trans
-            i18nKey="stakingStabilisesRewards"
-            components={{
-              a: (
-                <a
-                  href={
-                    'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
-                  }
-                  className="text-primary underline"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                />
-              ),
-            }}
-          />
-        }
-        icon={
-          <InformationCircleIcon
-            className="h-5 w-5 text-primary"
-            aria-hidden="true"
-          />
-        }
-      />
+      <div className="flex flex-col bg-sidebar lg:bg-transparent px-3 lg:px-0 lg:py-0 py-2 rounded-lg lg:space-y-2">
+        {summaryData.map(({ icon, title, value }, index) => (
+          <div
+            className="bg-sidebar flex flex-col lg:flex-row lg:items-center gap-x-4 gap-y-1 lg:rounded-md lg:shadow-card self-center w-full p-2"
+            key={index}
+          >
+            <dt className="text-base text-primary font-medium flex lg:items-center gap-x-2">
+              {icon && <div className="hidden lg:flex">{icon}</div>}
+              {title}:
+            </dt>
+            <dd className="flex lg:ml-auto pr-2 font-bold lg:font-semibold text-base text-primary">
+              {value}
+            </dd>
+          </div>
+        ))}
+      </div>
+      <div className="flex mt-4">
+        <Banner
+          bgColor="bg-info"
+          content={
+            <Trans
+              i18nKey="stakingStabilisesRewards"
+              components={{
+                a: (
+                  <a
+                    href={
+                      'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault'
+                    }
+                    className="text-primary underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                ),
+              }}
+            />
+          }
+          icon={
+            <InformationCircleIcon
+              className="h-5 w-5 text-primary"
+              aria-hidden="true"
+            />
+          }
+        />
+      </div>
     </div>
   );
 };

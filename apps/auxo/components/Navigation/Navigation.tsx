@@ -10,6 +10,7 @@ import {
   BanknotesIcon,
   AuxoLogotype,
   AuxoLogo,
+  TreasuryIcon,
 } from '../Icons/Icons';
 import classNames from '../../utils/classnames';
 import { Socials } from '../';
@@ -31,7 +32,7 @@ export default function Navigation({
     {
       name: t('treasury'),
       href: '/treasury',
-      icon: <TemplateIcon className='className="w-6 h-6"' />,
+      icon: <TreasuryIcon />,
     },
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
@@ -84,7 +85,7 @@ export default function Navigation({
       <AnimatePresence initial={false}>
         <motion.aside
           className={classNames(
-            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-20 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow',
+            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-20 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow overflow-hidden',
             isDesktop
               ? open
                 ? 'max-w-[11rem] overflow-y-auto'
@@ -102,7 +103,7 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 pb-8 pt-3 pl-4 w-[120px] sm:w-full h-16 overflow-hidden"
+                className="flex flex-shrink-0 w-[96px] h-[20px] p-2.5"
               >
                 <AuxoLogotype />
               </motion.div>
@@ -114,7 +115,7 @@ export default function Navigation({
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: -10, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex flex-shrink-0 mb-8 mt-3 w-10 h-10 overflow-hidden mx-auto shadow-lg rounded-full"
+                className="flex flex-shrink-0 w-10 h-10 overflow-hidden mx-auto shadow-lg rounded-full"
               >
                 <AuxoLogo />
               </motion.div>
@@ -126,7 +127,7 @@ export default function Navigation({
               variants={listVariants}
               initial="hidden"
               animate="visible"
-              className="flex flex-col pl-0 mb-0 list-none mx-2 gap-y-2"
+              className="flex flex-col pl-0 mb-0 list-none mx-2 gap-y-2 mt-6"
             >
               {navigation.map((item) => {
                 const active = pathname === item.href;
@@ -184,10 +185,10 @@ export default function Navigation({
       <motion.button
         type="button"
         className={classNames(
-          'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 mt-7 rounded-full',
+          'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 rounded-full',
           open
-            ? 'left-36 lg:left-40 bg-transparent'
-            : 'left-5 lg:left-20 bg-white/90 shadow py-2 px-1',
+            ? 'left-36 lg:left-40 bg-transparent mt-7'
+            : 'left-2 lg:left-20 bg-white/90 shadow py-2 px-1 mt-5',
         )}
         onClick={() => setOpen(!open)}
       >

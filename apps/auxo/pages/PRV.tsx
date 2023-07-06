@@ -125,7 +125,7 @@ export default function XAUXO({
         </section>
         {/* Section for TVL, Capital Utilization, and APY */}
         <section className="flex flex-wrap justify-between gap-4  text-xs md:text-inherit mt-6">
-          <div className="flex gap-x-4 items-center w-full sm:w-fit">
+          <div className="flex gap-x-4 items-center w-full sm:w-fit ml-[10px] flex-wrap">
             <div className="flex flex-col py-1">
               {!stakingAmount ? (
                 <>
@@ -134,7 +134,7 @@ export default function XAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-sub-dark text-base sm:text-xl">
+                  <p className="font-semibold text-primary text-base sm:text-xl">
                     {formatBalance(
                       stakingAmount.label,
                       defaultLocale,
@@ -142,7 +142,7 @@ export default function XAUXO({
                       'standard',
                     )}
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('totalStaked', { token: 'PRV' })}
                     <Tooltip>{t('totalStakedPrvTooltip')}</Tooltip>
                   </div>
@@ -157,7 +157,7 @@ export default function XAUXO({
                 </>
               ) : (
                 <>
-                  <p className="font-bold text-base text-sub-dark sm:text-xl">
+                  <p className="font-semibold text-primary text-base sm:text-xl">
                     <span>
                       {formatBalance(
                         totalSupply.label,
@@ -167,7 +167,7 @@ export default function XAUXO({
                       )}
                     </span>
                   </p>
-                  <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                  <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                     {t('total', { token: 'PRV' })}
                     <Tooltip>{t('totalTooltip', { token: 'PRV' })}</Tooltip>
                   </div>
@@ -177,20 +177,21 @@ export default function XAUXO({
           </div>
           <div className="flex gap-x-2 items-center w-full sm:w-fit">
             {/* <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
-              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
+              <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
+
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.avgAPR
                     ? 'N/A'
                     : formatAsPercent(0, defaultLocale)}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('lastMonthDistribution')}
                   <Tooltip>{t('lastMonthDistributionTooltip')}</Tooltip>
                 </div>
               </div>
             </div> */}
-            <div className="flex flex-col p-[3px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full sm:w-fit">
-              <div className="bg-gradient-to-r from-white via-white to-background px-4 py-1 rounded-md">
+            <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full">
+              <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
                 <p className="font-bold text-primary text-xl">
                   {isError || !data?.getTreasury?.marketData?.auxoAPR
                     ? 'N/A'
@@ -199,7 +200,7 @@ export default function XAUXO({
                         defaultLocale,
                       )}
                 </p>
-                <div className="flex text-base text-sub-dark font-medium gap-x-1">
+                <div className="flex text-base text-primary font-medium gap-x-1 items-center">
                   {t('apr', { token: 'PRV' })}
                   <Tooltip>{t('aprTooltip', { token: 'PRV' })}</Tooltip>
                 </div>
@@ -209,10 +210,10 @@ export default function XAUXO({
         </section>
         <section className="mt-6">
           <TokenCarousel>
-            <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
+            <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden shadow-sm items-start w-full font-medium transition-all mx-auto bg-center bg-no-repeat bg-[url('/images/background/ARV/ARV_SLIDE_1.png')] bg-cover h-full relative">
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-full flex flex-col place-items-center">
-                  <div className="flex flex-shrink-0 mb-12">
+                  <div className="flex flex-shrink-0 mb-12 justify-center">
                     <svg
                       width="41"
                       height="41"
@@ -246,71 +247,79 @@ export default function XAUXO({
                 </div>
               </div>
             </div>
-            <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
+            <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_1.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[75%] md:max-w-[50%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[85%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide2Title')}
                   </h2>
-                  <p className="font-medium text-base text-white">
+                  <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide2Description')}
                   </p>
-                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap justify-center w-full lg:justify-start">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('votingNotRequired')}</span>
                     </div>
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('earningTreasuryYield')}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="relative h-[482px] flex-[0_0_100%] min-w-0">
+            <div className="relative h-[560px] flex-[0_0_100%] min-w-0">
               <div className="overflow-hidden  relative shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/PRV/PRV_SLIDE_2.png')] bg-cover h-full">
-                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[50%] mx-auto lg:mx-16 gap-y-6">
+                <div className="absolute top-1/2 transform -translate-y-1/2 left-1/2 -translate-x-1/2 lg:left-0 lg:-translate-x-0 text-center lg:text-left w-full flex flex-col max-w-[85%] mx-auto lg:mx-16 gap-y-6">
                   <h2 className="text-lg md:text-4xl bg-clip-text text-transparent bg-gradient-major-colors font-bold">
                     {t('prvSlide3Title')}
                   </h2>
-                  <p className="font-medium text-base text-white">
+                  <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide3Description1')}
                   </p>
-                  <p className="font-medium text-base text-white">
+                  <p className="font-medium text-sm lg:text-base text-white">
                     {t('prvSlide3Description2')}
                   </p>
-                  <div className="flex gap-x-6 gap-y-2 flex-wrap">
+                  <div className="flex gap-x-6 gap-y-2 flex-wrap justify-center w-full lg:justify-start">
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('unstakeAnytime')}</span>
                     </div>
                     <div className="w-fit bg-secondary text-white text-xs md:text-sm font-medium px-4 py-1.5 rounded-full gap-x-2 flex items-center">
-                      <Image
-                        src={DoubleCheckmark}
-                        alt="double checkmark"
-                        width={18}
-                        height={18}
-                        priority
-                      />
+                      <div className="flex flex-shrink-0">
+                        <Image
+                          src={DoubleCheckmark}
+                          alt="double checkmark"
+                          width={18}
+                          height={18}
+                          priority
+                        />
+                      </div>
                       <span>{t('stakeAtLeastOneEpoch')}</span>
                     </div>
                   </div>

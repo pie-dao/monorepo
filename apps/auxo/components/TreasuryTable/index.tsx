@@ -64,26 +64,15 @@ export function TreasuryTabs(
     'pagination[pageSize]': 3,
   });
 
-  const { data: glpPrice, isLoading } = useGetGlpStatsQuery(
-    {
-      endpoint: 'https://api.thegraph.com/subgraphs/name/gmx-io/gmx-stats',
-    },
-    {
-      first: 1,
-      orderBy: GlpStat_OrderBy.Timestamp,
-      orderDirection: OrderDirection.Desc,
-    },
-  );
-
   return (
-    <section className="w-full bg-background pt-8">
+    <section className="w-full bg-background mt-6">
       <Tab.Group>
-        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-2 grid grid-cols-2 w-full">
+        <Tab.List className="md:flex ml-[10px] md:max-w-xs gap-x-2 grid grid-cols-1 w-full">
           {['About'].map((title) => (
             <Tab
               className={({ selected }) =>
                 classNames(
-                  'md:w-fit py-1 text-md font-medium leading-5 focus:outline-none relative text-center',
+                  'md:w-fit py-2 text-md font-medium leading-5 focus:outline-none relative text-center',
                   !selected && 'text-sub-light',
                   selected && 'text-secondary',
                 )
@@ -102,12 +91,12 @@ export function TreasuryTabs(
           ))}
         </Tab.List>
 
-        <Tab.Panels className="bg-gradient-primary shadow-md rounded-lg px-3 py-2 overflow-hidden mt-4">
+        <Tab.Panels className="bg-gradient-primary shadow-md rounded-lg p-4 overflow-hidden mt-4">
           <SingleProductPanel className="divide-y">
             <>
               <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                 <div className="flex flex-col gap-y-8 divide-gray-200">
-                  <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-strong:text-primary prose-ul:text-primary prose-li:text-primary">
+                  <div className="text-primary text-base">
                     {t('treasuryDescription')}
                   </div>
                   <div className="flex flex-col gap-y-6">
@@ -115,12 +104,12 @@ export function TreasuryTabs(
                       <h3 className="text-base text-primary font-medium">
                         {t('multisigAddresses')}
                       </h3>
-                      <dl className="ml-4 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                      <dl className="flex flex-col space-y-4 mt-2">
                         {!isEmpty(MultisigAddresses?.multisigs?.treasury)
                           ? Object.entries(
                               MultisigAddresses?.multisigs?.treasury,
                             ).map(([key, value]) => (
-                              <Fragment key={key}>
+                              <div className="flex flex-col gap-2" key={key}>
                                 <dt className="text-sm font-medium text-primary flex gap-x-2 items-center">
                                   <div className="flex flex-shrink-0">
                                     <ChainIcons
@@ -132,7 +121,7 @@ export function TreasuryTabs(
                                   </div>
                                   {chainMap[Number(key)].chainName}
                                 </dt>
-                                <dd className="text-secondary text-lg truncate">
+                                <dd className="text-primary hover:text-secondary text-base truncate">
                                   <a
                                     href={`${
                                       getExplorer(Number(key))[0].url
@@ -143,7 +132,7 @@ export function TreasuryTabs(
                                     {value}
                                   </a>
                                 </dd>
-                              </Fragment>
+                              </div>
                             ))
                           : null}
                       </dl>
@@ -174,7 +163,7 @@ export function TreasuryTabs(
                       {({ width }) => (
                         <PieChart
                           width={width}
-                          height={300}
+                          height={280}
                           data={data?.data?.map((item) => ({
                             label: item.attributes.label,
                             value: item.attributes.value,
