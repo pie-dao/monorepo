@@ -4,6 +4,7 @@ export default function isValidDate(dateString: string) {
 }
 
 export const sanitizeDate = (monthYear: string) => {
+  if (!monthYear) return '';
   const parts = monthYear.split('-');
 
   if (parts[1].length === 2) {
