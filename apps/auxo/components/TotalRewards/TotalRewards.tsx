@@ -4,7 +4,7 @@ import PRV from '../../public/tokens/32x32/PRV.svg';
 import useTranslation from 'next-translate/useTranslation';
 import { formatBalance } from '../../utils/formatBalance';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useActiveRewards, useUnclaimedRewards } from '../../hooks/useRewards';
+import { useActiveRewards } from '../../hooks/useRewards';
 import {
   setClaimFlowOpen,
   setClaimStep,
@@ -17,7 +17,6 @@ import { useMemo, useRef } from 'react';
 import {
   useIsAutoCompoundEnabled,
   useTokenBalance,
-  useUserStakedPRV,
 } from '../../hooks/useToken';
 import { isEmpty, isEqual } from 'lodash';
 import { zeroBalance } from '../../utils/balances';
