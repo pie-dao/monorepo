@@ -5,8 +5,6 @@ import { useAppSelector, useAppDispatch } from '../../../hooks';
 import Image from 'next/image';
 import { useLendingPoolContract } from '../../../hooks/useContracts';
 import { formatBalance } from '../../../utils/formatBalance';
-import { PREFERENCES } from '../../../utils/constants';
-import { invert } from 'lodash';
 import { thunkLendDeposit } from '../../../store/lending/lending.thunks';
 import { useEnanchedPools } from '../../../hooks/useEnanchedPools';
 import { PendingTransactionContent } from './PendingTransactionContent';

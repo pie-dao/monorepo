@@ -2,13 +2,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
   contractWrappers,
   poolAddressesContracts,
-  productContracts,
 } from '../products/products.contracts';
 import { promiseObject } from '../../utils/promiseObject';
 import { find, isEmpty } from 'lodash';
-import { EIP1193Provider, WalletState } from '@web3-onboard/core';
+import { EIP1193Provider } from '@web3-onboard/core';
 import { toBalance } from '../../utils/formatBalance';
-import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { BigNumber } from 'ethers';
 import { Epoch, STEPS, States, Steps, TX_STATES } from './lending.types';
 import { calculatePriceInUSD, zeroBalance } from '../../utils/balances';
 import { findProductByAddress } from '../../utils/findProductByAddress';
@@ -17,8 +16,7 @@ import { BigNumberReference } from '../products/products.types';
 import { Erc20Abi, LendingPoolAbi } from '@shared/util-blockchain';
 import { pendingNotification } from '../../components/Notifications/Notifications';
 import { setLendingStep, setTx, setTxHash } from './lending.slice';
-import { DEADLINE, PREFERENCES } from '../../utils/constants';
-import { getPermitSignature } from '../../utils/permit';
+import { PREFERENCES } from '../../utils/constants';
 
 const createEpochObject = (epoch: Epoch, decimals: number) => ({
   rate: toBalance(epoch.rate.mul(BigNumber.from(100)), 18),

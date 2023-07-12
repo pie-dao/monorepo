@@ -16,8 +16,6 @@ import classNames from '../../utils/classnames';
 import { AnimatePresence } from 'framer-motion';
 import ModalBox from '../Modals/ModalBox';
 import { Alert } from '../Alerts/Alerts';
-import * as Switch from '@radix-ui/react-switch';
-import { RefreshIcon } from '@heroicons/react/solid';
 import { useEnanchedPools } from '../../hooks/useEnanchedPools';
 import LendActions from './InputActions';
 import {
@@ -33,7 +31,7 @@ import {
   UsePoolAcceptsDeposits,
   UsePoolState,
 } from '../../hooks/useLending';
-import { isEmpty, isEqual, set } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { formatBalance } from '../../utils/formatBalance';
 import { PREFERENCES } from '../../utils/constants';
 import { Preferences, STATES, STEPS } from '../../store/lending/lending.types';
@@ -211,40 +209,6 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                 </Tab>
               ) : null}
             </Tab.List>
-            {/* {selectedIndex === 0 ? (
-              <div className="flex gap-x-2 items-center">
-                <label
-                  className="pr-2 text-sub-dark font-medium text-base flex gap-x-1"
-                  htmlFor="autocompound"
-                >
-                  <RefreshIcon
-                    className="h-5 w-5 text-primary rotate-90 -scale-y-100"
-                    aria-hidden="true"
-                  />
-                  <span className="text-primary">{t('autocompound')}</span>
-                </label>
-                <Switch.Root
-                  className={classNames(
-                    'group',
-                    'flex bg-sub-dark relative items-center h-[15px] w-[36px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out',
-                    'focus:outline-none focus-visible:ring focus-visible:ring-sub-dark focus-visible:ring-opacity-75',
-                  )}
-                  id="autocompound"
-                  onCheckedChange={setAutocompound}
-                  checked={
-                    preference === PREFERENCES.AUTOCOMPOUND ? true : false
-                  }
-                >
-                  <Switch.Thumb
-                    className={classNames(
-                      'group-radix-state-checked:translate-x-4 group-radix-state-checked:bg-secondary',
-                      'group-radix-state-unchecked:-translate-x-1 group-radix-state-unchecked:bg-sub-light',
-                      'pointer-events-none flex h-[23px] w-[23px] transform rounded-full shadow-lg ring-0 transition duration-200 ease-in-out',
-                    )}
-                  />
-                </Switch.Root>
-              </div>
-            ) : null} */}
           </div>
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
