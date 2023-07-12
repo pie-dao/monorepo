@@ -61,7 +61,9 @@ export const Report = z.object({
     tvl: z.number(),
     tvl_in_eth: z.number(),
     capital_utilisation: z.number(),
-    avg_apr: z.number(),
+    avg_apr: z.number().nullish(),
+    avg_apr_arv: z.number().nullish(),
+    avg_apr_prv: z.number().nullish(),
     report_url: z.string().nullish(),
   }),
 });

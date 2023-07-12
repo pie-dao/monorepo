@@ -17,7 +17,6 @@ import { useMemo, useRef } from 'react';
 import {
   useIsAutoCompoundEnabled,
   useTokenBalance,
-  useUserStakedPRV,
 } from '../../hooks/useToken';
 import { isEmpty, isEqual } from 'lodash';
 import { zeroBalance } from '../../utils/balances';
@@ -39,10 +38,8 @@ const TotalRewards: React.FC = () => {
   const totalARVRewards = useActiveRewards('ARV');
 
   const ARVBalance = useTokenBalance('ARV');
-  const StakedPRVBalance = useUserStakedPRV();
 
   const hasARVBalance = !isEqual(ARVBalance, zeroBalance);
-  const hasPRVBalance = !isEqual(StakedPRVBalance, zeroBalance);
 
   const hasPRVRewards = !isEqual(totalPRVRewards?.total, zeroBalance);
   const hasARVRewards = !isEqual(totalARVRewards?.total, zeroBalance);
@@ -97,8 +94,8 @@ const TotalRewards: React.FC = () => {
               })}
             </p>
           </div>
-          {hasPRVBalance ? (
-            <ActionsBar token="PRV" showClaim={hasPRVRewards} />
+          {hasPRVRewards ? (
+            <ActionsBar token="PRV" showClaim={true} />
           ) : (
             <NoRewards token="PRV" />
           )}

@@ -13,7 +13,7 @@ import {
   BaseSubDarkTextSkeleton,
 } from '../components/Skeleton';
 import { formatBalance, formatAsPercent } from '../utils/formatBalance';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector, useStrapiCollection } from '../hooks';
 import Stake from '../components/Stake/Stake';
 import { useConnectWallet } from '@web3-onboard/react';
 import {
@@ -38,6 +38,7 @@ import { mulBalances, subBalances } from '../utils/balances';
 import TokenCarousel from '../components/TokenCarousel/TokenCarousel';
 import Trans from 'next-translate/Trans';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
+import { TypesMap } from '../types/cmsTypes';
 
 export default function ARV({
   tokenConfig,
@@ -52,6 +53,15 @@ export default function ARV({
   const stakingAmount = useAppSelector(
     (state) => state.dashboard?.tokens?.[tokenConfig.name]?.stakingAmount,
   );
+
+  const {
+    data: latestReport,
+    isLoading,
+    isError,
+  } = useStrapiCollection<TypesMap['reports']>('reports', {
+    sort: 'createdAt:desc',
+    _limit: 1,
+  });
 
   const votingAddresses = useAppSelector(
     (state) => state.dashboard?.tokens?.[tokenConfig.name]?.votingAddresses,
@@ -111,9 +121,6 @@ export default function ARV({
     dispatch(setStep(STEPS.EARLY_TERMINATION));
     dispatch(setIsOpen(true));
   };
-
-  const data = null;
-  const isError = false;
 
   return (
     <>
@@ -233,10 +240,12 @@ export default function ARV({
             <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full">
               <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
                 <p className="font-bold text-primary text-xl">
-                  {isError || !data?.getTreasury?.marketData?.auxoAPR
+                  {isError ||
+                  isLoading ||
+                  latestReport?.data?.[0]?.attributes.avg_apr_arv === null
                     ? 'N/A'
                     : formatAsPercent(
-                        data.getTreasury.marketData.auxoAPR,
+                        latestReport?.data?.[0]?.attributes.avg_apr_arv,
                         defaultLocale,
                       )}
                 </p>
