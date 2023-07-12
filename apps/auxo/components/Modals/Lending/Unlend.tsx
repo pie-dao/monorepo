@@ -38,7 +38,7 @@ export default function Unlend() {
             as="h3"
             className="font-bold text-center text-xl text-primary capitalize w-full"
           >
-            {t('claimingRewardsFor', {
+            {t('unlendTitle', {
               token: poolData?.attributes?.token?.data?.attributes?.name,
             })}
           </Dialog.Title>

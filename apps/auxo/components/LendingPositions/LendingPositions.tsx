@@ -225,15 +225,17 @@ export const SinglePoolPosition = ({ position }: SinglePoolPositionProps) => {
           </div>
           <div className="grid-cols-1 gap-4 py-1 items-center col-span-2 hidden md:grid">
             <div className="flex items-center gap-x-1 ml-auto lg:ml-0 justify-end">
-              <p className="text-sm font-medium text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
-                {t('poolAPR', {
-                  apr: formatAsPercent(
-                    position?.lastActiveEpoch?.rate?.label,
-                    'en-US',
-                    2,
-                  ),
-                })}
-              </p>
+              {position?.lastActiveEpoch?.rate?.label ? (
+                <p className="text-sm font-medium text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                  {t('poolAPR', {
+                    apr: formatAsPercent(
+                      position?.lastActiveEpoch?.rate?.label,
+                      'en-US',
+                      2,
+                    ),
+                  })}
+                </p>
+              ) : null}
               <div className="flex flex-shrink-0">
                 <ChevronRightIcon className="h-5 w-5 text-primary" />
               </div>

@@ -45,6 +45,12 @@ export const UseCanUserWithdrawFromPool = (poolAddress: string) => {
   );
 };
 
+export const UseUserCanClaim = (poolAddress: string) => {
+  return useAppSelector(
+    (state) => state?.lending?.pools?.[poolAddress]?.userData?.canClaim,
+  );
+};
+
 export const UseUserPreference = (poolAddress: string) => {
   return useAppSelector(
     (state) => state?.lending?.pools?.[poolAddress]?.userData?.preference,
@@ -55,6 +61,12 @@ export const UseMaxBorrowableAmountFromPool = (poolAddress: string) => {
   return useAppSelector(
     (state) =>
       state?.lending?.pools?.[poolAddress]?.lastEpoch?.maxBorrow ?? zeroBalance,
+  );
+};
+
+export const UsePoolState = (poolAddress: string) => {
+  return useAppSelector(
+    (state) => state?.lending?.pools?.[poolAddress]?.lastEpoch?.state,
   );
 };
 
@@ -71,6 +83,9 @@ export const UseLoan = (poolAddress: string) => {
       state?.lending?.pools?.[poolAddress]?.userData?.balance ?? zeroBalance,
   );
 };
+
+export const UsePoolAcceptsDeposits = (poolAddress: string): boolean =>
+  useAppSelector((state) => state?.lending?.pools?.[poolAddress]?.canDeposit);
 
 export const UseSufficentApproval = (poolAddress: string): boolean => {
   const allowance = UsePoolApproval(poolAddress);

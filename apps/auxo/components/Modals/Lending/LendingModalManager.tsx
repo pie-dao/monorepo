@@ -15,6 +15,7 @@ import Unlend from './Unlend';
 import WithdrawRequest from './WithdrawRequest';
 import LendingSuccess from './LendingSuccess';
 import WithdrawConfirm from './WIthdrawConfirm';
+import ChangePreference from './ChangePreference';
 
 export default function LendingModalManager() {
   const { open, step } = useAppSelector((state) => state.lending.lendingFlow);
@@ -47,6 +48,10 @@ export default function LendingModalManager() {
                     <LendingSuccess action="deposit" />
                   )}
                   {step === STEPS.LEND_REWARDS_CLAIM && <LendClaimRewards />}
+                  {step === STEPS.CHANGE_PREFERENCE && <ChangePreference />}
+                  {step === STEPS.CHANGE_PREFERENCE_COMPLETED && (
+                    <LendingSuccess action={'changePreference'} />
+                  )}
                   {step === STEPS.UNLEND && <Unlend />}
                   {step === STEPS.WITHDRAW_REQUEST && <WithdrawRequest />}
                   {step === STEPS.WITHDRAW_CONFIRM && <WithdrawConfirm />}

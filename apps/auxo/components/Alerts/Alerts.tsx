@@ -25,10 +25,12 @@ export function Alert({
   open,
   children,
   style = 'warning',
+  className,
 }: {
   open?: boolean;
   children: React.ReactNode;
   style?: 'error' | 'warning';
+  className?: string;
 }) {
   return (
     <AnimatePresence>
@@ -38,6 +40,7 @@ export function Alert({
             'rounded-lg items-center py-1 justify-center',
             style === 'warning' && 'bg-warning text-primary',
             style === 'error' && 'bg-red text-white',
+            className,
           )}
           variants={variants}
           initial="hidden"

@@ -20,14 +20,14 @@ export default function PoolsPage({ pool, tokenConfig }: Props) {
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-6">
-        <div className="lg:col-span-5">
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 mt-6">
+        <div className="xl:col-span-5">
           <ClaimablePoolRewards poolAddress={pool} />
         </div>
-        <div className="lg:col-span-2 order-2 lg:order-1">
+        <div className="xl:col-span-2 order-2 xl:order-1">
           <Lend tokenConfig={tokenConfig} poolAddress={pool} />
         </div>
-        <div className="lg:col-span-3  order-1 lg:order-2 h-full">
+        <div className="xl:col-span-3  order-1 xl:order-2 h-full">
           <LendInfo poolAddress={pool} />
         </div>
       </div>

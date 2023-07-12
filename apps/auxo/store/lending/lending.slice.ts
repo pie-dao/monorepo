@@ -4,11 +4,11 @@ import {
   thunkGetLendingData,
   thunkGetUserLendingData,
   thunkLendDeposit,
-  thunkRequestWithdrawal,
+  thunkChangePreference,
   thunkUnlend,
   thunkWithdraw,
 } from './lending.thunks';
-import { Pools, SliceState, Steps } from './lending.types';
+import { Pools, Preferences, SliceState, Steps } from './lending.types';
 import { merge } from 'lodash';
 import { BigNumberReference } from '../products/products.types';
 import { zeroBalance } from '../../utils/balances';
@@ -82,7 +82,7 @@ const appSlice = createSlice({
     addTxNotifications(builder, thunkLendDeposit, 'lendDeposit');
     addTxNotifications(builder, thunkUnlend, 'unlend');
     addTxNotifications(builder, thunkWithdraw, 'withdraw');
-    addTxNotifications(builder, thunkRequestWithdrawal, 'requestWithdrawal');
+    addTxNotifications(builder, thunkChangePreference, 'changePreference');
   },
 
   reducers: {
@@ -137,7 +137,7 @@ const appSlice = createSlice({
     setPrincipal: (state, action: PayloadAction<string>) => {
       state.lendingFlow.principal = action.payload;
     },
-    setPreference: (state, action: PayloadAction<number>) => {
+    setPreference: (state, action: PayloadAction<Preferences>) => {
       state.lendingFlow.preference = action.payload;
     },
   },

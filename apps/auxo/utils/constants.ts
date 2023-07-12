@@ -5,6 +5,9 @@ export const AVG_SECONDS_IN_DAY = 86400;
 export const MAX_LOCK_DURATION_IN_SECONDS = 94608000;
 // JS to Solidity one hour
 export const ONE_HOUR_DEADLINE = 3600000;
+export const DEADLINE = Math.floor(
+  Date.now() / 1000 + ONE_HOUR_DEADLINE,
+).toString();
 
 export const CONVERSION_CURVE = [
   '1',
@@ -121,6 +124,6 @@ export const WETH_ADDRESS = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 
 export const PREFERENCES = {
   AUTOCOMPOUND: 0,
-  ROLLED: 1,
+  CLAIM: 1,
   WITHDRAW: 2,
-};
+} as const;

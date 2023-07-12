@@ -1,6 +1,7 @@
 import { BigNumber } from 'ethers';
 import { BigNumberReference } from '../products/products.types';
 import { TxState } from '../modal/modal.types';
+import { PREFERENCES } from '../../utils/constants';
 
 export type SliceState = {
   pools: Pools;
@@ -23,9 +24,18 @@ export const STEPS = {
   WITHDRAW_CONFIRM_COMPLETED: 'WITHDRAW_CONFIRM_COMPLETED',
   WITHDRAW_CONFIRM: 'WITHDRAW_CONFIRM',
   WITHDRAW_REQUEST_COMPLETED: 'WITHDRAW_REQUEST_COMPLETED',
+  CHANGE_PREFERENCE: 'CHANGE_PREFERENCE',
+  CHANGE_PREFERENCE_COMPLETED: 'CHANGE_PREFERENCE_COMPLETED',
 } as const;
 
-export type Steps = keyof typeof STEPS;
+export type Steps =
+  | `${'LEND'}${string}`
+  | `${'APPROVE'}${string}`
+  | `${'UNLEND'}${string}`
+  | `${'WITHDRAW'}${string}`
+  | `${'CHANGE_PREFERENCE'}${string}`;
+
+export type Preferences = (typeof PREFERENCES)[keyof typeof PREFERENCES];
 
 export type LendingFlow = {
   step: Steps;
@@ -39,7 +49,7 @@ export type LendingFlow = {
   showCompleteModal: boolean;
   spender?: string;
   selectedPool?: string;
-  preference?: number;
+  preference?: Preferences;
 };
 
 export type Principal = {
@@ -47,13 +57,22 @@ export type Principal = {
   decimals: number;
 };
 
+export const STATES = {
+  PENDING: 0,
+  ACTIVE: 1,
+  LOCKED: 2,
+  CLOSED: 3,
+} as const;
+
+export type States = (typeof STATES)[keyof typeof STATES];
+
 export type Pool = {
   address?: string;
   principal?: string;
   interest?: BigNumberReference;
   lastEpoch?: {
     rate?: BigNumberReference;
-    state?: number;
+    state?: States;
     maxBorrow?: BigNumberReference;
     totalBorrow?: BigNumberReference;
     available?: BigNumberReference;
@@ -62,7 +81,7 @@ export type Pool = {
   };
   lastActiveEpoch?: {
     rate?: BigNumberReference;
-    state?: number;
+    state?: States;
     maxBorrow?: BigNumberReference;
     totalBorrow?: BigNumberReference;
     available?: BigNumberReference;
@@ -74,10 +93,12 @@ export type Pool = {
     balance?: BigNumberReference;
     yield?: BigNumberReference;
     canWithdraw?: boolean;
+    canClaim?: boolean;
     unlendableAmount?: BigNumberReference;
     preference?: number;
     allowance?: BigNumberReference;
   };
+  canDeposit?: boolean;
   epochs?: convertedEpoch[];
 };
 
@@ -99,7 +120,7 @@ export type Epoch = {
 
 export type convertedEpoch = {
   rate: BigNumberReference;
-  state: number;
+  state: States;
   maxBorrow: BigNumberReference;
   totalBorrow: BigNumberReference;
   available: BigNumberReference;

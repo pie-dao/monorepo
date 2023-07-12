@@ -3,9 +3,9 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export function Markdown(text: string) {
+export function ParseMarkdown(text: string) {
   return (
-    <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-p:leading-normal prose-strong:text-primary prose-ul:text-primary prose-li:text-primary prose-h4:mb-6">
+    <div className="prose max-w-none prose-headings:text-primary prose-p:text-primary prose-p:leading-normal prose-strong:text-primary prose-ul:text-primary prose-li:text-primary prose-h4:mb-4">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
     </div>
   );

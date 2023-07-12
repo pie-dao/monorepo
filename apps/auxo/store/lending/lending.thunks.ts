@@ -6,10 +6,10 @@ import {
 } from '../products/products.contracts';
 import { promiseObject } from '../../utils/promiseObject';
 import { find, isEmpty } from 'lodash';
-import { EIP1193Provider } from '@web3-onboard/core';
+import { EIP1193Provider, WalletState } from '@web3-onboard/core';
 import { toBalance } from '../../utils/formatBalance';
-import { BigNumber, BigNumberish } from 'ethers';
-import { Epoch, STEPS, Steps, TX_STATES } from './lending.types';
+import { BigNumber, BigNumberish, ContractTransaction } from 'ethers';
+import { Epoch, STEPS, States, Steps, TX_STATES } from './lending.types';
 import { calculatePriceInUSD, zeroBalance } from '../../utils/balances';
 import { findProductByAddress } from '../../utils/findProductByAddress';
 import { fetchPrice } from '../../hooks/useCoingecko';
@@ -17,11 +17,12 @@ import { BigNumberReference } from '../products/products.types';
 import { Erc20Abi, LendingPoolAbi } from '@shared/util-blockchain';
 import { pendingNotification } from '../../components/Notifications/Notifications';
 import { setLendingStep, setTx, setTxHash } from './lending.slice';
-import { PREFERENCES } from '../../utils/constants';
+import { DEADLINE, PREFERENCES } from '../../utils/constants';
+import { getPermitSignature } from '../../utils/permit';
 
 const createEpochObject = (epoch: Epoch, decimals: number) => ({
   rate: toBalance(epoch.rate.mul(BigNumber.from(100)), 18),
-  state: epoch.state,
+  state: epoch.state as States,
   maxBorrow: toBalance(epoch.maxBorrow, decimals),
   totalBorrow: toBalance(epoch.totalBorrowed, decimals),
   available: toBalance(epoch.available, decimals),
@@ -34,6 +35,8 @@ export const THUNKS = {
   GET_USER_LENDING_DATA: 'app/getUserLendingData',
   APPROVE_LENDING_TOKEN: 'app/approveLendingToken',
   LEND_DEPOSIT: 'app/lendDeposit',
+  LEND_WITH_SIGNATURE: 'app/lendWithSignature',
+  CHANGE_PREFERENCE: 'app/changePreference',
   CLAIM_REWARDS: 'app/claimRewards',
   UNLOAN: 'app/unloan',
   REQUEST_WITHDRAWAL: 'app/requestWithdrawal',
@@ -53,7 +56,7 @@ export const thunkGetLendingData = createAsyncThunk(
             lastEpoch: wrappedPool.getLatestEpoch(),
             lastActiveEpoch: wrappedPool.getLastActiveEpoch(),
             epochs: wrappedPool.getEpochs(),
-            // canDeposit: wrappedPool.isPoolAcceptingDeposits()
+            canDeposit: wrappedPool.isPoolAcceptingDeposits(),
           });
           return results;
         }),
@@ -101,7 +104,7 @@ export const thunkGetLendingData = createAsyncThunk(
                 epochs: pool.epochs.map((epoch) => {
                   return createEpochObject(epoch, decimals);
                 }),
-                // canDeposit: pool?.canDeposit,
+                canDeposit: pool.canDeposit,
               },
             ];
           }),
@@ -133,7 +136,9 @@ export const thunkGetUserLendingData = createAsyncThunk(
             claimableRewards: wrappedPool.claimable(account),
             loan: wrappedPool.getLoan(account),
             canWithdraw: wrappedPool.canWithdraw(account),
+            canClaim: wrappedPool.canClaim(account),
             unlendableAmount: wrappedPool.getUnlendableAmount(account),
+            loanAndCompound: wrappedPool.previewCompound(account),
           });
           return results;
         }),
@@ -194,7 +199,7 @@ export const thunkGetUserLendingData = createAsyncThunk(
             price,
           );
           totalDeposited += calculatePriceInUSD(
-            toBalance(pool.loan.amount, decimals),
+            toBalance(pool.loanAndCompound ?? pool.loan.amount, decimals),
             decimals,
             price,
           );
@@ -213,6 +218,10 @@ export const thunkGetUserLendingData = createAsyncThunk(
               {
                 userData: {
                   balance: toBalance(
+                    pool.loanAndCompound ?? pool.loan.amount,
+                    findProductByAddress(pool.principal).decimals,
+                  ),
+                  balanceWithoutCompound: toBalance(
                     pool.loan.amount,
                     findProductByAddress(pool.principal).decimals,
                   ),
@@ -221,6 +230,7 @@ export const thunkGetUserLendingData = createAsyncThunk(
                     findProductByAddress(pool.principal).decimals,
                   ),
                   canWithdraw: pool?.canWithdraw,
+                  canClaim: pool?.canClaim,
                   unlendableAmount: pool?.unlendableAmount
                     ? toBalance(
                         pool.unlendableAmount,
@@ -295,18 +305,17 @@ export const thunkApproveToken = createAsyncThunk(
 export type ThunkLendDeposit = {
   deposit: BigNumberReference;
   lendingPool: LendingPoolAbi;
-  preference: BigNumberish;
 };
 
 export const thunkLendDeposit = createAsyncThunk(
   THUNKS.LEND_DEPOSIT,
   async (
-    { deposit, lendingPool, preference }: ThunkLendDeposit,
+    { deposit, lendingPool }: ThunkLendDeposit,
     { rejectWithValue, dispatch },
   ) => {
     if (!lendingPool) return rejectWithValue('Missing staking contract');
     dispatch(setTxHash(null));
-    const tx = await lendingPool.lend(deposit.value, preference);
+    const tx = await lendingPool.lendAndClaim(deposit.value);
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
@@ -334,6 +343,80 @@ export const thunkLendDeposit = createAsyncThunk(
       : rejectWithValue('Deposit Failed');
   },
 );
+
+// export type thunkLendWithSignature = {
+//   wallet: WalletState;
+//   account: string;
+//   token: Erc20Abi;
+//   deposit: BigNumberReference;
+//   lendingPool: LendingPoolAbi;
+// };
+
+// export const ThunkLendWithSignature = createAsyncThunk(
+//   THUNKS.LEND_WITH_SIGNATURE,
+//   async (
+//     { wallet, account, token, deposit, lendingPool }: thunkLendWithSignature,
+//     { rejectWithValue, dispatch },
+//   ) => {
+//     if (!lendingPool) return rejectWithValue('Missing staking contract');
+//     dispatch(setTx({ status: null, hash: null }));
+//     let tx: ContractTransaction;
+//     let r: string;
+//     let v: number;
+//     let s: string;
+
+//     try {
+//       ({ r, v, s } = await getPermitSignature(
+//         wallet,
+//         account,
+//         token,
+//         lendingPool.address,
+//         deposit.value,
+//         DEADLINE,
+//       ));
+//     } catch (e) {
+//       console.error(e);
+//       return rejectWithValue('Permit Signature Failed');
+//     }
+//     try {
+//       tx = await lendingPool.lendWithSignature(
+//         deposit.value,
+//         DEADLINE,
+//         v,
+//         r,
+//         s,
+//       );
+//     } catch (err) {
+//       console.error(err);
+//       rejectWithValue('Deposit Failed');
+//     }
+
+//     const { hash } = tx;
+//     dispatch(setTxHash(hash));
+
+//     pendingNotification({
+//       title: `lendDepositPending`,
+//       id: 'lendDeposit',
+//     });
+
+//     dispatch(
+//       setTx({
+//         hash: tx.hash,
+//         status: TX_STATES.PENDING,
+//       }),
+//     );
+
+//     const receipt = await tx.wait();
+
+//     if (receipt.status === 1) {
+//       dispatch(setLendingStep(STEPS.LEND_DEPOSIT_COMPLETED));
+//     }
+
+//     return receipt.status === 1
+//       ? { deposit }
+//       : rejectWithValue('Deposit Failed');
+//   },
+// );
 
 export type ThunkLendClaimRewards = {
   lendingPool: LendingPoolAbi;
@@ -378,24 +461,25 @@ export const thunkLendClaimRewards = createAsyncThunk(
 
 export type ThunkRequestWithdrawal = {
   lendingPool: LendingPoolAbi;
+  preference: (typeof PREFERENCES)[keyof typeof PREFERENCES];
 };
 
-export const thunkRequestWithdrawal = createAsyncThunk(
-  THUNKS.REQUEST_WITHDRAWAL,
+export const thunkChangePreference = createAsyncThunk(
+  THUNKS.CHANGE_PREFERENCE,
   async (
-    { lendingPool }: ThunkRequestWithdrawal,
+    { lendingPool, preference }: ThunkRequestWithdrawal,
     { rejectWithValue, dispatch },
   ) => {
     if (!lendingPool) return rejectWithValue('Missing staking contract');
     dispatch(setTxHash(null));
-    const tx = await lendingPool.setWithdrawalPreference(PREFERENCES.WITHDRAW);
+    const tx = await lendingPool.setWithdrawalPreference(preference);
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
 
     pendingNotification({
-      title: `requestWithdrawalPending`,
-      id: 'requestWithdrawal',
+      title: `changePreferencePending`,
+      id: 'changePreference',
     });
 
     dispatch(
@@ -408,12 +492,10 @@ export const thunkRequestWithdrawal = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setLendingStep(STEPS.WITHDRAW_REQUEST_COMPLETED));
+      dispatch(setLendingStep(STEPS.CHANGE_PREFERENCE_COMPLETED));
     }
 
-    return receipt.status === 1
-      ? { lendingPool }
-      : rejectWithValue('Unlend Failed');
+    if (receipt.status !== 1) rejectWithValue('Change Preference Failed');
   },
 );
 
@@ -488,7 +570,7 @@ export const thunkUnlend = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
-      dispatch(setLendingStep(STEPS.LEND_DEPOSIT_COMPLETED));
+      dispatch(setLendingStep(STEPS.UNLEND_COMPLETED));
     }
 
     return receipt.status === 1

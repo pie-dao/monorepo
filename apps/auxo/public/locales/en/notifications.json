@@ -127,5 +127,9 @@
   "unlendSuccess": "Unlended successfully",
   "unlendError": "There was an error while unlending",
 
+  "changepreferencePending": "Changing preference",
+  "changepreferenceSuccess": "Changed preference successfully",
+  "changepreferenceError": "There was an error while changing preference",
+
   "defaultError": "There was an error"
 }

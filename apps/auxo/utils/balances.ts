@@ -202,6 +202,8 @@ export const multiplyNumberToBnReference = (
   decimals: number,
 ): BigNumberReference => {
   let value: BigNumber;
+  if (!b1) return zeroBalance;
+  if (isNaN(number)) return zeroBalance;
   try {
     value = BigNumber.from(b1.value).mul(
       ethers.utils.parseUnits(number.toString(), decimals),

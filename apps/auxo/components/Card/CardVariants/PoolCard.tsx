@@ -9,10 +9,10 @@ import CardInfoList, {
   CardDescription,
   CardFooter,
 } from '../Card';
-import { Markdown } from '../../../utils/parseMarkdown';
 import { formatDate } from '../../../utils/dates';
 import { userMergedPosition } from '../../../hooks/useEnanchedPools';
 import { isEmpty } from 'lodash';
+import { ParseMarkdown } from '../../ParseMarkdown/ParseMarkdown';
 
 export const PoolCard = ({ pool }: { pool: userMergedPosition }) => {
   const { t } = useTranslation();
@@ -52,7 +52,7 @@ export const PoolCard = ({ pool }: { pool: userMergedPosition }) => {
         </div>
         <CardDescription>
           <div className="text-primary bg-light-gray text-sm p-4 rounded-md relative">
-            {Markdown(pool?.attributes?.description)}
+            {ParseMarkdown(pool?.attributes?.description)}
             <div className="flex flex-wrap gap-2 mt-2">
               {pool?.attributes?.tags?.map(({ tag }, i) => (
                 <span

@@ -23,16 +23,10 @@ export const ClaimablePoolRewards = ({
   poolAddress: string;
 }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
-  const preference = useAppSelector(
-    (state) => state.lending.pools?.[poolAddress]?.userData?.preference ?? null,
-  );
+
   const { t } = useTranslation();
   const { data } = useEnanchedPools(poolAddress);
   const dispatch = useAppDispatch();
-  const [{ wallet }] = useConnectWallet();
-  const account = wallet?.accounts[0]?.address;
-
-  const isAlreadyWithdraw = preference === PREFERENCES.WITHDRAW;
 
   const claimRewards = () => {
     dispatch(setLendingFlowPool(poolAddress));
@@ -44,20 +38,6 @@ export const ClaimablePoolRewards = ({
     isEqual(data?.userData?.yield, zeroBalance) ||
     data?.userData?.yield === undefined ||
     data?.userData?.yield === null;
-
-  const requestWithdraw = () => {
-    dispatch(setLendingFlowPool(poolAddress));
-    dispatch(setLendingFlowOpen(true));
-    dispatch(setLendingStep(STEPS.WITHDRAW_REQUEST));
-  };
-
-  const withdrawalReady = data?.userData?.canWithdraw;
-
-  const withdraw = () => {
-    dispatch(setLendingFlowPool(poolAddress));
-    dispatch(setLendingFlowOpen(true));
-    dispatch(setLendingStep(STEPS.WITHDRAW_CONFIRM));
-  };
 
   return (
     <div className="flex gap-x-4 gap-y-2 flex-wrap items-center w-full bg-gradient-primary shadow-md rounded-lg px-3 py-2 justify-between">
@@ -78,17 +58,6 @@ export const ClaimablePoolRewards = ({
         </p>
       </div>
       <div className="flex gap-x-2 items-center ml-auto">
-        {withdrawalReady && account ? (
-          <button
-            type="button"
-            className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
-            onClick={withdraw}
-            disabled={withdrawalReady}
-          >
-            <BanknotesIcon />
-            {t('withdraw')}
-          </button>
-        ) : null}
         <button
           type="button"
           className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-inset ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
@@ -98,32 +67,6 @@ export const ClaimablePoolRewards = ({
           <BanknotesIcon />
           {t('claimRewards')}
         </button>
-        {account && !isAlreadyWithdraw ? (
-          <div className="flex order-2 sm:order-3 mx-4">
-            <Tooltip
-              icon={
-                <Image
-                  src={ThreeDots}
-                  width={18}
-                  height={18}
-                  priority
-                  alt="three dots"
-                />
-              }
-            >
-              <div className="flex bg-white rounded-md">
-                <button
-                  className="flex items-center gap-x-2 hover:bg-background px-4 py-2 rounded-md"
-                  onClick={requestWithdraw}
-                >
-                  <span className="text-primary font-medium text-base">
-                    {t('requestWithdraw')}
-                  </span>
-                </button>
-              </div>
-            </Tooltip>
-          </div>
-        ) : null}
       </div>
     </div>
   );

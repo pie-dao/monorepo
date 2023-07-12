@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import useTranslation from 'next-translate/useTranslation';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
@@ -13,7 +13,7 @@ import { PendingTransactionContent } from './PendingTransactionContent';
 
 export default function LendDeposit() {
   const { t } = useTranslation();
-  const { selectedPool, amount, preference, tx } = useAppSelector(
+  const { selectedPool, amount, tx } = useAppSelector(
     (state) => state.lending.lendingFlow,
   );
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -21,7 +21,15 @@ export default function LendDeposit() {
   const lendingPoolContract = useLendingPoolContract(selectedPool);
   const [lendingLoading, setLendingLoading] = useState(false);
   const { data } = useEnanchedPools(selectedPool);
-  const preferenceLabel = invert(PREFERENCES)[preference].toLowerCase();
+
+  const isMountedRef = useRef(null);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const confirmDeposit = () => {
     setLendingLoading(true);
@@ -29,9 +37,12 @@ export default function LendDeposit() {
       thunkLendDeposit({
         lendingPool: lendingPoolContract,
         deposit: amount,
-        preference,
       }),
-    ).finally(() => setLendingLoading(false));
+    ).finally(() => {
+      if (isMountedRef.current) {
+        setLendingLoading(false);
+      }
+    });
   };
 
   return (
@@ -44,10 +55,14 @@ export default function LendDeposit() {
           >
             {t('confirm')}
           </Dialog.Title>
-          <Dialog.Description className="text-center text-base text-sub-dark w-full mt-2 font-medium">
+
+          <Dialog.Description className="text-center text-base text-sub-dark w-full mt-2 font-medium [text-wrap:balance]">
             {t('confirmDepositDescription', {
               token: data?.attributes?.token?.data?.attributes?.name,
             })}
+          </Dialog.Description>
+          <Dialog.Description className="text-center text-base text-sub-dark w-full mt-2 font-medium [text-wrap:balance]">
+            {t('depositAndClaimDisclaimer')}
           </Dialog.Description>
           <div className="overflow-hidden rounded-lg items-start w-full font-medium">
             <div className="flex flex-col px-4 py-4 w-full gap-y-3 h-full">
@@ -72,10 +87,6 @@ export default function LendDeposit() {
                     </span>
                   </span>
                 </div>
-                <p className="font-semibold text-primary text-base">
-                  {t('preference')}
-                  {': '} {t(preferenceLabel)}
-                </p>
               </div>
             </div>
           </div>

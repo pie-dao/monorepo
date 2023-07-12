@@ -80,9 +80,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "deposited",
-        "type": "uint256"
+        "internalType": "uint64",
+        "name": "rate",
+        "type": "uint64"
       }
     ],
     "name": "EpochClosed",
@@ -244,6 +244,56 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "epochId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "Repayment",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "epochId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      }
+    ],
+    "name": "RepaymentReversed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "bytes32",
         "name": "role",
         "type": "bytes32"
@@ -366,13 +416,7 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "_rate",
-        "type": "uint64"
-      }
-    ],
+    "inputs": [],
     "name": "activateNextEpoch",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -443,14 +487,15 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "_rate",
-        "type": "uint64"
-      }
-    ],
+    "inputs": [],
     "name": "closeEpoch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "closeEpochWithDefault",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -459,11 +504,11 @@
     "inputs": [
       {
         "internalType": "uint64",
-        "name": "_withdrawalProRata",
+        "name": "_rate",
         "type": "uint64"
       }
     ],
-    "name": "closeEpochWithDefault",
+    "name": "closeEpochWithRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -537,6 +582,11 @@
       {
         "internalType": "uint128",
         "name": "forWithdrawal",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "repaid",
         "type": "uint128"
       }
     ],
@@ -615,6 +665,11 @@
             "internalType": "uint128",
             "name": "forWithdrawal",
             "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "repaid",
+            "type": "uint128"
           }
         ],
         "internalType": "struct ILendingPoolData.Epoch[]",
@@ -664,6 +719,11 @@
           {
             "internalType": "uint128",
             "name": "forWithdrawal",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "repaid",
             "type": "uint128"
           }
         ],
@@ -741,6 +801,11 @@
             "internalType": "uint128",
             "name": "forWithdrawal",
             "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "repaid",
+            "type": "uint128"
           }
         ],
         "internalType": "struct ILendingPoolData.Epoch",
@@ -810,6 +875,25 @@
         "internalType": "struct ILendingPoolData.Loan",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getRate",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -979,6 +1063,19 @@
   },
   {
     "inputs": [],
+    "name": "isPoolAcceptingDeposits",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "latestActiveEpochIsClosed",
     "outputs": [
       {
@@ -996,11 +1093,6 @@
         "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
-      },
-      {
-        "internalType": "enum ILendingPoolData.WithdrawalPreference",
-        "name": "_preference",
-        "type": "uint8"
       }
     ],
     "name": "lend",
@@ -1012,16 +1104,11 @@
     "inputs": [
       {
         "internalType": "uint128",
-        "name": "_amount",
+        "name": "_lendAmount",
         "type": "uint128"
-      },
-      {
-        "internalType": "enum ILendingPoolData.WithdrawalPreference",
-        "name": "_preference",
-        "type": "uint8"
       }
     ],
-    "name": "lendAndSetPreference",
+    "name": "lendAndClaim",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1032,11 +1119,6 @@
         "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
-      },
-      {
-        "internalType": "enum ILendingPoolData.WithdrawalPreference",
-        "name": "_preference",
-        "type": "uint8"
       },
       {
         "internalType": "uint256",
@@ -1129,6 +1211,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      }
+    ],
+    "name": "previewCompound",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "compoundedPrincipal",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "principalToken",
     "outputs": [
@@ -1155,6 +1256,32 @@
       }
     ],
     "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_amount",
+        "type": "uint128"
+      }
+    ],
+    "name": "repay",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_amount",
+        "type": "uint128"
+      }
+    ],
+    "name": "reverseRepay",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1233,6 +1360,25 @@
     "name": "sweep",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "totalRewardsForEpoch",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

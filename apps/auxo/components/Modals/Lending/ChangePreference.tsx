@@ -7,23 +7,26 @@ import { useLendingPoolContract } from '../../../hooks/useContracts';
 import { PendingTransactionContent } from './PendingTransactionContent';
 import { PREFERENCES } from '../../../utils/constants';
 
-export default function RequestWithdraw() {
+export default function ChangePreference() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const [lendClaim, setLendClaim] = useState(false);
-  const { selectedPool, tx } = useAppSelector(
+  const [changePreferenceLoading, setChangePreferenceLoading] = useState(false);
+  const { selectedPool, preference, tx } = useAppSelector(
     (state) => state.lending.lendingFlow,
   );
   const lendingPoolContract = useLendingPoolContract(selectedPool);
+  const preferenceKey = Object.keys(PREFERENCES)
+    .find((key) => PREFERENCES[key as keyof typeof PREFERENCES] === preference)
+    ?.toLowerCase();
 
   const unLendRewards = () => {
-    setLendClaim(true);
+    setChangePreferenceLoading(true);
     dispatch(
       thunkChangePreference({
         lendingPool: lendingPoolContract,
-        preference: PREFERENCES.WITHDRAW,
+        preference,
       }),
-    ).finally(() => setLendClaim(false));
+    ).finally(() => setChangePreferenceLoading(false));
   };
 
   return (
@@ -34,36 +37,22 @@ export default function RequestWithdraw() {
             as="h3"
             className="font-bold text-center text-xl text-primary capitalize w-full"
           >
-            {t('requestWithdrawPrincipal')}
+            {t('requestChangePreference')}
           </Dialog.Title>
-          {/* <div className="overflow-hidden rounded-lg shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/bg-rewards.png')] bg-cover">
-            <div className="flex flex-col px-4 py-4 w-full bg-white/80 gap-y-3 h-full">
-              <div className="flex justify-center w-full">
-                <div className="text-2xl w-fit text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant pl-4 pr-6 py-2 rounded-lg z-10">
-                  {poolData?.attributes?.token?.data?.attributes?.icon?.data
-                    ?.attributes?.url ? (
-                    <Image
-                      src={
-                        poolData?.attributes?.token?.data?.attributes?.icon
-                          ?.data?.attributes?.url
-                      }
-                      alt={poolData?.attributes?.token?.data?.attributes?.name}
-                      width={24}
-                      height={24}
-                    />
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div> */}
-          <div className="w-full flex flex-col gap-y-4 items-center mt-4">
-            {!lendClaim ? (
+          <Dialog.Description className="text-center text-base text-sub-dark w-full font-medium [text-wrap:balance]">
+            {t('requestChangePreferenceDescription', {
+              preference: preferenceKey,
+            })}
+          </Dialog.Description>
+
+          <div className="w-full flex flex-col gap-y-4 items-center mt-12">
+            {!changePreferenceLoading ? (
               <button
                 type="button"
                 className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                 onClick={unLendRewards}
               >
-                {t('claimRewards')}
+                {t('confirm')}
               </button>
             ) : (
               <div className="w-full flex justify-center">

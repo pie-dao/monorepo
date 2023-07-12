@@ -15,14 +15,18 @@ import {
   setSpender,
 } from '../../store/lending/lending.slice';
 import { STEPS } from '../../store/lending/lending.types';
-import { useTokenContract } from '../../hooks/useContracts';
-import { UsePoolApproval, UseSufficentApproval } from '../../hooks/useLending';
+import {
+  UseCanUserWithdrawFromPool,
+  UseLoan,
+  UseMaxWithdrawableAmountFromPool,
+  UseSufficentApproval,
+} from '../../hooks/useLending';
 
 const LendActions: React.FC<{
   deposit: BigNumberReference;
   tokenConfig: TokenConfig;
   poolAddress: string;
-  action?: 'deposit' | 'unlend';
+  action?: 'deposit' | 'withdraw';
   disabled?: boolean;
 }> = ({
   deposit,
@@ -37,15 +41,21 @@ const LendActions: React.FC<{
   const dispatch = useAppDispatch();
   const tokens = useTokenBalance(tokenConfig.name);
   const hasSufficentApproval = UseSufficentApproval(poolAddress);
+  const canWithdraw = UseCanUserWithdrawFromPool(poolAddress);
+  const loan = UseLoan(poolAddress);
+  const unlendableAmount = UseMaxWithdrawableAmountFromPool(poolAddress);
 
   const sufficientTokens = useMemo(() => {
     switch (action) {
       case 'deposit':
         return compareBalances(tokens, 'gte', deposit);
-      case 'unlend':
-        return compareBalances(deposit, 'gte', tokens);
+      case 'withdraw':
+        if (canWithdraw) {
+          return compareBalances(loan, 'gte', deposit);
+        }
+        return compareBalances(unlendableAmount, 'gte', deposit);
     }
-  }, [action, deposit, tokens]);
+  }, [action, canWithdraw, deposit, loan, tokens, unlendableAmount]);
 
   const disabledStake = useMemo(() => {
     const invalidDeposit = deposit.label <= 0;
@@ -65,10 +75,12 @@ const LendActions: React.FC<{
         dispatch(setPrincipal(tokenConfig.name));
         dispatch(setLendingFlowOpen(true));
         break;
-      case 'unlend':
+      case 'withdraw':
         dispatch(setLendingFlowPool(poolAddress));
         dispatch(setLendingFlowOpen(true));
-        dispatch(setLendingStep(STEPS.UNLEND));
+        canWithdraw
+          ? dispatch(setLendingStep(STEPS.WITHDRAW_CONFIRM))
+          : dispatch(setLendingStep(STEPS.UNLEND));
         dispatch(setDepositValue(deposit));
     }
   };
@@ -80,7 +92,7 @@ const LendActions: React.FC<{
           <button
             onClick={openModal}
             disabled={disabledStake}
-            className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+            className="w-fit px-5 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
           >
             {t(action)}
           </button>

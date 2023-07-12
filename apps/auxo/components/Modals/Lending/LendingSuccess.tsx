@@ -7,6 +7,7 @@ import { useEnanchedPools } from '../../../hooks/useEnanchedPools';
 import { isEqual } from 'lodash';
 import { zeroBalance } from '../../../utils/balances';
 import { Dialog } from '@headlessui/react';
+import { PREFERENCES } from '../../../utils/constants';
 
 type Props = {
   action?:
@@ -14,12 +15,13 @@ type Props = {
     | 'unlend'
     | 'claim'
     | 'withdrawConfirm'
-    | 'withdrawRequest';
+    | 'withdrawRequest'
+    | 'changePreference';
 };
 
 export default function LendingSuccess({ action }: Props) {
   const { t } = useTranslation();
-  const { tx, selectedPool, amount } = useAppSelector(
+  const { tx, selectedPool, amount, preference } = useAppSelector(
     (state) => state.lending.lendingFlow,
   );
   const { data } = useEnanchedPools(selectedPool);
@@ -33,9 +35,24 @@ export default function LendingSuccess({ action }: Props) {
       <Dialog.Description className="text-center text-base text-sub-dark w-full font-medium">
         {t(`${action}CompletedDescription`)}
       </Dialog.Description>
-      <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
-        <div className="absolute inset-0 bg-white opacity-30 z-0" />
-        {amount && !isEqual(amount, zeroBalance) ? (
+      {action === 'changePreference' ? (
+        <div className="text-lg text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
+          <span>
+            {t(
+              Object.keys(PREFERENCES)
+                .find(
+                  (key) =>
+                    PREFERENCES[key as keyof typeof PREFERENCES] === preference,
+                )
+                ?.toLowerCase() ?? '',
+            )}
+          </span>
+        </div>
+      ) : null}
+
+      {amount && !isEqual(amount, zeroBalance) ? (
+        <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
+          <div className="absolute inset-0 bg-white opacity-30 z-0" />
           <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
             {data?.attributes?.token?.data?.attributes?.icon?.data?.attributes
               ?.url ? (
@@ -57,8 +74,8 @@ export default function LendingSuccess({ action }: Props) {
               {data?.attributes?.token?.data?.attributes?.name}
             </span>
           </div>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       {tx?.hash && (
         <div className="flex items-center self-center justify-between w-full py-2">
           <div className="text-sm text-sub-dark font-medium flex items-center gap-x-2">

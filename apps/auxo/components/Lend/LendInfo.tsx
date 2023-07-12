@@ -40,20 +40,20 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
           </>
         ),
       },
-      {
-        title: t('pendingLoan'),
-        value: (
-          <>
-            {formatBalance(
-              data?.userData?.unlendableAmount?.label ?? 0,
-              defaultLocale,
-              2,
-              'standard',
-            )}{' '}
-            {data?.attributes?.token?.data?.attributes?.name}
-          </>
-        ),
-      },
+      // {
+      //   title: t('pendingLoan'),
+      //   value: (
+      //     <>
+      //       {formatBalance(
+      //         data?.userData?.unlendableAmount?.label ?? 0,
+      //         defaultLocale,
+      //         2,
+      //         'standard',
+      //       )}{' '}
+      //       {data?.attributes?.token?.data?.attributes?.name}
+      //     </>
+      //   ),
+      // },
       {
         title: t('yield'),
         value: (
@@ -80,7 +80,6 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
   }, [
     t,
     data?.userData?.balance,
-    data?.userData?.unlendableAmount?.label,
     data?.userData?.yield?.label,
     data?.attributes?.token?.data?.attributes?.name,
     defaultLocale,
@@ -91,14 +90,16 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2 h-full">
       <div className="flex justify-between w-full mb-2 pb-2 border-b border-custom-border items-center">
         <p className="text-primary font-semibold text-lg">{currentMonthYear}</p>
-        <p className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5 font-medium">
-          {formatAsPercent(
-            data?.lastActiveEpoch?.rate?.label,
-            defaultLocale,
-            2,
-          )}{' '}
-          {t('APR')}
-        </p>
+        {data?.lastActiveEpoch?.rate?.label ? (
+          <p className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5 font-medium">
+            {formatAsPercent(
+              data?.lastActiveEpoch?.rate?.label,
+              defaultLocale,
+              2,
+            )}{' '}
+            {t('APR')}
+          </p>
+        ) : null}
       </div>
       <div className="flex flex-col  text-center w-full">
         <p className="text-primary text-base">{t('activeIn')}</p>
