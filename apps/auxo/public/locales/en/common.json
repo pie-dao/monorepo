@@ -440,7 +440,7 @@
   "confirmDeposit": "Confirm deposit",
   "confirm": "Confirm",
   "confirmDepositDescription": "You are about to deposit ${token} into the lending pool",
-  "depositAndClaimDisclaimer": "If you are incrasing your deposit into the lending pool you are automatically also claiming your yield",
+  "depositAndClaimDisclaimer": "If you are increasing your deposit into the lending pool you are automatically also claiming your yield",
   "depositCompleted": "Deposit completed",
   "unlendCompleted": "Withdraw completed",
   "withdrawCompleted": "Withdraw completed",

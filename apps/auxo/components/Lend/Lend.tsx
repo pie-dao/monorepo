@@ -26,7 +26,7 @@ import {
 } from '../../store/lending/lending.slice';
 import {
   UseCanUserWithdrawFromPool,
-  UseMaxBorrowableAmountFromPool,
+  UseMaxEpochCapacityFromPool,
   UseMaxWithdrawableAmountFromPool,
   UsePoolAcceptsDeposits,
   UsePoolState,
@@ -38,6 +38,8 @@ import { Preferences, STATES, STEPS } from '../../store/lending/lending.types';
 import { RadioGroup, RadioGroupItem } from '../RadioGroup/RadioGroup';
 import { Label } from '@radix-ui/react-label';
 import { WithdrawIcon } from '../Icons/Icons';
+import { thunkCompoundYield } from '../../store/lending/lending.thunks';
+import { useLendingPoolContract } from '../../hooks/useContracts';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -66,7 +68,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   const poolState = UsePoolState(poolAddress);
   const dispatch = useAppDispatch();
 
-  const maxBorrow = UseMaxBorrowableAmountFromPool(poolAddress);
+  const maxBorrow = UseMaxEpochCapacityFromPool(poolAddress);
   // Let's put here the max deposit value from the contract
   const maxDeposit = useMemo(() => {
     return pickBalanceList([balance, maxBorrow], 'min');
@@ -127,22 +129,24 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
     dispatch(setPreference(userActualPreference as Preferences));
   }, [dispatch, userActualPreference]);
 
+  const lendingPoolContract = useLendingPoolContract(poolAddress);
+
+  const compound = () => {
+    dispatch(
+      thunkCompoundYield({
+        lendingPool: lendingPoolContract,
+      }),
+    );
+  };
+
   useEffect(() => {
     setSelectedIndex(0);
-  }, [hasBalanceInPool]);
-
-  console.log(
-    'together',
-    !isEmpty(maxUnlendAmount) &&
-      !isEmpty(loanedAmount) &&
-      !isEqual(maxUnlendAmount, loanedAmount),
-    'maxUnlendAmount',
-    maxUnlendAmount,
-    'loanedAmount',
-    loanedAmount,
-    'isEqual',
-    isEqual(maxUnlendAmount, loanedAmount),
-  );
+  }, [
+    hasBalanceInPool,
+    isPoolAcceptingDeposits,
+    hasUnlendableAmount,
+    canWithdraw,
+  ]);
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background h-full">
@@ -406,6 +410,9 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                           ) : null}
                         </div>
                       )}
+                    <button onClick={compound} className="w-fit">
+                      compound
+                    </button>
                   </ModalBox>
                 </Tab.Panel>
               )}

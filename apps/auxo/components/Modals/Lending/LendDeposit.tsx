@@ -8,6 +8,7 @@ import { formatBalance } from '../../../utils/formatBalance';
 import { thunkLendDeposit } from '../../../store/lending/lending.thunks';
 import { useEnanchedPools } from '../../../hooks/useEnanchedPools';
 import { PendingTransactionContent } from './PendingTransactionContent';
+import { UseUserCanClaim, UseUserCanCompound } from '../../../hooks/useLending';
 
 export default function LendDeposit() {
   const { t } = useTranslation();
@@ -19,6 +20,8 @@ export default function LendDeposit() {
   const lendingPoolContract = useLendingPoolContract(selectedPool);
   const [lendingLoading, setLendingLoading] = useState(false);
   const { data } = useEnanchedPools(selectedPool);
+  const canClaim = UseUserCanClaim(selectedPool);
+  const canCompound = UseUserCanCompound(selectedPool);
 
   const isMountedRef = useRef(null);
 
@@ -35,6 +38,8 @@ export default function LendDeposit() {
       thunkLendDeposit({
         lendingPool: lendingPoolContract,
         deposit: amount,
+        canClaim,
+        canCompound,
       }),
     ).finally(() => {
       if (isMountedRef.current) {

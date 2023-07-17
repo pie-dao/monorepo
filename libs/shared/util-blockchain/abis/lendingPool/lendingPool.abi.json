@@ -390,6 +390,31 @@
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "lender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "YieldCompounded",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "DEFAULT_ADMIN_ROLE",
     "outputs": [
@@ -426,11 +451,30 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_user",
+        "name": "_lender",
         "type": "address"
       }
     ],
     "name": "canClaim",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      }
+    ],
+    "name": "canCompound",
     "outputs": [
       {
         "internalType": "bool",
@@ -463,6 +507,19 @@
   {
     "inputs": [],
     "name": "claim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      }
+    ],
+    "name": "claimAndSetPreference",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -509,6 +566,26 @@
       }
     ],
     "name": "closeEpochWithRate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "compound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      }
+    ],
+    "name": "compoundAndSetPreference",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -587,6 +664,11 @@
       {
         "internalType": "uint128",
         "name": "repaid",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "totalCompounded",
         "type": "uint128"
       }
     ],
@@ -670,6 +752,11 @@
             "internalType": "uint128",
             "name": "repaid",
             "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "totalCompounded",
+            "type": "uint128"
           }
         ],
         "internalType": "struct ILendingPoolData.Epoch[]",
@@ -724,6 +811,11 @@
           {
             "internalType": "uint128",
             "name": "repaid",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "totalCompounded",
             "type": "uint128"
           }
         ],
@@ -806,6 +898,11 @@
             "internalType": "uint128",
             "name": "repaid",
             "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "totalCompounded",
+            "type": "uint128"
           }
         ],
         "internalType": "struct ILendingPoolData.Epoch",
@@ -875,6 +972,19 @@
         "internalType": "struct ILendingPoolData.Loan",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getPendingEpochCapacity",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1117,6 +1227,19 @@
     "inputs": [
       {
         "internalType": "uint128",
+        "name": "_lendAmount",
+        "type": "uint128"
+      }
+    ],
+    "name": "lendAndCompound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
       },
@@ -1221,9 +1344,9 @@
     "name": "previewCompound",
     "outputs": [
       {
-        "internalType": "uint128",
+        "internalType": "uint256",
         "name": "compoundedPrincipal",
-        "type": "uint128"
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1307,6 +1430,84 @@
   {
     "inputs": [
       {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      }
+    ],
+    "name": "safeClaimAndSetPreference",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      }
+    ],
+    "name": "safeCompoundAndSetPreference",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_amount",
+        "type": "uint128"
+      }
+    ],
+    "name": "safeLend",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_lendAmount",
+        "type": "uint128"
+      }
+    ],
+    "name": "safeLendAndClaim",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_lendAmount",
+        "type": "uint128"
+      }
+    ],
+    "name": "safeLendAndCompound",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      }
+    ],
+    "name": "safeSetPreference",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint128",
         "name": "_maxBorrow",
         "type": "uint128"
@@ -1325,7 +1526,7 @@
         "type": "uint8"
       }
     ],
-    "name": "setWithdrawalPreference",
+    "name": "setPreference",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

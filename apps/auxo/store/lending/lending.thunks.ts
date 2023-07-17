@@ -7,7 +7,7 @@ import { promiseObject } from '../../utils/promiseObject';
 import { find, isEmpty } from 'lodash';
 import { EIP1193Provider } from '@web3-onboard/core';
 import { toBalance } from '../../utils/formatBalance';
-import { BigNumber } from 'ethers';
+import { BigNumber, ContractTransaction } from 'ethers';
 import { Epoch, STEPS, States, Steps, TX_STATES } from './lending.types';
 import { calculatePriceInUSD, zeroBalance } from '../../utils/balances';
 import { findProductByAddress } from '../../utils/findProductByAddress';
@@ -39,6 +39,7 @@ export const THUNKS = {
   UNLOAN: 'app/unloan',
   REQUEST_WITHDRAWAL: 'app/requestWithdrawal',
   WITHDRAW: 'app/withdraw',
+  COMPOUND_YIELD: 'app/compoundYield',
 };
 
 export const thunkGetLendingData = createAsyncThunk(
@@ -55,6 +56,7 @@ export const thunkGetLendingData = createAsyncThunk(
             lastActiveEpoch: wrappedPool.getLastActiveEpoch(),
             epochs: wrappedPool.getEpochs(),
             canDeposit: wrappedPool.isPoolAcceptingDeposits(),
+            epochCapacity: wrappedPool.getPendingEpochCapacity(),
           });
           return results;
         }),
@@ -103,6 +105,7 @@ export const thunkGetLendingData = createAsyncThunk(
                   return createEpochObject(epoch, decimals);
                 }),
                 canDeposit: pool.canDeposit,
+                epochCapacity: toBalance(pool.epochCapacity, decimals),
               },
             ];
           }),
@@ -137,6 +140,7 @@ export const thunkGetUserLendingData = createAsyncThunk(
             canClaim: wrappedPool.canClaim(account),
             unlendableAmount: wrappedPool.getUnlendableAmount(account),
             loanAndCompound: wrappedPool.previewCompound(account),
+            canCompound: wrappedPool.canCompound(account),
           });
           return results;
         }),
@@ -216,7 +220,7 @@ export const thunkGetUserLendingData = createAsyncThunk(
               {
                 userData: {
                   balance: toBalance(
-                    pool.loanAndCompound ?? pool.loan.amount,
+                    pool.loan.amount,
                     findProductByAddress(pool.principal).decimals,
                   ),
                   balanceWithoutCompound: toBalance(
@@ -229,6 +233,7 @@ export const thunkGetUserLendingData = createAsyncThunk(
                   ),
                   canWithdraw: pool?.canWithdraw,
                   canClaim: pool?.canClaim,
+                  canCompound: pool?.canCompound,
                   unlendableAmount: pool?.unlendableAmount
                     ? toBalance(
                         pool.unlendableAmount,
@@ -294,26 +299,35 @@ export const thunkApproveToken = createAsyncThunk(
       dispatch(setLendingStep(nextStep));
     }
 
-    return receipt.status === 1
-      ? { deposit }
-      : rejectWithValue('Approval Failed');
+    if (receipt.status !== 1) rejectWithValue('Approval Failed');
   },
 );
 
 export type ThunkLendDeposit = {
   deposit: BigNumberReference;
   lendingPool: LendingPoolAbi;
+  canClaim: boolean;
+  canCompound: boolean;
 };
 
 export const thunkLendDeposit = createAsyncThunk(
   THUNKS.LEND_DEPOSIT,
   async (
-    { deposit, lendingPool }: ThunkLendDeposit,
+    { deposit, lendingPool, canClaim, canCompound }: ThunkLendDeposit,
     { rejectWithValue, dispatch },
   ) => {
     if (!lendingPool) return rejectWithValue('Missing staking contract');
     dispatch(setTxHash(null));
-    const tx = await lendingPool.lendAndClaim(deposit.value);
+
+    let tx: ContractTransaction;
+
+    if (canClaim) {
+      tx = await lendingPool.safeLendAndClaim(deposit.value);
+    } else if (canCompound) {
+      tx = await lendingPool.safeLendAndCompound(deposit.value);
+    } else {
+      tx = await lendingPool.lend(deposit.value);
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
@@ -336,9 +350,7 @@ export const thunkLendDeposit = createAsyncThunk(
       dispatch(setLendingStep(STEPS.LEND_DEPOSIT_COMPLETED));
     }
 
-    return receipt.status === 1
-      ? { deposit }
-      : rejectWithValue('Deposit Failed');
+    if (receipt.status !== 1) rejectWithValue('Deposit Failed');
   },
 );
 
@@ -451,26 +463,35 @@ export const thunkLendClaimRewards = createAsyncThunk(
       dispatch(setLendingStep(STEPS.LEND_REWARDS_CLAIM_COMPLETED));
     }
 
-    return receipt.status === 1
-      ? { lendingPool }
-      : rejectWithValue('Claim Failed');
+    if (receipt.status === 1) rejectWithValue('Claim Failed');
   },
 );
 
 export type ThunkRequestWithdrawal = {
   lendingPool: LendingPoolAbi;
   preference: (typeof PREFERENCES)[keyof typeof PREFERENCES];
+  canClaim: boolean;
+  canCompound: boolean;
 };
 
 export const thunkChangePreference = createAsyncThunk(
   THUNKS.CHANGE_PREFERENCE,
   async (
-    { lendingPool, preference }: ThunkRequestWithdrawal,
+    { lendingPool, preference, canClaim, canCompound }: ThunkRequestWithdrawal,
     { rejectWithValue, dispatch },
   ) => {
-    if (!lendingPool) return rejectWithValue('Missing staking contract');
+    if (!lendingPool) rejectWithValue('Missing staking contract');
     dispatch(setTxHash(null));
-    const tx = await lendingPool.setWithdrawalPreference(preference);
+
+    let tx: ContractTransaction;
+
+    if (canClaim) {
+      tx = await lendingPool.claimAndSetPreference(preference);
+    } else if (canCompound) {
+      tx = await lendingPool.compoundAndSetPreference(preference);
+    } else {
+      tx = await lendingPool.setPreference(preference);
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));
@@ -529,9 +550,7 @@ export const thunkWithdraw = createAsyncThunk(
       dispatch(setLendingStep(STEPS.WITHDRAW_CONFIRM_COMPLETED));
     }
 
-    return receipt.status === 1
-      ? { lendingPool }
-      : rejectWithValue('Unlend Failed');
+    if (receipt.status !== 1) rejectWithValue('Withdraw Failed');
   },
 );
 
@@ -571,8 +590,42 @@ export const thunkUnlend = createAsyncThunk(
       dispatch(setLendingStep(STEPS.UNLEND_COMPLETED));
     }
 
-    return receipt.status === 1
-      ? { lendingPool }
-      : rejectWithValue('Unlend Failed');
+    if (receipt.status !== 1) rejectWithValue('Unlend Failed');
+  },
+);
+
+export type ThunkCompoundYield = {
+  lendingPool: LendingPoolAbi;
+};
+
+export const thunkCompoundYield = createAsyncThunk(
+  THUNKS.COMPOUND_YIELD,
+  async (
+    { lendingPool }: ThunkCompoundYield,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (!lendingPool) rejectWithValue('Missing staking contract');
+    dispatch(setTxHash(null));
+
+    const tx = await lendingPool.compound();
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `compoundYieldPending`,
+      id: 'compoundYield',
+    });
+
+    dispatch(
+      setTx({
+        hash: tx.hash,
+        status: TX_STATES.PENDING,
+      }),
+    );
+
+    const receipt = await tx.wait();
+
+    if (receipt.status !== 1) rejectWithValue('Compound Yield Failed');
   },
 );

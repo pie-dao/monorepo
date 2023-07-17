@@ -6,6 +6,7 @@ import { thunkChangePreference } from '../../../store/lending/lending.thunks';
 import { useLendingPoolContract } from '../../../hooks/useContracts';
 import { PendingTransactionContent } from './PendingTransactionContent';
 import { PREFERENCES } from '../../../utils/constants';
+import { UseUserCanClaim, UseUserCanCompound } from '../../../hooks/useLending';
 
 export default function ChangePreference() {
   const { t } = useTranslation();
@@ -15,16 +16,22 @@ export default function ChangePreference() {
     (state) => state.lending.lendingFlow,
   );
   const lendingPoolContract = useLendingPoolContract(selectedPool);
+
+  const canClaim = UseUserCanClaim(selectedPool);
+  const canCompound = UseUserCanCompound(selectedPool);
+
   const preferenceKey = Object.keys(PREFERENCES)
     .find((key) => PREFERENCES[key as keyof typeof PREFERENCES] === preference)
     ?.toLowerCase();
 
-  const unLendRewards = () => {
+  const changePreference = () => {
     setChangePreferenceLoading(true);
     dispatch(
       thunkChangePreference({
         lendingPool: lendingPoolContract,
         preference,
+        canClaim,
+        canCompound,
       }),
     ).finally(() => setChangePreferenceLoading(false));
   };
@@ -50,7 +57,7 @@ export default function ChangePreference() {
               <button
                 type="button"
                 className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
-                onClick={unLendRewards}
+                onClick={changePreference}
               >
                 {t('confirm')}
               </button>

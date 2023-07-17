@@ -16,7 +16,8 @@ type Props = {
     | 'claim'
     | 'withdrawConfirm'
     | 'withdrawRequest'
-    | 'changePreference';
+    | 'changePreference'
+    | 'compound';
 };
 
 export default function LendingSuccess({ action }: Props) {
@@ -49,7 +50,6 @@ export default function LendingSuccess({ action }: Props) {
           </span>
         </div>
       ) : null}
-
       {amount && !isEqual(amount, zeroBalance) ? (
         <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
           <div className="absolute inset-0 bg-white opacity-30 z-0" />

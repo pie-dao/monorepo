@@ -94,11 +94,13 @@ export type Pool = {
     yield?: BigNumberReference;
     canWithdraw?: boolean;
     canClaim?: boolean;
+    canCompound?: boolean;
     unlendableAmount?: BigNumberReference;
     preference?: number;
     allowance?: BigNumberReference;
   };
   canDeposit?: boolean;
+  epochCapacity?: BigNumberReference;
   epochs?: convertedEpoch[];
 };
 

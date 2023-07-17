@@ -6,6 +6,7 @@ import { thunkChangePreference } from '../../../store/lending/lending.thunks';
 import { useLendingPoolContract } from '../../../hooks/useContracts';
 import { PendingTransactionContent } from './PendingTransactionContent';
 import { PREFERENCES } from '../../../utils/constants';
+import { UseUserCanClaim, UseUserCanCompound } from '../../../hooks/useLending';
 
 export default function RequestWithdraw() {
   const { t } = useTranslation();
@@ -16,12 +17,17 @@ export default function RequestWithdraw() {
   );
   const lendingPoolContract = useLendingPoolContract(selectedPool);
 
+  const canClaim = UseUserCanClaim(selectedPool);
+  const canCompound = UseUserCanCompound(selectedPool);
+
   const unLendRewards = () => {
     setLendClaim(true);
     dispatch(
       thunkChangePreference({
         lendingPool: lendingPoolContract,
         preference: PREFERENCES.WITHDRAW,
+        canClaim,
+        canCompound,
       }),
     ).finally(() => setLendClaim(false));
   };
@@ -36,26 +42,6 @@ export default function RequestWithdraw() {
           >
             {t('requestWithdrawPrincipal')}
           </Dialog.Title>
-          {/* <div className="overflow-hidden rounded-lg shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/bg-rewards.png')] bg-cover">
-            <div className="flex flex-col px-4 py-4 w-full bg-white/80 gap-y-3 h-full">
-              <div className="flex justify-center w-full">
-                <div className="text-2xl w-fit text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant pl-4 pr-6 py-2 rounded-lg z-10">
-                  {poolData?.attributes?.token?.data?.attributes?.icon?.data
-                    ?.attributes?.url ? (
-                    <Image
-                      src={
-                        poolData?.attributes?.token?.data?.attributes?.icon
-                          ?.data?.attributes?.url
-                      }
-                      alt={poolData?.attributes?.token?.data?.attributes?.name}
-                      width={24}
-                      height={24}
-                    />
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div> */}
           <div className="w-full flex flex-col gap-y-4 items-center mt-4">
             {!lendClaim ? (
               <button

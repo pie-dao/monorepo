@@ -51,16 +51,22 @@ export const UseUserCanClaim = (poolAddress: string) => {
   );
 };
 
+export const UseUserCanCompound = (poolAddress: string) => {
+  return useAppSelector(
+    (state) => state?.lending?.pools?.[poolAddress]?.userData?.canCompound,
+  );
+};
+
 export const UseUserPreference = (poolAddress: string) => {
   return useAppSelector(
     (state) => state?.lending?.pools?.[poolAddress]?.userData?.preference,
   );
 };
 
-export const UseMaxBorrowableAmountFromPool = (poolAddress: string) => {
+export const UseMaxEpochCapacityFromPool = (poolAddress: string) => {
   return useAppSelector(
     (state) =>
-      state?.lending?.pools?.[poolAddress]?.lastEpoch?.maxBorrow ?? zeroBalance,
+      state?.lending?.pools?.[poolAddress]?.epochCapacity ?? zeroBalance,
   );
 };
 
