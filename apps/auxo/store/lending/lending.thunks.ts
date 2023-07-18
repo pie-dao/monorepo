@@ -72,6 +72,7 @@ export const thunkGetLendingData = createAsyncThunk(
       let totalDeposited = 0;
       try {
         for (const pool of lendingPoolsData) {
+          console.log(lendingPoolsData);
           const decimals = findProductByAddress(pool.principal).decimals;
           const price = await fetchPrice(pool.principal, 'usd');
           totalDeposited += calculatePriceInUSD(
@@ -220,7 +221,7 @@ export const thunkGetUserLendingData = createAsyncThunk(
               {
                 userData: {
                   balance: toBalance(
-                    pool.loan.amount,
+                    pool.loanAndCompound ?? pool.loan.amount,
                     findProductByAddress(pool.principal).decimals,
                   ),
                   balanceWithoutCompound: toBalance(
@@ -533,7 +534,7 @@ export const thunkWithdraw = createAsyncThunk(
     dispatch(setTxHash(hash));
 
     pendingNotification({
-      title: `withdrawalPending`,
+      title: `withdrawPending`,
       id: 'withdraw',
     });
 
@@ -573,8 +574,8 @@ export const thunkUnlend = createAsyncThunk(
     dispatch(setTxHash(hash));
 
     pendingNotification({
-      title: `unlendPending`,
-      id: 'unlend',
+      title: `withdrawPending`,
+      id: 'withdraw',
     });
 
     dispatch(
@@ -590,7 +591,7 @@ export const thunkUnlend = createAsyncThunk(
       dispatch(setLendingStep(STEPS.UNLEND_COMPLETED));
     }
 
-    if (receipt.status !== 1) rejectWithValue('Unlend Failed');
+    if (receipt.status !== 1) rejectWithValue('Withdraw Failed');
   },
 );
 

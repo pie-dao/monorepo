@@ -3,6 +3,8 @@ import Image from 'next/image';
 import StakeInput from '../Input/InputSlider';
 import {
   compareBalances,
+  isZero,
+  isZeroBalance,
   pickBalanceList,
   zeroBalance,
 } from '../../utils/balances';
@@ -38,8 +40,6 @@ import { Preferences, STATES, STEPS } from '../../store/lending/lending.types';
 import { RadioGroup, RadioGroupItem } from '../RadioGroup/RadioGroup';
 import { Label } from '@radix-ui/react-label';
 import { WithdrawIcon } from '../Icons/Icons';
-import { thunkCompoundYield } from '../../store/lending/lending.thunks';
-import { useLendingPoolContract } from '../../hooks/useContracts';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -88,18 +88,13 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   ) : null;
 
   const textContent =
-    canWithdraw ||
-    (userActualPreference === PREFERENCES.WITHDRAW && !canWithdraw)
+    userActualPreference === PREFERENCES.WITHDRAW && !canWithdraw
       ? t('fundsAvailableEndEpoch', { token: name })
       : !canWithdraw &&
         userActualPreference !== PREFERENCES.WITHDRAW &&
         poolState === STATES.ACTIVE
       ? t('beforeRequestingWithdraw', { token: name })
       : null;
-
-  const buttonDisabled =
-    userActualPreference === PREFERENCES.WITHDRAW ||
-    poolState !== STATES.ACTIVE;
 
   const requestWithdraw = () => {
     dispatch(setLendingFlowPool(poolAddress));
@@ -115,7 +110,8 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
 
   const buttonAction = canWithdraw
     ? withdraw
-    : userActualPreference !== PREFERENCES.WITHDRAW
+    : userActualPreference !== PREFERENCES.WITHDRAW &&
+      poolState === STATES.ACTIVE
     ? requestWithdraw
     : null;
 
@@ -128,16 +124,6 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   useEffect(() => {
     dispatch(setPreference(userActualPreference as Preferences));
   }, [dispatch, userActualPreference]);
-
-  const lendingPoolContract = useLendingPoolContract(poolAddress);
-
-  const compound = () => {
-    dispatch(
-      thunkCompoundYield({
-        lendingPool: lendingPoolContract,
-      }),
-    );
-  };
 
   useEffect(() => {
     setSelectedIndex(0);
@@ -172,62 +158,60 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                   </>
                 )}
               </Tab>
-              {hasBalanceInPool ? (
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'text-base font-semibold focus:outline-none relative',
-                      selected ? ' text-secondary' : ' text-sub-light',
-                      'disabled:opacity-20',
-                    )
-                  }
-                >
-                  {({ selected }) => (
-                    <>
-                      {t('withdraw')}
-                      {selected && (
-                        <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
-                      )}
-                    </>
-                  )}
-                </Tab>
-              ) : null}
-              {hasBalanceInPool && poolState === STATES.ACTIVE ? (
-                <Tab
-                  className={({ selected }) =>
-                    classNames(
-                      'text-base font-semibold focus:outline-none relative',
-                      selected ? ' text-secondary' : ' text-sub-light',
-                      'disabled:opacity-20',
-                    )
-                  }
-                >
-                  {({ selected }) => (
-                    <>
-                      {t('preference')}
-                      {selected && (
-                        <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
-                      )}
-                    </>
-                  )}
-                </Tab>
-              ) : null}
+
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    'text-base font-semibold focus:outline-none relative',
+                    selected ? ' text-secondary' : ' text-sub-light',
+                    'disabled:opacity-20',
+                  )
+                }
+              >
+                {({ selected }) => (
+                  <>
+                    {t('withdraw')}
+                    {selected && (
+                      <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+                    )}
+                  </>
+                )}
+              </Tab>
+
+              <Tab
+                className={({ selected }) =>
+                  classNames(
+                    'text-base font-semibold focus:outline-none relative',
+                    selected ? ' text-secondary' : ' text-sub-light',
+                    'disabled:opacity-20',
+                  )
+                }
+              >
+                {({ selected }) => (
+                  <>
+                    {t('preference')}
+                    {selected && (
+                      <div className="absolute -bottom-[1px] left-0 right-0 h-[2px] bg-secondary" />
+                    )}
+                  </>
+                )}
+              </Tab>
             </Tab.List>
           </div>
           <AnimatePresence initial={false}>
             <Tab.Panels className="mt-4 min-h-[15rem] h-full">
               <Tab.Panel className="h-full relative">
-                {!isPoolAcceptingDeposits && (
-                  <>
-                    <div className="absolute inset-0 backdrop-blur-lg bg-white/30 z-10 -m-2" />
-                    <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
-                      <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
-                        {t('notAcceptingDeposits')}
-                      </span>
-                    </div>
-                  </>
-                )}
                 <ModalBox className="flex flex-col h-full gap-y-2">
+                  {!isPoolAcceptingDeposits && (
+                    <>
+                      <div className="absolute inset-0 bg-white/90 z-10 -m-2" />
+                      <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
+                        <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                          {t('notAcceptingDeposits')}
+                        </span>
+                      </div>
+                    </>
+                  )}
                   <div className="flex items-center justify-between w-full mb-2">
                     <p className="font-medium text-base text-primary">
                       {t('amountToStake')}
@@ -255,6 +239,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                     setValue={setDepositValue}
                     max={maxDeposit}
                     disabled={userActualPreference === PREFERENCES.WITHDRAW}
+                    resetOnSteps={[STEPS.LEND_DEPOSIT_COMPLETED]}
                   />
                   {account && (
                     <Alert open={compareBalances(balance, 'lt', depositValue)}>
@@ -269,14 +254,107 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                   />
                 </ModalBox>
               </Tab.Panel>
-              {hasBalanceInPool && (
-                <Tab.Panel className="h-full">
-                  <ModalBox className="flex flex-col h-full gap-y-2">
-                    {hasUnlendableAmount && (
-                      <>
-                        <div className="flex flex-wrap gap-2 items-center justify-between w-full mb-2">
+              <Tab.Panel className="h-full relative">
+                <ModalBox className="flex flex-col h-full gap-y-2 relative">
+                  {isZeroBalance(maxUnlendAmount) ||
+                  isZeroBalance(loanedAmount) ? (
+                    <>
+                      <div className="absolute inset-0 bg-white/90 z-10 -m-2 rounded-lg" />
+                      <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
+                        <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                          {t('nothingToWithdraw')}
+                        </span>
+                      </div>
+                    </>
+                  ) : null}
+                  {hasUnlendableAmount ? (
+                    <>
+                      <div className="flex flex-wrap gap-2 items-center justify-between w-full mb-2">
+                        <p className="font-medium text-base text-primary">
+                          {t('availableToWithdraw')}
+                        </p>
+                        <div className="flex items-center gap-x-2 bg-white rounded-full shadow-card self-center w-fit px-2 py-0.5">
+                          {data?.attributes?.token?.data?.attributes?.icon?.data
+                            ?.attributes?.url ? (
+                            <div className="flex flex-shrink-0">
+                              <Image
+                                src={
+                                  data?.attributes?.token?.data?.attributes
+                                    ?.icon?.data?.attributes?.url
+                                }
+                                alt={
+                                  data?.attributes?.token?.data?.attributes
+                                    ?.name
+                                }
+                                width={24}
+                                height={24}
+                              />
+                            </div>
+                          ) : null}
+                          {hasUnlendableAmount ? (
+                            <span className="text-lg font-semibold text-primary">
+                              {formatBalance(
+                                maxUnlendAmount.label,
+                                defaultLocale,
+                                4,
+                                'standard',
+                              )}
+                            </span>
+                          ) : null}
+                          <h2 className="text-lg font-semibold text-primary">
+                            {t(name)}
+                          </h2>
+                        </div>
+                      </div>
+                      <div className="flex w-full gap-2">
+                        <div className="flex items-center mr-2 w-full gap-2">
+                          <StakeInput
+                            label={name}
+                            setValue={setWithdrawValue}
+                            max={canWithdraw ? loanedAmount : maxUnlendAmount}
+                            resetOnSteps={[STEPS.UNLEND_COMPLETED]}
+                            disabled={!(canWithdraw || hasUnlendableAmount)}
+                          />
+                        </div>
+                        <div className="flex items-center">
+                          <LendActions
+                            deposit={canWithdraw ? loanedAmount : withdrawValue}
+                            tokenConfig={tokenConfig}
+                            poolAddress={poolAddress}
+                            action="withdraw"
+                            disabled={!(canWithdraw || hasUnlendableAmount)}
+                          />
+                        </div>
+                      </div>
+                      {account && (
+                        <Alert
+                          open={compareBalances(
+                            canWithdraw
+                              ? loanedAmount
+                                ? loanedAmount
+                                : zeroBalance
+                              : maxUnlendAmount,
+                            'lt',
+                            withdrawValue,
+                          )}
+                          className="w-full"
+                        >
+                          You can only withdraw{' '}
+                          {canWithdraw
+                            ? loanedAmount?.label
+                            : maxUnlendAmount?.label}{' '}
+                          {name}
+                        </Alert>
+                      )}
+                    </>
+                  ) : null}
+                  {!isEmpty(maxUnlendAmount) &&
+                    !isEmpty(loanedAmount) &&
+                    !isEqual(maxUnlendAmount, loanedAmount) && (
+                      <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-wrap gap-2 items-center justify-between w-full">
                           <p className="font-medium text-base text-primary">
-                            {t('availableToWithdraw')}
+                            {t('yourCurrentLendingFunds')}
                           </p>
                           <div className="flex items-center gap-x-2 bg-white rounded-full shadow-card self-center w-fit px-2 py-0.5">
                             {data?.attributes?.token?.data?.attributes?.icon
@@ -296,129 +374,50 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                                 />
                               </div>
                             ) : null}
-                            {hasUnlendableAmount ? (
-                              <span className="text-lg font-semibold text-primary">
-                                {formatBalance(
-                                  maxUnlendAmount.label,
-                                  defaultLocale,
-                                  4,
-                                  'standard',
-                                )}
-                              </span>
-                            ) : null}
+                            <span className="text-lg font-semibold text-primary">
+                              {formatBalance(
+                                loanedAmount.label,
+                                defaultLocale,
+                                4,
+                                'standard',
+                              )}
+                            </span>
                             <h2 className="text-lg font-semibold text-primary">
                               {t(name)}
                             </h2>
                           </div>
                         </div>
-                        <div className="flex w-full gap-2">
-                          <div className="flex items-center mr-2 w-full gap-2">
-                            <StakeInput
-                              label={name}
-                              setValue={setWithdrawValue}
-                              max={canWithdraw ? loanedAmount : maxUnlendAmount}
-                              resetOnSteps={[STEPS.UNLEND_COMPLETED]}
-                              disabled={!(canWithdraw || hasUnlendableAmount)}
-                            />
-                          </div>
-                          <div className="flex items-center">
-                            <LendActions
-                              deposit={
-                                canWithdraw ? loanedAmount : withdrawValue
-                              }
-                              tokenConfig={tokenConfig}
-                              poolAddress={poolAddress}
-                              action="withdraw"
-                              disabled={!(canWithdraw || hasUnlendableAmount)}
-                            />
-                          </div>
-                        </div>
-                        {account && (
-                          <Alert
-                            open={compareBalances(
-                              canWithdraw
-                                ? loanedAmount
-                                  ? loanedAmount
-                                  : zeroBalance
-                                : maxUnlendAmount,
-                              'lt',
-                              withdrawValue,
-                            )}
-                            className="w-full"
-                          >
-                            You can only withdraw{' '}
-                            {canWithdraw
-                              ? loanedAmount?.label
-                              : maxUnlendAmount?.label}{' '}
-                            {name}
-                          </Alert>
-                        )}
-                      </>
-                    )}
-                    {!isEmpty(maxUnlendAmount) &&
-                      !isEmpty(loanedAmount) &&
-                      !isEqual(maxUnlendAmount, loanedAmount) && (
-                        <div className="flex flex-col gap-y-2">
-                          <div className="flex flex-wrap gap-2 items-center justify-between w-full">
-                            <p className="font-medium text-base text-primary">
-                              {t('yourCurrentLendingFunds')}
+                        {buttonText && (
+                          <>
+                            <p className="text-xs text-sub-dark font-medium">
+                              {textContent}
                             </p>
-                            <div className="flex items-center gap-x-2 bg-white rounded-full shadow-card self-center w-fit px-2 py-0.5">
-                              {data?.attributes?.token?.data?.attributes?.icon
-                                ?.data?.attributes?.url ? (
-                                <div className="flex flex-shrink-0">
-                                  <Image
-                                    src={
-                                      data?.attributes?.token?.data?.attributes
-                                        ?.icon?.data?.attributes?.url
-                                    }
-                                    alt={
-                                      data?.attributes?.token?.data?.attributes
-                                        ?.name
-                                    }
-                                    width={24}
-                                    height={24}
-                                  />
-                                </div>
-                              ) : null}
-                              <span className="text-lg font-semibold text-primary">
-                                {formatBalance(
-                                  loanedAmount.label,
-                                  defaultLocale,
-                                  4,
-                                  'standard',
-                                )}
-                              </span>
-                              <h2 className="text-lg font-semibold text-primary">
-                                {t(name)}
-                              </h2>
-                            </div>
-                          </div>
-                          {buttonText && textContent ? (
-                            <>
-                              <p className="text-xs text-sub-dark font-medium">
-                                {textContent}
-                              </p>
-                              <button
-                                disabled={buttonDisabled}
-                                onClick={buttonAction}
-                                className="w-fit px-10 md:px-20 py-3 my-2 text-sm md:text-base font-medium text-primary bg-transparent rounded-full ring-inset ring-1 ring-primary enabled:hover:bg-primary enabled:hover:text-white disabled:ring-sub-dark disabled:text-sub-dark"
-                              >
-                                {buttonText}
-                              </button>
-                            </>
-                          ) : null}
-                        </div>
-                      )}
-                    <button onClick={compound} className="w-fit">
-                      compound
-                    </button>
-                  </ModalBox>
-                </Tab.Panel>
-              )}
-              {hasBalanceInPool && (
-                <Tab.Panel className="h-full">
-                  <ModalBox className="flex flex-col h-full gap-y-2">
+                            <button
+                              onClick={buttonAction}
+                              disabled={buttonAction === null}
+                              className="w-fit px-10 md:px-20 py-3 my-2 text-sm md:text-base font-medium text-primary bg-transparent rounded-full ring-inset ring-1 ring-primary enabled:hover:bg-primary enabled:hover:text-white disabled:ring-sub-dark disabled:text-sub-dark"
+                            >
+                              {buttonText}
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    )}
+                </ModalBox>
+              </Tab.Panel>
+
+              <Tab.Panel className="h-full relative">
+                <ModalBox className="flex flex-col h-full gap-y-2 relative">
+                  {!hasBalanceInPool || poolState !== STATES.ACTIVE ? (
+                    <>
+                      <div className="absolute inset-0 bg-white/90 z-10 -m-2 rounded-lg" />
+                      <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
+                        <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                          {t('nothingToChangePreference')}
+                        </span>
+                      </div>
+                    </>
+                  ) : (
                     <>
                       <div className="flex flex-wrap gap-2 items-center justify-between w-full mb-2">
                         <p className="font-medium text-base text-primary">
@@ -433,6 +432,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                           );
                         }}
                         className="mb-4 pl-3"
+                        disabled={poolState !== STATES.ACTIVE}
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem
@@ -469,15 +469,18 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                       </RadioGroup>
                       <button
                         onClick={changePreference}
-                        disabled={userActualPreference === preference}
+                        disabled={
+                          userActualPreference === preference ||
+                          poolState !== STATES.ACTIVE
+                        }
                         className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                       >
                         {t('changePreference')}
                       </button>
                     </>
-                  </ModalBox>
-                </Tab.Panel>
-              )}
+                  )}
+                </ModalBox>
+              </Tab.Panel>
             </Tab.Panels>
           </AnimatePresence>
         </Tab.Group>

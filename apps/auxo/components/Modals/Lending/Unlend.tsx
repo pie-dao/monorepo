@@ -42,7 +42,7 @@ export default function Unlend() {
               token: poolData?.attributes?.token?.data?.attributes?.name,
             })}
           </Dialog.Title>
-          <div className="overflow-hidden rounded-lg shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/bg-rewards.png')] bg-cover">
+          <div className="overflow-hidden rounded-lg items-start w-full font-medium transition-all mx-auto">
             <div className="flex flex-col px-4 py-4 w-full bg-white/80 gap-y-3 h-full">
               <div className="flex justify-center w-full">
                 <div className="text-2xl w-fit text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant pl-4 pr-6 py-2 rounded-lg z-10">
@@ -73,7 +73,7 @@ export default function Unlend() {
                 className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                 onClick={unLendRewards}
               >
-                {t('claimRewards')}
+                {t('withdraw')}
               </button>
             ) : (
               <div className="w-full flex justify-center">

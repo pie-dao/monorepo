@@ -7,9 +7,10 @@ import {
   thunkChangePreference,
   thunkUnlend,
   thunkWithdraw,
+  thunkLendClaimRewards,
 } from './lending.thunks';
 import { Pools, Preferences, SliceState, Steps } from './lending.types';
-import { merge } from 'lodash';
+import { add, merge } from 'lodash';
 import { BigNumberReference } from '../products/products.types';
 import { zeroBalance } from '../../utils/balances';
 import addTxNotifications from '../../utils/notifications';
@@ -80,8 +81,9 @@ const appSlice = createSlice({
 
     addTxNotifications(builder, thunkApproveToken, 'approveToken');
     addTxNotifications(builder, thunkLendDeposit, 'lendDeposit');
-    addTxNotifications(builder, thunkUnlend, 'unlend');
+    addTxNotifications(builder, thunkUnlend, 'withdraw');
     addTxNotifications(builder, thunkWithdraw, 'withdraw');
+    addTxNotifications(builder, thunkLendClaimRewards, 'claimLendRewards');
     addTxNotifications(builder, thunkChangePreference, 'changePreference');
   },
 

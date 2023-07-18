@@ -76,12 +76,35 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
             ? t(invert(PREFERENCES)[userPreference]?.toLowerCase())
             : null,
       },
+      {
+        title: t('maxPoolCapacity'),
+        value: (
+          <>
+            {formatBalance(
+              data?.lastEpoch?.available?.label ?? 0,
+              defaultLocale,
+              2,
+              'standard',
+            )}
+            {' / '}
+            {formatBalance(
+              data?.lastEpoch?.maxBorrow?.label ?? 0,
+              defaultLocale,
+              2,
+              'standard',
+            )}{' '}
+            {data?.attributes?.token?.data?.attributes?.name}
+          </>
+        ),
+      },
     ];
   }, [
     t,
     data?.userData?.balance,
     data?.userData?.yield?.label,
     data?.attributes?.token?.data?.attributes?.name,
+    data?.epochCapacity?.label,
+    data?.lastEpoch?.maxBorrow?.label,
     defaultLocale,
     userPreference,
   ]);
@@ -90,13 +113,9 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
     <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-white gap-y-2 h-full">
       <div className="flex justify-between w-full mb-2 pb-2 border-b border-custom-border items-center">
         <p className="text-primary font-semibold text-lg">{currentMonthYear}</p>
-        {data?.lastActiveEpoch?.rate?.label ? (
+        {data?.lastEpoch?.rate?.label ? (
           <p className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5 font-medium">
-            {formatAsPercent(
-              data?.lastActiveEpoch?.rate?.label,
-              defaultLocale,
-              2,
-            )}{' '}
+            {formatAsPercent(data?.lastEpoch?.rate?.label, defaultLocale, 2)}{' '}
             {t('APR')}
           </p>
         ) : null}

@@ -456,7 +456,7 @@
   "APR": "APR",
   "unlendTitle": "You are withdrawing your ${token}",
   "withdrawPrincipalTitle": "You are withdrawing your principal",
-  "withdrawPrincipalDescription": "You are about to withdraw your principal from the lending pool",
+  "withdrawPrincipalDescription": "You are about to withdraw your principal from the lending pool, if you also have claimable yield it will be automatically claimed",
   "withdrawPrincipal": "Withdraw principal",
   "availableToWithdraw": "Available to withdraw",
   "yourCurrentLendingFunds": "Your current lending funds",
@@ -472,5 +472,8 @@
   "withdrawalRequested": "Requested",
   "withdrawalReady": "Withdraw",
   "notAcceptingDeposits": "Pool is currently not accepting deposits",
-  "USDC": "USDC"
+  "USDC": "USDC",
+  "maxPoolCapacity": "Max pool capacity",
+  "nothingToWithdraw": "Here you will be able to withdraw your funds",
+  "nothingToChangePreference": "Here you will be able to change your preference"
 }

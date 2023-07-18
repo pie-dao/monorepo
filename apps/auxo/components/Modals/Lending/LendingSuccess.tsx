@@ -8,6 +8,7 @@ import { isEqual } from 'lodash';
 import { zeroBalance } from '../../../utils/balances';
 import { Dialog } from '@headlessui/react';
 import { PREFERENCES } from '../../../utils/constants';
+import classNames from '../../../utils/classnames';
 
 type Props = {
   action?:
@@ -51,7 +52,13 @@ export default function LendingSuccess({ action }: Props) {
         </div>
       ) : null}
       {amount && !isEqual(amount, zeroBalance) ? (
-        <div className="flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md relative">
+        <div
+          className={classNames(
+            'flex flex-col items-center justify-center w-full gap-y-4 rounded-lg px-2 py-4 m-2 relative',
+            action === 'claim' &&
+              "bg-[url('/images/background/bg-rewards.png')] bg-cover shadow-md",
+          )}
+        >
           <div className="absolute inset-0 bg-white opacity-30 z-0" />
           <div className="text-2xl text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
             {data?.attributes?.token?.data?.attributes?.icon?.data?.attributes

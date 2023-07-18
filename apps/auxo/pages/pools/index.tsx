@@ -137,8 +137,7 @@ export default function PoolsPage({ poolsConfig }: Props) {
             const currentState = Object.keys(STATES)
               .find(
                 (key) =>
-                  STATES[key as keyof typeof STATES] ===
-                  pool?.lastActiveEpoch?.state,
+                  STATES[key as keyof typeof STATES] === pool?.lastEpoch?.state,
               )
               ?.toLowerCase();
             return (
@@ -191,7 +190,7 @@ export default function PoolsPage({ poolsConfig }: Props) {
                     <span
                       className={classNames(
                         'text-base text-white rounded-lg px-2 py-0.5',
-                        classesByState[pool?.lastActiveEpoch?.state],
+                        classesByState[pool?.lastEpoch?.state],
                       )}
                     >
                       {t('poolStatus')}

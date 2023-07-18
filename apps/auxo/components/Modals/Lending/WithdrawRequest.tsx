@@ -49,7 +49,7 @@ export default function RequestWithdraw() {
                 className="w-fit px-20 py-2 text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                 onClick={unLendRewards}
               >
-                {t('claimRewards')}
+                {t('requestWithdraw')}
               </button>
             ) : (
               <div className="w-full flex justify-center">

@@ -10,6 +10,7 @@ import injectedModule from '@web3-onboard/injected-wallets';
 import walletConnectModule from '@web3-onboard/walletconnect';
 import coinbaseWalletModule from '@web3-onboard/coinbase';
 import trezorModule from '@web3-onboard/trezor';
+import ledgerModule from '@web3-onboard/ledger';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
@@ -36,13 +37,19 @@ const trezorInitOptions = {
   appUrl: 'https://auxo.fi',
 };
 
+const ledgerInitOptions = {
+  walletConnectVersion: 2 as const,
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
+};
+
 const injected = injectedModule();
 const coinbaseWalletSdk = coinbaseWalletModule();
 const walletConnect = walletConnectModule(wcV2InitOptions);
 const trezor = trezorModule(trezorInitOptions);
+const ledger = ledgerModule(ledgerInitOptions);
 
 const web3Onboard = init({
-  wallets: [injected, walletConnect, coinbaseWalletSdk, trezor],
+  wallets: [injected, walletConnect, coinbaseWalletSdk, trezor, ledger],
   chains: [
     {
       id: '0x1',

@@ -123,13 +123,9 @@
   "withdrawSuccess": "Withdrawn successfully",
   "withdrawError": "There was an error while withdrawing",
 
-  "unlendPending": "Unlending",
-  "unlendSuccess": "Unlended successfully",
-  "unlendError": "There was an error while unlending",
-
-  "changepreferencePending": "Changing preference",
-  "changepreferenceSuccess": "Changed preference successfully",
-  "changepreferenceError": "There was an error while changing preference",
+  "changePreferencePending": "Changing preference",
+  "changePreferenceSuccess": "Changed preference successfully",
+  "changePreferenceError": "There was an error while changing preference",
 
   "defaultError": "There was an error"
 }
