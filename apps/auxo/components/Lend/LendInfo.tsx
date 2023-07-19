@@ -103,7 +103,7 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
     data?.userData?.balance,
     data?.userData?.yield?.label,
     data?.attributes?.token?.data?.attributes?.name,
-    data?.epochCapacity?.label,
+    data?.lastEpoch?.totalBorrow?.label,
     data?.lastEpoch?.maxBorrow?.label,
     defaultLocale,
     userPreference,
