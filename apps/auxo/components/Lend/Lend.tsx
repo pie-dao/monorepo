@@ -256,7 +256,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
               </Tab.Panel>
               <Tab.Panel className="h-full relative">
                 <ModalBox className="flex flex-col h-full gap-y-2 relative">
-                  {isZeroBalance(maxUnlendAmount) ||
+                  {isZeroBalance(maxUnlendAmount) &&
                   isZeroBalance(loanedAmount) ? (
                     <>
                       <div className="absolute inset-0 bg-white/90 z-10 -m-2 rounded-lg" />

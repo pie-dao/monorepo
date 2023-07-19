@@ -81,7 +81,7 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
         value: (
           <>
             {formatBalance(
-              data?.lastEpoch?.available?.label ?? 0,
+              data?.lastEpoch?.totalBorrow?.label ?? 0,
               defaultLocale,
               2,
               'standard',

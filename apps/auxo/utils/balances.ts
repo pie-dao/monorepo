@@ -65,7 +65,7 @@ export const compareBalances = (
 
 export const zeroBalance = { label: 0, value: '0' };
 export const isZeroBalance = (b: BigNumberReference): boolean =>
-  b.label === 0 && b.value === '0';
+  b?.label === 0 && b?.value === '0';
 
 export const convertToUnderlying = (
   original: BigNumberReference,

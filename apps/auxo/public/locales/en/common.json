@@ -473,7 +473,9 @@
   "withdrawalReady": "Withdraw",
   "notAcceptingDeposits": "Pool is currently not accepting deposits",
   "USDC": "USDC",
-  "maxPoolCapacity": "Max pool capacity",
+  "maxPoolCapacity": "Pool capacity",
   "nothingToWithdraw": "Here you will be able to withdraw your funds",
-  "nothingToChangePreference": "Here you will be able to change your preference"
+  "nothingToChangePreference": "Here you will be able to change your preference",
+  "withdrawConfirmCompleted": "Withdraw completed",
+  "withdrawConfirmCompletedDescription": "You have successfully withdrawn your principal"
 }
