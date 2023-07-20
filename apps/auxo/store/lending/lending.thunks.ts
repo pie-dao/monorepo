@@ -527,7 +527,7 @@ export const thunkWithdraw = createAsyncThunk(
   async ({ lendingPool }: ThunkWithdraw, { rejectWithValue, dispatch }) => {
     if (!lendingPool) return rejectWithValue('Missing staking contract');
     dispatch(setTxHash(null));
-    const tx = await lendingPool.withdraw();
+    const tx = await lendingPool.safeClaimAndWithdraw();
 
     const { hash } = tx;
     dispatch(setTxHash(hash));

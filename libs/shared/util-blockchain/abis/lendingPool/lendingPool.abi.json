@@ -106,6 +106,25 @@
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint32",
+        "name": "epochId",
+        "type": "uint32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "rate",
+        "type": "uint64"
+      }
+    ],
+    "name": "EpochCreatedFixedRate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "uint256",
         "name": "epochId",
         "type": "uint256"
@@ -558,19 +577,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "_rate",
-        "type": "uint64"
-      }
-    ],
-    "name": "closeEpochWithRate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "compound",
     "outputs": [],
@@ -596,6 +602,11 @@
         "internalType": "uint128",
         "name": "_maxBorrow",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_rate",
+        "type": "uint64"
       }
     ],
     "name": "createPendingEpoch",
@@ -664,6 +675,11 @@
       {
         "internalType": "uint128",
         "name": "repaid",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "withdrawCompound",
         "type": "uint128"
       },
       {
@@ -755,6 +771,11 @@
           },
           {
             "internalType": "uint128",
+            "name": "withdrawCompound",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
             "name": "totalCompounded",
             "type": "uint128"
           }
@@ -811,6 +832,11 @@
           {
             "internalType": "uint128",
             "name": "repaid",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "withdrawCompound",
             "type": "uint128"
           },
           {
@@ -901,6 +927,11 @@
           },
           {
             "internalType": "uint128",
+            "name": "withdrawCompound",
+            "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
             "name": "totalCompounded",
             "type": "uint128"
           }
@@ -967,6 +998,11 @@
             "internalType": "uint128",
             "name": "lastDepositedQty",
             "type": "uint128"
+          },
+          {
+            "internalType": "uint128",
+            "name": "compoundedQty",
+            "type": "uint128"
           }
         ],
         "internalType": "struct ILendingPoolData.Loan",
@@ -985,25 +1021,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_epochId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRate",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -1138,6 +1155,11 @@
         "internalType": "uint128",
         "name": "_maxBorrow",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_rate",
+        "type": "uint64"
       }
     ],
     "name": "initialize",
@@ -1308,6 +1330,11 @@
         "internalType": "uint128",
         "name": "lastDepositedQty",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint128",
+        "name": "compoundedQty",
+        "type": "uint128"
       }
     ],
     "stateMutability": "view",
@@ -1399,6 +1426,25 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "requiredRepayment",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
@@ -1436,6 +1482,13 @@
       }
     ],
     "name": "safeClaimAndSetPreference",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "safeClaimAndWithdraw",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
