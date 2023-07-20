@@ -37,7 +37,7 @@ export function formatBalance(
     style: 'decimal',
     notation: notation ?? 'compact',
     minimumFractionDigits: 0,
-    maximumFractionDigits: fixed ?? 0,
+    maximumFractionDigits: 6 ?? 0,
   }).format(balanceAmount ?? 0);
   return balance;
 }
