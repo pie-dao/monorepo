@@ -14,7 +14,8 @@ export type SupportedChains = ValueOf<typeof SUPPORTED_CHAINS>;
 
 // can be swapped out for local host
 export const MAINNET_RPC =
-  'https://bestnet.alexintosh.com/rpc/new-lend' ?? 'https://eth.llamarpc.com';
+  'https://bestnet.alexintosh.com/rpc/fixed-rate-testing' ??
+  'https://eth.llamarpc.com';
 
 export const RPC_URLS =
   process.env.NEXT_PUBLIC_TESTNET === 'true'
