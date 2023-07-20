@@ -14,7 +14,7 @@ export type SupportedChains = ValueOf<typeof SUPPORTED_CHAINS>;
 
 // can be swapped out for local host
 export const MAINNET_RPC =
-  'https://bestnet.alexintosh.com/rpc/demo-lending' ??
+  'https://bestnet.alexintosh.com/rpc/demo-team-lending' ??
   'https://eth.llamarpc.com';
 
 export const RPC_URLS =
