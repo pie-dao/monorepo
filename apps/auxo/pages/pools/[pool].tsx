@@ -9,6 +9,10 @@ import { TokenConfig, TokensConfig } from '../../types/tokensConfig';
 import Lend from '../../components/Lend/Lend';
 import LendInfo from '../../components/Lend/LendInfo';
 import { PoolCard } from '../../components/Card/CardVariants/PoolCard';
+import classNames from '../../utils/classnames';
+import { Card, CardContent, CardDebug } from '../../components/Card/Card';
+import { STATES } from '../../store/lending/lending.types';
+import { PREFERENCES } from '../../utils/constants';
 
 type Props = {
   pool: string;
@@ -17,6 +21,7 @@ type Props = {
 
 export default function PoolsPage({ pool, tokenConfig }: Props) {
   const { data: lendingPool, isLoading, isError } = useEnanchedPools(pool);
+  console.log('lendingPool', lendingPool);
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -32,6 +37,115 @@ export default function PoolsPage({ pool, tokenConfig }: Props) {
         </div>
       </div>
       {!isLoading && !isError ? <PoolCard pool={lendingPool} /> : null}
+      <Card className={classNames('bg-grsadient-primary flex-row')}>
+        <CardContent className="gap-4 flex-col lg:flex-row flex">
+          <CardDebug
+            infos={
+              [
+                {
+                  title: 'Last Epoch',
+                  value: (
+                    <ul>
+                      <li className="text-secondary text-sm">
+                        Available: {lendingPool?.lastEpoch?.available?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        Pool State:{' '}
+                        {Object.keys(STATES).find(
+                          (key) =>
+                            STATES[key as keyof typeof STATES] ===
+                            lendingPool?.lastEpoch?.state,
+                        )}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        MaxBorrow: {lendingPool?.lastEpoch?.maxBorrow?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        Rate: {lendingPool?.lastEpoch?.rate?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        forClaims: {lendingPool?.lastEpoch?.forClaims?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        forWithdrawal:{' '}
+                        {lendingPool?.lastEpoch?.forWithdrawal?.label}
+                      </li>
+                    </ul>
+                  ),
+                },
+                {
+                  title: 'Last Active Epoch',
+                  value: (
+                    <ul>
+                      <li className="text-secondary text-sm">
+                        Available:{' '}
+                        {lendingPool?.lastActiveEpoch?.available?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        Pool State:
+                        {Object.keys(STATES).find(
+                          (key) =>
+                            STATES[key as keyof typeof STATES] ===
+                            lendingPool?.lastActiveEpoch?.state,
+                        )}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        MaxBorrow:{' '}
+                        {lendingPool?.lastActiveEpoch?.maxBorrow?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        Rate: {lendingPool?.lastActiveEpoch?.rate?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        forClaims:{' '}
+                        {lendingPool?.lastActiveEpoch?.forClaims?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        forWithdrawal:{' '}
+                        {lendingPool?.lastActiveEpoch?.forWithdrawal?.label}
+                      </li>
+                    </ul>
+                  ),
+                },
+                {
+                  title: 'User Data',
+                  value: (
+                    <ul>
+                      <li className="text-secondary text-sm">
+                        canWithdraw:{' '}
+                        {lendingPool?.userData?.canWithdraw?.toString()}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        canClaim: {lendingPool?.userData?.canClaim?.toString()}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        canCompound:{' '}
+                        {lendingPool?.userData?.canCompound?.toString()}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        Allowance: {lendingPool?.userData?.allowance?.label}
+                      </li>
+                      <li className="text-secondary text-sm">
+                        Preference:{' '}
+                        {Object.keys(PREFERENCES)
+                          .find(
+                            (key) =>
+                              PREFERENCES[key as keyof typeof PREFERENCES] ===
+                              lendingPool?.userData?.preference,
+                          )
+                          ?.toLowerCase() ?? ''}
+                      </li>
+                    </ul>
+                  ),
+                },
+              ] as {
+                title: string;
+                value: JSX.Element;
+              }[]
+            }
+          />
+        </CardContent>
+      </Card>
     </div>
   );
 }

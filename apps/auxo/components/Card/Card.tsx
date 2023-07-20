@@ -90,6 +90,30 @@ const CardInfoList = React.forwardRef<
 ));
 CardInfoList.displayName = 'CardInfoList';
 
+const CardDebug = React.forwardRef<
+  HTMLDivElement,
+  { className?: string; infos: { title: string; value: JSX.Element }[] }
+>(({ className, infos, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={classNames(
+      'flex flex-col p-2 gap-y-2 text-sm justify-center flex-1',
+    )}
+    {...props}
+  >
+    {infos.map(({ title, value }, index) => (
+      <dl
+        key={index}
+        className="font-medium flex flex-col gap-1 justify-between"
+      >
+        <dt>{title}</dt>
+        <dd className="font-medium">{value}</dd>
+      </dl>
+    ))}
+  </div>
+));
+CardDebug.displayName = 'CardDebug';
+
 export default CardInfoList;
 
 export {
@@ -100,4 +124,5 @@ export {
   CardDescription,
   CardContent,
   CardInfoList,
+  CardDebug,
 };

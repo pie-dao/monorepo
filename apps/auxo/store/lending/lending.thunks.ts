@@ -72,7 +72,6 @@ export const thunkGetLendingData = createAsyncThunk(
       let totalDeposited = 0;
       try {
         for (const pool of lendingPoolsData) {
-          console.log(lendingPoolsData);
           const decimals = findProductByAddress(pool.principal).decimals;
           const price = await fetchPrice(pool.principal, 'usd');
           totalDeposited += calculatePriceInUSD(
