@@ -36,6 +36,9 @@ export const promiseObject = async <T>(obj: PromiseObject<T>): Promise<T> => {
       if (current.status === 'fulfilled') {
         map[key] = current.value as Awaited<{ [K in keyof T]: T[K] }[keyof T]>;
       }
+      if (current.status === 'rejected') {
+        console.error(`Promise ${String(key)} failed`, current.reason);
+      }
       return map;
     }, {} as T);
   } catch (e) {
