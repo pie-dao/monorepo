@@ -93,7 +93,10 @@ export const UseLoan = (poolAddress: string) => {
 export const UsePoolAcceptsDeposits = (poolAddress: string): boolean =>
   useAppSelector((state) => state?.lending?.pools?.[poolAddress]?.canDeposit);
 
-export const UseSufficentApproval = (poolAddress: string): boolean => {
+export const UseSufficentApproval = (
+  poolAddress: string,
+  inputValue: BigNumberReference,
+): boolean => {
   const allowance = UsePoolApproval(poolAddress);
-  return compareBalances(allowance, 'gt', zeroBalance);
+  return compareBalances(allowance, 'gte', inputValue);
 };

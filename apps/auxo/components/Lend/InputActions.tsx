@@ -40,7 +40,7 @@ const LendActions: React.FC<{
   const account = wallet?.accounts[0]?.address;
   const dispatch = useAppDispatch();
   const tokens = useTokenBalance(tokenConfig.name);
-  const hasSufficentApproval = UseSufficentApproval(poolAddress);
+  const hasSufficentApproval = UseSufficentApproval(poolAddress, deposit);
   const canWithdraw = UseCanUserWithdrawFromPool(poolAddress);
   const loan = UseLoan(poolAddress);
   const unlendableAmount = UseMaxWithdrawableAmountFromPool(poolAddress);
