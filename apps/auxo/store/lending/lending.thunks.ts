@@ -61,18 +61,22 @@ export const thunkGetLendingData = createAsyncThunk(
           return results;
         }),
       );
-      const lendingPoolsData = lendingPoolsDataResults.map((result) => {
-        if (result.status === 'fulfilled') {
-          return result.value;
-        }
-        if (result.status === 'rejected') {
-          rejectWithValue(result.reason);
-        }
-      });
+      const lendingPoolsData = lendingPoolsDataResults
+        .map((result) => {
+          if (result.status === 'fulfilled') {
+            return result.value;
+          }
+          if (result.status === 'rejected') {
+            rejectWithValue(result.reason);
+          }
+        })
+        .filter(
+          (item) => !(Object.keys(item).length === 1 && 'poolAddress' in item),
+        );
       let totalDeposited = 0;
       try {
         for (const pool of lendingPoolsData) {
-          const decimals = findProductByAddress(pool.principal).decimals;
+          const decimals = findProductByAddress(pool.principal)?.decimals;
           const price = await fetchPrice(pool.principal, 'usd');
           totalDeposited += calculatePriceInUSD(
             toBalance(pool.lastEpoch.totalBorrowed, decimals),
@@ -145,14 +149,18 @@ export const thunkGetUserLendingData = createAsyncThunk(
           return results;
         }),
       );
-      const lendingPoolsData = lendingPoolsDataResults.map((result) => {
-        if (result.status === 'fulfilled') {
-          return result.value;
-        }
-        if (result.status === 'rejected') {
-          rejectWithValue(result.reason);
-        }
-      });
+      const lendingPoolsData = lendingPoolsDataResults
+        .map((result) => {
+          if (result.status === 'fulfilled') {
+            return result.value;
+          }
+          if (result.status === 'rejected') {
+            rejectWithValue(result.reason);
+          }
+        })
+        .filter(
+          (item) => !(Object.keys(item).length === 1 && 'poolAddress' in item),
+        );
 
       let totalDeposited = 0;
       let totalClaimableRewards = 0;
