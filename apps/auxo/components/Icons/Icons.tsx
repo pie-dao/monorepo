@@ -53,12 +53,12 @@ export const BanknotesIcon = () => (
   </svg>
 );
 
-export const WithdrawIcon = () => (
+export const WithdrawIcon = ({ className }: { className?: string }) => (
   <svg
     viewBox="0 0 16 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="w-4 h-4"
+    className={classNames('w-4 h-4', className)}
   >
     <g clipPath="url(#clip0_2195_3234)">
       <path

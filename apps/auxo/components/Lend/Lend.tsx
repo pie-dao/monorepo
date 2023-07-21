@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import StakeInput from '../Input/InputSlider';
 import {
@@ -40,6 +40,11 @@ import { Preferences, STATES, STEPS } from '../../store/lending/lending.types';
 import { RadioGroup, RadioGroupItem } from '../RadioGroup/RadioGroup';
 import { Label } from '@radix-ui/react-label';
 import { WithdrawIcon } from '../Icons/Icons';
+import {
+  BellIcon,
+  CurrencyDollarIcon,
+  RefreshIcon,
+} from '@heroicons/react/solid';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -61,7 +66,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   const hasUnlendableAmount = !isEqual(maxUnlendAmount, zeroBalance);
   const canWithdraw = UseCanUserWithdrawFromPool(poolAddress);
   const loanedAmount = data?.userData?.balance;
-  const userActualPreference = data?.userData?.preference;
+  const userActualPreference = data?.userData?.preference as Preferences;
   const hasBalanceInPool =
     !isEmpty(loanedAmount) && !isEqual(loanedAmount, zeroBalance);
   const isPoolAcceptingDeposits = UsePoolAcceptsDeposits(poolAddress);
@@ -407,7 +412,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
               </Tab.Panel>
 
               <Tab.Panel className="h-full relative">
-                <ModalBox className="flex flex-col h-full gap-y-2 relative">
+                <ModalBox className="flex flex-col h-full gap-y-2 relative place-items-center">
                   {!hasBalanceInPool || poolState !== STATES.ACTIVE ? (
                     <>
                       <div className="absolute inset-0 bg-white/90 z-10 -m-2 rounded-lg" />
@@ -425,47 +430,33 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                         </p>
                       </div>
                       <RadioGroup
+                        className="grid grid-cols-3 gap-4"
                         defaultValue={userActualPreference?.toString()}
                         onValueChange={(value) => {
                           dispatch(
                             setPreference(parseInt(value) as Preferences),
                           );
                         }}
-                        className="mb-4 pl-3"
                         disabled={poolState !== STATES.ACTIVE}
                       >
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="1"
-                            id="CLAIM"
-                            disabled={
-                              userActualPreference === PREFERENCES.CLAIM
-                            }
-                          />
-                          <Label htmlFor="CLAIM">{t('claim')}</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="0"
-                            id="AUTOCOMPOUND"
-                            disabled={
-                              userActualPreference === PREFERENCES.AUTOCOMPOUND
-                            }
-                          />
-                          <Label htmlFor="AUTOCOMPOUND">
-                            {t('autocompound')}
-                          </Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem
-                            value="2"
-                            id="WITHDRAW"
-                            disabled={
-                              userActualPreference === PREFERENCES.WITHDRAW
-                            }
-                          />
-                          <Label htmlFor="WITHDRAW">{t('withdraw')}</Label>
-                        </div>
+                        <PreferenceOption
+                          userActualPreference={userActualPreference}
+                          preference={PREFERENCES.CLAIM}
+                          id="CLAIM"
+                          icon={CurrencyDollarIcon}
+                        />
+                        <PreferenceOption
+                          preference={PREFERENCES.AUTOCOMPOUND}
+                          id="AUTOCOMPOUND"
+                          icon={RefreshIcon}
+                          userActualPreference={userActualPreference}
+                        />
+                        <PreferenceOption
+                          preference={PREFERENCES.WITHDRAW}
+                          id="WITHDRAW"
+                          icon={WithdrawIcon}
+                          userActualPreference={userActualPreference}
+                        />
                       </RadioGroup>
                       <button
                         onClick={changePreference}
@@ -473,7 +464,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                           userActualPreference === preference ||
                           poolState !== STATES.ACTIVE
                         }
-                        className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+                        className="w-fit px-10 py-2 mt-6 text-sm font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                       >
                         {t('changePreference')}
                       </button>
@@ -490,3 +481,36 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
 };
 
 export default Lend;
+
+export const PreferenceOption = ({
+  preference,
+  id,
+  icon: Icon,
+  userActualPreference,
+}: {
+  preference: Preferences;
+  id: string;
+  icon: React.FC<{ className?: string }>;
+  userActualPreference: Preferences;
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Label
+      htmlFor={id}
+      className={classNames(
+        'flex flex-col items-center justify-between rounded-md border-2 border-transparent bg-transparent p-4 [&:has(&:not(disabled))]hover:bg-secondary/5 [&:has(&:not(disabled))]:hover:text-secondary [&:has([data-state=checked])]:text-secondary [&:has([data-state=checked])]:shadow-md [&:has([data-state=checked])]:border-secondary [&:has(disabled)]:bg-sub-dark [&:has(disabled)]:text-sub-dark [&:not(:has(disabled))]:cursor-pointer',
+      )}
+    >
+      <RadioGroupItem value={String(preference)} id={id} className="sr-only" />
+      <Icon className="mb-3 h-6 w-6" />
+      {t(
+        Object.keys(PREFERENCES)
+          .find(
+            (key) =>
+              PREFERENCES[key as keyof typeof PREFERENCES] === preference,
+          )
+          ?.toLowerCase(),
+      )}
+    </Label>
+  );
+};

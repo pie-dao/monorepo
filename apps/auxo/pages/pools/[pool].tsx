@@ -37,7 +37,7 @@ export default function PoolsPage({ pool, tokenConfig }: Props) {
         </div>
       </div>
       {!isLoading && !isError ? <PoolCard pool={lendingPool} /> : null}
-      <Card className={classNames('bg-grsadient-primary flex-row')}>
+      <Card className={classNames('bg-gradient-primary flex-row')}>
         <CardContent className="gap-4 flex-col lg:flex-row flex">
           <CardDebug
             infos={
