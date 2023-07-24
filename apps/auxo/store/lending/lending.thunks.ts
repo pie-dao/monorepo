@@ -15,7 +15,12 @@ import { fetchPrice } from '../../hooks/useCoingecko';
 import { BigNumberReference } from '../products/products.types';
 import { Erc20Abi, LendingPoolAbi } from '@shared/util-blockchain';
 import { pendingNotification } from '../../components/Notifications/Notifications';
-import { setLendingStep, setTx, setTxHash } from './lending.slice';
+import {
+  setLendingStep,
+  setPreference,
+  setTx,
+  setTxHash,
+} from './lending.slice';
 import { PREFERENCES } from '../../utils/constants';
 
 const createEpochObject = (epoch: Epoch, decimals: number) => ({
@@ -519,6 +524,7 @@ export const thunkChangePreference = createAsyncThunk(
     const receipt = await tx.wait();
 
     if (receipt.status === 1) {
+      dispatch(setPreference(preference));
       dispatch(setLendingStep(STEPS.CHANGE_PREFERENCE_COMPLETED));
     }
 

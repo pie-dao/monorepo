@@ -23,13 +23,12 @@ type Props = {
 
 export default function LendingSuccess({ action }: Props) {
   const { t } = useTranslation();
-  const { tx, selectedPool, amount } = useAppSelector(
+  const { tx, selectedPool, amount, preference } = useAppSelector(
     (state) => state.lending.lendingFlow,
   );
   const { data } = useEnanchedPools(selectedPool);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const chainExplorer = useChainExplorer();
-  const preference = data?.userData?.preference;
 
   const actualPreference =
     Object.keys(PREFERENCES)

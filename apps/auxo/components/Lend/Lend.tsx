@@ -130,10 +130,6 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   };
 
   useEffect(() => {
-    dispatch(setPreference(userActualPreference as Preferences));
-  }, [dispatch, userActualPreference]);
-
-  useEffect(() => {
     setSelectedIndex(0);
   }, [
     hasBalanceInPool,
