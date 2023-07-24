@@ -84,7 +84,7 @@ export default function LendDeposit() {
                     />
                   ) : null}
                   <span>
-                    {formatBalance(amount.label, defaultLocale, 4, 'standard')}{' '}
+                    {formatBalance(amount.label, defaultLocale, 6, 'standard')}{' '}
                     <span className="uppercase">
                       {data?.attributes?.token?.data?.attributes?.name}
                     </span>

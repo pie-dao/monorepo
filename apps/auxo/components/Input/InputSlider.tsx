@@ -130,7 +130,7 @@ function InputSlider({
             <span className="text-sub-dark">{`${formatBalance(
               max.label,
               defaultLocale,
-              4,
+              6,
               'standard',
             )} ${label}`}</span>
             <span>MAX</span>

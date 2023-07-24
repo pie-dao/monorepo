@@ -47,7 +47,7 @@ export const ClaimablePoolRewards = ({
             amount: formatBalance(
               data?.userData?.yield?.label,
               defaultLocale,
-              2,
+              6,
               'standard',
             ),
           })}{' '}
@@ -57,7 +57,7 @@ export const ClaimablePoolRewards = ({
       <div className="flex gap-x-2 items-center ml-auto">
         <button
           type="button"
-          className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-inset ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
+          className="flex gap-x-2 items-center w-fit px-2 py-1 text-sm font-medium text-white bg-green rounded-full ring-inset ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-30"
           onClick={claimRewards}
           disabled={claimableAmount}
         >

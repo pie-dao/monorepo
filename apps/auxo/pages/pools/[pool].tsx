@@ -21,7 +21,6 @@ type Props = {
 
 export default function PoolsPage({ pool, tokenConfig }: Props) {
   const { data: lendingPool, isLoading, isError } = useEnanchedPools(pool);
-  console.log('lendingPool', lendingPool);
 
   return (
     <div className="flex flex-col gap-y-4">

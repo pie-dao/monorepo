@@ -23,12 +23,21 @@ type Props = {
 
 export default function LendingSuccess({ action }: Props) {
   const { t } = useTranslation();
-  const { tx, selectedPool, amount, preference } = useAppSelector(
+  const { tx, selectedPool, amount } = useAppSelector(
     (state) => state.lending.lendingFlow,
   );
   const { data } = useEnanchedPools(selectedPool);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const chainExplorer = useChainExplorer();
+  const preference = data?.userData?.preference;
+
+  const actualPreference =
+    Object.keys(PREFERENCES)
+      .find(
+        (key) => PREFERENCES[key as keyof typeof PREFERENCES] === preference,
+      )
+      ?.toLowerCase() ?? '';
+
   return (
     <div className="flex flex-col items-center justify-center w-full gap-y-4">
       <Dialog.Title className="bg-clip-text text-transparent bg-gradient-major-secondary-predominant font-bold text-xl z-10">
@@ -39,16 +48,7 @@ export default function LendingSuccess({ action }: Props) {
       </Dialog.Description>
       {action === 'changePreference' ? (
         <div className="text-lg text-white font-medium flex items-center gap-x-2 bg-gradient-major-secondary-predominant px-4 py-2 rounded-lg z-10">
-          <span>
-            {t(
-              Object.keys(PREFERENCES)
-                .find(
-                  (key) =>
-                    PREFERENCES[key as keyof typeof PREFERENCES] === preference,
-                )
-                ?.toLowerCase() ?? '',
-            )}
-          </span>
+          <span>{t(`lending${actualPreference}`)}</span>
         </div>
       ) : null}
       {amount && !isEqual(amount, zeroBalance) ? (
@@ -77,7 +77,7 @@ export default function LendingSuccess({ action }: Props) {
               />
             ) : null}
             <span>
-              {formatBalance(amount.label, defaultLocale, 4, 'standard')}{' '}
+              {formatBalance(amount.label, defaultLocale, 6, 'standard')}{' '}
               {data?.attributes?.token?.data?.attributes?.name}
             </span>
           </div>

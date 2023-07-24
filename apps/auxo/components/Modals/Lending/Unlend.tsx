@@ -59,7 +59,7 @@ export default function Unlend() {
                     />
                   ) : null}
                   <span>
-                    {formatBalance(amount?.label, defaultLocale, 4, 'standard')}{' '}
+                    {formatBalance(amount?.label, defaultLocale, 6, 'standard')}{' '}
                     {poolData?.attributes?.token?.data?.attributes?.name}
                   </span>
                 </div>

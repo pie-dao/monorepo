@@ -65,7 +65,7 @@ export default function ApproveLendToken() {
                     />
                   ) : null}
                   <span className="text-2xl font-medium text-white">
-                    {formatBalance(amount?.label, defaultLocale, 2, 'standard')}{' '}
+                    {formatBalance(amount?.label, defaultLocale, 6, 'standard')}{' '}
                     {poolData?.attributes?.token?.data?.attributes?.name}
                   </span>
                 </div>

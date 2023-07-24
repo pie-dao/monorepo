@@ -8,6 +8,7 @@ import { formatBalance } from '../../../utils/formatBalance';
 import { useEnanchedPools } from '../../../hooks/useEnanchedPools';
 import { useLendingPoolContract } from '../../../hooks/useContracts';
 import { PendingTransactionContent } from './PendingTransactionContent';
+import { UseCanUserWithdrawFromPool } from '../../../hooks/useLending';
 
 export default function LendClaimRewards() {
   const { t } = useTranslation();
@@ -19,6 +20,7 @@ export default function LendClaimRewards() {
   );
   const { data: poolData } = useEnanchedPools(selectedPool);
   const lendingPoolContract = useLendingPoolContract(selectedPool);
+  const canWithdraw = UseCanUserWithdrawFromPool(selectedPool);
 
   const lendClaimRewards = () => {
     setLendClaim(true);
@@ -33,14 +35,21 @@ export default function LendClaimRewards() {
     <>
       {!tx?.hash ? (
         <>
-          <Dialog.Title
-            as="h3"
-            className="font-bold text-center text-xl text-primary capitalize w-full"
-          >
-            {t('claimingRewardsFor', {
-              token: poolData?.attributes?.token?.data?.attributes?.name,
-            })}
-          </Dialog.Title>
+          <div className="flex flex-col items-center justify-center w-full gap-y-4">
+            <Dialog.Title
+              as="h3"
+              className="font-bold text-center text-xl text-primary capitalize w-full"
+            >
+              {t('claimingRewardsFor', {
+                token: poolData?.attributes?.token?.data?.attributes?.name,
+              })}
+            </Dialog.Title>
+            {canWithdraw ? (
+              <Dialog.Description className="text-center text-base text-sub-dark w-full font-medium [text-wrap:balance]">
+                {t('claimingRewardsDescription')}
+              </Dialog.Description>
+            ) : null}
+          </div>
           <div className="overflow-hidden rounded-lg shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/bg-rewards.png')] bg-cover">
             <div className="flex flex-col px-4 py-4 w-full bg-white/80 gap-y-3 h-full">
               <div className="flex justify-center w-full">
@@ -58,7 +67,7 @@ export default function LendClaimRewards() {
                     />
                   ) : null}
                   <span>
-                    {formatBalance(amount?.label, defaultLocale, 4, 'standard')}{' '}
+                    {formatBalance(amount?.label, defaultLocale, 6, 'standard')}{' '}
                     {poolData?.attributes?.token?.data?.attributes?.name}
                   </span>
                 </div>

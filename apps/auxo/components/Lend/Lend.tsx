@@ -3,7 +3,6 @@ import Image from 'next/image';
 import StakeInput from '../Input/InputSlider';
 import {
   compareBalances,
-  isZero,
   isZeroBalance,
   pickBalanceList,
   zeroBalance,
@@ -32,6 +31,7 @@ import {
   UseMaxWithdrawableAmountFromPool,
   UsePoolAcceptsDeposits,
   UsePoolState,
+  UseUserCanClaim,
 } from '../../hooks/useLending';
 import { isEmpty, isEqual } from 'lodash';
 import { formatBalance } from '../../utils/formatBalance';
@@ -40,11 +40,7 @@ import { Preferences, STATES, STEPS } from '../../store/lending/lending.types';
 import { RadioGroup, RadioGroupItem } from '../RadioGroup/RadioGroup';
 import { Label } from '@radix-ui/react-label';
 import { WithdrawIcon } from '../Icons/Icons';
-import {
-  BellIcon,
-  CurrencyDollarIcon,
-  RefreshIcon,
-} from '@heroicons/react/solid';
+import { CurrencyDollarIcon, RefreshIcon } from '@heroicons/react/solid';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -65,7 +61,8 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   const maxUnlendAmount = UseMaxWithdrawableAmountFromPool(poolAddress);
   const hasUnlendableAmount = !isEqual(maxUnlendAmount, zeroBalance);
   const canWithdraw = UseCanUserWithdrawFromPool(poolAddress);
-  const loanedAmount = data?.userData?.balance;
+  const canClaim = UseUserCanClaim(poolAddress);
+  const loanedAmount = data?.userData?.balance ?? zeroBalance;
   const userActualPreference = data?.userData?.preference as Preferences;
   const hasBalanceInPool =
     !isEmpty(loanedAmount) && !isEqual(loanedAmount, zeroBalance);
@@ -81,16 +78,22 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
 
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
-  const buttonText = canWithdraw ? (
-    t('withdrawalReady')
-  ) : userActualPreference === PREFERENCES.WITHDRAW ? (
-    <p className="flex items-center gap-x-2">
-      <WithdrawIcon />
-      <span>{t('withdrawalRequested')}</span>
-    </p>
-  ) : poolState === STATES.ACTIVE ? (
-    t('requestWithdrawal')
-  ) : null;
+  let buttonText = null;
+
+  if (canWithdraw && canClaim) {
+    buttonText = t('withdrawAndClaim');
+  } else if (canWithdraw) {
+    buttonText = t('withdrawalReady');
+  } else if (userActualPreference === PREFERENCES.WITHDRAW) {
+    buttonText = (
+      <p className="flex items-center gap-x-2">
+        <WithdrawIcon />
+        <span>{t('withdrawalRequested')}</span>
+      </p>
+    );
+  } else if (poolState === STATES.ACTIVE) {
+    buttonText = t('requestWithdrawal');
+  }
 
   const textContent =
     userActualPreference === PREFERENCES.WITHDRAW && !canWithdraw
@@ -138,6 +141,19 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
     hasUnlendableAmount,
     canWithdraw,
   ]);
+
+  const textForPreference = useMemo(() => {
+    switch (preference) {
+      case PREFERENCES.CLAIM:
+        return t('interestOnlyPreferenceDescription');
+      case PREFERENCES.AUTOCOMPOUND:
+        return t('autocompoundPreferenceDescription');
+      case PREFERENCES.WITHDRAW:
+        return t('withdrawPreferenceDescription');
+      default:
+        return '';
+    }
+  }, [preference, t]);
 
   return (
     <div className="bg-gradient-to-r from-white via-white to-background h-full">
@@ -204,16 +220,23 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
             </Tab.List>
           </div>
           <AnimatePresence initial={false}>
-            <Tab.Panels className="mt-4 min-h-[15rem] h-full">
+            <Tab.Panels className="mt-4 min-h-[18rem] h-full">
               <Tab.Panel className="h-full relative">
                 <ModalBox className="flex flex-col h-full gap-y-2">
-                  {!isPoolAcceptingDeposits && (
+                  {(!isPoolAcceptingDeposits || canWithdraw) && (
                     <>
                       <div className="absolute inset-0 bg-white/90 z-10 -m-2" />
                       <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
-                        <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
-                          {t('notAcceptingDeposits')}
-                        </span>
+                        {(!isPoolAcceptingDeposits && (
+                          <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                            {t('notAcceptingDeposits')}
+                          </span>
+                        )) ||
+                          (canWithdraw && (
+                            <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                              {t('youNeedToWithdraw')}
+                            </span>
+                          ))}
                       </div>
                     </>
                   )}
@@ -301,7 +324,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                               {formatBalance(
                                 maxUnlendAmount.label,
                                 defaultLocale,
-                                4,
+                                6,
                                 'standard',
                               )}
                             </span>
@@ -383,7 +406,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                               {formatBalance(
                                 loanedAmount.label,
                                 defaultLocale,
-                                4,
+                                6,
                                 'standard',
                               )}
                             </span>
@@ -413,20 +436,22 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
 
               <Tab.Panel className="h-full relative">
                 <ModalBox className="flex flex-col h-full gap-y-2 relative place-items-center">
-                  {!hasBalanceInPool || poolState !== STATES.ACTIVE ? (
-                    <>
-                      <div className="absolute inset-0 bg-white/90 z-10 -m-2 rounded-lg" />
-                      <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
-                        <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
-                          {t('nothingToChangePreference')}
-                        </span>
-                      </div>
-                    </>
+                  {canWithdraw ? (
+                    <DisplayMessage
+                      messageKey={t('youCannotChangePreference')}
+                    />
+                  ) : !hasBalanceInPool || poolState !== STATES.ACTIVE ? (
+                    <DisplayMessage
+                      messageKey={t('nothingToChangePreference')}
+                    />
                   ) : (
                     <>
                       <div className="flex flex-wrap gap-2 items-center justify-between w-full mb-2">
                         <p className="font-medium text-base text-primary">
                           {t('changePreference')}
+                        </p>
+                        <p className="text-sm text-sub-dark font-medium">
+                          {t('changePreferenceDescription')}
                         </p>
                       </div>
                       <RadioGroup
@@ -458,13 +483,16 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                           userActualPreference={userActualPreference}
                         />
                       </RadioGroup>
+                      <p className="text-xs text-sub-dark font-medium">
+                        {textForPreference}
+                      </p>
                       <button
                         onClick={changePreference}
                         disabled={
                           userActualPreference === preference ||
                           poolState !== STATES.ACTIVE
                         }
-                        className="w-fit px-10 py-2 mt-6 text-sm font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
+                        className="w-fit px-10 py-2 mt-auto text-sm font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                       >
                         {t('changePreference')}
                       </button>
@@ -486,7 +514,6 @@ export const PreferenceOption = ({
   preference,
   id,
   icon: Icon,
-  userActualPreference,
 }: {
   preference: Preferences;
   id: string;
@@ -504,13 +531,24 @@ export const PreferenceOption = ({
       <RadioGroupItem value={String(preference)} id={id} className="sr-only" />
       <Icon className="mb-3 h-6 w-6" />
       {t(
-        Object.keys(PREFERENCES)
+        `lending${Object.keys(PREFERENCES)
           .find(
             (key) =>
               PREFERENCES[key as keyof typeof PREFERENCES] === preference,
           )
-          ?.toLowerCase(),
+          .toLowerCase()}`,
       )}
     </Label>
   );
 };
+
+export const DisplayMessage = ({ messageKey }) => (
+  <>
+    <div className="absolute inset-0 bg-white/90 z-10 -m-2 rounded-lg" />
+    <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
+      <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+        {messageKey}
+      </span>
+    </div>
+  </>
+);

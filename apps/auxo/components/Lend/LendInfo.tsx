@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { formatAsPercent, formatBalance } from '../../utils/formatBalance';
 import { useAppSelector } from '../../hooks';
@@ -9,6 +9,8 @@ import { UseUserPreference } from '../../hooks/useLending';
 import { PREFERENCES } from '../../utils/constants';
 import { invert, isEqual } from 'lodash';
 import { zeroBalance } from '../../utils/balances';
+import { STATES } from '../../store/lending/lending.types';
+import classNames from '../../utils/classnames';
 
 type Props = {
   poolAddress: string;
@@ -23,6 +25,31 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
     month: 'long',
     year: 'numeric',
   });
+
+  const poolState = useMemo(() => {
+    const currentState = Object.keys(STATES).find(
+      (key) => STATES[key as keyof typeof STATES] === data?.lastEpoch?.state,
+    );
+
+    return currentState?.toLowerCase() ?? '';
+  }, [data?.lastEpoch?.state]);
+
+  const classesByState = {
+    [STATES.ACTIVE]:
+      'bg-gradient-major-secondary-predominant bg-clip-text text-transparent',
+    [STATES.PENDING]: 'text-secondary',
+    [STATES.CLOSED]: 'text-primary',
+    [STATES.LOCKED]: 'text-primary',
+  };
+
+  const preference = useMemo(() => {
+    return Object.keys(PREFERENCES)
+      .find(
+        (key) =>
+          PREFERENCES[key as keyof typeof PREFERENCES] === userPreference,
+      )
+      ?.toLowerCase();
+  }, [userPreference]);
 
   const summaryData = useMemo(() => {
     return [
@@ -40,22 +67,8 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
           </>
         ),
       },
-      // {
-      //   title: t('pendingLoan'),
-      //   value: (
-      //     <>
-      //       {formatBalance(
-      //         data?.userData?.unlendableAmount?.label ?? 0,
-      //         defaultLocale,
-      //         2,
-      //         'standard',
-      //       )}{' '}
-      //       {data?.attributes?.token?.data?.attributes?.name}
-      //     </>
-      //   ),
-      // },
       {
-        title: t('yield'),
+        title: t('claimableYield'),
         value: (
           <>
             {formatBalance(
@@ -73,7 +86,7 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
         value:
           data?.userData?.balance?.label !== undefined &&
           !isEqual(data?.userData?.balance, zeroBalance)
-            ? t(invert(PREFERENCES)[userPreference]?.toLowerCase())
+            ? t(`lending${preference}`)
             : null,
       },
       {
@@ -121,8 +134,17 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
         ) : null}
       </div>
       <div className="flex flex-col  text-center w-full">
-        <p className="text-primary text-base">{t('activeIn')}</p>
-        <Countdown date={data?.attributes?.date_until_next_state} />
+        <p className="text-primary font-medium text-lg">{t('poolState')}</p>
+        <p
+          className={classNames(
+            'text-2xl font-semibold',
+            classesByState[data?.lastEpoch?.state],
+          )}
+        >
+          {t(poolState)}
+        </p>
+
+        {/* <Countdown date={data?.attributes?.date_until_next_state} /> */}
       </div>
       {summaryData.map(({ title, value }, index) => {
         if (!value) return null;

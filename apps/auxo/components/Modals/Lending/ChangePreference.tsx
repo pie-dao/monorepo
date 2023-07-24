@@ -48,7 +48,7 @@ export default function ChangePreference() {
           </Dialog.Title>
           <Dialog.Description className="text-center text-base text-sub-dark w-full font-medium [text-wrap:balance]">
             {t('requestChangePreferenceDescription', {
-              preference: preferenceKey,
+              preference: t(`lending${preferenceKey}`),
             })}
           </Dialog.Description>
 
