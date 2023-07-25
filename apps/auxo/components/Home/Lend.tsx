@@ -78,8 +78,8 @@ const Lend: React.FC = () => {
           <h5 className="text-base text-sub-light text-center font-medium">
             {t('lendDescription')}
           </h5>
-          <Container size="sm">
-            <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center">
+          <Container size="lg">
+            <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 lg:grid-cols-3 lg:text-center place-items-center">
               {lendFeatures.map((feature, index) => (
                 <div
                   key={index}
@@ -88,7 +88,7 @@ const Lend: React.FC = () => {
                   <div className="flex flex-shrink-0 items-center justify-center w-16 h-16 rounded-full bg-background/10 shadow-md text-secondary">
                     {feature.icon}
                   </div>
-                  <div className="relative w-full pl-8 pr-4 py-3 rounded-lg text-left">
+                  <div className="relative w-full pl-4 py-3 rounded-lg text-left">
                     <p className="text-white font-bold">
                       {t(feature.description)}
                     </p>

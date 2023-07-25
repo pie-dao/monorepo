@@ -18,7 +18,7 @@ type Props = PropsWithChildren & EmblaOptionsType;
 const Carousel: FC<Props> = ({ children, ...options }: Props) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(options, [
     Autoplay({
-      delay: 2000,
+      delay: 10_000,
     }),
   ]);
 
