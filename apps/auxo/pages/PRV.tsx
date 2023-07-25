@@ -11,7 +11,7 @@ import {
   BaseSubDarkTextSkeleton,
 } from '../components/Skeleton';
 import { formatBalance, formatAsPercent } from '../utils/formatBalance';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector, useStrapiCollection } from '../hooks';
 import Swap from '../components/Swap/Swap';
 import { useSetChain } from '@web3-onboard/react';
 import {
@@ -30,6 +30,7 @@ import { PrvWithdrawalMerkleTree } from '../types/merkleTree';
 import AddToWallet from '../components/AddToWallet/AddToWallet';
 import { useConnectWallet } from '@web3-onboard/react';
 import { getPRVWithdrawalMerkleTree } from '../utils/getUserMerkleTree';
+import { TypesMap } from '../types/cmsTypes';
 
 const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
 
@@ -56,6 +57,15 @@ export default function XAUXO({
   const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
   const [{ wallet }] = useConnectWallet();
 
+  const {
+    data: latestReport,
+    isLoading,
+    isError,
+  } = useStrapiCollection<TypesMap['reports']>('reports', {
+    sort: 'createdAt:desc',
+    _limit: 1,
+  });
+
   const account = wallet?.accounts[0]?.address;
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -81,9 +91,6 @@ export default function XAUXO({
     tokenConfig.addresses,
     wallet,
   ]);
-
-  const data = null;
-  const isError = false;
 
   useEffect(() => {
     if (prvTree && prvTree?.recipients && account && prvMerkleVerifier) {
@@ -193,10 +200,12 @@ export default function XAUXO({
             <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-lg w-full">
               <div className="bg-gradient-to-r from-white via-white to-background p-2.5 rounded-md">
                 <p className="font-bold text-primary text-xl">
-                  {isError || !data?.getTreasury?.marketData?.auxoAPR
+                  {isError ||
+                  isLoading ||
+                  latestReport?.data?.[0]?.attributes?.avg_apr_prv === null
                     ? 'N/A'
                     : formatAsPercent(
-                        data.getTreasury.marketData.auxoAPR,
+                        latestReport?.data?.[0]?.attributes?.avg_apr_prv,
                         defaultLocale,
                       )}
                 </p>

@@ -61,9 +61,6 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         ),
       },
       {
-        icon: (
-          <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
-        ),
         title: t('stakedBalance', { token: 'PRV' }),
         value: (
           <Trans
@@ -80,9 +77,6 @@ const Summary: React.FC<Props> = ({ tokenConfig }) => {
         ),
       },
       {
-        icon: (
-          <Image src={xAUXOIconCircle} alt="xAUXO" width={24} height={24} />
-        ),
         title: t('yourPendingStakedBalance', { token: 'PRV' }),
         value: (
           <div className="flex items-center gap-x-2">

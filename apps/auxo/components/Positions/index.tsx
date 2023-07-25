@@ -69,7 +69,7 @@ export default function PositionsTabs() {
   return (
     <section className="w-full pb-16 mt-8">
       <Tab.Group>
-        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-4 grid grid-cols-2 w-full mb-4 ml-[10px]">
+        <Tab.List className="md:flex p-1 md:max-w-xs gap-x-6 grid grid-cols-2 w-full mb-4 ml-[10px]">
           {['Treasury positions', 'Strategy details'].map((title) => (
             <Tab
               className={({ selected }) =>
@@ -316,7 +316,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
               </motion.div>
             </div>
             {exposure?.id !== 7 && (
-              <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border">
+              <div className="flex lg:hidden items-center justify-between py-2 border-t border-custom-border mt-2">
                 <p className="text-primary font-bold">{t('holding')}:</p>
                 <p className="text-primary font-bold">
                   {formatBalance(principalAmount)}
@@ -359,7 +359,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                     open: { scale: 1 },
                   }}
                   transition={{ duration: 0.3 }}
-                  className="origin-top space-y-1 border-t"
+                  className="origin-top space-y-1 border-t mt-2"
                 >
                   <div className="w-full flex flex-col space-between ">
                     <div className="hidden items-center sm:flex mt-4">
@@ -406,7 +406,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                           )}
                           <div className="w-full grid lg:grid-cols-5 lg:gap-x-4 px-4 py-2 bg-[#F7F7FF] rounded-md items-center">
                             <div className="flex-row hidden lg:block">
-                              <p className="text-xs text-primary">
+                              <p className="text-xs text-primary font-bold">
                                 {formatBalance(
                                   position?.attributes?.principal_amount,
                                   'en-US',
@@ -467,7 +467,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                                 </div>
                               </div>
                               <div className="flex-col flex lg:hidden ml-auto">
-                                <p className="text-sm text-primary">
+                                <p className="text-sm text-primary font-bold">
                                   {formatBalance(
                                     position?.attributes?.principal_amount,
                                     'en-US',
@@ -534,7 +534,7 @@ export const SingleTokenPosition = ({ exposure }: SingleTokenPositionProps) => {
                             </div>
                             {exposure.id !== 7 && (
                               <div className="hidden flex-col lg:flex text-right">
-                                <p className="text-xs text-primary">
+                                <p className="text-xs text-primary font-bold">
                                   {formatBalance(
                                     position?.attributes?.principal_amount,
                                     'en-US',
