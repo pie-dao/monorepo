@@ -173,7 +173,7 @@ export default function Navigation({
                         </div>
                         <motion.span
                           variants={itemVariants}
-                          className="text-base"
+                          className="text-sm"
                           initial="hidden"
                           animate={open ? 'visible' : 'hidden'}
                         >

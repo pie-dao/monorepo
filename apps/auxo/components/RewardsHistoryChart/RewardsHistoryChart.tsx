@@ -49,7 +49,12 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
             </div>
             <p className="text-sm text-primary font-medium flex gap-x-2 items-center">
               {`${t('from')} ${payload[0].name}`}{' '}
-              <span className="flex w-3 h-3 rounded-full bg-secondary"></span>
+              <span
+                className={classNames(
+                  'flex w-3 h-3 rounded-full',
+                  payload[0].name === 'ARV' ? 'bg-secondary' : 'bg-[#82ca9d]',
+                )}
+              ></span>
             </p>
           </div>
         )}

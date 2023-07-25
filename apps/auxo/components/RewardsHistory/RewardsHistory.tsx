@@ -216,7 +216,7 @@ const RewardsHistory = () => {
         </div>
         <Tab.Panels className="mt-4 h-full">
           <Tab.Panel>
-            <div className="w-full flex flex-col shadow-sm rounded-lg bg-gradient-primary overflow-hidden">
+            <div className="w-full flex flex-col shadow-sm rounded-lg bg-gradient-primary overflow-hidden gap-y-3">
               <div className="lg:items-center justify-between w-full px-4 py-2 flex flex-col lg:flex-row gap-3">
                 <div className="flex justify-between gap-x-2 w-full items-center">
                   <h3 className="text-primary text-base font-semibold flex gap-x-2 items-center">
