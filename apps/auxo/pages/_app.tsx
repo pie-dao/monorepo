@@ -8,8 +8,8 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { init, Web3OnboardProvider } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import walletConnectModule from '@web3-onboard/walletconnect';
-import coinbaseWalletModule from '@web3-onboard/coinbase';
 import trezorModule from '@web3-onboard/trezor';
+import ledgerModule from '@web3-onboard/ledger';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
@@ -35,13 +35,18 @@ const trezorInitOptions = {
   appUrl: 'https://auxo.fi',
 };
 
+const ledgerInitOptions = {
+  walletConnectVersion: 2 as const,
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
+};
+
 const injected = injectedModule();
-const coinbaseWalletSdk = coinbaseWalletModule();
 const walletConnect = walletConnectModule(wcV2InitOptions);
 const trezor = trezorModule(trezorInitOptions);
+const ledger = ledgerModule(ledgerInitOptions);
 
 const web3Onboard = init({
-  wallets: [injected, walletConnect, coinbaseWalletSdk, trezor],
+  wallets: [injected, walletConnect, trezor, ledger],
   chains: [
     {
       id: '0x1',
@@ -71,7 +76,6 @@ const web3Onboard = init({
     icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 24"><rect width="24" height="24" x=".5" fill="url(#a)" rx="12"/><path fill="#1F0860" d="M14.8167 4.5h-4.412L5 18.75h3.7758l2.6892-.8687h2.2914l2.6949.8687H20L14.8167 4.5ZM9.83048 15.609l2.69482-7.87321h.1727c.0356.10053.0694.20864.1051.32813L15.391 15.609l-1.6327-.8687h-2.2914l-1.63455.8687h-.00187Z"/><defs><linearGradient id="a" x1=".5" x2="23.8222" y1="4.63158" y2="5.04303" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#F6F7FF"/></linearGradient></defs></svg>',
     recommendedInjectedWallets: [
       { name: 'MetaMask', url: 'https://metamask.io' },
-      { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
     ],
   },
   connect: {
