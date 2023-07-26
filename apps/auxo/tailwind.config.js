@@ -66,6 +66,15 @@ module.exports = {
         )`,
         'gradient-major-secondary-predominant': `linear-gradient(90deg, #0B78DD 53.18%, #0BDD91 129.01%)`,
       },
+      keyframes: {
+        'pulse-fast': {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0.2 },
+        },
+      },
+      animation: {
+        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
     },
   },
   plugins: [

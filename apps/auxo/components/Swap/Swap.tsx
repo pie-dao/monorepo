@@ -110,7 +110,9 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
         address: tokenConfig?.addresses?.[1]?.rollStakerAddress,
       },
       {
-        title: t('merkleDistributorContract'),
+        title: t('merkleDistributorContract', {
+          token: 'PRV',
+        }),
         address: tokenConfig?.addresses?.[1]?.merkleDistributorAddress,
       },
       {

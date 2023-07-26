@@ -148,7 +148,9 @@ const Stake: React.FC<Props> = ({
         address: destinationToken?.addresses?.[1]?.stakingAddress,
       },
       {
-        title: t('merkleDistributorContract'),
+        title: t('merkleDistributorContract', {
+          token: 'ARV',
+        }),
         address: destinationToken?.addresses?.[1]?.merkleDistributorAddress,
       },
     ];

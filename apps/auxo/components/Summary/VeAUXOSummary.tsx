@@ -172,6 +172,7 @@ const Summary: React.FC<Props> = ({ tokenConfig, commitmentValue }) => {
             width={width}
             height={180}
             level={hasLock ? increasedLevel : userLevel}
+            showPulse={true}
           />
         )}
       </ParentSize>

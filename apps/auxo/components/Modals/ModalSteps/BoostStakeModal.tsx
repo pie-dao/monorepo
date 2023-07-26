@@ -101,7 +101,13 @@ export default function BoostStakeModal() {
               </div>
               <ParentSize className="w-full h-40 relative -top-6">
                 {({ width }) => (
-                  <LevelChart width={width} height={160} level={30} />
+                  <LevelChart
+                    width={width}
+                    height={160}
+                    level={30}
+                    levelDifference={userLevel}
+                    prefix={'boosted'}
+                  />
                 )}
               </ParentSize>
             </div>
