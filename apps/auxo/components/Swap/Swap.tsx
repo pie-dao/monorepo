@@ -40,6 +40,8 @@ import AUXO from '../../public/images/icons/AUXO-no-bg.svg';
 import { PrvWithdrawalRecipient } from '../../types/merkleTree';
 import WithdrawButton from './WithdrawButton';
 import Tooltip from '../Tooltip/Tooltip';
+import { useSelectedIndexFromQuery } from '../../hooks/useSelectedIndexFromQuery';
+import Highlight from '../WithHighlight/WithHighlight';
 
 type Props = {
   tokenConfig: TokenConfig;
@@ -65,8 +67,20 @@ const tokenOptions = [
   },
 ];
 
+const TABS_MAP = {
+  convert_and_stake: 0,
+  unstake: 1,
+  info: 2,
+  redeem: 3,
+};
+
+const SELECT_MAP = {
+  convert_and_stake: 0,
+  convert: 1,
+  stake: 2,
+};
+
 const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
-  const [tab, setTab] = useState(tokenOptions[0]);
   const [{ wallet }] = useConnectWallet();
   const account = wallet?.accounts[0]?.address;
   const { defaultLocale } = useAppSelector((state) => state.preferences);
@@ -124,514 +138,482 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
     ];
   }, [t, stakingTokenConfig?.addresses, tokenConfig?.addresses]);
 
+  const [selectedIndex, setSelectedIndex] = useSelectedIndexFromQuery(
+    'selectedIndex',
+    TABS_MAP,
+  );
+
+  const [selectedItem, setSelectedItem] = useSelectedIndexFromQuery(
+    'selectedItem',
+    SELECT_MAP,
+  );
+
+  let tab = tokenOptions[0];
+  if (selectedItem !== undefined && selectedItem < tokenOptions.length) {
+    tab = tokenOptions[selectedItem];
+  }
+
+  const setTab = (tab: (typeof tokenOptions)[0]) => {
+    const index = tokenOptions.findIndex((option) => option === tab);
+    setSelectedItem(index);
+  };
+
   return (
-    <div className="bg-gradient-to-r from-white via-white to-background">
-      <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
-        <Tab.Group>
-          <Tab.List className="flex gap-x-4 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
-            {['convertStake', 'unstake', 'info', 'redeem'].map((tab) => (
-              <Tab
-                className={({ selected }) =>
-                  classNames(
-                    'text-base font-semibold focus:outline-none relative',
-                    selected ? ' text-secondary' : ' text-sub-light',
-                    'disabled:opacity-20',
-                  )
-                }
-                key={tab}
-              >
-                {({ selected }) => (
-                  <>
-                    {t(tab)}
-                    {selected && (
-                      <div className="absolute -bottom-[5px] left-0 right-0 h-[2px] bg-secondary" />
-                    )}
-                  </>
-                )}
-              </Tab>
-            ))}
-          </Tab.List>
-          <AnimatePresence initial={false}>
-            <Tab.Panels className="mt-4 min-h-[15rem] h-full">
-              <Tab.Panel className="h-full">
-                <ModalBox className="flex flex-col gap-y-4 h-full">
-                  <div className="flex items-center justify-between w-full gap-x-4">
-                    <p className="text-base text-primary font-medium">
-                      {t('amountToStake')}
-                    </p>
-                    <div className="flex w-72 justify-end">
-                      <Listbox value={tab} onChange={setTab}>
-                        {({ open }) => (
-                          <div className="relative mt-1 w-full">
-                            <Listbox.Button className="flex items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full px-2 py-0.5 justify-between">
-                              <div className="flex gap-x-2 place-items-center">
-                                <div className="flex flex-shrink-0">
-                                  {tab.image}
+    <Highlight id="stake">
+      <div className="bg-gradient-to-r from-white via-white to-background">
+        <div className="flex flex-col px-4 py-3 rounded-lg shadow-md bg-[url('/images/background/prv-bg.png')] bg-left-bottom bg-no-repeat gap-y-2 overflow-hidden h-full">
+          <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+            <Tab.List className="flex gap-x-4 pb-4 whitespace-nowrap overflow-x-auto scrollbar:w-[2px] scrollbar:h-[2px] scrollbar:bg-white scrollbar:border scrollbar:border-sub-dark scrollbar-track:bg-white scrollbar-thumb:bg-sub-light scrollbar-track:[box-shadow:inset_0_0_1px_rgba(0,0,0,0.4)] scrollbar-track:rounded-full scrollbar-thumb:rounded-full">
+              {['convertStake', 'unstake', 'info', 'redeem'].map((tab) => (
+                <Tab
+                  className={({ selected }) =>
+                    classNames(
+                      'text-base font-semibold focus:outline-none relative',
+                      selected ? ' text-secondary' : ' text-sub-light',
+                      'disabled:opacity-20',
+                    )
+                  }
+                  key={tab}
+                >
+                  {({ selected }) => (
+                    <>
+                      {t(tab)}
+                      {selected && (
+                        <div className="absolute -bottom-[5px] left-0 right-0 h-[2px] bg-secondary" />
+                      )}
+                    </>
+                  )}
+                </Tab>
+              ))}
+            </Tab.List>
+            <AnimatePresence initial={false}>
+              <Tab.Panels className="mt-4 min-h-[15rem] h-full">
+                <Tab.Panel className="h-full">
+                  <ModalBox className="flex flex-col gap-y-4 h-full">
+                    <div className="flex items-center justify-between w-full gap-x-4">
+                      <p className="text-base text-primary font-medium">
+                        {t('amountToStake')}
+                      </p>
+                      <div className="flex w-72 justify-end">
+                        <Listbox value={tab} onChange={setTab}>
+                          {({ open }) => (
+                            <div className="relative mt-1 w-full">
+                              <Listbox.Button className="flex items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full px-2 py-0.5 justify-between">
+                                <div className="flex gap-x-2 place-items-center">
+                                  <div className="flex flex-shrink-0">
+                                    {tab.image}
+                                  </div>
+                                  <h2 className="text-xs md:text-lg font-medium text-primary">
+                                    {tab.title}
+                                  </h2>
                                 </div>
-                                <h2 className="text-xs md:text-lg font-medium text-primary">
-                                  {tab.title}
-                                </h2>
-                              </div>
-                              <motion.div
-                                initial={{ rotate: 0 }}
-                                animate={{ rotate: open ? -180 : 0 }}
-                                transition={{
-                                  duration: 0.4,
-                                  type: 'spring',
-                                  bounce: 0.2,
-                                }}
-                                className="flex items-center"
-                              >
-                                <ChevronDownIcon
+                                <motion.div
+                                  initial={{ rotate: 0 }}
+                                  animate={{ rotate: open ? -180 : 0 }}
+                                  transition={{
+                                    duration: 0.4,
+                                    type: 'spring',
+                                    bounce: 0.2,
+                                  }}
+                                  className="flex items-center"
+                                >
+                                  <ChevronDownIcon
+                                    className="h-5 w-5 text-primary"
+                                    aria-hidden="true"
+                                  />
+                                </motion.div>
+                              </Listbox.Button>
+                              <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                {tokenOptions.map((token, i) => (
+                                  <Listbox.Option
+                                    key={i}
+                                    value={token}
+                                    className={({ active }) =>
+                                      `relative select-none cursor-pointer group p-2 ${
+                                        active && 'text-secondary'
+                                      }`
+                                    }
+                                  >
+                                    <div className="flex gap-x-2 place-items-center truncate">
+                                      <div className="flex flex-shrink-0">
+                                        {token.image}
+                                      </div>
+                                      <h2 className="text-sm md:text-lg font-medium text-primary group-hover:text-secondary">
+                                        {token.title}
+                                      </h2>
+                                    </div>
+                                  </Listbox.Option>
+                                ))}
+                              </Listbox.Options>
+                            </div>
+                          )}
+                        </Listbox>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-y-2 h-full">
+                      {tab.value === 'convert' && (
+                        <>
+                          <StakeInput
+                            resetOnSteps={[STEPS.CONVERT_COMPLETED]}
+                            label={originToken}
+                            setValue={setOriginDepositValue}
+                            max={balance}
+                          />
+                          {account && (
+                            <Alert
+                              open={compareBalances(
+                                balance,
+                                'lt',
+                                originDepositValue,
+                              )}
+                            >
+                              You can only deposit {balance.label} {originToken}
+                            </Alert>
+                          )}
+                          <div className="flex place-items-center justify-between w-full">
+                            <p className="text-base text-primary font-medium">
+                              {t('vaultBalance')}
+                            </p>
+                            <p className="text-secondary font-bold text-lg">
+                              {formatBalance(
+                                originDepositValue.label,
+                                defaultLocale,
+                                4,
+                                'standard',
+                              )}{' '}
+                              PRV
+                            </p>
+                          </div>
+                          <DepositActions
+                            deposit={originDepositValue}
+                            estimation={originDepositValue}
+                            tokenConfig={stakingTokenConfig}
+                            toToken="PRV"
+                            isConvertAndStake={false}
+                          >
+                            {t('convert')}
+                          </DepositActions>
+                          <div className="w-full flex justify-center items-center mt-auto mb-0.5">
+                            <Banner
+                              bgColor="bg-warning"
+                              content={
+                                <Trans
+                                  i18nKey="withdrawalMechanism"
+                                  components={{
+                                    a: (
+                                      <a
+                                        href={
+                                          'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
+                                        }
+                                        className="text-primary underline"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      />
+                                    ),
+                                  }}
+                                />
+                              }
+                              icon={
+                                <ExclamationIcon
                                   className="h-5 w-5 text-primary"
                                   aria-hidden="true"
                                 />
-                              </motion.div>
-                            </Listbox.Button>
-                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                              {tokenOptions.map((token, i) => (
-                                <Listbox.Option
-                                  key={i}
-                                  value={token}
-                                  className={({ active }) =>
-                                    `relative select-none cursor-pointer group p-2 ${
-                                      active && 'text-secondary'
-                                    }`
-                                  }
-                                >
-                                  <div className="flex gap-x-2 place-items-center truncate">
-                                    <div className="flex flex-shrink-0">
-                                      {token.image}
-                                    </div>
-                                    <h2 className="text-sm md:text-lg font-medium text-primary group-hover:text-secondary">
-                                      {token.title}
-                                    </h2>
-                                  </div>
-                                </Listbox.Option>
-                              ))}
-                            </Listbox.Options>
+                              }
+                            />
                           </div>
-                        )}
-                      </Listbox>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-y-2 h-full">
-                    {tab.value === 'convert' && (
-                      <>
-                        <StakeInput
-                          resetOnSteps={[STEPS.CONVERT_COMPLETED]}
-                          label={originToken}
-                          setValue={setOriginDepositValue}
-                          max={balance}
-                        />
-                        {account && (
-                          <Alert
-                            open={compareBalances(
-                              balance,
-                              'lt',
-                              originDepositValue,
-                            )}
-                          >
-                            You can only deposit {balance.label} {originToken}
-                          </Alert>
-                        )}
-                        <div className="flex place-items-center justify-between w-full">
-                          <p className="text-base text-primary font-medium">
-                            {t('vaultBalance')}
-                          </p>
-                          <p className="text-secondary font-bold text-lg">
-                            {formatBalance(
-                              originDepositValue.label,
-                              defaultLocale,
-                              4,
-                              'standard',
-                            )}{' '}
-                            PRV
-                          </p>
-                        </div>
-                        <DepositActions
-                          deposit={originDepositValue}
-                          estimation={originDepositValue}
-                          tokenConfig={stakingTokenConfig}
-                          toToken="PRV"
-                          isConvertAndStake={false}
-                        >
-                          {t('convert')}
-                        </DepositActions>
-                        <div className="w-full flex justify-center items-center mt-auto mb-0.5">
-                          <Banner
-                            bgColor="bg-warning"
-                            content={
-                              <Trans
-                                i18nKey="withdrawalMechanism"
-                                components={{
-                                  a: (
-                                    <a
-                                      href={
-                                        'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
-                                      }
-                                      className="text-primary underline"
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    />
-                                  ),
-                                }}
-                              />
-                            }
-                            icon={
-                              <ExclamationIcon
-                                className="h-5 w-5 text-primary"
-                                aria-hidden="true"
-                              />
-                            }
+                        </>
+                      )}
+                      {tab.value === 'stake' && (
+                        <>
+                          <StakeInput
+                            resetOnSteps={[STEPS.CONVERT_COMPLETED]}
+                            label={stakingToken}
+                            setValue={setStakingDepositValue}
+                            max={PrvBalance}
                           />
-                        </div>
-                      </>
-                    )}
-                    {tab.value === 'stake' && (
-                      <>
-                        <StakeInput
-                          resetOnSteps={[STEPS.CONVERT_COMPLETED]}
-                          label={stakingToken}
-                          setValue={setStakingDepositValue}
-                          max={PrvBalance}
-                        />
-                        {account && (
-                          <Alert
-                            open={compareBalances(
-                              PrvBalance,
-                              'lt',
-                              stakingDepositValue,
-                            )}
-                          >
-                            You can only deposit {PrvBalance.label}{' '}
-                            {stakingToken}
-                          </Alert>
-                        )}
-                        <div className="flex place-items-center justify-between w-full">
-                          <p className="text-base text-primary font-medium">
-                            {t('staking')}:
-                          </p>
-                          <p className="text-secondary font-bold text-lg">
-                            {formatBalance(
-                              stakingDepositValue.label,
-                              defaultLocale,
-                              4,
-                              'standard',
-                            )}{' '}
-                            PRV
-                          </p>
-                        </div>
-                        <StakeButton
-                          deposit={stakingDepositValue}
-                          tokenConfig={tokenConfig}
-                          isConvertAndStake={false}
-                          action="stake"
-                        />
-                      </>
-                    )}
-                    {tab.value === 'convertAndStake' && (
-                      <>
-                        <StakeInput
-                          resetOnSteps={[STEPS.CONVERT_COMPLETED]}
-                          label={originToken}
-                          setValue={setOriginDepositValue}
-                          max={balance}
-                        />
+                          {account && (
+                            <Alert
+                              open={compareBalances(
+                                PrvBalance,
+                                'lt',
+                                stakingDepositValue,
+                              )}
+                            >
+                              You can only deposit {PrvBalance.label}{' '}
+                              {stakingToken}
+                            </Alert>
+                          )}
+                          <div className="flex place-items-center justify-between w-full">
+                            <p className="text-base text-primary font-medium">
+                              {t('staking')}:
+                            </p>
+                            <p className="text-secondary font-bold text-lg">
+                              {formatBalance(
+                                stakingDepositValue.label,
+                                defaultLocale,
+                                4,
+                                'standard',
+                              )}{' '}
+                              PRV
+                            </p>
+                          </div>
+                          <StakeButton
+                            deposit={stakingDepositValue}
+                            tokenConfig={tokenConfig}
+                            isConvertAndStake={false}
+                            action="stake"
+                          />
+                        </>
+                      )}
+                      {tab.value === 'convertAndStake' && (
+                        <>
+                          <StakeInput
+                            resetOnSteps={[STEPS.CONVERT_COMPLETED]}
+                            label={originToken}
+                            setValue={setOriginDepositValue}
+                            max={balance}
+                          />
 
-                        {account && (
-                          <Alert
-                            open={compareBalances(
-                              balance,
-                              'lt',
-                              originDepositValue,
-                            )}
+                          {account && (
+                            <Alert
+                              open={compareBalances(
+                                balance,
+                                'lt',
+                                originDepositValue,
+                              )}
+                            >
+                              You can only deposit {balance.label} {originToken}
+                            </Alert>
+                          )}
+                          <div className="flex place-items-center justify-between w-full">
+                            <p className="text-base text-primary font-medium">
+                              {t('staking')}:
+                            </p>
+                            <p className="text-secondary font-bold text-lg">
+                              {formatBalance(
+                                originDepositValue.label,
+                                defaultLocale,
+                                4,
+                                'standard',
+                              )}{' '}
+                              PRV
+                            </p>
+                          </div>
+                          <DepositActions
+                            deposit={originDepositValue}
+                            estimation={originDepositValue}
+                            tokenConfig={stakingTokenConfig}
+                            toToken="PRV"
+                            isConvertAndStake={true}
                           >
-                            You can only deposit {balance.label} {originToken}
-                          </Alert>
-                        )}
-                        <div className="flex place-items-center justify-between w-full">
-                          <p className="text-base text-primary font-medium">
-                            {t('staking')}:
-                          </p>
-                          <p className="text-secondary font-bold text-lg">
-                            {formatBalance(
-                              originDepositValue.label,
-                              defaultLocale,
-                              4,
-                              'standard',
-                            )}{' '}
-                            PRV
-                          </p>
-                        </div>
-                        <DepositActions
-                          deposit={originDepositValue}
-                          estimation={originDepositValue}
-                          tokenConfig={stakingTokenConfig}
-                          toToken="PRV"
-                          isConvertAndStake={true}
-                        >
-                          {t('convertAndStake')}
-                        </DepositActions>
-                        <div className="w-full flex justify-center items-center mt-auto mb-0.5">
-                          <Banner
-                            bgColor="bg-warning"
-                            content={
-                              <Trans
-                                i18nKey="withdrawalMechanism"
-                                components={{
-                                  a: (
-                                    <a
-                                      href={
-                                        'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
-                                      }
-                                      className="text-primary underline"
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    />
-                                  ),
-                                }}
-                              />
-                            }
-                            icon={
-                              <ExclamationIcon
-                                className="h-5 w-5 text-primary"
-                                aria-hidden="true"
-                              />
-                            }
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </ModalBox>
-              </Tab.Panel>
-              <Tab.Panel>
-                <ModalBox className="flex flex-col gap-y-4 h-full">
-                  <div className="flex items-center justify-between w-full">
-                    <p className="text-base text-primary font-medium">
-                      {t('amountToUnstake')}
-                    </p>
-                  </div>
-                  <div className="flex flex-col gap-y-2">
-                    <StakeInput
-                      resetOnSteps={[STEPS.UNSTAKE_COMPLETED]}
-                      label={stakingToken}
-                      setValue={setUnstakingDepositValue}
-                      max={stakedXAUXO}
-                    />
-                    {account && (
-                      <Alert
-                        open={compareBalances(
-                          stakedXAUXO,
-                          'lt',
-                          unstakingDepositValue,
-                        )}
-                      >
-                        You can only withdraw {stakedXAUXO.label} {stakingToken}
-                      </Alert>
-                    )}
-                    <div className="flex place-items-center justify-between w-full">
+                            {t('convertAndStake')}
+                          </DepositActions>
+                          <div className="w-full flex justify-center items-center mt-auto mb-0.5">
+                            <Banner
+                              bgColor="bg-warning"
+                              content={
+                                <Trans
+                                  i18nKey="withdrawalMechanism"
+                                  components={{
+                                    a: (
+                                      <a
+                                        href={
+                                          'https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics'
+                                        }
+                                        className="text-primary underline"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      />
+                                    ),
+                                  }}
+                                />
+                              }
+                              icon={
+                                <ExclamationIcon
+                                  className="h-5 w-5 text-primary"
+                                  aria-hidden="true"
+                                />
+                              }
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </ModalBox>
+                </Tab.Panel>
+                <Tab.Panel>
+                  <ModalBox className="flex flex-col gap-y-4 h-full">
+                    <div className="flex items-center justify-between w-full">
                       <p className="text-base text-primary font-medium">
-                        {t('unstaking')}:
-                      </p>
-                      <p className="text-secondary font-bold text-lg">
-                        {formatBalance(
-                          unstakingDepositValue.label,
-                          defaultLocale,
-                          4,
-                          'standard',
-                        )}{' '}
-                        PRV
+                        {t('amountToUnstake')}
                       </p>
                     </div>
-                    <StakeButton
-                      deposit={unstakingDepositValue}
-                      tokenConfig={tokenConfig}
-                      action="unstake"
-                    />
-                  </div>
-                </ModalBox>
-              </Tab.Panel>
-              <Tab.Panel>
-                <ModalBox className="flex flex-col h-full gap-y-2">
-                  <div className="flex flex-col items-center justify-between w-full divide-y">
-                    {addressList?.map((el, index) => (
-                      <div
-                        key={index}
-                        className={classNames(
-                          'grid grid-cols-2 gap-y py-2 items-center w-full',
-                          index === 0 && 'pt-0',
-                          index === addressList?.length - 1 && 'pb-0',
-                        )}
-                      >
-                        <p className="text-base text-primary font-medium">
-                          {el.title}
-                        </p>
-                        <a
-                          className="text-primary hover:text-secondary font-bold text-base truncate"
-                          href={`https://etherscan.io/address/${el.address}`}
-                          target="_blank"
-                          rel="noreferrer noopener"
+                    <div className="flex flex-col gap-y-2">
+                      <StakeInput
+                        resetOnSteps={[STEPS.UNSTAKE_COMPLETED]}
+                        label={stakingToken}
+                        setValue={setUnstakingDepositValue}
+                        max={stakedXAUXO}
+                      />
+                      {account && (
+                        <Alert
+                          open={compareBalances(
+                            stakedXAUXO,
+                            'lt',
+                            unstakingDepositValue,
+                          )}
                         >
-                          {el.address}
-                        </a>
+                          You can only withdraw {stakedXAUXO.label}{' '}
+                          {stakingToken}
+                        </Alert>
+                      )}
+                      <div className="flex place-items-center justify-between w-full">
+                        <p className="text-base text-primary font-medium">
+                          {t('unstaking')}:
+                        </p>
+                        <p className="text-secondary font-bold text-lg">
+                          {formatBalance(
+                            unstakingDepositValue.label,
+                            defaultLocale,
+                            4,
+                            'standard',
+                          )}{' '}
+                          PRV
+                        </p>
                       </div>
-                    ))}
-                  </div>
-                </ModalBox>
-              </Tab.Panel>
-              <Tab.Panel className="h-full">
-                <ModalBox className="flex flex-col gap-y-4 h-full">
-                  <>
-                    {canWithdraw ? (
-                      <>
-                        <div className="flex items-center justify-between w-full">
+                      <StakeButton
+                        deposit={unstakingDepositValue}
+                        tokenConfig={tokenConfig}
+                        action="unstake"
+                      />
+                    </div>
+                  </ModalBox>
+                </Tab.Panel>
+                <Tab.Panel>
+                  <ModalBox className="flex flex-col h-full gap-y-2">
+                    <div className="flex flex-col items-center justify-between w-full divide-y">
+                      {addressList?.map((el, index) => (
+                        <div
+                          key={index}
+                          className={classNames(
+                            'grid grid-cols-2 gap-y py-2 items-center w-full',
+                            index === 0 && 'pt-0',
+                            index === addressList?.length - 1 && 'pb-0',
+                          )}
+                        >
                           <p className="text-base text-primary font-medium">
-                            {t('amountToBurn')}
+                            {el.title}
                           </p>
-                          <div className="flex justify-end">
-                            <div className="flex items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full px-2 py-0.5 justify-between">
-                              <div className="flex gap-x-2 place-items-center">
-                                <div className="flex flex-shrink-0">
-                                  <Image
-                                    src={AUXO}
-                                    alt="AUXO"
-                                    width={18}
-                                    height={18}
-                                  />
+                          <a
+                            className="text-primary hover:text-secondary font-bold text-base truncate"
+                            href={`https://etherscan.io/address/${el.address}`}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                          >
+                            {el.address}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </ModalBox>
+                </Tab.Panel>
+                <Tab.Panel className="h-full">
+                  <ModalBox className="flex flex-col gap-y-4 h-full">
+                    <>
+                      {canWithdraw ? (
+                        <>
+                          <div className="flex items-center justify-between w-full">
+                            <p className="text-base text-primary font-medium">
+                              {t('amountToBurn')}
+                            </p>
+                            <div className="flex justify-end">
+                              <div className="flex items-center gap-x-2 bg-gradient-primary rounded-full shadow-card self-center w-full px-2 py-0.5 justify-between">
+                                <div className="flex gap-x-2 place-items-center">
+                                  <div className="flex flex-shrink-0">
+                                    <Image
+                                      src={AUXO}
+                                      alt="AUXO"
+                                      width={18}
+                                      height={18}
+                                    />
+                                  </div>
+                                  <h2 className="text-lg font-medium text-primary">
+                                    {t('redeemAuxo')}
+                                  </h2>
                                 </div>
-                                <h2 className="text-lg font-medium text-primary">
-                                  {t('redeemAuxo')}
-                                </h2>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <StakeInput
-                          resetOnSteps={[STEPS.WITHDRAW_PRV_COMPLETED]}
-                          label={'PRV'}
-                          setValue={setWithdrawDepositValue}
-                          max={withdrawableAmount}
-                        />
-                        {account && (
-                          <Alert
-                            open={compareBalances(
-                              withdrawDepositValue,
-                              'gt',
-                              withdrawableAmount,
-                            )}
-                          >
-                            You can only withdraw{' '}
-                            {withdrawableAmount?.label ?? 0} PRV
-                          </Alert>
-                        )}
-                        <div className="flex flex-col w-full">
-                          <div className="flex justify-between w-full">
-                            <p className="text-base text-primary font-medium">
-                              {t('youGet')}:
-                            </p>
-                            <p className="text-secondary font-bold text-lg">
-                              {formatBalance(
-                                withdrawalCalculation?.value?.label,
-                                defaultLocale,
-                                4,
-                                'standard',
-                              )}{' '}
-                              AUXO
-                            </p>
-                          </div>
-                          <div className="flex justify-between w-full">
-                            <p className="text-base text-primary font-medium">
-                              {t('fee')}:
-                            </p>
-                            <p className="text-secondary font-bold text-lg">
-                              {formatBalance(
-                                withdrawalCalculation?.subtractedValue?.label,
-                                defaultLocale,
-                                4,
-                                'standard',
-                              )}{' '}
-                              AUXO
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex w-full place-content-center">
-                          <WithdrawButton
-                            deposit={withdrawDepositValue}
-                            tokenConfig={tokenConfig}
-                            disabled={
-                              !canWithdraw ||
-                              withdrawDepositValue?.label === 0 ||
-                              compareBalances(
+                          <StakeInput
+                            resetOnSteps={[STEPS.WITHDRAW_PRV_COMPLETED]}
+                            label={'PRV'}
+                            setValue={setWithdrawDepositValue}
+                            max={withdrawableAmount}
+                          />
+                          {account && (
+                            <Alert
+                              open={compareBalances(
                                 withdrawDepositValue,
                                 'gt',
                                 withdrawableAmount,
-                              )
-                            }
-                            fee={withdrawalCalculation?.subtractedValue}
-                            estimation={withdrawalCalculation?.value}
-                            claim={claim}
-                          >
-                            {t('withdraw')}
-                          </WithdrawButton>
-                        </div>
-                        <div className="flex w-full flex-col sm:flex-row gap-3 mt-auto">
-                          <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-md w-full sm:w-fit">
-                            <div className="flex bg-gradient-to-r from-white via-white to-background px-4 py-4 rounded h-full items-center">
-                              <p className="flex gap-x-12 font-semibold justify-between text-base text-primary">
-                                <span>{t('epoch')}</span>
-                                <span>{claim?.windowIndex ?? 'N/A'}</span>
-                              </p>
-                            </div>
-                          </div>
-                          <div className="flex flex-1 flex-col border-2 border-red rounded-md w-full px-4 py-4 bg-white">
-                            <p className="flex gap-x-12 font-semibold justify-between text-base text-primary">
-                              <span>{t('youCanWithdraw')}</span>
-                              <div className="flex gap-x-2 items-center">
-                                <span>
-                                  {formatBalance(
-                                    withdrawableAmount?.label,
-                                    defaultLocale,
-                                    4,
-                                  )}{' '}
-                                  PRV
-                                </span>
-                                <Tooltip>{t('withdrawExplanation')}</Tooltip>
-                              </div>
-                            </p>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <h3 className="font-bold text-center text-xl text-primary capitalize w-full">
-                          {t('burningPrvToAuxo')}
-                        </h3>
-                        <div className="flex flex-col items-center justify-center w-full gap-y-6">
-                          <div className="text-center">
-                            <p className="text-base text-sub-dark font-medium">
-                              {t('burningPrvToAuxoSubtitle')}
-                            </p>
-                          </div>
-                          <div className="flex justify-between w-full gap-2 items-center flex-wrap">
-                            <div className="flex gap-x-2">
-                              <DocumentTextIcon className="h-5 w-5 text-primary" />
-                              <p className="text-base text-primary font-medium">
-                                {t('checkDocumentation')}
-                              </p>
-                            </div>
-                            <a
-                              rel="noreferrer noopener"
-                              target="_blank"
-                              className="w-fit px-5 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary hover:bg-secondary hover:text-white flex gap-x-2 items-center"
-                              href="https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics"
+                              )}
                             >
-                              {t('goToDocs')}
-                            </a>
+                              You can only withdraw{' '}
+                              {withdrawableAmount?.label ?? 0} PRV
+                            </Alert>
+                          )}
+                          <div className="flex flex-col w-full">
+                            <div className="flex justify-between w-full">
+                              <p className="text-base text-primary font-medium">
+                                {t('youGet')}:
+                              </p>
+                              <p className="text-secondary font-bold text-lg">
+                                {formatBalance(
+                                  withdrawalCalculation?.value?.label,
+                                  defaultLocale,
+                                  4,
+                                  'standard',
+                                )}{' '}
+                                AUXO
+                              </p>
+                            </div>
+                            <div className="flex justify-between w-full">
+                              <p className="text-base text-primary font-medium">
+                                {t('fee')}:
+                              </p>
+                              <p className="text-secondary font-bold text-lg">
+                                {formatBalance(
+                                  withdrawalCalculation?.subtractedValue?.label,
+                                  defaultLocale,
+                                  4,
+                                  'standard',
+                                )}{' '}
+                                AUXO
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex w-full place-content-center">
+                            <WithdrawButton
+                              deposit={withdrawDepositValue}
+                              tokenConfig={tokenConfig}
+                              disabled={
+                                !canWithdraw ||
+                                withdrawDepositValue?.label === 0 ||
+                                compareBalances(
+                                  withdrawDepositValue,
+                                  'gt',
+                                  withdrawableAmount,
+                                )
+                              }
+                              fee={withdrawalCalculation?.subtractedValue}
+                              estimation={withdrawalCalculation?.value}
+                              claim={claim}
+                            >
+                              {t('withdraw')}
+                            </WithdrawButton>
                           </div>
                           <div className="flex w-full flex-col sm:flex-row gap-3 mt-auto">
-                            <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-md w-fit">
+                            <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-md w-full sm:w-fit">
                               <div className="flex bg-gradient-to-r from-white via-white to-background px-4 py-4 rounded h-full items-center">
                                 <p className="flex gap-x-12 font-semibold justify-between text-base text-primary">
                                   <span>{t('epoch')}</span>
@@ -656,17 +638,74 @@ const Swap: React.FC<Props> = ({ tokenConfig, stakingTokenConfig, claim }) => {
                               </p>
                             </div>
                           </div>
-                        </div>
-                      </>
-                    )}
-                  </>
-                </ModalBox>
-              </Tab.Panel>
-            </Tab.Panels>
-          </AnimatePresence>
-        </Tab.Group>
+                        </>
+                      ) : (
+                        <>
+                          <h3 className="font-bold text-center text-xl text-primary capitalize w-full">
+                            {t('burningPrvToAuxo')}
+                          </h3>
+                          <div className="flex flex-col items-center justify-center w-full gap-y-6">
+                            <div className="text-center">
+                              <p className="text-base text-sub-dark font-medium">
+                                {t('burningPrvToAuxoSubtitle')}
+                              </p>
+                            </div>
+                            <div className="flex justify-between w-full gap-2 items-center flex-wrap">
+                              <div className="flex gap-x-2">
+                                <DocumentTextIcon className="h-5 w-5 text-primary" />
+                                <p className="text-base text-primary font-medium">
+                                  {t('checkDocumentation')}
+                                </p>
+                              </div>
+                              <a
+                                rel="noreferrer noopener"
+                                target="_blank"
+                                className="w-fit px-5 py-2 text-base text-secondary bg-transparent rounded-full ring-inset ring-1 ring-secondary hover:bg-secondary hover:text-white flex gap-x-2 items-center"
+                                href="https://docs.auxo.fi/auxo-docs/rewards-vaults/prv-passive-rewards-vault#withdrawal-mechanics"
+                              >
+                                {t('goToDocs')}
+                              </a>
+                            </div>
+                            <div className="flex w-full flex-col sm:flex-row gap-3 mt-auto">
+                              <div className="flex flex-col p-[2px] bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-md w-fit">
+                                <div className="flex bg-gradient-to-r from-white via-white to-background px-4 py-4 rounded h-full items-center">
+                                  <p className="flex gap-x-12 font-semibold justify-between text-base text-primary">
+                                    <span>{t('epoch')}</span>
+                                    <span>{claim?.windowIndex ?? 'N/A'}</span>
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex flex-1 flex-col border-2 border-red rounded-md w-full px-4 py-4 bg-white">
+                                <p className="flex gap-x-12 font-semibold justify-between text-base text-primary">
+                                  <span>{t('youCanWithdraw')}</span>
+                                  <div className="flex gap-x-2 items-center">
+                                    <span>
+                                      {formatBalance(
+                                        withdrawableAmount?.label,
+                                        defaultLocale,
+                                        4,
+                                      )}{' '}
+                                      PRV
+                                    </span>
+                                    <Tooltip>
+                                      {t('withdrawExplanation')}
+                                    </Tooltip>
+                                  </div>
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </>
+                  </ModalBox>
+                </Tab.Panel>
+              </Tab.Panels>
+            </AnimatePresence>
+          </Tab.Group>
+        </div>
       </div>
-    </div>
+    </Highlight>
   );
 };
 

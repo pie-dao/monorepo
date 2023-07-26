@@ -92,7 +92,7 @@ export default function Navigation({
       <AnimatePresence initial={false}>
         <motion.aside
           className={classNames(
-            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-20 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow overflow-hidden',
+            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-10 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow overflow-hidden',
             isDesktop
               ? open
                 ? 'max-w-[11rem] overflow-y-auto'
