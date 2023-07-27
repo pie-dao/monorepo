@@ -1,16 +1,12 @@
-import { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
-
-interface QueryMap {
-  [key: string]: number;
-}
+import { useEffect, useState } from 'react';
 
 export function useSelectedIndexFromQuery(
   queryKey: string,
-  map: QueryMap,
-): [number, Dispatch<SetStateAction<number>>] {
+  map: Record<string, number>,
+): [number, (index: number) => void] {
   const router = useRouter();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedIndex, setIndex] = useState(0);
 
   useEffect(() => {
     const getTabIndex = (tabName: string | string[]) => {
@@ -26,9 +22,19 @@ export function useSelectedIndexFromQuery(
     const selectedFromQuery = getTabIndex(router.query[queryKey]);
 
     if (selectedFromQuery !== undefined) {
-      setSelectedIndex(selectedFromQuery);
+      setIndex(selectedFromQuery);
     }
-  }, [router.query, queryKey, map]); // Note: map added as a dependency
+  }, [router.query, queryKey, map]);
+
+  const setSelectedIndex = (index: number) => {
+    setIndex(index);
+    const tabName = Object.keys(map).find((key) => map[key] === index);
+
+    const newQuery = { ...router.query, [queryKey]: tabName };
+    router.push({ pathname: router.pathname, query: newQuery }, undefined, {
+      shallow: true,
+    });
+  };
 
   return [selectedIndex, setSelectedIndex];
 }
