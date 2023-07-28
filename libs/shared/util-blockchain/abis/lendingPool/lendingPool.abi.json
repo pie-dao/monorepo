@@ -29,6 +29,25 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "depositLimit",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "DepositLimitSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "uint256",
         "name": "epochId",
@@ -144,6 +163,31 @@
       },
       {
         "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Exited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "lender",
+        "type": "address"
+      },
+      {
+        "indexed": false,
         "internalType": "uint128",
         "name": "amount",
         "type": "uint128"
@@ -199,12 +243,6 @@
         "type": "uint128"
       },
       {
-        "indexed": false,
-        "internalType": "uint128",
-        "name": "claimed",
-        "type": "uint128"
-      },
-      {
         "indexed": true,
         "internalType": "uint256",
         "name": "epochId",
@@ -218,10 +256,29 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
-        "name": "maxBorrow",
+        "name": "minLoan",
         "type": "uint256"
+      }
+    ],
+    "name": "MinLoanSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
       },
       {
         "indexed": true,
@@ -230,7 +287,7 @@
         "type": "uint256"
       }
     ],
-    "name": "MaxBorrowSet",
+    "name": "PoolClosed",
     "type": "event"
   },
   {
@@ -577,14 +634,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint64",
-        "name": "_rate",
-        "type": "uint64"
-      }
-    ],
-    "name": "closeEpochWithRate",
+    "inputs": [],
+    "name": "closePool",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -613,8 +664,13 @@
     "inputs": [
       {
         "internalType": "uint128",
-        "name": "_maxBorrow",
+        "name": "_newDepositLimit",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_rate",
+        "type": "uint64"
       }
     ],
     "name": "createPendingEpoch",
@@ -657,7 +713,7 @@
       },
       {
         "internalType": "uint128",
-        "name": "maxBorrow",
+        "name": "depositLimit",
         "type": "uint128"
       },
       {
@@ -684,14 +740,16 @@
         "internalType": "uint128",
         "name": "repaid",
         "type": "uint128"
-      },
-      {
-        "internalType": "uint128",
-        "name": "withdrawCompound",
-        "type": "uint128"
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "exitPool",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -744,7 +802,7 @@
           },
           {
             "internalType": "uint128",
-            "name": "maxBorrow",
+            "name": "depositLimit",
             "type": "uint128"
           },
           {
@@ -770,11 +828,6 @@
           {
             "internalType": "uint128",
             "name": "repaid",
-            "type": "uint128"
-          },
-          {
-            "internalType": "uint128",
-            "name": "withdrawCompound",
             "type": "uint128"
           }
         ],
@@ -804,7 +857,7 @@
           },
           {
             "internalType": "uint128",
-            "name": "maxBorrow",
+            "name": "depositLimit",
             "type": "uint128"
           },
           {
@@ -831,11 +884,6 @@
             "internalType": "uint128",
             "name": "repaid",
             "type": "uint128"
-          },
-          {
-            "internalType": "uint128",
-            "name": "withdrawCompound",
-            "type": "uint128"
           }
         ],
         "internalType": "struct ILendingPoolData.Epoch",
@@ -861,7 +909,7 @@
   },
   {
     "inputs": [],
-    "name": "getLastMaxBorrow",
+    "name": "getLastDepositLimit",
     "outputs": [
       {
         "internalType": "uint128",
@@ -890,7 +938,7 @@
           },
           {
             "internalType": "uint128",
-            "name": "maxBorrow",
+            "name": "depositLimit",
             "type": "uint128"
           },
           {
@@ -916,11 +964,6 @@
           {
             "internalType": "uint128",
             "name": "repaid",
-            "type": "uint128"
-          },
-          {
-            "internalType": "uint128",
-            "name": "withdrawCompound",
             "type": "uint128"
           }
         ],
@@ -1009,25 +1052,6 @@
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_epochId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getRate",
-    "outputs": [
-      {
-        "internalType": "uint64",
-        "name": "",
-        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -1160,8 +1184,13 @@
     "inputs": [
       {
         "internalType": "uint128",
-        "name": "_maxBorrow",
+        "name": "_initialDepositLimit",
         "type": "uint128"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_rate",
+        "type": "uint64"
       }
     ],
     "name": "initialize",
@@ -1172,19 +1201,6 @@
   {
     "inputs": [],
     "name": "isCurrentEpochActive",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "isLocked",
     "outputs": [
       {
         "internalType": "bool",
@@ -1318,6 +1334,19 @@
   },
   {
     "inputs": [],
+    "name": "poolClosed",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "poolName",
     "outputs": [
       {
@@ -1395,6 +1424,25 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_epochId",
+        "type": "uint256"
+      }
+    ],
+    "name": "requiredRepayment",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
@@ -1460,6 +1508,19 @@
     "inputs": [
       {
         "internalType": "uint128",
+        "name": "_amount",
+        "type": "uint128"
+      }
+    ],
+    "name": "safeLend",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
         "name": "_lendAmount",
         "type": "uint128"
       }
@@ -1485,12 +1546,25 @@
   {
     "inputs": [
       {
+        "internalType": "enum ILendingPoolData.WithdrawalPreference",
+        "name": "_preference",
+        "type": "uint8"
+      }
+    ],
+    "name": "safeSetPreference",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint128",
-        "name": "_maxBorrow",
+        "name": "_depositLimit",
         "type": "uint128"
       }
     ],
-    "name": "setMaxBorrow",
+    "name": "setDepositLimit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
