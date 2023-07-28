@@ -101,7 +101,7 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
             )}
             {' / '}
             {formatBalance(
-              data?.lastEpoch?.maxBorrow?.label ?? 0,
+              data?.lastEpoch?.depositLimit?.label ?? 0,
               defaultLocale,
               2,
               'standard',
@@ -117,7 +117,7 @@ const LendInfo: React.FC<Props> = ({ poolAddress }) => {
     data?.userData?.yield?.label,
     data?.attributes?.token?.data?.attributes?.name,
     data?.lastEpoch?.totalBorrow?.label,
-    data?.lastEpoch?.maxBorrow?.label,
+    data?.lastEpoch?.depositLimit?.label,
     defaultLocale,
     userPreference,
   ]);

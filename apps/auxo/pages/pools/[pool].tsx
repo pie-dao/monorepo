@@ -57,7 +57,8 @@ export default function PoolsPage({ pool, tokenConfig }: Props) {
                         )}
                       </li>
                       <li className="text-secondary text-sm">
-                        MaxBorrow: {lendingPool?.lastEpoch?.maxBorrow?.label}
+                        maxCapacity:{' '}
+                        {lendingPool?.lastEpoch?.depositLimit?.label}
                       </li>
                       <li className="text-secondary text-sm">
                         Rate: {lendingPool?.lastEpoch?.rate?.label}
@@ -89,8 +90,8 @@ export default function PoolsPage({ pool, tokenConfig }: Props) {
                         )}
                       </li>
                       <li className="text-secondary text-sm">
-                        MaxBorrow:{' '}
-                        {lendingPool?.lastActiveEpoch?.maxBorrow?.label}
+                        maxCapacity:{' '}
+                        {lendingPool?.lastActiveEpoch?.depositLimit?.label}
                       </li>
                       <li className="text-secondary text-sm">
                         Rate: {lendingPool?.lastActiveEpoch?.rate?.label}

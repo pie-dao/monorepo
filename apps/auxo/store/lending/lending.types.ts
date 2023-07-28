@@ -73,7 +73,7 @@ export type Pool = {
   lastEpoch?: {
     rate?: BigNumberReference;
     state?: States;
-    maxBorrow?: BigNumberReference;
+    depositLimit?: BigNumberReference;
     totalBorrow?: BigNumberReference;
     available?: BigNumberReference;
     forClaims?: BigNumberReference;
@@ -82,13 +82,12 @@ export type Pool = {
   lastActiveEpoch?: {
     rate?: BigNumberReference;
     state?: States;
-    maxBorrow?: BigNumberReference;
+    depositLimit?: BigNumberReference;
     totalBorrow?: BigNumberReference;
     available?: BigNumberReference;
     forClaims?: BigNumberReference;
     forWithdrawal?: BigNumberReference;
   };
-  isLocked?: boolean;
   userData?: {
     balance?: BigNumberReference;
     yield?: BigNumberReference;
@@ -113,7 +112,7 @@ export type userPositions = [Pools, BigNumberReference, BigNumberReference];
 export type Epoch = {
   rate: BigNumber;
   state: number;
-  maxBorrow: BigNumber;
+  depositLimit: BigNumber;
   totalBorrowed: BigNumber;
   available: BigNumber;
   forClaims: BigNumber;
@@ -123,7 +122,7 @@ export type Epoch = {
 export type convertedEpoch = {
   rate: BigNumberReference;
   state: States;
-  maxBorrow: BigNumberReference;
+  depositLimit: BigNumberReference;
   totalBorrow: BigNumberReference;
   available: BigNumberReference;
   forClaims: BigNumberReference;

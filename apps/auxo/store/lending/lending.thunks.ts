@@ -26,7 +26,7 @@ import { PREFERENCES } from '../../utils/constants';
 const createEpochObject = (epoch: Epoch, decimals: number) => ({
   rate: toBalance(epoch.rate.mul(BigNumber.from(100)), 18),
   state: epoch.state as States,
-  maxBorrow: toBalance(epoch.maxBorrow, decimals),
+  depositLimit: toBalance(epoch.depositLimit, decimals),
   totalBorrow: toBalance(epoch.totalBorrowed, decimals),
   available: toBalance(epoch.available, decimals),
   forClaims: toBalance(epoch.forClaims, decimals),
@@ -56,7 +56,6 @@ export const thunkGetLendingData = createAsyncThunk(
           const results = promiseObject({
             poolAddress: wrappedPool.address,
             principal: wrappedPool.principalToken(),
-            isLocked: wrappedPool.isLocked(),
             lastEpoch: wrappedPool.getLatestEpoch(),
             lastActiveEpoch: wrappedPool.getLastActiveEpoch(),
             epochs: wrappedPool.getEpochs(),
@@ -103,7 +102,6 @@ export const thunkGetLendingData = createAsyncThunk(
               {
                 address: pool.poolAddress,
                 principal: pool.principal,
-                isLocked: pool.isLocked,
                 lastEpoch: !isEmpty(pool?.lastEpoch)
                   ? createEpochObject(pool.lastEpoch, decimals)
                   : null,

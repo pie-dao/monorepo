@@ -70,11 +70,11 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   const poolState = UsePoolState(poolAddress);
   const dispatch = useAppDispatch();
 
-  const maxBorrow = UseMaxEpochCapacityFromPool(poolAddress);
+  const maxCapacity = UseMaxEpochCapacityFromPool(poolAddress);
   // Let's put here the max deposit value from the contract
   const maxDeposit = useMemo(() => {
-    return pickBalanceList([balance, maxBorrow], 'min');
-  }, [balance, maxBorrow]);
+    return pickBalanceList([balance, maxCapacity], 'min');
+  }, [balance, maxCapacity]);
 
   const { defaultLocale } = useAppSelector((state) => state.preferences);
 
