@@ -66,3 +66,20 @@
     --account-center-position-top: 100%;
   }
 }
+
+@keyframes ring-pulse {
+  0% {
+    box-shadow: 0 0 0 2px rgba(147, 197, 253, 1);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(147, 197, 253, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 5px rgba(147, 197, 253, 0.1);
+  }
+}
+
+.ring-pulse {
+  animation: ring-pulse 1s 6;
+}
