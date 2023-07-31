@@ -7,8 +7,10 @@ export function useHighlight(componentId: string) {
   const [highlighted, setHighlighted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
+  const highlightQuery = router.query.highlight;
+
   useEffect(() => {
-    const shouldHighlight = router.query.highlight === componentId.toString();
+    const shouldHighlight = highlightQuery === componentId.toString();
 
     if (shouldHighlight) {
       ref?.current?.scrollIntoView({
@@ -23,7 +25,7 @@ export function useHighlight(componentId: string) {
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [componentId, router.query]);
+  }, [componentId, highlightQuery]);
 
   return { overlay, highlighted, ref };
 }
