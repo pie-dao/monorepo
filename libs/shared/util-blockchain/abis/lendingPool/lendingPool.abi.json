@@ -125,25 +125,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint32",
-        "name": "epochId",
-        "type": "uint32"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint64",
-        "name": "rate",
-        "type": "uint64"
-      }
-    ],
-    "name": "EpochCreatedFixedRate",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "uint256",
         "name": "epochId",
         "type": "uint256"
@@ -505,6 +486,19 @@
   },
   {
     "inputs": [],
+    "name": "LENDER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "OPERATOR_ROLE",
     "outputs": [
       {
@@ -590,6 +584,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint128",
+        "name": "_lendAmount",
+        "type": "uint128"
+      }
+    ],
+    "name": "claimAndLend",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "enum ILendingPoolData.WithdrawalPreference",
         "name": "_preference",
         "type": "uint8"
@@ -608,27 +615,21 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_lender",
-        "type": "address"
-      }
-    ],
-    "name": "claimable",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
+    "inputs": [],
+    "name": "closeEpoch",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "closeEpoch",
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_rate",
+        "type": "uint64"
+      }
+    ],
+    "name": "closeEpochWithRate",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -664,13 +665,8 @@
     "inputs": [
       {
         "internalType": "uint128",
-        "name": "_newDepositLimit",
+        "name": "_depositLimit",
         "type": "uint128"
-      },
-      {
-        "internalType": "uint64",
-        "name": "_rate",
-        "type": "uint64"
       }
     ],
     "name": "createPendingEpoch",
@@ -768,6 +764,44 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      }
+    ],
+    "name": "getClaimableAmount",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      }
+    ],
+    "name": "getCompoundableAmount",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "compoundedPrincipal",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "epochId",
         "type": "uint256"
@@ -776,9 +810,9 @@
     "name": "getEpochCapacity",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "",
-        "type": "uint256"
+        "type": "uint128"
       }
     ],
     "stateMutability": "view",
@@ -996,6 +1030,25 @@
         "type": "address"
       }
     ],
+    "name": "getLenderDepositLimit",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lender",
+        "type": "address"
+      }
+    ],
     "name": "getLoan",
     "outputs": [
       {
@@ -1049,9 +1102,28 @@
     "name": "getPendingEpochCapacity",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "uint128",
         "name": "",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_epochId",
         "type": "uint256"
+      }
+    ],
+    "name": "getRate",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -1184,13 +1256,8 @@
     "inputs": [
       {
         "internalType": "uint128",
-        "name": "_initialDepositLimit",
+        "name": "_depositLimit",
         "type": "uint128"
-      },
-      {
-        "internalType": "uint64",
-        "name": "_rate",
-        "type": "uint64"
       }
     ],
     "name": "initialize",
@@ -1246,19 +1313,6 @@
       }
     ],
     "name": "lend",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint128",
-        "name": "_lendAmount",
-        "type": "uint128"
-      }
-    ],
-    "name": "lendAndClaim",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1334,6 +1388,19 @@
   },
   {
     "inputs": [],
+    "name": "minLoan",
+    "outputs": [
+      {
+        "internalType": "uint128",
+        "name": "",
+        "type": "uint128"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "poolClosed",
     "outputs": [
       {
@@ -1353,25 +1420,6 @@
         "internalType": "string",
         "name": "",
         "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_lender",
-        "type": "address"
-      }
-    ],
-    "name": "previewCompound",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "compoundedPrincipal",
-        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -1424,25 +1472,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_epochId",
-        "type": "uint256"
-      }
-    ],
-    "name": "requiredRepayment",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint128",
         "name": "_amount",
         "type": "uint128"
@@ -1474,6 +1503,19 @@
   {
     "inputs": [
       {
+        "internalType": "uint128",
+        "name": "_lendAmount",
+        "type": "uint128"
+      }
+    ],
+    "name": "safeClaimAndLend",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "enum ILendingPoolData.WithdrawalPreference",
         "name": "_preference",
         "type": "uint8"
@@ -1494,51 +1536,12 @@
   {
     "inputs": [
       {
-        "internalType": "enum ILendingPoolData.WithdrawalPreference",
-        "name": "_preference",
-        "type": "uint8"
-      }
-    ],
-    "name": "safeCompoundAndSetPreference",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint128",
-        "name": "_amount",
-        "type": "uint128"
-      }
-    ],
-    "name": "safeLend",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint128",
         "name": "_lendAmount",
         "type": "uint128"
       }
     ],
-    "name": "safeLendAndClaim",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint128",
-        "name": "_lendAmount",
-        "type": "uint128"
-      }
-    ],
-    "name": "safeLendAndCompound",
+    "name": "safeCompoundAndLend",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1551,7 +1554,14 @@
         "type": "uint8"
       }
     ],
-    "name": "safeSetPreference",
+    "name": "safeCompoundAndSetPreference",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "safeExitPool",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1565,6 +1575,19 @@
       }
     ],
     "name": "setDepositLimit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint128",
+        "name": "_minLoan",
+        "type": "uint128"
+      }
+    ],
+    "name": "setMinLoan",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -1612,25 +1635,6 @@
     "name": "sweep",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_epochId",
-        "type": "uint256"
-      }
-    ],
-    "name": "totalRewardsForEpoch",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {

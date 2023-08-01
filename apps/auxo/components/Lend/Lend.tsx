@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import StakeInput from '../Input/InputSlider';
@@ -27,11 +28,13 @@ import {
 } from '../../store/lending/lending.slice';
 import {
   UseCanUserWithdrawFromPool,
-  UseMaxEpochCapacityFromPool,
+  UseMaxUserDepositLimit,
   UseMaxWithdrawableAmountFromPool,
   UsePoolAcceptsDeposits,
+  UsePoolIsClosed,
   UsePoolState,
   UseUserCanClaim,
+  UseUserIsWhitelisted,
 } from '../../hooks/useLending';
 import { isEmpty, isEqual } from 'lodash';
 import { formatBalance } from '../../utils/formatBalance';
@@ -66,11 +69,13 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
   const userActualPreference = data?.userData?.preference as Preferences;
   const hasBalanceInPool =
     !isEmpty(loanedAmount) && !isEqual(loanedAmount, zeroBalance);
+  const isPoolClosed = UsePoolIsClosed(poolAddress);
   const isPoolAcceptingDeposits = UsePoolAcceptsDeposits(poolAddress);
+  const isUserWhitelisted = UseUserIsWhitelisted(poolAddress);
   const poolState = UsePoolState(poolAddress);
   const dispatch = useAppDispatch();
 
-  const maxCapacity = UseMaxEpochCapacityFromPool(poolAddress);
+  const maxCapacity = UseMaxUserDepositLimit(poolAddress);
   // Let's put here the max deposit value from the contract
   const maxDeposit = useMemo(() => {
     return pickBalanceList([balance, maxCapacity], 'min');
@@ -116,12 +121,13 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
     dispatch(setLendingStep(STEPS.WITHDRAW_CONFIRM));
   };
 
-  const buttonAction = canWithdraw
-    ? withdraw
-    : userActualPreference !== PREFERENCES.WITHDRAW &&
-      poolState === STATES.ACTIVE
-    ? requestWithdraw
-    : null;
+  const buttonAction =
+    canWithdraw || (isPoolClosed && !isZeroBalance(loanedAmount))
+      ? withdraw
+      : userActualPreference !== PREFERENCES.WITHDRAW &&
+        poolState === STATES.ACTIVE
+      ? requestWithdraw
+      : null;
 
   const changePreference = () => {
     dispatch(setLendingFlowPool(poolAddress));
@@ -219,7 +225,10 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
             <Tab.Panels className="mt-4 min-h-[18rem] h-full">
               <Tab.Panel className="h-full relative">
                 <ModalBox className="flex flex-col h-full gap-y-2">
-                  {(!isPoolAcceptingDeposits || canWithdraw) && (
+                  {(!isPoolAcceptingDeposits ||
+                    canWithdraw ||
+                    !isUserWhitelisted ||
+                    isPoolClosed) && (
                     <>
                       <div className="absolute inset-0 bg-white/90 z-10 -m-2" />
                       <div className="absolute inset-0 items-center justify-center flex flex-col gap-y-2 z-20">
@@ -274,7 +283,11 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                     deposit={depositValue}
                     tokenConfig={tokenConfig}
                     poolAddress={poolAddress}
-                    disabled={!isPoolAcceptingDeposits}
+                    disabled={
+                      !isPoolAcceptingDeposits ||
+                      !isUserWhitelisted ||
+                      isPoolClosed
+                    }
                   />
                 </ModalBox>
               </Tab.Panel>
@@ -432,7 +445,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
 
               <Tab.Panel className="h-full relative">
                 <ModalBox className="flex flex-col h-full gap-y-2 relative place-items-center">
-                  {canWithdraw ? (
+                  {canWithdraw || isPoolClosed ? (
                     <DisplayMessage
                       messageKey={t('youCannotChangePreference')}
                     />
@@ -486,7 +499,8 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                         onClick={changePreference}
                         disabled={
                           userActualPreference === preference ||
-                          poolState !== STATES.ACTIVE
+                          poolState !== STATES.ACTIVE ||
+                          isPoolClosed
                         }
                         className="w-fit px-10 py-2 mt-auto text-sm font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
                       >

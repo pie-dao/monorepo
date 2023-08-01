@@ -70,6 +70,11 @@ export type Pool = {
   address?: string;
   principal?: string;
   interest?: BigNumberReference;
+  canDeposit?: boolean;
+  epochCapacity?: BigNumberReference;
+  epochs?: convertedEpoch[];
+  minLoan?: BigNumberReference;
+  isClosed?: boolean;
   lastEpoch?: {
     rate?: BigNumberReference;
     state?: States;
@@ -91,16 +96,15 @@ export type Pool = {
   userData?: {
     balance?: BigNumberReference;
     yield?: BigNumberReference;
+    isWhitelisted?: boolean;
     canWithdraw?: boolean;
     canClaim?: boolean;
     canCompound?: boolean;
     unlendableAmount?: BigNumberReference;
     preference?: number;
     allowance?: BigNumberReference;
+    depositLimit?: BigNumberReference;
   };
-  canDeposit?: boolean;
-  epochCapacity?: BigNumberReference;
-  epochs?: convertedEpoch[];
 };
 
 export type Pools = {

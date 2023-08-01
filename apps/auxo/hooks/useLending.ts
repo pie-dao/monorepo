@@ -39,6 +39,14 @@ export const UseMaxWithdrawableAmountFromPool = (poolAddress: string) => {
   );
 };
 
+export const UseMaxUserDepositLimit = (poolAddress: string) => {
+  return useAppSelector(
+    (state) =>
+      state?.lending?.pools?.[poolAddress]?.userData?.depositLimit ??
+      zeroBalance,
+  );
+};
+
 export const UseCanUserWithdrawFromPool = (poolAddress: string) => {
   return useAppSelector(
     (state) => state?.lending?.pools?.[poolAddress]?.userData?.canWithdraw,
@@ -92,6 +100,14 @@ export const UseLoan = (poolAddress: string) => {
 
 export const UsePoolAcceptsDeposits = (poolAddress: string): boolean =>
   useAppSelector((state) => state?.lending?.pools?.[poolAddress]?.canDeposit);
+
+export const UsePoolIsClosed = (poolAddress: string): boolean =>
+  useAppSelector((state) => state?.lending?.pools?.[poolAddress]?.isClosed);
+
+export const UseUserIsWhitelisted = (poolAddress: string): boolean =>
+  useAppSelector(
+    (state) => state?.lending?.pools?.[poolAddress]?.userData?.isWhitelisted,
+  );
 
 export const UseSufficentApproval = (
   poolAddress: string,

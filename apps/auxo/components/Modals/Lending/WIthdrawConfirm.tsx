@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../../hooks';
 import { thunkWithdraw } from '../../../store/lending/lending.thunks';
 import { useLendingPoolContract } from '../../../hooks/useContracts';
 import { PendingTransactionContent } from './PendingTransactionContent';
+import { UseCanUserWithdrawFromPool } from '../../../hooks/useLending';
 
 export default function WithdrawConfirm() {
   const { t } = useTranslation();
@@ -14,12 +15,14 @@ export default function WithdrawConfirm() {
     (state) => state.lending.lendingFlow,
   );
   const lendingPoolContract = useLendingPoolContract(selectedPool);
+  const canWithdraw = UseCanUserWithdrawFromPool(selectedPool);
 
   const withdraw = () => {
     setLendClaim(true);
     dispatch(
       thunkWithdraw({
         lendingPool: lendingPoolContract,
+        exit: !canWithdraw,
       }),
     ).finally(() => setLendClaim(false));
   };

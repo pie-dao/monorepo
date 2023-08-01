@@ -21,7 +21,7 @@ import {
   setTx,
   setTxHash,
 } from './lending.slice';
-import { PREFERENCES } from '../../utils/constants';
+import { LENDER_ROLE, PREFERENCES } from '../../utils/constants';
 
 const createEpochObject = (epoch: Epoch, decimals: number) => ({
   rate: toBalance(epoch.rate.mul(BigNumber.from(100)), 18),
@@ -56,6 +56,8 @@ export const thunkGetLendingData = createAsyncThunk(
           const results = promiseObject({
             poolAddress: wrappedPool.address,
             principal: wrappedPool.principalToken(),
+            minLoan: wrappedPool.minLoan(),
+            isClosed: wrappedPool.poolClosed(),
             lastEpoch: wrappedPool.getLatestEpoch(),
             lastActiveEpoch: wrappedPool.getLastActiveEpoch(),
             epochs: wrappedPool.getEpochs(),
@@ -112,6 +114,8 @@ export const thunkGetLendingData = createAsyncThunk(
                   return createEpochObject(epoch, decimals);
                 }),
                 canDeposit: pool.canDeposit,
+                minLoan: toBalance(pool.minLoan, decimals),
+                isClosed: pool.isClosed,
                 epochCapacity: toBalance(pool.epochCapacity, decimals),
               },
             ];
@@ -141,13 +145,15 @@ export const thunkGetUserLendingData = createAsyncThunk(
           const results = promiseObject({
             poolAddress: wrappedPool.address,
             principal: wrappedPool.principalToken(),
-            claimableRewards: wrappedPool.claimable(account),
+            isWhitelisted: wrappedPool.hasRole(LENDER_ROLE, account),
+            claimableRewards: wrappedPool.getClaimableAmount(account),
             loan: wrappedPool.getLoan(account),
             canWithdraw: wrappedPool.canWithdraw(account),
             canClaim: wrappedPool.canClaim(account),
             unlendableAmount: wrappedPool.getUnlendableAmount(account),
-            loanAndCompound: wrappedPool.previewCompound(account),
+            loanAndCompound: wrappedPool.getCompoundableAmount(account),
             canCompound: wrappedPool.canCompound(account),
+            lenderDepositLimit: wrappedPool.getLenderDepositLimit(account),
           });
           return results;
         }),
@@ -258,6 +264,11 @@ export const thunkGetUserLendingData = createAsyncThunk(
                     )?.allowance,
                     findProductByAddress(pool.principal).decimals,
                   ),
+                  isWhitelisted: pool?.isWhitelisted,
+                  depositLimit: toBalance(
+                    pool?.lenderDepositLimit,
+                    findProductByAddress(pool.principal).decimals,
+                  ),
                 },
               },
             ];
@@ -333,9 +344,9 @@ export const thunkLendDeposit = createAsyncThunk(
     let tx: ContractTransaction;
 
     if (canClaim) {
-      tx = await lendingPool.safeLendAndClaim(deposit.value);
+      tx = await lendingPool.safeClaimAndLend(deposit.value);
     } else if (canCompound) {
-      tx = await lendingPool.safeLendAndCompound(deposit.value);
+      tx = await lendingPool.safeCompoundAndLend(deposit.value);
     } else {
       tx = await lendingPool.lend(deposit.value);
     }
@@ -532,14 +543,25 @@ export const thunkChangePreference = createAsyncThunk(
 
 export type ThunkWithdraw = {
   lendingPool: LendingPoolAbi;
+  exit: boolean;
 };
 
 export const thunkWithdraw = createAsyncThunk(
   THUNKS.WITHDRAW,
-  async ({ lendingPool }: ThunkWithdraw, { rejectWithValue, dispatch }) => {
+  async (
+    { lendingPool, exit }: ThunkWithdraw,
+    { rejectWithValue, dispatch },
+  ) => {
     if (!lendingPool) return rejectWithValue('Missing staking contract');
     dispatch(setTxHash(null));
-    const tx = await lendingPool.safeClaimAndWithdraw();
+
+    let tx: ContractTransaction;
+
+    if (exit) {
+      tx = await lendingPool.exitPool();
+    } else {
+      tx = await lendingPool.safeClaimAndWithdraw();
+    }
 
     const { hash } = tx;
     dispatch(setTxHash(hash));

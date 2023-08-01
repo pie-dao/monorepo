@@ -127,3 +127,6 @@ export const PREFERENCES = {
   CLAIM: 1,
   WITHDRAW: 2,
 } as const;
+
+export const LENDER_ROLE =
+  '0xc60d7a62d8843f2b14bc63f2a5240b187980481ad8c001a3caf4916aef3f667e';
