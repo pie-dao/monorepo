@@ -465,7 +465,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                     />
                   ) : (
                     <>
-                      <div className="flex flex-wrap gap-2 items-center justify-between w-full mb-2">
+                      <div className="flex flex-col gap-2 w-full mb-2">
                         <p className="font-medium text-base text-primary">
                           {t('changePreference')}
                         </p>
@@ -474,7 +474,7 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                         </p>
                       </div>
                       <RadioGroup
-                        className="grid grid-cols-3 gap-4"
+                        className="grid grid-cols-3 gap-4 w-full sm:w-fit"
                         defaultValue={userActualPreference?.toString()}
                         onValueChange={(value) => {
                           dispatch(
@@ -545,7 +545,7 @@ export const PreferenceOption = ({
     <Label
       htmlFor={id}
       className={classNames(
-        'flex flex-col items-center justify-between rounded-md border-2 border-transparent bg-transparent p-4 [&:has(&:not(disabled))]hover:bg-secondary/5 [&:has(&:not(disabled))]:hover:text-secondary [&:has([data-state=checked])]:text-secondary [&:has([data-state=checked])]:shadow-md [&:has([data-state=checked])]:border-secondary [&:has(disabled)]:bg-sub-dark [&:has(disabled)]:text-sub-dark [&:not(:has(disabled))]:cursor-pointer',
+        'flex flex-col items-center text-xs md:text-base justify-between rounded-md border-2 border-transparent bg-transparent p-1 md:p-4 [&:has(&:not(disabled))]hover:bg-secondary/5 [&:has(&:not(disabled))]:hover:text-secondary [&:has([data-state=checked])]:text-secondary [&:has([data-state=checked])]:shadow-md [&:has([data-state=checked])]:border-secondary [&:has(disabled)]:bg-sub-dark [&:has(disabled)]:text-sub-dark [&:not(:has(disabled))]:cursor-pointer',
       )}
     >
       <RadioGroupItem value={String(preference)} id={id} className="sr-only" />
