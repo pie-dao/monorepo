@@ -490,5 +490,7 @@
   "youNeedToWithdraw": "Before depositing again you need to perform the withdrawal",
   "withdrawAndClaim": "Withdraw and claim yield",
   "claimingRewardsDescription": "If you are leaving this pool, consider withdrawing rather than claiming. This allows you to execute both actions in one transaction.",
-  "youCannotChangePreference": "While exiting the pool, you cannot change your preference"
+  "youCannotChangePreference": "While exiting the pool, you cannot change your preference",
+  "notWhitelisted": "You are not eligible to deposit into this pool",
+  "poolClosed": "This pool is currently closed"
 }

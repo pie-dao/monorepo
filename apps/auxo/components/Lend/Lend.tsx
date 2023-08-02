@@ -241,6 +241,16 @@ const Lend: React.FC<Props> = ({ tokenConfig, poolAddress }) => {
                             <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
                               {t('youNeedToWithdraw')}
                             </span>
+                          )) ||
+                          (!isUserWhitelisted && (
+                            <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                              {t('notWhitelisted')}
+                            </span>
+                          )) ||
+                          (isPoolClosed && (
+                            <span className="text-base text-white bg-gradient-major-secondary-predominant rounded-lg px-2 py-0.5">
+                              {t('poolClosed')}
+                            </span>
                           ))}
                       </div>
                     </>
