@@ -1,6 +1,7 @@
 import { Id, toast, ToastContainer } from 'react-toastify';
 import Trans from 'next-translate/Trans';
 import { XIcon } from '@heroicons/react/solid';
+import { useWindowSize } from 'usehooks-ts';
 
 export const pendingNotification = ({
   title,
@@ -34,20 +35,24 @@ export const pendingNotification = ({
     },
   );
 
-export const NotificationDisplay = () => (
-  <ToastContainer
-    position="bottom-right"
-    autoClose={5000}
-    hideProgressBar={false}
-    newestOnTop
-    closeOnClick
-    rtl={false}
-    pauseOnFocusLoss
-    draggable
-    pauseOnHover
-    closeButton={CloseButton}
-  />
-);
+export const NotificationDisplay = () => {
+  const { width } = useWindowSize();
+
+  return (
+    <ToastContainer
+      position={width > 768 ? 'bottom-right' : 'top-center'}
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      closeButton={CloseButton}
+    />
+  );
+};
 
 export const CloseButton = ({ closeToast }) => (
   <XIcon className="w-5 h-5 text-sub-dark" onClick={closeToast} />
