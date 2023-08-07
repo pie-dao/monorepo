@@ -6,6 +6,7 @@ import { useAppSelector } from './index';
 import { useTokenContract } from './useContracts';
 import { useSetChain } from '@web3-onboard/react';
 import {
+  AVG_SECONDS_IN_DAY,
   AVG_SECONDS_IN_MONTH,
   LEVELS_REWARDS,
   MAX_LOCK_DURATION_IN_SECONDS,
@@ -221,6 +222,28 @@ export const useUserRemainingStakingTimeInMonths = () => {
     return remainingMonths;
   }, [lockDuration, lockStartingTime]);
   return remainingTime;
+};
+
+export const UseIsUserLosingLevel = () => {
+  const stakedAt = useUserLockStartingTime('ARV');
+
+  const isLosingLevel = useMemo(() => {
+    if (!stakedAt) return null;
+
+    const currentDate = new Date().getTime() / 1000;
+    const diffTime = currentDate - stakedAt;
+
+    // Calculate the day in the current cycle in seconds
+    const timeInCurrentCycle = diffTime % AVG_SECONDS_IN_MONTH;
+
+    // check if timeInCurrentCycle is between 25 days and 30 days (i.e., the last 5 days)
+    return (
+      timeInCurrentCycle >= AVG_SECONDS_IN_MONTH - 5 * AVG_SECONDS_IN_DAY &&
+      timeInCurrentCycle <= AVG_SECONDS_IN_MONTH
+    );
+  }, [stakedAt]);
+
+  return isLosingLevel;
 };
 
 export const useCheckUserIsMaxBoosted = () => {

@@ -6,11 +6,15 @@ import React, { useMemo } from 'react';
 import { COLORED_CHART_DATA, LEVEL_CHART_DATA } from '../../utils/constants';
 import { curveMonotoneX } from '@visx/curve';
 import { AxisBottom } from '@visx/axis';
+import { UseIsUserLosingLevel, useUserHasLock } from '../../hooks/useToken';
 
 type Props = {
   width: number;
   height: number;
   level: number;
+  showPulse?: boolean;
+  levelDifference?: number;
+  prefix?: string;
 };
 
 export const getLevel = (d: [number, number, string?, string?]): number => d[0];
@@ -19,16 +23,23 @@ export const getColor = (d: [number, number, string?, string?]): string => d[2];
 
 const verticalMargin = 20;
 
-const LevelChart = ({ width, height, level }: Props) => {
+const LevelChart = ({
+  width,
+  height,
+  level,
+  levelDifference,
+  showPulse = false,
+  prefix = '',
+}: Props) => {
   const xMax = width;
   const yMax = height - verticalMargin;
+  const hasLock = useUserHasLock('ARV');
 
   const currentLevels = useMemo(() => {
     const levels = COLORED_CHART_DATA.filter((d) => getLevel(d) <= level);
     if (levels.length === 31) {
       return levels;
     }
-    // now on the last element of the array we need to change the color, represented by the third and last element of the array without mutating the array
 
     const lastLevel = levels[levels.length - 1];
     const newLastLevel: [number, number, string, string] = [
@@ -37,9 +48,13 @@ const LevelChart = ({ width, height, level }: Props) => {
       'rgba(31, 8, 96, 1)',
       'rgba(31, 8, 96, 1)',
     ];
-    const newLevels = [...levels.slice(0, -1), newLastLevel];
+
+    const newLevels =
+      levelDifference > 0 || !hasLock
+        ? levels
+        : [...levels.slice(0, -1), newLastLevel];
     return newLevels;
-  }, [level]);
+  }, [hasLock, level, levelDifference]);
 
   // scales, memoize for performance
   const xScale = useMemo(
@@ -77,14 +92,16 @@ const LevelChart = ({ width, height, level }: Props) => {
     [lastBarX, lastBarY],
   ];
 
+  const isLosingLevel = UseIsUserLosingLevel();
+
   return width < 10 ? null : (
     <svg width={width} height={height}>
       {currentLevels.map((data, index) => (
         <React.Fragment key={index}>
-          <rect fill={`url(#gradient-${index})`} />
+          <rect fill={`url(#${prefix}gradient-${index})`} />
           <defs>
             <linearGradient
-              id={`gradient-${index}`}
+              id={`${prefix}gradient-${index}`}
               x1="0%"
               y1="0%"
               x2="100%"
@@ -137,24 +154,30 @@ const LevelChart = ({ width, height, level }: Props) => {
             />
           );
         })}
-        {currentLevels.length > 1 &&
-          currentLevels.map((d, i) => {
-            const level = getLevel(d);
-            const barWidth = xScale.bandwidth();
-            const barHeight = yMax - (yScale(getValue(d)) ?? 0);
-            const barX = xScale(level);
-            const barY = yMax - barHeight;
-            return (
-              <Bar
-                key={`bar-${level}`}
-                x={barX}
-                y={barY}
-                width={barWidth}
-                height={barHeight}
-                fill={`url(#gradient-${i})`}
-              />
-            );
-          })}
+        {currentLevels?.map((d, i) => {
+          const lastLevel = currentLevels[currentLevels.length - 1];
+          const level = getLevel(d);
+          const barWidth = xScale.bandwidth();
+          const barHeight = yMax - (yScale(getValue(d)) ?? 0);
+          const barX = xScale(level);
+          const barY = yMax - barHeight;
+
+          return (
+            <Bar
+              key={`bar-${level}`}
+              x={barX}
+              y={barY}
+              width={barWidth}
+              height={barHeight}
+              fill={`url(#${prefix}gradient-${i})`}
+              className={
+                ((isLosingLevel && lastLevel[0] === level && showPulse) ||
+                  i >= levelDifference) &&
+                'animate-pulse-fast'
+              }
+            />
+          );
+        })}
         <LinePath
           data={linePoints}
           x={(d) => d[0]}

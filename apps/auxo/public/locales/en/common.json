@@ -355,7 +355,7 @@
   "WETH": "WETH",
   "prvContract": "PRV Contract",
   "rollStakerProxyContract": "RollStaker Proxy",
-  "merkleDistributorContract": "MerkleDistributor PRV Proxy",
+  "merkleDistributorContract": "MerkleDistributor ${token} Proxy",
   "merkleVerifierContract": "PRVMerkleVerifier Proxy",
   "PrvRouterContract": "PRV Router",
   "unstaking": "Unstaking",
