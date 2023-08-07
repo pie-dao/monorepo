@@ -380,7 +380,7 @@
   "autocompoundActive": "Autocompound active",
   "stopAutocompound": "Stop Autocompound",
   "compounding": "Compounding",
-  "compoundingRewardsFor": "Autocompounding ${token} rewards for PRV",
+  "compoundingRewardsFor": "Autocompounding ${token} rewards for ${token}",
   "allUnclaimedRewards1": "You are about to delegate to the autocompounder. The rewards distributed during the last epoch will be exchanged for PRV and staked on your behalf the 25th of each month.",
   "allUnclaimedRewards2": "You need to delegate before the midnight of the 24th.",
   "allUnclaimedRewards3": "Once delegation is ON, compounding will happen every month until removed.",
