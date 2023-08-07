@@ -40,7 +40,7 @@ export const NotificationDisplay = () => {
 
   return (
     <ToastContainer
-      position={width > 768 ? 'top-right' : 'top-center'}
+      position={width > 768 ? 'bottom-right' : 'top-center'}
       autoClose={5000}
       hideProgressBar={false}
       newestOnTop
