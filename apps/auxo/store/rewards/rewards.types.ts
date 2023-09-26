@@ -9,6 +9,8 @@ export const STEPS = {
   CLAIM_ALL_REWARDS: 'CLAIM_ALL_REWARDS',
   CLAIM_COMPLETED: 'CLAIM_COMPLETED',
   COMPOUND_COMPLETED: 'COMPOUND_COMPLETED',
+  CLAIM_DISSOLUTION: 'CLAIM_DISSOLUTION',
+  CLAIM_DISSOLUTION_COMPLETED: 'CLAIM_DISSOLUTION_COMPLETED',
 } as const;
 
 export type Steps = keyof typeof STEPS;
@@ -16,10 +18,11 @@ export type Steps = keyof typeof STEPS;
 export type SliceState = {
   data: Data;
   claimFlow: ClaimFlow;
+  dissolution: Month[];
   loading: boolean;
 };
 
-export type TokenName = 'ARV' | 'PRV';
+export type TokenName = 'ARV' | 'PRV' | 'AUXO';
 
 export type TokenStats = {
   [key in TokenName]: {

@@ -1,7 +1,10 @@
 import { ContractTransaction, ethers } from 'ethers';
 import { isEmpty } from 'lodash';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { UserMerkleTree } from '../../types/merkleTree';
+import {
+  UserMerkleTree,
+  UserMerkleTreeDissolution,
+} from '../../types/merkleTree';
 import { merkleDistributorContract } from '../products/products.contracts';
 import { MerkleDistributorAbi, ClaimHelperAbi } from '@shared/util-blockchain';
 import {
@@ -11,7 +14,7 @@ import {
 } from '../rewards/rewards.slice';
 import { pendingNotification } from '../../components/Notifications/Notifications';
 import { addBalances, zeroBalance } from '../../utils/balances';
-import { Month, Data, STEPS } from './rewards.types';
+import { Month, Data, STEPS, SliceState, TokenName } from './rewards.types';
 import { promiseObject } from '../../utils/promiseObject';
 import daoContracts from '../../config/daoContracts.json';
 
@@ -20,6 +23,8 @@ export const THUNKS = {
   COMPOUND_REWARDS: 'rewards/compoundRewards',
   STOP_COMPOUND_REWARDS: 'rewards/stopCompoundRewards',
   CLAIM_REWARDS: 'rewards/claimRewards',
+  CLAIM_DISSOLUTION: 'rewards/claimDissolution',
+  GET_USER_DISSOLUTION: 'rewards/getUserDissolution',
 };
 
 export type ThunkClaimRewards = {
@@ -91,9 +96,68 @@ export const thunkClaimRewards = createAsyncThunk(
   },
 );
 
+export type ThunkClaimDissolution = {
+  claims: Parameters<MerkleDistributorAbi['claimMulti']>[0];
+  merkleDistributor: MerkleDistributorAbi;
+  token?: string;
+  account: string;
+  userRewards: UserMerkleTreeDissolution;
+};
+
+export const thunkClaimDissolution = createAsyncThunk(
+  THUNKS.CLAIM_DISSOLUTION,
+  async (
+    { claims, merkleDistributor, account, userRewards }: ThunkClaimDissolution,
+    { rejectWithValue, dispatch },
+  ) => {
+    if (
+      isEmpty(claims) ||
+      !merkleDistributor ||
+      !account ||
+      isEmpty(userRewards)
+    )
+      return rejectWithValue('Missing Contract, Account Details or Rewards');
+
+    dispatch(setTxHash(null));
+    let tx: ContractTransaction;
+    const isSingleClaim = claims?.length === 1;
+    try {
+      tx = isSingleClaim
+        ? await merkleDistributor.claim(claims[0])
+        : await merkleDistributor.claimMulti(claims);
+    } catch (e) {
+      console.error(e);
+      return rejectWithValue('Claim Rewards Failed');
+    }
+
+    const { hash } = tx;
+    dispatch(setTxHash(hash));
+
+    pendingNotification({
+      title: `claimRewardsPending`,
+      id: 'claimRewards',
+    });
+
+    const receipt = await tx.wait();
+
+    if (receipt.status === 1) {
+      dispatch(setClaimStep(STEPS.CLAIM_DISSOLUTION_COMPLETED));
+      dispatch(
+        thunkGetUserDissolution({
+          account,
+          rewards: userRewards,
+        }),
+      );
+      return receipt.status;
+    }
+
+    return receipt.status !== 1 && rejectWithValue('Claim Rewards Failed');
+  },
+);
+
 export type ThunkCompoundRewards = {
   merkleDistributor: MerkleDistributorAbi;
-  token: 'ARV' | 'PRV';
+  token: TokenName;
   account: string;
   userRewards: UserMerkleTree;
 };
@@ -308,6 +372,53 @@ export const thunkGetUserRewards = createAsyncThunk(
       };
 
       return data;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+);
+
+export type ThunkUserDissolution = {
+  account: string;
+  rewards: UserMerkleTreeDissolution;
+};
+
+export const thunkGetUserDissolution = createAsyncThunk(
+  THUNKS.GET_USER_DISSOLUTION,
+  async ({ account, rewards }: ThunkUserDissolution, { rejectWithValue }) => {
+    try {
+      if (!account || !rewards || isEmpty(rewards))
+        return rejectWithValue('Missing Account Details or Rewards');
+
+      const allMonthsPromisify = async () => {
+        const rewardPositions: Month[] = [];
+
+        await Promise.all(
+          Object.entries(rewards).map(async ([month, reward]) => {
+            const { windowIndex, accountIndex, rewards, proof } = reward;
+            const monthClaimed = await merkleDistributorContract(
+              'AUXO',
+            ).isClaimed(windowIndex, accountIndex);
+            rewardPositions.push({
+              month,
+              monthClaimed,
+              rewards: {
+                value: rewards,
+                label: Number(ethers.utils.formatUnits(rewards, 18)),
+              },
+              proof,
+              windowIndex,
+              accountIndex,
+            });
+          }),
+        );
+
+        return rewardPositions;
+      };
+
+      const results = await allMonthsPromisify();
+
+      return results;
     } catch (e) {
       console.error(e);
     }

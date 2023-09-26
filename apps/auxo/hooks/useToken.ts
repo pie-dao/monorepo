@@ -385,7 +385,7 @@ export const useCurrentPrvWithdrawalAmount = () => {
   );
 };
 
-export const useIsAutoCompoundEnabled = (token: 'ARV' | 'PRV') => {
+export const useIsAutoCompoundEnabled = (token: 'ARV' | 'PRV' | 'AUXO') => {
   return useAppSelector(
     (state) => state.rewards?.data?.metadata?.[token]?.isCompound ?? false,
   );

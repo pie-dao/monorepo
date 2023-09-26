@@ -393,5 +393,11 @@
   "claimed": "Claimed:",
   "rewardsSource": "Rewards source",
   "rewardsAmount": "Rewards amount",
-  "redeem": "Redeem"
+  "redeem": "Redeem",
+  "totalDissolutionAmount": "Total amount of wETH to be redeemed",
+  "dissolution": "Dissolution",
+  "claimingDissolution": "Claiming dissolution",
+  "noDissolutionMoney": "You have nothing to claim",
+  "dissolutionSuccessTitle": "You have successfully claimed your wETH",
+  "successDissolutionDesc": "See you, space cowboy."
 }

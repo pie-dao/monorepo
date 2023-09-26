@@ -19,7 +19,20 @@ export type MerkleTreesByUser = {
   };
 };
 
+export type MerkleTreesDissolution = {
+  [user: string]: {
+    [key: string]: {
+      windowIndex: number;
+      accountIndex: number;
+      rewards: string;
+      proof: string[];
+      token: string;
+    };
+  };
+};
+
 export type UserMerkleTree = MerkleTreesByUser['user'];
+export type UserMerkleTreeDissolution = MerkleTreesDissolution['user'];
 
 export type MerkleTree = {
   windowIndex: number;

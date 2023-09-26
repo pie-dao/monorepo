@@ -15,6 +15,16 @@ export const useActiveRewards = (token: Token) => {
   return data?.metadata?.[token];
 };
 
+export const useHasActiveClaimDissolution = () => {
+  const { dissolution } = useAppSelector((state) => state?.rewards);
+  return dissolution?.some((d) => !d.monthClaimed);
+};
+
+export const useActiveClaimDissolution = () => {
+  const { dissolution } = useAppSelector((state) => state?.rewards);
+  return dissolution?.filter((d) => !d.monthClaimed);
+};
+
 export const useLatestUnclaimedRewards = (token: Token) => {
   const { data } = useAppSelector((state) => state?.rewards);
   const rewardPosition = data?.rewardPositions?.[token];
