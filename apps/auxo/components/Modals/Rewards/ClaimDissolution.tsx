@@ -11,23 +11,15 @@ import ARVImage from '../../../public/tokens/32x32/ARV.svg';
 import PRVImage from '../../../public/tokens/32x32/PRV.svg';
 import AUXOImage from '../../../public/tokens/32x32/AUXO.svg';
 import PendingTransaction from '../../PendingTransaction/PendingTransaction';
-import {
-  thunkClaimDissolution,
-  thunkClaimRewards,
-} from '../../../store/rewards/rewards.thunks';
+import { thunkClaimDissolution } from '../../../store/rewards/rewards.thunks';
 import { WETH_ADDRESS } from '../../../utils/constants';
 import wEthImage from '../../../public/tokens/24x24/ETH.svg';
 import { setTotalClaiming } from '../../../store/rewards/rewards.slice';
 import useSWR from 'swr';
 import { fetcher } from '../../../utils/fetcher';
-import {
-  MerkleTreesByUser,
-  MerkleTreesDissolution,
-} from '../../../types/merkleTree';
+import { MerkleTreesDissolution } from '../../../types/merkleTree';
 import { MERKLE_TREES_BY_USER_DISSOLUTION_URL } from '../../../utils/constants';
-import { isEmpty } from 'lodash';
 import { getUserDissolutionMerkeTree } from '../../../utils/getUserMerkleTree';
-import { sanitizeDate } from '../../../utils/date';
 import { useActiveClaimDissolution } from '../../../hooks/useRewards';
 import { addBalances, zeroBalance } from '../../../utils/balances';
 import { MerkleDistributorAbi } from '@shared/util-blockchain';
