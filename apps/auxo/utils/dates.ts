@@ -9,12 +9,24 @@ export function addMonths(numOfMonths: number, date = new Date()) {
 export function formatDate(
   date: string | number | Date,
   defaultLocale = 'en-US',
+  showTime = false,
 ) {
-  return new Date(date).toLocaleDateString(defaultLocale, {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+  return new Date(date).toLocaleDateString(
+    defaultLocale,
+    showTime
+      ? {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+        }
+      : {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        },
+  );
 }
 
 export function fromLockedAtToMonths(date: number) {

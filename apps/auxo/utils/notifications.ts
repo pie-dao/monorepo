@@ -6,9 +6,10 @@ import {
 import { SliceState } from '../store/products/products.types';
 import { SliceState as migratorSliceState } from '../store/migration/migration.types';
 import { SliceState as rewardsSliceState } from '../store/rewards/rewards.types';
+import { SliceState as lendingSliceState } from '../store/lending/lending.types';
 const addTxNotifications = (
   builder: ActionReducerMapBuilder<
-    SliceState | migratorSliceState | rewardsSliceState
+    SliceState | migratorSliceState | rewardsSliceState | lendingSliceState
   >,
   // We could narrow the typedefs from any, but this adds substantial boilerplate
   // for a very simple set of functions that don't rely heavily on type inference

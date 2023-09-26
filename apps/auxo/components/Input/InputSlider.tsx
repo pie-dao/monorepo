@@ -10,6 +10,7 @@ import { useAppSelector } from '../../hooks';
 import wallet from '../../public/images/icons/wallet.svg';
 import { escapeRegExp, inputRegex } from '../../utils/sanitizeInput';
 import { Steps } from '../../store/modal/modal.types';
+import { Steps as StepsLend } from '../../store/lending/lending.types';
 
 function InputSlider({
   resetOnSteps,
@@ -17,26 +18,44 @@ function InputSlider({
   max,
   label,
   disabled = false,
+  className,
+  initialValue = '',
 }: {
-  resetOnSteps: Steps[] /* Steps to reset the input */;
+  resetOnSteps?: (Steps | StepsLend)[] /* Steps to reset the input */;
   setValue: SetStateType<BigNumberReference>;
   max: BigNumberReference;
   label: string;
   disabled?: boolean;
+  className?: string;
+  initialValue?: string;
 }): JSX.Element {
   const decimals = useDecimals(label);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const { step, showCompleteModal } = useAppSelector((state) => state.modal);
-  const [displayValue, setDisplayValue] = useState<string>('');
+  const { step: stepLend } = useAppSelector(
+    (state) => state.lending.lendingFlow,
+  );
+  const [displayValue, setDisplayValue] = useState<string>(initialValue);
 
   // if any of the passed reset steps match the current step
   // reset the input state
   useEffect(() => {
-    if (showCompleteModal || resetOnSteps?.includes(step)) {
+    if (
+      showCompleteModal ||
+      resetOnSteps?.includes(step) ||
+      resetOnSteps?.includes(stepLend)
+    ) {
       setDisplayValue('');
       setValue(zeroBalance);
     }
-  }, [step, showCompleteModal, setDisplayValue, setValue]);
+  }, [
+    step,
+    showCompleteModal,
+    setDisplayValue,
+    setValue,
+    resetOnSteps,
+    stepLend,
+  ]);
 
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
@@ -76,6 +95,7 @@ function InputSlider({
       className={classNames(
         disabled && 'pointer-events-none cursor-not-allowed',
         'flex flex-col items-center w-full',
+        className,
       )}
     >
       <div className="w-full">
@@ -102,7 +122,7 @@ function InputSlider({
               setValue(max);
               setDisplayValue(max.label.toString());
             }}
-            disabled={max.value === '0'}
+            disabled={max.value === '0' || disabled}
             className="flex text-secondary text-xs font-medium leading-3 px-3 pt-1 pb-3 gap-x-1"
             data-cy="max-button"
           >
@@ -110,7 +130,7 @@ function InputSlider({
             <span className="text-sub-dark">{`${formatBalance(
               max.label,
               defaultLocale,
-              4,
+              6,
               'standard',
             )} ${label}`}</span>
             <span>MAX</span>

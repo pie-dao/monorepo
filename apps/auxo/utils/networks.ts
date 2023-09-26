@@ -14,7 +14,7 @@ export type SupportedChains = ValueOf<typeof SUPPORTED_CHAINS>;
 
 // can be swapped out for local host
 export const MAINNET_RPC =
-  process.env.NEXT_PUBLIC_MAINNET_RPC ?? 'https://eth.llamarpc.com';
+  'http://localhost:8545' ?? 'https://eth.llamarpc.com';
 
 export const RPC_URLS =
   process.env.NEXT_PUBLIC_TESTNET === 'true'
@@ -41,7 +41,7 @@ export const config = Object.entries(RPC_URLS).reduce((obj, [chain, url]) => {
 }, {});
 
 export type SUPPORTED_CHAIN_ID =
-  typeof SUPPORTED_CHAINS[keyof typeof SUPPORTED_CHAINS];
+  (typeof SUPPORTED_CHAINS)[keyof typeof SUPPORTED_CHAINS];
 
 export type NetworkDetail = {
   chainId: string;

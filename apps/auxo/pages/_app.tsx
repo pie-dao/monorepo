@@ -1,4 +1,4 @@
-import type { ReactElement, ReactNode } from 'react';
+import { type ReactElement, type ReactNode } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { AppProps, NextWebVitalsMetric } from 'next/app';
@@ -8,6 +8,9 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { init, Web3OnboardProvider } from '@web3-onboard/react';
 import injectedModule from '@web3-onboard/injected-wallets';
 import walletConnectModule from '@web3-onboard/walletconnect';
+import coinbaseWalletModule from '@web3-onboard/coinbase';
+import trezorModule from '@web3-onboard/trezor';
+import ledgerModule from '@web3-onboard/ledger';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import getLibrary from '../connectors';
 import { Web3ContextProvider } from '../components/MultichainProvider/MultichainProvider';
@@ -21,6 +24,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import RewardsModalManager from '../components/Modals/Rewards/RewardsModalManager';
 import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
 import { MAINNET_RPC } from '../utils/networks';
+import LendingModalManager from '../components/Modals/Lending/LendingModalManager';
 
 const wcV2InitOptions = {
   version: 2 as const,
@@ -28,17 +32,44 @@ const wcV2InitOptions = {
   requiredChains: [1],
 };
 
+const trezorInitOptions = {
+  email: 'auxodao@protonmail.com',
+  appUrl: 'https://auxo.fi',
+};
+
+const ledgerInitOptions = {
+  walletConnectVersion: 2 as const,
+  projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_ID,
+};
+
 const injected = injectedModule();
+const coinbaseWalletSdk = coinbaseWalletModule();
 const walletConnect = walletConnectModule(wcV2InitOptions);
+const trezor = trezorModule(trezorInitOptions);
+const ledger = ledgerModule(ledgerInitOptions);
 
 const web3Onboard = init({
-  wallets: [injected, walletConnect],
+  wallets: [injected, walletConnect, coinbaseWalletSdk, trezor, ledger],
   chains: [
     {
       id: '0x1',
       token: 'ETH',
       label: 'Ethereum Mainnet',
       rpcUrl: MAINNET_RPC,
+      secondaryTokens: [
+        {
+          address: '0xff030228a046F640143Dab19be00009606C89B1d',
+          icon: '/tokens/AUXO.svg',
+        },
+        {
+          address: '0x069c0Ed12dB7199c1DdAF73b94de75AAe8061d33',
+          icon: '/tokens/32x32/ARV.svg',
+        },
+        {
+          address: '0xc72fbD264b40D88E445bcf82663D63FF21e722AF',
+          icon: '/tokens/32x32/PRV.svg',
+        },
+      ],
     },
   ],
   appMetadata: {
@@ -46,6 +77,10 @@ const web3Onboard = init({
     description:
       'Auxo is a DeFi platform that offers trust-minimized farming, rewards in ETH, and non-dilutive tokenomics.',
     icon: '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 25 24"><rect width="24" height="24" x=".5" fill="url(#a)" rx="12"/><path fill="#1F0860" d="M14.8167 4.5h-4.412L5 18.75h3.7758l2.6892-.8687h2.2914l2.6949.8687H20L14.8167 4.5ZM9.83048 15.609l2.69482-7.87321h.1727c.0356.10053.0694.20864.1051.32813L15.391 15.609l-1.6327-.8687h-2.2914l-1.63455.8687h-.00187Z"/><defs><linearGradient id="a" x1=".5" x2="23.8222" y1="4.63158" y2="5.04303" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#F6F7FF"/></linearGradient></defs></svg>',
+    recommendedInjectedWallets: [
+      { name: 'MetaMask', url: 'https://metamask.io' },
+      { name: 'Coinbase', url: 'https://wallet.coinbase.com/' },
+    ],
   },
   connect: {
     autoConnectAllPreviousWallet: true,
@@ -96,6 +131,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
   const { props, store } = wrapper.useWrappedStore(rest);
   usePagesViews();
   const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <Web3ContextProvider>
       <Web3OnboardProvider web3Onboard={web3Onboard}>
@@ -111,6 +147,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
                 <ModalManager />
                 <ModalStakingSuccess />
                 <RewardsModalManager />
+                <LendingModalManager />
                 <ClaimSuccess />
                 {getLayout(<Component {...props.pageProps} />)}
               </div>

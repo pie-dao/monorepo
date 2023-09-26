@@ -19,6 +19,10 @@ import { PrvWithdrawalMerkleTree } from '../../types/merkleTree';
 import { getPRVWithdrawalMerkleTree } from '../../utils/getUserMerkleTree';
 
 const prvTree = PrvWithdrawalTree as PrvWithdrawalMerkleTree;
+import {
+  thunkGetLendingData,
+  thunkGetUserLendingData,
+} from '../../store/lending/lending.thunks';
 
 export default function Layout({ children }) {
   const mq = useMediaQuery('(max-width: 1023px)');
@@ -36,9 +40,11 @@ export default function Layout({ children }) {
     dispatch(thunkGetProductsData());
     dispatch(thunkGetVeAUXOStakingData());
     dispatch(thunkGetXAUXOStakingData());
+    dispatch(thunkGetLendingData());
     if (!account || !wallet?.provider) return;
     dispatch(thunkGetUserProductsData({ account, provider: wallet?.provider }));
     dispatch(thunkGetUserStakingData({ account, provider: wallet?.provider }));
+    dispatch(thunkGetUserLendingData({ account, provider: wallet?.provider }));
     if (prvTree && prvTree?.recipients && account && prvMerkleVerifier) {
       dispatch(
         thunkGetUserPrvWithdrawal({
@@ -65,6 +71,20 @@ export default function Layout({ children }) {
       }
     };
   }, [updateOnBlock]);
+
+  useEffect(() => {
+    if (account && wallet?.provider) {
+      dispatch(
+        thunkGetUserProductsData({ account, provider: wallet?.provider }),
+      );
+      dispatch(
+        thunkGetUserStakingData({ account, provider: wallet?.provider }),
+      );
+      dispatch(
+        thunkGetUserLendingData({ account, provider: wallet?.provider }),
+      );
+    }
+  }, [account, dispatch, wallet?.provider]);
 
   return (
     <>

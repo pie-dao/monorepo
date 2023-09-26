@@ -40,7 +40,8 @@ export type Steps =
   | `${'EARLY_TERMINATION_COMPLETED'}`
   | `${'WITHDRAW_PRV'}`
   | `${'CONFIRM_WITHDRAW_PRV'}`
-  | `${'WITHDRAW_PRV_COMPLETED'}`;
+  | `${'WITHDRAW_PRV_COMPLETED'}`
+  | `${'LEND_DEPOSIT'}`;
 
 export const TX_STATES = {
   PENDING: 'PENDING',
@@ -73,7 +74,8 @@ export type SliceState = {
   showCompleteModal?: boolean;
   isConvertAndStake?: boolean;
   isIncreasedValue?: boolean;
-  claim: PrvWithdrawalRecipient & {
+  claim?: PrvWithdrawalRecipient & {
     account: string;
   };
+  lendingPool?: string;
 };

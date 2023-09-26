@@ -15,6 +15,7 @@ export type TokenConfig = {
   };
   coingeckoId: string;
   investmentFocusImage?: string;
+  decimals?: number;
 };
 
 export type TokensConfig = {

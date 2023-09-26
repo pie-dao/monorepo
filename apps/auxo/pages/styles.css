@@ -66,6 +66,7 @@
     --color-yellow: 206 152 46;
     --color-azure: 157 208 255;
     --color-light-red: 255 176 176;
+    --gradient-primary: 90deg, #ffffff 0.33%, #f6f7ff 95.86%;
   }
 }
 

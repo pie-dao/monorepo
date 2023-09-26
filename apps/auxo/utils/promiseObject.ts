@@ -23,24 +23,19 @@ type PromiseObject<T> = { [K in keyof T]: Promise<T[K]> | T[K] };
  * ```
  */
 export const promiseObject = async <T>(obj: PromiseObject<T>): Promise<T> => {
-  // Typescript will cast the promise array as unknown unless we give it some help
   const promises: PromiseObject<T>[keyof T][] = [];
-
-  // again, remind the compiler what it already knows
   const keys = Object.keys(obj) as Array<keyof T>;
 
-  // we cannot use map due to above compiler issues
   keys.forEach((key) => promises.push(obj[key]));
 
-  // the awaited result will throw an unhandled runtime error even if calling
-  // code is wrapped in a try/catch. Instead we will catch the error here and
-  // return an empty object.
   try {
-    const results = await Promise.all(promises);
-    // destructure the results of the await calls back into their respective k/v pairs
+    const results = await Promise.allSettled(promises);
+
     return results.reduce((map, current, index) => {
       const key = keys[index];
-      map[key] = current as Awaited<{ [K in keyof T]: T[K] }[keyof T]>;
+      if (current.status === 'fulfilled') {
+        map[key] = current.value as Awaited<{ [K in keyof T]: T[K] }[keyof T]>;
+      }
       return map;
     }, {} as T);
   } catch (e) {

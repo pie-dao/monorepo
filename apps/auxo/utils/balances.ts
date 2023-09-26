@@ -64,6 +64,8 @@ export const compareBalances = (
 };
 
 export const zeroBalance = { label: 0, value: '0' };
+export const isZeroBalance = (b: BigNumberReference): boolean =>
+  b?.label === 0 && b?.value === '0';
 
 export const convertToUnderlying = (
   original: BigNumberReference,
@@ -194,4 +196,42 @@ export const pickBalanceList = (
   const [first, second, ...rest] = balances;
   const picked = pickBalance(first, second, pick);
   return pickBalanceList([picked, ...rest], pick);
+};
+
+export const multiplyNumberToBnReference = (
+  b1: BigNumberReference,
+  number: number,
+  decimals: number,
+): BigNumberReference => {
+  let value: BigNumber;
+  if (!b1) return zeroBalance;
+  if (isNaN(number)) return zeroBalance;
+  try {
+    value = BigNumber.from(b1.value).mul(
+      ethers.utils.parseUnits(number.toString(), decimals),
+    );
+  } catch (e) {
+    if (e.code === 'INVALID_ARGUMENT') {
+      console.debug('Number too large to be converted to a BigNumber');
+      value = BigNumber.from(b1.value);
+    } else {
+      throw e;
+    }
+  }
+
+  return {
+    label: parseFloat(ethers.utils.formatUnits(value.toString(), decimals)),
+    value: value.toString(),
+  };
+};
+
+export const calculatePriceInUSD = (
+  amount: BigNumberReference,
+  decimals: number,
+  price: number,
+): number => {
+  const amountInTokens = ethers.utils.formatUnits(amount.value, decimals);
+  const amountInUSD = parseFloat(amountInTokens) * price;
+
+  return amountInUSD;
 };

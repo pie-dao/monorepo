@@ -2,13 +2,7 @@ import { Dispatch, SetStateAction, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
-import {
-  AnimatePresence,
-  motion,
-  PanInfo,
-  useMotionValue,
-  Variants,
-} from 'framer-motion';
+import { AnimatePresence, motion, Variants } from 'framer-motion';
 import { TemplateIcon, TrendingUpIcon } from '@heroicons/react/outline';
 import {
   ArvIcon,
@@ -43,6 +37,7 @@ export default function Navigation({
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
+    { name: t('lending'), href: '/pools', icon: <TrendingUpIcon /> },
   ];
 
   useEffect(() => {
@@ -82,8 +77,6 @@ export default function Navigation({
   };
 
   const { pathname } = useRouter();
-  const splitPath = pathname.split('/');
-  const path = `/${splitPath[1]}`;
 
   if (!mounted) return null;
 
@@ -137,7 +130,7 @@ export default function Navigation({
               className="flex flex-col pl-0 mb-0 list-none mx-2 gap-y-2 mt-6"
             >
               {navigation.map((item) => {
-                const active = path === item.href;
+                const active = pathname === item.href;
                 return (
                   <motion.li
                     key={item.name}

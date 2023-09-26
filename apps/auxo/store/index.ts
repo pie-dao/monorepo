@@ -12,6 +12,7 @@ import productsReducer from './products/products.slice';
 import notificationsReducer from './notifications/notifications.slice';
 import migrationReducer from './migration/migration.slice';
 import rewardsReducer from './rewards/rewards.slice';
+import lendingReducer from './lending/lending.slice';
 import { merge } from 'lodash';
 import memoize from 'proxy-memoize';
 import { useCallback } from 'react';
@@ -24,6 +25,7 @@ export const rootReducer = combineReducers({
   notifications: notificationsReducer,
   migration: migrationReducer,
   rewards: rewardsReducer,
+  lending: lendingReducer,
 });
 
 const reducer = (state: ReturnType<typeof rootReducer>, action: AnyAction) => {
