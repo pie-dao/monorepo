@@ -3,7 +3,7 @@ import { Month } from '../store/rewards/rewards.types';
 import { WritableDraft } from 'immer/dist/internal';
 import { isEmpty } from 'lodash';
 
-type Token = 'PRV' | 'ARV';
+type Token = 'PRV' | 'ARV' | 'AUXO';
 
 export const useTotalActiveRewards = () => {
   const { data } = useAppSelector((state) => state?.rewards);
