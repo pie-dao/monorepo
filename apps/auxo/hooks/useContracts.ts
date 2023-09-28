@@ -54,7 +54,7 @@ function getProviderOrSigner(
 }
 
 interface ContractFactory {
-  connect(address: string, providerSigner: Provider | Signer): unknown;
+  connect(address: string, providerSigner: Provider | Signer): any;
 }
 
 export function useContract<T extends ContractFactory>(
