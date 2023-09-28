@@ -24,7 +24,6 @@
         "libs/sdk-utils/state-listener/src/index.ts"
       ],
       "@shared/helpers": ["libs/shared/helpers/src/index.ts"],
-      "@shared/ui-library": ["libs/shared/ui-library/src/index.ts"],
       "@shared/util-blockchain": ["libs/shared/util-blockchain/src/index.ts"],
       "@shared/util-blockchain/abis": ["libs/shared/util-blockchain/abis"],
       "@shared/util-types": ["libs/shared/util-types/src/index.ts"],
