@@ -20,7 +20,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  swcMinify: false,
 };
 
 module.exports = withNx(nextTranslate(nextConfig));
