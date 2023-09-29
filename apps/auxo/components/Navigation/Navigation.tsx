@@ -35,14 +35,8 @@ export default function Navigation({
   const [mounted, setMounted] = useState(false);
 
   const navigation = [
-    {
-      name: t('treasury'),
-      href: '/treasury',
-      icon: <TreasuryIcon />,
-    },
-    { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
-    { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
+    { name: t('dissolution'), href: '/dissolution', icon: <ArvIcon /> },
   ];
 
   useEffect(() => {
