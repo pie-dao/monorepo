@@ -27,7 +27,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "auxo:build",
-        "dev": true
+        "dev": true,
+        "debug": true
       },
       "configurations": {
         "development": {
