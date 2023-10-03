@@ -165,7 +165,7 @@ const IncreaseLock: React.FC = () => {
       <div className="flex w-full items-center justify-center pt-4">
         <button
           onClick={increaseLock}
-          disabled={increasedStakingValue === 0}
+          disabled={true}
           className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
         >
           {t('increaseLock')}

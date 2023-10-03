@@ -36,6 +36,8 @@ export default function Navigation({
 
   const navigation = [
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
+    { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
+    { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('dissolution'), href: '/dissolution', icon: <ArvIcon /> },
   ];
 

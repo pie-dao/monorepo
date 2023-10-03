@@ -77,6 +77,7 @@ const ARVNotificationBar = () => {
           <div className="flex">
             <button
               onClick={boostToMax}
+              disabled
               className="px-4 py-1 text-base font-medium bg-gradient-to-r from-secondary via-secondary to-[#0BDD91] rounded-full text-white hover:bg-white"
             >
               {t('restake')}

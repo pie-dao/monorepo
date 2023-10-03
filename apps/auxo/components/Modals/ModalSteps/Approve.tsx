@@ -143,6 +143,7 @@ export default function Approve() {
           {!approving ? (
             <button
               type="button"
+              disabled
               className="w-fit px-10 md:px-20 py-2 text-sm md:text-lg font-medium text-white bg-secondary rounded-full ring-inset ring-2 ring-secondary enabled:hover:bg-transparent enabled:hover:text-secondary disabled:opacity-70"
               onClick={approveDeposit}
             >

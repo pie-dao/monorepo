@@ -160,6 +160,7 @@ export default function ARV({
                     <button
                       className="flex items-center gap-x-2"
                       onClick={openEarlyTermination}
+                      disabled
                     >
                       <Image
                         src={xAUXOIcon}
