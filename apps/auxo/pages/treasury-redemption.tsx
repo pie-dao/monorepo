@@ -68,7 +68,7 @@ export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
     // does not seem to work with key `initialState`
     props: {
-      title: 'Dissolution',
+      title: 'Treasury Redemption',
     },
   };
 });

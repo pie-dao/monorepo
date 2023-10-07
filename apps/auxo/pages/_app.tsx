@@ -22,6 +22,7 @@ import RewardsModalManager from '../components/Modals/Rewards/RewardsModalManage
 import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
 import { MAINNET_RPC } from '../utils/networks';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { RedemptionBanner } from '../components/RedemptionBanner/RedemptionBanner';
 
 const wcV2InitOptions = {
   version: 2 as const,
@@ -108,6 +109,7 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
                   <title>Welcome to AUXO</title>
                 </Head>
                 <GoogleAnalytics />
+                <RedemptionBanner />
                 <div className="h-full">
                   <NotificationDisplay />
                   <ModalManager />

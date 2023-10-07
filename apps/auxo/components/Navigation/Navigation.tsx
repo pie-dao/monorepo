@@ -38,7 +38,7 @@ export default function Navigation({
     { name: t('rewards'), href: '/rewards', icon: <BanknotesIcon /> },
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
-    { name: t('dissolution'), href: '/dissolution', icon: <ArvIcon /> },
+    { name: t('Redemption'), href: '/treasury-redemption', icon: <ArvIcon /> },
   ];
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export default function Navigation({
       <AnimatePresence initial={false}>
         <motion.aside
           className={classNames(
-            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 my-4 duration-300 transition-all bg-white border-0 ease-in-out z-10 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow overflow-hidden',
+            'fixed inset-y-0 left-0 flex-col place-items-start flex p-0 mt-[60px] mb-4 duration-300 transition-all bg-white border-0 ease-in-out z-10 w-full lg:ml-4 rounded-2xl lg:translate-x-0 shadow overflow-hidden',
             isDesktop
               ? open
                 ? 'max-w-[11rem] overflow-y-auto'
@@ -190,8 +190,8 @@ export default function Navigation({
         className={classNames(
           'focus:outline-none -pl-8 fixed flex z-20 self-start top-0 transition-all duration-300 rounded-full',
           open
-            ? 'left-36 lg:left-40 bg-transparent mt-7'
-            : 'left-2 lg:left-20 bg-white/90 shadow py-2 px-1 mt-5',
+            ? 'left-36 lg:left-40 bg-transparent mt-[72px]'
+            : 'left-2 lg:left-20 bg-white/90 shadow py-2 px-1 mt-[64px]',
         )}
         onClick={() => setOpen(!open)}
       >
