@@ -67,6 +67,10 @@
   "claimRewardsSuccess": "Claimed rewards successfully",
   "claimRewardsError": "There was an error while claiming rewards",
 
+  "claimDissolutionPending": "Claiming treasury redemption",
+  "claimDissolutionSuccess": "Claimed treasury redemption successfully",
+  "claimDissolutionError": "There was an error while claiming treasury redemption",
+
   "increaseLockVeAuxoPending": "Increasing lock",
   "increaseLockVeAuxoSuccess": "Increased lock successfully",
   "increaseLockVeAuxoError": "There was an error while increasing lock",

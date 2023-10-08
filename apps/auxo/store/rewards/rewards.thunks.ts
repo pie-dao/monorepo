@@ -121,6 +121,7 @@ export const thunkClaimDissolution = createAsyncThunk(
     dispatch(setTxHash(null));
     let tx: ContractTransaction;
     const isSingleClaim = claims?.length === 1;
+
     try {
       tx = isSingleClaim
         ? await merkleDistributor.claim(claims[0])
@@ -134,8 +135,8 @@ export const thunkClaimDissolution = createAsyncThunk(
     dispatch(setTxHash(hash));
 
     pendingNotification({
-      title: `claimRewardsPending`,
-      id: 'claimRewards',
+      title: `claimDissolutionPending`,
+      id: 'claimDissolution',
     });
 
     const receipt = await tx.wait();

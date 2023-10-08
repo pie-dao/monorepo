@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import addTxNotifications from '../../utils/notifications';
 import { BigNumberReference } from '../products/products.types';
 import {
+  thunkClaimDissolution,
   thunkClaimRewards,
   thunkCompoundRewards,
   thunkGetUserDissolution,
@@ -105,6 +106,7 @@ const rewardsSlice = createSlice({
       thunkStopCompoundRewards,
       'stopCompoundRewards',
     );
+    addTxNotifications(builder, thunkClaimDissolution, 'claimDissolution');
   },
 
   reducers: {
