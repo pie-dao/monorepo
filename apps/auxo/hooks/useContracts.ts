@@ -154,6 +154,13 @@ export function useMerkleDistributor(token: string) {
   );
 }
 
+// TODO: Put new distributor here
+export function useDissolutionMerkleDistributor() {
+  const [{ connectedChain }] = useSetChain();
+  const chainId = connectedChain?.id ? Number(connectedChain.id) : null;
+  return useContract(MerkleDistributorAbi__factory, '');
+}
+
 export function useClaimHelper(token: string) {
   const [{ connectedChain }] = useSetChain();
   const chainId = connectedChain?.id ? Number(connectedChain.id) : null;

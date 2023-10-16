@@ -1,4 +1,3 @@
-import { MetamaskIcon } from '@shared/ui-library';
 import { useSetChain } from '@web3-onboard/react';
 import useTranslation from 'next-translate/useTranslation';
 import { addTokenToWallet } from '../../utils/addTokenToWallet';
@@ -31,7 +30,6 @@ const AddToWallet: React.FC<AddToWalletProps> = ({ token, displayName }) => {
             })}
           </span>
         </div>
-        <MetamaskIcon className="h-5 w-5" />
       </div>
     </button>
   );

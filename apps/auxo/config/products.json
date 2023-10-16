@@ -4,7 +4,10 @@
     "name": "AUXO",
     "description": "AUXO Token",
     "addresses": {
-      "1": { "address": "0xff030228a046F640143Dab19be00009606C89B1d" },
+      "1": {
+        "address": "0xff030228a046F640143Dab19be00009606C89B1d",
+        "merkleDistributorAddress": "0x727a21924D9267E49D025a48464324edfcD215B5"
+      },
       "5": {
         "address": "0xAB3c5c69ABA8Db739665742763FDf5701c508B8a"
       },

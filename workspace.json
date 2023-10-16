@@ -13,7 +13,6 @@
     "sdk-utils-multichain": "libs/sdk-utils/multichain",
     "sdk-utils-state-listener": "libs/sdk-utils/state-listener",
     "shared-helpers": "libs/shared/helpers",
-    "shared-ui-library": "libs/shared/ui-library",
     "shared-util-blockchain": "libs/shared/util-blockchain",
     "shared-util-types": "libs/shared/util-types",
     "util-graphql": "libs/util-graphql"

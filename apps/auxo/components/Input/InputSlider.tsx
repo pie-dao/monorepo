@@ -84,7 +84,7 @@ function InputSlider({
             className="border-none leading-5 font-medium text-3xl text-primary rounded-xl focus:outline-none focus:ring-0 block w-full [appearance:textfield]"
             value={displayValue}
             onChange={(e) => enforcer(e.target.value.replace(/,/g, '.'))}
-            disabled={disabled}
+            disabled={true}
             // universal input options
             inputMode="decimal"
             autoComplete="off"
@@ -102,7 +102,7 @@ function InputSlider({
               setValue(max);
               setDisplayValue(max.label.toString());
             }}
-            disabled={max.value === '0'}
+            disabled={true}
             className="flex text-secondary text-xs font-medium leading-3 px-3 pt-1 pb-3 gap-x-1"
             data-cy="max-button"
           >

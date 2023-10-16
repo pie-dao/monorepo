@@ -3,7 +3,7 @@ import { Month } from '../store/rewards/rewards.types';
 import { WritableDraft } from 'immer/dist/internal';
 import { isEmpty } from 'lodash';
 
-type Token = 'PRV' | 'ARV';
+type Token = 'PRV' | 'ARV' | 'AUXO';
 
 export const useTotalActiveRewards = () => {
   const { data } = useAppSelector((state) => state?.rewards);
@@ -13,6 +13,16 @@ export const useTotalActiveRewards = () => {
 export const useActiveRewards = (token: Token) => {
   const { data } = useAppSelector((state) => state?.rewards);
   return data?.metadata?.[token];
+};
+
+export const useHasActiveClaimDissolution = () => {
+  const { dissolution } = useAppSelector((state) => state?.rewards);
+  return dissolution?.some((d) => !d.monthClaimed);
+};
+
+export const useActiveClaimDissolution = () => {
+  const { dissolution } = useAppSelector((state) => state?.rewards);
+  return dissolution?.filter((d) => !d.monthClaimed);
 };
 
 export const useLatestUnclaimedRewards = (token: Token) => {

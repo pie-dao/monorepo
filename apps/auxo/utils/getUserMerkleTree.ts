@@ -1,6 +1,7 @@
 import { toLower } from 'lodash';
 import {
   MerkleTreesByUser,
+  MerkleTreesDissolution,
   PrvWithdrawalMerkleTree,
   PrvWithdrawalRecipient,
   Recipient,
@@ -13,6 +14,17 @@ export default function getUserMerkleTree(
   for (const user in merkletreebyuser) {
     if (toLower(user) === toLower(userAddress)) {
       return merkletreebyuser[user];
+    }
+  }
+}
+
+export function getUserDissolutionMerkeTree(
+  merkleDissolutionTree: MerkleTreesDissolution,
+  userAddress: string,
+) {
+  for (const user in merkleDissolutionTree) {
+    if (toLower(user) === toLower(userAddress)) {
+      return merkleDissolutionTree[user];
     }
   }
 }

@@ -2,8 +2,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import addTxNotifications from '../../utils/notifications';
 import { BigNumberReference } from '../products/products.types';
 import {
+  thunkClaimDissolution,
   thunkClaimRewards,
   thunkCompoundRewards,
+  thunkGetUserDissolution,
   thunkGetUserRewards,
   thunkStopCompoundRewards,
 } from './rewards.thunks';
@@ -55,6 +57,7 @@ export const initialState: SliceState = {
     showCompleteModal: false,
     totalClaiming: null,
   },
+  dissolution: [],
   loading: false,
 };
 
@@ -79,6 +82,23 @@ const rewardsSlice = createSlice({
       });
       state.loading = false;
     });
+    builder.addCase(thunkGetUserDissolution.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(thunkGetUserDissolution.rejected, (state, action) => {
+      console.error(action.error);
+      state.loading = false;
+    });
+
+    builder.addCase(thunkGetUserDissolution.fulfilled, (state, action) => {
+      rewardsSlice.caseReducers.setDissolutionState(state, {
+        ...action,
+        payload: action.payload,
+      });
+      state.loading = false;
+    });
+
     addTxNotifications(builder, thunkClaimRewards, 'claimRewards');
     addTxNotifications(builder, thunkCompoundRewards, 'compoundRewards');
     addTxNotifications(
@@ -86,6 +106,7 @@ const rewardsSlice = createSlice({
       thunkStopCompoundRewards,
       'stopCompoundRewards',
     );
+    addTxNotifications(builder, thunkClaimDissolution, 'claimDissolution');
   },
 
   reducers: {
@@ -124,6 +145,12 @@ const rewardsSlice = createSlice({
     },
     setTotalClaiming: (state, action: PayloadAction<BigNumberReference>) => {
       state.claimFlow.totalClaiming = action.payload;
+    },
+    setDissolutionState: (
+      state,
+      action: PayloadAction<SliceState['dissolution']>,
+    ) => {
+      state.dissolution = action.payload;
     },
   },
 });

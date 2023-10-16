@@ -16,6 +16,8 @@ import ClaimMultiRewards from './ClaimMultiRewards';
 import ClaimAllRewards from './ClaimAllRewards';
 import CompoundRewards from './CompoundRewards';
 import CompoundSuccess from './CompoundSuccess';
+import ClaimDissolution from './ClaimDissolution';
+import DissolutionSuccess from './DissolutionSuccess';
 
 export default function RewardsModalManager() {
   const { open, step } = useAppSelector((state) => state.rewards.claimFlow);
@@ -52,10 +54,14 @@ export default function RewardsModalManager() {
                 <ModalBox>
                   {step === STEPS.LIST_REWARDS && <ListRewards />}
                   {step === STEPS.CLAIM_REWARDS && <ClaimRewards />}
+                  {step === STEPS.CLAIM_DISSOLUTION && <ClaimDissolution />}
                   {step === STEPS.CLAIM_MULTI_REWARDS && <ClaimMultiRewards />}
                   {step === STEPS.CLAIM_ALL_REWARDS && <ClaimAllRewards />}
                   {step === STEPS.COMPOUND_REWARDS && <CompoundRewards />}
                   {step === STEPS.COMPOUND_COMPLETED && <CompoundSuccess />}
+                  {step === STEPS.CLAIM_DISSOLUTION_COMPLETED && (
+                    <DissolutionSuccess />
+                  )}
                 </ModalBox>
               </>
             </Dialog.Panel>

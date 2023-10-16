@@ -3,8 +3,8 @@ import {
   motion,
   useMotionValue,
   useSpring,
-  type Variants,
-  type Transition,
+  Variants,
+  Transition,
 } from 'framer-motion';
 import { Dialog } from '@headlessui/react';
 import { useEffect, useMemo, useRef } from 'react';

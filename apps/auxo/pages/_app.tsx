@@ -21,6 +21,8 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import RewardsModalManager from '../components/Modals/Rewards/RewardsModalManager';
 import ClaimSuccess from '../components/Modals/Rewards/ClaimSuccess';
 import { MAINNET_RPC } from '../utils/networks';
+import ErrorBoundary from '../components/ErrorBoundary';
+import { RedemptionBanner } from '../components/RedemptionBanner/RedemptionBanner';
 
 const wcV2InitOptions = {
   version: 2 as const,
@@ -97,28 +99,31 @@ function CustomApp({ Component, ...rest }: AppPropsWithLayout) {
   usePagesViews();
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <Web3ContextProvider>
-      <Web3OnboardProvider web3Onboard={web3Onboard}>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <QueryClientProvider client={queryClient}>
-            <Provider store={store}>
-              <Head>
-                <title>Welcome to AUXO</title>
-              </Head>
-              <GoogleAnalytics />
-              <div className="h-full">
-                <NotificationDisplay />
-                <ModalManager />
-                <ModalStakingSuccess />
-                <RewardsModalManager />
-                <ClaimSuccess />
-                {getLayout(<Component {...props.pageProps} />)}
-              </div>
-            </Provider>
-          </QueryClientProvider>
-        </Web3ReactProvider>
-      </Web3OnboardProvider>
-    </Web3ContextProvider>
+    <ErrorBoundary>
+      <Web3ContextProvider>
+        <Web3OnboardProvider web3Onboard={web3Onboard}>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <QueryClientProvider client={queryClient}>
+              <Provider store={store}>
+                <Head>
+                  <title>Welcome to AUXO</title>
+                </Head>
+                <GoogleAnalytics />
+                <RedemptionBanner />
+                <div className="h-full">
+                  <NotificationDisplay />
+                  <ModalManager />
+                  <ModalStakingSuccess />
+                  <RewardsModalManager />
+                  <ClaimSuccess />
+                  {getLayout(<Component {...props.pageProps} />)}
+                </div>
+              </Provider>
+            </QueryClientProvider>
+          </Web3ReactProvider>
+        </Web3OnboardProvider>
+      </Web3ContextProvider>
+    </ErrorBoundary>
   );
 }
 
