@@ -47,12 +47,12 @@ export default function ClaimRewards() {
     fetcher,
   );
 
-  const amountToClaim = dissolutions[phase - 1]?.monthClaimed
+  const amountToClaim = dissolutions?.[phase - 1]?.monthClaimed
     ? zeroBalance
-    : dissolutions[phase - 1]?.rewards;
+    : dissolutions?.[phase - 1]?.rewards;
 
   const claimSingleReward = () => {
-    const dissolution = dissolutions[phase - 1];
+    const dissolution = dissolutions?.[phase - 1];
     const prepareClaim = {
       windowIndex: dissolution.windowIndex,
       merkleProof: dissolution.proof,

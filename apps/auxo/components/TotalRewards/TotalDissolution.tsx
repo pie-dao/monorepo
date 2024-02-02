@@ -13,6 +13,7 @@ import { STEPS } from '../../store/rewards/rewards.types';
 import { useActiveClaimDissolution } from '../../hooks/useRewards';
 import { useConnectWallet } from '@web3-onboard/react';
 import { zeroBalance } from '../../utils/balances';
+import { useMemo } from 'react';
 
 export type Props = {
   phase: number;
@@ -23,17 +24,20 @@ const TotalDissolution: React.FC<Props> = ({ phase }: { phase: number }) => {
   const account = wallet?.accounts[0]?.address;
   const dissolutions = useActiveClaimDissolution();
 
-  const amountToClaim = dissolutions[phase - 1]?.monthClaimed
+  const amountToClaim = dissolutions?.[phase - 1]?.monthClaimed
     ? zeroBalance
-    : dissolutions[phase - 1]?.rewards;
-  const shouldShowClaim = !dissolutions[phase - 1]?.monthClaimed && !!account;
+    : dissolutions?.[phase - 1]?.rewards;
+
+  const shouldShowClaim = useMemo(() => {
+    if (typeof dissolutions?.[phase - 1]?.monthClaimed === 'undefined')
+      return false;
+    return !dissolutions?.[phase - 1]?.monthClaimed && !!account;
+  }, [dissolutions, account, phase]);
 
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
   const ActionsBar = () => {
-    const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-
     const openClaimAllModal = () => {
       dispatch(setClaimToken('AUXO'));
       dispatch(setClaimStep(STEPS.CLAIM_DISSOLUTION));

@@ -66,7 +66,6 @@ Rewards.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
-    // does not seem to work with key `initialState`
     props: {
       title: 'Treasury Redemption Phase 2',
     },
