@@ -69,6 +69,7 @@ export const TX_STATES = {
 export type TxState = keyof typeof TX_STATES;
 
 export type ClaimFlow = {
+  phase: number;
   step: Steps;
   token: {
     name: TokenName;

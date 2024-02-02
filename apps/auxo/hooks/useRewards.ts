@@ -22,7 +22,7 @@ export const useHasActiveClaimDissolution = () => {
 
 export const useActiveClaimDissolution = () => {
   const { dissolution } = useAppSelector((state) => state?.rewards);
-  return dissolution?.filter((d) => !d.monthClaimed);
+  return dissolution;
 };
 
 export const useLatestUnclaimedRewards = (token: Token) => {

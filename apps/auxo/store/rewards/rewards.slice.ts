@@ -44,6 +44,7 @@ export const initialState: SliceState = {
   },
   claimFlow: {
     step: null,
+    phase: 0,
     open: false,
     tx: {
       hash: null,
@@ -116,6 +117,9 @@ const rewardsSlice = createSlice({
     setClaimStep: (state, action: PayloadAction<Steps>) => {
       state.claimFlow.step = action.payload;
     },
+    setClaimFlowPhase: (state, action: PayloadAction<number>) => {
+      state.claimFlow.phase = action.payload;
+    },
     setClaimFlowOpen: (state, action: PayloadAction<boolean>) => {
       state.claimFlow.open = action.payload;
     },
@@ -161,6 +165,7 @@ export const {
   setClaimFlowOpen,
   setClaimToken,
   setIsSingleClaim,
+  setClaimFlowPhase,
   setTx,
   setTxHash,
   setTxState,

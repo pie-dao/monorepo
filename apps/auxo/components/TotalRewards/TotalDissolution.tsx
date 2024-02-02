@@ -7,29 +7,52 @@ import {
   setClaimFlowOpen,
   setClaimStep,
   setClaimToken,
+  setClaimFlowPhase,
 } from '../../store/rewards/rewards.slice';
 import { STEPS } from '../../store/rewards/rewards.types';
-import {
-  useActiveClaimDissolution,
-  useHasActiveClaimDissolution,
-} from '../../hooks/useRewards';
+import { useActiveClaimDissolution } from '../../hooks/useRewards';
 import { useConnectWallet } from '@web3-onboard/react';
-import { addBalances, zeroBalance } from '../../utils/balances';
+import { zeroBalance } from '../../utils/balances';
 
-const TotalDissolution: React.FC = () => {
+export type Props = {
+  phase: number;
+};
+const TotalDissolution: React.FC<Props> = ({ phase }: { phase: number }) => {
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const [{ wallet }] = useConnectWallet();
   const account = wallet?.accounts[0]?.address;
-  const hasDissolutionToClaim = useHasActiveClaimDissolution();
   const dissolutions = useActiveClaimDissolution();
 
-  const amountToClaim = dissolutions?.reduce((acc, curr) => {
-    return addBalances(acc, curr.rewards);
-  }, zeroBalance);
-
-  const shouldShowClaim = hasDissolutionToClaim && !!account;
+  const amountToClaim = dissolutions[phase - 1]?.monthClaimed
+    ? zeroBalance
+    : dissolutions[phase - 1]?.rewards;
+  const shouldShowClaim = !dissolutions[phase - 1]?.monthClaimed && !!account;
 
   const { t } = useTranslation();
+
+  const ActionsBar = () => {
+    const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+
+    const openClaimAllModal = () => {
+      dispatch(setClaimToken('AUXO'));
+      dispatch(setClaimStep(STEPS.CLAIM_DISSOLUTION));
+      dispatch(setClaimFlowPhase(phase));
+      dispatch(setClaimFlowOpen(true));
+    };
+
+    return (
+      <div className="w-full flex justify-center">
+        <button
+          onClick={() => openClaimAllModal()}
+          className="flex gap-x-2 items-center w-32 px-2 py-1 place-content-center text-lg font-medium text-white bg-green rounded-full ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
+        >
+          {t('claim')}
+        </button>
+      </div>
+    );
+  };
+
   return (
     <section className="grid grid-cols-1 gap-4 mt-4 w-full items-start">
       <div className="overflow-hidden rounded-lg shadow-sm items-start w-full font-medium transition-all mx-auto bg-left bg-no-repeat bg-[url('/images/background/bg-rewards.png')] bg-cover">
@@ -52,7 +75,7 @@ const TotalDissolution: React.FC = () => {
             <p className="text-primary text-base font-semibold flex gap-x-2 uppercase items-center">
               {t('WETHAmount', {
                 amountLabel: formatBalance(
-                  amountToClaim.label,
+                  amountToClaim?.label,
                   defaultLocale,
                   12,
                   'standard',
@@ -68,28 +91,6 @@ const TotalDissolution: React.FC = () => {
 };
 
 export default TotalDissolution;
-
-const ActionsBar = () => {
-  const { t } = useTranslation();
-  const dispatch = useAppDispatch();
-
-  const openClaimAllModal = () => {
-    dispatch(setClaimToken('AUXO'));
-    dispatch(setClaimStep(STEPS.CLAIM_DISSOLUTION));
-    dispatch(setClaimFlowOpen(true));
-  };
-
-  return (
-    <div className="w-full flex justify-center">
-      <button
-        onClick={() => openClaimAllModal()}
-        className="flex gap-x-2 items-center w-32 px-2 py-1 place-content-center text-lg font-medium text-white bg-green rounded-full ring-2 ring-green enabled:hover:bg-transparent enabled:hover:text-green disabled:opacity-70"
-      >
-        {t('claim')}
-      </button>
-    </div>
-  );
-};
 
 const NoRewards = () => {
   const { t } = useTranslation();

@@ -97,7 +97,7 @@ export const thunkClaimRewards = createAsyncThunk(
 );
 
 export type ThunkClaimDissolution = {
-  claims: Parameters<MerkleDistributorAbi['claimMulti']>[0];
+  claims: Parameters<MerkleDistributorAbi['claim']>[0];
   merkleDistributor: MerkleDistributorAbi;
   token?: string;
   account: string;
@@ -120,12 +120,9 @@ export const thunkClaimDissolution = createAsyncThunk(
 
     dispatch(setTxHash(null));
     let tx: ContractTransaction;
-    const isSingleClaim = claims?.length === 1;
 
     try {
-      tx = isSingleClaim
-        ? await merkleDistributor.claim(claims[0])
-        : await merkleDistributor.claimMulti(claims);
+      tx = await merkleDistributor.claim(claims);
     } catch (e) {
       console.error(e);
       return rejectWithValue('Claim Rewards Failed');
