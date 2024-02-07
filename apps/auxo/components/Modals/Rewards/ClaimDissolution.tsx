@@ -33,7 +33,7 @@ export type Token = 'AUXO';
 
 export default function ClaimRewards() {
   const { t } = useTranslation();
-  const { tx } = useAppSelector((state) => state.rewards.claimFlow);
+  const { tx, phase } = useAppSelector((state) => state.rewards.claimFlow);
   const { defaultLocale } = useAppSelector((state) => state.preferences);
   const dispatch = useAppDispatch();
   const [{ wallet }] = useConnectWallet();
@@ -47,28 +47,26 @@ export default function ClaimRewards() {
     fetcher,
   );
 
-  const amountToClaim = dissolutions?.reduce((acc, curr) => {
-    return addBalances(acc, curr.rewards);
-  }, zeroBalance);
+  const amountToClaim = dissolutions?.[phase - 1]?.monthClaimed
+    ? zeroBalance
+    : dissolutions?.[phase - 1]?.rewards;
 
   const claimSingleReward = () => {
-    const prepareClaims: Parameters<MerkleDistributorAbi['claimMulti']>[0] =
-      dissolutions?.map((dissolution) => {
-        return {
-          windowIndex: dissolution.windowIndex,
-          merkleProof: dissolution.proof,
-          amount: dissolution.rewards.value,
-          accountIndex: dissolution.accountIndex,
-          account,
-          token: WETH_ADDRESS,
-        };
-      });
+    const dissolution = dissolutions?.[phase - 1];
+    const prepareClaim = {
+      windowIndex: dissolution.windowIndex,
+      merkleProof: dissolution.proof,
+      amount: dissolution.rewards.value,
+      accountIndex: dissolution.accountIndex,
+      account,
+      token: WETH_ADDRESS,
+    };
 
     setClaimRewardLoading(true);
     dispatch(setTotalClaiming(amountToClaim));
     dispatch(
       thunkClaimDissolution({
-        claims: prepareClaims,
+        claims: prepareClaim,
         merkleDistributor,
         account,
         userRewards: getUserDissolutionMerkeTree(data, account),

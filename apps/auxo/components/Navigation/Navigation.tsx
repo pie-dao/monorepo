@@ -39,6 +39,11 @@ export default function Navigation({
     { name: t('ARV'), href: '/ARV', icon: <ArvIcon className="w-6 h-6" /> },
     { name: t('PRV'), href: '/PRV', icon: <PrvIcon className="w-6 h-6" /> },
     { name: t('Redemption'), href: '/treasury-redemption', icon: <ArvIcon /> },
+    {
+      name: t('Redemption 2'),
+      href: '/treasury-redemption-2',
+      icon: <ArvIcon />,
+    },
   ];
 
   useEffect(() => {

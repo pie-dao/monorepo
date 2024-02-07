@@ -55,7 +55,7 @@ export default function Rewards({ title }) {
       <h2 className="flex sm:hidden text-2xl font-semibold text-primary w-auto drop-shadow-md ml-[10px]">
         {t(title)}
       </h2>
-      <TotalDissolution phase={1} />
+      <TotalDissolution phase={2} />
     </div>
   );
 }
@@ -66,9 +66,8 @@ Rewards.getLayout = function getLayout(page: ReactElement) {
 
 export const getStaticProps = wrapper.getStaticProps(() => () => {
   return {
-    // does not seem to work with key `initialState`
     props: {
-      title: 'Treasury Redemption Phase 1',
+      title: 'Treasury Redemption Phase 2',
     },
   };
 });
